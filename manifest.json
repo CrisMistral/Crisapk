@@ -1,22 +1,24 @@
 {
-  "name": "CRIS - Tu Compañera Diaria",
-  "short_name": "CRIS",
-  "description": "App de bienestar y estructura cognitiva para TDAH",
+  "name": "CRIS Art Shop",
+  "short_name": "CRISart",
+  "description": "Arte original en prints y cuadros — ediciones limitadas",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#e0f7fa",
-  "theme_color": "#4dd0e1",
-  "orientation": "portrait",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%234dd0e1'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white'%3E🦘%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230f0f0f'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%23c9a84c'%3E🎨%3C/text%3E%3C/svg%3E",
       "sizes": "192x192",
       "type": "image/svg+xml"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%234dd0e1'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white'%3E🦘%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230f0f0f'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%23c9a84c'%3E🎨%3C/text%3E%3C/svg%3E",
       "sizes": "512x512",
       "type": "image/svg+xml"
     }
-  ]
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "lang": "es"
 }
