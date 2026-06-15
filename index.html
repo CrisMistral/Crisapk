@@ -1,517 +1,1100 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#4dd0e1">
-<title>CRIS - Tu Compañera Diaria</title>
-<link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Maria Paints — Original Art & Fine Art Prints</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#e0f7fa 0%,#b2ebf2 100%);min-height:100vh;color:#2c3e50;overflow-x:hidden}
-.app{max-width:480px;margin:0 auto;background:#fff;min-height:100vh;position:relative}
-.header{background:linear-gradient(135deg,#4dd0e1,#26c6da);color:#fff;padding:1rem;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-.header h1{font-size:1.5rem;font-weight:300}
-.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:1rem;background:#fff;position:sticky;top:60px;z-index:99;border-bottom:2px solid #e0f7fa}
-.nav-btn{background:linear-gradient(135deg,#4dd0e1,#26c6da);color:#fff;border:none;padding:.8rem .5rem;border-radius:12px;font-size:.75rem;cursor:pointer;transition:all .3s}
-.nav-btn:active{transform:scale(.95)}
-.screen{display:none;padding:1rem;min-height:calc(100vh - 140px)}
-.screen.active{display:block}
-.card{background:#fff;border-radius:16px;padding:1rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.btn{background:linear-gradient(135deg,#4dd0e1,#26c6da);color:#fff;border:none;padding:.8rem 1rem;border-radius:12px;font-weight:600;cursor:pointer;width:100%;margin-bottom:.5rem;font-size:.9rem}
-.btn:active{transform:scale(.98)}
-.btn-sec{background:#f0f0f0;color:#333}
-.timer{font-size:3rem;font-weight:700;text-align:center;color:#4dd0e1;font-family:monospace;margin:1rem 0}
-.progress{height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden;margin:1rem 0}
-.progress-fill{height:100%;background:linear-gradient(90deg,#4dd0e1,#26c6da);transition:width .3s}
-.task{background:#f8f9fa;padding:.8rem;border-radius:8px;margin-bottom:.5rem;border-left:4px solid #4dd0e1}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin:1rem 0}
-input,textarea{width:100%;padding:.8rem;border:2px solid #e0e0e0;border-radius:8px;font-family:inherit;font-size:.9rem}
-input:focus,textarea:focus{outline:none;border-color:#4dd0e1}
-.hidden{display:none!important}
-.quokka{font-size:4rem;text-align:center;margin:1rem 0}
+/* ─── RESET & BASE ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAFAF6;
+  --warm:#F4EFE6;
+  --brown:#8B6F5E;
+  --brown-dark:#6B5245;
+  --sage:#4A7C59;
+  --charcoal:#1A1814;
+  --mid:#6B6560;
+  --border:#E2DDD6;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',-apple-system,sans-serif;
+  --shadow:0 4px 24px rgba(26,24,20,.08);
+  --shadow-lg:0 12px 48px rgba(26,24,20,.14);
+  --radius:4px;
+  --transition:.22s ease;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--cream);color:var(--charcoal);font-size:16px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--sans);border:none;background:none}
+img{max-width:100%;display:block}
+
+/* ─── ANNOUNCEMENT BAR ─── */
+.announcement{background:var(--charcoal);color:#fff;text-align:center;padding:.55rem 1rem;font-size:.78rem;letter-spacing:.05em}
+.announcement span{color:#D4AF6A}
+
+/* ─── HEADER ─── */
+.site-header{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px solid var(--border);transition:box-shadow var(--transition)}
+.site-header.scrolled{box-shadow:var(--shadow)}
+.header-inner{max-width:1200px;margin:0 auto;padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{font-family:var(--serif);font-size:1.35rem;font-weight:600;letter-spacing:.01em;flex-shrink:0}
+.logo span{font-style:italic;font-weight:400;color:var(--brown)}
+.main-nav{display:flex;gap:2rem;list-style:none}
+.main-nav a{font-size:.88rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--mid);transition:color var(--transition)}
+.main-nav a:hover{color:var(--charcoal)}
+.header-actions{display:flex;align-items:center;gap:.5rem}
+.icon-btn{width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background var(--transition);position:relative;color:var(--charcoal)}
+.icon-btn:hover{background:var(--warm)}
+.cart-count{position:absolute;top:4px;right:4px;background:var(--brown);color:#fff;width:18px;height:18px;border-radius:50%;font-size:.65rem;font-weight:600;display:flex;align-items:center;justify-content:center;transition:transform var(--transition)}
+.cart-count.bump{transform:scale(1.4)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px}
+.hamburger span{width:22px;height:2px;background:var(--charcoal);display:block;border-radius:2px;transition:var(--transition)}
+
+/* ─── MOBILE NAV ─── */
+.mobile-nav{position:fixed;inset:0;background:var(--cream);z-index:300;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding:2rem 1.5rem}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav-close{align-self:flex-end;font-size:1.4rem;color:var(--charcoal);padding:.5rem}
+.mobile-nav ul{list-style:none;margin-top:2rem;display:flex;flex-direction:column;gap:1.5rem}
+.mobile-nav a{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--charcoal)}
+
+/* ─── HERO ─── */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:88vh;max-width:1400px;margin:0 auto;padding:3rem 1.5rem 2rem}
+.hero-text{display:flex;flex-direction:column;justify-content:center;padding-right:4rem}
+.hero-eyebrow{font-size:.78rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--brown);margin-bottom:1.2rem}
+.hero-title{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4rem);line-height:1.08;font-weight:600;margin-bottom:1.4rem}
+.hero-title em{font-style:italic;color:var(--brown);font-weight:400}
+.hero-desc{font-size:1.05rem;color:var(--mid);max-width:420px;line-height:1.75;margin-bottom:2.2rem}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{background:var(--charcoal);color:#fff;padding:.85rem 2.2rem;border-radius:var(--radius);font-size:.9rem;font-weight:500;letter-spacing:.04em;transition:background var(--transition),transform .15s}
+.btn-primary:hover{background:var(--brown-dark);transform:translateY(-1px)}
+.btn-secondary{border:1.5px solid var(--charcoal);color:var(--charcoal);padding:.85rem 2.2rem;border-radius:var(--radius);font-size:.9rem;font-weight:500;letter-spacing:.04em;transition:all var(--transition)}
+.btn-secondary:hover{background:var(--charcoal);color:#fff}
+.hero-visual{display:flex;gap:1rem;align-items:stretch;padding:1rem 0}
+.hero-canvas{flex:1;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-lg)}
+.hero-canvas-side{flex:.45;display:flex;flex-direction:column;gap:1rem}
+.hero-canvas-side .mini{flex:1;border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+
+/* ─── ARTWORK CSS BACKGROUNDS ─── */
+.art-1{background:radial-gradient(ellipse 65% 75% at 38% 52%,rgba(224,135,120,.85) 0%,transparent 65%),radial-gradient(ellipse 55% 65% at 68% 30%,rgba(200,90,110,.65) 0%,transparent 60%),radial-gradient(ellipse 90% 90% at 50% 50%,#F5D5C0 0%,#EAB8A8 100%)}
+.art-2{background:radial-gradient(ellipse 55% 38% at 50% 62%,rgba(90,130,190,.55) 0%,transparent 68%),linear-gradient(180deg,#0C1B2A 0%,#1A3558 38%,#2A5298 62%,#4880C0 80%,#8AAAD8 100%)}
+.art-3{background:radial-gradient(circle at 18% 78%,rgba(58,110,70,.75) 0%,transparent 38%),radial-gradient(circle at 82% 22%,rgba(58,110,70,.55) 0%,transparent 28%),radial-gradient(circle at 55% 50%,rgba(180,100,60,.4) 0%,transparent 50%),linear-gradient(145deg,#C06040 0%,#D4785A 25%,#E89870 45%,#C87060 70%,#A85848 100%)}
+.art-4{background:radial-gradient(circle at 50% 72%,rgba(255,200,80,.85) 0%,transparent 58%),radial-gradient(circle at 28% 48%,rgba(255,140,40,.5) 0%,transparent 38%),linear-gradient(175deg,#180800 0%,#3C1800 14%,#882800 32%,#D45A08 52%,#F09020 72%,#FFCC50 88%,#FFF0A0 100%)}
+.art-5{background:radial-gradient(ellipse 68% 52% at 50% 42%,rgba(208,148,168,.65) 0%,transparent 68%),radial-gradient(ellipse 42% 32% at 32% 58%,rgba(160,190,150,.5) 0%,transparent 48%),radial-gradient(ellipse 30% 25% at 68% 65%,rgba(180,148,168,.45) 0%,transparent 42%),linear-gradient(155deg,#F0EBE2 0%,#E8DDD0 50%,#D8D0C4 100%)}
+.art-6{background:linear-gradient(135deg,#0A2540 0%,#0A2540 48%,#1E4080 48%,#1E4080 100%);position:relative}
+.art-6::before{content:'';position:absolute;top:18%;left:22%;width:38%;height:55%;background:rgba(255,220,80,.18);border-radius:2px}
+.art-6::after{content:'';position:absolute;bottom:12%;right:18%;width:28%;height:38%;background:rgba(80,180,220,.22);border-radius:2px}
+.art-7{background:radial-gradient(ellipse 60% 70% at 35% 50%,rgba(218,130,115,.75) 0%,transparent 65%),radial-gradient(ellipse 50% 60% at 62% 32%,rgba(195,88,108,.6) 0%,transparent 60%),linear-gradient(155deg,#F8E0D5 0%,#EEC0B0 100%)}
+.art-8{background:linear-gradient(0deg,#2D6A4F 0%,#2D6A4F 30%,#95D5B2 30%,#95D5B2 62%,#F8F3E3 62%,#F8F3E3 100%)}
+.art-9{background:radial-gradient(circle at 42% 38%,rgba(255,198,80,.8) 0%,transparent 55%),linear-gradient(175deg,#1A0C00 0%,#4A2000 18%,#9A4A10 38%,#E08030 58%,#F8B848 78%,#FFF0C0 100%)}
+.art-10{background:radial-gradient(ellipse 70% 55% at 50% 45%,rgba(200,140,165,.6) 0%,transparent 70%),linear-gradient(152deg,#EDE8E0 0%,#DDD5C8 100%)}
+
+/* ─── SECTION HEADERS ─── */
+section{padding:5rem 1.5rem}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-label{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brown);font-weight:500;margin-bottom:.8rem}
+.section-title{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:600;line-height:1.15;margin-bottom:1rem}
+.section-title em{font-style:italic;color:var(--brown);font-weight:400}
+.section-sub{color:var(--mid);max-width:520px;font-size:.97rem;line-height:1.72}
+
+/* ─── COLLECTIONS CARDS ─── */
+.collections{background:var(--warm)}
+.collections-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem}
+.collection-card{border-radius:8px;overflow:hidden;position:relative;cursor:pointer;min-height:340px;display:flex;align-items:flex-end}
+.collection-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,24,20,.65) 0%,transparent 55%);transition:opacity var(--transition)}
+.collection-card:hover::after{opacity:.85}
+.collection-art{position:absolute;inset:0}
+.collection-info{position:relative;z-index:1;padding:1.8rem;color:#fff}
+.collection-info h3{font-family:var(--serif);font-size:1.6rem;font-weight:600;margin-bottom:.4rem}
+.collection-info p{font-size:.85rem;opacity:.85;margin-bottom:1rem}
+.collection-link{display:inline-flex;align-items:center;gap:.5rem;font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:2px;transition:border-color var(--transition)}
+.collection-link:hover{border-color:#fff}
+
+/* ─── SHOP SECTION ─── */
+.shop-filters{display:flex;gap:.6rem;flex-wrap:wrap;margin:2.2rem 0 2.8rem}
+.filter-btn{padding:.55rem 1.4rem;border-radius:100px;font-size:.83rem;font-weight:500;letter-spacing:.04em;border:1.5px solid var(--border);color:var(--mid);background:#fff;transition:all var(--transition)}
+.filter-btn:hover{border-color:var(--brown);color:var(--brown)}
+.filter-btn.active{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
+
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem 1.4rem}
+.product-card{cursor:pointer;transition:transform var(--transition)}
+.product-card:hover{transform:translateY(-4px)}
+.product-card:hover .product-img{box-shadow:var(--shadow-lg)}
+.product-card.hidden{display:none}
+.product-img{width:100%;aspect-ratio:3/4;border-radius:6px;overflow:hidden;position:relative;box-shadow:var(--shadow);transition:box-shadow var(--transition)}
+.product-badge{position:absolute;top:.7rem;left:.7rem;background:var(--charcoal);color:#fff;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.28rem .65rem;border-radius:3px;z-index:1}
+.product-badge.sold{background:#6B6560}
+.product-badge.new{background:var(--sage)}
+.product-info{padding:.9rem .2rem .4rem}
+.product-name{font-family:var(--serif);font-size:1.05rem;font-weight:400;margin-bottom:.2rem}
+.product-meta{font-size:.8rem;color:var(--mid);margin-bottom:.55rem}
+.product-footer{display:flex;align-items:center;justify-content:space-between}
+.product-price{font-size:1rem;font-weight:600;letter-spacing:.01em}
+.add-btn{width:34px;height:34px;border-radius:50%;background:var(--charcoal);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--transition),transform .15s;flex-shrink:0}
+.add-btn:hover{background:var(--brown);transform:scale(1.1)}
+.add-btn svg{width:16px;height:16px}
+
+/* ─── ABOUT ─── */
+.about{background:var(--warm)}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-portrait{border-radius:8px;overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:4/5;position:relative}
+.portrait-art{position:absolute;inset:0;background:radial-gradient(ellipse 80% 95% at 50% 45%,#D4A882 0%,#B8806A 35%,#C89070 60%,#E8B898 80%,#F5D8C8 100%)}
+.portrait-art::before{content:'';position:absolute;top:5%;left:15%;right:15%;height:55%;background:radial-gradient(ellipse 70% 80% at 50% 40%,rgba(180,120,80,.8) 0%,rgba(140,90,65,.9) 50%,rgba(100,65,50,.95) 100%);border-radius:50% 50% 45% 45%}
+.portrait-art::after{content:'';position:absolute;top:2%;left:25%;right:25%;height:28%;background:radial-gradient(ellipse 70% 75% at 50% 35%,rgba(220,180,150,.9) 0%,rgba(190,140,110,.85) 100%);border-radius:50%}
+.about-quote{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);margin-bottom:1.2rem}
+.about-text p{color:var(--mid);line-height:1.8;margin-bottom:1rem;font-size:.97rem}
+.about-text p strong{color:var(--charcoal);font-weight:500}
+.social-row{display:flex;gap:1rem;margin-top:1.8rem;flex-wrap:wrap}
+.social-btn{display:inline-flex;align-items:center;gap:.55rem;padding:.65rem 1.3rem;border:1.5px solid var(--charcoal);border-radius:100px;font-size:.83rem;font-weight:500;transition:all var(--transition)}
+.social-btn:hover{background:var(--charcoal);color:#fff}
+.social-btn svg{width:16px;height:16px;flex-shrink:0}
+
+/* ─── PROCESS ─── */
+.process-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem}
+.step{text-align:center;padding:2rem 1.5rem;background:#fff;border-radius:8px;box-shadow:var(--shadow)}
+.step-icon{width:52px;height:52px;background:var(--warm);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-size:1.4rem}
+.step h4{font-family:var(--serif);font-size:1.1rem;font-weight:600;margin-bottom:.5rem}
+.step p{font-size:.85rem;color:var(--mid);line-height:1.7}
+
+/* ─── NEWSLETTER ─── */
+.newsletter{background:var(--charcoal);color:#fff;text-align:center}
+.newsletter .section-title{color:#fff}
+.newsletter .section-sub{color:rgba(255,255,255,.65);margin:0 auto 2.5rem}
+.newsletter .section-label{color:#D4AF6A}
+.newsletter-form{display:flex;gap:.75rem;max-width:440px;margin:0 auto}
+.newsletter-input{flex:1;padding:.85rem 1.2rem;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:.9rem;transition:border-color var(--transition)}
+.newsletter-input::placeholder{color:rgba(255,255,255,.4)}
+.newsletter-input:focus{outline:none;border-color:rgba(255,255,255,.5)}
+.btn-gold{background:#D4AF6A;color:var(--charcoal);padding:.85rem 1.6rem;border-radius:var(--radius);font-size:.88rem;font-weight:600;transition:background var(--transition)}
+.btn-gold:hover{background:#E8C87C}
+
+/* ─── FOOTER ─── */
+.site-footer{background:var(--charcoal);color:rgba(255,255,255,.65);border-top:1px solid rgba(255,255,255,.08)}
+.footer-inner{max-width:1200px;margin:0 auto;padding:4rem 1.5rem 2rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem}
+.footer-brand .logo{color:#fff;font-size:1.15rem;margin-bottom:.8rem}
+.footer-brand p{font-size:.83rem;line-height:1.75}
+.footer-col h5{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:1.2rem;font-weight:500}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+.footer-col a{font-size:.85rem;transition:color var(--transition)}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.08);font-size:.78rem}
+.footer-social{display:flex;gap:.8rem}
+.footer-social a{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;transition:all var(--transition)}
+.footer-social a:hover{background:#fff;color:var(--charcoal)}
+.footer-social svg{width:15px;height:15px}
+
+/* ─── CART SIDEBAR ─── */
+.overlay{position:fixed;inset:0;background:rgba(26,24,20,.45);z-index:400;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(2px)}
+.overlay.open{opacity:1;pointer-events:all}
+.cart-sidebar{position:fixed;top:0;right:0;width:420px;max-width:100vw;height:100vh;background:#fff;z-index:500;transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:var(--shadow-lg)}
+.cart-sidebar.open{transform:translateX(0)}
+.cart-header{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.5rem;border-bottom:1px solid var(--border)}
+.cart-header h2{font-family:var(--serif);font-size:1.3rem;font-weight:600}
+.close-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background var(--transition)}
+.close-btn:hover{background:var(--warm)}
+.cart-body{flex:1;overflow-y:auto;padding:1.5rem}
+.cart-empty{text-align:center;padding:4rem 2rem;color:var(--mid)}
+.cart-empty-icon{font-size:3rem;margin-bottom:1rem}
+.cart-empty h3{font-family:var(--serif);font-size:1.2rem;margin-bottom:.5rem;color:var(--charcoal)}
+.cart-item{display:flex;gap:1rem;padding:1.2rem 0;border-bottom:1px solid var(--border)}
+.cart-item-img{width:80px;height:100px;border-radius:4px;overflow:hidden;flex-shrink:0}
+.cart-item-details{flex:1;min-width:0}
+.cart-item-name{font-family:var(--serif);font-size:.97rem;margin-bottom:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-item-variant{font-size:.78rem;color:var(--mid);margin-bottom:.7rem}
+.cart-item-controls{display:flex;align-items:center;justify-content:space-between}
+.qty-control{display:flex;align-items:center;gap:.5rem;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.qty-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--mid);transition:background var(--transition)}
+.qty-btn:hover{background:var(--warm)}
+.qty-val{font-size:.88rem;font-weight:500;min-width:24px;text-align:center}
+.remove-btn{font-size:.75rem;color:var(--mid);text-decoration:underline;text-underline-offset:3px;transition:color var(--transition)}
+.remove-btn:hover{color:var(--charcoal)}
+.cart-item-price{font-weight:600;font-size:.95rem;flex-shrink:0}
+.cart-footer{padding:1.5rem;border-top:1px solid var(--border)}
+.cart-subtotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.9rem}
+.cart-subtotal-price{font-family:var(--serif);font-size:1.2rem;font-weight:600}
+.cart-note{font-size:.76rem;color:var(--mid);text-align:center;margin-bottom:1rem}
+.btn-checkout{width:100%;padding:1rem;background:var(--charcoal);color:#fff;border-radius:var(--radius);font-size:.95rem;font-weight:500;letter-spacing:.04em;transition:background var(--transition)}
+.btn-checkout:hover{background:var(--brown-dark)}
+
+/* ─── PRODUCT MODAL ─── */
+.product-modal{position:fixed;inset:0;z-index:600;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .28s}
+.product-modal.open{opacity:1;pointer-events:all}
+.product-modal-bg{position:absolute;inset:0;background:rgba(26,24,20,.55);backdrop-filter:blur(4px)}
+.product-modal-inner{position:relative;background:#fff;border-radius:10px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;box-shadow:var(--shadow-lg);transform:translateY(20px) scale(.97);transition:transform .28s cubic-bezier(.4,0,.2,1)}
+.product-modal.open .product-modal-inner{transform:translateY(0) scale(1)}
+.modal-img{min-height:440px;position:relative}
+.modal-details{padding:2.5rem 2rem;overflow-y:auto}
+.modal-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:background var(--transition)}
+.modal-close:hover{background:#fff}
+.modal-badge{display:inline-block;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .65rem;border-radius:3px;margin-bottom:1rem}
+.modal-badge.new{background:#E8F5ED;color:var(--sage)}
+.modal-badge.original{background:var(--warm);color:var(--brown)}
+.modal-badge.print{background:#EEF2F8;color:#456}
+.modal-title{font-family:var(--serif);font-size:1.7rem;font-weight:600;line-height:1.15;margin-bottom:.5rem}
+.modal-medium{font-size:.83rem;color:var(--mid);margin-bottom:1.2rem}
+.modal-price{font-size:1.5rem;font-weight:600;margin-bottom:1.5rem}
+.modal-desc{font-size:.9rem;color:var(--mid);line-height:1.78;margin-bottom:1.5rem}
+.modal-specs{background:var(--cream);border-radius:6px;padding:1rem 1.2rem;margin-bottom:1.5rem}
+.modal-spec{display:flex;justify-content:space-between;padding:.4rem 0;font-size:.83rem;border-bottom:1px solid var(--border)}
+.modal-spec:last-child{border:none}
+.modal-spec span:first-child{color:var(--mid)}
+.modal-spec span:last-child{font-weight:500}
+.size-selector{margin-bottom:1.5rem}
+.size-label{font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.7rem}
+.size-options{display:flex;gap:.5rem;flex-wrap:wrap}
+.size-opt{padding:.45rem 1rem;border:1.5px solid var(--border);border-radius:var(--radius);font-size:.82rem;cursor:pointer;transition:all var(--transition)}
+.size-opt:hover{border-color:var(--charcoal)}
+.size-opt.selected{border-color:var(--charcoal);background:var(--charcoal);color:#fff}
+.modal-add{width:100%;padding:1rem;background:var(--charcoal);color:#fff;border-radius:var(--radius);font-size:.95rem;font-weight:500;letter-spacing:.04em;transition:background var(--transition)}
+.modal-add:hover{background:var(--brown-dark)}
+.modal-add:disabled{background:var(--mid);cursor:default}
+.modal-shipping{display:flex;align-items:center;gap:.5rem;margin-top:1rem;font-size:.78rem;color:var(--mid)}
+.modal-shipping svg{width:14px;height:14px;flex-shrink:0}
+
+/* ─── CHECKOUT MODAL ─── */
+.checkout-modal{position:fixed;inset:0;z-index:700;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .28s}
+.checkout-modal.open{opacity:1;pointer-events:all}
+.checkout-modal-bg{position:absolute;inset:0;background:rgba(26,24,20,.6);backdrop-filter:blur(5px)}
+.checkout-inner{position:relative;background:#fff;border-radius:10px;max-width:820px;width:100%;max-height:92vh;overflow-y:auto;display:grid;grid-template-columns:1fr .8fr;box-shadow:var(--shadow-lg)}
+.checkout-form-col{padding:2.5rem 2rem}
+.checkout-form-col h2{font-family:var(--serif);font-size:1.5rem;font-weight:600;margin-bottom:.4rem}
+.checkout-form-col > p{font-size:.83rem;color:var(--mid);margin-bottom:2rem}
+.form-section-title{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);margin:.8rem 0 1rem;padding-top:.8rem;border-top:1px solid var(--border)}
+.form-section-title:first-of-type{border:none;padding-top:0}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+.form-row.single{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:.38rem}
+.form-group label{font-size:.78rem;font-weight:500;letter-spacing:.04em;color:var(--charcoal)}
+.form-group input,.form-group select{padding:.72rem .9rem;border:1.5px solid var(--border);border-radius:var(--radius);font-family:var(--sans);font-size:.88rem;color:var(--charcoal);transition:border-color var(--transition);background:#fff;width:100%}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--charcoal)}
+.form-group input::placeholder{color:#bbb}
+.payment-icons{display:flex;gap:.5rem;margin-bottom.8rem}
+.card-brands{display:flex;gap:.4rem;margin-bottom:1rem}
+.card-brand{padding:.25rem .6rem;border:1px solid var(--border);border-radius:3px;font-size:.7rem;font-weight:600;color:var(--mid)}
+.checkout-submit{width:100%;padding:1rem;background:var(--charcoal);color:#fff;border-radius:var(--radius);font-size:.95rem;font-weight:500;letter-spacing:.04em;margin-top:1.5rem;transition:background var(--transition)}
+.checkout-submit:hover{background:var(--brown-dark)}
+.checkout-note{font-size:.74rem;color:var(--mid);text-align:center;margin-top:.75rem;display:flex;align-items:center;justify-content:center;gap:.35rem}
+.checkout-summary-col{background:var(--cream);padding:2.5rem 1.8rem;border-radius:0 10px 10px 0}
+.checkout-summary-col h3{font-family:var(--serif);font-size:1.1rem;font-weight:600;margin-bottom:1.5rem}
+.summary-items{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem}
+.summary-item{display:flex;gap.75rem;align-items:flex-start;gap:.75rem}
+.summary-item-img{width:54px;height:68px;border-radius:4px;overflow:hidden;flex-shrink:0;position:relative}
+.summary-item-img .qty-badge{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:var(--brown);color:#fff;border-radius:50%;font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.summary-item-info{flex:1;min-width:0}
+.summary-item-name{font-size:.85rem;font-weight:500;margin-bottom:.15rem}
+.summary-item-variant{font-size:.76rem;color:var(--mid)}
+.summary-item-price{font-size:.88rem;font-weight:600;flex-shrink:0}
+.summary-divider{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.summary-line{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.5rem;color:var(--mid)}
+.summary-total{display:flex;justify-content:space-between;font-size:1.05rem;font-weight:600;color:var(--charcoal);margin-top:.8rem}
+.checkout-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.checkout-close:hover{background:#fff}
+
+/* ─── SUCCESS STATE ─── */
+.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;min-height:400px}
+.success-screen.show{display:flex}
+.checkout-form-inner{transition:opacity .3s}
+.success-icon{width:72px;height:72px;background:#E8F5ED;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;font-size:2rem}
+.success-screen h2{font-family:var(--serif);font-size:1.6rem;margin-bottom:.75rem}
+.success-screen p{color:var(--mid);font-size:.9rem;max-width:320px;line-height:1.7}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--charcoal);color:#fff;padding:.75rem 1.5rem;border-radius:100px;font-size:.85rem;font-weight:500;z-index:999;opacity:0;pointer-events:none;transition:all .3s;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding:2rem 1.5rem 3rem;gap:2.5rem}
+  .hero-text{padding-right:0;text-align:center;align-items:center}
+  .hero-desc{text-align:center}
+  .collections-grid{grid-template-columns:1fr}
+  .products-grid{grid-template-columns:repeat(2,1fr)}
+  .about-inner{grid-template-columns:1fr;gap:3rem}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:2rem}
+  .main-nav{display:none}
+  .hamburger{display:flex}
+  .checkout-inner{grid-template-columns:1fr}
+  .checkout-summary-col{border-radius:0 0 10px 10px}
+  .product-modal-inner{grid-template-columns:1fr}
+  .modal-img{min-height:280px}
+  .process-steps{grid-template-columns:1fr}
+}
+@media(max-width:540px){
+  .products-grid{grid-template-columns:1fr 1fr;gap:1rem .8rem}
+  .hero-cta{flex-direction:column;width:100%}
+  .btn-primary,.btn-secondary{text-align:center}
+  .newsletter-form{flex-direction:column}
+  .footer-inner{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="app" id="app">
+
+<!-- ANNOUNCEMENT -->
+<div class="announcement">
+  Free shipping on orders over <span>€120</span> &nbsp;·&nbsp; Original paintings ship worldwide
+</div>
 
 <!-- HEADER -->
-<div class="header">
-<h1>🦘 CRIS</h1>
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">what <span>maria</span> paints</a>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#originals">Originals</a></li>
+        <li><a href="#prints">Prints</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openCart()" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="22" height="22"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+      <button class="hamburger icon-btn" onclick="toggleMobileNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" id="mobile-nav">
+  <button class="mobile-nav-close" onclick="toggleMobileNav()">✕</button>
+  <ul>
+    <li><a href="#shop" onclick="toggleMobileNav()">Shop</a></li>
+    <li><a href="#originals" onclick="toggleMobileNav()">Originals</a></li>
+    <li><a href="#prints" onclick="toggleMobileNav()">Prints</a></li>
+    <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section style="padding:0">
+  <div class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Hand-painted originals & fine art prints</p>
+      <h1 class="hero-title">Art that makes<br>your space <em>feel alive</em></h1>
+      <p class="hero-desc">Each piece is painted by hand in my studio, with layers of colour and texture that photography can barely capture. Collect a one-of-a-kind original, or bring the same energy home with a museum-quality print.</p>
+      <div class="hero-cta">
+        <a href="#shop" class="btn-primary">Shop All Works</a>
+        <a href="#about" class="btn-secondary">About the Artist</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-canvas art-4" style="flex:1.1"></div>
+      <div class="hero-canvas-side">
+        <div class="mini art-1"></div>
+        <div class="mini art-2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLECTIONS -->
+<section class="collections">
+  <div class="section-inner">
+    <p class="section-label">Collections</p>
+    <h2 class="section-title">Browse by <em>category</em></h2>
+    <div class="collections-grid">
+      <div class="collection-card" onclick="filterProducts('original')" style="min-height:320px">
+        <div class="collection-art art-3" style="position:absolute;inset:0"></div>
+        <div class="collection-info">
+          <h3>Original Paintings</h3>
+          <p>Unique, signed works — one collector only</p>
+          <span class="collection-link">Shop originals →</span>
+        </div>
+      </div>
+      <div class="collection-card" onclick="filterProducts('print')" style="min-height:320px">
+        <div class="collection-art art-8" style="position:absolute;inset:0"></div>
+        <div class="collection-info">
+          <h3>Fine Art Prints</h3>
+          <p>Giclée on 300gsm cotton rag, signed & numbered</p>
+          <span class="collection-link">Shop prints →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section id="shop">
+  <div class="section-inner">
+    <p class="section-label">The Studio</p>
+    <h2 class="section-title">All <em>works</em></h2>
+    <div class="shop-filters">
+      <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+      <button class="filter-btn" id="btn-original" onclick="filterProducts('original', this)">Original Paintings</button>
+      <button class="filter-btn" id="btn-print" onclick="filterProducts('print', this)">Fine Art Prints</button>
+    </div>
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-inner about-inner">
+    <div class="about-portrait">
+      <div class="portrait-art"></div>
+    </div>
+    <div class="about-text">
+      <p class="about-quote">✦ The artist</p>
+      <h2 class="section-title">Hi, I'm <em>Maria</em></h2>
+      <p>I'm a painter based in my home studio, working mainly with acrylics and oils to create pieces that sit somewhere between the representational and the abstract. My paintings begin with a feeling — the quality of afternoon light, the colour of a field just before a storm — and evolve intuitively from there.</p>
+      <p>Every original I paint is completely unique and comes with a certificate of authenticity. My fine art prints are reproduced using museum-grade giclée printing on cotton rag, and are personally signed and numbered in limited editions.</p>
+      <p><strong>Follow along for studio updates, new work, and a look behind the scenes.</strong></p>
+      <div class="social-row">
+        <a href="https://www.instagram.com/whatmariapaints" target="_blank" rel="noopener" class="social-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @whatmariapaints
+        </a>
+        <a href="mailto:hello@whatmariapaints.com" class="social-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Get in touch
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section>
+  <div class="section-inner">
+    <p class="section-label" style="text-align:center">How it works</p>
+    <h2 class="section-title" style="text-align:center">From studio <em>to your wall</em></h2>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-icon">🎨</div>
+        <h4>Hand-painted or printed</h4>
+        <p>Originals are painted by Maria in her studio. Prints are produced on a museum-grade giclée press on 300gsm cotton rag paper.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">📦</div>
+        <h4>Carefully packaged</h4>
+        <p>Each work is wrapped in acid-free tissue, rolled or flat-packed in rigid board mailers, and shipped with tracking.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🖼️</div>
+        <h4>Ready to hang</h4>
+        <p>Originals come ready-to-hang. Prints arrive unframed — perfect for framing yourself or as a frameless wall piece.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="section-inner">
+    <p class="section-label">Stay connected</p>
+    <h2 class="section-title">New work, first</h2>
+    <p class="section-sub">Get studio updates, new releases, and occasional behind-the-scenes — straight to your inbox. No spam, ever.</p>
+    <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+      <input type="email" class="newsletter-input" placeholder="your@email.com" required>
+      <button type="submit" class="btn-gold">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo" style="color:#fff;margin-bottom:.8rem">what <span style="color:#D4AF6A;font-style:italic;font-weight:400">maria</span> paints</div>
+      <p>Original paintings and fine art prints, made with care in my studio.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Shop</h5>
+      <ul>
+        <li><a href="#shop" onclick="filterProducts('all')">All works</a></li>
+        <li><a href="#originals" onclick="filterProducts('original')">Originals</a></li>
+        <li><a href="#prints" onclick="filterProducts('print')">Prints</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Info</h5>
+      <ul>
+        <li><a href="#about">About Maria</a></li>
+        <li><a href="#" onclick="showToast('Shipping info coming soon')">Shipping & Returns</a></li>
+        <li><a href="#" onclick="showToast('FAQ coming soon')">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="mailto:hello@whatmariapaints.com">hello@whatmariapaints.com</a></li>
+        <li><a href="https://www.instagram.com/whatmariapaints" target="_blank">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 What Maria Paints. All rights reserved.</p>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/whatmariapaints" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cart-sidebar">
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button class="close-btn" onclick="closeCart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="cart-body" id="cart-body"></div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <span class="cart-subtotal-price" id="cart-subtotal">€0</span>
+    </div>
+    <p class="cart-note">Shipping calculated at checkout · Taxes included</p>
+    <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout →</button>
+  </div>
 </div>
 
-<!-- NAVEGACIÓN -->
-<div class="nav">
-<button class="nav-btn" onclick="showScreen('home')">🏠</button>
-<button class="nav-btn" onclick="showScreen('rutina')">☀️</button>
-<button class="nav-btn" onclick="showScreen('rescate')">💚</button>
-<button class="nav-btn" onclick="showScreen('stats')">📊</button>
+<!-- PRODUCT MODAL -->
+<div class="product-modal" id="product-modal">
+  <div class="product-modal-bg" onclick="closeProductModal()"></div>
+  <div class="product-modal-inner">
+    <button class="modal-close" onclick="closeProductModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-img" id="modal-img"></div>
+    <div class="modal-details" id="modal-details"></div>
+  </div>
 </div>
 
-<!-- HOME -->
-<div id="home" class="screen active">
-<div class="quokka">🦘</div>
-<h2 style="text-align:center;color:#4dd0e1;margin-bottom:1.5rem">¿Qué quieres hacer hoy?</h2>
-<div class="grid">
-<button class="btn" onclick="showScreen('ejercicio')">💪 Ejercicio</button>
-<button class="btn" onclick="showScreen('comida')">🍽️ Comida</button>
-<button class="btn" onclick="showScreen('limpieza')">🧹 Limpieza</button>
-<button class="btn" onclick="showScreen('intereses')">📚 Aprender</button>
-<button class="btn" onclick="showScreen('pomodoro')">⏱️ Pomodoro</button>
-<button class="btn" onclick="showScreen('noche')">🌙 Noche</button>
-<button class="btn" onclick="showScreen('rescate')">💚 Rescate</button>
-<button class="btn" onclick="showScreen('logica')">🧩 Lógica</button>
-</div>
-</div>
-
-<!-- RUTINA DEL DÍA -->
-<div id="rutina" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">☀️ Rutina del Día</h2>
-<div class="card">
-<h3>Secuencia Matutina</h3>
-<div class="task">🧹 Orden rápido (5 min)</div>
-<div class="task">💧 Hidratación</div>
-<div class="task">🍳 Desayuno simple</div>
-<div class="task">✅ Check-in emocional</div>
-<button class="btn" onclick="startRoutine()">Comenzar Rutina</button>
-</div>
-</div>
-
-<!-- EJERCICIO -->
-<div id="ejercicio" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">💪 Ejercicio HIIT</h2>
-<div class="card">
-<div id="exerciseContent"></div>
-<div class="timer" id="exerciseTimer">00:00</div>
-<button class="btn" onclick="startExercise()">▶️ Iniciar</button>
-<button class="btn btn-sec" onclick="skipExercise()">⏭️ Siguiente</button>
-</div>
-</div>
-
-<!-- COMIDA -->
-<div id="comida" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">🍽️ Recetas Fáciles</h2>
-<div class="card">
-<h3>Bowl de Quinoa</h3>
-<p><strong>Tiempo:</strong> 15 min</p>
-<div id="recipeSteps"></div>
-<button class="btn" onclick="nextStep()">Siguiente Paso</button>
-</div>
-<div class="card">
-<h3>Sopa Express</h3>
-<p><strong>Tiempo:</strong> 12 min</p>
-<button class="btn btn-sec">Ver Receta</button>
-</div>
-</div>
-
-<!-- LIMPIEZA -->
-<div id="limpieza" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">🧹 Limpieza Progresiva</h2>
-<div class="grid">
-<button class="btn" onclick="startCleaning('lunes')">Lunes</button>
-<button class="btn" onclick="startCleaning('martes')">Martes</button>
-<button class="btn" onclick="startCleaning('miercoles')">Miércoles</button>
-<button class="btn" onclick="startCleaning('jueves')">Jueves</button>
-<button class="btn" onclick="startCleaning('viernes')">Viernes</button>
-<button class="btn" onclick="startCleaning('sabado')">Sábado</button>
-</div>
-<div id="cleaningTasks" class="card hidden"></div>
-</div>
-
-<!-- INTERESES -->
-<div id="intereses" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">📚 Aprende Algo Nuevo</h2>
-<div class="grid">
-<button class="btn" onclick="startLesson('musica')">🎵 Música</button>
-<button class="btn" onclick="startLesson('escritura')">✍️ Escritura</button>
-<button class="btn" onclick="startLesson('dibujo')">🎨 Dibujo</button>
-<button class="btn" onclick="startLesson('nudos')">🪢 Nudos</button>
-<button class="btn" onclick="startLesson('electricidad')">⚡ Electricidad</button>
-<button class="btn" onclick="startLesson('neurociencia')">🧠 Neuro</button>
-</div>
-<div id="lessonContent" class="card hidden"></div>
-</div>
-
-<!-- POMODORO -->
-<div id="pomodoro" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">⏱️ Pomodoro</h2>
-<div class="card">
-<div class="timer" id="pomodoroTimer">25:00</div>
-<button class="btn" onclick="startPomodoro()">▶️ Iniciar</button>
-<button class="btn btn-sec" onclick="resetPomodoro()">🔄 Reset</button>
-<div style="margin-top:1rem">
-<button class="btn btn-sec" onclick="setPomodoro(25)">25 min</button>
-<button class="btn btn-sec" onclick="setPomodoro(45)">45 min</button>
-<button class="btn btn-sec" onclick="setPomodoro(5)">5 min break</button>
-</div>
-</div>
-<div class="card">
-<h3>Tareas de Hoy</h3>
-<div id="taskList"></div>
-<input type="text" id="newTask" placeholder="Nueva tarea...">
-<button class="btn" onclick="addTask()">➕ Añadir</button>
-</div>
-</div>
-
-<!-- NOCHE -->
-<div id="noche" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">🌙 Rutina Nocturna</h2>
-<div class="card">
-<h3>Secuencia de 25 minutos</h3>
-<div class="task">✨ Cuidado facial (5 min)</div>
-<div class="task">🧘 Estiramientos (8 min)</div>
-<div class="task">🕯️ Meditación Shiné (10 min)</div>
-<div class="task">📱 Desconexión total (2 min)</div>
-<button class="btn" onclick="startNight()">Comenzar Rutina</button>
-</div>
+<!-- CHECKOUT MODAL -->
+<div class="checkout-modal" id="checkout-modal">
+  <div class="checkout-modal-bg" onclick="closeCheckout()"></div>
+  <div class="checkout-inner">
+    <button class="checkout-close" onclick="closeCheckout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="checkout-form-col">
+      <div class="success-screen" id="success-screen">
+        <div class="success-icon">✓</div>
+        <h2>Order received!</h2>
+        <p>Thank you so much. You'll receive a confirmation email shortly, and Maria will personally pack and ship your order.</p>
+        <button class="btn-primary" style="margin-top:1.5rem" onclick="closeCheckout()">Continue shopping</button>
+      </div>
+      <div id="checkout-form-inner">
+        <h2>Checkout</h2>
+        <p>Secure checkout — your information is protected</p>
+        <form id="checkout-form" onsubmit="submitOrder(event)">
+          <p class="form-section-title">Contact</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>First name</label>
+              <input type="text" placeholder="Maria" required>
+            </div>
+            <div class="form-group">
+              <label>Last name</label>
+              <input type="text" placeholder="García" required>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" placeholder="you@email.com" required>
+            </div>
+          </div>
+          <p class="form-section-title">Shipping address</p>
+          <div class="form-row single">
+            <div class="form-group">
+              <label>Street address</label>
+              <input type="text" placeholder="Calle Mayor, 12" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" placeholder="Madrid" required>
+            </div>
+            <div class="form-group">
+              <label>Postal code</label>
+              <input type="text" placeholder="28001" required>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label>Country</label>
+              <select required>
+                <option value="">Select country</option>
+                <option>Spain</option>
+                <option>United Kingdom</option>
+                <option>France</option>
+                <option>Germany</option>
+                <option>Italy</option>
+                <option>Netherlands</option>
+                <option>United States</option>
+                <option>Australia</option>
+                <option>Canada</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <p class="form-section-title">Payment</p>
+          <div class="card-brands">
+            <span class="card-brand">VISA</span>
+            <span class="card-brand">MC</span>
+            <span class="card-brand">AMEX</span>
+            <span class="card-brand">PayPal</span>
+          </div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label>Card number</label>
+              <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Expiry</label>
+              <input type="text" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)" required>
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" placeholder="123" maxlength="4" required>
+            </div>
+          </div>
+          <button type="submit" class="checkout-submit" id="checkout-submit">Place Order →</button>
+          <p class="checkout-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            Secure, encrypted checkout
+          </p>
+        </form>
+      </div>
+    </div>
+    <div class="checkout-summary-col" id="checkout-summary">
+      <h3>Order Summary</h3>
+      <div class="summary-items" id="summary-items"></div>
+      <hr class="summary-divider">
+      <div class="summary-line"><span>Subtotal</span><span id="summary-subtotal">€0</span></div>
+      <div class="summary-line"><span>Shipping</span><span id="summary-shipping">Calculated</span></div>
+      <div class="summary-total"><span>Total</span><span id="summary-total">€0</span></div>
+    </div>
+  </div>
 </div>
 
-<!-- RESCATE EMOCIONAL -->
-<div id="rescate" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">💚 Rescate Emocional</h2>
-<div class="card">
-<h3>Técnicas Rápidas</h3>
-<button class="btn" onclick="startRescue('54321')">5-4-3-2-1 Grounding</button>
-<button class="btn" onclick="startRescue('478')">Respiración 4-7-8</button>
-<button class="btn" onclick="startRescue('reset')">Reset Cognitivo</button>
-</div>
-<div class="card">
-<h3>Meditaciones Guiadas</h3>
-<button class="btn btn-sec" onclick="startMeditation(8)">8 minutos</button>
-<button class="btn btn-sec" onclick="startMeditation(15)">15 minutos</button>
-<button class="btn btn-sec" onclick="startMeditation(30)">30 minutos</button>
-</div>
-<div class="card">
-<h3>Matriz de Eisenhower</h3>
-<button class="btn btn-sec" onclick="showEisenhower()">Organizar Prioridades</button>
-</div>
-</div>
-
-<!-- LÓGICA -->
-<div id="logica" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">🧩 Agilidad Mental</h2>
-<div class="card">
-<h3>Sudoku 4x4</h3>
-<div id="sudokuGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:1rem 0"></div>
-<button class="btn" onclick="checkSudoku()">Verificar</button>
-<button class="btn btn-sec" onclick="newSudoku()">Nuevo</button>
-</div>
-</div>
-
-<!-- STATS -->
-<div id="stats" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">📊 Tu Progreso</h2>
-<div class="card">
-<h3>Esta Semana</h3>
-<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:1rem 0">
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-<div style="background:#e0e0e0;height:40px;border-radius:4px"></div>
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-<div style="background:#e0e0e0;height:40px;border-radius:4px"></div>
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-</div>
-<p><strong>🔥 Racha:</strong> 5 días</p>
-<p><strong>📈 Total:</strong> 23 días completados</p>
-</div>
-</div>
-
-</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
-// ESTADO GLOBAL
-let state={
-  screen:'home',
-  timer:0,
-  running:false,
-  exerciseIdx:0,
-  recipeStep:0,
-  pomodoroMin:25,
-  tasks:[],
-  sudoku:[[1,0,0,4],[0,4,1,0],[0,1,4,0],[4,0,0,1]]
-};
-
-// DATOS
-const exercises=[
-  {name:"Jumping Jacks",dur:60},
-  {name:"Sentadillas",dur:50},
-  {name:"Plancha",dur:45},
-  {name:"Burpees",dur:50},
-  {name:"Flexiones",dur:45}
+// ─── DATA ───
+const products = [
+  {
+    id:1, type:'original', name:'Blooming', medium:'Acrylic on canvas',
+    size:'50 × 70 cm', price:280, artClass:'art-1', badge:'New',
+    edition:'One of a kind', desc:'A painterly celebration of late-spring bloom. Layers of coral, dusty rose and warm peach build up a surface that shifts in the light — luminous in the morning, deep and velvety at dusk.',
+    specs:[['Medium','Acrylic on canvas'],['Size','50 × 70 cm'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','3–5 working days']],
+    available: true
+  },
+  {
+    id:2, type:'original', name:"L'Heure Bleue", medium:'Oil on canvas',
+    size:'60 × 80 cm', price:420, artClass:'art-2',
+    edition:'One of a kind', desc:'Named for the French "blue hour" between sunset and night. The painting captures that charged stillness — the sky not yet dark, the world suspended between two states. Subtle gold at the horizon pulls everything into focus.',
+    specs:[['Medium','Oil on canvas'],['Size','60 × 80 cm'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','5–7 working days']],
+    available: true
+  },
+  {
+    id:3, type:'original', name:'Mediterranean Garden', medium:'Acrylic on canvas',
+    size:'40 × 60 cm', price:240, artClass:'art-3',
+    edition:'One of a kind', desc:'Terracotta walls, wild sage, afternoon heat. This painting is a memory of a garden in southern Spain — impastoed brushwork builds up the texture of sun-baked earth while loose, botanical greens breathe through the composition.',
+    specs:[['Medium','Acrylic on canvas'],['Size','40 × 60 cm'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','3–5 working days']],
+    available: true
+  },
+  {
+    id:4, type:'original', name:'Golden Hour', medium:'Oil on linen',
+    size:'80 × 100 cm', price:680, artClass:'art-4', badge:'Featured',
+    edition:'One of a kind', desc:'Maria\'s largest and most sought-after piece to date. The painting tracks the arc of a summer sunset from deep amber at the base through layers of saffron, gold and pale straw at the top. A work that changes character entirely depending on the light in the room.',
+    specs:[['Medium','Oil on linen'],['Size','80 × 100 cm'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','7–10 working days']],
+    available: true
+  },
+  {
+    id:5, type:'original', name:'Still Life No. 3', medium:'Oil on board',
+    size:'30 × 40 cm', price:190, artClass:'art-5',
+    edition:'One of a kind', desc:'A quiet composition of peonies and botanicals against a warm, neutral ground. Soft, direct light falls from the upper left, pooling in the petals and casting gentle shadows. A work for contemplative spaces.',
+    specs:[['Medium','Oil on board'],['Size','30 × 40 cm'],['Frame','Unframed, panel with white edges'],['Signed','Yes, on the reverse'],['Ships in','3–5 working days']],
+    available: true
+  },
+  {
+    id:6, type:'original', name:'Blue Forms', medium:'Acrylic on canvas',
+    size:'50 × 50 cm', price:260, artClass:'art-6',
+    edition:'One of a kind', desc:'A departure into pure abstraction. Two rectangles of blue — one deep prussian, one lighter cobalt — share the canvas with small rectangles of gold and teal. Balanced, architectural, meditative.',
+    specs:[['Medium','Acrylic on canvas'],['Size','50 × 50 cm (square)'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','3–5 working days']],
+    available: false
+  },
+  {
+    id:7, type:'print', name:'Blooming — Print', medium:'Giclée print',
+    sizes:['A4 · 21×30 cm','A3 · 30×42 cm','A2 · 42×60 cm'],
+    sizePrices:[28,42,65], price:28, artClass:'art-7', badge:'Best Seller',
+    edition:'Edition of 50, signed & numbered',
+    desc:'A high-fidelity reproduction of the original "Blooming" painting, printed on 300gsm Hahnemühle cotton rag using archival pigment inks. Unframed, ready to mat and frame.',
+    specs:[['Medium','Giclée on cotton rag'],['Paper','Hahnemühle Photo Rag 308gsm'],['Inks','Archival pigment, 100+ year fade rating'],['Edition','50 prints, signed & numbered'],['Ships in','5–7 working days']],
+    available: true
+  },
+  {
+    id:8, type:'print', name:'Garden Study — Print', medium:'Giclée print',
+    sizes:['A4 · 21×30 cm','A3 · 30×42 cm','A2 · 42×60 cm'],
+    sizePrices:[28,42,65], price:28, artClass:'art-8',
+    edition:'Edition of 50, signed & numbered',
+    desc:'A botanical abstraction in three colour zones — deep forest, sage and warm linen. Pairs beautifully with natural frames and linen mats.',
+    specs:[['Medium','Giclée on cotton rag'],['Paper','Hahnemühle Photo Rag 308gsm'],['Inks','Archival pigment, 100+ year fade rating'],['Edition','50 prints, signed & numbered'],['Ships in','5–7 working days']],
+    available: true
+  },
+  {
+    id:9, type:'print', name:'Golden Hour — Print', medium:'Giclée print',
+    sizes:['A4 · 21×30 cm','A3 · 30×42 cm','A2 · 42×60 cm'],
+    sizePrices:[28,42,65], price:28, artClass:'art-9',
+    edition:'Edition of 30, signed & numbered',
+    desc:'The best-selling print in the studio. The warm gradient of the original "Golden Hour" oil painting translates beautifully to print, with deep amber at the base fading to pale straw at the top.',
+    specs:[['Medium','Giclée on cotton rag'],['Paper','Hahnemühle Photo Rag 308gsm'],['Inks','Archival pigment, 100+ year fade rating'],['Edition','30 prints, signed & numbered'],['Ships in','5–7 working days']],
+    available: true
+  },
+  {
+    id:10, type:'print', name:'Still Life No. 3 — Print', medium:'Giclée print',
+    sizes:['A4 · 21×30 cm','A3 · 30×42 cm'],
+    sizePrices:[28,42], price:28, artClass:'art-10',
+    edition:'Edition of 50, signed & numbered',
+    desc:'A muted, intimate print of the "Still Life No. 3" oil painting. The warm neutral tones and soft botanical forms make it an ideal piece for bedrooms, reading nooks and quiet corners.',
+    specs:[['Medium','Giclée on cotton rag'],['Paper','Hahnemühle Photo Rag 308gsm'],['Inks','Archival pigment, 100+ year fade rating'],['Edition','50 prints, signed & numbered'],['Ships in','5–7 working days']],
+    available: true
+  }
 ];
 
-const recipes={
-  quinoa:{
-    steps:[
-      "Pon 1 taza de agua a hervir",
-      "Echa quinoa, tapa y cocina 12 min",
-      "Corta pepino y tomates",
-      "Mezcla todo con aceitunas y feta",
-      "Añade aceite y limón",
-      "¡Listo para comer!"
-    ]
+// ─── STATE ───
+let cart = JSON.parse(localStorage.getItem('wmp_cart') || '[]');
+let currentFilter = 'all';
+let selectedProduct = null;
+let selectedSizeIdx = 0;
+
+// ─── RENDER PRODUCTS ───
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = '';
+  products.forEach(p => {
+    const price = p.sizes ? `From €${p.sizePrices[0]}` : `€${p.price}`;
+    const badgeHtml = p.badge ? `<span class="product-badge ${p.badge==='New'?'new':p.badge==='Best Seller'?'new':''}">${p.badge}</span>` : '';
+    const soldBadge = !p.available ? `<span class="product-badge sold">Sold</span>` : '';
+    const card = document.createElement('div');
+    card.className = `product-card${currentFilter !== 'all' && p.type !== currentFilter ? ' hidden' : ''}`;
+    card.dataset.type = p.type;
+    card.innerHTML = `
+      <div class="product-img ${p.artClass}" onclick="openProductModal(${p.id})">
+        ${badgeHtml}${soldBadge}
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-meta">${p.medium}${p.size ? ' · ' + p.size : ''}</div>
+        <div class="product-footer">
+          <span class="product-price">${price}</span>
+          ${p.available ? `<button class="add-btn" onclick="event.stopPropagation(); ${p.sizes ? `openProductModal(${p.id})` : `quickAdd(${p.id})`}" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>` : ''}
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function filterProducts(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else {
+    const map = {original: 'btn-original', print: 'btn-print'};
+    if (map[type]) document.getElementById(map[type])?.classList.add('active');
   }
-};
-
-const cleaning={
-  lunes:{name:"Cocina",tasks:["Encimera","Fogones","Suelo"]},
-  martes:{name:"Baño",tasks:["Espejo","Lavabo","Ducha"]},
-  miercoles:{name:"Salón",tasks:["Polvo","Mesa","Suelo"]},
-  jueves:{name:"Habitación",tasks:["Cama","Muebles","Suelo"]},
-  viernes:{name:"Entrada",tasks:["Barrer","Puerta","Objetos"]},
-  sabado:{name:"Profunda",tasks:["Microondas","Nevera","Vitro"]}
-};
-
-// NAVEGACIÓN
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  state.screen=id;
-  if(id==='logica')initSudoku();
-  if(id==='ejercicio')loadExercise();
-  if(id==='comida')loadRecipe();
-  if(id==='pomodoro')loadTasks();
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.classList.toggle('hidden', type !== 'all' && card.dataset.type !== type);
+  });
+  document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
 }
 
-// EJERCICIO
-function loadExercise(){
-  const ex=exercises[state.exerciseIdx];
-  document.getElementById('exerciseContent').innerHTML=`
-    <h3>${ex.name}</h3>
-    <p>Duración: ${ex.dur} segundos</p>
-    <div class="progress"><div class="progress-fill" style="width:0%" id="exProgress"></div></div>
-  `;
-  state.timer=ex.dur;
-  updateTimer('exerciseTimer');
+// ─── PRODUCT MODAL ───
+function openProductModal(id) {
+  selectedProduct = products.find(p => p.id === id);
+  if (!selectedProduct) return;
+  selectedSizeIdx = 0;
+  const p = selectedProduct;
+  document.getElementById('modal-img').innerHTML = `<div class="${p.artClass}" style="position:absolute;inset:0"></div>`;
+  renderModalDetails();
+  document.getElementById('product-modal').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
-function startExercise(){
-  if(state.running)return;
-  state.running=true;
-  const interval=setInterval(()=>{
-    state.timer--;
-    updateTimer('exerciseTimer');
-    const progress=((exercises[state.exerciseIdx].dur-state.timer)/exercises[state.exerciseIdx].dur)*100;
-    document.getElementById('exProgress').style.width=progress+'%';
-    if(state.timer<=0){
-      clearInterval(interval);
-      state.running=false;
-      beep();
-      alert('¡Ejercicio completado!');
-    }
-  },1000);
-}
-
-function skipExercise(){
-  state.exerciseIdx=(state.exerciseIdx+1)%exercises.length;
-  loadExercise();
-  state.running=false;
-}
-
-// RECETAS
-function loadRecipe(){
-  state.recipeStep=0;
-  showRecipeStep();
-}
-
-function showRecipeStep(){
-  const step=recipes.quinoa.steps[state.recipeStep];
-  document.getElementById('recipeSteps').innerHTML=`
-    <div class="task">Paso ${state.recipeStep+1}/${recipes.quinoa.steps.length}</div>
-    <p style="margin:1rem 0">${step}</p>
-  `;
-}
-
-function nextStep(){
-  state.recipeStep++;
-  if(state.recipeStep>=recipes.quinoa.steps.length){
-    alert('¡Receta completada! 🍽️');
-    state.recipeStep=0;
-  }
-  showRecipeStep();
-}
-
-// LIMPIEZA
-function startCleaning(day){
-  const clean=cleaning[day];
-  document.getElementById('cleaningTasks').innerHTML=`
-    <h3>${clean.name}</h3>
-    ${clean.tasks.map(t=>`<div class="task">${t}</div>`).join('')}
-    <div class="timer" id="cleanTimer">15:00</div>
-    <button class="btn" onclick="startCleanTimer()">Comenzar</button>
-  `;
-  document.getElementById('cleaningTasks').classList.remove('hidden');
-  state.timer=900;
-}
-
-function startCleanTimer(){
-  state.running=true;
-  const interval=setInterval(()=>{
-    state.timer--;
-    updateTimer('cleanTimer');
-    if(state.timer<=0){
-      clearInterval(interval);
-      state.running=false;
-      beep();
-      alert('¡Limpieza completada! 🧹');
-    }
-  },1000);
-}
-
-// POMODORO
-function loadTasks(){
-  const saved=localStorage.getItem('tasks');
-  state.tasks=saved?JSON.parse(saved):[];
-  renderTasks();
-}
-
-function renderTasks(){
-  document.getElementById('taskList').innerHTML=state.tasks.map((t,i)=>`
-    <div class="task" onclick="toggleTask(${i})" style="${t.done?'opacity:0.5;text-decoration:line-through':''}">
-      ${t.text}
+function renderModalDetails() {
+  const p = selectedProduct;
+  const isOriginal = p.type === 'original';
+  const currentPrice = p.sizes ? p.sizePrices[selectedSizeIdx] : p.price;
+  const sizeSection = p.sizes ? `
+    <div class="size-selector">
+      <p class="size-label">Select size</p>
+      <div class="size-options">
+        ${p.sizes.map((s,i) => `<button class="size-opt ${i===selectedSizeIdx?'selected':''}" onclick="selectSize(${i})">${s}</button>`).join('')}
+      </div>
+    </div>` : '';
+  const badgeType = isOriginal ? 'original' : 'print';
+  const badgeText = isOriginal ? 'Original painting' : 'Fine art print';
+  document.getElementById('modal-details').innerHTML = `
+    <span class="modal-badge ${badgeType}">${badgeText}</span>
+    <h2 class="modal-title">${p.name}</h2>
+    <p class="modal-medium">${p.medium}${p.size ? ' · ' + p.size : ''}</p>
+    <p class="modal-price">€${currentPrice}</p>
+    <p class="modal-desc">${p.desc}</p>
+    <div class="modal-specs">
+      ${p.specs.map(s => `<div class="modal-spec"><span>${s[0]}</span><span>${s[1]}</span></div>`).join('')}
     </div>
-  `).join('');
+    ${sizeSection}
+    ${p.available
+      ? `<button class="modal-add" onclick="addToCartFromModal()">Add to Cart</button>`
+      : `<button class="modal-add" disabled>Sold — Inquire for commission</button>`}
+    <p class="modal-shipping">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Free shipping on orders over €120 · Worldwide delivery
+    </p>`;
 }
 
-function addTask(){
-  const input=document.getElementById('newTask');
-  if(!input.value.trim())return;
-  state.tasks.push({text:input.value,done:false});
-  input.value='';
-  localStorage.setItem('tasks',JSON.stringify(state.tasks));
-  renderTasks();
+function selectSize(idx) {
+  selectedSizeIdx = idx;
+  renderModalDetails();
 }
 
-function toggleTask(i){
-  state.tasks[i].done=!state.tasks[i].done;
-  localStorage.setItem('tasks',JSON.stringify(state.tasks));
-  renderTasks();
+function addToCartFromModal() {
+  const p = selectedProduct;
+  if (!p || !p.available) return;
+  const variant = p.sizes ? p.sizes[selectedSizeIdx] : null;
+  const price = p.sizes ? p.sizePrices[selectedSizeIdx] : p.price;
+  addToCart(p.id, variant, price);
+  closeProductModal();
 }
 
-function setPomodoro(min){
-  state.pomodoroMin=min;
-  state.timer=min*60;
-  updateTimer('pomodoroTimer');
-}
-
-function startPomodoro(){
-  if(state.timer===0)state.timer=state.pomodoroMin*60;
-  state.running=true;
-  const interval=setInterval(()=>{
-    state.timer--;
-    updateTimer('pomodoroTimer');
-    if(state.timer<=0){
-      clearInterval(interval);
-      state.running=false;
-      beep();
-      alert('¡Pomodoro completado! ⏱️');
-    }
-  },1000);
-}
-
-function resetPomodoro(){
-  state.timer=state.pomodoroMin*60;
-  state.running=false;
-  updateTimer('pomodoroTimer');
-}
-
-// RESCATE
-function startRescue(type){
-  const techniques={
-    '54321':'5 cosas que VES → 4 que TOCAS → 3 que ESCUCHAS → 2 que HUELES → 1 que SABOREAS',
-    '478':'Inhala 4 seg → Mantén 7 seg → Exhala 8 seg (Repite 3 veces)',
-    'reset':'Mirá un punto fijo 30 seg → Cerrá ojos → Escribí SOLO 3 pendientes → Decí "No todo es urgente"'
-  };
-  alert(techniques[type]);
-}
-
-function startMeditation(min){
-  alert(`Comenzando meditación de ${min} minutos...\n\nBuscá un lugar tranquilo, sentate cómodo y seguí las instrucciones de audio.`);
-}
-
-function showEisenhower(){
-  alert('Matriz de Eisenhower\n\nOrganizá tus tareas en 4 cuadrantes:\n\n1️⃣ Urgente + Importante\n2️⃣ No urgente pero Importante\n3️⃣ Urgente pero no Importante\n4️⃣ Ni urgente ni Importante');
-}
-
-// NOCHE
-function startNight(){
-  alert('Rutina Nocturna iniciada\n\n✨ Comenzamos con cuidado facial...');
-}
-
-// RUTINA
-function startRoutine(){
-  alert('Rutina del día iniciada\n\n🧹 Comenzamos ordenando 5 minutos...');
-}
-
-// SUDOKU
-function initSudoku(){
-  const grid=document.getElementById('sudokuGrid');
-  grid.innerHTML='';
-  state.sudoku.forEach((row,i)=>{
-    row.forEach((cell,j)=>{
-      const input=document.createElement('input');
-      input.type='number';
-      input.min='1';
-      input.max='4';
-      input.value=cell||'';
-      input.style.cssText='width:100%;height:50px;text-align:center;font-size:1.5rem;border:2px solid #e0e0e0;border-radius:4px';
-      if(cell)input.disabled=true;
-      input.oninput=(e)=>{state.sudoku[i][j]=parseInt(e.target.value)||0};
-      grid.appendChild(input);
-    });
-  });
-}
-
-function checkSudoku(){
-  const solution=[[1,2,3,4],[3,4,1,2],[2,1,4,3],[4,3,2,1]];
-  const correct=state.sudoku.every((row,i)=>row.every((cell,j)=>cell===solution[i][j]));
-  if(correct){
-    beep();
-    alert('¡Perfecto! ✅ Has resuelto el sudoku');
-  }else{
-    alert('Aún hay errores... sigue intentando 💪');
+function closeProductModal() {
+  document.getElementById('product-modal').classList.remove('open');
+  if (!document.getElementById('cart-sidebar').classList.contains('open') &&
+      !document.getElementById('checkout-modal').classList.contains('open')) {
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
   }
 }
 
-function newSudoku(){
-  state.sudoku=[[1,0,0,4],[0,4,1,0],[0,1,4,0],[4,0,0,1]];
-  initSudoku();
+// ─── CART ───
+function addToCart(id, variant, price) {
+  const p = products.find(x => x.id === id);
+  const key = `${id}-${variant || 'default'}`;
+  const existing = cart.find(x => x.key === key);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ key, id, name: p.name, artClass: p.artClass, variant, price, qty: 1 });
+  }
+  saveCart();
+  updateCartCount();
+  showToast(`"${p.name}" added to cart`);
+  bumpCartCount();
 }
 
-// UTILIDADES
-function updateTimer(id){
-  const m=Math.floor(state.timer/60);
-  const s=state.timer%60;
-  document.getElementById(id).textContent=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+function quickAdd(id) {
+  const p = products.find(x => x.id === id);
+  addToCart(id, null, p.price);
 }
 
-function beep(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const osc=ctx.createOscillator();
-    const gain=ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.value=600;
-    gain.gain.value=0.3;
-    osc.start();
-    osc.stop(ctx.currentTime+0.2);
-  }catch(e){}
+function saveCart() {
+  localStorage.setItem('wmp_cart', JSON.stringify(cart));
 }
 
-// INSTALACIÓN PWA
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('service-worker.js').catch(e=>console.log('SW error:',e));
-  });
+function cartTotal() {
+  return cart.reduce((sum, x) => sum + x.price * x.qty, 0);
 }
 
-// INICIALIZACIÓN
-document.addEventListener('DOMContentLoaded',()=>{
-  console.log('🦘 CRIS App cargada');
-  loadTasks();
-});
+function updateCartCount() {
+  const total = cart.reduce((s, x) => s + x.qty, 0);
+  document.getElementById('cart-count').textContent = total;
+}
+
+function bumpCartCount() {
+  const el = document.getElementById('cart-count');
+  el.classList.remove('bump');
+  void el.offsetWidth;
+  el.classList.add('bump');
+  setTimeout(() => el.classList.remove('bump'), 350);
+}
+
+function openCart() {
+  renderCart();
+  document.getElementById('cart-sidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+  document.getElementById('cart-sidebar').classList.remove('open');
+  if (!document.getElementById('product-modal').classList.contains('open') &&
+      !document.getElementById('checkout-modal').classList.contains('open')) {
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function renderCart() {
+  const body = document.getElementById('cart-body');
+  const footer = document.getElementById('cart-footer');
+  if (cart.length === 0) {
+    body.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><h3>Your cart is empty</h3><p>Explore the shop and find something you love.</p></div>`;
+    footer.style.display = 'none';
+    return;
+  }
+  body.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img ${item.artClass}"></div>
+      <div class="cart-item-details">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-variant">${item.variant || 'Original'}</div>
+        <div class="cart-item-controls">
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty('${item.key}', -1)">−</button>
+            <span class="qty-val">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${item.key}', 1)">+</button>
+          </div>
+          <button class="remove-btn" onclick="removeItem('${item.key}')">Remove</button>
+        </div>
+      </div>
+      <span class="cart-item-price">€${item.price * item.qty}</span>
+    </div>`).join('');
+  document.getElementById('cart-subtotal').textContent = `€${cartTotal()}`;
+  footer.style.display = 'block';
+}
+
+function changeQty(key, delta) {
+  const item = cart.find(x => x.key === key);
+  if (!item) return;
+  item.qty = Math.max(0, item.qty + delta);
+  if (item.qty === 0) cart = cart.filter(x => x.key !== key);
+  saveCart();
+  updateCartCount();
+  renderCart();
+}
+
+function removeItem(key) {
+  cart = cart.filter(x => x.key !== key);
+  saveCart();
+  updateCartCount();
+  renderCart();
+}
+
+// ─── CHECKOUT ───
+function openCheckout() {
+  closeCart();
+  renderCheckoutSummary();
+  document.getElementById('checkout-modal').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('success-screen').classList.remove('show');
+  document.getElementById('checkout-form-inner').style.opacity = '1';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCheckout() {
+  document.getElementById('checkout-modal').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderCheckoutSummary() {
+  const items = cart.map(item => `
+    <div class="summary-item">
+      <div class="summary-item-img ${item.artClass}">
+        <span class="qty-badge">${item.qty}</span>
+      </div>
+      <div class="summary-item-info">
+        <div class="summary-item-name">${item.name}</div>
+        <div class="summary-item-variant">${item.variant || 'Original'}</div>
+      </div>
+      <span class="summary-item-price">€${item.price * item.qty}</span>
+    </div>`).join('');
+  document.getElementById('summary-items').innerHTML = items;
+  const subtotal = cartTotal();
+  const shipping = subtotal >= 120 ? 'Free' : '€8.50';
+  const total = subtotal >= 120 ? subtotal : subtotal + 8.5;
+  document.getElementById('summary-subtotal').textContent = `€${subtotal}`;
+  document.getElementById('summary-shipping').textContent = shipping;
+  document.getElementById('summary-total').textContent = `€${total}`;
+}
+
+function submitOrder(e) {
+  e.preventDefault();
+  const btn = document.getElementById('checkout-submit');
+  btn.textContent = 'Processing…';
+  btn.disabled = true;
+  setTimeout(() => {
+    cart = [];
+    saveCart();
+    updateCartCount();
+    document.getElementById('checkout-form-inner').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('checkout-form-inner').style.display = 'none';
+      document.getElementById('success-screen').classList.add('show');
+    }, 300);
+    btn.textContent = 'Place Order →';
+    btn.disabled = false;
+  }, 1800);
+}
+
+// ─── UTILS ───
+function closeAll() {
+  closeCart();
+  closeProductModal();
+  closeCheckout();
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function toggleMobileNav() {
+  document.getElementById('mobile-nav').classList.toggle('open');
+}
+
+function subscribeNewsletter(e) {
+  e.preventDefault();
+  showToast('Thank you! You\'re subscribed.');
+  e.target.reset();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function formatCard(input) {
+  let v = input.value.replace(/\D/g,'').slice(0,16);
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+
+function formatExpiry(input) {
+  let v = input.value.replace(/\D/g,'');
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2,4);
+  input.value = v;
+}
+
+// ─── SCROLL HEADER ───
+window.addEventListener('scroll', () => {
+  document.getElementById('site-header').classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+// ─── INIT ───
+updateCartCount();
+renderProducts();
 </script>
 </body>
 </html>
