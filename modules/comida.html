@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comer Rico - Fácil y Simple</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #ffe0b3 0%, #f5f5dc 100%); min-height: 100vh; color: #5d4e37; padding: 20px; font-size: 18px; }
+        .container { max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 25px; backdrop-filter: blur(10px); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .chef { font-size: 60px; margin-bottom: 15px; }
+        .title { font-size: 2.2rem; color: #ff8c42; margin-bottom: 10px; }
+        .subtitle { color: #8b7355; font-size: 1.2rem; line-height: 1.5; }
+        
+        .difficulty-note { background: rgba(77, 208, 225, 0.2); padding: 15px; border-radius: 15px; margin-bottom: 25px; border-left: 5px solid #4dd0e1; }
+        .difficulty-note strong { color: #ff8c42; font-size: 1.1rem; }
+        
+        .recipes { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
+        .recipe { background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        
+        .recipe-header { text-align: center; margin-bottom: 15px; }
+        .emoji { font-size: 3.5rem; margin-bottom: 10px; }
+        .recipe-title { font-size: 1.4rem; color: #5d4e37; margin-bottom: 8px; font-weight: bold; }
+        .time { background: linear-gradient(45deg, #4dd0e1, #26c6da); color: white; padding: 8px 15px; border-radius: 15px; font-size: 1rem; font-weight: bold; display: inline-block; }
+        
+        .simplicity-tags { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+        .tag { background: #66bb6a; color: white; padding: 6px 12px; border-radius: 12px; font-size: 0.9rem; font-weight: bold; }
+        
+        .tools-needed { background: rgba(255, 215, 0, 0.1); padding: 12px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #FFD700; }
+        .tools-needed h4 { color: #ff8c42; margin-bottom: 8px; font-size: 1rem; }
+        .tool-list { font-size: 0.95rem; line-height: 1.6; }
+        
+        .ingredients { margin-bottom: 15px; }
+        .ingredients h4 { color: #ff8c42; margin-bottom: 8px; font-size: 1.1rem; }
+        .ingredient-list { font-size: 1rem; line-height: 1.8; color: #5d4e37; background: rgba(255, 255, 255, 0.8); padding: 12px; border-radius: 10px; }
+        
+        .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 12px 20px; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: all 0.3s ease; }
+        .btn-primary { background: linear-gradient(45deg, #ff8c42, #ff6b35); color: white; }
+        .btn-secondary { background: linear-gradient(45deg, #4dd0e1, #26c6da); color: white; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn:active { transform: scale(0.98); }
+        
+        .shopping { background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); margin-top: 30px; }
+        .shopping-title { color: #ff8c42; font-size: 1.6rem; text-align: center; margin-bottom: 20px; }
+        
+        .shopping-help { background: rgba(77, 208, 225, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        .shopping-help h4 { color: #4dd0e1; margin-bottom: 10px; }
+        
+        .shopping-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .category { background: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 12px; border-left: 5px solid #4dd0e1; }
+        .category-title { color: #4dd0e1; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; }
+        .shopping-item { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 1rem; line-height: 1.5; }
+        .shopping-item input { margin-top: 4px; transform: scale(1.3); accent-color: #4dd0e1; flex-shrink: 0; }
+        .shopping-item.completed { text-decoration: line-through; opacity: 0.6; }
+        .shopping-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); }
+        .modal-content { background: white; margin: 2% auto; padding: 25px; border-radius: 20px; width: 95%; max-width: 650px; max-height: 90vh; overflow-y: auto; }
+        .close { float: right; font-size: 32px; font-weight: bold; cursor: pointer; color: #aaa; line-height: 1; }
+        .close:hover { color: #ff6b35; }
+        
+        .audio-guide { background: rgba(255, 140, 66, 0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+        .timer { font-size: 2.5rem; font-weight: bold; color: #ff8c42; text-align: center; margin-bottom: 15px; }
+        .audio-controls { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .current-step { background: white; padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 6px solid #ff8c42; }
+        .step-text { font-size: 1.3rem; line-height: 1.8; color: #5d4e37; margin-bottom: 12px; font-weight: 500; }
+        .step-timer { color: #4dd0e1; font-weight: bold; font-size: 1.1rem; }
+        .steps-list { background: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 12px; }
+        .step-item { padding: 12px; margin-bottom: 10px; background: white; border-radius: 10px; font-size: 1.05rem; line-height: 1.6; }
+        .step-item.active { background: linear-gradient(45deg, #FFD700, #FFA500); color: white; transform: scale(1.02); }
+        .step-item.completed { background: #e8f5e8; }
+        
+        .visual-help { background: rgba(102, 187, 106, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #66bb6a; }
+        .visual-help h4 { color: #66bb6a; margin-bottom: 8px; }
+        
+        @media (max-width: 768px) { 
+            .recipes { grid-template-columns: 1fr; }
+            .shopping-grid { grid-template-columns: 1fr; }
+            .title { font-size: 1.8rem; }
+            body { font-size: 16px; }
+            .step-text { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="chef">👨‍🍳🐨</div>
+            <h1 class="title">Comer Rico (Versión Fácil)</h1>
+            <p class="subtitle">🌟 Recetas SUPER SIMPLES • Sin tomate • Solo utensilios básicos<br>✨ Perfecto si cocinar te cuesta • Paso a paso claro y sencillo</p>
+        </div>
+
+        <div class="difficulty-note" style="background: rgba(255, 193, 7, 0.2); border-left: 5px solid #FFC107;">
+            <strong>⚠️ IMPORTANTE - Lee esto primero:</strong><br>
+            <span style="font-size: 1.05rem;">
+                Antes de cocinar, necesitas tener los ingredientes en casa.<br>
+                👇 Mira primero la lista de compras abajo y ve al súper.<br>
+                Cuando tengas todo, vuelve aquí y elige tu receta.
+            </span>
+        </div>
+
+        <!-- LISTA DE COMPRAS PRIMERO -->
+        <div class="shopping" style="margin-bottom: 40px;">
+            <h3 class="shopping-title">🛒 PASO 1: Tu Lista de Compras (7 días para 1 persona)</h3>
+            
+            <div class="shopping-help">
+                <h4>📍 Cómo funciona:</h4>
+                1️⃣ <strong>Guarda o imprime esta lista AHORA</strong><br>
+                2️⃣ Ve al supermercado con tu móvil o lista impresa<br>
+                3️⃣ Compra todo lo que está marcado<br>
+                4️⃣ Cuando llegues a casa con todo, vuelve aquí para cocinar<br><br>
+                💡 <strong>Con esta compra puedes comer 7 días</strong> (1 almuerzo + 1 cena cada día)
+            </div>
+
+            <div class="shopping-grid">
+                <div class="category">
+                    <div class="category-title">🥬 Verduras (refrigerado/congelado)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="calabaza" onchange="toggleItem(this)">
+                        <label for="calabaza"><strong>Calabaza CONGELADA cortada</strong> - 2 bolsas (500g cada una) [Sección congelados]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="pepinos" onchange="toggleItem(this)">
+                        <label for="pepinos"><strong>Pepinos</strong> - 4 unidades [Verduras frescas]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="cebollas" onchange="toggleItem(this)">
+                        <label for="cebollas"><strong>Cebollas pequeñas</strong> - 4 unidades [Verduras frescas]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="limones" onchange="toggleItem(this)">
+                        <label for="limones"><strong>Limones</strong> - 4 unidades [Frutas]</label>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">🥛 Lácteos (nevera)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="queso-feta" onchange="toggleItem(this)">
+                        <label for="queso-feta"><strong>Queso feta</strong> - 1 paquete 200g (ya cortado en dados) [Quesos]</label>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">🌾 Cereales (pasillo seco)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="quinoa" onchange="toggleItem(this)">
+                        <label for="quinoa"><strong>Quinoa PRELAVADA</strong> - 1 paquete 500g [Arroz/Legumbres o comida sana]</label>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">🫒 Conservas (pasillo latas)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="aceitunas" onchange="toggleItem(this)">
+                        <label for="aceitunas"><strong>Aceitunas negras</strong> - 2 tarritos pequeños [Conservas]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="leche-coco" onchange="toggleItem(this)">
+                        <label for="leche-coco"><strong>Leche de coco</strong> - 2 latas [Cocina internacional o leches vegetales]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="caldo-verduras" onchange="toggleItem(this)">
+                        <label for="caldo-verduras"><strong>Caldo de verduras en BRICK</strong> - 2 briks de 1 litro [Caldos/Sopas]</label>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">🧂 Básicos (si no tienes)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="aceite-oliva" onchange="toggleItem(this)">
+                        <label for="aceite-oliva"><strong>Aceite de oliva</strong> - 1 botella [Aceites]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="sal" onchange="toggleItem(this)">
+                        <label for="sal"><strong>Sal</strong> - 1 paquete [Sal/Especias]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="curcuma" onchange="toggleItem(this)">
+                        <label for="curcuma"><strong>Cúrcuma</strong> - 1 botecito (OPCIONAL) [Especias]</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shopping-actions">
+                <button class="btn btn-secondary" onclick="shareList()">📱 Enviar lista a mi móvil</button>
+                <button class="btn btn-primary" onclick="downloadList()">💾 Descargar para imprimir</button>
+                <button class="btn btn-secondary" onclick="clearCompleted()">🗑️ Borrar marcados</button>
+            </div>
+
+            <div style="background: rgba(76, 175, 80, 0.15); padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #4CAF50;">
+                <strong style="color: #4CAF50;">✅ ¿Ya tienes todo comprado?</strong><br>
+                <span style="font-size: 1.05rem;">¡Perfecto! Ahora sí puedes elegir qué cocinar hoy 👇</span>
+            </div>
+        </div>
+
+        <!-- TEST DE SUGERENCIAS -->
+        <div id="suggestionTest" class="difficulty-note" style="cursor: pointer; transition: all 0.3s ease;" onclick="startTest()">
+            <strong>🤔 PASO 2: ¿No sabes qué cocinar hoy?</strong><br>
+            <span style="font-size: 1.1rem;">👉 HAZ CLIC AQUÍ y te ayudo a elegir según cómo te sientes</span>
+        </div>
+
+        <div class="difficulty-note">
+            <strong>💚 Recuerda:</strong><br>
+            ✓ Sin técnicas complicadas<br>
+            ✓ Con utensilios que todos tienen<br>
+            ✓ Pasos cortos y claros<br>
+            ✓ Audio que te guía en todo momento
+        </div>
+
+        <h2 style="text-align: center; color: #ff8c42; margin: 30px 0 20px 0; font-size: 1.8rem;">
+            🍽️ PASO 3: Elige tu Receta de Hoy
+        </h2>
+
+        <div class="recipes">
+            <div class="recipe">
+                <div class="recipe-header">
+                    <div class="emoji">🥣</div>
+                    <h3 class="recipe-title">Bowl Fácil con Quinoa</h3>
+                    <div class="time">Solo 15 min</div>
+                </div>
+                
+                <div class="simplicity-tags">
+                    <span class="tag">✓ Super fácil</span>
+                    <span class="tag">✓ Sin tomate</span>
+                    <span class="tag">✓ 1 olla</span>
+                </div>
+
+                <div class="tools-needed">
+                    <h4>🔧 Solo necesitas:</h4>
+                    <div class="tool-list">
+                        • 1 olla (cualquiera)<br>
+                        • 1 cuchillo (no importa si no es bueno)<br>
+                        • 1 bowl para comer<br>
+                        • 1 tenedor
+                    </div>
+                </div>
+
+                <div class="ingredients">
+                    <h4>🥘 Ingredientes (1 persona):</h4>
+                    <div class="ingredient-list">
+                        • 1/2 taza quinoa (la venden prelavada)<br>
+                        • 1/2 pepino<br>
+                        • Aceitunas de lata (las que quieras)<br>
+                        • Queso feta (50g, ya viene cortado)<br>
+                        • Aceite de oliva<br>
+                        • 1/2 limón<br>
+                        • Sal
+                    </div>
+                </div>
+
+                <div class="visual-help">
+                    <h4>💡 Tip para neurodivergentes:</h4>
+                    Esta receta NO necesita estar pendiente de nada. La quinoa se cocina sola y todo lo demás es cortar y mezclar. ¡Sin estrés!
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="startAudio('lunch')">🎵 Audio Paso a Paso</button>
+                    <button class="btn btn-secondary" onclick="viewIngredients('lunch')">📋 Ver Lista</button>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <div class="recipe-header">
+                    <div class="emoji">🍜</div>
+                    <h3 class="recipe-title">Sopa de Calabaza Express</h3>
+                    <div class="time">Solo 12 min</div>
+                </div>
+                
+                <div class="simplicity-tags">
+                    <span class="tag">✓ Ultra fácil</span>
+                    <span class="tag">✓ Sin tomate</span>
+                    <span class="tag">✓ 1 olla</span>
+                </div>
+
+                <div class="tools-needed">
+                    <h4>🔧 Solo necesitas:</h4>
+                    <div class="tool-list">
+                        • 1 olla<br>
+                        • 1 cuchillo o pelador<br>
+                        • Licuadora de mano (o tenedor para aplastar)<br>
+                        • 1 bowl para comer
+                    </div>
+                </div>
+
+                <div class="ingredients">
+                    <h4>🥘 Ingredientes (1 persona):</h4>
+                    <div class="ingredient-list">
+                        • Calabaza congelada (250g) → ¡Ya viene cortada!<br>
+                        • 1/2 cebolla pequeña<br>
+                        • 1 vaso de caldo de brick (200ml)<br>
+                        • 1/2 lata leche de coco<br>
+                        • Aceite de oliva<br>
+                        • Cúrcuma (opcional)<br>
+                        • Sal
+                    </div>
+                </div>
+
+                <div class="visual-help">
+                    <h4>💡 Tip para neurodivergentes:</h4>
+                    Usa calabaza CONGELADA (ya cortada) y caldo de BRICK. ¡No necesitas pelar ni cortar casi nada! Si no tienes licuadora, aplasta con un tenedor.
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="startAudio('dinner')">🎵 Audio Paso a Paso</button>
+                    <button class="btn btn-secondary" onclick="viewIngredients('dinner')">📋 Ver Lista</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="shopping">
+            <h3 class="shopping-title">🛒 Lista de Compras FÁCIL (7 días)</h3>
+            
+            <div class="shopping-help">
+                <h4>📍 Cómo usar esta lista:</h4>
+                ✓ Llévala al súper en tu móvil<br>
+                ✓ Marca cada cosa cuando la cojas<br>
+                ✓ Todo está en la sección que dice (no tienes que buscar)<br>
+                ✓ Si algo no lo encuentras, pregunta o saltátelo
+            </div>
+
+            <div class="shopping-grid">
+                <div class="category">
+                    <div class="category-title">🥬 Verduras (refrigerado/congelado)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="calabaza" onchange="toggleItem(this)">
+                        <label for="calabaza"><strong>Calabaza CONGELADA cortada</strong> - 2 bolsas (500g cada una) [Sección congelados]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="pepinos" onchange="toggleItem(this)">
+                        <label for="pepinos"><strong>Pepinos</strong> - 4 unidades [Verduras frescas]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="cebollas" onchange="toggleItem(this)">
+                        <label for="cebollas"><strong>Cebollas pequeñas</strong> - 4 unidades [Verduras frescas]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="limones" onchange="toggleItem(this)">
+                        <label for="limones"><strong>Limones</strong> - 4 unidades [Frutas]</label>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">🥛 Lácteos (nevera)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="queso-feta" onchange="toggleItem(this)">
+                        <label for="queso-feta"><strong>Queso feta</strong> - 1 paquete 200g (ya cortado en dados) [Quesos]</label>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">🌾 Cereales (pasillo seco)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="quinoa" onchange="toggleItem(this)">
+                        <label for="quinoa"><strong>Quinoa PRELAVADA</strong> - 1 paquete 500g [Arroz/Legumbres o comida sana]</label>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">🫒 Conservas (pasillo latas)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="aceitunas" onchange="toggleItem(this)">
+                        <label for="aceitunas"><strong>Aceitunas negras</strong> - 2 tarritos pequeños [Conservas]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="leche-coco" onchange="toggleItem(this)">
+                        <label for="leche-coco"><strong>Leche de coco</strong> - 2 latas [Cocina internacional o leches vegetales]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="caldo-verduras" onchange="toggleItem(this)">
+                        <label for="caldo-verduras"><strong>Caldo de verduras en BRICK</strong> - 2 briks de 1 litro [Caldos/Sopas]</label>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">🧂 Básicos (si no tienes)</div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="aceite-oliva" onchange="toggleItem(this)">
+                        <label for="aceite-oliva"><strong>Aceite de oliva</strong> - 1 botella [Aceites]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="sal" onchange="toggleItem(this)">
+                        <label for="sal"><strong>Sal</strong> - 1 paquete [Sal/Especias]</label>
+                    </div>
+                    <div class="shopping-item">
+                        <input type="checkbox" id="curcuma" onchange="toggleItem(this)">
+                        <label for="curcuma"><strong>Cúrcuma</strong> - 1 botecito (OPCIONAL) [Especias]</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shopping-actions">
+                <button class="btn btn-secondary" onclick="shareList()">📱 Enviar lista a mi móvil</button>
+                <button class="btn btn-primary" onclick="downloadList()">💾 Descargar para imprimir</button>
+                <button class="btn btn-secondary" onclick="clearCompleted()">🗑️ Borrar marcados</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Test de Sugerencias -->
+    <div id="testModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTest()">&times;</span>
+            
+            <div id="testContent">
+                <h2 style="color: #ff8c42; margin-bottom: 20px; text-align: center;">🤔 ¿Qué te apetece hoy?</h2>
+                
+                <div style="background: rgba(77, 208, 225, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 25px; text-align: center;">
+                    <strong style="color: #4dd0e1;">Solo 4 preguntas fáciles</strong><br>
+                    Te ayudaré a elegir la receta perfecta para ti hoy 😊
+                </div>
+
+                <div id="question1" class="test-question">
+                    <h3 style="color: #5d4e37; margin-bottom: 15px;">1️⃣ ¿Cómo está tu energía hoy?</h3>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(1, 'baja')">
+                        😴 Baja - Estoy cansado/a
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(1, 'media')">
+                        😊 Normal - Estoy bien
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="answer(1, 'alta')">
+                        ⚡ Alta - Tengo energía
+                    </button>
+                </div>
+
+                <div id="question2" class="test-question" style="display: none;">
+                    <h3 style="color: #5d4e37; margin-bottom: 15px;">2️⃣ ¿Qué tipo de comida te pide el cuerpo?</h3>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(2, 'ligero')">
+                        🥗 Algo ligero y fresco
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(2, 'caliente')">
+                        🍲 Algo caliente y reconfortante
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="answer(2, 'completo')">
+                        🍽️ Algo completo y nutritivo
+                    </button>
+                </div>
+
+                <div id="question3" class="test-question" style="display: none;">
+                    <h3 style="color: #5d4e37; margin-bottom: 15px;">3️⃣ ¿Cuánto tiempo puedes dedicar?</h3>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(3, 'poco')">
+                        ⚡ Poco - Lo más rápido posible
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(3, 'medio')">
+                        ⏱️ Normal - Unos 15 minutos está bien
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="answer(3, 'mucho')">
+                        🕐 Tengo tiempo - Sin prisa
+                    </button>
+                </div>
+
+                <div id="question4" class="test-question" style="display: none;">
+                    <h3 style="color: #5d4e37; margin-bottom: 15px;">4️⃣ ¿Te apetece algo con proteína animal hoy?</h3>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(4, 'si')">
+                        🐟 Sí - Me apetece pescado/pollo
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(4, 'no')">
+                        🌱 No - Prefiero vegetariano
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="answer(4, 'indiferente')">
+                        🤷 Me da igual
+                    </button>
+                </div>
+
+                <div id="result" class="test-question" style="display: none;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 4rem; margin-bottom: 15px;" id="resultEmoji"></div>
+                        <h3 style="color: #ff8c42; margin-bottom: 15px;" id="resultTitle"></h3>
+                        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px;" id="resultText"></p>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; font-size: 1.1rem;" onclick="goToRecipe()">
+                        ✨ Ver la receta recomendada
+                    </button>
+                    <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="restartTest()">
+                        🔄 Repetir el test
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="audioModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAudio()">&times;</span>
+            
+            <div id="audioContent">
+                <h2 id="recipeTitle" style="color: #ff8c42; margin-bottom: 20px;"></h2>
+                
+                <div class="audio-guide">
+                    <div class="timer" id="totalTimer">00:00</div>
+                    
+                    <div class="audio-controls">
+                        <button class="btn btn-primary" id="playBtn" onclick="play()">▶️ Empezar</button>
+                        <button class="btn btn-secondary" onclick="pause()">⏸️ Pausa</button>
+                        <button class="btn btn-secondary" onclick="reset()">🔄 Empezar de nuevo</button>
+                    </div>
+
+                    <div class="current-step">
+                        <div class="step-text" id="stepText">Presiona "Empezar" y te iré guiando paso a paso 😊</div>
+                        <div class="step-timer" id="stepTimer">⏱️ Tiempo del paso: --:--</div>
+                    </div>
+                </div>
+
+                <div class="steps-list">
+                    <h4 style="color: #ff8c42; margin-bottom: 12px; font-size: 1.2rem;">📝 Todos los pasos (para que veas que es fácil):</h4>
+                    <div id="stepsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const recipes = {
+            lunch: {
+                title: '🥣 Bowl Fácil con Quinoa',
+                ingredients: "Ingredientes (1 persona):\n• 1/2 taza quinoa prelavada\n• 1/2 pepino\n• Aceitunas de lata (las que quieras)\n• 50g queso feta (ya cortado)\n• 2 cdas aceite de oliva\n• 1/2 limón\n• Sal",
+                steps: [
+                    {text: "Pon 1 taza de agua en una olla y enciende el fuego. Espera a que hierva (verás burbujitas)", time: 3, audio: "Primer paso muy fácil: Pon una taza de agua en una olla cualquiera y enciende el fuego. Espera a que hierva, verás burbujitas"},
+                    {text: "Echa la quinoa en el agua hirviendo, baja el fuego a medio, tapa la olla y pon un temporizador de 12 minutos. ¡Ya está! No tienes que hacer nada más", time: 12, audio: "Segundo paso: Echa la quinoa en el agua, baja el fuego a medio o bajo, tapa la olla y pon la alarma del móvil en doce minutos. Ahora la quinoa se cocina sola, no tienes que vigilar nada"},
+                    {text: "Mientras la quinoa se cocina, corta el pepino en trozos. No importa cómo lo cortes, solo que sean pequeños para poder comerlos", time: 3, audio: "Tercer paso: Mientras esperas, corta el pepino en trozos pequeños. No te preocupes por cómo queden, solo que puedas comerlos fácilmente"},
+                    {text: "Abre el bote de aceitunas, escúrrelas y ponlas en un bowl grande", time: 1, audio: "Cuarto paso súper fácil: Abre el bote de aceitunas, quítales el agua y ponlas en un bowl grande donde vayas a comer"},
+                    {text: "Añade el queso feta al bowl (si viene en dados ya está listo, si no rómpelo con las manos)", time: 1, audio: "Quinto paso: Añade el queso feta al bowl. Si viene en dados perfecto, si no rómpelo con las manos en trozos"},
+                    {text: "Cuando suene la alarma, apaga el fuego, destapa la olla y deja reposar 2 minutos. La quinoa absorberá el agua que quede", time: 2, audio: "Cuando suene la alarma, apaga el fuego, destapa la olla y espera dos minutitos. La quinoa absorberá el agua que quede"},
+                    {text: "Echa la quinoa en el bowl con todo lo demás, añade aceite de oliva y exprime medio limón por encima. Mezcla y ¡a comer!", time: 2, audio: "Último paso: Echa toda la quinoa en el bowl, añade dos cucharadas de aceite de oliva, exprime medio limón por encima, mezcla todo y ya está. ¡A comer!"}
+                ]
+            },
+            dinner: {
+                title: '🍜 Sopa de Calabaza Express',
+                ingredients: "Ingredientes (1 persona):\n• 250g calabaza congelada (ya cortada)\n• 1/2 cebolla pequeña\n• 1 vaso (200ml) caldo de brick\n• 1/2 lata leche de coco\n• 1 cda aceite de oliva\n• Sal",
+                steps: [
+                    {text: "Corta la cebolla en trozos (no importa mucho cómo, se va a triturar después)", time: 2, audio: "Primer paso: Corta la cebolla en trozos. No te preocupes por cómo queden porque luego lo vamos a triturar todo"},
+                    {text: "Pon aceite en una olla, enciende el fuego medio y echa la cebolla. Remueve de vez en cuando durante 3 minutos", time: 3, audio: "Segundo paso: Pon una cucharada de aceite en la olla, enciende el fuego medio y echa la cebolla. Remueve un poco cada minuto durante tres minutos"},
+                    {text: "Echa la calabaza congelada directamente en la olla (no hay que descongelarla antes)", time: 1, audio: "Tercer paso súper fácil: Echa la calabaza congelada directamente a la olla, no hace falta descongelarla"},
+                    {text: "Añade el vaso de caldo y un poco de sal. Sube el fuego hasta que hierva", time: 2, audio: "Cuarto paso: Añade un vaso de caldo de brick y un poco de sal. Sube el fuego hasta que hierva, verás burbujitas"},
+                    {text: "Cuando hierva, baja el fuego a medio y deja cocinar 5 minutos sin tapa. Puedes ir a hacer otra cosa", time: 5, audio: "Quinto paso: Cuando hierva, baja el fuego a medio y pon la alarma en cinco minutos. Puedes irte a hacer otra cosa, no pasa nada"},
+                    {text: "Apaga el fuego y tritura con la batidora de mano. Si no tienes, aplasta con un tenedor hasta que quede como puré", time: 2, audio: "Sexto paso: Apaga el fuego y tritura con la batidora de mano. Si no tienes batidora no pasa nada, usa un tenedor para aplastar hasta que parezca un puré"},
+                    {text: "Añade media lata de leche de coco, remueve y ¡ya está! Sírvelo en un bowl y a comer", time: 1, audio: "Último paso facilísimo: Añade media lata de leche de coco, remueve y ya está listo. Sírvelo en un bowl y a disfrutar de tu sopa calentita"}
+                ]
+            }
+        };
+
+        let currentRecipe = null, currentStep = 0, isPlaying = false, stepTimer = null, totalTimer = null, totalSeconds = 0, stepSeconds = 0;
+        
+        // Variables del test
+        let testAnswers = {
+            energy: null,
+            type: null,
+            time: null,
+            protein: null
+        };
+        let recommendedRecipe = null;
+
+        // Sistema de test de sugerencias
+        function startTest() {
+            document.getElementById('testModal').style.display = 'block';
+            testAnswers = {energy: null, type: null, time: null, protein: null};
+            document.getElementById('question1').style.display = 'block';
+            document.getElementById('question2').style.display = 'none';
+            document.getElementById('question3').style.display = 'none';
+            document.getElementById('question4').style.display = 'none';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        function answer(questionNum, value) {
+            // Guardar respuesta
+            if (questionNum === 1) testAnswers.energy = value;
+            if (questionNum === 2) testAnswers.type = value;
+            if (questionNum === 3) testAnswers.time = value;
+            if (questionNum === 4) testAnswers.protein = value;
+
+            // Ocultar pregunta actual
+            document.getElementById('question' + questionNum).style.display = 'none';
+
+            // Mostrar siguiente pregunta o resultado
+            if (questionNum < 4) {
+                document.getElementById('question' + (questionNum + 1)).style.display = 'block';
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            // Lógica de recomendación basada en respuestas
+            let score = {lunch: 0, dinner: 0};
+
+            // Energía baja → sopa (más fácil)
+            if (testAnswers.energy === 'baja') score.dinner += 3;
+            if (testAnswers.energy === 'alta') score.lunch += 2;
+
+            // Tipo de comida
+            if (testAnswers.type === 'ligero') score.lunch += 2;
+            if (testAnswers.type === 'caliente') score.dinner += 3;
+            if (testAnswers.type === 'completo') score.lunch += 2;
+
+            // Tiempo
+            if (testAnswers.time === 'poco') score.dinner += 2;
+            if (testAnswers.time === 'medio') score.lunch += 1;
+
+            // Proteína
+            if (testAnswers.protein === 'no') score.dinner += 2;
+            if (testAnswers.protein === 'si') score.lunch += 1;
+
+            // Determinar ganador
+            recommendedRecipe = score.dinner > score.lunch ? 'dinner' : 'lunch';
+
+            // Mostrar resultado personalizado
+            const resultEmoji = document.getElementById('resultEmoji');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultText = document.getElementById('resultText');
+
+            if (recommendedRecipe === 'dinner') {
+                resultEmoji.textContent = '🍜';
+                resultTitle.textContent = 'Te recomiendo: Sopa de Calabaza Express';
+                
+                let reason = 'Esta receta es perfecta para ti hoy porque:\n\n';
+                if (testAnswers.energy === 'baja') reason += '✓ Es la más fácil y rápida (solo 12 minutos)\n';
+                if (testAnswers.type === 'caliente') reason += '✓ Es calentita y reconfortante\n';
+                if (testAnswers.protein === 'no') reason += '✓ Es 100% vegetariana\n';
+                reason += '✓ Casi no tienes que cortar nada (usa calabaza congelada)\n';
+                reason += '✓ Es suave y ligera para el estómago';
+                
+                resultText.textContent = reason;
+            } else {
+                resultEmoji.textContent = '🥣';
+                resultTitle.textContent = 'Te recomiendo: Bowl Fácil con Quinoa';
+                
+                let reason = 'Esta receta es perfecta para ti hoy porque:\n\n';
+                if (testAnswers.energy === 'alta') reason += '✓ Es completa y te dará buena energía\n';
+                if (testAnswers.type === 'ligero') reason += '✓ Es fresca y ligera\n';
+                if (testAnswers.type === 'completo') reason += '✓ Tiene proteínas, vitaminas y buenos nutrientes\n';
+                reason += '✓ Se cocina sola mientras haces otras cosas\n';
+                reason += '✓ Está rica fría o caliente';
+                
+                resultText.textContent = reason;
+            }
+
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function goToRecipe() {
+            closeTest();
+            // Scroll a la receta recomendada
+            const recipeCards = document.querySelectorAll('.recipe');
+            const targetRecipe = recommendedRecipe === 'lunch' ? recipeCards[0] : recipeCards[1];
+            targetRecipe.scrollIntoView({behavior: 'smooth', block: 'center'});
+            
+            // Resaltar la receta recomendada
+            targetRecipe.style.border = '3px solid #FFD700';
+            targetRecipe.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.5)';
+            
+            setTimeout(() => {
+                alert(`✨ Esta es tu receta recomendada\n\n¡Cuando estés listo/a, dale a "Audio Paso a Paso" y yo te guío! 😊`);
+            }, 500);
+        }
+
+        function restartTest() {
+            document.getElementById('result').style.display = 'none';
+            startTest();
+        }
+
+        function closeTest() {
+            document.getElementById('testModal').style.display = 'none';
+        }
+
+        function startAudio(type) {
+            currentRecipe = recipes[type];
+            currentStep = 0;
+            totalSeconds = 0;
+            isPlaying = false;
+            
+            document.getElementById('audioModal').style.display = 'block';
+            document.getElementById('recipeTitle').textContent = currentRecipe.title;
+            
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = currentRecipe.steps.map((step, i) => `
+                <div class="step-item" id="step-${i}">
+                    <strong>Paso ${i + 1}:</strong> ${step.text}
+                    <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">
+                        ⏱️ ${step.time} minuto${step.time !== 1 ? 's' : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('totalTimer').textContent = '00:00';
+            document.getElementById('stepText').textContent = 'Presiona "Empezar" y te iré guiando paso a paso 😊';
+            document.getElementById('stepTimer').textContent = '⏱️ Tiempo del paso: --:--';
+            document.getElementById('playBtn').innerHTML = '▶️ Empezar';
+            
+            document.querySelectorAll('.step-item').forEach(s => s.classList.remove('active', 'completed'));
+        }
+
+        function play() {
+            if (!currentRecipe) return;
+            if (!isPlaying) {
+                isPlaying = true;
+                document.getElementById('playBtn').innerHTML = '⏸️ Pausa';
+                if (currentStep === 0 && totalSeconds === 0) startTotalTimer();
+                playStep();
+            } else {
+                pause();
+            }
+        }
+
+        function pause() {
+            isPlaying = false;
+            document.getElementById('playBtn').innerHTML = '▶️ Seguir';
+            if (stepTimer) clearInterval(stepTimer);
+        }
+
+        function reset() {
+            isPlaying = false;
+            currentStep = 0;
+            totalSeconds = 0;
+            stepSeconds = 0;
+            document.getElementById('playBtn').innerHTML = '▶️ Empezar';
+            document.getElementById('totalTimer').textContent = '00:00';
+            document.getElementById('stepText').textContent = 'Presiona "Empezar" y te iré guiando paso a paso 😊';
+            document.getElementById('stepTimer').textContent = '⏱️ Tiempo del paso: --:--';
+            document.querySelectorAll('.step-item').forEach(s => s.classList.remove('active', 'completed'));
+            if (stepTimer) clearInterval(stepTimer);
+            if (totalTimer) clearInterval(totalTimer);
+        }
+
+        function startTotalTimer() {
+            totalTimer = setInterval(() => {
+                totalSeconds++;
+                const m = Math.floor(totalSeconds / 60);
+                const s = totalSeconds % 60;
+                document.getElementById('totalTimer').textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function playStep() {
+            if (currentStep >= currentRecipe.steps.length) {
+                complete();
+                return;
+            }
+
+            const step = currentRecipe.steps[currentStep];
+            
+            document.querySelectorAll('.step-item').forEach((item, i) => {
+                item.classList.remove('active');
+                if (i < currentStep) item.classList.add('completed');
+            });
+            
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.getElementById('stepText').textContent = step.text;
+            
+            setTimeout(() => {
+                if (isPlaying) alert(`🎵 ${step.audio}`);
+            }, 500);
+            
+            stepSeconds = step.time * 60;
+            updateTimer();
+            
+            stepTimer = setInterval(() => {
+                stepSeconds--;
+                updateTimer();
+                if (stepSeconds <= 0) {
+                    clearInterval(stepTimer);
+                    currentStep++;
+                    if (isPlaying) setTimeout(() => playStep(), 1000);
+                }
+            }, 1000);
+        }
+
+        function updateTimer() {
+            const m = Math.floor(stepSeconds / 60);
+            const s = stepSeconds % 60;
+            document.getElementById('stepTimer').textContent = `⏱️ Tiempo restante: ${m}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function complete() {
+            isPlaying = false;
+            document.getElementById('playBtn').innerHTML = '✅ ¡Terminado!';
+            document.getElementById('stepText').textContent = '🎉 ¡Lo has conseguido! Ya tienes tu comida lista. ¡Buen provecho!';
+            document.getElementById('stepTimer').textContent = '✨ ¡Has cocinado con éxito!';
+            document.querySelectorAll('.step-item').forEach(s => {
+                s.classList.add('completed');
+                s.classList.remove('active');
+            });
+            if (stepTimer) clearInterval(stepTimer);
+            if (totalTimer) clearInterval(totalTimer);
+            setTimeout(() => alert('🎉 ¡Genial! Has cocinado algo delicioso. ¡Disfruta tu comida! 😊'), 1000);
+        }
+
+        function closeAudio() {
+            document.getElementById('audioModal').style.display = 'none';
+            if (stepTimer) clearInterval(stepTimer);
+            if (totalTimer) clearInterval(totalTimer);
+            isPlaying = false;
+            currentStep = 0;
+            totalSeconds = 0;
+        }
+
+        function viewIngredients(type) {
+            const recipe = recipes[type];
+            const cal = type === 'lunch' ? '385 calorías' : '220 calorías';
+            alert(`${recipe.title}\n\n${recipe.ingredients}\n\n🔥 ${cal} por porción\n\n💡 Tip: Puedes guardar esta lista en las notas de tu móvil`);
+        }
+
+        function toggleItem(cb) {
+            cb.parentElement.classList.toggle('completed', cb.checked);
+        }
+
+        function shareList() {
+            const text = "🛒 MI LISTA DE COMPRAS FÁCIL (7 días)\n\n🥬 VERDURAS (refrigerado/congelado):\n☐ Calabaza CONGELADA cortada - 2 bolsas 500g [congelados]\n☐ Pepinos - 4 unidades [verduras frescas]\n☐ Cebollas pequeñas - 4 unidades [verduras]\n☐ Limones - 4 unidades [frutas]\n\n🥛 LÁCTEOS (nevera):\n☐ Queso feta en dados - 1 paquete 200g [quesos]\n\n🌾 CEREALES (pasillo seco):\n☐ Quinoa PRELAVADA - 1 paquete 500g [arroz/legumbres]\n\n🫒 CONSERVAS (pasillo latas):\n☐ Aceitunas negras - 2 tarritos [conservas]\n☐ Leche de coco - 2 latas [cocina internacional]\n☐ Caldo verduras BRICK - 2 briks 1L [caldos]\n\n🧂 BÁSICOS (si no tienes):\n☐ Aceite oliva - 1 botella\n☐ Sal - 1 paquete\n☐ Cúrcuma - 1 botecito (opcional)\n\n💡 Marca con ✓ cuando cojas cada cosa";
+            
+            if (navigator.share) {
+                navigator.share({title: 'Mi Lista de Compras Fácil', text: text}).catch(() => {
+                    navigator.clipboard.writeText(text).then(() => alert('📋 Lista copiada. Pégala donde quieras (WhatsApp, notas...)'));
+                });
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('📋 ¡Lista copiada! Ahora puedes pegarla en:\n\n• Notas de tu móvil\n• WhatsApp (enviártela a ti)\n• Email\n• Donde prefieras');
+                }).catch(() => alert(text));
+            }
+        }
+
+        function downloadList() {
+            const text = "MI LISTA DE COMPRAS FACIL - 7 DIAS\n\nVERDURAS (refrigerado/congelado):\n□ Calabaza CONGELADA cortada - 2 bolsas 500g [seccion: congelados]\n□ Pepinos - 4 unidades [seccion: verduras frescas]\n□ Cebollas pequeñas - 4 unidades [seccion: verduras]\n□ Limones - 4 unidades [seccion: frutas]\n\nLACTEOS (nevera):\n□ Queso feta en dados - 1 paquete 200g [seccion: quesos]\n\nCEREALES (pasillo seco):\n□ Quinoa PRELAVADA - 1 paquete 500g [seccion: arroz/legumbres]\n\nCONSERVAS (pasillo latas):\n□ Aceitunas negras - 2 tarritos [seccion: conservas]\n□ Leche de coco - 2 latas [seccion: cocina internacional]\n□ Caldo verduras BRICK - 2 briks 1 litro [seccion: caldos]\n\nBASICOS (si no tienes en casa):\n□ Aceite oliva - 1 botella\n□ Sal - 1 paquete\n□ Curcuma - 1 botecito (OPCIONAL)\n\nCONSEJO: Lleva esta lista impresa o en el movil. Marca con X cuando cojas cada cosa.";
+            
+            try {
+                const blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'mi-lista-compras-facil.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                alert('📥 ¡Lista descargada! Ahora puedes:\n\n• Imprimirla\n• Abrirla en tu móvil\n• Guardarla donde quieras');
+            } catch (error) {
+                alert('❌ No se pudo descargar automáticamente.\n\nPero puedes copiar la lista:\n\n' + text);
+            }
+        }
+
+        function clearCompleted() {
+            const items = document.querySelectorAll('.shopping-item.completed input');
+            items.forEach(cb => {
+                cb.checked = false;
+                cb.parentElement.classList.remove('completed');
+            });
+            if (items.length > 0) {
+                alert('🗑️ ¡Listo! Ya puedes volver a marcar las cosas para la próxima compra');
+            } else {
+                alert('ℹ️ No hay nada marcado todavía');
+            }
+        }
+
+        window.addEventListener('click', function(e) {
+            if (e.target === document.getElementById('audioModal')) closeAudio();
+            if (e.target === document.getElementById('testModal')) closeTest();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const message = '👨‍🍳 ¡Hola! Bienvenido/a a Comer Rico (versión fácil)\n\n' +
+                    '✨ Aquí TODO es super simple:\n' +
+                    '• Solo necesitas una olla y un cuchillo\n' +
+                    '• Los pasos son cortitos y claros\n' +
+                    '• El audio te guía en todo\n' +
+                    '• La lista de compras dice dónde está cada cosa\n\n' +
+                    '💚 Si no sabes qué cocinar, haz clic en "¿No sabes qué cocinar hoy?" y te ayudo a elegir';
+                alert(message);
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
+            

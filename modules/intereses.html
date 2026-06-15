@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intereses - Cris (Sistema de Progreso Diario)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #26a69a 0%, #2fb7a6 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .date-info {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+        
+        .streak-info {
+            font-size: 1rem;
+            opacity: 0.9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .streak-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .interest-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e1f5fe;
+            position: relative;
+        }
+        
+        .interest-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .progress-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        .progress-indicator.completed {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .progress-indicator.partial {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .progress-indicator.pending {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .interest-card .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .interest-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #26a69a;
+        }
+        
+        .interest-card p {
+            color: #666;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        .daily-goal {
+            background: #f0f9ff;
+            border: 1px solid #26a69a;
+            border-radius: 8px;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            color: #26a69a;
+            font-weight: 500;
+        }
+        
+        .content-section {
+            display: none;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #26a69a;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .back-button:hover {
+            background: #e1f5fe;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            color: #26a69a;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .day-navigator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .day-nav-btn {
+            background: #26a69a;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .day-nav-btn:hover {
+            background: #2fb7a6;
+        }
+        
+        .day-nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .current-day {
+            font-weight: bold;
+            color: #26a69a;
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .activity-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid #26a69a;
+        }
+        
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .activity-title {
+            font-size: 1.2rem;
+            color: #26a69a;
+            font-weight: 600;
+        }
+        
+        .complete-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+        
+        .complete-btn:hover {
+            background: #45a049;
+        }
+        
+        .complete-btn.completed {
+            background: #2196f3;
+        }
+        
+        .timer-section {
+            background: #f8fdff;
+            border: 2px solid #26a69a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .timer-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #26a69a;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .timer-btn {
+            background: #26a69a;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .timer-btn:hover {
+            background: #2fb7a6;
+            transform: translateY(-2px);
+        }
+        
+        .timer-btn.pause {
+            background: #ff9800;
+        }
+        
+        .timer-btn.reset {
+            background: #f44336;
+        }
+        
+        .timer-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .timer-presets {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .preset-btn {
+            background: white;
+            color: #26a69a;
+            border: 2px solid #26a69a;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .preset-btn:hover, .preset-btn.active {
+            background: #26a69a;
+            color: white;
+        }
+        
+        .timer-goal {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        .timer-progress {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .timer-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #26a69a, #2fb7a6);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .notes-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .notes-textarea {
+            width: 100%;
+            min-height: 120px;
+            border: 2px solid #e1f5fe;
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            resize: vertical;
+        }
+        
+        .notes-textarea:focus {
+            outline: none;
+            border-color: #26a69a;
+        }
+        
+        .progress-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .progress-bars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .progress-bar {
+            background: #f5f5f5;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 8px;
+            position: relative;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #26a69a, #2fb7a6);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.3rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 0.8rem 1.5rem;
+            background: #e1f5fe;
+            color: #26a69a;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background: #26a69a;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .day-navigator {
+                align-self: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="date-info">🦘🎻 Intereses</div>
+        <div class="streak-info">
+            <span class="streak-badge" id="current-streak">🔥 0 días</span>
+            <span class="streak-badge" id="total-days">📊 0 total</span>
+        </div>
+    </div>
+    
+    <main id="main-menu" class="main-grid">
+        <div class="interest-card" onclick="showSection('musica')">
+            <div class="progress-indicator pending" id="musica-progress">0/1</div>
+            <span class="emoji">🎵</span>
+            <h3>Música</h3>
+            <p>Práctica diaria de violín con ejercicios progresivos.</p>
+            <div class="daily-goal" id="musica-goal">Cargando objetivo del día...</div>
+        </div>
+        
+        <div class="interest-card" onclick="showSection('escritura')">
+            <div class="progress-indicator pending" id="escritura-progress">0/1</div>
+            <span class="emoji">✍️</span>
+            <h3>Escritura</h3>
+            <p>Reflexión diaria y desarrollo de ideas creativas.</p>
+            <div class="daily-goal" id="escritura-goal">Cargando objetivo del día...</div>
+        </div>
+        
+        <div class="interest-card" onclick="showSection('dibujo')">
+            <div class="progress-indicator pending" id="dibujo-progress">0/1</div>
+            <span class="emoji">🎨</span>
+            <h3>Dibujo</h3>
+            <p>Reto artístico diario para desarrollar creatividad.</p>
+            <div class="daily-goal" id="dibujo-goal">Cargando objetivo del día...</div>
+        </div>
+        
+        <div class="interest-card" onclick="showSection('nudos')">
+            <div class="progress-indicator pending" id="nudos-progress">0/1</div>
+            <span class="emoji">🪢</span>
+            <h3>Nudos</h3>
+            <p>Aprende nudos útiles paso a paso, desde básicos hasta avanzados.</p>
+            <div class="daily-goal" id="nudos-goal">Cargando objetivo del día...</div>
+        </div>
+        
+        <div class="interest-card" onclick="showSection('electricidad')">
+            <div class="progress-indicator pending" id="electricidad-progress">0/1</div>
+            <span class="emoji">⚡</span>
+            <h3>Electricidad</h3>
+            <p>Fundamentos de electricidad desde conceptos básicos hasta aplicaciones.</p>
+            <div class="daily-goal" id="electricidad-goal">Cargando objetivo del día...</div>
+        </div>
+        
+        <div class="interest-card" onclick="showSection('neurociencia')">
+            <div class="progress-indicator pending" id="neurociencia-progress">0/2</div>
+            <span class="emoji">🧠</span>
+            <h3>Neurociencia</h3>
+            <p>Aprendizaje diario sobre el cerebro y su funcionamiento.</p>
+            <div class="daily-goal" id="neurociencia-goal">Cargando objetivo del día...</div>
+        </div>
+    </main>
+    
+    <!-- Sección Música -->
+    <section id="musica" class="content-section">
+        <div class="back-button" onclick="showMainMenu()">← Volver al menú</div>
+        
+        <div class="section-header">
+            <h2 class="section-title">🎵 Práctica Musical</h2>
+            <div class="day-navigator">
+                <button class="day-nav-btn" onclick="changeDay('musica', -1)">‹</button>
+                <span class="current-day" id="musica-day">Día 1</span>
+                <button class="day-nav-btn" onclick="changeDay('musica', 1)">›</button>
+            </div>
+        </div>
+        
+        <div class="progress-summary">
+            <h3>Progreso Musical</h3>
+            <div class="progress-bars">
+                <div>
+                    <div class="progress-label">
+                        <span>Días completados</span>
+                        <span id="musica-completed">0/30</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="musica-progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="activity-card" id="musica-activity">
+            <div class="activity-header">
+                <div class="activity-title" id="musica-activity-title">Cargando ejercicio...</div>
+                <button class="complete-btn" onclick="completeActivity('musica')" id="musica-complete-btn">
+                    Completar
+                </button>
+            </div>
+            <div class="activity-content" id="musica-activity-content">
+                Cargando contenido...
+            </div>
+            
+            <!-- Temporizador para Música -->
+            <div class="timer-section">
+                <div class="timer-goal">🎯 Tiempo sugerido para la práctica</div>
+                <div class="timer-presets">
+                    <button class="preset-btn" onclick="setTimer('musica', 5)">5 min</button>
+                    <button class="preset-btn active" onclick="setTimer('musica', 10)">10 min</button>
+                    <button class="preset-btn" onclick="setTimer('musica', 15)">15 min</button>
+                    <button class="preset-btn" onclick="setTimer('musica', 20)">20 min</button>
+                </div>
+                <div class="timer-display" id="musica-timer">10:00</div>
+                <div class="timer-progress">
+                    <div class="timer-progress-fill" id="musica-progress-bar"></div>
+                </div>
+                <div class="timer-controls">
+                    <button class="timer-btn" id="musica-start-btn" onclick="startTimer('musica')">
+                        ▶️ Comenzar práctica
+                    </button>
+                    <button class="timer-btn pause" id="musica-pause-btn" onclick="pauseTimer('musica')" disabled>
+                        ⏸️ Pausar
+                    </button>
+                    <button class="timer-btn reset" id="musica-reset-btn" onclick="resetTimer('musica')">
+                        🔄 Reiniciar
+                    </button>
+                </div>
+            </div>
+            <div class="notes-section">
+                <textarea 
+                    class="notes-textarea" 
+                    id="musica-notes"
+                    placeholder="Notas sobre tu práctica de hoy...">
+                </textarea>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección Escritura -->
+    <section id="escritura" class="content-section">
+        <div class="back-button" onclick="showMainMenu()">← Volver al menú</div>
+        
+        <div class="section-header">
+            <h2 class="section-title">✍️ Escritura Diaria</h2>
+            <div class="day-navigator">
+                <button class="day-nav-btn" onclick="changeDay('escritura', -1)">‹</button>
+                <span class="current-day" id="escritura-day">Día 1</span>
+                <button class="day-nav-btn" onclick="changeDay('escritura', 1)">›</button>
+            </div>
+        </div>
+        
+        <div class="progress-summary">
+            <h3>Progreso de Escritura</h3>
+            <div class="progress-bars">
+                <div>
+                    <div class="progress-label">
+                        <span>Días completados</span>
+                        <span id="escritura-completed">0/30</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="escritura-progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="activity-card" id="escritura-activity">
+            <div class="activity-header">
+                <div class="activity-title" id="escritura-activity-title">Cargando prompt...</div>
+                <button class="complete-btn" onclick="completeActivity('escritura')" id="escritura-complete-btn">
+                    Completar
+                </button>
+            </div>
+            <div class="activity-content" id="escritura-activity-content">
+                Cargando contenido...
+            </div>
+            
+            <!-- Temporizador para Escritura -->
+            <div class="timer-section">
+                <div class="timer-goal">✍️ Tiempo dedicado a escribir</div>
+                <div class="timer-presets">
+                    <button class="preset-btn" onclick="setTimer('escritura', 10)">10 min</button>
+                    <button class="preset-btn active" onclick="setTimer('escritura', 15)">15 min</button>
+                    <button class="preset-btn" onclick="setTimer('escritura', 25)">25 min</button>
+                    <button class="preset-btn" onclick="setTimer('escritura', 30)">30 min</button>
+                </div>
+                <div class="timer-display" id="escritura-timer">15:00</div>
+                <div class="timer-progress">
+                    <div class="timer-progress-fill" id="escritura-progress-bar"></div>
+                </div>
+                <div class="timer-controls">
+                    <button class="timer-btn" id="escritura-start-btn" onclick="startTimer('escritura')">
+                        ✍️ Comenzar a escribir
+                    </button>
+                    <button class="timer-btn pause" id="escritura-pause-btn" onclick="pauseTimer('escritura')" disabled>
+                        ⏸️ Pausar
+                    </button>
+                    <button class="timer-btn reset" id="escritura-reset-btn" onclick="resetTimer('escritura')">
+                        🔄 Reiniciar
+                    </button>
+                </div>
+            </div>
+            <div class="notes-section">
+                <textarea 
+                    class="notes-textarea" 
+                    id="escritura-notes"
+                    placeholder="Escribe tu reflexión aquí...">
+                </textarea>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección Dibujo -->
+    <section id="dibujo" class="content-section">
+        <div class="back-button" onclick="showMainMenu()">← Volver al menú</div>
+        
+        <div class="section-header">
+            <h2 class="section-title">🎨 Reto Artístico</h2>
+            <div class="day-navigator">
+                <button class="day-nav-btn" onclick="changeDay('dibujo', -1)">‹</button>
+                <span class="current-day" id="dibujo-day">Día 1</span>
+                <button class="day-nav-btn" onclick="changeDay('dibujo', 1)">›</button>
+            </div>
+        </div>
+        
+        <div class="progress-summary">
+            <h3>Progreso Artístico</h3>
+            <div class="progress-bars">
+                <div>
+                    <div class="progress-label">
+                        <span>Días completados</span>
+                        <span id="dibujo-completed">0/30</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="dibujo-progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="activity-card" id="dibujo-activity">
+            <div class="activity-header">
+                <div class="activity-title" id="dibujo-activity-title">Cargando reto...</div>
+                <button class="complete-btn" onclick="completeActivity('dibujo')" id="dibujo-complete-btn">
+                    Completar
+                </button>
+            </div>
+            <div class="activity-content" id="dibujo-activity-content">
+                Cargando contenido...
+            </div>
+            
+            <!-- Temporizador para Dibujo -->
+            <div class="timer-section">
+                <div class="timer-goal">🎨 Tiempo para el reto artístico</div>
+                <div class="timer-presets">
+                    <button class="preset-btn" onclick="setTimer('dibujo', 5)">5 min</button>
+                    <button class="preset-btn" onclick="setTimer('dibujo', 10)">10 min</button>
+                    <button class="preset-btn active" onclick="setTimer('dibujo', 15)">15 min</button>
+                    <button class="preset-btn" onclick="setTimer('dibujo', 30)">30 min</button>
+                </div>
+                <div class="timer-display" id="dibujo-timer">15:00</div>
+                <div class="timer-progress">
+                    <div class="timer-progress-fill" id="dibujo-progress-bar"></div>
+                </div>
+                <div class="timer-controls">
+                    <button class="timer-btn" id="dibujo-start-btn" onclick="startTimer('dibujo')">
+                        🎨 Comenzar a dibujar
+                    </button>
+                    <button class="timer-btn pause" id="dibujo-pause-btn" onclick="pauseTimer('dibujo')" disabled>
+                        ⏸️ Pausar
+                    </button>
+                    <button class="timer-btn reset" id="dibujo-reset-btn" onclick="resetTimer('dibujo')">
+                        🔄 Reiniciar
+                    </button>
+                </div>
+            </div>
+            <div class="notes-section">
+                <textarea 
+                    class="notes-textarea" 
+                    id="dibujo-notes"
+                    placeholder="Describe tu proceso creativo...">
+                </textarea>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección Nudos -->
+    <section id="nudos" class="content-section">
+        <div class="back-button" onclick="showMainMenu()">← Volver al menú</div>
+        
+        <div class="section-header">
+            <h2 class="section-title">🪢 Nudos Prácticos</h2>
+            <div class="day-navigator">
+                <button class="day-nav-btn" onclick="changeDay('nudos', -1)">‹</button>
+                <span class="current-day" id="nudos-day">Día 1</span>
+                <button class="day-nav-btn" onclick="changeDay('nudos', 1)">›</button>
+            </div>
+        </div>
+        
+        <div class="progress-summary">
+            <h3>Progreso con Nudos</h3>
+            <div class="progress-bars">
+                <div>
+                    <div class="progress-label">
+                        <span>Nudos aprendidos</span>
+                        <span id="nudos-completed">0/30</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="nudos-progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="activity-card" id="nudos-activity">
+            <div class="activity-header">
+                <div class="activity-title" id="nudos-activity-title">Cargando nudo...</div>
+                <button class="complete-btn" onclick="completeActivity('nudos')" id="nudos-complete-btn">
+                    Completar
+                </button>
+            </div>
+            <div class="activity-content" id="nudos-activity-content">
+                Cargando contenido...
+            </div>
+            
+            <!-- Temporizador para Nudos -->
+            <div class="timer-section">
+                <div class="timer-goal">🪢 Tiempo de práctica con cuerdas</div>
+                <div class="timer-presets">
+                    <button class="preset-btn" onclick="setTimer('nudos', 5)">5 min</button>
+                    <button class="preset-btn active" onclick="setTimer('nudos', 10)">10 min</button>
+                    <button class="preset-btn" onclick="setTimer('nudos', 15)">15 min</button>
+                    <button class="preset-btn" onclick="setTimer('nudos', 20)">20 min</button>
+                </div>
+                <div class="timer-display" id="nudos-timer">10:00</div>
+                <div class="timer-progress">
+                    <div class="timer-progress-fill" id="nudos-progress-bar"></div>
+                </div>
+                <div class="timer-controls">
+                    <button class="timer-btn" id="nudos-start-btn" onclick="startTimer('nudos')">
+                        🪢 Comenzar práctica
+                    </button>
+                    <button class="timer-btn pause" id="nudos-pause-btn" onclick="pauseTimer('nudos')" disabled>
+                        ⏸️ Pausar
+                    </button>
+                    <button class="timer-btn reset" id="nudos-reset-btn" onclick="resetTimer('nudos')">
+                        🔄 Reiniciar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="notes-section">
+                <textarea 
+                    class="notes-textarea" 
+                    id="nudos-notes"
+                    placeholder="Anota tus observaciones sobre la técnica del nudo...">
+                </textarea>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección Electricidad -->
+    <section id="electricidad" class="content-section">
+        <div class="back-button" onclick="showMainMenu()">← Volver al menú</div>
+        
+        <div class="section-header">
+            <h2 class="section-title">⚡ Fundamentos de Electricidad</h2>
+            <div class="day-navigator">
+                <button class="day-nav-btn" onclick="changeDay('electricidad', -1)">‹</button>
+                <span class="current-day" id="electricidad-day">Día 1</span>
+                <button class="day-nav-btn" onclick="changeDay('electricidad', 1)">›</button>
+            </div>
+        </div>
+        
+        <div class="progress-summary">
+            <h3>Progreso en Electricidad</h3>
+            <div class="progress-bars">
+                <div>
+                    <div class="progress-label">
+                        <span>Conceptos dominados</span>
+                        <span id="electricidad-completed">0/30</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="electricidad-progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="activity-card" id="electricidad-activity">
+            <div class="activity-header">
+                <div class="activity-title" id="electricidad-activity-title">Cargando concepto...</div>
+                <button class="complete-btn" onclick="completeActivity('electricidad')" id="electricidad-complete-btn">
+                    Completar
+                </button>
+            </div>
+            <div class="activity-content" id="electricidad-activity-content">
+                Cargando contenido...
+            </div>
+            
+            <!-- Temporizador para Electricidad -->
+            <div class="timer-section">
+                <div class="timer-goal">⚡ Tiempo de estudio y práctica</div>
+                <div class="timer-presets">
+                    <button class="preset-btn" onclick="setTimer('electricidad', 10)">10 min</button>
+                    <button class="preset-btn active" onclick="setTimer('electricidad', 15)">15 min</button>
+                    <button class="preset-btn" onclick="setTimer('electricidad', 20)">20 min</button>
+                    <button class="preset-btn" onclick="setTimer('electricidad', 25)">25 min</button>
+                </div>
+                <div class="timer-display" id="electricidad-timer">15:00</div>
+                <div class="timer-progress">
+                    <div class="timer-progress-fill" id="electricidad-progress-bar"></div>
+                </div>
+                <div class="timer-controls">
+                    <button class="timer-btn" id="electricidad-start-btn" onclick="startTimer('electricidad')">
+                        ⚡ Comenzar estudio
+                    </button>
+                    <button class="timer-btn pause" id="electricidad-pause-btn" onclick="pauseTimer('electricidad')" disabled>
+                        ⏸️ Pausar
+                    </button>
+                    <button class="timer-btn reset" id="electricidad-reset-btn" onclick="resetTimer('electricidad')">
+                        🔄 Reiniciar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="notes-section">
+                <textarea 
+                    class="notes-textarea" 
+                    id="electricidad-notes"
+                    placeholder="Anota los conceptos clave y experimentos realizados...">
+                </textarea>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección Neurociencia -->
+    <section id="neurociencia" class="content-section">
+        <div class="back-button" onclick="showMainMenu()">← Volver al menú</div>
+        
+        <div class="section-header">
+            <h2 class="section-title">🧠 Neurociencia Diaria</h2>
+            <div class="day-navigator">
+                <button class="day-nav-btn" onclick="changeDay('neurociencia', -1)">‹</button>
+                <span class="current-day" id="neurociencia-day">Día 1</span>
+                <button class="day-nav-btn" onclick="changeDay('neurociencia', 1)">›</button>
+            </div>
+        </div>
+        
+        <div class="progress-summary">
+            <h3>Progreso en Neurociencia</h3>
+            <div class="progress-bars">
+                <div>
+                    <div class="progress-label">
+                        <span>Conceptos aprendidos</span>
+                        <span id="neurociencia-completed">0/60</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="neurociencia-progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showNeuroTab('cotidiano', this)">Cotidiano</div>
+            <div class="tab" onclick="showNeuroTab('tecnico', this)">Técnico</div>
+        </div>
+        
+        <div class="activity-card" id="neurociencia-cotidiano">
+            <div class="activity-header">
+                <div class="activity-title" id="neuro-cotidiano-title">Cargando consejo...</div>
+                <button class="complete-btn" onclick="completeActivity('neurociencia-cotidiano')" id="neuro-cotidiano-btn">
+                    Completar
+                </button>
+            </div>
+            <div class="activity-content" id="neuro-cotidiano-content">
+                Cargando contenido...
+            </div>
+            
+            <!-- Temporizador para Neurociencia Cotidiano -->
+            <div class="timer-section">
+                <div class="timer-goal">🧠 Tiempo de reflexión y aplicación</div>
+                <div class="timer-presets">
+                    <button class="preset-btn" onclick="setTimer('neuro-cotidiano', 5)">5 min</button>
+                    <button class="preset-btn active" onclick="setTimer('neuro-cotidiano', 10)">10 min</button>
+                    <button class="preset-btn" onclick="setTimer('neuro-cotidiano', 15)">15 min</button>
+                </div>
+                <div class="timer-display" id="neuro-cotidiano-timer">10:00</div>
+                <div class="timer-progress">
+                    <div class="timer-progress-fill" id="neuro-cotidiano-progress-bar"></div>
+                </div>
+                <div class="timer-controls">
+                    <button class="timer-btn" id="neuro-cotidiano-start-btn" onclick="startTimer('neuro-cotidiano')">
+                        🤔 Comenzar reflexión
+                    </button>
+                    <button class="timer-btn pause" id="neuro-cotidiano-pause-btn" onclick="pauseTimer('neuro-cotidiano')" disabled>
+                        ⏸️ Pausar
+                    </button>
+                    <button class="timer-btn reset" id="neuro-cotidiano-reset-btn" onclick="resetTimer('neuro-cotidiano')">
+                        🔄 Reiniciar
+                    </button>
+                </div>
+            </div>
+            <div class="notes-section">
+                <textarea 
+                    class="notes-textarea" 
+                    id="neuro-cotidiano-notes"
+                    placeholder="¿Cómo aplicarás este consejo?">
+                </textarea>
+            </div>
+        </div>
+        
+        <div class="activity-card" id="neurociencia-tecnico" style="display: none;">
+            <div class="activity-header">
+                <div class="activity-title" id="neuro-tecnico-title">Cargando concepto...</div>
+                <button class="complete-btn" onclick="completeActivity('neurociencia-tecnico')" id="neuro-tecnico-btn">
+                    Completar
+                </button>
+            </div>
+            <div class="activity-content" id="neuro-tecnico-content">
+                Cargando contenido...
+            </div>
+            
+            <!-- Temporizador para Neurociencia Técnico -->
+            <div class="timer-section">
+                <div class="timer-goal">🔬 Tiempo de estudio profundo</div>
+                <div class="timer-presets">
+                    <button class="preset-btn" onclick="setTimer('neuro-tecnico', 10)">10 min</button>
+                    <button class="preset-btn active" onclick="setTimer('neuro-tecnico', 15)">15 min</button>
+                    <button class="preset-btn" onclick="setTimer('neuro-tecnico', 20)">20 min</button>
+                    <button class="preset-btn" onclick="setTimer('neuro-tecnico', 25)">25 min</button>
+                </div>
+                <div class="timer-display" id="neuro-tecnico-timer">15:00</div>
+                <div class="timer-progress">
+                    <div class="timer-progress-fill" id="neuro-tecnico-progress-bar"></div>
+                </div>
+                <div class="timer-controls">
+                    <button class="timer-btn" id="neuro-tecnico-start-btn" onclick="startTimer('neuro-tecnico')">
+                        📚 Comenzar estudio
+                    </button>
+                    <button class="timer-btn pause" id="neuro-tecnico-pause-btn" onclick="pauseTimer('neuro-tecnico')" disabled>
+                        ⏸️ Pausar
+                    </button>
+                    <button class="timer-btn reset" id="neuro-tecnico-reset-btn" onclick="resetTimer('neuro-tecnico')">
+                        🔄 Reiniciar
+                    </button>
+                </div>
+            </div>
+            <div class="notes-section">
+                <textarea 
+                    class="notes-textarea" 
+                    id="neuro-tecnico-notes"
+                    placeholder="Resumen del concepto aprendido...">
+                </textarea>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        // Sistema de datos y progreso
+        let appData = {
+            currentDay: {
+                musica: 1,
+                escritura: 1,
+                dibujo: 1,
+                nudos: 1,
+                electricidad: 1,
+                neurociencia: 1
+            },
+            progress: {
+                musica: {},
+                escritura: {},
+                dibujo: {},
+                nudos: {},
+                electricidad: {},
+                neurociencia: {}
+            },
+            streak: {
+                current: 0,
+                best: 0,
+                lastActivity: null
+            }
+        };
+        
+        // Contenido diario para cada área
+        const dailyContent = {
+            musica: [
+                {
+                    title: "Postura y sujeción del violín",
+                    content: "Practica la postura correcta durante 10 minutos. Coloca el violín en tu hombro izquierdo, sostén el cuello con tu mano izquierda y asegúrate de mantener la espalda recta.",
+                    goal: "Practicar postura 10 min"
+                },
+                {
+                    title: "Técnica básica del arco",
+                    content: "Ejercicios de arco abierto en cuerdas al aire. Practica movimientos largos y suaves, manteniendo el arco perpendicular a las cuerdas.",
+                    goal: "30 movimientos de arco limpios"
+                },
+                {
+                    title: "Primeras notas - Cuerda Sol",
+                    content: "Aprende las notas Sol, La y Si en la cuerda Sol. Practica cada nota por separado, luego combínalas en secuencias simples.",
+                    goal: "Tocar Sol-La-Si 10 veces"
+                },
+                {
+                    title: "Primeras notas - Cuerda Re",
+                    content: "Continúa con las notas Re, Mi y Fa# en la cuerda Re. Alterna entre las cuerdas Sol y Re.",
+                    goal: "Secuencias entre 2 cuerdas"
+                },
+                {
+                    title: "Ritmo básico - Negras",
+                    content: "Introduce el concepto de negras. Toca notas simples siguiendo un metrónomo a 60 BPM.",
+                    goal: "5 min con metrónomo"
+                }
+            ],
+            nudos: [
+                {
+                    title: "Nudo simple - Base fundamental",
+                    content: "El nudo simple es la base de todos los nudos. Practica hacer un bucle y pasar el extremo por él. Úsalo para evitar que una cuerda se deslice por un agujero o como base para nudos más complejos.",
+                    goal: "Hacer 10 nudos simples perfectos"
+                },
+                {
+                    title: "Nudo de ocho - Seguridad marina",
+                    content: "También llamado 'nudo en ocho'. Forma un ocho con la cuerda y pasa el extremo siguiendo el mismo camino. Es más seguro que el nudo simple porque no se desliza y es fácil de deshacer incluso bajo tensión.",
+                    goal: "Dominar el nudo en ocho en ambas direcciones"
+                },
+                {
+                    title: "Nudo llano (reef knot) - Unir cuerdas",
+                    content: "Para unir dos cuerdas del mismo grosor. Derecha sobre izquierda, luego izquierda sobre derecha. Recuerda: 'Derecha sobre izquierda, izquierda sobre derecha'. Fundamental para rescate y navegación.",
+                    goal: "Unir 2 cuerdas diferentes sin mirar"
+                },
+                {
+                    title: "Ballestrinque - Sujeción rápida",
+                    content: "Ideal para atar una cuerda a un poste o mástil. Da dos vueltas alrededor del objeto, cruzando la cuerda sobre sí misma. Se puede hacer con una sola mano y es ajustable bajo carga.",
+                    goal: "Hacer ballestrinque con una sola mano"
+                },
+                {
+                    title: "As de guía - El rey de los nudos",
+                    content: "Crea un bucle fijo que no se desliza. 'El conejo sale del agujero, rodea el árbol y vuelve al agujero'. Es el nudo más versátil: escalada, rescate, navegación. Mantiene el 60% de la resistencia de la cuerda.",
+                    goal: "As de guía perfecto en menos de 10 segundos"
+                }
+            ],
+            electricidad: [
+                {
+                    title: "¿Qué es la electricidad?",
+                    content: "La electricidad es el movimiento de electrones a través de un conductor. Los electrones tienen carga negativa y se mueven del polo negativo al positivo. Como el agua en una tubería, necesita un circuito cerrado para fluir.",
+                    goal: "Entender el flujo básico de electrones"
+                },
+                {
+                    title: "Voltaje, corriente y resistencia",
+                    content: "VOLTAJE (V) = presión eléctrica, como la presión del agua. CORRIENTE (A) = cantidad de electrones fluyendo, como el caudal. RESISTENCIA (Ω) = oposición al flujo. Ley de Ohm: V = I × R",
+                    goal: "Calcular 3 ejemplos con Ley de Ohm"
+                },
+                {
+                    title: "Circuitos en serie vs paralelo",
+                    content: "SERIE: componentes uno tras otro, misma corriente pero voltaje se divide. PARALELO: componentes en ramas separadas, mismo voltaje pero corriente se divide. Las casas usan circuitos paralelo.",
+                    goal: "Dibujar ambos tipos de circuito"
+                },
+                {
+                    title: "Potencia eléctrica y consumo",
+                    content: "POTENCIA (W) = V × I = energía consumida por segundo. Una bombilla de 60W a 120V consume 0.5A. El consumo se mide en kWh (kilovatios-hora). Tu factura eléctrica se basa en kWh consumidos.",
+                    goal: "Calcular consumo de 5 aparatos caseros"
+                },
+                {
+                    title: "Seguridad eléctrica práctica",
+                    content: "NUNCA trabajes con electricidad sin cortar la alimentación. Los disyuntores protegen de sobrecargas, los GFCI de electrocución. El cuerpo humano tiene ~1000Ω de resistencia; 10mA ya son peligrosos. Siempre usa multímetro.",
+                    goal: "Identificar protecciones de tu casa"
+                }
+            ],
+            escritura: [
+                {
+                    title: "Reflexión matutina",
+                    content: "Escribe sobre cómo te sientes al comenzar el día. ¿Qué esperas lograr hoy? ¿Qué pensamientos cruzan tu mente?",
+                    goal: "Escribir 100 palabras mínimo"
+                },
+                {
+                    title: "Describir un objeto",
+                    content: "Elige un objeto cercano y descríbelo en detalle. No solo su apariencia, sino también qué sensaciones te provoca, qué recuerdos despierta.",
+                    goal: "Descripción detallada 150 palabras"
+                },
+                {
+                    title: "Diálogo imaginario",
+                    content: "Crea una conversación entre dos personas que acaban de conocerse en un lugar inusual. ¿De qué hablan? ¿Cómo se conocieron?",
+                    goal: "Diálogo de 10 intercambios"
+                },
+                {
+                    title: "Carta al futuro yo",
+                    content: "Escribe una carta a ti mismo/a dentro de un año. ¿Qué le dirías? ¿Qué consejos le darías? ¿Qué esperas haber logrado?",
+                    goal: "Carta de 200 palabras"
+                },
+                {
+                    title: "Historia en 6 palabras",
+                    content: "El reto de Hemingway: cuenta una historia completa en exactamente 6 palabras. Luego expándela a un párrafo completo.",
+                    goal: "Historia de 6 palabras + expansión"
+                }
+            ],
+            dibujo: [
+                {
+                    title: "Línea continua",
+                    content: "Dibuja tu mano no dominante usando una sola línea continua, sin levantar el lápiz del papel. Concéntrate en observar cada detalle.",
+                    goal: "Dibujo de mano completo"
+                },
+                {
+                    title: "Formas geométricas",
+                    content: "Crea una composición usando solo círculos, cuadrados y triángulos. Experimenta con diferentes tamaños y superposiciones.",
+                    goal: "Composición de 15 formas"
+                },
+                {
+                    title: "Sombreado básico",
+                    content: "Dibuja una esfera, un cubo y un cilindro. Practica diferentes técnicas de sombreado para crear volumen y profundidad.",
+                    goal: "3 objetos con sombras realistas"
+                },
+                {
+                    title: "Textura natural",
+                    content: "Encuentra algo con textura interesante (corteza de árbol, piedra, tela) y recréala en papel usando diferentes técnicas de trazado.",
+                    goal: "Estudio de textura detallado"
+                },
+                {
+                    title: "Boceto rápido",
+                    content: "Haz 5 bocetos de 2 minutos cada uno de diferentes objetos de tu entorno. Enfócate en capturar la esencia, no los detalles.",
+                    goal: "5 bocetos de 2 minutos c/u"
+                }
+            ],
+            neurociencia: {
+                cotidiano: [
+                    {
+                        title: "¿Qué es la neurociencia?",
+                        content: "La neurociencia estudia cómo funciona tu cerebro. Cada pensamiento, emoción y movimiento que haces es resultado de 86 mil millones de neuronas comunicándose entre sí. ¡Tu cerebro consume el 20% de toda tu energía diaria!",
+                        goal: "Observar una función cerebral básica"
+                    },
+                    {
+                        title: "El poder del sueño",
+                        content: "Mientras duermes, tu cerebro se 'limpia' eliminando toxinas como las proteínas beta-amiloide (relacionadas con Alzheimer). También consolida memorias del día transfiriéndolas del hipocampo a la corteza.",
+                        goal: "Mejorar higiene del sueño"
+                    },
+                    {
+                        title: "Ejercicio = medicina cerebral",
+                        content: "El ejercicio aeróbico libera BDNF (factor neurotrófico), una proteína que actúa como 'fertilizante' para las neuronas, promoviendo su crecimiento y supervivencia. 20 minutos diarios pueden mejorar tu memoria en semanas.",
+                        goal: "Planificar rutina de ejercicio"
+                    },
+                    {
+                        title: "Música y supersimetría cerebral",
+                        content: "Tocar música activa simultáneamente áreas motoras, auditivas, visuales y de memoria. Es el único actividad que hace trabajar todo el cerebro a la vez, creando nuevas conexiones neuronales permanentes.",
+                        goal: "Conectar con práctica musical"
+                    },
+                    {
+                        title: "Neurotecnología personal (2024-2025)",
+                        content: "Las interfaces cerebro-ordenador no invasivas ahora permiten tratamientos domiciliarios para trastornos del sueño y concentración. Apps como neurofeedback entrenan tu cerebro en tiempo real usando EEG portable.",
+                        goal: "Explorar apps de neurofeedback"
+                    }
+                ],
+                tecnico: [
+                    {
+                        title: "Neuronas: las células especiales",
+                        content: "Las neuronas tienen dendritas (antenas receptoras), soma (cuerpo celular), axón (cable transmisor) y sinapsis (conectores). A diferencia de otras células, se comunican con señales eléctricas que viajan a 120 m/s.",
+                        goal: "Dibujar una neurona básica"
+                    },
+                    {
+                        title: "Plasticidad sináptica: la base del aprendizaje",
+                        content: "LTP (Potenciación a Largo Plazo): cuando dos neuronas se activan juntas repetidamente, su conexión se fortalece. 'Neurons that fire together, wire together' - base molecular de cómo aprendes nuevas habilidades.",
+                        goal: "Identificar una habilidad en desarrollo"
+                    },
+                    {
+                        title: "Neurotransmisores: mensajeros químicos",
+                        content: "Dopamina (motivación/placer), Serotonina (bienestar/sueño), GABA (calma/inhibición), Acetilcolina (atención/memoria), Noradrenalina (alerta/estrés). Cada uno tiene receptores específicos como llaves y cerraduras.",
+                        goal: "Relacionar con estados mentales"
+                    },
+                    {
+                        title: "Ondas cerebrales y estados de conciencia",
+                        content: "Delta (0.5-4Hz, sueño profundo), Theta (4-8Hz, creatividad), Alpha (8-13Hz, relajación), Beta (13-30Hz, concentración), Gamma (30-100Hz, alta cognición). Diferentes frecuencias para diferentes funciones mentales.",
+                        goal: "Identificar tu patrón de ondas"
+                    },
+                    {
+                        title: "Avances 2024: Mapeo cerebral completo",
+                        content: "En 2024 se cartografió completamente el cerebro de Drosophila melanogaster, un hito que abre camino al 'conectoma humano'. Las neurotecnologías invasivas y no invasivas ahora permiten leer y modificar actividad neuronal con precisión milimétrica.",
+                        goal: "Investigar proyecto conectoma"
+                    }
+                ]
+            }
+        };
+
+        // Sistema de temporizadores
+        let timers = {
+            musica: { interval: null, timeLeft: 600, totalTime: 600, isRunning: false },
+            escritura: { interval: null, timeLeft: 900, totalTime: 900, isRunning: false },
+            dibujo: { interval: null, timeLeft: 900, totalTime: 900, isRunning: false },
+            nudos: { interval: null, timeLeft: 600, totalTime: 600, isRunning: false },
+            electricidad: { interval: null, timeLeft: 900, totalTime: 900, isRunning: false },
+            'neuro-cotidiano': { interval: null, timeLeft: 600, totalTime: 600, isRunning: false },
+            'neuro-tecnico': { interval: null, timeLeft: 900, totalTime: 900, isRunning: false }
+        };
+
+        // Funciones del temporizador
+        function setTimer(section, minutes) {
+            const seconds = minutes * 60;
+            timers[section].timeLeft = seconds;
+            timers[section].totalTime = seconds;
+            updateTimerDisplay(section);
+            updateTimerProgress(section);
+            
+            // Actualizar botones de preset
+            document.querySelectorAll(`#${section} .preset-btn`).forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function startTimer(section) {
+            if (timers[section].isRunning) return;
+            
+            timers[section].isRunning = true;
+            timers[section].interval = setInterval(() => {
+                timers[section].timeLeft--;
+                updateTimerDisplay(section);
+                updateTimerProgress(section);
+                
+                if (timers[section].timeLeft <= 0) {
+                    finishTimer(section);
+                }
+            }, 1000);
+            
+            // Actualizar botones
+            document.getElementById(`${section}-start-btn`).disabled = true;
+            document.getElementById(`${section}-pause-btn`).disabled = false;
+        }
+
+        function pauseTimer(section) {
+            if (!timers[section].isRunning) return;
+            
+            clearInterval(timers[section].interval);
+            timers[section].isRunning = false;
+            
+            // Actualizar botones
+            document.getElementById(`${section}-start-btn`).disabled = false;
+            document.getElementById(`${section}-pause-btn`).disabled = true;
+            document.getElementById(`${section}-start-btn`).innerHTML = 
+                document.getElementById(`${section}-start-btn`).innerHTML.replace('Comenzar', 'Continuar');
+        }
+
+        function resetTimer(section) {
+            clearInterval(timers[section].interval);
+            timers[section].isRunning = false;
+            timers[section].timeLeft = timers[section].totalTime;
+            
+            updateTimerDisplay(section);
+            updateTimerProgress(section);
+            
+            // Actualizar botones
+            document.getElementById(`${section}-start-btn`).disabled = false;
+            document.getElementById(`${section}-pause-btn`).disabled = true;
+            
+            // Restaurar texto original del botón
+            const startBtn = document.getElementById(`${section}-start-btn`);
+            const originalTexts = {
+                'musica': '▶️ Comenzar práctica',
+                'escritura': '✍️ Comenzar a escribir',
+                'dibujo': '🎨 Comenzar a dibujar',
+                'nudos': '🪢 Comenzar práctica',
+                'electricidad': '⚡ Comenzar estudio',
+                'neuro-cotidiano': '🤔 Comenzar reflexión',
+                'neuro-tecnico': '📚 Comenzar estudio'
+            };
+            startBtn.innerHTML = originalTexts[section];
+        }
+
+        function finishTimer(section) {
+            clearInterval(timers[section].interval);
+            timers[section].isRunning = false;
+            timers[section].timeLeft = 0;
+            
+            updateTimerDisplay(section);
+            updateTimerProgress(section);
+            
+            // Actualizar botones
+            document.getElementById(`${section}-start-btn`).disabled = false;
+            document.getElementById(`${section}-pause-btn`).disabled = true;
+            
+            // Notificación visual y sonora
+            showTimerNotification(section);
+            
+            // Auto-completar la actividad si el tiempo fue completado
+            if (timers[section].timeLeft === 0) {
+                setTimeout(() => {
+                    if (confirm(`¡Tiempo completado para ${getSectionName(section)}! ¿Marcar como completado?`)) {
+                        completeActivity(section);
+                    }
+                }, 1000);
+            }
+        }
+
+        function updateTimerDisplay(section) {
+            const minutes = Math.floor(timers[section].timeLeft / 60);
+            const seconds = timers[section].timeLeft % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById(`${section}-timer`).textContent = display;
+            
+            // Cambiar color cuando quedan menos de 2 minutos
+            const timerElement = document.getElementById(`${section}-timer`);
+            if (timers[section].timeLeft <= 120 && timers[section].timeLeft > 0) {
+                timerElement.style.color = '#ff9800';
+            } else if (timers[section].timeLeft === 0) {
+                timerElement.style.color = '#4caf50';
+            } else {
+                timerElement.style.color = '#26a69a';
+            }
+        }
+
+        function updateTimerProgress(section) {
+            const progress = ((timers[section].totalTime - timers[section].timeLeft) / timers[section].totalTime) * 100;
+            document.getElementById(`${section}-progress-bar`).style.width = `${progress}%`;
+        }
+
+        function showTimerNotification(section) {
+            const sectionName = getSectionName(section);
+            const timerElement = document.getElementById(`${section}-timer`);
+            
+            // Efecto visual
+            timerElement.style.transform = 'scale(1.1)';
+            timerElement.style.background = '#4caf50';
+            timerElement.style.color = 'white';
+            timerElement.style.borderRadius = '10px';
+            timerElement.style.padding = '0.5rem';
+            
+            setTimeout(() => {
+                timerElement.style.transform = 'scale(1)';
+                timerElement.style.background = 'transparent';
+                timerElement.style.padding = '0';
+            }, 2000);
+            
+            // Mostrar mensaje
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4caf50;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                font-weight: bold;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = `🎉 ¡Tiempo completado en ${sectionName}!`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        function getSectionName(section) {
+            const names = {
+                'musica': 'Música',
+                'escritura': 'Escritura', 
+                'dibujo': 'Dibujo',
+                'nudos': 'Nudos',
+                'electricidad': 'Electricidad',
+                'neuro-cotidiano': 'Neurociencia Cotidiano',
+                'neuro-tecnico': 'Neurociencia Técnico'
+            };
+            return names[section] || section;
+        }
+
+        // Pausar todos los temporizadores cuando se cambia de sección
+        function pauseAllTimers() {
+            Object.keys(timers).forEach(section => {
+                if (timers[section].isRunning) {
+                    pauseTimer(section);
+                }
+            });
+        }
+
+        // Inicialización de la app
+        function initializeApp() {
+            loadAppData();
+            updateAllProgress();
+            updateStreakInfo();
+            updateDailyGoals();
+            setCurrentDay();
+        }
+
+        // Gestión de datos
+        function saveAppData() {
+            window.appDataStorage = JSON.stringify(appData);
+        }
+
+        function loadAppData() {
+            if (window.appDataStorage) {
+                try {
+                    appData = JSON.parse(window.appDataStorage);
+                } catch (e) {
+                    console.log("Error loading data, using defaults");
+                }
+            }
+        }
+
+        // Navegación
+        function showSection(sectionId) {
+            pauseAllTimers(); // Pausar temporizadores al cambiar de sección
+            document.getElementById('main-menu').style.display = 'none';
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+            loadSectionContent(sectionId);
+        }
+
+        function showMainMenu() {
+            pauseAllTimers(); // Pausar temporizadores al volver al menú
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById('main-menu').style.display = 'grid';
+            updateAllProgress();
+        }
+
+        // Cambio de día
+        function changeDay(section, direction) {
+            const maxDay = getMaxDayForSection(section);
+            appData.currentDay[section] = Math.max(1, Math.min(maxDay, appData.currentDay[section] + direction));
+            loadSectionContent(section);
+            saveAppData();
+        }
+
+        function getMaxDayForSection(section) {
+            if (section === 'neurociencia') return 5; // Menos días porque tiene 2 actividades por día
+            return 5; // 5 días de contenido por ahora
+        }
+
+        function setCurrentDay() {
+            const today = new Date();
+            const dayOfMonth = today.getDate();
+            
+            // Resetear a día 1 si es un nuevo mes
+            Object.keys(appData.currentDay).forEach(section => {
+                if (dayOfMonth === 1) {
+                    appData.currentDay[section] = 1;
+                }
+            });
+        }
+
+        // Carga de contenido por sección
+        function loadSectionContent(section) {
+            const dayIndex = appData.currentDay[section] - 1;
+            
+            if (section === 'neurociencia') {
+                loadNeuroscienceContent(dayIndex);
+            } else {
+                loadRegularSectionContent(section, dayIndex);
+            }
+            
+            updateSectionProgress(section);
+            loadNotes(section, appData.currentDay[section]);
+        }
+
+        function loadRegularSectionContent(section, dayIndex) {
+            const content = dailyContent[section][dayIndex] || dailyContent[section][0];
+            
+            document.getElementById(`${section}-day`).textContent = `Día ${appData.currentDay[section]}`;
+            document.getElementById(`${section}-activity-title`).textContent = content.title;
+            document.getElementById(`${section}-activity-content`).innerHTML = 
+                `<p>${content.content}</p><p style="margin-top: 1rem; padding: 1rem; background: #f0f9ff; border-radius: 8px; color: #26a69a; font-weight: 500;">🎯 Objetivo: ${content.goal}</p>`;
+            
+            // Actualizar estado del botón
+            const progressKey = `${section}-day-${appData.currentDay[section]}`;
+            const button = document.getElementById(`${section}-complete-btn`);
+            if (appData.progress[section][progressKey]) {
+                button.textContent = 'Completado ✓';
+                button.classList.add('completed');
+            } else {
+                button.textContent = 'Completar';
+                button.classList.remove('completed');
+            }
+        }
+
+        function loadNeuroscienceContent(dayIndex) {
+            const cotidianoContent = dailyContent.neurociencia.cotidiano[dayIndex] || dailyContent.neurociencia.cotidiano[0];
+            const tecnicoContent = dailyContent.neurociencia.tecnico[dayIndex] || dailyContent.neurociencia.tecnico[0];
+            
+            document.getElementById('neurociencia-day').textContent = `Día ${appData.currentDay.neurociencia}`;
+            
+            // Contenido cotidiano
+            document.getElementById('neuro-cotidiano-title').textContent = cotidianoContent.title;
+            document.getElementById('neuro-cotidiano-content').innerHTML = 
+                `<p>${cotidianoContent.content}</p><p style="margin-top: 1rem; padding: 1rem; background: #f0f9ff; border-radius: 8px; color: #26a69a; font-weight: 500;">🎯 Objetivo: ${cotidianoContent.goal}</p>`;
+            
+            // Contenido técnico
+            document.getElementById('neuro-tecnico-title').textContent = tecnicoContent.title;
+            document.getElementById('neuro-tecnico-content').innerHTML = 
+                `<p>${tecnicoContent.content}</p><p style="margin-top: 1rem; padding: 1rem; background: #f0f9ff; border-radius: 8px; color: #26a69a; font-weight: 500;">🎯 Objetivo: ${tecnicoContent.goal}</p>`;
+            
+            // Actualizar botones
+            const day = appData.currentDay.neurociencia;
+            updateNeuroButton('cotidiano', day);
+            updateNeuroButton('tecnico', day);
+        }
+
+        function updateNeuroButton(type, day) {
+            const progressKey = `neurociencia-${type}-day-${day}`;
+            const button = document.getElementById(`neuro-${type}-btn`);
+            if (appData.progress.neurociencia[progressKey]) {
+                button.textContent = 'Completado ✓';
+                button.classList.add('completed');
+            } else {
+                button.textContent = 'Completar';
+                button.classList.remove('completed');
+            }
+        }
+
+        // Pestañas de neurociencia
+        function showNeuroTab(tabId, tabElement) {
+            document.querySelectorAll('#neurociencia .tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            tabElement.classList.add('active');
+            
+            document.getElementById('neurociencia-cotidiano').style.display = 
+                tabId === 'cotidiano' ? 'block' : 'none';
+            document.getElementById('neurociencia-tecnico').style.display = 
+                tabId === 'tecnico' ? 'block' : 'none';
+        }
+
+        // Completar actividades
+        function completeActivity(activityId) {
+            const day = appData.currentDay[activityId] || appData.currentDay[activityId.split('-')[0]];
+            const progressKey = `${activityId}-day-${day}`;
+            
+            if (!appData.progress[activityId.split('-')[0]]) {
+                appData.progress[activityId.split('-')[0]] = {};
+            }
+            
+            appData.progress[activityId.split('-')[0]][progressKey] = {
+                completed: true,
+                date: new Date().toISOString(),
+                notes: document.getElementById(`${activityId}-notes`)?.value || ''
+            };
+            
+            // Actualizar streak
+            updateStreak();
+            
+            // Actualizar UI
+            const button = document.getElementById(`${activityId}-complete-btn`) || 
+                         document.getElementById(`${activityId.replace('-', '-').split('-').slice(0,2).join('-')}-btn`);
+            if (button) {
+                button.textContent = 'Completado ✓';
+                button.classList.add('completed');
+            }
+            
+            saveAppData();
+            updateAllProgress();
+            saveNotes(activityId, day);
+            
+            // Efecto visual
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // Sistema de notas
+        function saveNotes(sectionId, day) {
+            const textarea = document.getElementById(`${sectionId}-notes`);
+            if (textarea) {
+                const progressKey = `${sectionId}-day-${day}`;
+                if (!appData.progress[sectionId.split('-')[0]]) {
+                    appData.progress[sectionId.split('-')[0]] = {};
+                }
+                if (!appData.progress[sectionId.split('-')[0]][progressKey]) {
+                    appData.progress[sectionId.split('-')[0]][progressKey] = {};
+                }
+                appData.progress[sectionId.split('-')[0]][progressKey].notes = textarea.value;
+                saveAppData();
+            }
+        }
+
+        function loadNotes(sectionId, day) {
+            // Cargar notas para sección regular
+            const textarea = document.getElementById(`${sectionId}-notes`);
+            if (textarea) {
+                const progressKey = `${sectionId}-day-${day}`;
+                const progress = appData.progress[sectionId]?.[progressKey];
+                textarea.value = progress?.notes || '';
+            }
+            
+            // Cargar notas para neurociencia (ambas pestañas)
+            if (sectionId === 'neurociencia') {
+                ['cotidiano', 'tecnico'].forEach(type => {
+                    const neuroTextarea = document.getElementById(`neuro-${type}-notes`);
+                    if (neuroTextarea) {
+                        const progressKey = `neurociencia-${type}-day-${day}`;
+                        const progress = appData.progress.neurociencia?.[progressKey];
+                        neuroTextarea.value = progress?.notes || '';
+                    }
+                });
+            }
+        }
+
+        // Auto-guardar notas mientras se escribe
+        function setupAutoSave() {
+            document.addEventListener('input', function(e) {
+                if (e.target.classList.contains('notes-textarea')) {
+                    const sectionMatch = e.target.id.match(/^([^-]+(?:-[^-]+)?)-notes$/);
+                    if (sectionMatch) {
+                        const sectionId = sectionMatch[1];
+                        const section = sectionId.split('-')[0];
+                        const day = appData.currentDay[section];
+                        saveNotes(sectionId, day);
+                    }
+                }
+            });
+        }
+
+        // Sistema de progreso
+        function updateAllProgress() {
+            ['musica', 'escritura', 'dibujo', 'nudos', 'electricidad', 'neurociencia'].forEach(section => {
+                updateSectionProgress(section);
+                updateMainMenuProgress(section);
+            });
+        }
+
+        function updateSectionProgress(section) {
+            const completedDays = getCompletedDays(section);
+            const totalDays = getTotalDaysForSection(section);
+            const percentage = totalDays > 0 ? (completedDays / totalDays) * 100 : 0;
+            
+            const progressFill = document.getElementById(`${section}-progress-fill`);
+            const progressLabel = document.getElementById(`${section}-completed`);
+            
+            if (progressFill) progressFill.style.width = `${percentage}%`;
+            if (progressLabel) progressLabel.textContent = `${completedDays}/${totalDays}`;
+        }
+
+        function updateMainMenuProgress(section) {
+            const indicator = document.getElementById(`${section}-progress`);
+            if (!indicator) return;
+            
+            const currentDay = appData.currentDay[section];
+            let completed = 0;
+            let total = 1;
+            
+            if (section === 'neurociencia') {
+                total = 2;
+                const cotidianoKey = `neurociencia-cotidiano-day-${currentDay}`;
+                const tecnicoKey = `neurociencia-tecnico-day-${currentDay}`;
+                if (appData.progress.neurociencia?.[cotidianoKey]?.completed) completed++;
+                if (appData.progress.neurociencia?.[tecnicoKey]?.completed) completed++;
+            } else {
+                const progressKey = `${section}-day-${currentDay}`;
+                if (appData.progress[section]?.[progressKey]?.completed) completed = 1;
+            }
+            
+            indicator.textContent = `${completed}/${total}`;
+            indicator.className = `progress-indicator ${
+                completed === total ? 'completed' : 
+                completed > 0 ? 'partial' : 'pending'
+            }`;
+        }
+
+        function getCompletedDays(section) {
+            if (!appData.progress[section]) return 0;
+            
+            if (section === 'neurociencia') {
+                // Para neurociencia, contar días donde ambas actividades están completas
+                let completedDays = 0;
+                for (let day = 1; day <= 5; day++) {
+                    const cotidianoKey = `neurociencia-cotidiano-day-${day}`;
+                    const tecnicoKey = `neurociencia-tecnico-day-${day}`;
+                    if (appData.progress.neurociencia[cotidianoKey]?.completed && 
+                        appData.progress.neurociencia[tecnicoKey]?.completed) {
+                        completedDays++;
+                    }
+                }
+                return completedDays;
+            } else {
+                return Object.keys(appData.progress[section]).filter(key => 
+                    appData.progress[section][key]?.completed
+                ).length;
+            }
+        }
+
+        function getTotalDaysForSection(section) {
+            return section === 'neurociencia' ? 5 : 5; // 5 días por sección
+        }
+
+        // Sistema de streak
+        function updateStreak() {
+            const today = new Date().toDateString();
+            const lastActivity = appData.streak.lastActivity;
+            
+            if (lastActivity !== today) {
+                if (lastActivity) {
+                    const lastDate = new Date(lastActivity);
+                    const todayDate = new Date();
+                    const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays === 1) {
+                        appData.streak.current++;
+                    } else if (diffDays > 1) {
+                        appData.streak.current = 1;
+                    }
+                } else {
+                    appData.streak.current = 1;
+                }
+                
+                appData.streak.lastActivity = today;
+                appData.streak.best = Math.max(appData.streak.best, appData.streak.current);
+                updateStreakInfo();
+            }
+        }
+
+        function updateStreakInfo() {
+            document.getElementById('current-streak').textContent = `🔥 ${appData.streak.current} días`;
+            const totalCompleted = ['musica', 'escritura', 'dibujo', 'nudos', 'electricidad', 'neurociencia']
+                .reduce((sum, section) => sum + getCompletedDays(section), 0);
+            document.getElementById('total-days').textContent = `📊 ${totalCompleted} total`;
+        }
+
+        // Objetivos diarios
+        function updateDailyGoals() {
+            ['musica', 'escritura', 'dibujo', 'nudos', 'electricidad'].forEach(section => {
+                const currentDay = appData.currentDay[section];
+                const dayIndex = currentDay - 1;
+                const content = dailyContent[section][dayIndex] || dailyContent[section][0];
+                const goalElement = document.getElementById(`${section}-goal`);
+                if (goalElement) {
+                    goalElement.textContent = content.goal;
+                }
+            });
+            
+            // Neurociencia goal
+            const neuroGoal = document.getElementById('neurociencia-goal');
+            if (neuroGoal) {
+                neuroGoal.textContent = 'Completar concepto cotidiano y técnico';
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupAutoSave();
+            
+            // Actualizar progreso cada minuto
+            setInterval(updateAllProgress, 60000);
+        });
+    </script>
+</body>
+</html>

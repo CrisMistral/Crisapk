@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cris - Rutina Diaria</title>
+<style>
+  :root{
+    --turq:#26a69a;
+    --turq-light:#4dd0e1;
+    --lavanda:#e8e6fb;
+    --lavanda-soft:#f3f1ff;
+    --bg:#f0f9ff;
+    --work:#ff6b6b;
+    --break:#4dd0e1;
+    --longbreak:#ffd54f;
+    --text:#2d3748;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
+  body{
+    background:linear-gradient(135deg,var(--bg) 0%,var(--lavanda-soft) 100%);
+    min-height:100vh;
+    padding:16px;
+    color:var(--text);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .card{
+    max-width:480px;
+    margin:0 auto;
+    background:#fff;
+    border-radius:24px;
+    box-shadow:0 8px 24px rgba(38,166,154,0.12);
+    padding:20px;
+  }
+  .header{text-align:center;margin-bottom:18px;}
+  .header .quokka{font-size:3rem;animation:bounce 2s ease-in-out infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .header h1{color:var(--turq);font-size:1.4rem;margin-top:4px;}
+
+  .section{background:var(--lavanda-soft);border-radius:16px;padding:14px;margin-bottom:16px;}
+  .section h2{color:var(--turq);font-size:1.05rem;margin-bottom:10px;}
+
+  .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .pill{
+    border:2px solid var(--turq);
+    color:var(--turq);
+    background:#fff;
+    border-radius:999px;
+    padding:7px 14px;
+    font-size:0.8rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .pill.active, .pill:active{background:var(--turq);color:#fff;}
+
+  .block-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+  .block-item{
+    background:#fff;
+    border-radius:12px;
+    padding:8px 10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.85rem;
+    border-left:5px solid var(--turq-light);
+  }
+  .block-item .label{flex:1;}
+  .block-item button{
+    border:none;background:var(--lavanda);color:var(--text);
+    width:30px;height:30px;border-radius:8px;font-size:1rem;cursor:pointer;
+  }
+  .block-item button:active{background:var(--turq-light);color:#fff;}
+
+  .add-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .add-btn{
+    flex:1;min-width:90px;border:none;border-radius:999px;padding:10px;
+    font-size:0.8rem;font-weight:700;color:#fff;cursor:pointer;
+  }
+  .add-btn.work{background:var(--work);}
+  .add-btn.break{background:var(--turq-light);}
+  .add-btn.long{background:var(--longbreak);color:#5d4e37;}
+
+  .summary{
+    background:#fff;border-radius:12px;padding:10px;font-size:0.8rem;
+    margin-bottom:14px;display:flex;justify-content:space-between;
+  }
+
+  .btn-main{
+    width:100%;border:none;border-radius:999px;padding:14px;
+    font-size:1rem;font-weight:800;color:#fff;background:#4caf50;cursor:pointer;
+    box-shadow:0 4px 12px rgba(76,175,80,0.35);
+  }
+  .btn-main:active{transform:scale(0.98);}
+
+  /* SESSION VIEW */
+  .session-title{font-size:1.1rem;font-weight:800;margin-bottom:8px;}
+  .timer-display{font-size:3rem;font-weight:800;margin-bottom:10px;letter-spacing:2px;}
+  .progress-track{width:100%;height:10px;background:var(--lavanda);border-radius:999px;overflow:hidden;margin-bottom:14px;}
+  .progress-fill{height:100%;background:var(--turq);transition:width .3s;}
+
+  .dots-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+  .dot{
+    width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;border:2px solid var(--lavanda);background:var(--lavanda-soft);
+  }
+  .dot.done{background:#4caf50;border-color:#4caf50;}
+  .dot.current{background:var(--turq);border-color:var(--turq);}
+
+  .session-info{font-size:0.78rem;color:#666;text-align:center;line-height:1.5;margin-bottom:14px;}
+
+  .controls{display:flex;gap:10px;justify-content:center;}
+  .controls button{
+    border:none;border-radius:999px;padding:12px 18px;font-size:1.1rem;color:#fff;cursor:pointer;
+  }
+  .controls .pause{background:#ff9800;}
+  .controls .skip{background:#90a4ae;}
+  .controls .reset{background:var(--work);}
+
+  /* TASKS */
+  .task{
+    background:#fff;border-radius:12px;padding:10px 12px;
+    display:flex;align-items:center;gap:10px;margin-bottom:8px;
+    border-left:4px solid transparent;cursor:pointer;font-size:0.9rem;
+  }
+  .task.done{opacity:.55;text-decoration:line-through;border-left-color:var(--turq-light);}
+  .check{
+    width:22px;height:22px;border-radius:50%;border:2px solid var(--turq);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.8rem;color:#fff;
+  }
+  .task.done .check{background:var(--turq);}
+  .task .del{margin-left:auto;background:none;border:none;font-size:1rem;color:var(--work);cursor:pointer;padding:4px;}
+
+  .new-task-row{display:flex;gap:8px;margin-top:6px;}
+  .new-task-row input{
+    flex:1;border:2px solid var(--turq);border-radius:12px;padding:10px;font-size:0.9rem;
+  }
+  .new-task-row button{
+    background:var(--turq);color:#fff;border:none;border-radius:12px;
+    width:46px;font-size:1.3rem;cursor:pointer;
+  }
+
+  /* MODAL */
+  .overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,0.45);
+    display:none;align-items:center;justify-content:center;z-index:50;padding:20px;
+  }
+  .overlay.show{display:flex;}
+  .modal{background:#fff;border-radius:20px;padding:20px;width:100%;max-width:340px;}
+  .modal h3{color:var(--turq);margin-bottom:14px;}
+  .modal .close{float:right;border:none;background:none;font-size:1.3rem;cursor:pointer;}
+  .modal input{
+    width:100%;border:2px solid var(--turq);border-radius:12px;padding:10px;
+    margin-bottom:12px;font-size:0.95rem;
+  }
+  .modal .confirm{
+    width:100%;background:var(--turq);color:#fff;border:none;border-radius:999px;
+    padding:12px;font-weight:800;font-size:1rem;cursor:pointer;
+  }
+  .toast{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+    background:var(--turq);color:#fff;padding:12px 20px;border-radius:14px;
+    font-size:0.9rem;text-align:center;max-width:320px;box-shadow:0 4px 16px rgba(0,0,0,0.2);
+    display:none;z-index:60;
+  }
+  .toast.show{display:block;}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <div class="quokka">🐨📝</div>
+    <h1>Rutina Diaria</h1>
+  </div>
+
+  <!-- POMODORO -->
+  <div class="section">
+    <h2>⏰ Pomodoro por Bloques</h2>
+
+    <!-- CONFIG VIEW -->
+    <div id="configView">
+      <div class="pill-row">
+        <button class="pill" data-preset="clasico">Clásico</button>
+        <button class="pill" data-preset="intenso">Intenso</button>
+        <button class="pill" data-preset="sprint">Sprint</button>
+      </div>
+
+      <strong style="font-size:0.85rem;">📋 Bloques:</strong>
+      <div class="block-list" id="blockList"></div>
+
+      <strong style="font-size:0.85rem;">➕ Agregar:</strong>
+      <div class="add-row" style="margin-top:6px;">
+        <button class="add-btn work" data-type="work">🔥 Trabajo</button>
+        <button class="add-btn break" data-type="break">☕ Descanso</button>
+        <button class="add-btn long" data-type="longbreak">🌟 Largo</button>
+      </div>
+
+      <div class="summary">
+        <span>⏱️ Total: <strong id="totalTime">0</strong> min</span>
+        <span>📊 <strong id="blockCount">0</strong> bloques</span>
+      </div>
+
+      <button class="btn-main" id="startBtn">▶️ INICIAR SESIÓN</button>
+    </div>
+
+    <!-- SESSION VIEW -->
+    <div id="sessionView" style="display:none;">
+      <div style="text-align:center;">
+        <div class="session-title" id="blockLabel"></div>
+        <div class="timer-display" id="timeLeft">00:00</div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="dots-row" id="dotsRow"></div>
+        <div class="session-info" id="sessionInfo"></div>
+        <div class="controls">
+          <button class="pause" id="pauseBtn">⏸️</button>
+          <button class="skip" id="skipBtn">⏭️</button>
+          <button class="reset" id="resetBtn">🔁</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAREAS -->
+  <div class="section">
+    <h2>📋 Tareas del Día</h2>
+    <div id="taskList"></div>
+    <div class="new-task-row">
+      <input type="text" id="newTaskInput" placeholder="Nueva tarea...">
+      <button id="addTaskBtn">+</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AGREGAR BLOQUE -->
+<div class="overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="close" id="modalClose">✕</button>
+    <h3 id="modalTitle">Agregar Bloque</h3>
+    <input type="number" id="modalDuration" min="1" max="120" placeholder="Minutos">
+    <input type="text" id="modalLabel" placeholder="Etiqueta (opcional)">
+    <button class="confirm" id="modalConfirm">Agregar</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'cris_rutina_diaria_v1';
+
+  const presets = {
+    clasico: [
+      { type:'work', duration:25, label:'Trabajo 1' },
+      { type:'break', duration:5, label:'Descanso' },
+      { type:'work', duration:25, label:'Trabajo 2' },
+      { type:'break', duration:5, label:'Descanso' },
+      { type:'work', duration:25, label:'Trabajo 3' },
+      { type:'longbreak', duration:15, label:'Descanso largo' }
+    ],
+    intenso: [
+      { type:'work', duration:45, label:'Profundo 1' },
+      { type:'break', duration:10, label:'Pausa' },
+      { type:'work', duration:45, label:'Profundo 2' },
+      { type:'longbreak', duration:20, label:'Descanso' }
+    ],
+    sprint: [
+      { type:'work', duration:15, label:'Sprint 1' },
+      { type:'break', duration:3, label:'Break' },
+      { type:'work', duration:15, label:'Sprint 2' },
+      { type:'break', duration:3, label:'Break' },
+      { type:'work', duration:15, label:'Sprint 3' },
+      { type:'longbreak', duration:10, label:'Descanso' }
+    ]
+  };
+
+  const defaultTasks = [
+    { text:'☀️ Despertar', done:false },
+    { text:'🥐 Desayunar', done:false },
+    { text:'💻 Trabajo', done:false },
+    { text:'🏃‍♀️ Ejercicio', done:false }
+  ];
+
+  let state = {
+    blocks: JSON.parse(JSON.stringify(presets.clasico)),
+    tasks: JSON.parse(JSON.stringify(defaultTasks)),
+    currentBlockIndex: 0,
+    blockTimeLeft: 0,
+    blockTotalTime: 0,
+    sessionRunning: false,
+    isPaused: false
+  };
+
+  // ---- Persistencia ----
+  function save(){
+    const toSave = {
+      blocks: state.blocks,
+      tasks: state.tasks
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+  }
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const data = JSON.parse(raw);
+        if(data.blocks && data.blocks.length) state.blocks = data.blocks;
+        if(data.tasks) state.tasks = data.tasks;
+      }
+    }catch(e){}
+  }
+
+  // ---- Audio / Feedback ----
+  let audioCtx;
+  function beep(freq=880, dur=0.15){
+    try{
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.connect(g); g.connect(audioCtx.destination);
+      o.frequency.value = freq;
+      o.type = 'sine';
+      g.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      o.start(); o.stop(audioCtx.currentTime + dur);
+    }catch(e){}
+  }
+  function vibrate(pattern){
+    if(navigator.vibrate) navigator.vibrate(pattern);
+  }
+  function speak(text){
+    if('speechSynthesis' in window){
+      try{
+        speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'es-ES';
+        u.rate = 0.95;
+        speechSynthesis.speak(u);
+      }catch(e){}
+    }
+  }
+  function showToast(msg, ms=2200){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(()=>t.classList.remove('show'), ms);
+  }
+
+  // ---- Helpers ----
+  function getBlockIcon(type){ return type==='work' ? '🔥' : type==='break' ? '☕' : '🌟'; }
+  function getBlockColorVar(type){ return type==='work' ? 'var(--work)' : type==='break' ? 'var(--break)' : 'var(--longbreak)'; }
+  function formatTime(seconds){
+    const m = Math.floor(seconds/60);
+    const s = seconds%60;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  function getTotalTime(){ return state.blocks.reduce((sum,b)=>sum+b.duration,0); }
+
+  // ---- Render: config ----
+  function renderConfig(){
+    const list = document.getElementById('blockList');
+    list.innerHTML = '';
+    state.blocks.forEach((block,i)=>{
+      const row = document.createElement('div');
+      row.className = 'block-item';
+      row.style.borderLeftColor = getBlockColorVar(block.type);
+      row.innerHTML = `
+        <span>${getBlockIcon(block.type)}</span>
+        <span class="label">${block.label} - ${block.duration}min</span>
+        <button data-act="up" data-i="${i}">▲</button>
+        <button data-act="down" data-i="${i}">▼</button>
+        <button data-act="del" data-i="${i}">🗑️</button>
+      `;
+      list.appendChild(row);
+    });
+    document.getElementById('totalTime').textContent = getTotalTime();
+    document.getElementById('blockCount').textContent = state.blocks.length;
+  }
+
+  // ---- Render: session ----
+  function renderSession(){
+    const block = state.blocks[state.currentBlockIndex];
+    if(!block) return;
+    document.getElementById('blockLabel').textContent = `${getBlockIcon(block.type)} ${block.label.toUpperCase()}`;
+    document.getElementById('blockLabel').style.color = getBlockColorVar(block.type);
+    document.getElementById('timeLeft').textContent = formatTime(state.blockTimeLeft);
+
+    const progress = state.blockTotalTime > 0 ? ((state.blockTotalTime - state.blockTimeLeft)/state.blockTotalTime)*100 : 0;
+    document.getElementById('progressFill').style.width = progress + '%';
+
+    const dots = document.getElementById('dotsRow');
+    dots.innerHTML = '';
+    state.blocks.forEach((b,i)=>{
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < state.currentBlockIndex ? ' done' : i === state.currentBlockIndex ? ' current' : '');
+      d.textContent = getBlockIcon(b.type);
+      dots.appendChild(d);
+    });
+
+    const sessionProgress = Math.round((state.currentBlockIndex/state.blocks.length)*100);
+    const timeRemaining = state.blocks.slice(state.currentBlockIndex).reduce((sum,b)=>sum+b.duration,0);
+    document.getElementById('sessionInfo').innerHTML =
+      `Bloque ${state.currentBlockIndex+1} de ${state.blocks.length}<br>Sesión: ${sessionProgress}% &nbsp;·&nbsp; Quedan ~${timeRemaining} min`;
+
+    document.getElementById('pauseBtn').textContent = state.isPaused ? '▶️' : '⏸️';
+  }
+
+  // ---- Lógica del temporizador ----
+  let timerInterval = null;
+
+  function startBlock(index){
+    const block = state.blocks[index];
+    state.blockTotalTime = block.duration * 60;
+    state.blockTimeLeft = state.blockTotalTime;
+    state.isPaused = false;
+    speak(`${block.label}. ${block.duration} minutos.`);
+    renderSession();
+  }
+
+  function tick(){
+    if(!state.sessionRunning || state.isPaused) return;
+    if(state.blockTimeLeft > 0){
+      state.blockTimeLeft--;
+      renderSession();
+      if(state.blockTimeLeft === 0){
+        completeBlock();
+      }
+    }
+  }
+
+  function completeBlock(){
+    beep(660, 0.4);
+    vibrate([200,100,200]);
+    const nextIndex = state.currentBlockIndex + 1;
+    if(nextIndex < state.blocks.length){
+      const next = state.blocks[nextIndex];
+      speak(`¡Bloque completado! Siguiente: ${next.label}`);
+      showToast(`✅ ¡Bloque completado! Siguiente: ${next.label}`, 2800);
+      state.currentBlockIndex = nextIndex;
+      startBlock(nextIndex);
+    } else {
+      beep(880, 0.6);
+      vibrate([200,100,200,100,200]);
+      speak('¡Sesión completada! Buen trabajo.');
+      showToast('🎉 ¡Sesión completada! Buen trabajo.', 3500);
+      resetSession();
+    }
+  }
+
+  function startSession(){
+    if(state.blocks.length === 0) return;
+    state.currentBlockIndex = 0;
+    state.sessionRunning = true;
+    document.getElementById('configView').style.display = 'none';
+    document.getElementById('sessionView').style.display = 'block';
+    startBlock(0);
+    if(timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(tick, 1000);
+  }
+
+  function resetSession(){
+    state.sessionRunning = false;
+    state.isPaused = false;
+    state.currentBlockIndex = 0;
+    state.blockTimeLeft = 0;
+    if(timerInterval) clearInterval(timerInterval);
+    document.getElementById('configView').style.display = 'block';
+    document.getElementById('sessionView').style.display = 'none';
+    renderConfig();
+  }
+
+  // ---- Tareas ----
+  function renderTasks(){
+    const list = document.getElementById('taskList');
+    list.innerHTML = '';
+    state.tasks.forEach((task,i)=>{
+      const row = document.createElement('div');
+      row.className = 'task' + (task.done ? ' done' : '');
+      row.innerHTML = `
+        <div class="check">${task.done ? '✓' : ''}</div>
+        <span style="flex:1;">${task.text}</span>
+        <button class="del" data-i="${i}">🗑️</button>
+      `;
+      row.addEventListener('click', (e)=>{
+        if(e.target.closest('.del')) return;
+        task.done = !task.done;
+        if(task.done){ beep(990,0.1); vibrate(50); }
+        save();
+        renderTasks();
+      });
+      row.querySelector('.del').addEventListener('click', ()=>{
+        state.tasks.splice(i,1);
+        save();
+        renderTasks();
+      });
+      list.appendChild(row);
+    });
+  }
+
+  // ---- Eventos: presets ----
+  document.querySelectorAll('.pill').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(state.sessionRunning) return;
+      const preset = btn.dataset.preset;
+      state.blocks = JSON.parse(JSON.stringify(presets[preset]));
+      document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      save();
+      renderConfig();
+    });
+  });
+
+  // ---- Eventos: lista de bloques ----
+  document.getElementById('blockList').addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn || state.sessionRunning) return;
+    const i = parseInt(btn.dataset.i);
+    const act = btn.dataset.act;
+    if(act === 'del'){
+      state.blocks.splice(i,1);
+    } else if(act === 'up' && i > 0){
+      [state.blocks[i-1], state.blocks[i]] = [state.blocks[i], state.blocks[i-1]];
+    } else if(act === 'down' && i < state.blocks.length-1){
+      [state.blocks[i+1], state.blocks[i]] = [state.blocks[i], state.blocks[i+1]];
+    }
+    save();
+    renderConfig();
+  });
+
+  // ---- Modal agregar bloque ----
+  let modalType = 'work';
+  document.querySelectorAll('.add-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      modalType = btn.dataset.type;
+      const defaults = { work:25, break:5, longbreak:15 };
+      document.getElementById('modalDuration').value = defaults[modalType];
+      document.getElementById('modalLabel').value = '';
+      const titles = { work:'🔥 Agregar bloque de trabajo', break:'☕ Agregar descanso', longbreak:'🌟 Agregar descanso largo' };
+      document.getElementById('modalTitle').textContent = titles[modalType];
+      document.getElementById('modalOverlay').classList.add('show');
+    });
+  });
+  document.getElementById('modalClose').addEventListener('click', ()=>{
+    document.getElementById('modalOverlay').classList.remove('show');
+  });
+  document.getElementById('modalOverlay').addEventListener('click', (e)=>{
+    if(e.target.id === 'modalOverlay') document.getElementById('modalOverlay').classList.remove('show');
+  });
+  document.getElementById('modalConfirm').addEventListener('click', ()=>{
+    const duration = parseInt(document.getElementById('modalDuration').value) || 0;
+    if(duration < 1) return;
+    let label = document.getElementById('modalLabel').value.trim();
+    if(!label){
+      label = modalType==='work' ? 'Trabajo' : modalType==='break' ? 'Descanso' : 'Descanso largo';
+    }
+    state.blocks.push({ type:modalType, duration, label });
+    document.getElementById('modalOverlay').classList.remove('show');
+    save();
+    renderConfig();
+  });
+
+  // ---- Botones de sesión ----
+  document.getElementById('startBtn').addEventListener('click', startSession);
+  document.getElementById('pauseBtn').addEventListener('click', ()=>{
+    state.isPaused = !state.isPaused;
+    if(state.isPaused){ speak('Pausado'); } else { speak('Reanudado'); }
+    renderSession();
+  });
+  document.getElementById('skipBtn').addEventListener('click', ()=>{
+    completeBlock();
+  });
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    if(confirm('¿Reiniciar la sesión y volver a la configuración?')){
+      speak('Sesión reiniciada');
+      resetSession();
+    }
+  });
+
+  // ---- Tareas: agregar ----
+  document.getElementById('addTaskBtn').addEventListener('click', addTask);
+  document.getElementById('newTaskInput').addEventListener('keypress', (e)=>{
+    if(e.key === 'Enter') addTask();
+  });
+  function addTask(){
+    const input = document.getElementById('newTaskInput');
+    const text = input.value.trim();
+    if(!text) return;
+    state.tasks.push({ text, done:false });
+    input.value = '';
+    save();
+    renderTasks();
+  }
+
+  // ---- Init ----
+  load();
+  renderConfig();
+  renderTasks();
+})();
+</script>
+</body>
+</html>

@@ -1,22 +1,26 @@
 {
-  "name": "CRIS - Tu Compañera Diaria",
-  "short_name": "CRIS",
-  "description": "App de bienestar y estructura cognitiva para TDAH",
-  "start_url": "/",
+  "name": "Cris - Tu compañera diaria",
+  "short_name": "Cris",
+  "description": "App de acompañamiento diario para TDAH: rutinas, ejercicio, comida, limpieza, intereses y rescate emocional.",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#e0f7fa",
-  "theme_color": "#4dd0e1",
   "orientation": "portrait",
+  "background_color": "#f0f9ff",
+  "theme_color": "#26a69a",
+  "lang": "es",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%234dd0e1'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white'%3E🦘%3C/text%3E%3C/svg%3E",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%234dd0e1'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white'%3E🦘%3C/text%3E%3C/svg%3E",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

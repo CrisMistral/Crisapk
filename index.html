@@ -2,516 +2,237 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#4dd0e1">
-<title>CRIS - Tu Compañera Diaria</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#26a69a">
+<title>Cris</title>
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#e0f7fa 0%,#b2ebf2 100%);min-height:100vh;color:#2c3e50;overflow-x:hidden}
-.app{max-width:480px;margin:0 auto;background:#fff;min-height:100vh;position:relative}
-.header{background:linear-gradient(135deg,#4dd0e1,#26c6da);color:#fff;padding:1rem;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-.header h1{font-size:1.5rem;font-weight:300}
-.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:1rem;background:#fff;position:sticky;top:60px;z-index:99;border-bottom:2px solid #e0f7fa}
-.nav-btn{background:linear-gradient(135deg,#4dd0e1,#26c6da);color:#fff;border:none;padding:.8rem .5rem;border-radius:12px;font-size:.75rem;cursor:pointer;transition:all .3s}
-.nav-btn:active{transform:scale(.95)}
-.screen{display:none;padding:1rem;min-height:calc(100vh - 140px)}
-.screen.active{display:block}
-.card{background:#fff;border-radius:16px;padding:1rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.btn{background:linear-gradient(135deg,#4dd0e1,#26c6da);color:#fff;border:none;padding:.8rem 1rem;border-radius:12px;font-weight:600;cursor:pointer;width:100%;margin-bottom:.5rem;font-size:.9rem}
-.btn:active{transform:scale(.98)}
-.btn-sec{background:#f0f0f0;color:#333}
-.timer{font-size:3rem;font-weight:700;text-align:center;color:#4dd0e1;font-family:monospace;margin:1rem 0}
-.progress{height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden;margin:1rem 0}
-.progress-fill{height:100%;background:linear-gradient(90deg,#4dd0e1,#26c6da);transition:width .3s}
-.task{background:#f8f9fa;padding:.8rem;border-radius:8px;margin-bottom:.5rem;border-left:4px solid #4dd0e1}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin:1rem 0}
-input,textarea{width:100%;padding:.8rem;border:2px solid #e0e0e0;border-radius:8px;font-family:inherit;font-size:.9rem}
-input:focus,textarea:focus{outline:none;border-color:#4dd0e1}
-.hidden{display:none!important}
-.quokka{font-size:4rem;text-align:center;margin:1rem 0}
+  :root{
+    --turq:#26a69a;
+    --turq-light:#4dd0e1;
+    --lavanda:#e8e6fb;
+    --lavanda-soft:#f3f1ff;
+    --bg:#f0f9ff;
+    --text:#2d3748;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    background:linear-gradient(160deg,var(--bg) 0%, var(--lavanda-soft) 50%, #ffffff 100%);
+    min-height:100vh;
+    color:var(--text);
+    overflow-x:hidden;
+  }
+
+  /* ---------- DASHBOARD ---------- */
+  #dashboard{
+    max-width:520px;
+    margin:0 auto;
+    padding:24px 18px 40px;
+  }
+  .hero{
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .hero .mascot{
+    font-size:4.2rem;
+    animation:bounce 2.4s ease-in-out infinite;
+  }
+  @keyframes bounce{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-10px) rotate(3deg);}}
+  .hero h1{
+    color:var(--turq);
+    font-size:2rem;
+    font-weight:800;
+    letter-spacing:1px;
+    margin-top:4px;
+  }
+  .hero p{
+    color:#7a8a99;
+    font-size:0.95rem;
+    margin-top:4px;
+  }
+  #greeting{
+    font-weight:700;
+    color:var(--turq);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:8px;
+  }
+  .module-card{
+    background:#fff;
+    border-radius:20px;
+    padding:18px 12px;
+    text-align:center;
+    box-shadow:0 6px 16px rgba(38,166,154,0.10);
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:transform .12s, border-color .12s;
+    position:relative;
+  }
+  .module-card:active{
+    transform:scale(0.96);
+    border-color:var(--turq-light);
+  }
+  .module-card .icon{
+    font-size:2.2rem;
+    margin-bottom:8px;
+    display:block;
+  }
+  .module-card .title{
+    font-size:0.92rem;
+    font-weight:700;
+    color:var(--text);
+    line-height:1.2;
+  }
+  .module-card .sub{
+    font-size:0.72rem;
+    color:#9aa5b1;
+    margin-top:4px;
+  }
+  .module-card.pending{
+    opacity:0.55;
+  }
+  .module-card .badge{
+    position:absolute;
+    top:8px;
+    right:8px;
+    background:var(--lavanda);
+    color:#6c5ce7;
+    font-size:0.6rem;
+    font-weight:700;
+    padding:3px 7px;
+    border-radius:999px;
+  }
+
+  .footer-note{
+    text-align:center;
+    margin-top:28px;
+    font-size:0.72rem;
+    color:#b3bcc4;
+    line-height:1.6;
+  }
+
+  /* ---------- VISOR DE MÓDULOS ---------- */
+  #viewer{
+    position:fixed;
+    inset:0;
+    background:#fff;
+    display:none;
+    z-index:100;
+  }
+  #viewer.show{display:block;}
+  #viewer iframe{
+    width:100%;
+    height:100%;
+    border:none;
+    display:block;
+  }
+  #homeBtn{
+    position:fixed;
+    bottom:18px;
+    left:18px;
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:var(--turq);
+    color:#fff;
+    border:none;
+    font-size:1.4rem;
+    box-shadow:0 4px 14px rgba(38,166,154,0.4);
+    z-index:101;
+    display:none;
+    align-items:center;
+    justify-content:center;
+  }
+  #homeBtn.show{display:flex;}
+  #homeBtn:active{transform:scale(0.92);}
 </style>
 </head>
 <body>
-<div class="app" id="app">
 
-<!-- HEADER -->
-<div class="header">
-<h1>🦘 CRIS</h1>
-</div>
+<div id="dashboard">
+  <div class="hero">
+    <div class="mascot">🦘</div>
+    <h1>Cris</h1>
+    <p><span id="greeting">¡Hola!</span> ¿qué te ayudo a hacer hoy?</p>
+  </div>
 
-<!-- NAVEGACIÓN -->
-<div class="nav">
-<button class="nav-btn" onclick="showScreen('home')">🏠</button>
-<button class="nav-btn" onclick="showScreen('rutina')">☀️</button>
-<button class="nav-btn" onclick="showScreen('rescate')">💚</button>
-<button class="nav-btn" onclick="showScreen('stats')">📊</button>
-</div>
+  <div class="grid" id="moduleGrid">
+    <!-- Las tarjetas se generan con JS -->
+  </div>
 
-<!-- HOME -->
-<div id="home" class="screen active">
-<div class="quokka">🦘</div>
-<h2 style="text-align:center;color:#4dd0e1;margin-bottom:1.5rem">¿Qué quieres hacer hoy?</h2>
-<div class="grid">
-<button class="btn" onclick="showScreen('ejercicio')">💪 Ejercicio</button>
-<button class="btn" onclick="showScreen('comida')">🍽️ Comida</button>
-<button class="btn" onclick="showScreen('limpieza')">🧹 Limpieza</button>
-<button class="btn" onclick="showScreen('intereses')">📚 Aprender</button>
-<button class="btn" onclick="showScreen('pomodoro')">⏱️ Pomodoro</button>
-<button class="btn" onclick="showScreen('noche')">🌙 Noche</button>
-<button class="btn" onclick="showScreen('rescate')">💚 Rescate</button>
-<button class="btn" onclick="showScreen('logica')">🧩 Lógica</button>
-</div>
+  <div class="footer-note">
+    Cris · tu compañera de cada día 💚<br>
+    Toca un módulo para empezar. Siempre puedes volver aquí con el botón 🏠
+  </div>
 </div>
 
-<!-- RUTINA DEL DÍA -->
-<div id="rutina" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">☀️ Rutina del Día</h2>
-<div class="card">
-<h3>Secuencia Matutina</h3>
-<div class="task">🧹 Orden rápido (5 min)</div>
-<div class="task">💧 Hidratación</div>
-<div class="task">🍳 Desayuno simple</div>
-<div class="task">✅ Check-in emocional</div>
-<button class="btn" onclick="startRoutine()">Comenzar Rutina</button>
+<div id="viewer">
+  <iframe id="moduleFrame" title="Módulo de Cris"></iframe>
 </div>
-</div>
-
-<!-- EJERCICIO -->
-<div id="ejercicio" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">💪 Ejercicio HIIT</h2>
-<div class="card">
-<div id="exerciseContent"></div>
-<div class="timer" id="exerciseTimer">00:00</div>
-<button class="btn" onclick="startExercise()">▶️ Iniciar</button>
-<button class="btn btn-sec" onclick="skipExercise()">⏭️ Siguiente</button>
-</div>
-</div>
-
-<!-- COMIDA -->
-<div id="comida" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">🍽️ Recetas Fáciles</h2>
-<div class="card">
-<h3>Bowl de Quinoa</h3>
-<p><strong>Tiempo:</strong> 15 min</p>
-<div id="recipeSteps"></div>
-<button class="btn" onclick="nextStep()">Siguiente Paso</button>
-</div>
-<div class="card">
-<h3>Sopa Express</h3>
-<p><strong>Tiempo:</strong> 12 min</p>
-<button class="btn btn-sec">Ver Receta</button>
-</div>
-</div>
-
-<!-- LIMPIEZA -->
-<div id="limpieza" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">🧹 Limpieza Progresiva</h2>
-<div class="grid">
-<button class="btn" onclick="startCleaning('lunes')">Lunes</button>
-<button class="btn" onclick="startCleaning('martes')">Martes</button>
-<button class="btn" onclick="startCleaning('miercoles')">Miércoles</button>
-<button class="btn" onclick="startCleaning('jueves')">Jueves</button>
-<button class="btn" onclick="startCleaning('viernes')">Viernes</button>
-<button class="btn" onclick="startCleaning('sabado')">Sábado</button>
-</div>
-<div id="cleaningTasks" class="card hidden"></div>
-</div>
-
-<!-- INTERESES -->
-<div id="intereses" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">📚 Aprende Algo Nuevo</h2>
-<div class="grid">
-<button class="btn" onclick="startLesson('musica')">🎵 Música</button>
-<button class="btn" onclick="startLesson('escritura')">✍️ Escritura</button>
-<button class="btn" onclick="startLesson('dibujo')">🎨 Dibujo</button>
-<button class="btn" onclick="startLesson('nudos')">🪢 Nudos</button>
-<button class="btn" onclick="startLesson('electricidad')">⚡ Electricidad</button>
-<button class="btn" onclick="startLesson('neurociencia')">🧠 Neuro</button>
-</div>
-<div id="lessonContent" class="card hidden"></div>
-</div>
-
-<!-- POMODORO -->
-<div id="pomodoro" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">⏱️ Pomodoro</h2>
-<div class="card">
-<div class="timer" id="pomodoroTimer">25:00</div>
-<button class="btn" onclick="startPomodoro()">▶️ Iniciar</button>
-<button class="btn btn-sec" onclick="resetPomodoro()">🔄 Reset</button>
-<div style="margin-top:1rem">
-<button class="btn btn-sec" onclick="setPomodoro(25)">25 min</button>
-<button class="btn btn-sec" onclick="setPomodoro(45)">45 min</button>
-<button class="btn btn-sec" onclick="setPomodoro(5)">5 min break</button>
-</div>
-</div>
-<div class="card">
-<h3>Tareas de Hoy</h3>
-<div id="taskList"></div>
-<input type="text" id="newTask" placeholder="Nueva tarea...">
-<button class="btn" onclick="addTask()">➕ Añadir</button>
-</div>
-</div>
-
-<!-- NOCHE -->
-<div id="noche" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">🌙 Rutina Nocturna</h2>
-<div class="card">
-<h3>Secuencia de 25 minutos</h3>
-<div class="task">✨ Cuidado facial (5 min)</div>
-<div class="task">🧘 Estiramientos (8 min)</div>
-<div class="task">🕯️ Meditación Shiné (10 min)</div>
-<div class="task">📱 Desconexión total (2 min)</div>
-<button class="btn" onclick="startNight()">Comenzar Rutina</button>
-</div>
-</div>
-
-<!-- RESCATE EMOCIONAL -->
-<div id="rescate" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">💚 Rescate Emocional</h2>
-<div class="card">
-<h3>Técnicas Rápidas</h3>
-<button class="btn" onclick="startRescue('54321')">5-4-3-2-1 Grounding</button>
-<button class="btn" onclick="startRescue('478')">Respiración 4-7-8</button>
-<button class="btn" onclick="startRescue('reset')">Reset Cognitivo</button>
-</div>
-<div class="card">
-<h3>Meditaciones Guiadas</h3>
-<button class="btn btn-sec" onclick="startMeditation(8)">8 minutos</button>
-<button class="btn btn-sec" onclick="startMeditation(15)">15 minutos</button>
-<button class="btn btn-sec" onclick="startMeditation(30)">30 minutos</button>
-</div>
-<div class="card">
-<h3>Matriz de Eisenhower</h3>
-<button class="btn btn-sec" onclick="showEisenhower()">Organizar Prioridades</button>
-</div>
-</div>
-
-<!-- LÓGICA -->
-<div id="logica" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">🧩 Agilidad Mental</h2>
-<div class="card">
-<h3>Sudoku 4x4</h3>
-<div id="sudokuGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:1rem 0"></div>
-<button class="btn" onclick="checkSudoku()">Verificar</button>
-<button class="btn btn-sec" onclick="newSudoku()">Nuevo</button>
-</div>
-</div>
-
-<!-- STATS -->
-<div id="stats" class="screen">
-<h2 style="color:#4dd0e1;margin-bottom:1rem">📊 Tu Progreso</h2>
-<div class="card">
-<h3>Esta Semana</h3>
-<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:1rem 0">
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-<div style="background:#e0e0e0;height:40px;border-radius:4px"></div>
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-<div style="background:#e0e0e0;height:40px;border-radius:4px"></div>
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-<div style="background:#4dd0e1;height:40px;border-radius:4px"></div>
-</div>
-<p><strong>🔥 Racha:</strong> 5 días</p>
-<p><strong>📈 Total:</strong> 23 días completados</p>
-</div>
-</div>
-
-</div>
+<button id="homeBtn" title="Volver al inicio">🏠</button>
 
 <script>
-// ESTADO GLOBAL
-let state={
-  screen:'home',
-  timer:0,
-  running:false,
-  exerciseIdx:0,
-  recipeStep:0,
-  pomodoroMin:25,
-  tasks:[],
-  sudoku:[[1,0,0,4],[0,4,1,0],[0,1,4,0],[4,0,0,1]]
-};
+  const modules = [
+    { icon:'🍅', title:'Rutina Diaria', sub:'Pomodoro y tareas', file:'modules/rutina-diaria.html' },
+    { icon:'💪', title:'Ejercicios', sub:'HIIT semanal', file:'modules/ejercicios-hiit.html' },
+    { icon:'🍲', title:'Comer Rico', sub:'Recetas y compras', file:'modules/comida.html' },
+    { icon:'🧹', title:'Limpieza', sub:'Plan progresivo', file:'modules/limpieza.html' },
+    { icon:'🎨', title:'Intereses', sub:'Aprender cada día', file:'modules/intereses.html' },
+    { icon:'💚', title:'Botiquín Emocional', sub:'Rescate y calma', file:'modules/rescate-emocional.html', pending:true },
+    { icon:'🌙', title:'Rutina Nocturna', sub:'Con Shiné', file:'modules/rutina-nocturna.html' },
+    { icon:'🧩', title:'Juegos Mentales', sub:'Agilidad y enfoque', file:'modules/juegos.html', pending:true }
+  ];
 
-// DATOS
-const exercises=[
-  {name:"Jumping Jacks",dur:60},
-  {name:"Sentadillas",dur:50},
-  {name:"Plancha",dur:45},
-  {name:"Burpees",dur:50},
-  {name:"Flexiones",dur:45}
-];
+  const grid = document.getElementById('moduleGrid');
+  modules.forEach(m=>{
+    const card = document.createElement('div');
+    card.className = 'module-card' + (m.pending ? ' pending' : '');
+    card.innerHTML = `
+      ${m.pending ? '<span class="badge">pronto</span>' : ''}
+      <span class="icon">${m.icon}</span>
+      <div class="title">${m.title}</div>
+      <div class="sub">${m.sub}</div>
+    `;
+    card.addEventListener('click', ()=> openModule(m.file));
+    grid.appendChild(card);
+  });
 
-const recipes={
-  quinoa:{
-    steps:[
-      "Pon 1 taza de agua a hervir",
-      "Echa quinoa, tapa y cocina 12 min",
-      "Corta pepino y tomates",
-      "Mezcla todo con aceitunas y feta",
-      "Añade aceite y limón",
-      "¡Listo para comer!"
-    ]
+  function openModule(file){
+    const frame = document.getElementById('moduleFrame');
+    frame.src = file;
+    document.getElementById('viewer').classList.add('show');
+    document.getElementById('homeBtn').classList.add('show');
   }
-};
 
-const cleaning={
-  lunes:{name:"Cocina",tasks:["Encimera","Fogones","Suelo"]},
-  martes:{name:"Baño",tasks:["Espejo","Lavabo","Ducha"]},
-  miercoles:{name:"Salón",tasks:["Polvo","Mesa","Suelo"]},
-  jueves:{name:"Habitación",tasks:["Cama","Muebles","Suelo"]},
-  viernes:{name:"Entrada",tasks:["Barrer","Puerta","Objetos"]},
-  sabado:{name:"Profunda",tasks:["Microondas","Nevera","Vitro"]}
-};
+  document.getElementById('homeBtn').addEventListener('click', ()=>{
+    document.getElementById('viewer').classList.remove('show');
+    document.getElementById('homeBtn').classList.remove('show');
+    document.getElementById('moduleFrame').src = '';
+  });
 
-// NAVEGACIÓN
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  state.screen=id;
-  if(id==='logica')initSudoku();
-  if(id==='ejercicio')loadExercise();
-  if(id==='comida')loadRecipe();
-  if(id==='pomodoro')loadTasks();
-}
-
-// EJERCICIO
-function loadExercise(){
-  const ex=exercises[state.exerciseIdx];
-  document.getElementById('exerciseContent').innerHTML=`
-    <h3>${ex.name}</h3>
-    <p>Duración: ${ex.dur} segundos</p>
-    <div class="progress"><div class="progress-fill" style="width:0%" id="exProgress"></div></div>
-  `;
-  state.timer=ex.dur;
-  updateTimer('exerciseTimer');
-}
-
-function startExercise(){
-  if(state.running)return;
-  state.running=true;
-  const interval=setInterval(()=>{
-    state.timer--;
-    updateTimer('exerciseTimer');
-    const progress=((exercises[state.exerciseIdx].dur-state.timer)/exercises[state.exerciseIdx].dur)*100;
-    document.getElementById('exProgress').style.width=progress+'%';
-    if(state.timer<=0){
-      clearInterval(interval);
-      state.running=false;
-      beep();
-      alert('¡Ejercicio completado!');
-    }
-  },1000);
-}
-
-function skipExercise(){
-  state.exerciseIdx=(state.exerciseIdx+1)%exercises.length;
-  loadExercise();
-  state.running=false;
-}
-
-// RECETAS
-function loadRecipe(){
-  state.recipeStep=0;
-  showRecipeStep();
-}
-
-function showRecipeStep(){
-  const step=recipes.quinoa.steps[state.recipeStep];
-  document.getElementById('recipeSteps').innerHTML=`
-    <div class="task">Paso ${state.recipeStep+1}/${recipes.quinoa.steps.length}</div>
-    <p style="margin:1rem 0">${step}</p>
-  `;
-}
-
-function nextStep(){
-  state.recipeStep++;
-  if(state.recipeStep>=recipes.quinoa.steps.length){
-    alert('¡Receta completada! 🍽️');
-    state.recipeStep=0;
+  // Saludo según la hora
+  function setGreeting(){
+    const h = new Date().getHours();
+    let txt;
+    if(h < 12) txt = '¡Buenos días!';
+    else if(h < 19) txt = '¡Buenas tardes!';
+    else txt = '¡Buenas noches!';
+    document.getElementById('greeting').textContent = txt;
   }
-  showRecipeStep();
-}
+  setGreeting();
 
-// LIMPIEZA
-function startCleaning(day){
-  const clean=cleaning[day];
-  document.getElementById('cleaningTasks').innerHTML=`
-    <h3>${clean.name}</h3>
-    ${clean.tasks.map(t=>`<div class="task">${t}</div>`).join('')}
-    <div class="timer" id="cleanTimer">15:00</div>
-    <button class="btn" onclick="startCleanTimer()">Comenzar</button>
-  `;
-  document.getElementById('cleaningTasks').classList.remove('hidden');
-  state.timer=900;
-}
-
-function startCleanTimer(){
-  state.running=true;
-  const interval=setInterval(()=>{
-    state.timer--;
-    updateTimer('cleanTimer');
-    if(state.timer<=0){
-      clearInterval(interval);
-      state.running=false;
-      beep();
-      alert('¡Limpieza completada! 🧹');
-    }
-  },1000);
-}
-
-// POMODORO
-function loadTasks(){
-  const saved=localStorage.getItem('tasks');
-  state.tasks=saved?JSON.parse(saved):[];
-  renderTasks();
-}
-
-function renderTasks(){
-  document.getElementById('taskList').innerHTML=state.tasks.map((t,i)=>`
-    <div class="task" onclick="toggleTask(${i})" style="${t.done?'opacity:0.5;text-decoration:line-through':''}">
-      ${t.text}
-    </div>
-  `).join('');
-}
-
-function addTask(){
-  const input=document.getElementById('newTask');
-  if(!input.value.trim())return;
-  state.tasks.push({text:input.value,done:false});
-  input.value='';
-  localStorage.setItem('tasks',JSON.stringify(state.tasks));
-  renderTasks();
-}
-
-function toggleTask(i){
-  state.tasks[i].done=!state.tasks[i].done;
-  localStorage.setItem('tasks',JSON.stringify(state.tasks));
-  renderTasks();
-}
-
-function setPomodoro(min){
-  state.pomodoroMin=min;
-  state.timer=min*60;
-  updateTimer('pomodoroTimer');
-}
-
-function startPomodoro(){
-  if(state.timer===0)state.timer=state.pomodoroMin*60;
-  state.running=true;
-  const interval=setInterval(()=>{
-    state.timer--;
-    updateTimer('pomodoroTimer');
-    if(state.timer<=0){
-      clearInterval(interval);
-      state.running=false;
-      beep();
-      alert('¡Pomodoro completado! ⏱️');
-    }
-  },1000);
-}
-
-function resetPomodoro(){
-  state.timer=state.pomodoroMin*60;
-  state.running=false;
-  updateTimer('pomodoroTimer');
-}
-
-// RESCATE
-function startRescue(type){
-  const techniques={
-    '54321':'5 cosas que VES → 4 que TOCAS → 3 que ESCUCHAS → 2 que HUELES → 1 que SABOREAS',
-    '478':'Inhala 4 seg → Mantén 7 seg → Exhala 8 seg (Repite 3 veces)',
-    'reset':'Mirá un punto fijo 30 seg → Cerrá ojos → Escribí SOLO 3 pendientes → Decí "No todo es urgente"'
-  };
-  alert(techniques[type]);
-}
-
-function startMeditation(min){
-  alert(`Comenzando meditación de ${min} minutos...\n\nBuscá un lugar tranquilo, sentate cómodo y seguí las instrucciones de audio.`);
-}
-
-function showEisenhower(){
-  alert('Matriz de Eisenhower\n\nOrganizá tus tareas en 4 cuadrantes:\n\n1️⃣ Urgente + Importante\n2️⃣ No urgente pero Importante\n3️⃣ Urgente pero no Importante\n4️⃣ Ni urgente ni Importante');
-}
-
-// NOCHE
-function startNight(){
-  alert('Rutina Nocturna iniciada\n\n✨ Comenzamos con cuidado facial...');
-}
-
-// RUTINA
-function startRoutine(){
-  alert('Rutina del día iniciada\n\n🧹 Comenzamos ordenando 5 minutos...');
-}
-
-// SUDOKU
-function initSudoku(){
-  const grid=document.getElementById('sudokuGrid');
-  grid.innerHTML='';
-  state.sudoku.forEach((row,i)=>{
-    row.forEach((cell,j)=>{
-      const input=document.createElement('input');
-      input.type='number';
-      input.min='1';
-      input.max='4';
-      input.value=cell||'';
-      input.style.cssText='width:100%;height:50px;text-align:center;font-size:1.5rem;border:2px solid #e0e0e0;border-radius:4px';
-      if(cell)input.disabled=true;
-      input.oninput=(e)=>{state.sudoku[i][j]=parseInt(e.target.value)||0};
-      grid.appendChild(input);
+  // Registrar service worker (PWA)
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=>{
+      navigator.serviceWorker.register('service-worker.js').catch(()=>{});
     });
-  });
-}
-
-function checkSudoku(){
-  const solution=[[1,2,3,4],[3,4,1,2],[2,1,4,3],[4,3,2,1]];
-  const correct=state.sudoku.every((row,i)=>row.every((cell,j)=>cell===solution[i][j]));
-  if(correct){
-    beep();
-    alert('¡Perfecto! ✅ Has resuelto el sudoku');
-  }else{
-    alert('Aún hay errores... sigue intentando 💪');
   }
-}
-
-function newSudoku(){
-  state.sudoku=[[1,0,0,4],[0,4,1,0],[0,1,4,0],[4,0,0,1]];
-  initSudoku();
-}
-
-// UTILIDADES
-function updateTimer(id){
-  const m=Math.floor(state.timer/60);
-  const s=state.timer%60;
-  document.getElementById(id).textContent=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-}
-
-function beep(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const osc=ctx.createOscillator();
-    const gain=ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.value=600;
-    gain.gain.value=0.3;
-    osc.start();
-    osc.stop(ctx.currentTime+0.2);
-  }catch(e){}
-}
-
-// INSTALACIÓN PWA
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('service-worker.js').catch(e=>console.log('SW error:',e));
-  });
-}
-
-// INICIALIZACIÓN
-document.addEventListener('DOMContentLoaded',()=>{
-  console.log('🦘 CRIS App cargada');
-  loadTasks();
-});
 </script>
 </body>
 </html>
