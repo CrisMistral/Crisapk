@@ -2,30 +2,760 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Botiquín Emocional - Próximamente</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Botiquín Emocional · Cris</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
-  body{
-    min-height:100vh;
-    display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(160deg,#f0f9ff 0%, #f3f1ff 50%, #ffffff 100%);
-    color:#2d3748;text-align:center;padding:24px;
-  }
-  .box{max-width:340px;}
-  .icon{font-size:4rem;margin-bottom:14px;animation:bounce 2.2s ease-in-out infinite;}
-  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
-  h1{color:#26a69a;font-size:1.3rem;margin-bottom:10px;}
-  p{font-size:0.9rem;color:#7a8a99;line-height:1.6;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+:root{--turq:#26a69a;--turq-l:#4dd0e1;--lavanda:#e8e6fb;--lavanda-s:#f3f1ff;--bg:#f0f9ff;--text:#2d3748;}
+body{background:linear-gradient(160deg,var(--bg) 0%,var(--lavanda-s) 50%,#fff 100%);min-height:100vh;color:var(--text);overflow-x:hidden;}
+
+.view{display:none;min-height:100vh;padding:20px 16px 48px;}
+.view.active{display:block;}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;transition:transform .1s;text-align:center;margin-bottom:8px;}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:linear-gradient(135deg,var(--turq),var(--turq-l));color:#fff;}
+.btn-sec{background:#f0f0f0;color:#444;}
+.btn-danger{background:linear-gradient(135deg,#ef4444,#f97316);color:#fff;}
+.btn-amber{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#666;font-size:.88rem;cursor:pointer;margin-bottom:18px;padding:0;}
+.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 14px rgba(38,166,154,.09);}
+.neuro-box{background:#eff6ff;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:.78rem;color:#1e40af;line-height:1.5;}
+.progress-bar{height:7px;background:#e5e7eb;border-radius:4px;overflow:hidden;margin-bottom:18px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--turq),var(--turq-l));border-radius:4px;transition:width .5s;}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:.7rem;font-weight:700;background:var(--lavanda);color:#6c5ce7;}
+
+/* HOME */
+#view-home{max-width:440px;margin:0 auto;}
+.home-header{text-align:center;padding:20px 0 18px;}
+.mascot{font-size:3.2rem;animation:bounce 2.4s ease-in-out infinite;display:block;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.home-header h1{color:var(--turq);font-size:1.55rem;font-weight:800;margin-top:6px;}
+.home-header p{color:#7a8a99;font-size:.87rem;margin-top:4px;}
+.card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.card-header .ic{font-size:1.5rem;}
+.card-header .ct .name{font-weight:800;font-size:.95rem;}
+.card-header .ct .sub{font-size:.73rem;color:#9aa5b1;margin-top:2px;}
+.med-list{display:flex;flex-direction:column;gap:8px;}
+.med-btn{background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;border:none;border-radius:12px;padding:12px 14px;text-align:left;cursor:pointer;transition:transform .1s;width:100%;}
+.med-btn:active{transform:scale(.97);}
+.med-btn .mn{font-weight:700;font-size:.88rem;}
+.med-btn .ms{font-size:.73rem;opacity:.8;margin-top:2px;}
+
+/* RESCUE */
+#view-rescue{max-width:440px;margin:0 auto;}
+.rescue-icon{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 14px;}
+.step-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:11px;}
+.step-num{width:26px;height:26px;min-width:26px;border-radius:50%;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.step-text{font-size:.88rem;line-height:1.45;padding-top:4px;color:var(--text);}
+.pattern-box{border-radius:12px;padding:16px;text-align:center;margin:12px 0;background:#d1fae5;}
+.pattern-text{color:#065f46;font-size:1rem;font-weight:700;}
+.instruction-box{border-radius:12px;padding:14px;margin:12px 0;background:#fff1f2;}
+.instruction-text{color:#881337;font-weight:700;font-size:.95rem;}
+.instruction-detail{color:#9f1239;font-size:.82rem;margin-top:6px;}
+
+/* GUIDED */
+#view-guided{background:linear-gradient(160deg,#0f172a,#1e1b4b) !important;color:#fff;padding:20px 16px 48px;}
+#view-guided.active{display:flex;flex-direction:column;}
+.guided-inner{max-width:440px;margin:0 auto;width:100%;}
+.guided-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.back-dark{background:none;border:none;color:#94a3b8;font-size:.88rem;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.speed-group{display:flex;gap:6px;}
+.spd-btn{padding:5px 10px;border-radius:8px;border:none;font-size:.7rem;font-weight:700;cursor:pointer;background:#334155;color:#94a3b8;transition:background .15s;}
+.spd-btn.active{background:#6366f1;color:#fff;}
+.guided-meta{text-align:center;margin-bottom:14px;}
+.guided-meta h2{font-size:1.2rem;font-weight:800;}
+.guided-meta p{font-size:.78rem;color:#94a3b8;margin-top:2px;}
+.guided-timer{font-size:3.8rem;font-weight:800;color:#e2e8f0;text-align:center;margin:16px 0 4px;font-family:monospace;}
+.guided-step-info{text-align:center;color:#64748b;font-size:.78rem;margin-bottom:20px;}
+.guided-main{background:linear-gradient(135deg,#3b82f6,#8b5cf6);border-radius:18px;padding:22px;text-align:center;margin-bottom:10px;}
+.guided-main p{color:#fff;font-size:1.1rem;font-weight:600;line-height:1.4;}
+.guided-inst{background:#1e293b;border:2px solid #334155;border-radius:18px;padding:18px;text-align:center;margin-bottom:18px;}
+.guided-inst p{color:#e2e8f0;font-size:.97rem;font-weight:500;}
+.play-btn{width:100%;padding:16px;border-radius:14px;border:none;font-size:1rem;font-weight:700;cursor:pointer;transition:transform .1s;}
+.play-btn:active{transform:scale(.97);}
+.play-btn.playing{background:#ef4444;color:#fff;}
+.play-btn.paused{background:#22c55e;color:#fff;}
+
+/* EISENHOWER */
+#view-eisenhower,#view-ei-questions,#view-ei-matrix{max-width:520px;margin:0 auto;}
+.ei-intro-box{background:#fff8ed;border-radius:14px;padding:16px;margin-bottom:12px;}
+.ei-intro-box h3{color:#92400e;font-weight:700;margin-bottom:8px;font-size:.95rem;}
+.ei-intro-box p{font-size:.83rem;color:#78350f;line-height:1.55;}
+.ei-step{display:flex;align-items:flex-start;gap:6px;margin:5px 0;font-size:.8rem;color:#78350f;}
+.why-box{background:#eff6ff;border-radius:14px;padding:14px;margin-bottom:14px;}
+.why-box h3{color:#1e40af;font-weight:700;margin-bottom:6px;font-size:.93rem;}
+.why-box p{font-size:.82rem;color:#1e3a8a;line-height:1.5;}
+.ei-question-card{background:#fff8ed;border-radius:14px;padding:16px;margin-bottom:12px;}
+.ei-q-title{font-size:1.05rem;font-weight:800;color:#92400e;}
+.ei-q-sub{font-size:.75rem;color:#b45309;margin-top:2px;}
+.ei-q-text{font-size:.93rem;color:var(--text);margin:12px 0 8px;font-weight:600;}
+.ei-examples{background:#eff6ff;border-radius:10px;padding:10px;margin-bottom:10px;}
+.ei-examples .exlabel{font-size:.73rem;color:#1e40af;font-weight:700;margin-bottom:4px;}
+.ei-examples li{font-size:.72rem;color:#1e40af;list-style:none;padding:2px 0;}
+.ei-examples li::before{content:"• ";}
+.ei-help{font-size:.77rem;color:#6b7280;margin-bottom:12px;line-height:1.5;}
+.ei-textarea{width:100%;padding:10px;border:2px solid #d1d5db;border-radius:10px;font-size:.87rem;resize:none;height:88px;font-family:inherit;}
+.ei-textarea:focus{outline:none;border-color:#f59e0b;}
+.ei-btns{display:flex;gap:10px;}
+.ei-btns .btn{flex:1;margin-bottom:0;padding:13px;}
+.ei-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+
+/* MATRIX */
+.quadrant{border-radius:14px;padding:14px;margin-bottom:12px;}
+.quadrant h3{font-weight:800;font-size:.93rem;margin-bottom:2px;}
+.q-sub{font-size:.7rem;margin-bottom:10px;}
+.q1{background:#fee2e2;border:2px solid #fca5a5;} .q1 h3{color:#991b1b;} .q1 .q-sub{color:#dc2626;}
+.q2{background:#d1fae5;border:2px solid #6ee7b7;} .q2 h3{color:#065f46;} .q2 .q-sub{color:#16a34a;}
+.q3{background:#fef9c3;border:2px solid #fde047;} .q3 h3{color:#713f12;} .q3 .q-sub{color:#ca8a04;}
+.q4{background:#f3f4f6;border:2px solid #d1d5db;} .q4 h3{color:#374151;} .q4 .q-sub{color:#6b7280;}
+.task-row{display:flex;align-items:center;gap:8px;background:#fff;border-radius:8px;padding:8px;margin-bottom:6px;}
+.task-row input[type=checkbox]{width:17px;height:17px;cursor:pointer;flex-shrink:0;}
+.task-text{flex:1;font-size:.83rem;line-height:1.3;}
+.task-text.done{text-decoration:line-through;opacity:.5;}
+.del-btn{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.95rem;padding:0 3px;flex-shrink:0;}
+.q-input{width:100%;padding:8px 10px;border:1.5px solid #d1d5db;border-radius:8px;font-size:.83rem;margin-top:6px;font-family:inherit;}
+.q-input:focus{outline:none;border-color:var(--turq);}
+.q-add{width:100%;margin-top:6px;padding:8px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.8rem;color:#fff;}
+.q1-add{background:#ef4444;} .q2-add{background:#16a34a;} .q3-add{background:#ca8a04;} .q4-add{background:#6b7280;}
+.matrix-hint{background:#fff;border-radius:14px;padding:14px;margin-top:6px;}
+.matrix-hint h3{font-weight:700;color:var(--text);margin-bottom:8px;font-size:.88rem;}
+.matrix-hint li{font-size:.79rem;color:#4b5563;margin-bottom:5px;list-style:none;line-height:1.4;}
 </style>
 </head>
 <body>
-  <div class="box">
-    <div class="icon">💚🦘</div>
+
+<!-- ===== HOME ===== -->
+<div id="view-home" class="view active">
+  <div class="home-header">
+    <span class="mascot">💚</span>
     <h1>Botiquín Emocional</h1>
-    <p>Este módulo está en construcción.<br>
-    Pronto tendrás aquí tus técnicas de anclaje, respiración, meditaciones guiadas y la matriz de Eisenhower, todo en un solo lugar.</p>
-    <p style="margin-top:14px;">Mientras tanto, usa el botón 🏠 para volver al inicio.</p>
+    <p>Rescate, meditación y organización mental</p>
   </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="ic">🚨</span>
+      <div class="ct">
+        <div class="name">Rescate Emocional</div>
+        <div class="sub">9 técnicas · para momentos de crisis o sobrecarga</div>
+      </div>
+    </div>
+    <button class="btn btn-danger" onclick="startRescue()">🚨 RESCÁTAME AHORA</button>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="ic">🧘</span>
+      <div class="ct">
+        <div class="name">Meditaciones Guiadas</div>
+        <div class="sub">Occidentales y tradición budista</div>
+      </div>
+    </div>
+    <div class="med-list" id="medList"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="ic">📊</span>
+      <div class="ct">
+        <div class="name">Matriz de Eisenhower</div>
+        <div class="sub">Organiza prioridades y reduce estrés</div>
+      </div>
+    </div>
+    <p style="font-size:.82rem;color:#6b7280;margin-bottom:12px;">Clasifica tus tareas en 4 cuadrantes y ve claramente qué merece tu energía.</p>
+    <button class="btn btn-amber" onclick="showEisenhower()">📊 ORGANIZAR AHORA</button>
+  </div>
+</div>
+
+<!-- ===== RESCUE ===== -->
+<div id="view-rescue" class="view">
+  <div style="max-width:440px;margin:0 auto;">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <div class="rescue-icon" id="rescue-icon"></div>
+    <h2 id="rescue-name" style="text-align:center;font-size:1.25rem;font-weight:800;margin-bottom:8px;"></h2>
+    <div style="text-align:center;margin-bottom:12px;"><span class="badge" id="rescue-badge"></span></div>
+    <div class="neuro-box" id="rescue-neuro" style="display:none;"></div>
+    <div id="rescue-steps"></div>
+    <button class="btn btn-danger" style="margin-top:16px;" onclick="startRescue()">🔀 Otra Técnica</button>
+  </div>
+</div>
+
+<!-- ===== GUIDED MEDITATION ===== -->
+<div id="view-guided" class="view">
+  <div class="guided-inner">
+    <div class="guided-top">
+      <button class="back-dark" onclick="stopGuided()">← Salir</button>
+      <div class="speed-group">
+        <button class="spd-btn" id="spd-lento" onclick="setSpeed('lento')">Lento</button>
+        <button class="spd-btn active" id="spd-normal" onclick="setSpeed('normal')">Normal</button>
+        <button class="spd-btn" id="spd-rapido" onclick="setSpeed('rápido')">Rápido</button>
+      </div>
+    </div>
+    <div class="guided-meta">
+      <h2 id="guided-title"></h2>
+      <p id="guided-instructor"></p>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="guided-progress" style="width:0%"></div></div>
+    <div class="guided-timer" id="guided-timer">0:00</div>
+    <div class="guided-step-info" id="guided-step-info">Paso 1 de ?</div>
+    <div class="guided-main"><p id="guided-step-text"></p></div>
+    <div class="guided-inst"><p id="guided-step-inst"></p></div>
+    <button class="play-btn paused" id="playBtn" onclick="togglePlay()">▶ Iniciar Sesión</button>
+  </div>
+</div>
+
+<!-- ===== EISENHOWER INTRO ===== -->
+<div id="view-eisenhower" class="view">
+  <div style="max-width:500px;margin:0 auto;">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <div style="text-align:center;margin-bottom:18px;">
+      <div style="font-size:3rem;">📊</div>
+      <h1 style="font-size:1.4rem;font-weight:800;margin-top:8px;">Matriz de Eisenhower</h1>
+      <p style="font-size:.84rem;color:#6b7280;margin-top:4px;">Organiza tu mente y reduce el estrés</p>
+    </div>
+    <div class="ei-intro-box">
+      <h3>¿Cómo funciona?</h3>
+      <p>Te haré <strong>4 preguntas específicas</strong>, una por cuadrante. Así sabrás exactamente dónde va cada cosa.</p>
+      <div style="margin-top:10px;">
+        <div class="ei-step"><span>1️⃣ <strong>Hacer AHORA:</strong> Urgente + Importante</span></div>
+        <div class="ei-step"><span>2️⃣ <strong>Planificar:</strong> Importante pero no urgente</span></div>
+        <div class="ei-step"><span>3️⃣ <strong>Delegar:</strong> Urgente pero no importante</span></div>
+        <div class="ei-step"><span>4️⃣ <strong>Eliminar:</strong> Ni urgente ni importante</span></div>
+      </div>
+    </div>
+    <div class="why-box">
+      <h3>¿Por qué es útil?</h3>
+      <p>Verás claramente qué merece tu energía y qué debes soltar. Perfecto para cuando todo parece urgente y te sientes abrumado.</p>
+    </div>
+    <button class="btn btn-amber" onclick="startEisenhowerQuestions()">Comenzar Cuestionario</button>
+    <button class="btn btn-sec" onclick="goToMatrix()">Ver Matriz Directamente</button>
+  </div>
+</div>
+
+<!-- ===== EISENHOWER QUESTIONS ===== -->
+<div id="view-ei-questions" class="view">
+  <div style="max-width:500px;margin:0 auto;">
+    <div class="ei-top">
+      <button class="back-btn" style="margin-bottom:0;" onclick="eiBack()">← Atrás</button>
+      <span id="ei-q-counter" style="font-size:.82rem;color:#6b7280;"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="ei-q-progress" style="width:0%"></div></div>
+    <div id="ei-question-content"></div>
+    <div class="ei-btns">
+      <button class="btn btn-sec" onclick="eiSkip()">Saltar</button>
+      <button class="btn btn-amber" id="ei-next-btn" onclick="eiAnswer()">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MATRIX ===== -->
+<div id="view-ei-matrix" class="view">
+  <div style="max-width:560px;margin:0 auto;">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <h1 style="font-size:1.25rem;font-weight:800;text-align:center;margin-bottom:4px;">Matriz de Eisenhower</h1>
+    <p style="text-align:center;font-size:.77rem;color:#6b7280;margin-bottom:16px;">Toca una tarea para marcarla · ✕ para eliminar</p>
+
+    <div class="quadrant q1">
+      <h3>🔥 Hacer AHORA</h3>
+      <div class="q-sub">Urgente e Importante</div>
+      <div id="tasks-q1"></div>
+      <input class="q-input" id="input-q1" placeholder="Nueva tarea urgente..." onkeypress="if(event.key==='Enter')addMTask('q1')">
+      <button class="q-add q1-add" onclick="addMTask('q1')">+ Agregar</button>
+    </div>
+    <div class="quadrant q2">
+      <h3>📅 Planificar</h3>
+      <div class="q-sub">Importante pero No Urgente</div>
+      <div id="tasks-q2"></div>
+      <input class="q-input" id="input-q2" placeholder="Nueva tarea importante..." onkeypress="if(event.key==='Enter')addMTask('q2')">
+      <button class="q-add q2-add" onclick="addMTask('q2')">+ Agregar</button>
+    </div>
+    <div class="quadrant q3">
+      <h3>👥 Delegar</h3>
+      <div class="q-sub">Urgente pero No Importante</div>
+      <div id="tasks-q3"></div>
+      <input class="q-input" id="input-q3" placeholder="Nueva interrupción a delegar..." onkeypress="if(event.key==='Enter')addMTask('q3')">
+      <button class="q-add q3-add" onclick="addMTask('q3')">+ Agregar</button>
+    </div>
+    <div class="quadrant q4">
+      <h3>🗑️ Eliminar</h3>
+      <div class="q-sub">Ni Urgente Ni Importante</div>
+      <div id="tasks-q4"></div>
+      <input class="q-input" id="input-q4" placeholder="Nueva distracción..." onkeypress="if(event.key==='Enter')addMTask('q4')">
+      <button class="q-add q4-add" onclick="addMTask('q4')">+ Agregar</button>
+    </div>
+
+    <div class="matrix-hint">
+      <h3>💡 Cómo usar esta matriz</h3>
+      <ul>
+        <li>🔥 <strong>Hacer AHORA:</strong> Crisis, deadlines urgentes, problemas que escalan</li>
+        <li>📅 <strong>Planificar:</strong> Metas personales, relaciones, crecimiento</li>
+        <li>👥 <strong>Delegar:</strong> Interrupciones, llamadas, correos no esenciales</li>
+        <li>🗑️ <strong>Eliminar:</strong> Scroll infinito, distracciones, trivialidades</li>
+      </ul>
+    </div>
+    <button class="btn btn-sec" style="margin-top:10px;" onclick="resetMatrix()">🔄 Hacer Cuestionario de Nuevo</button>
+  </div>
+</div>
+
+<script>
+// ======= DATA =======
+
+const rescues = [
+  { id:1, name:"5-4-3-2-1", icon:"👁️", color:"#3B82F6", category:"Anclaje al Presente",
+    steps:["5 VES", "4 TOCAS", "3 ESCUCHAS", "2 HUELES", "1 SABOREAS"],
+    neuro:"Activa corteza prefrontal" },
+  { id:2, name:"Respiración 4-7-8", icon:"🌬️", color:"#10B981", category:"Regulación Bioquímica",
+    pattern:"Inhala 4 → Mantén 7 → Exhala 8",
+    neuro:"Nervio vago" },
+  { id:3, name:"Reset Cognitivo", icon:"🧠", color:"#A855F7", category:"Frenar Sobrecarga",
+    steps:["Punto fijo 30seg", "Palmas frente", "3 pendientes", "Di: No urgente", "Desactiva notis", "Cuenta: 700,693,686..."],
+    neuro:"Reordena jerarquías" },
+  { id:4, name:"Regulación 90seg", icon:"⏰", color:"#F59E0B", category:"Bioquímica Rápida",
+    steps:["Respiración 4-4-4-4", "Bosteza", "Agua fría", "Sonríe"],
+    neuro:"Nervio vago" },
+  { id:5, name:"Anclaje Sensorial", icon:"✋", color:"#14B8A6", category:"Detener la Tormenta",
+    steps:["5 objetos", "Peso corporal", "Dibuja 8", "Texturas", "Estoy presente"],
+    neuro:"Grounding" },
+  { id:6, name:"Depuración RAM", icon:"🧠", color:"#6366F1", category:"Liberar Espacio Mental",
+    steps:["Escribe 3min", "Marca círculo", "Tacha tarea", "Ordena", "Apaga pantallas"],
+    neuro:"Libera procesamiento" },
+  { id:7, name:"Micro-Placer", icon:"⚡", color:"#EC4899", category:"Reequilibrio Neuroquímico",
+    steps:["Aroma", "Música", "Mensaje", "Estiramiento", "Reinicio"],
+    neuro:"Neurotransmisores" },
+  { id:8, name:"Música 60 BPM", icon:"❤️", color:"#F43F5E", category:"Sincronización Cardíaca",
+    instruction:"YouTube: Música Barroca 60 BPM",
+    detail:"2 minutos",
+    neuro:"Sincroniza corazón" },
+  { id:9, name:"EMDR Bilateral", icon:"👀", color:"#8B5CF6", category:"Desactivación de Trauma",
+    steps:["Cabeza quieta", "Ojos lado a lado", "30-60 segundos", "Respira natural", "Señal de seguridad"],
+    neuro:"Movimiento bilateral estimula nervio vago, reduce amígdala. Base EMDR para trauma. Detiene rumiación." }
+];
+
+const meditations = [
+  { id:1, name:"Respiración 8 min", instructor:"Ana", steps:[
+    {text:"Hola, soy Ana. Ponte cómodo",instruction:"Cierra los ojos suavemente",time:15},
+    {text:"Respira naturalmente",instruction:"Solo observa tu respiración",time:20},
+    {text:"Inhala profundamente",instruction:"Siente el aire entrando",time:10},
+    {text:"Exhala lentamente",instruction:"Suelta toda tensión",time:12},
+    {text:"Continuemos este ritmo",instruction:"Inhala 4 seg, exhala 6 seg",time:60},
+    {text:"Si divaga tu mente, vuelve",instruction:"Gentilmente a la respiración",time:30},
+    {text:"Siente la calma",instruction:"Cada respiración trae paz",time:45},
+    {text:"Abre los ojos lentamente",instruction:"Lleva esta calma contigo",time:15}
+  ]},
+  { id:2, name:"Autocompasión 10 min", instructor:"María", steps:[
+    {text:"Hola, soy María",instruction:"Pon una mano en tu corazón",time:15},
+    {text:"Este es un momento de dolor",instruction:"Reconócelo con gentileza",time:25},
+    {text:"Tu dolor es válido",instruction:"No necesitas cambiarlo",time:30},
+    {text:"No estás sola en esto",instruction:"Miles sienten este dolor",time:25},
+    {text:"Sé gentil contigo",instruction:"Repite: Que pueda ser buena conmigo",time:40},
+    {text:"Mereces compasión",instruction:"Especialmente ahora",time:35},
+    {text:"Siente tu mano como consuelo",instruction:"Ese calor es tu amor",time:30},
+    {text:"Eres valiosa",instruction:"Tal como eres",time:35},
+    {text:"Lleva esta compasión contigo",instruction:"Siempre puedes volver",time:30},
+    {text:"Abre los ojos con amor",instruction:"Has hecho algo hermoso",time:15}
+  ]},
+  { id:3, name:"Sanación 30 min", instructor:"Sofía", steps:[
+    {text:"Bienvenida, soy Sofía",instruction:"Este tiempo es para ti",time:20},
+    {text:"Cierra los ojos profundo",instruction:"Conecta con tu cuerpo",time:25},
+    {text:"Inhala paz, exhala tensión",instruction:"Establece tu respiración",time:40},
+    {text:"Reconoce tu dolor",instruction:"Permítelo estar presente",time:60},
+    {text:"Tu dolor es real",instruction:"Te veo, te acepto",time:70},
+    {text:"Envía amor a tu corazón",instruction:"Imagina luz dorada",time:80},
+    {text:"Esta luz te sana",instruction:"Disuelve el dolor",time:90},
+    {text:"Eres fuerte",instruction:"Puedes sanar",time:60},
+    {text:"Relaja tus pies",instruction:"Siéntelos aflojarse",time:40},
+    {text:"Relaja tus piernas",instruction:"Pantorrillas, muslos",time:50},
+    {text:"Tu abdomen descansa",instruction:"Respira hacia tu centro",time:50},
+    {text:"Tu espalda se suelta",instruction:"Desde lumbar a hombros",time:60},
+    {text:"Tu corazón late en paz",instruction:"Siente su ritmo calmado",time:70},
+    {text:"Tus hombros caen",instruction:"Sueltas todo peso",time:60},
+    {text:"Tus brazos descansan",instruction:"Completamente relajados",time:50},
+    {text:"Tu rostro se suaviza",instruction:"Frente, ojos, mandíbula",time:60},
+    {text:"Tu mente descansa",instruction:"Los pensamientos pasan",time:80},
+    {text:"Agradece a tu cuerpo",instruction:"Por todo su trabajo",time:70},
+    {text:"Agradece a tu corazón",instruction:"Por su resistencia",time:60},
+    {text:"Visualiza días mejores",instruction:"Tu futuro lleno de paz",time:90},
+    {text:"Esta calma es tuya",instruction:"Nadie puede quitártela",time:70},
+    {text:"Respiraciones finales",instruction:"Inhala paz, exhala lo viejo",time:50},
+    {text:"Has sanado hoy",instruction:"Abre los ojos lentamente",time:30}
+  ]},
+  { id:4, name:"Mindfulness Budista 15 min", instructor:"Venerable Tenzin", steps:[
+    {text:"Que la paz sea contigo",instruction:"Siéntate con espalda recta",time:20},
+    {text:"Refugio en Buda, Dharma, Sangha",instruction:"Conecta con la sabiduría",time:30},
+    {text:"Observa tu respiración",instruction:"Sin cambiarla, solo observa",time:60},
+    {text:"Los pensamientos surgen y pasan",instruction:"Etiquétalos: 'pensamiento'",time:90},
+    {text:"Todo es impermanente",instruction:"El dolor también pasará",time:75},
+    {text:"Cultiva metta · amor bondadoso",instruction:"Que yo sea feliz",time:90},
+    {text:"Amor a seres queridos",instruction:"Que todos sean felices",time:75},
+    {text:"Amor incluso a quien te lastimó",instruction:"Que todos sean libres",time:90},
+    {text:"Practica el desapego",instruction:"Suelta lo que no controlas",time:75},
+    {text:"Regresa a respirar",instruction:"Inhala compasión, exhala paz",time:60},
+    {text:"Dedica los méritos",instruction:"Para todos los seres",time:45},
+    {text:"Om Mani Padme Hum",instruction:"Abre los ojos en paz",time:30}
+  ]},
+  { id:5, name:"Tonglen Tibetano 18 min", instructor:"Lama Pema", steps:[
+    {text:"Tashi Delek, soy Lama Pema",instruction:"Abre tu corazón",time:25},
+    {text:"Tonglen transforma el sufrimiento",instruction:"Tu dolor se vuelve medicina",time:40},
+    {text:"Reconoce tu dolor",instruction:"Acógelo con gentileza",time:60},
+    {text:"Inhala sufrimiento como humo oscuro",instruction:"Acepta tu dolor",time:75},
+    {text:"Exhala alivio como luz dorada",instruction:"Envíate amor",time:75},
+    {text:"Piensa en alguien que sufre",instruction:"Conecta con su dolor",time:60},
+    {text:"Inhala su sufrimiento también",instruction:"Tu corazón puede contenerlo",time:90},
+    {text:"Exhala sanación para ambos",instruction:"Luz dorada para los dos",time:90},
+    {text:"Expande a todos los que sufren",instruction:"Millones sienten esto",time:90},
+    {text:"Inhala todo el sufrimiento",instruction:"Tu compasión es infinita",time:90},
+    {text:"Exhala sanación universal",instruction:"Que todos sean libres",time:120},
+    {text:"Este es el corazón Bodhisattva",instruction:"Despertar para todos los seres",time:75},
+    {text:"Tu dolor tiene propósito",instruction:"Es portal a la compasión",time:90},
+    {text:"Om Tare Tuttare Ture Soha",instruction:"Que Tara proteja a todos",time:45},
+    {text:"Mantén el corazón abierto",instruction:"Abre los ojos renovado",time:30}
+  ]}
+];
+
+const eiQuestions = [
+  { title:"🔥 CUADRANTE 1: Hacer AHORA", sub:"Urgente E Importante",
+    q:"¿Qué necesitas hacer HOY sí o sí que es realmente importante?",
+    examples:["Pagar la renta antes de la fecha límite","Llamar al doctor por síntomas preocupantes","Entregar proyecto urgente del trabajo"],
+    placeholder:"Ej: Resolver problema urgente del trabajo",
+    help:"Estas son crisis o emergencias. Si no lo haces hoy, habrá consecuencias serias.",
+    quadrant:"q1" },
+  { title:"📅 CUADRANTE 2: Planificar", sub:"NO Urgente PERO Importante",
+    q:"¿Qué es importante para tu bienestar pero no tiene prisa inmediata?",
+    examples:["Buscar terapeuta","Empezar a hacer ejercicio","Reconectar con amigos","Aprender algo nuevo"],
+    placeholder:"Ej: Empezar terapia para procesar el estrés",
+    help:"Estas cosas mejoran tu vida a largo plazo. Deberías agendar tiempo para ellas.",
+    quadrant:"q2" },
+  { title:"👥 CUADRANTE 3: Delegar o Minimizar", sub:"Urgente PERO NO Importante",
+    q:"¿Qué cosas urgentes te interrumpen pero no son realmente importantes?",
+    examples:["Responder mensajes de grupo","Llamadas no esenciales","Favores que te piden","Notificaciones constantes"],
+    placeholder:"Ej: Contestar mensajes de WhatsApp de grupos",
+    help:"Estas cosas parecen urgentes pero no te acercan a tus metas. Delega o minimiza.",
+    quadrant:"q3" },
+  { title:"🗑️ CUADRANTE 4: Eliminar", sub:"NI Urgente NI Importante",
+    q:"¿En qué pierdes tiempo que no te aporta nada?",
+    examples:["Scroll infinito sin propósito","Ver series solo por verlas","Chismorreo innecesario"],
+    placeholder:"Ej: Scroll infinito en redes sociales",
+    help:"Estas son distracciones puras. Identificarlas es el primer paso para eliminarlas.",
+    quadrant:"q4" }
+];
+
+// ======= STATE =======
+let usedRescues = [];
+let currentMed = null;
+let medStep = 0;
+let medTimer = 0;
+let medPlaying = false;
+let medInterval = null;
+let medSpeed = 'normal';
+const speedMult = { lento:1.5, normal:1, 'rápido':0.7 };
+let eiCurrentQ = 0;
+let matrixTasks = { q1:[], q2:[], q3:[], q4:[] };
+
+// ======= AUDIO / FEEDBACK =======
+function beep(freq=600, dur=200) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if(ctx.state==='suspended') ctx.resume();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type='sine';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + dur/1000);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + dur/1000);
+  } catch(e){}
+}
+const beepStart = ()=>beep(400,300);
+const beepTick  = ()=>beep(600,150);
+const beepDone  = ()=>{ beep(900,150); setTimeout(()=>beep(1100,220),220); };
+
+function vib(ms=50) { try { navigator.vibrate(ms); } catch(e){} }
+
+function speak(text) {
+  try {
+    if(!window.speechSynthesis) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang='es-ES'; u.rate=0.88; u.pitch=1.05;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  } catch(e){}
+}
+
+// ======= NAVIGATION =======
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ======= RESCUE =======
+function startRescue() {
+  const available = rescues.filter(r=>!usedRescues.includes(r.id));
+  if(!available.length) usedRescues = [];
+  const pool = available.length ? available : rescues;
+  const r = pool[Math.floor(Math.random()*pool.length)];
+  usedRescues.push(r.id);
+  renderRescue(r);
+  beepStart(); vib(80);
+  showView('rescue');
+}
+
+function renderRescue(r) {
+  const iconEl = document.getElementById('rescue-icon');
+  iconEl.style.background = r.color+'22';
+  iconEl.innerHTML = `<span style="font-size:2.2rem;">${r.icon}</span>`;
+  document.getElementById('rescue-name').textContent = r.name;
+  document.getElementById('rescue-badge').textContent = r.category||'';
+
+  const neuroEl = document.getElementById('rescue-neuro');
+  if(r.neuro) {
+    neuroEl.style.display = 'block';
+    neuroEl.innerHTML = `<strong>🧠 Neurociencia:</strong> ${r.neuro}`;
+  } else {
+    neuroEl.style.display = 'none';
+  }
+
+  const stepsEl = document.getElementById('rescue-steps');
+  stepsEl.innerHTML = '';
+  if(r.steps) {
+    r.steps.forEach((s,i)=>{
+      stepsEl.innerHTML += `<div class="step-row">
+        <div class="step-num" style="background:${r.color}22;color:${r.color};">${i+1}</div>
+        <div class="step-text">${s}</div>
+      </div>`;
+    });
+  }
+  if(r.pattern) {
+    stepsEl.innerHTML += `<div class="pattern-box"><div class="pattern-text">${r.pattern}</div></div>`;
+  }
+  if(r.instruction) {
+    stepsEl.innerHTML += `<div class="instruction-box">
+      <div class="instruction-text">${r.instruction}</div>
+      ${r.detail?`<div class="instruction-detail">${r.detail}</div>`:''}
+    </div>`;
+  }
+}
+
+// ======= GUIDED MEDITATION =======
+function buildMedList() {
+  const list = document.getElementById('medList');
+  list.innerHTML = '';
+  meditations.forEach(m=>{
+    const btn = document.createElement('button');
+    btn.className = 'med-btn';
+    btn.innerHTML = `<div class="mn">${m.name}</div><div class="ms">con ${m.instructor}</div>`;
+    btn.onclick = ()=>startGuided(m);
+    list.appendChild(btn);
+  });
+}
+
+function startGuided(med) {
+  currentMed = med;
+  medStep = 0;
+  medPlaying = false;
+  medSpeed = 'normal';
+  clearInterval(medInterval);
+  medTimer = Math.floor(med.steps[0].time * speedMult[medSpeed]);
+  document.getElementById('guided-title').textContent = med.name;
+  document.getElementById('guided-instructor').textContent = 'con ' + med.instructor;
+  document.querySelectorAll('.spd-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('spd-normal').classList.add('active');
+  updateGuidedUI();
+  showView('guided');
+  beepStart();
+}
+
+function updateGuidedUI() {
+  if(!currentMed) return;
+  const step = currentMed.steps[medStep];
+  const total = currentMed.steps.length;
+  document.getElementById('guided-progress').style.width = ((medStep+1)/total*100)+'%';
+  document.getElementById('guided-timer').textContent = fmtTime(medTimer);
+  document.getElementById('guided-step-info').textContent = `Paso ${medStep+1} de ${total}`;
+  document.getElementById('guided-step-text').textContent = step.text;
+  document.getElementById('guided-step-inst').textContent = step.instruction;
+  const btn = document.getElementById('playBtn');
+  if(medPlaying) { btn.className='play-btn playing'; btn.textContent='⏸ Pausar Sesión'; }
+  else           { btn.className='play-btn paused';  btn.textContent='▶ Iniciar Sesión'; }
+}
+
+function togglePlay() {
+  if(medPlaying) {
+    medPlaying = false;
+    clearInterval(medInterval);
+    beepTick();
+  } else {
+    medPlaying = true;
+    beepStart(); vib(60);
+    speak(currentMed.steps[medStep].text);
+    medInterval = setInterval(tickMed, 1000);
+  }
+  updateGuidedUI();
+}
+
+function tickMed() {
+  medTimer--;
+  document.getElementById('guided-timer').textContent = fmtTime(medTimer);
+  if(medTimer <= 0) {
+    if(medStep < currentMed.steps.length - 1) {
+      medStep++;
+      medTimer = Math.floor(currentMed.steps[medStep].time * speedMult[medSpeed]);
+      beepTick(); vib(40);
+      speak(currentMed.steps[medStep].text);
+      updateGuidedUI();
+    } else {
+      clearInterval(medInterval);
+      medPlaying = false;
+      beepDone(); vib([100,50,100]);
+      speak('Has completado la meditación. Muy bien.');
+      document.getElementById('guided-step-text').textContent = '✅ Meditación completa';
+      document.getElementById('guided-step-inst').textContent = 'Tómate un momento antes de volver';
+      document.getElementById('playBtn').className='play-btn paused';
+      document.getElementById('playBtn').textContent='▶ Volver a empezar';
+    }
+  }
+}
+
+function setSpeed(s) {
+  medSpeed = s;
+  medTimer = Math.floor(currentMed.steps[medStep].time * speedMult[s]);
+  document.querySelectorAll('.spd-btn').forEach(b=>b.classList.remove('active'));
+  const map = { lento:'spd-lento', normal:'spd-normal', 'rápido':'spd-rapido' };
+  document.getElementById(map[s]).classList.add('active');
+  beepTick();
+  updateGuidedUI();
+}
+
+function stopGuided() {
+  clearInterval(medInterval);
+  medPlaying = false;
+  try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch(e){}
+  showView('home');
+}
+
+// ======= EISENHOWER =======
+function showEisenhower() {
+  beepStart();
+  showView('eisenhower');
+}
+
+function goToMatrix() {
+  loadMatrix();
+  renderMatrixAll();
+  showView('ei-matrix');
+}
+
+function startEisenhowerQuestions() {
+  eiCurrentQ = 0;
+  matrixTasks = { q1:[], q2:[], q3:[], q4:[] };
+  beepStart();
+  renderEiQ();
+  showView('ei-questions');
+}
+
+function renderEiQ() {
+  const q = eiQuestions[eiCurrentQ];
+  const total = eiQuestions.length;
+  document.getElementById('ei-q-counter').textContent = `${eiCurrentQ+1} de ${total} cuadrantes`;
+  document.getElementById('ei-q-progress').style.width = ((eiCurrentQ+1)/total*100)+'%';
+  document.getElementById('ei-next-btn').textContent =
+    eiCurrentQ < total-1 ? 'Siguiente →' : 'Ver Mi Matriz ✓';
+  document.getElementById('ei-question-content').innerHTML = `
+    <div class="ei-question-card">
+      <div class="ei-q-title">${q.title}</div>
+      <div class="ei-q-sub">${q.sub}</div>
+      <div class="ei-q-text">${q.q}</div>
+      <div class="ei-examples">
+        <div class="exlabel">💡 Ejemplos:</div>
+        ${q.examples.map(e=>`<li>${e}</li>`).join('')}
+      </div>
+      <p class="ei-help">ℹ️ ${q.help}</p>
+      <textarea class="ei-textarea" id="ei-answer" placeholder="${q.placeholder}"></textarea>
+    </div>`;
+  setTimeout(()=>{ const el=document.getElementById('ei-answer'); if(el)el.focus(); },120);
+}
+
+function eiAnswer() {
+  const answer = (document.getElementById('ei-answer')?.value||'').trim();
+  const q = eiQuestions[eiCurrentQ];
+  if(answer) matrixTasks[q.quadrant].push({ id:Date.now(), text:answer, done:false });
+  if(eiCurrentQ < eiQuestions.length-1) {
+    eiCurrentQ++;
+    beepTick();
+    renderEiQ();
+  } else {
+    beepDone(); vib(80);
+    saveMatrix();
+    renderMatrixAll();
+    showView('ei-matrix');
+  }
+}
+
+function eiSkip() {
+  beepTick();
+  if(eiCurrentQ < eiQuestions.length-1) { eiCurrentQ++; renderEiQ(); }
+  else { saveMatrix(); renderMatrixAll(); showView('ei-matrix'); }
+}
+
+function eiBack() {
+  if(eiCurrentQ > 0) { eiCurrentQ--; renderEiQ(); }
+  else showView('eisenhower');
+}
+
+function renderMatrixAll() {
+  ['q1','q2','q3','q4'].forEach(q=>renderMTasks(q));
+}
+
+function renderMTasks(q) {
+  const el = document.getElementById('tasks-'+q);
+  el.innerHTML = matrixTasks[q].map(t=>`
+    <div class="task-row">
+      <input type="checkbox" ${t.done?'checked':''} onchange="toggleMTask('${q}',${t.id})">
+      <span class="task-text${t.done?' done':''}">${t.text}</span>
+      <button class="del-btn" onclick="deleteMTask('${q}',${t.id})">✕</button>
+    </div>`).join('');
+}
+
+function addMTask(q) {
+  const inp = document.getElementById('input-'+q);
+  const text = inp.value.trim();
+  if(!text) return;
+  matrixTasks[q].push({ id:Date.now(), text, done:false });
+  inp.value = '';
+  beepTick(); renderMTasks(q); saveMatrix();
+}
+
+function toggleMTask(q, id) {
+  const t = matrixTasks[q].find(t=>t.id===id);
+  if(t) { t.done=!t.done; beepTick(); renderMTasks(q); saveMatrix(); }
+}
+
+function deleteMTask(q, id) {
+  matrixTasks[q] = matrixTasks[q].filter(t=>t.id!==id);
+  beepTick(); renderMTasks(q); saveMatrix();
+}
+
+function saveMatrix() {
+  localStorage.setItem('cris_rescate_matrix_v1', JSON.stringify(matrixTasks));
+}
+
+function loadMatrix() {
+  try {
+    const s = localStorage.getItem('cris_rescate_matrix_v1');
+    if(s) matrixTasks = JSON.parse(s);
+  } catch(e){}
+}
+
+// ======= UTILS =======
+function fmtTime(s) {
+  return `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;
+}
+
+// ======= INIT =======
+buildMedList();
+loadMatrix();
+</script>
 </body>
 </html>
