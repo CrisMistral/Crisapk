@@ -1,376 +1,303 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What Maria Paints — Original Art & Fine Art Prints</title>
+<title>What Maria Paints — Pinturas originales y láminas</title>
+<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* ─── RESET & BASE ─── */
+/* ─── BASE ─── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --cream:#FAFAF6;
-  --warm:#F4EFE6;
-  --brown:#8B6F5E;
-  --brown-dark:#6B5245;
-  --sage:#4A7C59;
-  --charcoal:#1A1814;
-  --mid:#6B6560;
-  --border:#E2DDD6;
+  --bg:#fff;
+  --bg2:#F7F7F5;
+  --border:#E8E8E8;
+  --text:#111;
+  --text2:#888;
   --serif:'Playfair Display',Georgia,serif;
   --sans:'DM Sans',-apple-system,sans-serif;
-  --shadow:0 4px 24px rgba(26,24,20,.08);
-  --shadow-lg:0 12px 48px rgba(26,24,20,.14);
-  --radius:4px;
-  --transition:.22s ease;
+  --r:3px;
+  --t:.2s ease;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--cream);color:var(--charcoal);font-size:16px;line-height:1.6;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 button{cursor:pointer;font-family:var(--sans);border:none;background:none}
-img{max-width:100%;display:block}
+section{padding:5rem 1.5rem}
+.inner{max-width:1180px;margin:0 auto}
 
-/* ─── ANNOUNCEMENT BAR ─── */
-.announcement{background:var(--charcoal);color:#fff;text-align:center;padding:.55rem 1rem;font-size:.78rem;letter-spacing:.05em}
-.announcement span{color:#D4AF6A}
+/* ─── TIPOGRAFÍA ─── */
+.label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text2)}
+.title{font-family:var(--serif);font-size:clamp(1.9rem,3.8vw,3rem);font-weight:600;line-height:1.1;margin:.6rem 0 1rem}
+.title em{font-style:italic;font-weight:400}
+.sub{color:var(--text2);font-size:.95rem;line-height:1.75;max-width:480px}
 
 /* ─── HEADER ─── */
-.site-header{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px solid var(--border);transition:box-shadow var(--transition)}
-.site-header.scrolled{box-shadow:var(--shadow)}
-.header-inner{max-width:1200px;margin:0 auto;padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.logo{font-family:var(--serif);font-size:1.35rem;font-weight:600;letter-spacing:.01em;flex-shrink:0}
-.logo span{font-style:italic;font-weight:400;color:var(--brown)}
-.main-nav{display:flex;gap:2rem;list-style:none}
-.main-nav a{font-size:.88rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--mid);transition:color var(--transition)}
-.main-nav a:hover{color:var(--charcoal)}
-.header-actions{display:flex;align-items:center;gap:.5rem}
-.icon-btn{width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background var(--transition);position:relative;color:var(--charcoal)}
-.icon-btn:hover{background:var(--warm)}
-.cart-count{position:absolute;top:4px;right:4px;background:var(--brown);color:#fff;width:18px;height:18px;border-radius:50%;font-size:.65rem;font-weight:600;display:flex;align-items:center;justify-content:center;transition:transform var(--transition)}
-.cart-count.bump{transform:scale(1.4)}
+.site-header{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--border);transition:box-shadow var(--t)}
+.site-header.scrolled{box-shadow:0 2px 16px rgba(0,0,0,.06)}
+.header-inner{max-width:1180px;margin:0 auto;padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:600}
+.logo em{font-style:italic;font-weight:400;color:var(--text2)}
+.main-nav{display:flex;gap:2.2rem;list-style:none}
+.main-nav a{font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);transition:color var(--t)}
+.main-nav a:hover{color:var(--text)}
+.header-right{display:flex;align-items:center;gap:.3rem}
+.icon-btn{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background var(--t);position:relative}
+.icon-btn:hover{background:var(--bg2)}
+.cart-count{position:absolute;top:5px;right:5px;background:var(--text);color:#fff;width:16px;height:16px;border-radius:50%;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center}
 .hamburger{display:none;flex-direction:column;gap:5px;padding:8px}
-.hamburger span{width:22px;height:2px;background:var(--charcoal);display:block;border-radius:2px;transition:var(--transition)}
+.hamburger span{width:20px;height:1.5px;background:var(--text);display:block}
 
 /* ─── MOBILE NAV ─── */
-.mobile-nav{position:fixed;inset:0;background:var(--cream);z-index:300;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding:2rem 1.5rem}
+.mobile-nav{position:fixed;inset:0;background:var(--bg);z-index:300;transform:translateX(-100%);transition:transform .32s cubic-bezier(.4,0,.2,1);padding:2rem 1.5rem;display:flex;flex-direction:column}
 .mobile-nav.open{transform:translateX(0)}
-.mobile-nav-close{align-self:flex-end;font-size:1.4rem;color:var(--charcoal);padding:.5rem}
-.mobile-nav ul{list-style:none;margin-top:2rem;display:flex;flex-direction:column;gap:1.5rem}
-.mobile-nav a{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--charcoal)}
+.mobile-nav-close{align-self:flex-end;font-size:1.1rem;color:var(--text2);padding:.5rem}
+.mobile-nav ul{list-style:none;margin-top:3rem;display:flex;flex-direction:column;gap:2rem}
+.mobile-nav a{font-family:var(--serif);font-size:1.8rem;font-weight:400}
 
 /* ─── HERO ─── */
-.hero{display:grid;grid-template-columns:1fr 1fr;min-height:88vh;max-width:1400px;margin:0 auto;padding:3rem 1.5rem 2rem}
-.hero-text{display:flex;flex-direction:column;justify-content:center;padding-right:4rem}
-.hero-eyebrow{font-size:.78rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--brown);margin-bottom:1.2rem}
-.hero-title{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4rem);line-height:1.08;font-weight:600;margin-bottom:1.4rem}
-.hero-title em{font-style:italic;color:var(--brown);font-weight:400}
-.hero-desc{font-size:1.05rem;color:var(--mid);max-width:420px;line-height:1.75;margin-bottom:2.2rem}
+.hero{min-height:82vh;display:flex;align-items:center;border-bottom:1px solid var(--border)}
+.hero-inner{max-width:1180px;margin:0 auto;padding:4rem 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text2);margin-bottom:1.4rem}
+.hero-title{font-family:var(--serif);font-size:clamp(2.6rem,5.5vw,4.4rem);line-height:1.05;font-weight:600;margin-bottom:1.5rem}
+.hero-title em{font-style:italic;font-weight:400}
+.hero-desc{color:var(--text2);font-size:1rem;line-height:1.8;max-width:400px;margin-bottom:2.5rem}
 .hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
-.btn-primary{background:var(--charcoal);color:#fff;padding:.85rem 2.2rem;border-radius:var(--radius);font-size:.9rem;font-weight:500;letter-spacing:.04em;transition:background var(--transition),transform .15s}
-.btn-primary:hover{background:var(--brown-dark);transform:translateY(-1px)}
-.btn-secondary{border:1.5px solid var(--charcoal);color:var(--charcoal);padding:.85rem 2.2rem;border-radius:var(--radius);font-size:.9rem;font-weight:500;letter-spacing:.04em;transition:all var(--transition)}
-.btn-secondary:hover{background:var(--charcoal);color:#fff}
-.hero-visual{display:flex;gap:1rem;align-items:stretch;padding:1rem 0}
-.hero-canvas{flex:1;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-lg)}
-.hero-canvas-side{flex:.45;display:flex;flex-direction:column;gap:1rem}
-.hero-canvas-side .mini{flex:1;border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+.btn-dark{background:var(--text);color:#fff;padding:.8rem 2rem;border-radius:var(--r);font-size:.85rem;font-weight:500;letter-spacing:.04em;transition:opacity var(--t)}
+.btn-dark:hover{opacity:.78}
+.btn-outline{border:1px solid var(--text);color:var(--text);padding:.8rem 2rem;border-radius:var(--r);font-size:.85rem;font-weight:500;letter-spacing:.04em;transition:background var(--t),color var(--t)}
+.btn-outline:hover{background:var(--text);color:#fff}
+.hero-visual{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:.8rem;height:500px}
+.hero-img-main{grid-row:1/3;border-radius:4px;overflow:hidden}
+.hero-img-sm{border-radius:4px;overflow:hidden}
+.hero-img-main,.hero-img-sm{background:var(--bg2)}
 
-/* ─── ARTWORK CSS BACKGROUNDS ─── */
-.art-1{background:radial-gradient(ellipse 65% 75% at 38% 52%,rgba(224,135,120,.85) 0%,transparent 65%),radial-gradient(ellipse 55% 65% at 68% 30%,rgba(200,90,110,.65) 0%,transparent 60%),radial-gradient(ellipse 90% 90% at 50% 50%,#F5D5C0 0%,#EAB8A8 100%)}
-.art-2{background:radial-gradient(ellipse 55% 38% at 50% 62%,rgba(90,130,190,.55) 0%,transparent 68%),linear-gradient(180deg,#0C1B2A 0%,#1A3558 38%,#2A5298 62%,#4880C0 80%,#8AAAD8 100%)}
-.art-3{background:radial-gradient(circle at 18% 78%,rgba(58,110,70,.75) 0%,transparent 38%),radial-gradient(circle at 82% 22%,rgba(58,110,70,.55) 0%,transparent 28%),radial-gradient(circle at 55% 50%,rgba(180,100,60,.4) 0%,transparent 50%),linear-gradient(145deg,#C06040 0%,#D4785A 25%,#E89870 45%,#C87060 70%,#A85848 100%)}
-.art-4{background:radial-gradient(circle at 50% 72%,rgba(255,200,80,.85) 0%,transparent 58%),radial-gradient(circle at 28% 48%,rgba(255,140,40,.5) 0%,transparent 38%),linear-gradient(175deg,#180800 0%,#3C1800 14%,#882800 32%,#D45A08 52%,#F09020 72%,#FFCC50 88%,#FFF0A0 100%)}
-.art-5{background:radial-gradient(ellipse 68% 52% at 50% 42%,rgba(208,148,168,.65) 0%,transparent 68%),radial-gradient(ellipse 42% 32% at 32% 58%,rgba(160,190,150,.5) 0%,transparent 48%),radial-gradient(ellipse 30% 25% at 68% 65%,rgba(180,148,168,.45) 0%,transparent 42%),linear-gradient(155deg,#F0EBE2 0%,#E8DDD0 50%,#D8D0C4 100%)}
-.art-6{background:linear-gradient(135deg,#0A2540 0%,#0A2540 48%,#1E4080 48%,#1E4080 100%);position:relative}
-.art-6::before{content:'';position:absolute;top:18%;left:22%;width:38%;height:55%;background:rgba(255,220,80,.18);border-radius:2px}
-.art-6::after{content:'';position:absolute;bottom:12%;right:18%;width:28%;height:38%;background:rgba(80,180,220,.22);border-radius:2px}
-.art-7{background:radial-gradient(ellipse 60% 70% at 35% 50%,rgba(218,130,115,.75) 0%,transparent 65%),radial-gradient(ellipse 50% 60% at 62% 32%,rgba(195,88,108,.6) 0%,transparent 60%),linear-gradient(155deg,#F8E0D5 0%,#EEC0B0 100%)}
-.art-8{background:linear-gradient(0deg,#2D6A4F 0%,#2D6A4F 30%,#95D5B2 30%,#95D5B2 62%,#F8F3E3 62%,#F8F3E3 100%)}
-.art-9{background:radial-gradient(circle at 42% 38%,rgba(255,198,80,.8) 0%,transparent 55%),linear-gradient(175deg,#1A0C00 0%,#4A2000 18%,#9A4A10 38%,#E08030 58%,#F8B848 78%,#FFF0C0 100%)}
-.art-10{background:radial-gradient(ellipse 70% 55% at 50% 45%,rgba(200,140,165,.6) 0%,transparent 70%),linear-gradient(152deg,#EDE8E0 0%,#DDD5C8 100%)}
+/* ─── OBRA CSS (placeholder si no hay foto) ─── */
+.art-1{background:linear-gradient(145deg,#F0D8CC,#D4A89A)}
+.art-2{background:linear-gradient(180deg,#1C3050,#3A6090)}
+.art-3{background:linear-gradient(140deg,#B8704A,#D49070)}
+.art-4{background:linear-gradient(170deg,#1A0800,#C06010,#F8B040)}
+.art-5{background:linear-gradient(155deg,#EDE5DC,#D0C4B8)}
+.art-6{background:#1C2E48}
+.art-7{background:linear-gradient(145deg,#EEDDD4,#D0A898)}
+.art-8{background:linear-gradient(0deg,#2D6A4F 0%,#95D5B2 55%,#F5F0E5 100%)}
+.art-9{background:linear-gradient(170deg,#200A00,#C85C10,#FFD050)}
+.art-10{background:linear-gradient(152deg,#EAE2D8,#D4C8BC)}
 
-/* ─── SECTION HEADERS ─── */
-section{padding:5rem 1.5rem}
-.section-inner{max-width:1200px;margin:0 auto}
-.section-label{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brown);font-weight:500;margin-bottom:.8rem}
-.section-title{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:600;line-height:1.15;margin-bottom:1rem}
-.section-title em{font-style:italic;color:var(--brown);font-weight:400}
-.section-sub{color:var(--mid);max-width:520px;font-size:.97rem;line-height:1.72}
+/* ─── COLECCIONES ─── */
+.collections{background:var(--bg2)}
+.collections-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.5rem}
+.coll-card{position:relative;height:280px;border-radius:4px;overflow:hidden;cursor:pointer}
+.coll-card:hover .coll-card-inner{transform:scale(1.02)}
+.coll-card-inner{position:absolute;inset:0;transition:transform .5s ease}
+.coll-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 50%);z-index:1}
+.coll-card-text{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:1.5rem}
+.coll-card-text h3{font-family:var(--serif);font-size:1.3rem;color:#fff;margin-bottom:.2rem}
+.coll-card-text p{font-size:.78rem;color:rgba(255,255,255,.7)}
 
-/* ─── COLLECTIONS CARDS ─── */
-.collections{background:var(--warm)}
-.collections-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem}
-.collection-card{border-radius:8px;overflow:hidden;position:relative;cursor:pointer;min-height:340px;display:flex;align-items:flex-end}
-.collection-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,24,20,.65) 0%,transparent 55%);transition:opacity var(--transition)}
-.collection-card:hover::after{opacity:.85}
-.collection-art{position:absolute;inset:0}
-.collection-info{position:relative;z-index:1;padding:1.8rem;color:#fff}
-.collection-info h3{font-family:var(--serif);font-size:1.6rem;font-weight:600;margin-bottom:.4rem}
-.collection-info p{font-size:.85rem;opacity:.85;margin-bottom:1rem}
-.collection-link{display:inline-flex;align-items:center;gap:.5rem;font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:2px;transition:border-color var(--transition)}
-.collection-link:hover{border-color:#fff}
-
-/* ─── SHOP SECTION ─── */
-.shop-filters{display:flex;gap:.6rem;flex-wrap:wrap;margin:2.2rem 0 2.8rem}
-.filter-btn{padding:.55rem 1.4rem;border-radius:100px;font-size:.83rem;font-weight:500;letter-spacing:.04em;border:1.5px solid var(--border);color:var(--mid);background:#fff;transition:all var(--transition)}
-.filter-btn:hover{border-color:var(--brown);color:var(--brown)}
-.filter-btn.active{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
-
-.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem 1.4rem}
-.product-card{cursor:pointer;transition:transform var(--transition)}
-.product-card:hover{transform:translateY(-4px)}
-.product-card:hover .product-img{box-shadow:var(--shadow-lg)}
+/* ─── SHOP ─── */
+.shop-filters{display:flex;gap:.5rem;flex-wrap:wrap;margin:2rem 0 2.5rem}
+.filter-btn{padding:.48rem 1.2rem;border-radius:100px;font-size:.8rem;font-weight:500;letter-spacing:.03em;border:1px solid var(--border);color:var(--text2);background:var(--bg);transition:all var(--t)}
+.filter-btn:hover{border-color:var(--text);color:var(--text)}
+.filter-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem 1.8rem}
+.product-card{cursor:pointer}
 .product-card.hidden{display:none}
-.product-img{width:100%;aspect-ratio:3/4;border-radius:6px;overflow:hidden;position:relative;box-shadow:var(--shadow);transition:box-shadow var(--transition)}
-.product-badge{position:absolute;top:.7rem;left:.7rem;background:var(--charcoal);color:#fff;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.28rem .65rem;border-radius:3px;z-index:1}
-.product-badge.sold{background:#6B6560}
-.product-badge.new{background:var(--sage)}
-.product-info{padding:.9rem .2rem .4rem}
-.product-name{font-family:var(--serif);font-size:1.05rem;font-weight:400;margin-bottom:.2rem}
-.product-meta{font-size:.8rem;color:var(--mid);margin-bottom:.55rem}
+.product-img{width:100%;aspect-ratio:3/4;border-radius:4px;overflow:hidden;position:relative;background:var(--bg2);transition:opacity var(--t)}
+.product-card:hover .product-img{opacity:.88}
+.product-badge{position:absolute;top:.6rem;left:.6rem;font-size:.65rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.22rem .6rem;border-radius:2px;background:var(--text);color:#fff;z-index:1}
+.product-badge.sold{background:var(--text2)}
+.product-info{padding:.8rem 0 .3rem}
+.product-name{font-family:var(--serif);font-size:1rem;font-weight:400;margin-bottom:.15rem}
+.product-meta{font-size:.75rem;color:var(--text2);margin-bottom:.55rem}
 .product-footer{display:flex;align-items:center;justify-content:space-between}
-.product-price{font-size:1rem;font-weight:600;letter-spacing:.01em}
-.add-btn{width:34px;height:34px;border-radius:50%;background:var(--charcoal);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--transition),transform .15s;flex-shrink:0}
-.add-btn:hover{background:var(--brown);transform:scale(1.1)}
-.add-btn svg{width:16px;height:16px}
+.product-price{font-size:.92rem;font-weight:500}
+.add-btn{width:30px;height:30px;border-radius:50%;background:var(--text);color:#fff;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity var(--t);flex-shrink:0}
+.product-card:hover .add-btn{opacity:1}
 
 /* ─── ABOUT ─── */
-.about{background:var(--warm)}
+.about{background:var(--bg2)}
 .about-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
-.about-portrait{border-radius:8px;overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:4/5;position:relative}
-.portrait-art{position:absolute;inset:0;background:radial-gradient(ellipse 80% 95% at 50% 45%,#D4A882 0%,#B8806A 35%,#C89070 60%,#E8B898 80%,#F5D8C8 100%)}
-.portrait-art::before{content:'';position:absolute;top:5%;left:15%;right:15%;height:55%;background:radial-gradient(ellipse 70% 80% at 50% 40%,rgba(180,120,80,.8) 0%,rgba(140,90,65,.9) 50%,rgba(100,65,50,.95) 100%);border-radius:50% 50% 45% 45%}
-.portrait-art::after{content:'';position:absolute;top:2%;left:25%;right:25%;height:28%;background:radial-gradient(ellipse 70% 75% at 50% 35%,rgba(220,180,150,.9) 0%,rgba(190,140,110,.85) 100%);border-radius:50%}
-.about-quote{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);margin-bottom:1.2rem}
-.about-text p{color:var(--mid);line-height:1.8;margin-bottom:1rem;font-size:.97rem}
-.about-text p strong{color:var(--charcoal);font-weight:500}
-.social-row{display:flex;gap:1rem;margin-top:1.8rem;flex-wrap:wrap}
-.social-btn{display:inline-flex;align-items:center;gap:.55rem;padding:.65rem 1.3rem;border:1.5px solid var(--charcoal);border-radius:100px;font-size:.83rem;font-weight:500;transition:all var(--transition)}
-.social-btn:hover{background:var(--charcoal);color:#fff}
-.social-btn svg{width:16px;height:16px;flex-shrink:0}
+.about-portrait{aspect-ratio:3/4;border-radius:4px;overflow:hidden;background:var(--border)}
+.about-portrait-art{width:100%;height:100%;background:linear-gradient(160deg,#E8D8C8,#C8A888)}
+.about-text .label{margin-bottom:.8rem;display:block}
+.about-text p{color:var(--text2);line-height:1.85;font-size:.95rem;margin-bottom:.85rem}
+.about-text p strong{color:var(--text);font-weight:500}
+.social-row{display:flex;gap:.75rem;margin-top:1.6rem;flex-wrap:wrap}
+.social-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.2rem;border:1px solid var(--border);border-radius:var(--r);font-size:.8rem;font-weight:500;transition:all var(--t)}
+.social-btn:hover{border-color:var(--text)}
 
-/* ─── PROCESS ─── */
-.process-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem}
-.step{text-align:center;padding:2rem 1.5rem;background:#fff;border-radius:8px;box-shadow:var(--shadow)}
-.step-icon{width:52px;height:52px;background:var(--warm);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-size:1.4rem}
-.step h4{font-family:var(--serif);font-size:1.1rem;font-weight:600;margin-bottom:.5rem}
-.step p{font-size:.85rem;color:var(--mid);line-height:1.7}
+/* ─── PROCESO ─── */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2.8rem}
+.step{padding:2rem;border:1px solid var(--border);border-radius:4px}
+.step-num{font-family:var(--serif);font-size:1.8rem;font-weight:400;color:var(--border);margin-bottom:1rem}
+.step h4{font-size:.88rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:.5rem}
+.step p{font-size:.83rem;color:var(--text2);line-height:1.7}
 
 /* ─── NEWSLETTER ─── */
-.newsletter{background:var(--charcoal);color:#fff;text-align:center}
-.newsletter .section-title{color:#fff}
-.newsletter .section-sub{color:rgba(255,255,255,.65);margin:0 auto 2.5rem}
-.newsletter .section-label{color:#D4AF6A}
-.newsletter-form{display:flex;gap:.75rem;max-width:440px;margin:0 auto}
-.newsletter-input{flex:1;padding:.85rem 1.2rem;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:.9rem;transition:border-color var(--transition)}
-.newsletter-input::placeholder{color:rgba(255,255,255,.4)}
-.newsletter-input:focus{outline:none;border-color:rgba(255,255,255,.5)}
-.btn-gold{background:#D4AF6A;color:var(--charcoal);padding:.85rem 1.6rem;border-radius:var(--radius);font-size:.88rem;font-weight:600;transition:background var(--transition)}
-.btn-gold:hover{background:#E8C87C}
+.newsletter{border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
+.newsletter-form{display:flex;gap:.6rem;max-width:400px;margin:2rem auto 0}
+.newsletter-input{flex:1;padding:.75rem 1rem;border:1px solid var(--border);border-radius:var(--r);font-family:var(--sans);font-size:.88rem;transition:border-color var(--t)}
+.newsletter-input:focus{outline:none;border-color:var(--text)}
 
 /* ─── FOOTER ─── */
-.site-footer{background:var(--charcoal);color:rgba(255,255,255,.65);border-top:1px solid rgba(255,255,255,.08)}
-.footer-inner{max-width:1200px;margin:0 auto;padding:4rem 1.5rem 2rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem}
-.footer-brand .logo{color:#fff;font-size:1.15rem;margin-bottom:.8rem}
-.footer-brand p{font-size:.83rem;line-height:1.75}
-.footer-col h5{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:1.2rem;font-weight:500}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.65rem}
-.footer-col a{font-size:.85rem;transition:color var(--transition)}
-.footer-col a:hover{color:#fff}
-.footer-bottom{max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.08);font-size:.78rem}
-.footer-social{display:flex;gap:.8rem}
-.footer-social a{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;transition:all var(--transition)}
-.footer-social a:hover{background:#fff;color:var(--charcoal)}
-.footer-social svg{width:15px;height:15px}
+.site-footer{background:var(--bg2);border-top:1px solid var(--border)}
+.footer-inner{max-width:1180px;margin:0 auto;padding:3.5rem 1.5rem 2rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem}
+.footer-brand .logo{display:block;margin-bottom:.7rem}
+.footer-brand p{font-size:.8rem;color:var(--text2);line-height:1.7}
+.footer-col h5{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);margin-bottom:1rem;font-weight:500}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.footer-col a{font-size:.82rem;color:var(--text2);transition:color var(--t)}
+.footer-col a:hover{color:var(--text)}
+.footer-bottom{max-width:1180px;margin:0 auto;padding:1.5rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);font-size:.75rem;color:var(--text2)}
 
-/* ─── CART SIDEBAR ─── */
-.overlay{position:fixed;inset:0;background:rgba(26,24,20,.45);z-index:400;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(2px)}
+/* ─── OVERLAY ─── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:400;opacity:0;pointer-events:none;transition:opacity .3s}
 .overlay.open{opacity:1;pointer-events:all}
-.cart-sidebar{position:fixed;top:0;right:0;width:420px;max-width:100vw;height:100vh;background:#fff;z-index:500;transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:var(--shadow-lg)}
-.cart-sidebar.open{transform:translateX(0)}
-.cart-header{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.5rem;border-bottom:1px solid var(--border)}
-.cart-header h2{font-family:var(--serif);font-size:1.3rem;font-weight:600}
-.close-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background var(--transition)}
-.close-btn:hover{background:var(--warm)}
-.cart-body{flex:1;overflow-y:auto;padding:1.5rem}
-.cart-empty{text-align:center;padding:4rem 2rem;color:var(--mid)}
-.cart-empty-icon{font-size:3rem;margin-bottom:1rem}
-.cart-empty h3{font-family:var(--serif);font-size:1.2rem;margin-bottom:.5rem;color:var(--charcoal)}
-.cart-item{display:flex;gap:1rem;padding:1.2rem 0;border-bottom:1px solid var(--border)}
-.cart-item-img{width:80px;height:100px;border-radius:4px;overflow:hidden;flex-shrink:0}
-.cart-item-details{flex:1;min-width:0}
-.cart-item-name{font-family:var(--serif);font-size:.97rem;margin-bottom:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cart-item-variant{font-size:.78rem;color:var(--mid);margin-bottom:.7rem}
-.cart-item-controls{display:flex;align-items:center;justify-content:space-between}
-.qty-control{display:flex;align-items:center;gap:.5rem;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.qty-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--mid);transition:background var(--transition)}
-.qty-btn:hover{background:var(--warm)}
-.qty-val{font-size:.88rem;font-weight:500;min-width:24px;text-align:center}
-.remove-btn{font-size:.75rem;color:var(--mid);text-decoration:underline;text-underline-offset:3px;transition:color var(--transition)}
-.remove-btn:hover{color:var(--charcoal)}
-.cart-item-price{font-weight:600;font-size:.95rem;flex-shrink:0}
-.cart-footer{padding:1.5rem;border-top:1px solid var(--border)}
-.cart-subtotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.9rem}
-.cart-subtotal-price{font-family:var(--serif);font-size:1.2rem;font-weight:600}
-.cart-note{font-size:.76rem;color:var(--mid);text-align:center;margin-bottom:1rem}
-.btn-checkout{width:100%;padding:1rem;background:var(--charcoal);color:#fff;border-radius:var(--radius);font-size:.95rem;font-weight:500;letter-spacing:.04em;transition:background var(--transition)}
-.btn-checkout:hover{background:var(--brown-dark)}
 
-/* ─── PRODUCT MODAL ─── */
-.product-modal{position:fixed;inset:0;z-index:600;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .28s}
+/* ─── CARRITO ─── */
+.cart-sidebar{position:fixed;top:0;right:0;width:400px;max-width:100vw;height:100vh;background:var(--bg);z-index:500;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--border)}
+.cart-sidebar.open{transform:translateX(0)}
+.cart-header{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 1.5rem;border-bottom:1px solid var(--border)}
+.cart-header h2{font-family:var(--serif);font-size:1.2rem;font-weight:600}
+.close-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background var(--t)}
+.close-btn:hover{background:var(--bg2)}
+.cart-body{flex:1;overflow-y:auto;padding:1.5rem}
+.cart-empty{text-align:center;padding:4rem 1rem;color:var(--text2)}
+.cart-empty h3{font-family:var(--serif);font-size:1.1rem;color:var(--text);margin-bottom:.4rem}
+.cart-item{display:flex;gap:1rem;padding:1.1rem 0;border-bottom:1px solid var(--border)}
+.cart-item-img{width:72px;height:90px;border-radius:3px;overflow:hidden;flex-shrink:0;background:var(--bg2)}
+.cart-item-details{flex:1;min-width:0}
+.cart-item-name{font-family:var(--serif);font-size:.92rem;margin-bottom:.18rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-item-variant{font-size:.75rem;color:var(--text2);margin-bottom:.65rem}
+.cart-item-controls{display:flex;align-items:center;justify-content:space-between}
+.qty-control{display:flex;align-items:center;gap:.5rem;border:1px solid var(--border);border-radius:var(--r)}
+.qty-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--text2);transition:background var(--t)}
+.qty-btn:hover{background:var(--bg2)}
+.qty-val{font-size:.82rem;font-weight:500;min-width:20px;text-align:center}
+.remove-btn{font-size:.72rem;color:var(--text2);text-decoration:underline;text-underline-offset:3px;transition:color var(--t)}
+.remove-btn:hover{color:var(--text)}
+.cart-item-price{font-weight:500;font-size:.88rem;flex-shrink:0}
+.cart-footer{padding:1.4rem 1.5rem;border-top:1px solid var(--border)}
+.cart-subtotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;font-size:.85rem;color:var(--text2)}
+.cart-subtotal-price{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--text)}
+.cart-note{font-size:.72rem;color:var(--text2);text-align:center;margin-bottom:.9rem}
+.btn-checkout{width:100%;padding:.9rem;background:var(--text);color:#fff;border-radius:var(--r);font-size:.88rem;font-weight:500;letter-spacing:.04em;transition:opacity var(--t)}
+.btn-checkout:hover{opacity:.78}
+
+/* ─── MODAL PRODUCTO ─── */
+.product-modal{position:fixed;inset:0;z-index:600;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .25s}
 .product-modal.open{opacity:1;pointer-events:all}
-.product-modal-bg{position:absolute;inset:0;background:rgba(26,24,20,.55);backdrop-filter:blur(4px)}
-.product-modal-inner{position:relative;background:#fff;border-radius:10px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;box-shadow:var(--shadow-lg);transform:translateY(20px) scale(.97);transition:transform .28s cubic-bezier(.4,0,.2,1)}
-.product-modal.open .product-modal-inner{transform:translateY(0) scale(1)}
-.modal-img{min-height:440px;position:relative}
-.modal-details{padding:2.5rem 2rem;overflow-y:auto}
-.modal-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:background var(--transition)}
-.modal-close:hover{background:#fff}
-.modal-badge{display:inline-block;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .65rem;border-radius:3px;margin-bottom:1rem}
-.modal-badge.new{background:#E8F5ED;color:var(--sage)}
-.modal-badge.original{background:var(--warm);color:var(--brown)}
-.modal-badge.print{background:#EEF2F8;color:#456}
-.modal-title{font-family:var(--serif);font-size:1.7rem;font-weight:600;line-height:1.15;margin-bottom:.5rem}
-.modal-medium{font-size:.83rem;color:var(--mid);margin-bottom:1.2rem}
-.modal-price{font-size:1.5rem;font-weight:600;margin-bottom:1.5rem}
-.modal-desc{font-size:.9rem;color:var(--mid);line-height:1.78;margin-bottom:1.5rem}
-.modal-specs{background:var(--cream);border-radius:6px;padding:1rem 1.2rem;margin-bottom:1.5rem}
-.modal-spec{display:flex;justify-content:space-between;padding:.4rem 0;font-size:.83rem;border-bottom:1px solid var(--border)}
-.modal-spec:last-child{border:none}
-.modal-spec span:first-child{color:var(--mid)}
+.product-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.35)}
+.product-modal-inner{position:relative;background:var(--bg);border-radius:6px;max-width:860px;width:100%;max-height:92vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;transform:translateY(16px);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.product-modal.open .product-modal-inner{transform:translateY(0)}
+.modal-img{min-height:420px;position:relative;background:var(--bg2)}
+.modal-img-inner{position:absolute;inset:0}
+.modal-details{padding:2.2rem 1.8rem;overflow-y:auto}
+.modal-close{position:absolute;top:.8rem;right:.8rem;width:32px;height:32px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1}
+.modal-type{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:.8rem;display:block}
+.modal-title{font-family:var(--serif);font-size:1.6rem;font-weight:600;line-height:1.1;margin-bottom:.35rem}
+.modal-medium{font-size:.8rem;color:var(--text2);margin-bottom:1rem}
+.modal-price{font-size:1.35rem;font-weight:600;margin-bottom:1.2rem}
+.modal-desc{font-size:.87rem;color:var(--text2);line-height:1.8;margin-bottom:1.3rem}
+.modal-specs{border-top:1px solid var(--border);margin-bottom:1.3rem}
+.modal-spec{display:flex;justify-content:space-between;padding:.45rem 0;font-size:.8rem;border-bottom:1px solid var(--border)}
+.modal-spec span:first-child{color:var(--text2)}
 .modal-spec span:last-child{font-weight:500}
-.size-selector{margin-bottom:1.5rem}
-.size-label{font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.7rem}
-.size-options{display:flex;gap:.5rem;flex-wrap:wrap}
-.size-opt{padding:.45rem 1rem;border:1.5px solid var(--border);border-radius:var(--radius);font-size:.82rem;cursor:pointer;transition:all var(--transition)}
-.size-opt:hover{border-color:var(--charcoal)}
-.size-opt.selected{border-color:var(--charcoal);background:var(--charcoal);color:#fff}
-.modal-add{width:100%;padding:1rem;background:var(--charcoal);color:#fff;border-radius:var(--radius);font-size:.95rem;font-weight:500;letter-spacing:.04em;transition:background var(--transition)}
-.modal-add:hover{background:var(--brown-dark)}
-.modal-add:disabled{background:var(--mid);cursor:default}
-.modal-shipping{display:flex;align-items:center;gap:.5rem;margin-top:1rem;font-size:.78rem;color:var(--mid)}
-.modal-shipping svg{width:14px;height:14px;flex-shrink:0}
+.size-label{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem}
+.size-options{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.3rem}
+.size-opt{padding:.4rem .9rem;border:1px solid var(--border);border-radius:var(--r);font-size:.78rem;cursor:pointer;transition:all var(--t)}
+.size-opt:hover{border-color:var(--text)}
+.size-opt.selected{border-color:var(--text);background:var(--text);color:#fff}
+.modal-add{width:100%;padding:.9rem;background:var(--text);color:#fff;border-radius:var(--r);font-size:.88rem;font-weight:500;letter-spacing:.04em;transition:opacity var(--t)}
+.modal-add:hover{opacity:.78}
+.modal-add:disabled{opacity:.4;cursor:default}
+.modal-shipping{display:flex;align-items:center;gap:.4rem;margin-top:.9rem;font-size:.74rem;color:var(--text2)}
 
 /* ─── CHECKOUT MODAL ─── */
-.checkout-modal{position:fixed;inset:0;z-index:700;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .28s}
+.checkout-modal{position:fixed;inset:0;z-index:700;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .25s}
 .checkout-modal.open{opacity:1;pointer-events:all}
-.checkout-modal-bg{position:absolute;inset:0;background:rgba(26,24,20,.6);backdrop-filter:blur(5px)}
-.checkout-inner{position:relative;background:#fff;border-radius:10px;max-width:820px;width:100%;max-height:92vh;overflow-y:auto;display:grid;grid-template-columns:.85fr 1fr;box-shadow:var(--shadow-lg)}
-.checkout-form-col{padding:2.5rem 2rem}
-.checkout-form-col h2{font-family:var(--serif);font-size:1.5rem;font-weight:600;margin-bottom:.4rem}
-.checkout-form-col > p{font-size:.83rem;color:var(--mid);margin-bottom:2rem}
-.form-section-title{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);margin:.8rem 0 1rem;padding-top:.8rem;border-top:1px solid var(--border)}
-.form-section-title:first-of-type{border:none;padding-top:0}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
-.form-row.single{grid-template-columns:1fr}
-.form-group{display:flex;flex-direction:column;gap:.38rem}
-.form-group label{font-size:.78rem;font-weight:500;letter-spacing:.04em;color:var(--charcoal)}
-.form-group input,.form-group select{padding:.72rem .9rem;border:1.5px solid var(--border);border-radius:var(--radius);font-family:var(--sans);font-size:.88rem;color:var(--charcoal);transition:border-color var(--transition);background:#fff;width:100%}
-.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--charcoal)}
-.form-group input::placeholder{color:#bbb}
-.payment-icons{display:flex;gap:.5rem;margin-bottom.8rem}
-.card-brands{display:flex;gap:.4rem;margin-bottom:1rem}
-.card-brand{padding:.25rem .6rem;border:1px solid var(--border);border-radius:3px;font-size:.7rem;font-weight:600;color:var(--mid)}
-.checkout-submit{width:100%;padding:1rem;background:var(--charcoal);color:#fff;border-radius:var(--radius);font-size:.95rem;font-weight:500;letter-spacing:.04em;margin-top:1.5rem;transition:background var(--transition)}
-.checkout-submit:hover{background:var(--brown-dark)}
-.checkout-note{font-size:.74rem;color:var(--mid);text-align:center;margin-top:.75rem;display:flex;align-items:center;justify-content:center;gap:.35rem}
-.checkout-summary-col{background:var(--cream);padding:2.5rem 1.8rem;border-radius:10px 0 0 10px}
-.checkout-summary-col h3{font-family:var(--serif);font-size:1.1rem;font-weight:600;margin-bottom:1.5rem}
-.summary-items{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem}
-.summary-item{display:flex;gap.75rem;align-items:flex-start;gap:.75rem}
-.summary-item-img{width:54px;height:68px;border-radius:4px;overflow:hidden;flex-shrink:0;position:relative}
-.summary-item-img .qty-badge{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:var(--brown);color:#fff;border-radius:50%;font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.checkout-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.4)}
+.checkout-inner{position:relative;background:var(--bg);border-radius:6px;max-width:780px;width:100%;max-height:92vh;overflow-y:auto;display:grid;grid-template-columns:.85fr 1fr}
+.checkout-close{position:absolute;top:.8rem;right:.8rem;width:32px;height:32px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1}
+.checkout-summary-col{background:var(--bg2);padding:2.2rem 1.8rem;border-radius:6px 0 0 6px}
+.checkout-summary-col h3{font-family:var(--serif);font-size:1.1rem;font-weight:600;margin-bottom:1.4rem}
+.summary-items{display:flex;flex-direction:column;gap:.9rem;margin-bottom:1.3rem}
+.summary-item{display:flex;gap:.65rem;align-items:flex-start}
+.summary-item-img{width:50px;height:62px;border-radius:3px;overflow:hidden;flex-shrink:0;position:relative;background:var(--border)}
+.qty-badge{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:var(--text);color:#fff;border-radius:50%;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center}
 .summary-item-info{flex:1;min-width:0}
-.summary-item-name{font-size:.85rem;font-weight:500;margin-bottom:.15rem}
-.summary-item-variant{font-size:.76rem;color:var(--mid)}
-.summary-item-price{font-size:.88rem;font-weight:600;flex-shrink:0}
-.summary-divider{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
-.summary-line{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.5rem;color:var(--mid)}
-.summary-total{display:flex;justify-content:space-between;font-size:1.05rem;font-weight:600;color:var(--charcoal);margin-top:.8rem}
-.checkout-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.checkout-close:hover{background:#fff}
-
-/* ─── SUCCESS STATE ─── */
-.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;min-height:400px}
-.success-screen.show{display:flex}
-.checkout-form-inner{transition:opacity .3s}
-.success-icon{width:72px;height:72px;background:#E8F5ED;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;font-size:2rem}
-.success-screen h2{font-family:var(--serif);font-size:1.6rem;margin-bottom:.75rem}
-.success-screen p{color:var(--mid);font-size:.9rem;max-width:320px;line-height:1.7}
+.summary-item-name{font-size:.82rem;font-weight:500;margin-bottom:.1rem}
+.summary-item-variant{font-size:.72rem;color:var(--text2)}
+.summary-item-price{font-size:.85rem;font-weight:600;flex-shrink:0}
+.summary-divider{border:none;border-top:1px solid var(--border);margin:.8rem 0}
+.summary-line{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.4rem;color:var(--text2)}
+.summary-total{display:flex;justify-content:space-between;font-size:.98rem;font-weight:600;color:var(--text);margin-top:.6rem}
+.checkout-pay-col{padding:2.2rem 1.8rem;background:var(--bg);border-radius:0 6px 6px 0;display:flex;flex-direction:column}
+.checkout-pay-col h2{font-family:var(--serif);font-size:1.3rem;font-weight:600;margin-bottom:.4rem}
+.pay-intro{font-size:.83rem;color:var(--text2);line-height:1.7;margin-bottom:1.4rem}
+.accepted-methods{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.3rem}
+.method-badge{padding:.28rem .7rem;border:1px solid var(--border);border-radius:3px;font-size:.7rem;font-weight:700;color:var(--text2)}
+.checkout-trust{border:1px solid var(--border);border-radius:4px;padding:1rem 1.2rem;margin-bottom:1.4rem;display:flex;flex-direction:column;gap:.5rem}
+.trust-item{font-size:.8rem;color:var(--text)}
+.btn-stripe{width:100%;padding:1rem;background:#635BFF;color:#fff;border-radius:var(--r);font-size:.92rem;font-weight:600;margin-bottom:.9rem;transition:opacity var(--t)}
+.btn-stripe:hover{opacity:.88}
+.btn-stripe:disabled{opacity:.5;cursor:default}
+.stripe-legal{font-size:.71rem;color:var(--text2);line-height:1.6;text-align:center;margin-bottom:.8rem}
+.stripe-badge{display:flex;align-items:center;justify-content:center;gap:.3rem;font-size:.71rem;color:var(--text2)}
 
 /* ─── TOAST ─── */
-.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--charcoal);color:#fff;padding:.75rem 1.5rem;border-radius:100px;font-size:.85rem;font-weight:500;z-index:999;opacity:0;pointer-events:none;transition:all .3s;white-space:nowrap}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(12px);background:var(--text);color:#fff;padding:.65rem 1.3rem;border-radius:100px;font-size:.82rem;z-index:999;opacity:0;pointer-events:none;transition:all .28s;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ─── STRIPE PAYMENT PANEL ─── */
-.checkout-pay-col{padding:2.5rem 2rem;display:flex;flex-direction:column;background:#fff;border-radius:0 10px 10px 0}
-.checkout-pay-col h2{font-family:var(--serif);font-size:1.5rem;font-weight:600;margin-bottom:.5rem}
-.pay-intro{font-size:.85rem;color:var(--mid);line-height:1.7;margin-bottom:1.5rem}
-.accepted-methods{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.4rem}
-.method-badge{padding:.32rem .75rem;border:1.5px solid var(--border);border-radius:4px;font-size:.72rem;font-weight:700;color:var(--mid);letter-spacing:.02em}
-.checkout-trust{background:var(--cream);border-radius:8px;padding:1.1rem 1.3rem;margin-bottom:1.6rem;display:flex;flex-direction:column;gap:.55rem}
-.trust-item{font-size:.83rem;color:var(--charcoal)}
-.btn-stripe{width:100%;padding:1.05rem;background:#635BFF;color:#fff;border-radius:var(--radius);font-size:.97rem;font-weight:600;letter-spacing:.02em;transition:background .2s,transform .15s;margin-bottom:1rem}
-.btn-stripe:hover{background:#5a52e8;transform:translateY(-1px)}
-.btn-stripe:disabled{background:#9b97c7;cursor:default;transform:none}
-.stripe-legal{font-size:.74rem;color:var(--mid);line-height:1.65;text-align:center;margin-bottom:1.2rem}
-.stripe-badge{display:flex;align-items:center;justify-content:center;gap:.3rem}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:900px){
-  .hero{grid-template-columns:1fr;min-height:auto;padding:2rem 1.5rem 3rem;gap:2.5rem}
-  .hero-text{padding-right:0;text-align:center;align-items:center}
-  .hero-desc{text-align:center}
+  .hero-inner{grid-template-columns:1fr;min-height:auto;gap:2rem;padding:3rem 1.5rem}
+  .hero-visual{height:320px}
   .collections-grid{grid-template-columns:1fr}
-  .products-grid{grid-template-columns:repeat(2,1fr)}
-  .about-inner{grid-template-columns:1fr;gap:3rem}
+  .products-grid{grid-template-columns:repeat(2,1fr);gap:1.8rem 1rem}
+  .about-inner{grid-template-columns:1fr;gap:2.5rem}
   .footer-inner{grid-template-columns:1fr 1fr;gap:2rem}
+  .steps-grid{grid-template-columns:1fr}
   .main-nav{display:none}
   .hamburger{display:flex}
   .checkout-inner{grid-template-columns:1fr}
-  .checkout-summary-col{border-radius:10px 10px 0 0}
-  .checkout-pay-col{border-radius:0 0 10px 10px}
+  .checkout-summary-col{border-radius:6px 6px 0 0}
+  .checkout-pay-col{border-radius:0 0 6px 6px}
   .product-modal-inner{grid-template-columns:1fr}
-  .modal-img{min-height:280px}
-  .process-steps{grid-template-columns:1fr}
+  .modal-img{min-height:260px}
+  .add-btn{opacity:1}
 }
-@media(max-width:540px){
-  .products-grid{grid-template-columns:1fr 1fr;gap:1rem .8rem}
-  .hero-cta{flex-direction:column;width:100%}
-  .btn-primary,.btn-secondary{text-align:center}
+@media(max-width:520px){
+  .products-grid{grid-template-columns:1fr 1fr;gap:1.2rem .7rem}
+  .hero-cta{flex-direction:column}
   .newsletter-form{flex-direction:column}
   .footer-inner{grid-template-columns:1fr}
-  .form-row{grid-template-columns:1fr}
+  .hero-visual{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ANNOUNCEMENT -->
-<div class="announcement">
-  Free shipping on orders over <span>€120</span> &nbsp;·&nbsp; Original paintings ship worldwide
-</div>
-
 <!-- HEADER -->
 <header class="site-header" id="site-header">
   <div class="header-inner">
-    <a href="#" class="logo">what <span>maria</span> paints</a>
-    <nav>
-      <ul class="main-nav">
-        <li><a href="#shop">Shop</a></li>
-        <li><a href="#originals">Originals</a></li>
-        <li><a href="#prints">Prints</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
-    </nav>
-    <div class="header-actions">
-      <button class="icon-btn" onclick="openCart()" aria-label="Cart">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="22" height="22"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    <a href="#" class="logo">what <em>maria</em> paints</a>
+    <nav><ul class="main-nav">
+      <li><a href="#shop">Tienda</a></li>
+      <li><a href="#shop" onclick="filterProducts('original')">Originales</a></li>
+      <li><a href="#shop" onclick="filterProducts('print')">Láminas</a></li>
+      <li><a href="#about">Sobre mí</a></li>
+    </ul></nav>
+    <div class="header-right">
+      <button class="icon-btn" onclick="openCart()" aria-label="Carrito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="20"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="cart-count" id="cart-count">0</span>
       </button>
-      <button class="hamburger icon-btn" onclick="toggleMobileNav()" aria-label="Menu">
+      <button class="hamburger icon-btn" onclick="toggleMobileNav()" aria-label="Menú">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -381,135 +308,121 @@ section{padding:5rem 1.5rem}
 <nav class="mobile-nav" id="mobile-nav">
   <button class="mobile-nav-close" onclick="toggleMobileNav()">✕</button>
   <ul>
-    <li><a href="#shop" onclick="toggleMobileNav()">Shop</a></li>
-    <li><a href="#originals" onclick="toggleMobileNav()">Originals</a></li>
-    <li><a href="#prints" onclick="toggleMobileNav()">Prints</a></li>
-    <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
+    <li><a href="#shop" onclick="toggleMobileNav()">Tienda</a></li>
+    <li><a href="#shop" onclick="filterProducts('original');toggleMobileNav()">Originales</a></li>
+    <li><a href="#shop" onclick="filterProducts('print');toggleMobileNav()">Láminas</a></li>
+    <li><a href="#about" onclick="toggleMobileNav()">Sobre mí</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
-<section style="padding:0">
-  <div class="hero">
+<section style="padding:0;border-bottom:1px solid var(--border)">
+  <div class="hero-inner">
     <div class="hero-text">
-      <p class="hero-eyebrow">Hand-painted originals & fine art prints</p>
-      <h1 class="hero-title">Art that makes<br>your space <em>feel alive</em></h1>
-      <p class="hero-desc">Each piece is painted by hand in my studio, with layers of colour and texture that photography can barely capture. Collect a one-of-a-kind original, or bring the same energy home with a museum-quality print.</p>
+      <p class="hero-eyebrow">Pinturas originales y láminas de arte</p>
+      <h1 class="hero-title">Arte hecho a mano<br>para tu <em>espacio</em></h1>
+      <p class="hero-desc">Cada pieza la pinto a mano en mi estudio, con capas de color y textura que la fotografía apenas puede capturar. Llévate un original único o la misma energía en una lámina de calidad museo.</p>
       <div class="hero-cta">
-        <a href="#shop" class="btn-primary">Shop All Works</a>
-        <a href="#about" class="btn-secondary">About the Artist</a>
+        <a href="#shop" class="btn-dark">Ver todas las obras</a>
+        <a href="#about" class="btn-outline">Sobre la artista</a>
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-canvas art-4" style="flex:1.1"></div>
-      <div class="hero-canvas-side">
-        <div class="mini art-1"></div>
-        <div class="mini art-2"></div>
-      </div>
+      <div class="hero-img-main art-4"></div>
+      <div class="hero-img-sm art-1"></div>
+      <div class="hero-img-sm art-7"></div>
     </div>
   </div>
 </section>
 
-<!-- COLLECTIONS -->
+<!-- COLECCIONES -->
 <section class="collections">
-  <div class="section-inner">
-    <p class="section-label">Collections</p>
-    <h2 class="section-title">Browse by <em>category</em></h2>
+  <div class="inner">
+    <p class="label">Colecciones</p>
+    <h2 class="title">Elige <em>tu formato</em></h2>
     <div class="collections-grid">
-      <div class="collection-card" onclick="filterProducts('original')" style="min-height:320px">
-        <div class="collection-art art-3" style="position:absolute;inset:0"></div>
-        <div class="collection-info">
-          <h3>Original Paintings</h3>
-          <p>Unique, signed works — one collector only</p>
-          <span class="collection-link">Shop originals →</span>
+      <div class="coll-card" onclick="filterProducts('original')">
+        <div class="coll-card-inner art-3"></div>
+        <div class="coll-card-overlay"></div>
+        <div class="coll-card-text">
+          <h3>Pinturas originales</h3>
+          <p>Obras únicas, firmadas — solo una coleccionista</p>
         </div>
       </div>
-      <div class="collection-card" onclick="filterProducts('print')" style="min-height:320px">
-        <div class="collection-art art-8" style="position:absolute;inset:0"></div>
-        <div class="collection-info">
-          <h3>Fine Art Prints</h3>
-          <p>Giclée on 300gsm cotton rag, signed & numbered</p>
-          <span class="collection-link">Shop prints →</span>
+      <div class="coll-card" onclick="filterProducts('print')">
+        <div class="coll-card-inner art-8"></div>
+        <div class="coll-card-overlay"></div>
+        <div class="coll-card-text">
+          <h3>Láminas de arte</h3>
+          <p>Giclée sobre papel algodón 300 g, firmadas y numeradas</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SHOP -->
+<!-- TIENDA -->
 <section id="shop">
-  <div class="section-inner">
-    <p class="section-label">The Studio</p>
-    <h2 class="section-title">All <em>works</em></h2>
+  <div class="inner">
+    <p class="label">El estudio</p>
+    <h2 class="title">Todas las <em>obras</em></h2>
     <div class="shop-filters">
-      <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
-      <button class="filter-btn" id="btn-original" onclick="filterProducts('original', this)">Original Paintings</button>
-      <button class="filter-btn" id="btn-print" onclick="filterProducts('print', this)">Fine Art Prints</button>
+      <button class="filter-btn active" onclick="filterProducts('all',this)">Todo</button>
+      <button class="filter-btn" id="btn-original" onclick="filterProducts('original',this)">Pinturas originales</button>
+      <button class="filter-btn" id="btn-print" onclick="filterProducts('print',this)">Láminas</button>
     </div>
     <div class="products-grid" id="products-grid"></div>
   </div>
 </section>
 
-<!-- ABOUT -->
+<!-- SOBRE MÍ -->
 <section class="about" id="about">
-  <div class="section-inner about-inner">
+  <div class="inner about-inner">
     <div class="about-portrait">
-      <div class="portrait-art"></div>
+      <div class="about-portrait-art"></div>
     </div>
     <div class="about-text">
-      <p class="about-quote">✦ The artist</p>
-      <h2 class="section-title">Hi, I'm <em>Maria</em></h2>
-      <p>I'm a painter based in my home studio, working mainly with acrylics and oils to create pieces that sit somewhere between the representational and the abstract. My paintings begin with a feeling — the quality of afternoon light, the colour of a field just before a storm — and evolve intuitively from there.</p>
-      <p>Every original I paint is completely unique and comes with a certificate of authenticity. My fine art prints are reproduced using museum-grade giclée printing on cotton rag, and are personally signed and numbered in limited editions.</p>
-      <p><strong>Follow along for studio updates, new work, and a look behind the scenes.</strong></p>
+      <span class="label">La artista</span>
+      <h2 class="title">Hola, soy <em>María</em></h2>
+      <p>Soy pintora y trabajo principalmente con acrílicos y óleos para crear piezas que se mueven entre lo representacional y lo abstracto. Mis cuadros nacen de una sensación — la calidad de la luz de tarde, el color de un campo antes de una tormenta — y evolucionan de forma intuitiva.</p>
+      <p>Cada original es completamente único y lleva certificado de autenticidad. Mis láminas se reproducen con impresión giclée de calidad museo sobre papel de algodón, firmadas y numeradas en ediciones limitadas.</p>
+      <p><strong>Sígueme para novedades del estudio y obra reciente.</strong></p>
       <div class="social-row">
         <a href="https://www.instagram.com/whatmariapaints" target="_blank" rel="noopener" class="social-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
           @whatmariapaints
         </a>
         <a href="mailto:hello@whatmariapaints.com" class="social-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Get in touch
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contacto
         </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROCESS -->
+<!-- PROCESO -->
 <section>
-  <div class="section-inner">
-    <p class="section-label" style="text-align:center">How it works</p>
-    <h2 class="section-title" style="text-align:center">From studio <em>to your wall</em></h2>
-    <div class="process-steps">
-      <div class="step">
-        <div class="step-icon">🎨</div>
-        <h4>Hand-painted or printed</h4>
-        <p>Originals are painted by Maria in her studio. Prints are produced on a museum-grade giclée press on 300gsm cotton rag paper.</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">📦</div>
-        <h4>Carefully packaged</h4>
-        <p>Each work is wrapped in acid-free tissue, rolled or flat-packed in rigid board mailers, and shipped with tracking.</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">🖼️</div>
-        <h4>Ready to hang</h4>
-        <p>Originals come ready-to-hang. Prints arrive unframed — perfect for framing yourself or as a frameless wall piece.</p>
-      </div>
+  <div class="inner">
+    <p class="label" style="text-align:center">Cómo funciona</p>
+    <h2 class="title" style="text-align:center">Del estudio <em>a tu pared</em></h2>
+    <div class="steps-grid">
+      <div class="step"><div class="step-num">01</div><h4>Pintado a mano o impreso</h4><p>Los originales los pinto en mi estudio. Las láminas se producen en una prensa giclée profesional sobre papel de algodón de 300 g.</p></div>
+      <div class="step"><div class="step-num">02</div><h4>Embalado con cuidado</h4><p>Cada obra se envuelve en papel de seda libre de ácido, plana o enrollada en tubos rígidos, y se envía con número de seguimiento.</p></div>
+      <div class="step"><div class="step-num">03</div><h4>Lista para colgar</h4><p>Los originales vienen listos para colgar. Las láminas llegan sin enmarcar — perfectas para que elijas el marco que mejor quede.</p></div>
     </div>
   </div>
 </section>
 
 <!-- NEWSLETTER -->
 <section class="newsletter">
-  <div class="section-inner">
-    <p class="section-label">Stay connected</p>
-    <h2 class="section-title">New work, first</h2>
-    <p class="section-sub">Get studio updates, new releases, and occasional behind-the-scenes — straight to your inbox. No spam, ever.</p>
+  <div class="inner">
+    <p class="label">Mantente al día</p>
+    <h2 class="title">Nueva obra, <em>antes que nadie</em></h2>
+    <p class="sub" style="margin:0 auto">Actualizaciones del estudio, nuevas piezas y algo de lo que pasa entre bambalinas. Sin spam.</p>
     <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
-      <input type="email" class="newsletter-input" placeholder="your@email.com" required>
-      <button type="submit" class="btn-gold">Subscribe</button>
+      <input type="email" class="newsletter-input" placeholder="tu@email.com" required>
+      <button type="submit" class="btn-dark" style="white-space:nowrap">Suscribirme</button>
     </form>
   </div>
 </section>
@@ -518,52 +431,38 @@ section{padding:5rem 1.5rem}
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="logo" style="color:#fff;margin-bottom:.8rem">what <span style="color:#D4AF6A;font-style:italic;font-weight:400">maria</span> paints</div>
-      <p>Original paintings and fine art prints, made with care in my studio.</p>
+      <a href="#" class="logo footer-brand-logo">what <em>maria</em> paints</a>
+      <p>Pinturas originales y láminas de arte, hechas con cuidado en mi estudio.</p>
     </div>
-    <div class="footer-col">
-      <h5>Shop</h5>
-      <ul>
-        <li><a href="#shop" onclick="filterProducts('all')">All works</a></li>
-        <li><a href="#originals" onclick="filterProducts('original')">Originals</a></li>
-        <li><a href="#prints" onclick="filterProducts('print')">Prints</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Info</h5>
-      <ul>
-        <li><a href="#about">About Maria</a></li>
-        <li><a href="#" onclick="showToast('Shipping info coming soon')">Shipping & Returns</a></li>
-        <li><a href="#" onclick="showToast('FAQ coming soon')">FAQ</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Contact</h5>
-      <ul>
-        <li><a href="mailto:hello@whatmariapaints.com">hello@whatmariapaints.com</a></li>
-        <li><a href="https://www.instagram.com/whatmariapaints" target="_blank">Instagram</a></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h5>Tienda</h5><ul>
+      <li><a href="#shop" onclick="filterProducts('all')">Todas las obras</a></li>
+      <li><a href="#shop" onclick="filterProducts('original')">Originales</a></li>
+      <li><a href="#shop" onclick="filterProducts('print')">Láminas</a></li>
+    </ul></div>
+    <div class="footer-col"><h5>Info</h5><ul>
+      <li><a href="#about">Sobre María</a></li>
+      <li><a href="#" onclick="showToast('Envíos: 5–10 días laborables. Devoluciones: 14 días.')">Envíos y devoluciones</a></li>
+      <li><a href="#" onclick="showToast('FAQ próximamente')">FAQ</a></li>
+    </ul></div>
+    <div class="footer-col"><h5>Contacto</h5><ul>
+      <li><a href="mailto:hello@whatmariapaints.com">hello@whatmariapaints.com</a></li>
+      <li><a href="https://www.instagram.com/whatmariapaints" target="_blank">Instagram</a></li>
+    </ul></div>
   </div>
   <div class="footer-bottom">
-    <p>© 2024 What Maria Paints. All rights reserved.</p>
-    <div class="footer-social">
-      <a href="https://www.instagram.com/whatmariapaints" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-      </a>
-    </div>
+    <p>© 2024 What Maria Paints</p>
   </div>
 </footer>
 
 <!-- OVERLAY -->
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
-<!-- CART SIDEBAR -->
+<!-- CARRITO -->
 <div class="cart-sidebar" id="cart-sidebar">
   <div class="cart-header">
-    <h2>Your Cart</h2>
+    <h2>Carrito</h2>
     <button class="close-btn" onclick="closeCart()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
   <div class="cart-body" id="cart-body"></div>
@@ -572,44 +471,42 @@ section{padding:5rem 1.5rem}
       <span>Subtotal</span>
       <span class="cart-subtotal-price" id="cart-subtotal">€0</span>
     </div>
-    <p class="cart-note">Shipping calculated at checkout · Taxes included</p>
-    <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout →</button>
+    <p class="cart-note">Gastos de envío calculados al pagar · Envío gratis +€120</p>
+    <button class="btn-checkout" onclick="openCheckout()">Finalizar compra →</button>
   </div>
 </div>
 
-<!-- PRODUCT MODAL -->
+<!-- MODAL PRODUCTO -->
 <div class="product-modal" id="product-modal">
   <div class="product-modal-bg" onclick="closeProductModal()"></div>
   <div class="product-modal-inner">
     <button class="modal-close" onclick="closeProductModal()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
     <div class="modal-img" id="modal-img"></div>
     <div class="modal-details" id="modal-details"></div>
   </div>
 </div>
 
-<!-- CHECKOUT MODAL -->
+<!-- MODAL CHECKOUT -->
 <div class="checkout-modal" id="checkout-modal">
   <div class="checkout-modal-bg" onclick="closeCheckout()"></div>
   <div class="checkout-inner">
     <button class="checkout-close" onclick="closeCheckout()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
-    <!-- Order Summary -->
     <div class="checkout-summary-col" id="checkout-summary">
-      <h3>Order Summary</h3>
+      <h3>Tu pedido</h3>
       <div class="summary-items" id="summary-items"></div>
       <hr class="summary-divider">
       <div class="summary-line"><span>Subtotal</span><span id="summary-subtotal">€0</span></div>
-      <div class="summary-line"><span>Shipping</span><span id="summary-shipping">Calculated at checkout</span></div>
+      <div class="summary-line"><span>Envío</span><span id="summary-shipping">A calcular</span></div>
       <div class="summary-total"><span>Total</span><span id="summary-total">€0</span></div>
-      <p style="font-size:.74rem;color:var(--mid);margin-top:.6rem">Free shipping on orders over €120</p>
+      <p style="font-size:.7rem;color:var(--text2);margin-top:.5rem">Envío gratis en pedidos superiores a €120</p>
     </div>
-    <!-- Payment Panel -->
     <div class="checkout-pay-col">
-      <h2>Secure Checkout</h2>
-      <p class="pay-intro">You'll be redirected to Stripe's secure page to enter your shipping address and payment details.</p>
+      <h2>Pago seguro</h2>
+      <p class="pay-intro">Te redirigiremos a la página segura de Stripe para introducir tu dirección de envío y datos de pago.</p>
       <div class="accepted-methods">
         <span class="method-badge">VISA</span>
         <span class="method-badge">Mastercard</span>
@@ -618,22 +515,15 @@ section{padding:5rem 1.5rem}
         <span class="method-badge">Google Pay</span>
       </div>
       <div class="checkout-trust">
-        <div class="trust-item">🔒 256-bit SSL encryption</div>
-        <div class="trust-item">📦 Worldwide tracked shipping</div>
-        <div class="trust-item">↩️ 14-day return policy</div>
-        <div class="trust-item">✉️ Instant confirmation email</div>
+        <div class="trust-item">🔒 Cifrado SSL de 256 bits</div>
+        <div class="trust-item">📦 Envío rastreado a todo el mundo</div>
+        <div class="trust-item">↩️ Devoluciones en 14 días</div>
       </div>
-      <button class="btn-stripe" id="stripe-btn" onclick="proceedToStripe()">
-        Pay securely with Stripe →
-      </button>
-      <p class="stripe-legal">
-        By placing your order you agree to our terms. Maria personally packs and ships every order.
-      </p>
+      <button class="btn-stripe" id="stripe-btn" onclick="proceedToStripe()">Pagar con Stripe →</button>
+      <p class="stripe-legal">Al completar tu compra aceptas nuestras condiciones. María empaqueta y envía cada pedido personalmente.</p>
       <div class="stripe-badge">
-        <span style="font-size:.72rem;color:var(--mid)">Powered by</span>
-        <svg viewBox="0 0 60 26" xmlns="http://www.w3.org/2000/svg" style="height:18px;margin-left:4px">
-          <text x="0" y="21" font-size="20" fill="#635BFF" font-family="Arial,sans-serif" font-weight="800" letter-spacing="-0.5">stripe</text>
-        </svg>
+        <span>Powered by</span>
+        <svg viewBox="0 0 60 26" xmlns="http://www.w3.org/2000/svg" style="height:16px;margin-left:3px"><text x="0" y="21" font-size="20" fill="#635BFF" font-family="Arial,sans-serif" font-weight="800" letter-spacing="-0.5">stripe</text></svg>
       </div>
     </div>
   </div>
@@ -643,144 +533,232 @@ section{padding:5rem 1.5rem}
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── DATA ───
-const products = [
-  {
-    id:1, type:'original', name:'Blooming', medium:'Acrylic on canvas',
-    size:'50 × 70 cm', price:280, artClass:'art-1', badge:'New',
-    edition:'One of a kind', desc:'A painterly celebration of late-spring bloom. Layers of coral, dusty rose and warm peach build up a surface that shifts in the light — luminous in the morning, deep and velvety at dusk.',
-    specs:[['Medium','Acrylic on canvas'],['Size','50 × 70 cm'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','3–5 working days']],
-    available: true
-  },
-  {
-    id:2, type:'original', name:"L'Heure Bleue", medium:'Oil on canvas',
-    size:'60 × 80 cm', price:420, artClass:'art-2',
-    edition:'One of a kind', desc:'Named for the French "blue hour" between sunset and night. The painting captures that charged stillness — the sky not yet dark, the world suspended between two states. Subtle gold at the horizon pulls everything into focus.',
-    specs:[['Medium','Oil on canvas'],['Size','60 × 80 cm'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','5–7 working days']],
-    available: true
-  },
-  {
-    id:3, type:'original', name:'Mediterranean Garden', medium:'Acrylic on canvas',
-    size:'40 × 60 cm', price:240, artClass:'art-3',
-    edition:'One of a kind', desc:'Terracotta walls, wild sage, afternoon heat. This painting is a memory of a garden in southern Spain — impastoed brushwork builds up the texture of sun-baked earth while loose, botanical greens breathe through the composition.',
-    specs:[['Medium','Acrylic on canvas'],['Size','40 × 60 cm'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','3–5 working days']],
-    available: true
-  },
-  {
-    id:4, type:'original', name:'Golden Hour', medium:'Oil on linen',
-    size:'80 × 100 cm', price:680, artClass:'art-4', badge:'Featured',
-    edition:'One of a kind', desc:'Maria\'s largest and most sought-after piece to date. The painting tracks the arc of a summer sunset from deep amber at the base through layers of saffron, gold and pale straw at the top. A work that changes character entirely depending on the light in the room.',
-    specs:[['Medium','Oil on linen'],['Size','80 × 100 cm'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','7–10 working days']],
-    available: true
-  },
-  {
-    id:5, type:'original', name:'Still Life No. 3', medium:'Oil on board',
-    size:'30 × 40 cm', price:190, artClass:'art-5',
-    edition:'One of a kind', desc:'A quiet composition of peonies and botanicals against a warm, neutral ground. Soft, direct light falls from the upper left, pooling in the petals and casting gentle shadows. A work for contemplative spaces.',
-    specs:[['Medium','Oil on board'],['Size','30 × 40 cm'],['Frame','Unframed, panel with white edges'],['Signed','Yes, on the reverse'],['Ships in','3–5 working days']],
-    available: true
-  },
-  {
-    id:6, type:'original', name:'Blue Forms', medium:'Acrylic on canvas',
-    size:'50 × 50 cm', price:260, artClass:'art-6',
-    edition:'One of a kind', desc:'A departure into pure abstraction. Two rectangles of blue — one deep prussian, one lighter cobalt — share the canvas with small rectangles of gold and teal. Balanced, architectural, meditative.',
-    specs:[['Medium','Acrylic on canvas'],['Size','50 × 50 cm (square)'],['Frame','Unframed, gallery-wrapped edges'],['Signed','Yes, on the reverse'],['Ships in','3–5 working days']],
-    available: false
-  },
-  {
-    id:7, type:'print', name:'Blooming — Print', medium:'Giclée print',
-    sizes:['A4 · 21×30 cm','A3 · 30×42 cm','A2 · 42×60 cm'],
-    sizePrices:[28,42,65], price:28, artClass:'art-7', badge:'Best Seller',
-    edition:'Edition of 50, signed & numbered',
-    desc:'A high-fidelity reproduction of the original "Blooming" painting, printed on 300gsm Hahnemühle cotton rag using archival pigment inks. Unframed, ready to mat and frame.',
-    specs:[['Medium','Giclée on cotton rag'],['Paper','Hahnemühle Photo Rag 308gsm'],['Inks','Archival pigment, 100+ year fade rating'],['Edition','50 prints, signed & numbered'],['Ships in','5–7 working days']],
-    available: true
-  },
-  {
-    id:8, type:'print', name:'Garden Study — Print', medium:'Giclée print',
-    sizes:['A4 · 21×30 cm','A3 · 30×42 cm','A2 · 42×60 cm'],
-    sizePrices:[28,42,65], price:28, artClass:'art-8',
-    edition:'Edition of 50, signed & numbered',
-    desc:'A botanical abstraction in three colour zones — deep forest, sage and warm linen. Pairs beautifully with natural frames and linen mats.',
-    specs:[['Medium','Giclée on cotton rag'],['Paper','Hahnemühle Photo Rag 308gsm'],['Inks','Archival pigment, 100+ year fade rating'],['Edition','50 prints, signed & numbered'],['Ships in','5–7 working days']],
-    available: true
-  },
-  {
-    id:9, type:'print', name:'Golden Hour — Print', medium:'Giclée print',
-    sizes:['A4 · 21×30 cm','A3 · 30×42 cm','A2 · 42×60 cm'],
-    sizePrices:[28,42,65], price:28, artClass:'art-9',
-    edition:'Edition of 30, signed & numbered',
-    desc:'The best-selling print in the studio. The warm gradient of the original "Golden Hour" oil painting translates beautifully to print, with deep amber at the base fading to pale straw at the top.',
-    specs:[['Medium','Giclée on cotton rag'],['Paper','Hahnemühle Photo Rag 308gsm'],['Inks','Archival pigment, 100+ year fade rating'],['Edition','30 prints, signed & numbered'],['Ships in','5–7 working days']],
-    available: true
-  },
-  {
-    id:10, type:'print', name:'Still Life No. 3 — Print', medium:'Giclée print',
-    sizes:['A4 · 21×30 cm','A3 · 30×42 cm'],
-    sizePrices:[28,42], price:28, artClass:'art-10',
-    edition:'Edition of 50, signed & numbered',
-    desc:'A muted, intimate print of the "Still Life No. 3" oil painting. The warm neutral tones and soft botanical forms make it an ideal piece for bedrooms, reading nooks and quiet corners.',
-    specs:[['Medium','Giclée on cotton rag'],['Paper','Hahnemühle Photo Rag 308gsm'],['Inks','Archival pigment, 100+ year fade rating'],['Edition','50 prints, signed & numbered'],['Ships in','5–7 working days']],
-    available: true
-  }
-];
+/* ═══════════════════════════════════════════════════════════════════
+   ✏️  EDITA TUS OBRAS AQUÍ — No necesitas saber programar
+   ═══════════════════════════════════════════════════════════════════
 
-// ─── STATE ───
-let cart = JSON.parse(localStorage.getItem('wmp_cart') || '[]');
+   📸 Cómo añadir la foto de un cuadro (desde Google Drive):
+      1. Sube la imagen a Drive
+      2. Clic derecho → Compartir → "Cualquier persona con el enlace"
+      3. Copia el ID del enlace (la parte larga entre /d/ y /view)
+      4. Escribe:  foto: "https://drive.google.com/uc?id=PEGA_EL_ID"
+
+   ➕ Para añadir una obra nueva: copia un bloque { ... } completo,
+      cámbialo y dale un id diferente (número mayor).
+
+   ✅ disponible: true  →  a la venta
+   ✅ disponible: false →  aparece como "Vendido"
+   ═══════════════════════════════════════════════════════════════════ */
+
+const OBRAS = [
+
+  // ── PINTURAS ORIGINALES ─────────────────────────────────────────
+
+  {
+    id: 1,
+    tipo: "original",          // "original" o "print"
+    nombre: "Blooming",
+    tecnica: "Acrílico sobre lienzo",
+    medidas: "50 × 70 cm",
+    precio: 280,
+    foto: "",                  // ← pega aquí la URL de la foto
+    descripcion: "Una celebración pictórica del florecimiento tardío. Capas de coral, rosa y melocotón que cambian con la luz.",
+    edicion: "Obra única, firmada",
+    ficha: [["Técnica","Acrílico sobre lienzo"],["Medidas","50 × 70 cm"],["Marco","Sin enmarcar, bordes galería"],["Firma","Sí, al dorso"],["Envío","3–5 días laborables"]],
+    disponible: true,
+    badge: "Nueva",
+    artClass: "art-1",         // color de fondo si no hay foto
+  },
+  {
+    id: 2,
+    tipo: "original",
+    nombre: "L'Heure Bleue",
+    tecnica: "Óleo sobre lienzo",
+    medidas: "60 × 80 cm",
+    precio: 420,
+    foto: "",
+    descripcion: "La hora azul entre el atardecer y la noche. Una quietud cargada — el cielo suspendido entre dos estados.",
+    edicion: "Obra única, firmada",
+    ficha: [["Técnica","Óleo sobre lienzo"],["Medidas","60 × 80 cm"],["Marco","Sin enmarcar, bordes galería"],["Firma","Sí, al dorso"],["Envío","5–7 días laborables"]],
+    disponible: true,
+    artClass: "art-2",
+  },
+  {
+    id: 3,
+    tipo: "original",
+    nombre: "Jardín Mediterráneo",
+    tecnica: "Acrílico sobre lienzo",
+    medidas: "40 × 60 cm",
+    precio: 240,
+    foto: "",
+    descripcion: "Paredes de terracota, salvia silvestre, calor de mediodía. El recuerdo de un jardín en el sur de España.",
+    edicion: "Obra única, firmada",
+    ficha: [["Técnica","Acrílico sobre lienzo"],["Medidas","40 × 60 cm"],["Marco","Sin enmarcar, bordes galería"],["Firma","Sí, al dorso"],["Envío","3–5 días laborables"]],
+    disponible: true,
+    artClass: "art-3",
+  },
+  {
+    id: 4,
+    tipo: "original",
+    nombre: "Golden Hour",
+    tecnica: "Óleo sobre lino",
+    medidas: "80 × 100 cm",
+    precio: 680,
+    foto: "",
+    descripcion: "El arco de un atardecer de verano desde el ámbar profundo hasta la paja pálida. Cambia de carácter con la luz de la habitación.",
+    edicion: "Obra única, firmada",
+    ficha: [["Técnica","Óleo sobre lino"],["Medidas","80 × 100 cm"],["Marco","Sin enmarcar, bordes galería"],["Firma","Sí, al dorso"],["Envío","7–10 días laborables"]],
+    disponible: true,
+    badge: "Destacado",
+    artClass: "art-4",
+  },
+  {
+    id: 5,
+    tipo: "original",
+    nombre: "Naturaleza Muerta nº 3",
+    tecnica: "Óleo sobre tabla",
+    medidas: "30 × 40 cm",
+    precio: 190,
+    foto: "",
+    descripcion: "Una composición tranquila de peonías y botánicas sobre un fondo neutro y cálido.",
+    edicion: "Obra única, firmada",
+    ficha: [["Técnica","Óleo sobre tabla"],["Medidas","30 × 40 cm"],["Marco","Sin enmarcar, panel bordes blancos"],["Firma","Sí, al dorso"],["Envío","3–5 días laborables"]],
+    disponible: true,
+    artClass: "art-5",
+  },
+  {
+    id: 6,
+    tipo: "original",
+    nombre: "Formas Azules",
+    tecnica: "Acrílico sobre lienzo",
+    medidas: "50 × 50 cm",
+    precio: 260,
+    foto: "",
+    descripcion: "Abstracción pura. Dos rectángulos de azul comparten el lienzo con pequeños rectángulos de oro y verde azulado.",
+    edicion: "Obra única, firmada",
+    ficha: [["Técnica","Acrílico sobre lienzo"],["Medidas","50 × 50 cm (cuadrado)"],["Marco","Sin enmarcar, bordes galería"],["Firma","Sí, al dorso"],["Envío","3–5 días laborables"]],
+    disponible: false,
+    artClass: "art-6",
+  },
+
+  // ── LÁMINAS (PRINTS) ────────────────────────────────────────────
+  // tallas: [ ["Nombre talla", precio], ... ]
+
+  {
+    id: 7,
+    tipo: "print",
+    nombre: "Blooming — Lámina",
+    tecnica: "Impresión giclée",
+    foto: "",
+    descripcion: "Reproducción impresa sobre papel de algodón 300 g Hahnemühle con tintas de archivo. Sin marco.",
+    edicion: "Edición de 50, firmada y numerada",
+    tallas: [["A4 · 21×30 cm", 28], ["A3 · 30×42 cm", 42], ["A2 · 42×60 cm", 65]],
+    precio: 28,
+    ficha: [["Técnica","Giclée sobre papel algodón"],["Papel","Hahnemühle Photo Rag 308 g"],["Tintas","Pigmento de archivo, +100 años"],["Edición","50 láminas, firmada y numerada"],["Envío","5–7 días laborables"]],
+    disponible: true,
+    badge: "Más vendida",
+    artClass: "art-7",
+  },
+  {
+    id: 8,
+    tipo: "print",
+    nombre: "Estudio de Jardín — Lámina",
+    tecnica: "Impresión giclée",
+    foto: "",
+    descripcion: "Abstracción botánica en tres zonas de color — bosque profundo, salvia y lino cálido.",
+    edicion: "Edición de 50, firmada y numerada",
+    tallas: [["A4 · 21×30 cm", 28], ["A3 · 30×42 cm", 42], ["A2 · 42×60 cm", 65]],
+    precio: 28,
+    ficha: [["Técnica","Giclée sobre papel algodón"],["Papel","Hahnemühle Photo Rag 308 g"],["Tintas","Pigmento de archivo, +100 años"],["Edición","50 láminas, firmada y numerada"],["Envío","5–7 días laborables"]],
+    disponible: true,
+    artClass: "art-8",
+  },
+  {
+    id: 9,
+    tipo: "print",
+    nombre: "Golden Hour — Lámina",
+    tecnica: "Impresión giclée",
+    foto: "",
+    descripcion: "La lámina más vendida del estudio. El cálido degradado del original se traduce perfectamente a la impresión.",
+    edicion: "Edición de 30, firmada y numerada",
+    tallas: [["A4 · 21×30 cm", 28], ["A3 · 30×42 cm", 42], ["A2 · 42×60 cm", 65]],
+    precio: 28,
+    ficha: [["Técnica","Giclée sobre papel algodón"],["Papel","Hahnemühle Photo Rag 308 g"],["Tintas","Pigmento de archivo, +100 años"],["Edición","30 láminas, firmada y numerada"],["Envío","5–7 días laborables"]],
+    disponible: true,
+    artClass: "art-9",
+  },
+  {
+    id: 10,
+    tipo: "print",
+    nombre: "Naturaleza Muerta nº 3 — Lámina",
+    tecnica: "Impresión giclée",
+    foto: "",
+    descripcion: "Los tonos neutros cálidos y las formas botánicas la hacen ideal para dormitorios y rincones de lectura.",
+    edicion: "Edición de 50, firmada y numerada",
+    tallas: [["A4 · 21×30 cm", 28], ["A3 · 30×42 cm", 42]],
+    precio: 28,
+    ficha: [["Técnica","Giclée sobre papel algodón"],["Papel","Hahnemühle Photo Rag 308 g"],["Tintas","Pigmento de archivo, +100 años"],["Edición","50 láminas, firmada y numerada"],["Envío","5–7 días laborables"]],
+    disponible: true,
+    artClass: "art-10",
+  },
+
+]; // ← fin de OBRAS
+
+/* ═══════════════════════════════════════════════════════════════════
+   ⛔  A PARTIR DE AQUÍ NO NECESITAS TOCAR NADA
+   ═══════════════════════════════════════════════════════════════════ */
+
+function iStyle(p){ return p.foto?`background-image:url('${p.foto}');background-size:cover;background-position:center`:''; }
+function iClass(p){ return p.foto?'':p.artClass||''; }
+
+let cart = JSON.parse(localStorage.getItem('wmp_cart')||'[]');
 let currentFilter = 'all';
 let selectedProduct = null;
 let selectedSizeIdx = 0;
 
-// ─── RENDER PRODUCTS ───
 function renderProducts() {
   const grid = document.getElementById('products-grid');
   grid.innerHTML = '';
-  products.forEach(p => {
-    const price = p.sizes ? `From €${p.sizePrices[0]}` : `€${p.price}`;
-    const badgeHtml = p.badge ? `<span class="product-badge ${p.badge==='New'?'new':p.badge==='Best Seller'?'new':''}">${p.badge}</span>` : '';
-    const soldBadge = !p.available ? `<span class="product-badge sold">Sold</span>` : '';
+  OBRAS.forEach(p => {
+    const priceLabel = p.tallas ? `Desde €${p.tallas[0][1]}` : `€${p.precio}`;
+    const badge = p.badge ? `<span class="product-badge">${p.badge}</span>` : '';
+    const sold = !p.disponible ? `<span class="product-badge sold">Vendido</span>` : '';
     const card = document.createElement('div');
-    card.className = `product-card${currentFilter !== 'all' && p.type !== currentFilter ? ' hidden' : ''}`;
-    card.dataset.type = p.type;
+    card.className = `product-card${currentFilter!=='all'&&p.tipo!==currentFilter?' hidden':''}`;
+    card.dataset.type = p.tipo;
     card.innerHTML = `
-      <div class="product-img ${p.artClass}" onclick="openProductModal(${p.id})">
-        ${badgeHtml}${soldBadge}
+      <div class="product-img ${iClass(p)}" style="${iStyle(p)}" onclick="openProductModal(${p.id})">
+        ${badge}${sold}
       </div>
       <div class="product-info">
-        <div class="product-name">${p.name}</div>
-        <div class="product-meta">${p.medium}${p.size ? ' · ' + p.size : ''}</div>
+        <div class="product-name">${p.nombre}</div>
+        <div class="product-meta">${p.tecnica}${p.medidas?' · '+p.medidas:''}</div>
         <div class="product-footer">
-          <span class="product-price">${price}</span>
-          ${p.available ? `<button class="add-btn" onclick="event.stopPropagation(); ${p.sizes ? `openProductModal(${p.id})` : `quickAdd(${p.id})`}" aria-label="Add to cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>` : ''}
+          <span class="product-price">${priceLabel}</span>
+          ${p.disponible?`<button class="add-btn" onclick="event.stopPropagation();${p.tallas?`openProductModal(${p.id})`:`quickAdd(${p.id})`}" aria-label="Añadir">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>`:''}
         </div>
       </div>`;
     grid.appendChild(card);
   });
 }
 
-function filterProducts(type, btn) {
-  currentFilter = type;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  else {
-    const map = {original: 'btn-original', print: 'btn-print'};
-    if (map[type]) document.getElementById(map[type])?.classList.add('active');
-  }
-  document.querySelectorAll('.product-card').forEach(card => {
-    card.classList.toggle('hidden', type !== 'all' && card.dataset.type !== type);
-  });
-  document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+function filterProducts(tipo, btn) {
+  currentFilter = tipo;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else { const m={original:'btn-original',print:'btn-print'}; if(m[tipo]) document.getElementById(m[tipo])?.classList.add('active'); }
+  document.querySelectorAll('.product-card').forEach(c=>c.classList.toggle('hidden',tipo!=='all'&&c.dataset.type!==tipo));
+  document.getElementById('shop').scrollIntoView({behavior:'smooth'});
 }
 
-// ─── PRODUCT MODAL ───
 function openProductModal(id) {
-  selectedProduct = products.find(p => p.id === id);
-  if (!selectedProduct) return;
+  selectedProduct = OBRAS.find(p=>p.id===id);
+  if(!selectedProduct) return;
   selectedSizeIdx = 0;
   const p = selectedProduct;
-  document.getElementById('modal-img').innerHTML = `<div class="${p.artClass}" style="position:absolute;inset:0"></div>`;
+  document.getElementById('modal-img').innerHTML = `<div class="modal-img-inner ${iClass(p)}" style="${iStyle(p)}"></div>`;
   renderModalDetails();
   document.getElementById('product-modal').classList.add('open');
   document.getElementById('overlay').classList.add('open');
@@ -789,258 +767,168 @@ function openProductModal(id) {
 
 function renderModalDetails() {
   const p = selectedProduct;
-  const isOriginal = p.type === 'original';
-  const currentPrice = p.sizes ? p.sizePrices[selectedSizeIdx] : p.price;
-  const sizeSection = p.sizes ? `
+  const price = p.tallas ? p.tallas[selectedSizeIdx][1] : p.precio;
+  const sizeSection = p.tallas ? `
     <div class="size-selector">
-      <p class="size-label">Select size</p>
+      <p class="size-label">Selecciona tamaño</p>
       <div class="size-options">
-        ${p.sizes.map((s,i) => `<button class="size-opt ${i===selectedSizeIdx?'selected':''}" onclick="selectSize(${i})">${s}</button>`).join('')}
+        ${p.tallas.map((t,i)=>`<button class="size-opt ${i===selectedSizeIdx?'selected':''}" onclick="selectSize(${i})">${t[0]}</button>`).join('')}
       </div>
     </div>` : '';
-  const badgeType = isOriginal ? 'original' : 'print';
-  const badgeText = isOriginal ? 'Original painting' : 'Fine art print';
   document.getElementById('modal-details').innerHTML = `
-    <span class="modal-badge ${badgeType}">${badgeText}</span>
-    <h2 class="modal-title">${p.name}</h2>
-    <p class="modal-medium">${p.medium}${p.size ? ' · ' + p.size : ''}</p>
-    <p class="modal-price">€${currentPrice}</p>
-    <p class="modal-desc">${p.desc}</p>
-    <div class="modal-specs">
-      ${p.specs.map(s => `<div class="modal-spec"><span>${s[0]}</span><span>${s[1]}</span></div>`).join('')}
-    </div>
+    <span class="modal-type">${p.tipo==='original'?'Pintura original':'Lámina de arte'}</span>
+    <h2 class="modal-title">${p.nombre}</h2>
+    <p class="modal-medium">${p.tecnica}${p.medidas?' · '+p.medidas:''}</p>
+    <p class="modal-price">€${price}</p>
+    <p class="modal-desc">${p.descripcion}</p>
+    <div class="modal-specs">${p.ficha.map(f=>`<div class="modal-spec"><span>${f[0]}</span><span>${f[1]}</span></div>`).join('')}</div>
     ${sizeSection}
-    ${p.available
-      ? `<button class="modal-add" onclick="addToCartFromModal()">Add to Cart</button>`
-      : `<button class="modal-add" disabled>Sold — Inquire for commission</button>`}
+    ${p.disponible
+      ?`<button class="modal-add" onclick="addToCartFromModal()">Añadir al carrito</button>`
+      :`<button class="modal-add" disabled>Vendido — Consultar encargo</button>`}
     <p class="modal-shipping">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-      Free shipping on orders over €120 · Worldwide delivery
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Envío gratis en pedidos +€120 · Envío mundial con seguimiento
     </p>`;
 }
 
-function selectSize(idx) {
-  selectedSizeIdx = idx;
-  renderModalDetails();
-}
+function selectSize(idx){ selectedSizeIdx=idx; renderModalDetails(); }
 
 function addToCartFromModal() {
   const p = selectedProduct;
-  if (!p || !p.available) return;
-  const variant = p.sizes ? p.sizes[selectedSizeIdx] : null;
-  const price = p.sizes ? p.sizePrices[selectedSizeIdx] : p.price;
+  if(!p||!p.disponible) return;
+  const variant = p.tallas ? p.tallas[selectedSizeIdx][0] : null;
+  const price = p.tallas ? p.tallas[selectedSizeIdx][1] : p.precio;
   addToCart(p.id, variant, price);
   closeProductModal();
 }
 
 function closeProductModal() {
   document.getElementById('product-modal').classList.remove('open');
-  if (!document.getElementById('cart-sidebar').classList.contains('open') &&
-      !document.getElementById('checkout-modal').classList.contains('open')) {
+  if(!document.getElementById('cart-sidebar').classList.contains('open')&&
+     !document.getElementById('checkout-modal').classList.contains('open')){
     document.getElementById('overlay').classList.remove('open');
-    document.body.style.overflow = '';
+    document.body.style.overflow='';
   }
 }
 
-// ─── CART ───
 function addToCart(id, variant, price) {
-  const p = products.find(x => x.id === id);
-  const key = `${id}-${variant || 'default'}`;
-  const existing = cart.find(x => x.key === key);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({ key, id, name: p.name, artClass: p.artClass, variant, price, qty: 1 });
-  }
-  saveCart();
-  updateCartCount();
-  showToast(`"${p.name}" added to cart`);
-  bumpCartCount();
+  const p = OBRAS.find(x=>x.id===id);
+  const key = `${id}-${variant||'default'}`;
+  const ex = cart.find(x=>x.key===key);
+  if(ex){ ex.qty++; }
+  else { cart.push({key,id,name:p.nombre,artClass:p.artClass,foto:p.foto,variant,price,qty:1}); }
+  saveCart(); updateCartCount();
+  showToast(`"${p.nombre}" añadido al carrito`);
+  bumpCount();
 }
 
-function quickAdd(id) {
-  const p = products.find(x => x.id === id);
-  addToCart(id, null, p.price);
-}
+function quickAdd(id){ const p=OBRAS.find(x=>x.id===id); addToCart(id,null,p.precio); }
+function saveCart(){ localStorage.setItem('wmp_cart',JSON.stringify(cart)); }
+function cartTotal(){ return cart.reduce((s,x)=>s+x.price*x.qty,0); }
+function updateCartCount(){ document.getElementById('cart-count').textContent=cart.reduce((s,x)=>s+x.qty,0); }
+function bumpCount(){ const el=document.getElementById('cart-count'); el.style.transform='scale(1.5)'; setTimeout(()=>el.style.transform='',300); }
 
-function saveCart() {
-  localStorage.setItem('wmp_cart', JSON.stringify(cart));
-}
-
-function cartTotal() {
-  return cart.reduce((sum, x) => sum + x.price * x.qty, 0);
-}
-
-function updateCartCount() {
-  const total = cart.reduce((s, x) => s + x.qty, 0);
-  document.getElementById('cart-count').textContent = total;
-}
-
-function bumpCartCount() {
-  const el = document.getElementById('cart-count');
-  el.classList.remove('bump');
-  void el.offsetWidth;
-  el.classList.add('bump');
-  setTimeout(() => el.classList.remove('bump'), 350);
-}
-
-function openCart() {
-  renderCart();
-  document.getElementById('cart-sidebar').classList.add('open');
-  document.getElementById('overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeCart() {
+function openCart(){ renderCart(); document.getElementById('cart-sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeCart(){
   document.getElementById('cart-sidebar').classList.remove('open');
-  if (!document.getElementById('product-modal').classList.contains('open') &&
-      !document.getElementById('checkout-modal').classList.contains('open')) {
-    document.getElementById('overlay').classList.remove('open');
-    document.body.style.overflow = '';
+  if(!document.getElementById('product-modal').classList.contains('open')&&!document.getElementById('checkout-modal').classList.contains('open')){
+    document.getElementById('overlay').classList.remove('open'); document.body.style.overflow='';
   }
 }
 
 function renderCart() {
-  const body = document.getElementById('cart-body');
-  const footer = document.getElementById('cart-footer');
-  if (cart.length === 0) {
-    body.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><h3>Your cart is empty</h3><p>Explore the shop and find something you love.</p></div>`;
-    footer.style.display = 'none';
-    return;
+  const body=document.getElementById('cart-body'), footer=document.getElementById('cart-footer');
+  if(!cart.length){
+    body.innerHTML=`<div class="cart-empty"><p style="font-size:2rem;margin-bottom:.8rem">🛒</p><h3>Tu carrito está vacío</h3><p style="margin-top:.3rem;font-size:.82rem">Explora la tienda y encuentra algo que te guste.</p></div>`;
+    footer.style.display='none'; return;
   }
-  body.innerHTML = cart.map(item => `
+  body.innerHTML=cart.map(item=>`
     <div class="cart-item">
-      <div class="cart-item-img ${item.artClass}"></div>
+      <div class="cart-item-img ${item.foto?'':item.artClass}" style="${item.foto?`background-image:url('${item.foto}');background-size:cover;background-position:center`:''}"></div>
       <div class="cart-item-details">
         <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-variant">${item.variant || 'Original'}</div>
+        <div class="cart-item-variant">${item.variant||'Original'}</div>
         <div class="cart-item-controls">
           <div class="qty-control">
-            <button class="qty-btn" onclick="changeQty('${item.key}', -1)">−</button>
+            <button class="qty-btn" onclick="changeQty('${item.key}',-1)">−</button>
             <span class="qty-val">${item.qty}</span>
-            <button class="qty-btn" onclick="changeQty('${item.key}', 1)">+</button>
+            <button class="qty-btn" onclick="changeQty('${item.key}',1)">+</button>
           </div>
-          <button class="remove-btn" onclick="removeItem('${item.key}')">Remove</button>
+          <button class="remove-btn" onclick="removeItem('${item.key}')">Eliminar</button>
         </div>
       </div>
-      <span class="cart-item-price">€${item.price * item.qty}</span>
+      <span class="cart-item-price">€${item.price*item.qty}</span>
     </div>`).join('');
-  document.getElementById('cart-subtotal').textContent = `€${cartTotal()}`;
-  footer.style.display = 'block';
+  document.getElementById('cart-subtotal').textContent=`€${cartTotal()}`;
+  footer.style.display='block';
 }
 
-function changeQty(key, delta) {
-  const item = cart.find(x => x.key === key);
-  if (!item) return;
-  item.qty = Math.max(0, item.qty + delta);
-  if (item.qty === 0) cart = cart.filter(x => x.key !== key);
-  saveCart();
-  updateCartCount();
-  renderCart();
+function changeQty(key,delta){
+  const item=cart.find(x=>x.key===key); if(!item) return;
+  item.qty=Math.max(0,item.qty+delta);
+  if(!item.qty) cart=cart.filter(x=>x.key!==key);
+  saveCart(); updateCartCount(); renderCart();
 }
+function removeItem(key){ cart=cart.filter(x=>x.key!==key); saveCart(); updateCartCount(); renderCart(); }
 
-function removeItem(key) {
-  cart = cart.filter(x => x.key !== key);
-  saveCart();
-  updateCartCount();
-  renderCart();
-}
-
-// ─── CHECKOUT ───
-function openCheckout() {
-  closeCart();
-  renderCheckoutSummary();
+function openCheckout(){
+  closeCart(); renderCheckoutSummary();
   document.getElementById('checkout-modal').classList.add('open');
   document.getElementById('overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  const btn = document.getElementById('stripe-btn');
-  if (btn) { btn.textContent = 'Pay securely with Stripe →'; btn.disabled = false; }
+  document.body.style.overflow='hidden';
+  const btn=document.getElementById('stripe-btn');
+  if(btn){btn.textContent='Pagar con Stripe →';btn.disabled=false;}
 }
-
-function closeCheckout() {
+function closeCheckout(){
   document.getElementById('checkout-modal').classList.remove('open');
   document.getElementById('overlay').classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.style.overflow='';
 }
 
-function renderCheckoutSummary() {
-  const items = cart.map(item => `
+function renderCheckoutSummary(){
+  document.getElementById('summary-items').innerHTML=cart.map(item=>`
     <div class="summary-item">
-      <div class="summary-item-img ${item.artClass}">
+      <div class="summary-item-img ${item.foto?'':item.artClass}" style="${item.foto?`background-image:url('${item.foto}');background-size:cover;background-position:center`:''}">
         <span class="qty-badge">${item.qty}</span>
       </div>
       <div class="summary-item-info">
         <div class="summary-item-name">${item.name}</div>
-        <div class="summary-item-variant">${item.variant || 'Original'}</div>
+        <div class="summary-item-variant">${item.variant||'Original'}</div>
       </div>
-      <span class="summary-item-price">€${item.price * item.qty}</span>
+      <span class="summary-item-price">€${item.price*item.qty}</span>
     </div>`).join('');
-  document.getElementById('summary-items').innerHTML = items;
-  const subtotal = cartTotal();
-  const shipping = subtotal >= 120 ? 'Free' : '€8.50';
-  const total = subtotal >= 120 ? subtotal : subtotal + 8.5;
-  document.getElementById('summary-subtotal').textContent = `€${subtotal}`;
-  document.getElementById('summary-shipping').textContent = shipping;
-  document.getElementById('summary-total').textContent = `€${total}`;
+  const sub=cartTotal(), free=sub>=120;
+  document.getElementById('summary-subtotal').textContent=`€${sub}`;
+  document.getElementById('summary-shipping').textContent=free?'Gratis':'€8.50';
+  document.getElementById('summary-total').textContent=`€${free?sub:sub+8.5}`;
 }
 
-async function proceedToStripe() {
-  if (cart.length === 0) return;
-  const btn = document.getElementById('stripe-btn');
-  btn.textContent = 'Redirecting to Stripe…';
-  btn.disabled = true;
-  try {
-    const res = await fetch('/.netlify/functions/create-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: cart }),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
-    window.location.href = data.url;
-  } catch (err) {
-    console.error('Checkout error:', err);
-    btn.textContent = 'Pay securely with Stripe →';
-    btn.disabled = false;
-    showToast('Could not connect to payment. Please try again.');
+async function proceedToStripe(){
+  if(!cart.length) return;
+  const btn=document.getElementById('stripe-btn');
+  btn.textContent='Redirigiendo a Stripe…'; btn.disabled=true;
+  try{
+    const res=await fetch('/.netlify/functions/create-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:cart})});
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();
+    if(data.error) throw new Error(data.error);
+    window.location.href=data.url;
+  }catch(err){
+    console.error(err); btn.textContent='Pagar con Stripe →'; btn.disabled=false;
+    showToast('No se pudo conectar al pago. Inténtalo de nuevo.');
   }
 }
 
-// ─── UTILS ───
-function closeAll() {
-  closeCart();
-  closeProductModal();
-  closeCheckout();
-  document.getElementById('overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
+function closeAll(){ closeCart(); closeProductModal(); closeCheckout(); document.getElementById('overlay').classList.remove('open'); document.body.style.overflow=''; }
+function toggleMobileNav(){ document.getElementById('mobile-nav').classList.toggle('open'); }
+function subscribeNewsletter(e){ e.preventDefault(); showToast('¡Gracias! Ya estás suscrito/a.'); e.target.reset(); }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
 
-function toggleMobileNav() {
-  document.getElementById('mobile-nav').classList.toggle('open');
-}
+window.addEventListener('scroll',()=>{ document.getElementById('site-header').classList.toggle('scrolled',window.scrollY>40); },{passive:true});
 
-function subscribeNewsletter(e) {
-  e.preventDefault();
-  showToast('Thank you! You\'re subscribed.');
-  e.target.reset();
-}
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(()=>{})); }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-
-
-// ─── SCROLL HEADER ───
-window.addEventListener('scroll', () => {
-  document.getElementById('site-header').classList.toggle('scrolled', window.scrollY > 40);
-}, { passive: true });
-
-// ─── INIT ───
 updateCartCount();
 renderProducts();
 </script>
