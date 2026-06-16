@@ -1,49 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order Confirmed — What Maria Paints</title>
+<title>Pedido confirmado — What Maria Paints</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --cream:#FAFAF6;--warm:#F4EFE6;--brown:#8B6F5E;--brown-dark:#6B5245;
-  --charcoal:#1A1814;--mid:#6B6560;--border:#E2DDD6;--sage:#4A7C59;
+  --bg:#fff;--bg2:#F7F7F5;--border:#E8E8E8;--text:#111;--text2:#888;
   --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',-apple-system,sans-serif;
 }
-body{font-family:var(--sans);background:var(--cream);color:var(--charcoal);min-height:100vh;display:flex;flex-direction:column}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;line-height:1.6}
 a{color:inherit;text-decoration:none}
 
-.site-header{background:var(--cream);border-bottom:1px solid var(--border);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;width:100%}
-.logo{font-family:var(--serif);font-size:1.25rem;font-weight:600}
-.logo span{font-style:italic;font-weight:400;color:var(--brown)}
 header{border-bottom:1px solid var(--border)}
 header .inner{max-width:1200px;margin:0 auto;padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:600}
+.logo em{font-style:italic;font-weight:400;color:var(--text2)}
 
 main{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem 1.5rem}
-.success-card{background:#fff;border-radius:12px;box-shadow:0 4px 40px rgba(26,24,20,.1);max-width:560px;width:100%;padding:3rem 2.5rem;text-align:center}
-.check-ring{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#E8F5ED,#D0EDDB);display:flex;align-items:center;justify-content:center;margin:0 auto 1.8rem;font-size:2.2rem}
-h1{font-family:var(--serif);font-size:2rem;font-weight:600;margin-bottom:.75rem}
-h1 em{font-style:italic;color:var(--brown);font-weight:400}
-.sub{color:var(--mid);font-size:.95rem;line-height:1.75;max-width:400px;margin:0 auto 2rem}
-.details-box{background:var(--warm);border-radius:8px;padding:1.4rem 1.6rem;margin-bottom:2rem;text-align:left;display:flex;flex-direction:column;gap:.7rem}
+.success-card{background:#fff;border:1px solid var(--border);border-radius:8px;max-width:560px;width:100%;padding:3rem 2.5rem;text-align:center}
+.check-ring{width:72px;height:72px;border-radius:50%;border:1.5px solid var(--text);display:flex;align-items:center;justify-content:center;margin:0 auto 1.6rem;font-size:1.9rem}
+h1{font-family:var(--serif);font-size:1.9rem;font-weight:600;margin-bottom:.7rem}
+h1 em{font-style:italic;color:var(--text2);font-weight:400}
+.sub{color:var(--text2);font-size:.95rem;line-height:1.75;max-width:400px;margin:0 auto 2rem}
+.details-box{background:var(--bg2);border-radius:8px;padding:1.4rem 1.6rem;margin-bottom:2rem;text-align:left;display:flex;flex-direction:column;gap:.7rem}
 .detail-row{display:flex;align-items:flex-start;gap:.75rem;font-size:.87rem}
 .detail-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
-.detail-text{color:var(--charcoal);line-height:1.5}
-.detail-text strong{display:block;color:var(--charcoal);font-weight:500}
-.detail-text span{color:var(--mid)}
+.detail-text strong{display:block;color:var(--text);font-weight:500}
+.detail-text span{color:var(--text2)}
 .actions{display:flex;flex-direction:column;gap:.75rem}
-.btn-primary{background:var(--charcoal);color:#fff;padding:.9rem 2rem;border-radius:4px;font-size:.92rem;font-weight:500;font-family:var(--sans);cursor:pointer;border:none;transition:background .2s;text-align:center;display:block}
-.btn-primary:hover{background:var(--brown-dark)}
-.btn-secondary{border:1.5px solid var(--charcoal);color:var(--charcoal);padding:.9rem 2rem;border-radius:4px;font-size:.92rem;font-weight:500;font-family:var(--sans);cursor:pointer;background:none;transition:all .2s;text-align:center;display:block}
-.btn-secondary:hover{background:var(--charcoal);color:#fff}
-.insta-note{margin-top:1.8rem;font-size:.8rem;color:var(--mid);line-height:1.6}
-.insta-note a{color:var(--brown);font-weight:500}
+.btn-primary{background:var(--text);color:#fff;padding:.9rem 2rem;border-radius:3px;font-size:.92rem;font-weight:500;font-family:var(--sans);cursor:pointer;border:none;transition:opacity .2s;text-align:center;display:block}
+.btn-primary:hover{opacity:.8}
+.btn-secondary{border:1px solid var(--text);color:var(--text);padding:.9rem 2rem;border-radius:3px;font-size:.92rem;font-weight:500;font-family:var(--sans);cursor:pointer;background:none;transition:all .2s;text-align:center;display:block}
+.btn-secondary:hover{background:var(--text);color:#fff}
+.insta-note{margin-top:1.8rem;font-size:.8rem;color:var(--text2);line-height:1.6}
+.insta-note a{color:var(--text);font-weight:500}
 
-footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center;font-size:.78rem;color:var(--mid)}
+footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center;font-size:.78rem;color:var(--text2)}
 
 @media(max-width:520px){.success-card{padding:2rem 1.4rem}}
 </style>
@@ -52,58 +49,58 @@ footer{border-top:1px solid var(--border);padding:1.5rem;text-align:center;font-
 
 <header>
   <div class="inner">
-    <a href="/" class="logo">what <span>maria</span> paints</a>
-    <a href="/" style="font-size:.85rem;color:var(--mid)">← Back to shop</a>
+    <a href="/" class="logo">what <em>maria</em> paints</a>
+    <a href="/" style="font-size:.85rem;color:var(--text2)">← Volver a la tienda</a>
   </div>
 </header>
 
 <main>
   <div class="success-card">
     <div class="check-ring">✓</div>
-    <h1>Order <em>confirmed</em></h1>
-    <p class="sub">Thank you so much for your purchase. Maria personally packs every order with care — you'll receive a shipping notification once it's on its way.</p>
+    <h1>Pedido <em>confirmado</em></h1>
+    <p class="sub">Muchísimas gracias por tu compra. María empaqueta cada pedido personalmente y con mucho cuidado — recibirás un aviso en cuanto tu obra esté de camino.</p>
 
     <div class="details-box">
       <div class="detail-row">
         <span class="detail-icon">✉️</span>
         <div class="detail-text">
-          <strong>Confirmation email</strong>
-          <span>Stripe has sent a receipt to your email address.</span>
+          <strong>Email de confirmación</strong>
+          <span>Stripe ha enviado un recibo a tu correo electrónico.</span>
         </div>
       </div>
       <div class="detail-row">
         <span class="detail-icon">📦</span>
         <div class="detail-text">
-          <strong>Shipping</strong>
-          <span>Original paintings ship within 3–7 business days. Prints within 5–10 business days.</span>
+          <strong>Envío</strong>
+          <span>Envío incluido en España; internacional, +7€. Te llegará con seguimiento.</span>
         </div>
       </div>
       <div class="detail-row">
         <span class="detail-icon">🖼️</span>
         <div class="detail-text">
-          <strong>Returns</strong>
-          <span>Contact us within 14 days if anything isn't right.</span>
+          <strong>Tu obra</strong>
+          <span>Los originales llegan listos para colgar; las láminas, sin enmarcar.</span>
         </div>
       </div>
     </div>
 
     <div class="actions">
-      <a href="/" class="btn-primary">Continue shopping</a>
-      <a href="https://www.instagram.com/whatmariapaints" target="_blank" rel="noopener" class="btn-secondary">Follow @whatmariapaints</a>
+      <a href="/" class="btn-primary">Seguir explorando</a>
+      <a href="https://www.instagram.com/whatmariapaints" target="_blank" rel="noopener" class="btn-secondary">Seguir a @whatmariapaints</a>
     </div>
 
     <p class="insta-note">
-      Tag Maria when your work arrives —
+      Etiqueta a María cuando tu obra llegue a casa —
       <a href="https://www.instagram.com/whatmariapaints" target="_blank" rel="noopener">@whatmariapaints</a>
-      loves seeing her paintings in their new homes.
+      le encanta ver sus cuadros en sus nuevos hogares.
     </p>
   </div>
 </main>
 
-<footer>© 2024 What Maria Paints · <a href="mailto:hello@whatmariapaints.com" style="color:var(--brown)">hello@whatmariapaints.com</a></footer>
+<footer>© 2026 María Gallego · <a href="https://www.instagram.com/whatmariapaints" target="_blank" rel="noopener" style="color:var(--text)">@whatmariapaints</a></footer>
 
 <script>
-// Clear cart on successful purchase
+// Vaciar el carrito tras una compra correcta
 localStorage.removeItem('wmp_cart');
 </script>
 </body>
