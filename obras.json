@@ -1,0 +1,995 @@
+[
+  {
+    "id": 1,
+    "tipo": "original",
+    "nombre": "Siesta al sol",
+    "tecnica": "Técnica mixta (acrílico y óleo) sobre lienzo",
+    "medidas": "130 × 81 cm",
+    "precio": 800,
+    "foto": "images/p04_siesta.jpg",
+    "descripcion": "Tumbonas a rayas bajo las palmeras, en plena hora de la siesta. Acrílico y óleo en una explosión de color veraniego. También disponible en lámina firmada.",
+    "edicion": "Obra única, firmada · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico y óleo sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "130 × 81 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ],
+      [
+        "Láminas",
+        "Edición limitada de 20 copias"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-4"
+  },
+  {
+    "id": 2,
+    "tipo": "original",
+    "nombre": "Debajo de las sombrillas amarillas",
+    "tecnica": "Técnica mixta (acrílico y óleo) sobre lienzo",
+    "medidas": "120 × 80 cm",
+    "precio": 750,
+    "foto": "images/p05_sombrillas.jpg",
+    "descripcion": "Sombrillas amarillas, palmeras y una piscina al fondo. Un día de verano detenido en el lienzo.",
+    "edicion": "Obra única, firmada · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico y óleo sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "120 × 80 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-9"
+  },
+  {
+    "id": 3,
+    "tipo": "original",
+    "nombre": "Todos los días atardece",
+    "tecnica": "Técnica mixta (acrílico y óleo) sobre lienzo",
+    "medidas": "120 × 90 cm",
+    "precio": 450,
+    "foto": "images/p06_atardece.jpg",
+    "descripcion": "Una casa con piscina y sombrilla amarilla frente al mar. Obra presentada en Versiona Thyssen 2026.",
+    "edicion": "Obra única, firmada · 2026",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico y óleo sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "120 × 90 cm"
+      ],
+      [
+        "Año",
+        "2026"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ],
+      [
+        "Exposición",
+        "Versiona Thyssen 2026"
+      ]
+    ],
+    "disponible": true,
+    "badge": "Versiona Thyssen",
+    "artClass": "art-3"
+  },
+  {
+    "id": 4,
+    "tipo": "original",
+    "nombre": "Florecer",
+    "tecnica": "Técnica mixta sobre lienzo",
+    "medidas": "136 × 89 cm",
+    "precio": 750,
+    "foto": "images/p09_florecer.jpg",
+    "descripcion": "Un campo de flores silvestres sobre fondo azul grisáceo. Una de las obras más queridas del estudio. También disponible en lámina firmada.",
+    "edicion": "Obra única, firmada · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Técnica mixta sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "136 × 89 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ],
+      [
+        "Láminas",
+        "Edición limitada de 20 copias"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-2"
+  },
+  {
+    "id": 5,
+    "tipo": "original",
+    "nombre": "La mesa de Doña Concha",
+    "tecnica": "Técnica mixta sobre lienzo",
+    "medidas": "81 × 97 cm",
+    "precio": 700,
+    "foto": "images/p10_concha.jpg",
+    "descripcion": "La mesa camilla con mantel de flores y la lámpara encendida. Un homenaje a la abuela Concha.",
+    "edicion": "Obra única, firmada · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Técnica mixta sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "81 × 97 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-1"
+  },
+  {
+    "id": 6,
+    "tipo": "original",
+    "nombre": "La vida en el barrio",
+    "tecnica": "Técnica mixta (acrílico y gouache) sobre papel",
+    "medidas": "64,8 × 101,6 cm",
+    "precio": 370,
+    "foto": "images/p11_barrio.jpg",
+    "descripcion": "Vecinos que van y vienen por las calles del barrio, cada uno con su historia, sobre franjas de verde.",
+    "edicion": "Obra única, firmada · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico y gouache sobre papel"
+      ],
+      [
+        "Medidas",
+        "64,8 × 101,6 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-8"
+  },
+  {
+    "id": 7,
+    "tipo": "original",
+    "nombre": "Noche en el lago",
+    "tecnica": "Técnica mixta (acrílico y óleo) sobre lienzo",
+    "medidas": "60 × 50 cm",
+    "precio": 320,
+    "foto": "images/p07_lago.jpg",
+    "descripcion": "Vegetación exuberante junto al agua bajo un cielo de noche profunda.",
+    "edicion": "Obra única, firmada · 2026",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico y óleo sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "60 × 50 cm"
+      ],
+      [
+        "Año",
+        "2026"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-6"
+  },
+  {
+    "id": 8,
+    "tipo": "original",
+    "nombre": "Después de la verbena",
+    "tecnica": "Técnica mixta (acrílico y óleo) sobre lienzo",
+    "medidas": "30 × 30 cm",
+    "precio": 260,
+    "foto": "images/p08_verbena.jpg",
+    "descripcion": "Claveles rojos sobre fondo azul, en pequeño formato y pintado por los cuatro lados.",
+    "edicion": "Obra única, firmada · 2026",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico y óleo sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "30 × 30 cm"
+      ],
+      [
+        "Año",
+        "2026"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-2"
+  },
+  {
+    "id": 9,
+    "tipo": "original",
+    "nombre": "Pescaito y verdutitas",
+    "tecnica": "Técnica mixta (acrílico y óleo) sobre lienzo de madera",
+    "medidas": "15 × 15 cm · díptico",
+    "precio": 120,
+    "foto": "images/p13_pescaito.jpg",
+    "descripcion": "Díptico de pequeño formato: pescado y verduras sobre fondo intenso. Dos piezas que van juntas.",
+    "edicion": "Díptico original, firmado · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico y óleo sobre lienzo de madera"
+      ],
+      [
+        "Medidas",
+        "15 × 15 cm (díptico)"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Edición",
+        "Obra original única (díptico)"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-9"
+  },
+  {
+    "id": 10,
+    "tipo": "original",
+    "nombre": "Flores de pastel",
+    "tecnica": "Pastel y óleo en barra sobre papel",
+    "medidas": "21 × 29,7 cm",
+    "precio": 60,
+    "foto": "images/p14_pastel.jpg",
+    "descripcion": "Orquídeas en rosa y dorado sobre papel azul noche. Pastel y óleo en barra.",
+    "edicion": "Obra única, firmada · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Pastel y óleo en barra sobre papel"
+      ],
+      [
+        "Medidas",
+        "21 × 29,7 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-6"
+  },
+  {
+    "id": 11,
+    "tipo": "original",
+    "nombre": "El cielo",
+    "tecnica": "Óleo sobre lienzo",
+    "medidas": "20 × 30 cm",
+    "precio": 70,
+    "foto": "images/p12_cielo.jpg",
+    "descripcion": "Solo cielo: nubes de tarde teñidas de amarillo y malva. Óleo de pequeño formato.",
+    "edicion": "Obra única, firmada · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Óleo sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "20 × 30 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-5"
+  },
+  {
+    "id": 12,
+    "tipo": "original",
+    "nombre": "Glovo",
+    "tecnica": "Acrílico sobre lienzo de madera",
+    "medidas": "20 × 12 cm",
+    "precio": 70,
+    "foto": "images/p15_glovo.jpg",
+    "descripcion": "Un rider de Glovo cruzando la tabla de madera. Una escena cotidiana con humor, en miniatura.",
+    "edicion": "Obra única, firmada · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico sobre lienzo de madera"
+      ],
+      [
+        "Medidas",
+        "20 × 12 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Edición",
+        "Obra original única, firmada"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-5"
+  },
+  {
+    "id": 13,
+    "tipo": "original",
+    "nombre": "Flamenquín con patatas",
+    "tecnica": "Acrílico sobre lienzo enmarcado",
+    "medidas": "50 × 40 cm",
+    "precio": 400,
+    "foto": "images/p16_flamenquin.jpg",
+    "descripcion": "Una mesa servida vista desde arriba, llena de color. Obra enmarcada. También disponible en lámina firmada.",
+    "edicion": "Obra única, firmada y enmarcada · 2024",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico sobre lienzo, enmarcado"
+      ],
+      [
+        "Medidas",
+        "50 × 40 cm"
+      ],
+      [
+        "Año",
+        "2024"
+      ],
+      [
+        "Edición",
+        "Obra original única, enmarcada"
+      ],
+      [
+        "Láminas",
+        "Edición limitada de 30 copias"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-3"
+  },
+  {
+    "id": 14,
+    "tipo": "original",
+    "nombre": "Merienda en el Valle de Los Pedroches",
+    "tecnica": "Acrílico sobre lienzo de lino",
+    "medidas": "25 × 15 cm",
+    "precio": 300,
+    "foto": "images/p17_merienda.jpg",
+    "descripcion": "Una merienda al aire libre con productos de la tierra, sobre lino. Obra enmarcada. También disponible en lámina firmada.",
+    "edicion": "Obra única, firmada y enmarcada · 2024",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico sobre lienzo de lino, enmarcado"
+      ],
+      [
+        "Medidas",
+        "25 × 15 cm"
+      ],
+      [
+        "Año",
+        "2024"
+      ],
+      [
+        "Edición",
+        "Obra original única, enmarcada"
+      ],
+      [
+        "Láminas",
+        "Edición limitada de 30 copias"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-1"
+  },
+  {
+    "id": 15,
+    "tipo": "original",
+    "nombre": "Un día soñé con esta piscina",
+    "tecnica": "Técnica mixta (acrílico y óleo en barra) sobre lienzo",
+    "medidas": "140 × 93 cm",
+    "precio": 900,
+    "foto": "images/p19_piscina.jpg",
+    "descripcion": "Una piscina rodeada de flores y tumbonas, en gran formato. Original vendido — disponible en lámina firmada.",
+    "edicion": "Original vendido · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico y óleo en barra sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "140 × 93 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Estado",
+        "Original vendido"
+      ],
+      [
+        "Láminas",
+        "Edición limitada de 20 copias"
+      ]
+    ],
+    "disponible": false,
+    "artClass": "art-9"
+  },
+  {
+    "id": 16,
+    "tipo": "original",
+    "nombre": "Una vez vi un leopardo",
+    "tecnica": "Óleo en barra sobre cartulina",
+    "medidas": "50 × 65 cm",
+    "precio": 0,
+    "foto": "images/p20_leopardo.jpg",
+    "descripcion": "Dos leopardos entre palmeras, con orla de cuentas. Original vendido — disponible en lámina firmada.",
+    "edicion": "Original vendido",
+    "ficha": [
+      [
+        "Técnica",
+        "Óleo en barra sobre cartulina"
+      ],
+      [
+        "Medidas",
+        "50 × 65 cm"
+      ],
+      [
+        "Estado",
+        "Original vendido"
+      ],
+      [
+        "Láminas",
+        "Edición limitada de 20 copias"
+      ]
+    ],
+    "disponible": false,
+    "artClass": "art-3"
+  },
+  {
+    "id": 17,
+    "tipo": "original",
+    "nombre": "Lejos de casa",
+    "tecnica": "Óleo en barra sobre cartulina",
+    "medidas": "50 × 65 cm",
+    "precio": 0,
+    "foto": "images/p21_lejos.jpg",
+    "descripcion": "Tuk-tuks bajo las palmeras al borde de la carretera. Óleo en barra sobre cartulina. Original vendido.",
+    "edicion": "Original vendido",
+    "ficha": [
+      [
+        "Técnica",
+        "Óleo en barra sobre cartulina"
+      ],
+      [
+        "Medidas",
+        "50 × 65 cm"
+      ],
+      [
+        "Estado",
+        "Original vendido"
+      ]
+    ],
+    "disponible": false,
+    "artClass": "art-4"
+  },
+  {
+    "id": 18,
+    "tipo": "original",
+    "nombre": "Todo encuentra su sitio",
+    "tecnica": "Acrílico sobre tela",
+    "medidas": "146 × 97 cm",
+    "precio": 0,
+    "foto": "images/p29_sitio.jpg",
+    "descripcion": "Un jardín en flor frente a una casita de campo, en gran formato. Original vendido — disponible en lámina firmada.",
+    "edicion": "Original vendido",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico sobre tela"
+      ],
+      [
+        "Medidas",
+        "146 × 97 cm"
+      ],
+      [
+        "Estado",
+        "Original vendido"
+      ],
+      [
+        "Láminas",
+        "Edición limitada de 20 copias"
+      ]
+    ],
+    "disponible": false,
+    "artClass": "art-8"
+  },
+  {
+    "id": 19,
+    "tipo": "original",
+    "nombre": "El sueño de Alabama",
+    "tecnica": "Técnica mixta sobre lienzo",
+    "medidas": "90 × 70 cm",
+    "precio": 0,
+    "foto": "images/p28_alabama.jpg",
+    "descripcion": "Piscina, sombrillas y mantel de cuadros rojos rodeados de flores. Original vendido — disponible en lámina firmada.",
+    "edicion": "Original vendido",
+    "ficha": [
+      [
+        "Técnica",
+        "Técnica mixta sobre lienzo"
+      ],
+      [
+        "Medidas",
+        "90 × 70 cm"
+      ],
+      [
+        "Estado",
+        "Original vendido"
+      ],
+      [
+        "Láminas",
+        "Edición limitada de 20 copias"
+      ]
+    ],
+    "disponible": false,
+    "artClass": "art-9"
+  },
+  {
+    "id": 20,
+    "tipo": "original",
+    "nombre": "Pensamientos encriptados",
+    "tecnica": "Acrílico sobre lienzo de madera",
+    "medidas": "100 × 81 cm",
+    "precio": 0,
+    "foto": "images/p24_pensamientos.jpg",
+    "descripcion": "Un lienzo lleno de pequeños símbolos y pensamientos cifrados. Original vendido.",
+    "edicion": "Original vendido · 2025",
+    "ficha": [
+      [
+        "Técnica",
+        "Acrílico sobre lienzo de madera"
+      ],
+      [
+        "Medidas",
+        "100 × 81 cm"
+      ],
+      [
+        "Año",
+        "2025"
+      ],
+      [
+        "Estado",
+        "Original vendido"
+      ]
+    ],
+    "disponible": false,
+    "artClass": "art-5"
+  },
+  {
+    "id": 101,
+    "tipo": "print",
+    "nombre": "Siesta al sol — Lámina",
+    "tecnica": "Lámina firmada y numerada",
+    "foto": "images/p04_siesta.jpg",
+    "descripcion": "Lámina de «Siesta al sol», firmada y numerada a mano. Impresa en tamaños A4 y A3 (otros bajo pedido).",
+    "edicion": "Edición limitada de 20 copias",
+    "tallas": [
+      [
+        "A4 · 21×29,7 cm",
+        18
+      ],
+      [
+        "A3 · 29,7×42 cm",
+        25
+      ]
+    ],
+    "precio": 18,
+    "ficha": [
+      [
+        "Impresión",
+        "Lámina firmada y numerada a mano"
+      ],
+      [
+        "Tamaños",
+        "A4 · 18€   /   A3 · 25€"
+      ],
+      [
+        "Otros",
+        "A2 · A1 · A0 bajo pedido"
+      ],
+      [
+        "Edición",
+        "20 copias numeradas"
+      ],
+      [
+        "Envío",
+        "España incluido · Internacional +7€"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-4"
+  },
+  {
+    "id": 102,
+    "tipo": "print",
+    "nombre": "Florecer — Lámina",
+    "tecnica": "Lámina firmada y numerada",
+    "foto": "images/p09_florecer.jpg",
+    "descripcion": "Lámina de «Florecer», firmada y numerada a mano. Impresa en tamaños A4 y A3 (otros bajo pedido).",
+    "edicion": "Edición limitada de 20 copias",
+    "tallas": [
+      [
+        "A4 · 21×29,7 cm",
+        18
+      ],
+      [
+        "A3 · 29,7×42 cm",
+        25
+      ]
+    ],
+    "precio": 18,
+    "ficha": [
+      [
+        "Impresión",
+        "Lámina firmada y numerada a mano"
+      ],
+      [
+        "Tamaños",
+        "A4 · 18€   /   A3 · 25€"
+      ],
+      [
+        "Otros",
+        "A2 · A1 · A0 bajo pedido"
+      ],
+      [
+        "Edición",
+        "20 copias numeradas"
+      ],
+      [
+        "Envío",
+        "España incluido · Internacional +7€"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-2"
+  },
+  {
+    "id": 103,
+    "tipo": "print",
+    "nombre": "Flamenquín con patatas — Lámina",
+    "tecnica": "Lámina firmada y numerada",
+    "foto": "images/p16_flamenquin.jpg",
+    "descripcion": "Lámina de «Flamenquín con patatas», firmada y numerada a mano. Impresa en tamaños A4 y A3 (otros bajo pedido).",
+    "edicion": "Edición limitada de 30 copias",
+    "tallas": [
+      [
+        "A4 · 21×29,7 cm",
+        18
+      ],
+      [
+        "A3 · 29,7×42 cm",
+        25
+      ]
+    ],
+    "precio": 18,
+    "ficha": [
+      [
+        "Impresión",
+        "Lámina firmada y numerada a mano"
+      ],
+      [
+        "Tamaños",
+        "A4 · 18€   /   A3 · 25€"
+      ],
+      [
+        "Otros",
+        "A2 · A1 · A0 bajo pedido"
+      ],
+      [
+        "Edición",
+        "30 copias numeradas"
+      ],
+      [
+        "Envío",
+        "España incluido · Internacional +7€"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-3"
+  },
+  {
+    "id": 104,
+    "tipo": "print",
+    "nombre": "Merienda en el Valle de Los Pedroches — Lámina",
+    "tecnica": "Lámina firmada y numerada",
+    "foto": "images/p17_merienda.jpg",
+    "descripcion": "Lámina de «Merienda en el Valle de Los Pedroches», firmada y numerada a mano. Impresa en tamaños A4 y A3 (otros bajo pedido).",
+    "edicion": "Edición limitada de 30 copias",
+    "tallas": [
+      [
+        "A4 · 21×29,7 cm",
+        18
+      ],
+      [
+        "A3 · 29,7×42 cm",
+        25
+      ]
+    ],
+    "precio": 18,
+    "ficha": [
+      [
+        "Impresión",
+        "Lámina firmada y numerada a mano"
+      ],
+      [
+        "Tamaños",
+        "A4 · 18€   /   A3 · 25€"
+      ],
+      [
+        "Otros",
+        "A2 · A1 · A0 bajo pedido"
+      ],
+      [
+        "Edición",
+        "30 copias numeradas"
+      ],
+      [
+        "Envío",
+        "España incluido · Internacional +7€"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-1"
+  },
+  {
+    "id": 105,
+    "tipo": "print",
+    "nombre": "Un día soñé con esta piscina — Lámina",
+    "tecnica": "Lámina firmada y numerada",
+    "foto": "images/p19_piscina.jpg",
+    "descripcion": "Lámina de «Un día soñé con esta piscina», firmada y numerada a mano. Impresa en tamaños A4 y A3 (otros bajo pedido).",
+    "edicion": "Edición limitada de 20 copias",
+    "tallas": [
+      [
+        "A4 · 21×29,7 cm",
+        18
+      ],
+      [
+        "A3 · 29,7×42 cm",
+        25
+      ]
+    ],
+    "precio": 18,
+    "ficha": [
+      [
+        "Impresión",
+        "Lámina firmada y numerada a mano"
+      ],
+      [
+        "Tamaños",
+        "A4 · 18€   /   A3 · 25€"
+      ],
+      [
+        "Otros",
+        "A2 · A1 · A0 bajo pedido"
+      ],
+      [
+        "Edición",
+        "20 copias numeradas"
+      ],
+      [
+        "Envío",
+        "España incluido · Internacional +7€"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-9"
+  },
+  {
+    "id": 106,
+    "tipo": "print",
+    "nombre": "Una vez vi un leopardo — Lámina",
+    "tecnica": "Lámina firmada y numerada",
+    "foto": "images/p20_leopardo.jpg",
+    "descripcion": "Lámina de «Una vez vi un leopardo», firmada y numerada a mano. Impresa en tamaños A4 y A3 (otros bajo pedido).",
+    "edicion": "Edición limitada de 20 copias",
+    "tallas": [
+      [
+        "A4 · 21×29,7 cm",
+        18
+      ],
+      [
+        "A3 · 29,7×42 cm",
+        25
+      ]
+    ],
+    "precio": 18,
+    "ficha": [
+      [
+        "Impresión",
+        "Lámina firmada y numerada a mano"
+      ],
+      [
+        "Tamaños",
+        "A4 · 18€   /   A3 · 25€"
+      ],
+      [
+        "Otros",
+        "A2 · A1 · A0 bajo pedido"
+      ],
+      [
+        "Edición",
+        "20 copias numeradas"
+      ],
+      [
+        "Envío",
+        "España incluido · Internacional +7€"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-3"
+  },
+  {
+    "id": 107,
+    "tipo": "print",
+    "nombre": "Todo encuentra su sitio — Lámina",
+    "tecnica": "Lámina firmada y numerada",
+    "foto": "images/p29_sitio.jpg",
+    "descripcion": "Lámina de «Todo encuentra su sitio», firmada y numerada a mano. Impresa en tamaños A4 y A3 (otros bajo pedido).",
+    "edicion": "Edición limitada de 20 copias",
+    "tallas": [
+      [
+        "A4 · 21×29,7 cm",
+        18
+      ],
+      [
+        "A3 · 29,7×42 cm",
+        25
+      ]
+    ],
+    "precio": 18,
+    "ficha": [
+      [
+        "Impresión",
+        "Lámina firmada y numerada a mano"
+      ],
+      [
+        "Tamaños",
+        "A4 · 18€   /   A3 · 25€"
+      ],
+      [
+        "Otros",
+        "A2 · A1 · A0 bajo pedido"
+      ],
+      [
+        "Edición",
+        "20 copias numeradas"
+      ],
+      [
+        "Envío",
+        "España incluido · Internacional +7€"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-8"
+  },
+  {
+    "id": 108,
+    "tipo": "print",
+    "nombre": "El sueño de Alabama — Lámina",
+    "tecnica": "Lámina firmada y numerada",
+    "foto": "images/p28_alabama.jpg",
+    "descripcion": "Lámina de «El sueño de Alabama», firmada y numerada a mano. Impresa en tamaños A4 y A3 (otros bajo pedido).",
+    "edicion": "Edición limitada de 20 copias",
+    "tallas": [
+      [
+        "A4 · 21×29,7 cm",
+        18
+      ],
+      [
+        "A3 · 29,7×42 cm",
+        25
+      ]
+    ],
+    "precio": 18,
+    "ficha": [
+      [
+        "Impresión",
+        "Lámina firmada y numerada a mano"
+      ],
+      [
+        "Tamaños",
+        "A4 · 18€   /   A3 · 25€"
+      ],
+      [
+        "Otros",
+        "A2 · A1 · A0 bajo pedido"
+      ],
+      [
+        "Edición",
+        "20 copias numeradas"
+      ],
+      [
+        "Envío",
+        "España incluido · Internacional +7€"
+      ]
+    ],
+    "disponible": true,
+    "artClass": "art-9"
+  }
+]
