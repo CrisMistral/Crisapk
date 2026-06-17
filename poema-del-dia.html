@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poema del día · 2026–2027</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:     #F2EEE4;
+      --fg:     #0F0F0F;
+      --meta:   #8A8780;
+      --subtle: rgba(15,15,15,0.09);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: Georgia, 'Times New Roman', serif;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── Cuadrícula — influencia Elena Asins ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(15,15,15,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15,15,15,0.045) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Marco perimetral */
+    .frame {
+      position: fixed;
+      inset: 13px;
+      border: 1px solid rgba(15,15,15,0.17);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* Marcas de esquina */
+    .frame::before,
+    .frame::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+    }
+    .frame::before {
+      top: -5px; left: -5px;
+      border-top: 1px solid var(--fg);
+      border-left: 1px solid var(--fg);
+    }
+    .frame::after {
+      bottom: -5px; right: -5px;
+      border-bottom: 1px solid var(--fg);
+      border-right: 1px solid var(--fg);
+    }
+
+    /* Layout principal */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 68px 52px 60px;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Cabecera ── */
+    .hd {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 88px;
+    }
+
+    .hd-logo {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 8px;
+      letter-spacing: 0.46em;
+      text-transform: uppercase;
+      color: var(--meta);
+    }
+
+    .hd-date {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: var(--meta);
+      text-align: right;
+      line-height: 2;
+    }
+
+    /* ── Cuerpo ── */
+    main {
+      flex: 1;
+      animation: appear 0.35s ease both;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(7px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .day-tag {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 7.5px;
+      letter-spacing: 0.6em;
+      text-transform: uppercase;
+      color: var(--meta);
+      margin-bottom: 40px;
+    }
+
+    .poet {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .rule {
+      height: 1px;
+      background: var(--fg);
+      margin-bottom: 46px;
+    }
+
+    .p-title {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--meta);
+      margin-bottom: 38px;
+      letter-spacing: 0.03em;
+    }
+
+    .p-body {
+      font-size: 18.5px;
+      line-height: 2.1;
+    }
+
+    .p-body p { margin-bottom: 1.5em; }
+    .p-body p:last-child { margin-bottom: 0; }
+
+    /* Código generativo — patrón binario del día (referencia Asins) */
+    .asins {
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+      height: 22px;
+      margin-top: 52px;
+      opacity: 0.13;
+    }
+
+    .asins b {
+      display: block;
+      width: 2px;
+      background: var(--fg);
+    }
+
+    /* ── Separador ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 60px 0 50px;
+    }
+
+    .div-line {
+      flex: 1;
+      height: 1px;
+      background: var(--subtle);
+    }
+
+    .div-gem {
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--meta);
+      transform: rotate(45deg);
+      margin: 0 20px;
+      flex-shrink: 0;
+    }
+
+    /* ── Navegación ── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-btn {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 8px;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: var(--meta);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 0;
+      transition: color 0.14s;
+      min-width: 84px;
+    }
+
+    .nav-btn:hover:not(:disabled) { color: var(--fg); }
+    .nav-btn:disabled { opacity: 0.2; cursor: default; }
+    .nav-r { text-align: right; }
+
+    .nav-mid {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 8px;
+      letter-spacing: 0.28em;
+      color: var(--meta);
+      text-align: center;
+    }
+
+    /* ── Pie ── */
+    footer {
+      margin-top: 52px;
+      padding-top: 18px;
+      border-top: 1px solid var(--subtle);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .ft {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 7px;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: rgba(15,15,15,0.2);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .page { padding: 52px 28px 48px; }
+      .hd   { margin-bottom: 64px; }
+      .p-body { font-size: 16.5px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="frame"></div>
+
+<div class="page">
+  <header class="hd">
+    <div class="hd-logo">Poema · del · día</div>
+    <div class="hd-date" id="hd-date"></div>
+  </header>
+
+  <main id="main"></main>
+
+  <div class="divider">
+    <div class="div-line"></div>
+    <div class="div-gem"></div>
+    <div class="div-line"></div>
+  </div>
+
+  <nav class="nav">
+    <button class="nav-btn" id="prev" onclick="go(-1)">← anterior</button>
+    <div class="nav-mid" id="nav-mid"></div>
+    <button class="nav-btn nav-r" id="next" onclick="go(1)">siguiente →</button>
+  </nav>
+
+  <footer>
+    <span class="ft">18 · vi · mmxxvi</span>
+    <span class="ft">18 · vi · mmxxvii</span>
+  </footer>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  POEMAS — 10 poetas, 4 poemas cada una
+//  Poemas originales en el espíritu de cada autora
+// ─────────────────────────────────────────────
+const POETS = [
+  {
+    name: 'Pilar Adón',
+    poems: [
+      {
+        title: 'Respiraciones',
+        text: 'La casa respira\ncon sus propias pausas.\nYo la escucho desde el umbral\ncomo se escucha\na un animal que duerme\ny no quieres despertar.',
+      },
+      {
+        title: 'El jardín sin testigos',
+        text: 'El jardín existe\nsin que nadie lo mire.\nEso lo hace\nmás real\nque cualquier cosa\nque hayamos nombrado.',
+      },
+      {
+        title: 'Correspondencias',
+        text: 'Cada habitación\nguarda el silencio\nque corresponde a su forma.\nLo que cabe en una\nno cabe en otra.\nAsí funciona la casa.',
+      },
+      {
+        title: 'Las tres',
+        text: 'A las tres de la madrugada\nlos objetos se mueven un poco.\nNadie los ve.\nEs la única libertad\nque les damos.',
+      },
+    ],
+  },
+  {
+    name: 'Martha Asunción Alonso',
+    poems: [
+      {
+        title: 'Forma',
+        text: 'P A L A B R A\n\npalabra\n\n(el espacio entre las dos\nes también el poema)',
+      },
+      {
+        title: 'Borrado',
+        text: 'si borras una palabra\nqueda el hueco\nsi borras el hueco\nqueda el poema\nsi borras el poema\nqueda esto',
+      },
+      {
+        title: 'Convención',
+        text: 'la sintaxis es una convención\nlos signos son convenciones\nel significado es una convención\n\nyo también',
+      },
+      {
+        title: '[          ]',
+        text: '          \n—\n          \n—\n          \n\n(el resto, tú)',
+      },
+    ],
+  },
+  {
+    name: 'Graciela Baquero',
+    poems: [
+      {
+        title: 'Distancia',
+        text: 'La distancia de la isla\nse mide en años, no en kilómetros.\nCuanto más tiempo llevas\nmás cerca está\ny más imposible.',
+      },
+      {
+        title: 'La caja',
+        text: 'Guardaba en una caja\nlas palabras que no podía decirte:\ncaimito, guayaba, majagua,\nlos nombres de las cosas\nque no tienen traducción.',
+      },
+      {
+        title: 'El trópico',
+        text: 'El trópico\nno es un lugar.\nEs una forma\nde estar en el cuerpo\nque no se cura.',
+      },
+      {
+        title: 'Mangle',
+        text: 'Las raíces del mangle\naprenden a respirar\nen el agua salada.\nEso también\nes un tipo de patria.',
+      },
+    ],
+  },
+  {
+    name: 'Mercedes Cebrián',
+    poems: [
+      {
+        title: 'Recomendación',
+        text: 'Me han recomendado\neste poema\nporque leí otro parecido\ny le di like\nsin leerlo del todo.',
+      },
+      {
+        title: 'Ciclo',
+        text: 'El café donde quedábamos\nahora es un supermercado.\nEl supermercado\ndonde comprábamos\nahora es otro poema.',
+      },
+      {
+        title: 'Reseña',
+        text: 'Cinco estrellas\na la experiencia de vivir.\nTres estrellas\na la atención al cliente.',
+      },
+      {
+        title: 'Sin devolución',
+        text: 'La nostalgia viene incluida\nen el precio de la entrada.\nEl ticket\nno tiene devolución.',
+      },
+    ],
+  },
+  {
+    name: 'María Eloy-García',
+    poems: [
+      {
+        title: 'Realismo',
+        text: 'Hay un tipo de realismo\nque solo puede decirse\ncon palabras de pájaro\no de plomo.',
+      },
+      {
+        title: 'La ministra',
+        text: 'La ministra tenía seis brazos.\nLos usaba todos a la vez\ny aun así\nno daba abasto.',
+      },
+      {
+        title: 'Debajo',
+        text: 'Debajo de la ciudad\nhay otra ciudad\nmás verdadera.\nPara llegar a ella\nhay que saber perderse.',
+      },
+      {
+        title: 'Lo que ya estaba',
+        text: 'El surrealismo no inventa nada.\nSimplemente nombra\nlo que ya estaba\nesperando ser nombrado.',
+      },
+    ],
+  },
+  {
+    name: 'Berta García Faet',
+    poems: [
+      {
+        title: 'Gramática',
+        text: 'el cuerpo es una gramática\nque nadie me enseñó\ny sin embargo\nhablo con él\ntodo el día',
+      },
+      {
+        title: 'Querer',
+        text: 'querer bien\nes difícil\nquerer regular\ntambién\nquerer es\nen general\nuna actividad\nde alta dificultad',
+      },
+      {
+        title: 'Lunes, miércoles, viernes',
+        text: 'soy feminista\nlos lunes miércoles y viernes.\nlos martes jueves y sábados\nsoy feminista también\npero con más caña.',
+      },
+      {
+        title: 'El corazón',
+        text: 'hay que ir con cuidado\ncon las metáforas del corazón:\nel corazón\nes un músculo\ny ya tiene suficiente trabajo',
+      },
+    ],
+  },
+  {
+    name: 'Erika Martínez',
+    poems: [
+      {
+        title: 'Palabras puestas encima',
+        text: 'Hay palabras\nque llevo en el cuerpo\nsin haberlas aprendido.\nSon las palabras\nque me pusieron encima\nantes de nacer.',
+      },
+      {
+        title: 'El archivo',
+        text: 'El océano\nes también\nun archivo.\nLo que guarda\nno te lo devuelve,\nte lo presta\ncon intereses.',
+      },
+      {
+        title: 'El giro',
+        text: 'Hablo el idioma del colonizador\ncon la lengua del colonizado.\nEse es el giro\nque no figura\nen los manuales.',
+      },
+      {
+        title: 'De ningún sitio',
+        text: 'Ser de ningún sitio\nes también\nuna forma de ser\nde todos los sitios.\nHay días en que eso\ncasi consuela.',
+      },
+    ],
+  },
+  {
+    name: 'Elena Medel',
+    poems: [
+      {
+        title: 'El círculo',
+        text: 'Mi madre trabajó\npara que yo pudiera estudiar\npara que yo pudiera escribir\nsobre madres que trabajan.\nEl círculo se cierra.',
+      },
+      {
+        title: 'Las palabras de la vida',
+        text: 'Hay palabras\nque no aprendí en los libros:\nsindicato, ERE, nómina,\nlas palabras con las que se vive\nantes de las que se escriben.',
+      },
+      {
+        title: 'Nosotras',
+        text: 'Cuando digo «nosotras»\nhablo de las que van al metro a las seis\nhablo de las que friegan\nhablo de las que cuidan\nhablo de mí\nantes de que me fuera.',
+      },
+      {
+        title: 'Precio de entrada',
+        text: 'La cultura también\ntiene un precio de entrada\ny días sin descuento\npara jóvenes, mayores\no cualquier tipo de precariedad.',
+      },
+    ],
+  },
+  {
+    name: 'Miriam Reyes',
+    poems: [
+      {
+        title: 'Sin aviso',
+        text: 'El deseo no pide permiso.\nLlega\ny reorganiza\nlos muebles de la razón\nsin avisar.',
+      },
+      {
+        title: 'Galicia',
+        text: 'Galicia sabe\na piedra mojada\ny a presencia de los muertos.\nLos dos\nson formas del amor.',
+      },
+      {
+        title: 'El idioma del cuerpo',
+        text: 'El cuerpo tiene\nsu propio idioma:\nmás antiguo que el castellano,\nmás exacto\nque cualquier cosa\nque yo haya escrito.',
+      },
+      {
+        title: 'Cartografía',
+        text: 'Tocarte\nfue aprender\nla geografía\nde otro planeta\nhabitado.',
+      },
+    ],
+  },
+  {
+    name: 'Julieta Valero',
+    poems: [
+      {
+        title: 'Los que pasan',
+        text: 'El tiempo no pasa.\nSomos nosotros\nlos que pasamos\na través del tiempo\nintentando\nno mojar los zapatos.',
+      },
+      {
+        title: 'Morir un poco',
+        text: 'Escribir es también\nuna forma de morir un poco:\ndejas algo\nque durará más que tú\no no durará\npero lo intentaste.',
+      },
+      {
+        title: 'Pregunta y silencio',
+        text: 'La filosofía pregunta.\nLa poesía\nno necesita\nque nadie responda.',
+      },
+      {
+        title: 'Antes del poema',
+        text: 'Hay un instante\nantes del instante\nen que el poema todavía\nno sabe\nlo que va a decir.\nAhí vivo yo.',
+      },
+    ],
+  },
+];
+
+// ─────────────────────────────────────────────
+//  FECHAS
+//  Día 0 = 18 jun 2026 · Día 365 = 18 jun 2027
+// ─────────────────────────────────────────────
+const START = new Date(2026, 5, 18);
+const TOTAL = 366;
+
+function dayOffset(date) {
+  const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  return Math.round((d - START) / 86400000);
+}
+
+function dateForDay(n) {
+  const d = new Date(START);
+  d.setDate(d.getDate() + n);
+  return d;
+}
+
+const MESES = [
+  'enero','febrero','marzo','abril','mayo','junio',
+  'julio','agosto','septiembre','octubre','noviembre','diciembre',
+];
+
+function fmtLong(d) {
+  return `${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}`;
+}
+
+function fmtShort(d) {
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  return `${dd}·${mm}·${d.getFullYear()}`;
+}
+
+// ─────────────────────────────────────────────
+//  DISTRIBUCIÓN DE POEMAS
+//  Día N → poeta[N % 10] → poema[floor(N/10) % 4]
+//  Sistema rotatorio — espíritu Asins
+// ─────────────────────────────────────────────
+function poemFor(n) {
+  const poet  = POETS[n % 10];
+  const poem  = poet.poems[Math.floor(n / 10) % poet.poems.length];
+  return { name: poet.name, ...poem };
+}
+
+// ─────────────────────────────────────────────
+//  CÓDIGO GENERATIVO (patrón binario del día)
+//  Inspirado en las series sistemáticas de Elena Asins
+// ─────────────────────────────────────────────
+function makeBars(n) {
+  const bits  = (n + 1).toString(2).padStart(9, '0');
+  const seq   = (bits + bits.split('').reverse().join('') + bits).split('');
+  const steps = [5, 8, 11, 15, 18, 20, 18, 15, 11, 8, 5, 9, 13, 17, 19];
+  let html = '';
+  seq.forEach((b, i) => {
+    const base = steps[i % steps.length];
+    const h    = b === '1' ? base + 3 : Math.max(3, base - 3);
+    html += `<b style="height:${h}px"></b>`;
+  });
+  return html;
+}
+
+// ─────────────────────────────────────────────
+//  ESTADO Y RENDER
+// ─────────────────────────────────────────────
+const todayN = dayOffset(new Date());
+let cur = Math.max(0, Math.min(TOTAL - 1, isNaN(todayN) ? 0 : todayN < 0 ? 0 : todayN > TOTAL - 1 ? TOTAL - 1 : todayN));
+
+function go(delta) {
+  cur = Math.max(0, Math.min(TOTAL - 1, cur + delta));
+  render();
+}
+
+function render() {
+  const date = dateForDay(cur);
+
+  // Cabecera
+  document.getElementById('hd-date').innerHTML =
+    fmtShort(date) +
+    `<br><span style="font-size:6.5px;letter-spacing:0.55em;opacity:0.8">DÍA ${String(cur + 1).padStart(3,'0')}</span>`;
+
+  // Poema
+  const { name, title, text } = poemFor(cur);
+
+  const body = text
+    .split('\n\n')
+    .map(s => `<p>${s.replace(/\n/g,'<br>')}</p>`)
+    .join('');
+
+  const main = document.getElementById('main');
+  main.innerHTML = `
+    <div class="day-tag">día ${String(cur + 1).padStart(3,'0')} · ${fmtLong(date)}</div>
+    <div class="poet">${name}</div>
+    <div class="rule"></div>
+    <div class="p-title">${title}</div>
+    <div class="p-body">${body}</div>
+    <div class="asins">${makeBars(cur)}</div>
+  `;
+
+  // Reiniciar animación
+  main.style.animation = 'none';
+  void main.offsetHeight;
+  main.style.animation = '';
+
+  // Navegación
+  const isToday = cur === todayN;
+  document.getElementById('nav-mid').textContent =
+    isToday ? '· hoy ·' : `${cur + 1} / 366`;
+
+  document.getElementById('prev').disabled = cur <= 0;
+  document.getElementById('next').disabled = cur >= TOTAL - 1;
+}
+
+render();
+</script>
+</body>
+</html>
