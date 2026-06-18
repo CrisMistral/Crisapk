@@ -271,227 +271,72 @@
   </nav>
 
   <footer>
-    <span class="ft">18 · vi · mmxxvi</span>
-    <span class="ft">18 · vi · mmxxvii</span>
+    <span class="ft">poetas españolas · ss. xv–xx</span>
+    <span class="ft">poesía japonesa · 1868–1945</span>
   </footer>
 </div>
 
 <script>
 // ─────────────────────────────────────────────
-//  POEMAS — 10 poetas, 4 poemas cada una
-//  Poemas originales en el espíritu de cada autora
+//  POEMAS — antología española (ss. XV–XX)
+//            + poesía japonesa moderna (1868–1945)
 // ─────────────────────────────────────────────
-const POETS = [
-  {
-    name: 'Pilar Adón',
-    poems: [
-      {
-        title: 'Respiraciones',
-        text: 'La casa respira\ncon sus propias pausas.\nYo la escucho desde el umbral\ncomo se escucha\na un animal que duerme\ny no quieres despertar.',
-      },
-      {
-        title: 'El jardín sin testigos',
-        text: 'El jardín existe\nsin que nadie lo mire.\nEso lo hace\nmás real\nque cualquier cosa\nque hayamos nombrado.',
-      },
-      {
-        title: 'Correspondencias',
-        text: 'Cada habitación\nguarda el silencio\nque corresponde a su forma.\nLo que cabe en una\nno cabe en otra.\nAsí funciona la casa.',
-      },
-      {
-        title: 'Las tres',
-        text: 'A las tres de la madrugada\nlos objetos se mueven un poco.\nNadie los ve.\nEs la única libertad\nque les damos.',
-      },
-    ],
-  },
-  {
-    name: 'Martha Asunción Alonso',
-    poems: [
-      {
-        title: 'Forma',
-        text: 'P A L A B R A\n\npalabra\n\n(el espacio entre las dos\nes también el poema)',
-      },
-      {
-        title: 'Borrado',
-        text: 'si borras una palabra\nqueda el hueco\nsi borras el hueco\nqueda el poema\nsi borras el poema\nqueda esto',
-      },
-      {
-        title: 'Convención',
-        text: 'la sintaxis es una convención\nlos signos son convenciones\nel significado es una convención\n\nyo también',
-      },
-      {
-        title: '[          ]',
-        text: '          \n—\n          \n—\n          \n\n(el resto, tú)',
-      },
-    ],
-  },
-  {
-    name: 'Graciela Baquero',
-    poems: [
-      {
-        title: 'Distancia',
-        text: 'La distancia de la isla\nse mide en años, no en kilómetros.\nCuanto más tiempo llevas\nmás cerca está\ny más imposible.',
-      },
-      {
-        title: 'La caja',
-        text: 'Guardaba en una caja\nlas palabras que no podía decirte:\ncaimito, guayaba, majagua,\nlos nombres de las cosas\nque no tienen traducción.',
-      },
-      {
-        title: 'El trópico',
-        text: 'El trópico\nno es un lugar.\nEs una forma\nde estar en el cuerpo\nque no se cura.',
-      },
-      {
-        title: 'Mangle',
-        text: 'Las raíces del mangle\naprenden a respirar\nen el agua salada.\nEso también\nes un tipo de patria.',
-      },
-    ],
-  },
-  {
-    name: 'Mercedes Cebrián',
-    poems: [
-      {
-        title: 'Recomendación',
-        text: 'Me han recomendado\neste poema\nporque leí otro parecido\ny le di like\nsin leerlo del todo.',
-      },
-      {
-        title: 'Ciclo',
-        text: 'El café donde quedábamos\nahora es un supermercado.\nEl supermercado\ndonde comprábamos\nahora es otro poema.',
-      },
-      {
-        title: 'Reseña',
-        text: 'Cinco estrellas\na la experiencia de vivir.\nTres estrellas\na la atención al cliente.',
-      },
-      {
-        title: 'Sin devolución',
-        text: 'La nostalgia viene incluida\nen el precio de la entrada.\nEl ticket\nno tiene devolución.',
-      },
-    ],
-  },
-  {
-    name: 'María Eloy-García',
-    poems: [
-      {
-        title: 'Realismo',
-        text: 'Hay un tipo de realismo\nque solo puede decirse\ncon palabras de pájaro\no de plomo.',
-      },
-      {
-        title: 'La ministra',
-        text: 'La ministra tenía seis brazos.\nLos usaba todos a la vez\ny aun así\nno daba abasto.',
-      },
-      {
-        title: 'Debajo',
-        text: 'Debajo de la ciudad\nhay otra ciudad\nmás verdadera.\nPara llegar a ella\nhay que saber perderse.',
-      },
-      {
-        title: 'Lo que ya estaba',
-        text: 'El surrealismo no inventa nada.\nSimplemente nombra\nlo que ya estaba\nesperando ser nombrado.',
-      },
-    ],
-  },
-  {
-    name: 'Berta García Faet',
-    poems: [
-      {
-        title: 'Gramática',
-        text: 'el cuerpo es una gramática\nque nadie me enseñó\ny sin embargo\nhablo con él\ntodo el día',
-      },
-      {
-        title: 'Querer',
-        text: 'querer bien\nes difícil\nquerer regular\ntambién\nquerer es\nen general\nuna actividad\nde alta dificultad',
-      },
-      {
-        title: 'Lunes, miércoles, viernes',
-        text: 'soy feminista\nlos lunes miércoles y viernes.\nlos martes jueves y sábados\nsoy feminista también\npero con más caña.',
-      },
-      {
-        title: 'El corazón',
-        text: 'hay que ir con cuidado\ncon las metáforas del corazón:\nel corazón\nes un músculo\ny ya tiene suficiente trabajo',
-      },
-    ],
-  },
-  {
-    name: 'Erika Martínez',
-    poems: [
-      {
-        title: 'Palabras puestas encima',
-        text: 'Hay palabras\nque llevo en el cuerpo\nsin haberlas aprendido.\nSon las palabras\nque me pusieron encima\nantes de nacer.',
-      },
-      {
-        title: 'El archivo',
-        text: 'El océano\nes también\nun archivo.\nLo que guarda\nno te lo devuelve,\nte lo presta\ncon intereses.',
-      },
-      {
-        title: 'El giro',
-        text: 'Hablo el idioma del colonizador\ncon la lengua del colonizado.\nEse es el giro\nque no figura\nen los manuales.',
-      },
-      {
-        title: 'De ningún sitio',
-        text: 'Ser de ningún sitio\nes también\nuna forma de ser\nde todos los sitios.\nHay días en que eso\ncasi consuela.',
-      },
-    ],
-  },
-  {
-    name: 'Elena Medel',
-    poems: [
-      {
-        title: 'El círculo',
-        text: 'Mi madre trabajó\npara que yo pudiera estudiar\npara que yo pudiera escribir\nsobre madres que trabajan.\nEl círculo se cierra.',
-      },
-      {
-        title: 'Las palabras de la vida',
-        text: 'Hay palabras\nque no aprendí en los libros:\nsindicato, ERE, nómina,\nlas palabras con las que se vive\nantes de las que se escriben.',
-      },
-      {
-        title: 'Nosotras',
-        text: 'Cuando digo «nosotras»\nhablo de las que van al metro a las seis\nhablo de las que friegan\nhablo de las que cuidan\nhablo de mí\nantes de que me fuera.',
-      },
-      {
-        title: 'Precio de entrada',
-        text: 'La cultura también\ntiene un precio de entrada\ny días sin descuento\npara jóvenes, mayores\no cualquier tipo de precariedad.',
-      },
-    ],
-  },
-  {
-    name: 'Miriam Reyes',
-    poems: [
-      {
-        title: 'Sin aviso',
-        text: 'El deseo no pide permiso.\nLlega\ny reorganiza\nlos muebles de la razón\nsin avisar.',
-      },
-      {
-        title: 'Galicia',
-        text: 'Galicia sabe\na piedra mojada\ny a presencia de los muertos.\nLos dos\nson formas del amor.',
-      },
-      {
-        title: 'El idioma del cuerpo',
-        text: 'El cuerpo tiene\nsu propio idioma:\nmás antiguo que el castellano,\nmás exacto\nque cualquier cosa\nque yo haya escrito.',
-      },
-      {
-        title: 'Cartografía',
-        text: 'Tocarte\nfue aprender\nla geografía\nde otro planeta\nhabitado.',
-      },
-    ],
-  },
-  {
-    name: 'Julieta Valero',
-    poems: [
-      {
-        title: 'Los que pasan',
-        text: 'El tiempo no pasa.\nSomos nosotros\nlos que pasamos\na través del tiempo\nintentando\nno mojar los zapatos.',
-      },
-      {
-        title: 'Morir un poco',
-        text: 'Escribir es también\nuna forma de morir un poco:\ndejas algo\nque durará más que tú\no no durará\npero lo intentaste.',
-      },
-      {
-        title: 'Pregunta y silencio',
-        text: 'La filosofía pregunta.\nLa poesía\nno necesita\nque nadie responda.',
-      },
-      {
-        title: 'Antes del poema',
-        text: 'Hay un instante\nantes del instante\nen que el poema todavía\nno sabe\nlo que va a decir.\nAhí vivo yo.',
-      },
-    ],
-  },
+const ALL_POEMS = [
+  { author: "Susana March", title: "Umbral", text: "Cándidamente azul. Aún no he nacido.\nCiñe el aire mis muslos. Soy de aire.\nEl mar me sabe. Sal, vela y espuma\ndibujan mi contorno en el paisaje.\n\nMe traspasa la luz. No me conozco.\nSoy apenas un soplo de la tarde.\nEl sexo yace en paz, el alma duerme,\nno tengo voz y Dios está distante.\n\nNavego por los cielos castamente\ncon las alas al viento.\nPequeña llama, apenas un chispazo,\nmi corazón no existe pero arde." },
+  { author: "Susana March", title: "La pasión desvelada", text: "Dame tu voz antigua en cuyo acento escucho\nel rumor de los bosques primitivos,\nel canto misterioso de los seres selváticos,\nel grito de agonía\nde la primera virgen violada.\n\nDame tu voz antigua donde yo reconozco\nmi propia voz extinguida,\naquella que cantaba hace milenios\nen las frondosas selvas sin historia,\naquella que sonaba en el murmullo\nde las límpidas fuentes intocadas.\n\nYo fui una gota de agua,\no un pájaro aturdido cruzando el aire nuevo\nde la aurora del mundo;\nacaso un pez de oro sobre cuyas escamas\nprobó el sol la dorada destreza de sus rayos.\nMas era ya la misma doliente criatura\nque ahora soy, consumida de sueños y tristezas." },
+  { author: "Dolores Catarineu", title: "¡Cómo quise tu boca", text: "¡Cómo quise tu boca,\ngranada abierta,\nque en las noches\nde estío de amor\nme llena!\n\n¡Cómo lloran las sombras\nde las veredas,\nqué cauces más amargos\ndejan!\n\nEn fragmentos la luna\nse mete en las ventanas\nentreabiertas,\ny manos de fulgores\nlas cierran.\n\nEn las praderas bailan blancas estrellas.\n¡Cómo quiero tu boca\ncuando te alejas!" },
+  { author: "Dolores Catarineu", title: "Permanencia del pensamiento en el paisaje", text: "Cada rama demuestra\nun alto pensamiento.\nCada raíz responde\na un goce permanente.\n\nCada nube es un sueño\nque se deshace en rosa.\nCada soplo de viento\nes un latido breve.\n\nCada charco de lluvia\nespera una mirada.\nCada hoja olvidada\nuna palabra muerta.\n\nCada señal de vida,\nuna vida que pasa.\n¡Y cada pensamiento\nun anhelo en la nada!" },
+  { author: "Dolores Catarineu", title: "Tender un puente firme", text: "Tender un puente firme\nen esta noche clara,\ndesde mi pensamiento\na tu dormido ensueño.\n\nTener la certidumbre\nde que esperas, sin duda,\ny sentir palpitar\ncomo un pájaro herido,\ntu corazón en lucha\nque reclama el silencio.\n\nEstar en el deseo\ncomo bruma azulada\nque acaricia tus párpados\ncon desvelo de nido.\n\nOrdenar las estrellas\nque velarán tu sueño;\ny sentirte latir\nen la onda sonora\nque trae tu sentimiento." },
+  { author: "Josefina de la Torre", title: "Yo no sé qué tengo", text: "Yo no sé qué tengo.\nSi son vuelos ciegos de tormenta oscura,\no es reposo lento de inmóviles aguas.\nPero todo gira cerca de mi sombra\ny conmueve el aire de mi pensamiento.\nEs el mar y el sol y la arena misma\ny es la vela blanca por la orilla abierta\ny es todo que vibra dentro de mi sangre\ny cubre mis brazos de áspero reflejo...\nNo sé qué me pasa.\nSiento que me espera una hora de luces,\nun inesperado vaivén del misterio.\nY en mis sienes vivas, sabias compañeras,\nya siento la huella del primer latido.\n¡Ah, sonrisas libres de todos los niños,\nvoces olvidadas de todos los viejos,\nrodeadme ahora,\npedidme consejos!" },
+  { author: "Ernestina de Champourcín", title: "Laxitud", text: "La tarde gris y triste me agobia,\ntengo sueño;\nestiro lentamente\nmis dos brazos abiertos\nque se prenden al aire;\nquieren cazar el tiempo,\naprisionarlo pronto,\nrobarle su secreto,\ndeshacer bruscamente sus límites estrechos.\nQuiero llorar: no sé;\nquiero reír: no puedo.\nLos deseos\nse estrellan contra la inexorable inercia\ndel silencio;\nsobre mi corazón rueda grávido el peso\nde la existencia toda.\nAl fin me desperezo.\nLogro romper el cerco\ndel malsano sopor,\npero apenas lo venzo" },
+  { author: "Ernestina de Champourcín", title: "La oración", text: "Ese muro implacable, tan ciego, tan callado…\ny yo a los pies del muro con mi sed y mis ansias,\nyo sola, rodeada de todo lo que esquivo…\n¡Qué lucha de lo inútil contra la pura esencia!\n\nUn reflejo en el muro… una luz resbala\nsobre esa cal inmóvil de un blanco impenetrable…\n¡Es Tu sombra, Señor! Qué minuto de gloria.\nY después… qué silencio en qué sombras de noche.\n\nAquí estoy todavía… Yo sé que existe el pozo\ndonde dormita el agua que ofreciste a mis labios.\nYo sé que solo falta una grieta en el muro;\nla que yo podré abrir mientras espero y amo.\n\nDame fuerzas, Señor. Aunque transcurran siglos\nme encontrarás aquí, rendida y obstinada,\nsoñándote y amándote mientras pasan las horas,\nmientras mi sed de Ti va adelgazando el muro…" },
+  { author: "María Teresa Roca de Togores", title: "A un abanico", text: "Abanico encantado, en tus tenues colores,\nvibra el arte supremo del pincel de Watteau,\nen ti mueren las frases de los viejos amores\ny las rimas ingenuas que tu gracia inspiró.\n\nTu naciste en un siglo de placer y de orgía,\ny en la Corte famosa de un famoso Rey Luis,\nescuchaste las risas de la amada de un día\ncomo el triste suspiro de una reina infeliz." },
+  { author: "Carolina Valencia", title: "Mi tumba", text: "Cuando mis breves días acabados,\nsalga el alma del cuerpo que mantuvo,\ny los calcáreos huesos separados\ndel hálito vital que los sostuvo\n\nbajen al seno de la tierra fría\npara dormir el sueño de la muerte\nhasta que el alba del postrero día\nla trompeta del ángel me despierte.\n\nQuiero una tumba humilde y escondida\nen región ignorada y silenciosa,\nsin recuerdos del mundo y de la vida,\nsin nombre ni inscripción sobre la losa.\n\nQuiérola junto a un bosque colocada\ny al lindel solitario de un camino\ndonde canten las aves la alborada\ny al pasar me bendiga el peregrino." },
+  { author: "Concepción de Estevarena", title: "Misterio", text: "Silenciosa es la noche: las campanas\ncon causa y gravedad su voz elevan,\ny de las doce el último sonido\nal extinguirse en el espacio tiembla.\nUn instante no más ha separado\nel año que termina del que empieza;\nun instante no más, también, separa\nla vida humana de la vida eterna.\nUn año confundido entre las sombras\nen el dormido mundo se despierta;\n¡quién sabe lo que guarda en sus momentos!,\n¡quién desgarra el misterio que lo encierra!" },
+  { author: "Concepción de Estevarena", title: "Hojas perdidas", text: "Conservo el tallo verde entre mis manos\ny ya esparcí las hojas de la flor;\nlas he visto alejarse, cual se aleja\nla primera ilusión.\n\nEran hojas de rosas, que aún guardaban\nel perfume, la forma y el color,\ny, aun siendo así, volaron con el viento,\ny nadie las miró.\n\nHe visto en esas hojas el destino\nde seres sin hogar y sin amor,\nque saben de la noche y nada saben\nde los rayos del sol.\n\nArrancados del tallo en que nacieran\ny arrojados al viento del dolor,\nnadie se para a ver si en esos seres\nexiste un corazón." },
+  { author: "Concepción de Estevarena", title: "Deseos", text: "Porque miro dolores y miserias\nme pesa haber nacido;\nyo quisiera ignorar ajenos males,\naun sintiendo los míos.\n\nQuisiera ser la nota que se eleva\nal espacio infinito,\nquisiera ser el sueño que se forma\nen la mente de un niño.\n\nQuisiera ser más grande que el deseo,\nmás libre que un suspiro:\nquisiera ser un ignorado mundo\nrodando en el vacío." },
+  { author: "María Rosa Gálvez", title: "Oda", text: "¡Portentosa natura! Yo en mi mente\nsaludo tus augustas maravillas,\nobra de un Dios de eterna omnipotencia;\npermíteme que pueda reverente\nal tiempo que me humillas\ncon tu magnificencia,\ndel Teyde abrasador cantar la cumbre,\nsu altura prodigiosa,\nsu hondo abismo y su mole cavernosa.\n\nEl astro de la luz, padre del día,\ndel globo de la tierra\nsus rayos escondía\ncuando yo penetraba\nde Laguna la selva deliciosa." },
+  { author: "Florencia del Pinar", title: "Canción", text: "El amor ha tales mañas\nque quien no se guarda dellas,\nsi se l'entra en las entrañas,\nno puede salir sin ellas.\n\nEl amor es un gusano\nbien mirada su figura,\nes un cáncer de natura\nque come todo lo sano.\n\nPor sus burlas, por sus sañas,\ndél se dan tales querellas\nque si s'entra en las entrañas,\nno puede salir sin ellas.\n\nEs de diversas colores,\ncríase de mil antojos;\nda fatiga, da dolores,\nrige grandes y menores,\nciega muchos claros ojos." },
+  { author: "Florencia del Pinar", title: "Canción de unas perdices que le enviaron vivas", text: "Destas aves su nación\nes cantar con alegría,\ny de vellas en prisión\nsento yo grave pasión,\nsin sentir nadie la mía.\n\nEllas lloran que se vieron\nsin temor de ser cativas,\ny a quien eran más esquivas\nesos mismos las prendieron.\n\nSus nombres mi vida son\nque va perdiendo alegría,\ny de vellas en prisión\nsento yo grave pasión,\nsin sentir nadie la mía." },
+  { author: "Akiko Yosano", title: "Sin conocer", text: "Sin conocer\nla sangre ardiente\nde un cuerpo tierno,\n¿no te sentirás solo,\ntú que predicas el camino?" },
+  { author: "Akiko Yosano", title: "La primavera es fugaz", text: "La primavera es fugaz.\n¿Qué me importa una vida inmortal?\nToqué\ncon las manos\nmis senos abundantes." },
+  { author: "Akiko Yosano", title: "En Kamakura", text: "En Kamakura\naunque sea un Buda\nShakyamuni\nes guapo.\nUna arboleda de verano." },
+  { author: "Akiko Yosano", title: "La joven veinteañera", text: "La joven veinteañera.\nFluye entre los dientes del peine\nsu cabellera negra.\nLa ostentosa juventud,\n¡oh, maravilla!" },
+  { author: "Akiko Yosano", title: "No te mueras", text: "Ay, hermano, lloro por ti,\nno te mueras.\nTú que naciste el menor de la familia,\nel cariño de tus padres superaba todo,\nmas ¿acaso ellos te han educado para matar a la gente\nhaciéndote empuñar una espada?\n¿Te han criado hasta los veinticuatro años\npara que mueras después de matar a la gente?\n\nEres el dueño de una tienda tradicional\nde un comerciante de la ciudad de Sakai.\nEres el heredero del nombre de tu padre.\nNo te mueras.\n\nEl Emperador nunca aparecerá en el campo de batalla.\n\nAy, hermano,\nno te mueras en el campo de batalla." },
+  { author: "Hakushu Kitahara", title: "Sen Rikyu", text: "Sen Rikyu amaba el té\nporque le complacía el espíritu del té.\n\nAlma tranquila y noble del amanecer y del atardecer.\nEl humo era más amado aún que el té.\n\nMantener la sutileza en la apariencia\nequivale a purificar el alma con sutileza.\n\nPor eso Rikyu permanecía sentado\ny le sonreía al sol tenue bajo el pabellón de té." },
+  { author: "Hakushu Kitahara", title: "Palma de la mano", text: "En la palma de mi mano reluciente\nestá un Buda de Oro.\n\nDe mi alma reluciente\ndesapareció el Buda en un parpadeo.\n\nVolteando la palma de mi mano reluciente\nbusqué al Buda todo el día." },
+  { author: "Hakushu Kitahara", title: "Impresión del crepúsculo", text: "Delicia de los besos… murmullos…\nMas la sangre invisible gotea en el cielo\ncomo el rugido de una bestia herida y agonizante.\n¿Por qué duele tanto?\nAh, el color de la melodía crepuscular,\nel silencioso resplandor.\n\nDelicia de los besos… murmullos…" },
+  { author: "Hakushu Kitahara", title: "Fatiga", text: "Ay, beso que vas aumentando en violencia,\nmelodía carnal…\n\nDe esa manera, el rostro de una bestia, pálido, fatigado,\nahora me contempla, fugaz, tan fugazmente,\ny del otro lado de la ventana turbia me maldice, vacilando.\n\nOh, violín enloquecido que rechinas, oh, mis labios.\nUn muro de arsénico quema mi cuerpo.\nEl sol de la tarde rebota en la pared." },
+  { author: "Takuboku Ishikawa", title: "En una isla del Mar del Este", text: "En una isla del Mar del Este\nsobre la arena blanca de la playa\ncansado de tanto llorar\nme entretengo con un cangrejo." },
+  { author: "Takuboku Ishikawa", title: "Por tu mejilla resbalaba una lágrima", text: "Por tu mejilla resbalaba una lágrima.\nSin secarla, me mostrabas un puñado de arena.\n¡Imposible olvidarla!" },
+  { author: "Takuboku Ishikawa", title: "Esta duna", text: "Esta duna\nque la tormenta de una noche\nconstruyó;\n¿tumba de quién será?" },
+  { author: "Takuboku Ishikawa", title: "Por juego, cargué a mi madre", text: "Por juego, cargué a mi madre en la espalda\nsin poder contener el llanto\nni avanzar más de tres pasos\n¡pesaba tan poco!" },
+  { author: "Takuboku Ishikawa", title: "La arena se encoge", text: "La arena se encoge al chupar mis lágrimas;\n¡qué cosa tan pesada una lágrima!\nCien veces escribo en la arena la letra dai\ny regreso a casa dejando\nla idea de suicidarme." },
+  { author: "Takuboku Ishikawa", title: "Salí huyendo", text: "Salí huyendo:\nquería llorar a solas\nfrente al vasto mar\npor siete u ocho días." },
+  { author: "Takuboku Ishikawa", title: "Lágrimas, lágrimas", text: "Lágrimas, lágrimas\n¡Extraño!\nLavan mi corazón\ny siento ganas de bromear." },
+  { author: "Sakutaro Haguiwara", title: "Muerte de una rana", text: "Mataron a una rana,\nlos niños alzaron las manos formando un corro,\ntodos juntos,\nalzaron pequeñitas\ny ensangrentadas manos.\nSalió la luna.\nEncima del cerro se yergue una persona.\nHay un rostro debajo del sombrero." },
+  { author: "Sakutaro Haguiwara", title: "Piedad amorosa", text: "Sin duda, con tus dientes bellos y duros,\nmujer, masticarás el verdor de hierbas.\nMujer,\ncon esta tinta de hierba verdegay,\nel rostro te pintaré del todo,\nte excitaré a la lujuria,\ny nos divertiremos con juegos secretos a la sombra del follaje.\nMira,\naquí las campánulas mueven el cuello,\nallá cimbrean los brazos las gencianas.\n¡Oh!, abrazaré tu seno con firmeza." },
+  { author: "Sakutaro Haguiwara", title: "Enamorado del enamoramiento", text: "Con la boca pintada, yo\nbesé el tronco de un tierno abedul blanco.\nYo, por más guapo que sea,\nno tengo pechos como pelotas.\nMi cutis no esparce la fragancia de polvos finos.\nSoy un infeliz marchitado.\nAy, ¡qué hombre tan pobre!\nEn este campo de estío temprano aromado,\nen la arboleda fulgurante,\nme puse ajustados guantes de color del cielo." },
+  { author: "Sakutaro Haguiwara", title: "Flauta verde", text: "En esta llanura crepuscular\nindolentes caminan en procesión\nlos elefantes de orejas amplias.\nEn el viento se estremece una luna amarilla de atardecer.\nAcá y allá flamean hojas de hierba como sombreros.\n¿Se siente sola, Señorita?\nHe aquí una flauta cuyo son es de verde transparente.\nToque dulcemente una melodía.\nTemblando en el cielo diáfano\ninvoque a su espejismo." },
+  { author: "Sakutaro Haguiwara", title: "Caza de la luciérnaga", text: "Una, desde el escote de mi amada hermana\nUna, desde la ventana de un hospital de leprosos\nUna, desde el pozo del linaje\nUna, desde los pies descalzos de Cristo\nUna, desde el dorso de un pez\nUna, desde el corazón de un homicida\nUna, desde mis manos pulidas\nEn el lejano mundo nocturno cacé una luciérnaga." },
+  { author: "Mitsuharu Kaneko", title: "Paracaídas", text: "Los paracaídas se despliegan\ncomo un rosario\nse enredan\ncomo las flores marchitas de la correhuela.\n\nFloto aislado enmedio del cielo azul\n¡Ah, qué soledad!\n\nNubes donde se reúnen\nlos granizos\ny el trueno,\n\nLos quitasoles van flotando\npor el cielo donde moran la luna y el arcoiris\n¡Qué frágiles son!\n\n¿Pero adónde se dirigen?\n¿Hacia qué destino van?" },
+  { author: "Kenzi Miyazawa", title: "No sucumbir a la lluvia", text: "No sucumbir a la lluvia\nNo sucumbir al viento\nNo sucumbir a la nieve ni al calor del estío\nTener un cuerpo firme y sano\nsin avaricia ni codicia\nSonreír siempre tranquilo\nNunca tener ira\ncomer cuatro tazas de arroz al día\ny un poco de pasta de soya y legumbres.\nNo contar conmigo mismo\nen ninguna ocasión\nobservar atentamente y comprender\nSi al este hay un niño enfermo\nir a cuidarlo\nSi al oeste hay una madre fatigada\nayudarle cargando las gavillas de arroz" },
+  { author: "Daigaku Horiguchi", title: "Arabesco", text: "Iluminados por la luna\nPierrot, Pierrete\nDanzaban. Pierrot, Pierrette.\n\nIluminados por la luna\nPierrot, Pierrette\nCantaban. Pierrot, Pierrette.\n\nDanzaban, cantaban\nPierrot, Pierrette." },
+  { author: "Daigaku Horiguchi", title: "Noche argentada", text: "En la calle bañado por la luna\nTaciturno, Pierrot se erguía.\n\nLa imagen pálida de Pierrot\n¡Humedecida por los rayos de la luna!\n\nA su alrededor echó en vano la mirada fija\nbuscando la sombra de colombina.\n\nY con desconsuelo infinito\n¡se le saltaron las lágrimas!" },
+  { author: "Daigaku Horiguchi", title: "Pierrot autumnal", text: "Con tono plañidero, mi Pierrot\nCanta: \"¡Es otoño!\", \"¡Es otoño!\".\n\nAbriendo la boca en forma de \"O\"\nCanta; \"¡Es otoño!\", \"¡Es otoño!\"\n\nLa faz enharinada como la luna\nSe le llena de lágrimas.\n\nSu menester de payaso obliga a mi Pierrot\na esta pobre arlequinada.\n\nMas el otoño melancólico lo hiere de verdad\nY le arranca lágrimas sinceras." },
+  { author: "Daigaku Horiguchi", title: "Pierrot", text: "¡Palidez de Pierrot! ¡Pena terrenal!\nPese a su brillante blancura\nLa faz de Pierrot era triste\nComo rayo de Luna.\nPese a su brillante blancura\n¡El rayo de luna era triste!" },
+  { author: "Daigaku Horiguchi", title: "Lamento de Pierrot", text: "¿No es tu vida una aflicción, Pierrot?\n¡Bastardo de la luna viuda!\nElla, en el alto cielo\nY tú, acá en la tierra\n¡En esta faena tragicómica!" },
+  { author: "Shigueharu Nakano", title: "Adiós de la madrugada", text: "Hemos de trabajar\nhemos de discutir nuestros asuntos.\nSiempre que nos reunimos\nnos asaltan los gendarmes\ny nos golpean la nariz\nnos golpean los ojos.\n\nPor eso nos cambiamos a este segundo piso\ncon salida a callejones y atajos de refugio.\n\nAquí duermen seis adolescentes.\nEn la planta baja, un matrimonio y un niño de pecho.\nNo conozco a estos adolescentes\nsólo sé que son mis camaradas." },
+  { author: "Shigueharu Nakano", title: "Canto", text: "Tú no cantes\nno cantes a las flores de cerezo\nni a las alas de las libélulas\nno cantes al murmullo del aire\nni al aroma del cabello de las mujeres.\n\nNiégate\ntodas las cosas débiles\ntodas las cosas frágiles\ntodas las cosas melancólicas.\n\nRechaza\ntodas las cosas sentimentales\ny canta con franqueza\nlo que piensas\nlo que llena nuestro estómago.\n\nCanta las cosas que penetran al corazón\ncanta un canto que aúlle cuando lo destrocen\nun canto que brote desde el fondo del agravio." },
+  { author: "Chuya Nakahara", title: "Circo", text: "Habían transcurrido varias épocas\ny hubo guerras de color castaño.\n\nHabían transcurrido varias épocas\ny soplaron ráfagas heladas de invierno.\n\nHabían transcurrido varias épocas\ny esta noche, aquí, llegaban a su punto culminante.\n\nHay una viga en lo alto de la carpa del circo.\nHay un columpio.\nUn columpio casi invisible.\n\nCuelga boca abajo con los brazos tendidos\nbajo el techo manchado de algodón." },
+  { author: "Chuya Nakahara", title: "La tristeza manchada", text: "Sobre la tristeza manchada\ncaen hoy otra vez copos de nieve.\nSobre la tristeza manchada\nhoy hasta el viento pasa.\n\nLa tristeza manchada\nes como la piel del zorro.\nLa tristeza manchada\nse encoge bajo la nieve que cae como polvo.\n\nLa tristeza manchada\nnada desea ni nada suplica.\nLa tristeza manchada\nsueña en la muerte, con tedio." },
+  { author: "Shinkichi Takahashi", title: "Plato", text: "Plato plato plato plato plato\nplato plato plato plato plato\nplato plato plato plato plato\nAburrimiento\nPasión con que repta una lombriz en el frente.\nCon un delantal de color de arroz blanco\nno sequen los platos.\nMujer de negros nidos nasales,\nallí también el humorismo está ahumándose.\nRompan los platos.\nAl romperlos,\nresuena el ruido de aburrimiento." },
+  { author: "Shinkichi Takahashi", title: "Papas", text: "Quisiera ser una papa\nrecién sacada de la tierra." },
+  { author: "Shinkichi Takahashi", title: "Hojas secas", text: "No necesitan estar vivas\nse han muerto calcinadas\nHan de ser oreadas al viento.\nEn la lluvia desolada de otoño\nentre los montes de arces sutilmente coloreados,\ncomo son hojas muertas caídas en la tierra,\nhan de dormir con tranquilidad." },
+  { author: "Shinkichi Takahashi", title: "Ausencia", text: "Decid que no estoy.\nDecid que aquí no hay nadie,\nque regreso cincuenta millones de años después." },
+  { author: "Shinkichi Takahashi", title: "Ignorancia es el Buda", text: "Nada mejor que no saber nada\nBien dicho: \"ignorancia es el Buda\"\n\nNo saber nada\nes la suprema sabiduría." },
+  { author: "Shinkichi Takahashi", title: "Enseñanzas de Buda", text: "Las enseñanzas de Buda\nno son para que vivamos\nsino para señalarnos qué es vivir.\nUna vez pronunciadas, ya son inútiles.\nTambién vivir es inútil,\nmas vivimos por los demás\npara señalarles qué es vivir." },
+  { author: "Shinkichi Takahashi", title: "Abrojo", text: "Brotaba una flor de abrojo\nen el arenal de México.\n\nLa flor de abrojo se levantaba en un vaso\nen medio del inmenso desierto de la luna.\n\nFlorecía el abrojo\nencima del cerro escabroso del corazón de una mujer.\nEl mar, bullicioso, se manchaba con el abrojo.\n\nEl abrojo púrpura\nflorecía en silencio\nal costado de la mujer.\nEra el cadáver de un hombre." },
 ];
 
 // ─────────────────────────────────────────────
@@ -528,14 +373,11 @@ function fmtShort(d) {
 }
 
 // ─────────────────────────────────────────────
-//  DISTRIBUCIÓN DE POEMAS
-//  Día N → poeta[N % 10] → poema[floor(N/10) % 4]
-//  Sistema rotatorio — espíritu Asins
+//  DISTRIBUCIÓN — rotación sobre ALL_POEMS
 // ─────────────────────────────────────────────
 function poemFor(n) {
-  const poet  = POETS[n % 10];
-  const poem  = poet.poems[Math.floor(n / 10) % poet.poems.length];
-  return { name: poet.name, ...poem };
+  const p = ALL_POEMS[n % ALL_POEMS.length];
+  return { name: p.author, title: p.title, text: p.text };
 }
 
 // ─────────────────────────────────────────────
