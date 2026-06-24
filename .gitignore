@@ -1,3 +1,13 @@
 .env
 node_modules/
 .netlify/
+
+# VideoBot — datos locales (NO versionar)
+sessions/*
+!sessions/.gitkeep
+uploads/*
+!uploads/.gitkeep
+data/*
+!data/.gitkeep
+logs/*
+!logs/.gitkeep
