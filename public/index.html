@@ -4,461 +4,757 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0f0f0f">
-  <title>VideoBot — Publicador Automático</title>
+  <meta name="theme-color" content="#0a0a0a">
+  <title>VideoBot — Publica en YouTube automáticamente</title>
   <style>
     :root {
-      --bg: #0f0f0f;
-      --card: #1a1a1a;
-      --card2: #222;
-      --border: #2a2a2a;
-      --accent: #6c63ff;
-      --accent2: #ff6b6b;
-      --green: #22c55e;
-      --yellow: #f59e0b;
-      --red: #ef4444;
-      --text: #f0f0f0;
-      --muted: #888;
-      --radius: 16px;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --bg: #0a0a0a; --card: #141414; --card2: #1e1e1e; --border: #272727;
+      --accent: #6c63ff; --accent-dim: rgba(108,99,255,.15);
+      --green: #22c55e; --yellow: #f59e0b; --red: #ef4444; --blue: #3b82f6;
+      --text: #f0f0f0; --muted: #777; --radius: 16px;
+      --safe-top: env(safe-area-inset-top,0px); --safe-bottom: env(safe-area-inset-bottom,0px);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px}
 
-    /* ── Layout ── */
-    .app { display: flex; flex-direction: column; height: 100%; max-width: 600px; margin: 0 auto; }
-    .header {
-      padding: calc(var(--safe-top) + 16px) 20px 16px;
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 12px;
+    /* ── Screens ── */
+    .screen{display:none;flex-direction:column;height:100%}
+    .screen.active{display:flex}
+
+    /* ══════════════════════════════════════════════
+       LANDING / AUTH
+    ══════════════════════════════════════════════ */
+    #landing{overflow-y:auto;padding:0 20px 40px}
+    .landing-hero{text-align:center;padding:calc(var(--safe-top) + 40px) 0 32px}
+    .hero-logo{font-size:52px;margin-bottom:12px}
+    .hero-title{font-size:28px;font-weight:800;line-height:1.2;margin-bottom:8px}
+    .hero-title span{color:var(--accent)}
+    .hero-sub{font-size:15px;color:var(--muted);max-width:300px;margin:0 auto}
+
+    .auth-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:24px 0 20px}
+    .auth-tab{flex:1;padding:12px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s}
+    .auth-tab.active{background:var(--accent);color:#fff}
+
+    .auth-form{display:flex;flex-direction:column;gap:12px}
+    .auth-form input{
+      padding:14px 16px;border-radius:12px;border:1px solid var(--border);
+      background:var(--card2);color:var(--text);font-size:15px;outline:none;width:100%;
+      transition:border-color .2s
     }
-    .header-icon { font-size: 28px; }
-    .header-title { font-size: 20px; font-weight: 700; }
-    .header-sub { font-size: 12px; color: var(--muted); }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-left: auto; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .auth-form input:focus{border-color:var(--accent)}
+    .btn-primary{
+      padding:15px;border-radius:12px;border:none;background:var(--accent);
+      color:#fff;font-size:16px;font-weight:700;cursor:pointer;width:100%;
+      transition:opacity .2s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px
+    }
+    .btn-primary:active{transform:scale(.98)}
+    .btn-primary:disabled{opacity:.5;cursor:not-allowed}
+    .auth-error{color:var(--red);font-size:13px;text-align:center;min-height:20px}
 
-    .content { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+    /* Pricing cards */
+    .pricing-section{margin-top:40px}
+    .pricing-title{text-align:center;font-size:18px;font-weight:700;margin-bottom:4px}
+    .pricing-sub{text-align:center;font-size:13px;color:var(--muted);margin-bottom:20px}
+    .pricing-cards{display:flex;flex-direction:column;gap:12px}
+    .pricing-card{
+      border:1px solid var(--border);border-radius:var(--radius);padding:20px;
+      background:var(--card);position:relative
+    }
+    .pricing-card.featured{border-color:var(--accent);background:var(--accent-dim)}
+    .pricing-badge{
+      position:absolute;top:-10px;right:16px;background:var(--accent);color:#fff;
+      font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px
+    }
+    .pricing-name{font-size:18px;font-weight:700;margin-bottom:4px}
+    .pricing-price{font-size:32px;font-weight:800;margin-bottom:12px}
+    .pricing-price span{font-size:14px;font-weight:400;color:var(--muted)}
+    .pricing-features{list-style:none;display:flex;flex-direction:column;gap:6px}
+    .pricing-features li{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+    .pricing-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+
+    /* ══════════════════════════════════════════════
+       MAIN APP
+    ══════════════════════════════════════════════ */
+    #app{position:relative}
+    .app-header{
+      padding:calc(var(--safe-top) + 14px) 20px 14px;
+      background:var(--card);border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:10px;flex-shrink:0
+    }
+    .app-logo{font-size:22px}
+    .app-title{font-size:17px;font-weight:700;flex:1}
+    .user-badge{
+      background:var(--card2);border:1px solid var(--border);border-radius:20px;
+      padding:5px 12px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer
+    }
+    .plan-chip{
+      font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;
+      background:var(--accent-dim);color:var(--accent);text-transform:uppercase
+    }
+
+    .app-content{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+
+    /* Tabs */
+    .tabs{display:flex;background:var(--card2);border-radius:12px;padding:4px;gap:4px;flex-shrink:0}
+    .tab{flex:1;padding:9px 4px;text-align:center;font-size:12px;font-weight:600;border-radius:8px;cursor:pointer;color:var(--muted);transition:all .2s}
+    .tab.active{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+
+    /* Tab content */
+    .tab-pane{display:none;flex-direction:column;gap:14px}
+    .tab-pane.active{display:flex}
 
     /* ── Cards ── */
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
-    .card-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+    .card-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
 
-    /* ── Upload Zone ── */
-    .upload-zone {
-      border: 2px dashed var(--border); border-radius: var(--radius);
-      padding: 32px 20px; text-align: center; cursor: pointer;
-      transition: border-color .2s, background .2s;
+    /* Upload zone */
+    .upload-zone{
+      border:2px dashed var(--border);border-radius:var(--radius);
+      padding:28px 16px;text-align:center;cursor:pointer;transition:all .2s
     }
-    .upload-zone:active, .upload-zone.drag { border-color: var(--accent); background: rgba(108,99,255,.08); }
-    .upload-zone .icon { font-size: 48px; margin-bottom: 12px; }
-    .upload-zone .label { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-    .upload-zone .hint { font-size: 13px; color: var(--muted); }
-    #videoInput { display: none; }
+    .upload-zone:active,.upload-zone.drag{border-color:var(--accent);background:var(--accent-dim)}
+    .upload-icon{font-size:44px;margin-bottom:10px}
+    .upload-label{font-size:15px;font-weight:600;margin-bottom:3px}
+    .upload-hint{font-size:12px;color:var(--muted)}
+    #videoInput{display:none}
 
-    /* Video preview */
-    .video-preview { border-radius: var(--radius); overflow: hidden; background: #000; position: relative; }
-    .video-preview video { width: 100%; max-height: 240px; object-fit: contain; display: block; }
-    .video-preview .remove-btn {
-      position: absolute; top: 8px; right: 8px;
-      background: rgba(0,0,0,.7); border: none; color: #fff;
-      border-radius: 50%; width: 32px; height: 32px; font-size: 18px;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    .video-preview{border-radius:12px;overflow:hidden;background:#000;position:relative;margin-top:12px}
+    .video-preview video{width:100%;max-height:220px;object-fit:contain;display:block}
+    .remove-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.7);border:none;color:#fff;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .video-meta{font-size:11px;color:var(--muted);margin-top:6px}
+
+    /* Inputs */
+    textarea,input[type="text"]{
+      width:100%;background:var(--card2);border:1px solid var(--border);
+      border-radius:10px;padding:12px;color:var(--text);font-size:15px;
+      font-family:inherit;resize:none;outline:none;transition:border-color .2s
     }
-    .video-info { margin-top: 8px; font-size: 12px; color: var(--muted); }
+    textarea:focus,input[type="text"]:focus{border-color:var(--accent)}
+    .char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:4px}
 
-    /* ── Inputs ── */
-    textarea, input[type="text"] {
-      width: 100%; background: var(--card2); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px; color: var(--text); font-size: 15px;
-      font-family: inherit; resize: none; outline: none;
-      transition: border-color .2s;
+    /* Platform pills */
+    .platform-grid{display:flex;gap:10px;flex-wrap:wrap}
+    .platform-pill{
+      display:flex;align-items:center;gap:7px;padding:9px 14px;
+      border-radius:20px;border:1.5px solid var(--border);
+      background:var(--card2);cursor:pointer;transition:all .2s;
+      font-size:13px;font-weight:600;color:var(--muted)
     }
-    textarea:focus, input[type="text"]:focus { border-color: var(--accent); }
-    .char-count { font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
-    .char-count.warn { color: var(--yellow); }
-    .char-count.over { color: var(--red); }
+    .platform-pill .pi{font-size:18px}
+    .platform-pill.active{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
+    .platform-pill.locked{opacity:.4;cursor:not-allowed}
+    .platform-pill .lock{font-size:11px;color:var(--yellow)}
 
-    /* ── Platforms ── */
-    .platforms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .platform-btn {
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      padding: 12px 8px; border-radius: 12px; border: 2px solid var(--border);
-      background: var(--card2); cursor: pointer; transition: all .2s; user-select: none;
+    /* Publish button */
+    .publish-btn{
+      width:100%;padding:16px;border-radius:var(--radius);border:none;
+      background:var(--accent);color:#fff;font-size:16px;font-weight:700;
+      cursor:pointer;transition:opacity .2s,transform .1s;
+      display:flex;align-items:center;justify-content:center;gap:8px
     }
-    .platform-btn .p-icon { font-size: 28px; }
-    .platform-btn .p-name { font-size: 11px; font-weight: 600; color: var(--muted); }
-    .platform-btn.active { border-color: var(--accent); background: rgba(108,99,255,.12); }
-    .platform-btn.active .p-name { color: var(--accent); }
+    .publish-btn:active{transform:scale(.98)}
+    .publish-btn:disabled{opacity:.5;cursor:not-allowed}
+    .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* ── Publish Button ── */
-    .publish-btn {
-      width: 100%; padding: 16px; border-radius: var(--radius); border: none;
-      background: var(--accent); color: #fff; font-size: 16px; font-weight: 700;
-      cursor: pointer; transition: opacity .2s, transform .1s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+    /* Jobs */
+    .job-list{display:flex;flex-direction:column;gap:10px}
+    .job-item{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:13px}
+    .job-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .status-dot.pending{background:var(--muted)}
+    .status-dot.processing{background:var(--yellow);animation:pulse 1s infinite}
+    .status-dot.done{background:var(--green)}
+    .status-dot.error{background:var(--red)}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+    .job-name{flex:1;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .job-time{font-size:11px;color:var(--muted);flex-shrink:0}
+    .job-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;padding:2px 6px}
+    .job-del:active{color:var(--red)}
+    .result-badges{display:flex;gap:6px;flex-wrap:wrap}
+    .result-badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;display:flex;align-items:center;gap:4px}
+    .result-badge.ok{background:rgba(34,197,94,.12);color:var(--green)}
+    .result-badge.fail{background:rgba(239,68,68,.12);color:var(--red)}
+    .result-badge.wait{background:rgba(119,119,119,.12);color:var(--muted)}
+    .result-link{color:var(--accent);font-size:11px;text-decoration:none;margin-top:5px;display:inline-block}
+    .empty-state{text-align:center;padding:32px;color:var(--muted);font-size:14px}
+    .empty-state .ei{font-size:38px;margin-bottom:8px}
+
+    /* Accounts tab */
+    .account-item{
+      display:flex;align-items:center;gap:12px;padding:14px;
+      background:var(--card2);border:1px solid var(--border);border-radius:12px
     }
-    .publish-btn:active { transform: scale(.98); }
-    .publish-btn:disabled { opacity: .5; cursor: not-allowed; }
-    .publish-btn .spinner {
-      width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
-      border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite;
+    .account-icon{font-size:28px;flex-shrink:0}
+    .account-info{flex:1}
+    .account-name{font-size:14px;font-weight:600}
+    .account-sub{font-size:12px;color:var(--muted)}
+    .account-status{width:10px;height:10px;border-radius:50%;background:var(--border)}
+    .account-status.connected{background:var(--green)}
+    .btn-connect{
+      padding:8px 16px;border-radius:20px;border:1.5px solid var(--accent);
+      background:transparent;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── Jobs list ── */
-    .jobs-list { display: flex; flex-direction: column; gap: 10px; }
-    .job-card { background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
-    .job-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .job-status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .job-status-dot.pending { background: var(--muted); }
-    .job-status-dot.processing { background: var(--yellow); animation: pulse 1s infinite; }
-    .job-status-dot.done { background: var(--green); }
-    .job-status-dot.error { background: var(--red); }
-    .job-name { font-size: 14px; font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .job-time { font-size: 11px; color: var(--muted); flex-shrink: 0; }
-    .job-platforms { display: flex; gap: 6px; flex-wrap: wrap; }
-    .platform-badge {
-      font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 600;
-      display: flex; align-items: center; gap: 4px;
+    .btn-connect:active{background:var(--accent-dim)}
+    .btn-disconnect{
+      padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);
+      background:transparent;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer
     }
-    .platform-badge.success { background: rgba(34,197,94,.15); color: var(--green); }
-    .platform-badge.fail { background: rgba(239,68,68,.15); color: var(--red); }
-    .platform-badge.pending { background: rgba(136,136,136,.15); color: var(--muted); }
-    .job-error { font-size: 12px; color: var(--red); margin-top: 6px; opacity: .8; }
-    .job-delete { background: none; border: none; color: var(--muted); cursor: pointer; padding: 2px 6px; border-radius: 6px; font-size: 16px; }
-    .job-delete:active { color: var(--red); }
+    .soon-chip{font-size:10px;background:rgba(245,158,11,.15);color:var(--yellow);font-weight:700;padding:2px 8px;border-radius:10px}
 
-    .empty-state { text-align: center; padding: 32px; color: var(--muted); font-size: 14px; }
-    .empty-state .e-icon { font-size: 40px; margin-bottom: 8px; }
-
-    /* ── Toast ── */
-    .toast-container { position: fixed; bottom: calc(var(--safe-bottom) + 80px); left: 50%; transform: translateX(-50%); z-index: 999; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
-    .toast { background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 10px 16px; font-size: 13px; font-weight: 500; white-space: nowrap; animation: toastIn .3s ease; }
-    .toast.success { border-color: var(--green); color: var(--green); }
-    .toast.error { border-color: var(--red); color: var(--red); }
-    @keyframes toastIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-
-    /* ── Nav ── */
-    .bottom-nav {
-      display: flex; background: var(--card); border-top: 1px solid var(--border);
-      padding: 8px 0 calc(var(--safe-bottom) + 8px);
+    /* Settings tab */
+    .plan-card{
+      background:var(--accent-dim);border:1px solid var(--accent);
+      border-radius:var(--radius);padding:20px;text-align:center
     }
-    .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px; cursor: pointer; border: none; background: none; color: var(--muted); transition: color .2s; }
-    .nav-btn .n-icon { font-size: 22px; }
-    .nav-btn .n-label { font-size: 10px; font-weight: 600; }
-    .nav-btn.active { color: var(--accent); }
+    .plan-current{font-size:13px;color:var(--accent);font-weight:600;margin-bottom:4px}
+    .plan-name{font-size:26px;font-weight:800;margin-bottom:8px}
+    .plan-desc{font-size:13px;color:var(--muted)}
+    .btn-outline{
+      padding:12px;border-radius:12px;border:1.5px solid var(--border);
+      background:transparent;color:var(--text);font-size:14px;font-weight:600;
+      cursor:pointer;width:100%;transition:all .2s
+    }
+    .btn-outline:active{background:var(--card2)}
+    .btn-danger{border-color:var(--red);color:var(--red)}
 
-    /* ── Sections ── */
-    .section { display: none; flex-direction: column; gap: 16px; }
-    .section.active { display: flex; }
+    /* Toast */
+    .toast-wrap{position:fixed;bottom:calc(var(--safe-bottom)+70px);left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+    .toast{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:500;white-space:nowrap;animation:tin .25s ease}
+    .toast.ok{border-color:var(--green);color:var(--green)}
+    .toast.err{border-color:var(--red);color:var(--red)}
+    @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Bottom nav */
+    .bottom-nav{display:flex;background:var(--card);border-top:1px solid var(--border);padding:6px 0 calc(var(--safe-bottom)+6px);flex-shrink:0}
+    .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px;cursor:pointer;border:none;background:none;color:var(--muted);transition:color .2s}
+    .nav-btn .ni{font-size:22px}
+    .nav-btn .nl{font-size:10px;font-weight:600}
+    .nav-btn.active{color:var(--accent)}
+
+    .divider{height:1px;background:var(--border)}
   </style>
 </head>
 <body>
-<div class="app">
-  <!-- Header -->
-  <div class="header">
-    <span class="header-icon">🎬</span>
-    <div>
-      <div class="header-title">VideoBot</div>
-      <div class="header-sub">Publicador automático</div>
-    </div>
-    <div class="status-dot" id="serverDot" title="Servidor conectado"></div>
+
+<!-- ══════════════════ LANDING / AUTH ══════════════════ -->
+<div class="screen active" id="landing">
+  <div class="landing-hero">
+    <div class="hero-logo">🎬</div>
+    <div class="hero-title">Publica en <span>YouTube</span><br>con un solo toque</div>
+    <div class="hero-sub">Sube el video, escribe el texto y el sistema lo publica solo.</div>
   </div>
 
-  <!-- Content -->
-  <div class="content">
+  <div class="auth-tabs">
+    <div class="auth-tab active" onclick="setAuthTab('login')">Entrar</div>
+    <div class="auth-tab" onclick="setAuthTab('register')">Crear cuenta</div>
+  </div>
 
-    <!-- UPLOAD SECTION -->
-    <div class="section active" id="section-upload">
+  <form class="auth-form" onsubmit="return false">
+    <div id="nameField" style="display:none">
+      <input type="text" id="nameInput" placeholder="Tu nombre" autocomplete="name">
+    </div>
+    <input type="email" id="emailInput" placeholder="Email" autocomplete="email" required>
+    <input type="password" id="passwordInput" placeholder="Contraseña (mín. 8 caracteres)" autocomplete="current-password" required>
+    <div class="auth-error" id="authError"></div>
+    <button class="btn-primary" id="authBtn" onclick="handleAuth()">
+      <span id="authBtnText">Entrar</span>
+    </button>
+  </form>
+
+  <div class="pricing-section">
+    <div class="pricing-title">Planes</div>
+    <div class="pricing-sub">Empieza gratis. Sin tarjeta.</div>
+    <div class="pricing-cards">
+      <div class="pricing-card">
+        <div class="pricing-name">Gratis</div>
+        <div class="pricing-price">0€<span>/mes</span></div>
+        <ul class="pricing-features">
+          <li>5 videos al mes</li>
+          <li>YouTube</li>
+          <li>Procesado automático 9:16</li>
+        </ul>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-badge">MÁS POPULAR</div>
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-price">9€<span>/mes</span></div>
+        <ul class="pricing-features">
+          <li>Videos ilimitados</li>
+          <li>YouTube</li>
+          <li>Procesado automático 9:16</li>
+          <li>Cola de publicación</li>
+          <li>Soporte prioritario</li>
+        </ul>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Agencia</div>
+        <div class="pricing-price">49€<span>/mes</span></div>
+        <ul class="pricing-features">
+          <li>Videos ilimitados</li>
+          <li>YouTube + Instagram + TikTok</li>
+          <li>Múltiples clientes</li>
+          <li>Procesado automático 9:16</li>
+          <li>Soporte dedicado</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ MAIN APP ══════════════════ -->
+<div class="screen" id="app">
+  <div class="app-header">
+    <span class="app-logo">🎬</span>
+    <span class="app-title">VideoBot</span>
+    <span class="plan-chip" id="planChip">free</span>
+    <div class="user-badge" id="userBadge" onclick="showTab('settings')">···</div>
+  </div>
+
+  <div style="padding:12px 16px 0;flex-shrink:0">
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('upload')">➕ Publicar</div>
+      <div class="tab" onclick="showTab('queue')">📋 Cola</div>
+      <div class="tab" onclick="showTab('accounts')">🔗 Cuentas</div>
+      <div class="tab" onclick="showTab('settings')">⚙️ Plan</div>
+    </div>
+  </div>
+
+  <div class="app-content">
+
+    <!-- ── UPLOAD TAB ── -->
+    <div class="tab-pane active" id="tab-upload">
       <div class="card">
         <div class="card-title">Video</div>
         <div class="upload-zone" id="uploadZone" onclick="document.getElementById('videoInput').click()">
-          <div class="icon">📱</div>
-          <div class="label">Toca para seleccionar video</div>
-          <div class="hint">MP4, MOV, AVI — máx. 500 MB</div>
+          <div class="upload-icon">📱</div>
+          <div class="upload-label">Toca para elegir video</div>
+          <div class="upload-hint">MP4, MOV, AVI — máx 500 MB</div>
         </div>
         <input type="file" id="videoInput" accept="video/*">
-        <div id="videoPreviewContainer" style="display:none;margin-top:12px">
+        <div id="previewWrap" style="display:none">
           <div class="video-preview">
             <video id="videoPreview" controls playsinline></video>
             <button class="remove-btn" onclick="removeVideo()">✕</button>
           </div>
-          <div class="video-info" id="videoInfo"></div>
+          <div class="video-meta" id="videoMeta"></div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title">Descripción</div>
-        <textarea id="descInput" rows="3" placeholder="Escribe la descripción de tu video..." maxlength="2200" oninput="updateCharCount(this, 'descCount', 2200)"></textarea>
+        <textarea id="desc" rows="3" placeholder="Escribe la descripción..." maxlength="2200" oninput="countChars(this,'descCount',2200)"></textarea>
         <div class="char-count" id="descCount">0 / 2200</div>
       </div>
 
       <div class="card">
         <div class="card-title">Hashtags</div>
-        <input type="text" id="tagsInput" placeholder="#hashtag1 #hashtag2 #hashtag3">
+        <input type="text" id="tags" placeholder="#hashtag1 #hashtag2 #viral">
       </div>
 
       <div class="card">
         <div class="card-title">Plataformas</div>
-        <div class="platforms">
-          <div class="platform-btn active" data-platform="tiktok" onclick="togglePlatform(this)">
-            <span class="p-icon">🎵</span>
-            <span class="p-name">TikTok</span>
+        <div class="platform-grid">
+          <div class="platform-pill active" data-p="youtube" onclick="togglePlatform(this)">
+            <span class="pi">▶️</span> YouTube
           </div>
-          <div class="platform-btn active" data-platform="instagram" onclick="togglePlatform(this)">
-            <span class="p-icon">📸</span>
-            <span class="p-name">Instagram</span>
+          <div class="platform-pill locked" title="Próximamente">
+            <span class="pi">📸</span> Instagram <span class="lock">🔒</span>
           </div>
-          <div class="platform-btn active" data-platform="youtube" onclick="togglePlatform(this)">
-            <span class="p-icon">▶️</span>
-            <span class="p-name">YouTube</span>
+          <div class="platform-pill locked" title="Próximamente">
+            <span class="pi">🎵</span> TikTok <span class="lock">🔒</span>
           </div>
         </div>
       </div>
 
       <button class="publish-btn" id="publishBtn" onclick="publishVideo()">
-        <span>🚀</span> Publicar ahora
+        🚀 Publicar ahora
       </button>
     </div>
 
-    <!-- QUEUE SECTION -->
-    <div class="section" id="section-queue">
+    <!-- ── QUEUE TAB ── -->
+    <div class="tab-pane" id="tab-queue">
       <div class="card">
-        <div class="card-title">Cola de publicaciones</div>
-        <div class="jobs-list" id="jobsList">
-          <div class="empty-state">
-            <div class="e-icon">📭</div>
-            Aún no hay publicaciones
-          </div>
+        <div class="card-title">Publicaciones</div>
+        <div class="job-list" id="jobList">
+          <div class="empty-state"><div class="ei">📭</div>Aún no hay publicaciones</div>
         </div>
       </div>
     </div>
 
-  </div><!-- /content -->
+    <!-- ── ACCOUNTS TAB ── -->
+    <div class="tab-pane" id="tab-accounts">
+      <div class="card">
+        <div class="card-title">Conectar cuentas</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
 
-  <!-- Bottom nav -->
-  <div class="bottom-nav">
-    <button class="nav-btn active" id="nav-upload" onclick="showSection('upload')">
-      <span class="n-icon">➕</span>
-      <span class="n-label">Publicar</span>
-    </button>
-    <button class="nav-btn" id="nav-queue" onclick="showSection('queue')">
-      <span class="n-icon">📋</span>
-      <span class="n-label">Cola</span>
-    </button>
-  </div>
+          <div class="account-item">
+            <span class="account-icon">▶️</span>
+            <div class="account-info">
+              <div class="account-name">YouTube</div>
+              <div class="account-sub" id="ytSub">No conectado</div>
+            </div>
+            <div class="account-status" id="ytDot"></div>
+            <button class="btn-connect" id="ytBtn" onclick="connectYoutube()">Conectar</button>
+          </div>
 
-  <div class="toast-container" id="toastContainer"></div>
-</div>
+          <div class="account-item" style="opacity:.5">
+            <span class="account-icon">📸</span>
+            <div class="account-info">
+              <div class="account-name">Instagram</div>
+              <div class="account-sub">Próximamente</div>
+            </div>
+            <span class="soon-chip">PRONTO</span>
+          </div>
+
+          <div class="account-item" style="opacity:.5">
+            <span class="account-icon">🎵</span>
+            <div class="account-info">
+              <div class="account-name">TikTok</div>
+              <div class="account-sub">Próximamente</div>
+            </div>
+            <span class="soon-chip">PRONTO</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card" style="background:rgba(108,99,255,.06);border-color:rgba(108,99,255,.3)">
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">
+          <strong style="color:var(--text)">¿Cómo funciona?</strong><br>
+          Conectas tu cuenta de YouTube una sola vez. El sistema guarda el acceso de forma segura y publica los videos automáticamente cada vez que los envías.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS TAB ── -->
+    <div class="tab-pane" id="tab-settings">
+      <div class="plan-card">
+        <div class="plan-current">Plan actual</div>
+        <div class="plan-name" id="planName">Gratis</div>
+        <div class="plan-desc" id="planDesc">5 videos al mes · YouTube</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Actualizar plan</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button class="btn-outline" onclick="upgrade('starter')">
+            ⭐ Starter — 9€/mes (videos ilimitados)
+          </button>
+          <button class="btn-outline" onclick="upgrade('agency')">
+            🏢 Agencia — 49€/mes (YouTube + Instagram + TikTok)
+          </button>
+          <button class="btn-outline" onclick="manageSubscription()" style="color:var(--muted)">
+            Gestionar suscripción →
+          </button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <button class="btn-outline btn-danger" onclick="logout()">Cerrar sesión</button>
+    </div>
+
+  </div><!-- /app-content -->
+</div><!-- /#app -->
+
+<div class="toast-wrap" id="toastWrap"></div>
 
 <script>
-// ── State ────────────────────────────────────────────────────────────────────
+const API = '';  // same origin
+let token = localStorage.getItem('vb_token');
+let currentUser = null;
 let selectedFile = null;
-let activePlatforms = new Set(['tiktok', 'instagram', 'youtube']);
-let pollInterval = null;
+let activePlatforms = new Set(['youtube']);
+let connectionsStatus = {};
 
-const API = window.location.origin + '/api';
+// ── Init ─────────────────────────────────────────────────────────────────────
+(async function init() {
+  // Handle OAuth redirect params
+  const params = new URLSearchParams(location.search);
+  if (params.get('connected') === 'youtube') { toast('✅ YouTube conectado', 'ok'); history.replaceState({}, '', '/'); }
+  if (params.get('error')) { toast('Error al conectar cuenta', 'err'); history.replaceState({}, '', '/'); }
+  if (params.get('payment') === 'success') { toast('✅ Plan activado', 'ok'); history.replaceState({}, '', '/'); }
 
-// ── Sections & Nav ───────────────────────────────────────────────────────────
-function showSection(name) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('section-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
-  if (name === 'queue') loadJobs();
+  if (token) {
+    try {
+      const res = await api('/api/auth/me');
+      currentUser = res;
+      showApp();
+    } catch { token = null; localStorage.removeItem('vb_token'); }
+  }
+})();
+
+// ── Auth ─────────────────────────────────────────────────────────────────────
+let authMode = 'login';
+function setAuthTab(mode) {
+  authMode = mode;
+  document.querySelectorAll('.auth-tab').forEach((t, i) => t.classList.toggle('active', (i === 0) === (mode === 'login')));
+  document.getElementById('nameField').style.display = mode === 'register' ? 'block' : 'none';
+  document.getElementById('authBtn').querySelector('#authBtnText').textContent = mode === 'login' ? 'Entrar' : 'Crear cuenta';
+  document.getElementById('authError').textContent = '';
 }
 
-// ── File input ───────────────────────────────────────────────────────────────
-document.getElementById('videoInput').addEventListener('change', (e) => {
+async function handleAuth() {
+  const email = document.getElementById('emailInput').value.trim();
+  const password = document.getElementById('passwordInput').value;
+  const name = document.getElementById('nameInput').value.trim();
+  const errEl = document.getElementById('authError');
+  const btn = document.getElementById('authBtn');
+
+  if (!email || !password) { errEl.textContent = 'Completa todos los campos'; return; }
+  btn.disabled = true;
+
+  try {
+    const body = authMode === 'register' ? { email, password, name } : { email, password };
+    const res = await api(`/api/auth/${authMode}`, { method: 'POST', body });
+    token = res.token;
+    currentUser = res.user;
+    localStorage.setItem('vb_token', token);
+    showApp();
+  } catch (err) {
+    errEl.textContent = err.message || 'Error al iniciar sesión';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function logout() {
+  token = null; currentUser = null;
+  localStorage.removeItem('vb_token');
+  show('landing');
+}
+
+// ── App ───────────────────────────────────────────────────────────────────────
+function showApp() {
+  show('app');
+  updateUserUI();
+  loadConnections();
+  loadJobs();
+  // Auto-refresh queue every 6s
+  setInterval(() => { if (document.getElementById('tab-queue').classList.contains('active')) loadJobs(); }, 6000);
+}
+
+function updateUserUI() {
+  if (!currentUser) return;
+  const badge = document.getElementById('userBadge');
+  badge.textContent = currentUser.email.split('@')[0];
+  document.getElementById('planChip').textContent = currentUser.plan;
+  const plans = { free: 'Gratis', starter: 'Starter', agency: 'Agencia' };
+  const descs = { free: '5 videos/mes · YouTube', starter: 'Videos ilimitados · YouTube', agency: 'Videos ilimitados · YouTube + Instagram + TikTok' };
+  document.getElementById('planName').textContent = plans[currentUser.plan] || currentUser.plan;
+  document.getElementById('planDesc').textContent = descs[currentUser.plan] || '';
+}
+
+// ── Tabs / navigation ─────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['upload','queue','accounts','settings'][i] === name));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'queue') loadJobs();
+  if (name === 'accounts') loadConnections();
+}
+
+function show(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+// ── Video upload ──────────────────────────────────────────────────────────────
+document.getElementById('videoInput').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
   selectedFile = file;
-
-  const url = URL.createObjectURL(file);
-  const vid = document.getElementById('videoPreview');
-  vid.src = url;
-  document.getElementById('videoPreviewContainer').style.display = 'block';
-  document.getElementById('videoInfo').textContent =
-    `${file.name} — ${formatSize(file.size)}`;
+  document.getElementById('videoPreview').src = URL.createObjectURL(file);
+  document.getElementById('previewWrap').style.display = 'block';
+  document.getElementById('videoMeta').textContent = `${file.name} — ${fmt(file.size)}`;
 });
 
-// Drag & drop on desktop
 const zone = document.getElementById('uploadZone');
 ['dragenter','dragover'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('drag'); }));
 ['dragleave','drop'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.remove('drag'); }));
 zone.addEventListener('drop', ev => {
-  const file = ev.dataTransfer.files[0];
-  if (file && file.type.startsWith('video/')) {
-    selectedFile = file;
-    document.getElementById('videoPreview').src = URL.createObjectURL(file);
-    document.getElementById('videoPreviewContainer').style.display = 'block';
-    document.getElementById('videoInfo').textContent = `${file.name} — ${formatSize(file.size)}`;
-  }
+  const f = ev.dataTransfer.files[0];
+  if (f?.type.startsWith('video/')) { selectedFile = f; document.getElementById('videoPreview').src = URL.createObjectURL(f); document.getElementById('previewWrap').style.display = 'block'; }
 });
 
 function removeVideo() {
   selectedFile = null;
   document.getElementById('videoInput').value = '';
   document.getElementById('videoPreview').src = '';
-  document.getElementById('videoPreviewContainer').style.display = 'none';
+  document.getElementById('previewWrap').style.display = 'none';
 }
 
-// ── Platforms ────────────────────────────────────────────────────────────────
-function togglePlatform(btn) {
-  const p = btn.dataset.platform;
+function togglePlatform(el) {
+  if (el.classList.contains('locked')) return;
+  const p = el.dataset.p;
   if (activePlatforms.has(p)) {
-    if (activePlatforms.size === 1) { toast('Selecciona al menos una plataforma', 'error'); return; }
-    activePlatforms.delete(p);
-    btn.classList.remove('active');
-  } else {
-    activePlatforms.add(p);
-    btn.classList.add('active');
-  }
+    if (activePlatforms.size === 1) { toast('Selecciona al menos una plataforma', 'err'); return; }
+    activePlatforms.delete(p); el.classList.remove('active');
+  } else { activePlatforms.add(p); el.classList.add('active'); }
 }
 
-// ── Char counter ─────────────────────────────────────────────────────────────
-function updateCharCount(el, countId, max) {
-  const n = el.value.length;
-  const span = document.getElementById(countId);
-  span.textContent = `${n} / ${max}`;
-  span.className = 'char-count' + (n > max * 0.9 ? ' warn' : '') + (n >= max ? ' over' : '');
-}
-
-// ── Publish ───────────────────────────────────────────────────────────────────
 async function publishVideo() {
-  if (!selectedFile) { toast('Selecciona un video primero', 'error'); return; }
-  if (activePlatforms.size === 0) { toast('Selecciona al menos una plataforma', 'error'); return; }
+  if (!selectedFile) { toast('Selecciona un video primero', 'err'); return; }
+
+  // Check YouTube is connected
+  if (activePlatforms.has('youtube') && !connectionsStatus.youtube?.connected) {
+    toast('Conecta tu cuenta de YouTube primero', 'err');
+    showTab('accounts'); return;
+  }
 
   const btn = document.getElementById('publishBtn');
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner"></div> Subiendo...';
 
-  const formData = new FormData();
-  formData.append('video', selectedFile);
-  formData.append('description', document.getElementById('descInput').value.trim());
-  formData.append('hashtags', document.getElementById('tagsInput').value.trim());
-  formData.append('platforms', JSON.stringify([...activePlatforms]));
+  const form = new FormData();
+  form.append('video', selectedFile);
+  form.append('description', document.getElementById('desc').value.trim());
+  form.append('hashtags', document.getElementById('tags').value.trim());
+  form.append('platforms', JSON.stringify([...activePlatforms]));
 
   try {
-    const res = await fetch(`${API}/upload`, { method: 'POST', body: formData });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Error desconocido');
-
-    toast('✅ Video en cola — publicando pronto', 'success');
+    await apiForm('/api/jobs', form);
+    toast('✅ En cola — publicando pronto', 'ok');
     removeVideo();
-    document.getElementById('descInput').value = '';
-    document.getElementById('tagsInput').value = '';
-    updateCharCount(document.getElementById('descInput'), 'descCount', 2200);
-
-    // Switch to queue tab
-    setTimeout(() => { showSection('queue'); }, 1000);
+    document.getElementById('desc').value = '';
+    document.getElementById('tags').value = '';
+    document.getElementById('descCount').textContent = '0 / 2200';
+    showTab('queue');
   } catch (err) {
-    toast(`Error: ${err.message}`, 'error');
+    if (err.upgrade) { toast('Límite alcanzado. Actualiza tu plan.', 'err'); showTab('settings'); }
+    else toast('Error: ' + err.message, 'err');
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '<span>🚀</span> Publicar ahora';
+    btn.innerHTML = '🚀 Publicar ahora';
   }
 }
 
-// ── Jobs ─────────────────────────────────────────────────────────────────────
+// ── Jobs ──────────────────────────────────────────────────────────────────────
 async function loadJobs() {
   try {
-    const res = await fetch(`${API}/jobs`);
-    const jobs = await res.json();
-    renderJobs(jobs);
+    const data = await api('/api/jobs');
+    renderJobs(data);
   } catch {}
 }
 
-function renderJobs(jobs) {
-  const list = document.getElementById('jobsList');
-  if (!jobs.length) {
-    list.innerHTML = '<div class="empty-state"><div class="e-icon">📭</div>Aún no hay publicaciones</div>';
-    return;
-  }
+function renderJobs(list) {
+  const el = document.getElementById('jobList');
+  if (!list.length) { el.innerHTML = '<div class="empty-state"><div class="ei">📭</div>Aún no hay publicaciones</div>'; return; }
 
-  list.innerHTML = jobs.map(job => {
-    const platforms = JSON.parse(job.platforms || '[]');
-    const results = JSON.parse(job.results || '{}');
-    const timeAgo = formatTimeAgo(job.created_at);
-
-    const badges = platforms.map(p => {
-      const r = results[p];
-      const cls = !r ? 'pending' : r.success ? 'success' : 'fail';
-      const icon = p === 'tiktok' ? '🎵' : p === 'instagram' ? '📸' : '▶️';
-      const label = !r ? p : r.success ? p : `${p} ✕`;
-      return `<span class="platform-badge ${cls}">${icon} ${label}</span>`;
+  el.innerHTML = list.map(j => {
+    const plats = JSON.parse(j.platforms || '[]');
+    const res = JSON.parse(j.results || '{}');
+    const badges = plats.map(p => {
+      const r = res[p];
+      const cls = !r ? 'wait' : r.success ? 'ok' : 'fail';
+      const icon = {youtube:'▶️',instagram:'📸',tiktok:'🎵'}[p] || p;
+      const label = !r ? p : r.success ? p : p + ' ✕';
+      return `<span class="result-badge ${cls}">${icon} ${label}</span>`;
     }).join('');
 
-    const errorHtml = job.error ? `<div class="job-error">⚠️ ${job.error}</div>` : '';
+    const link = Object.values(res).find(r => r?.url)?.url;
+    const linkHtml = link ? `<a class="result-link" href="${link}" target="_blank">Ver en YouTube →</a>` : '';
 
-    return `
-      <div class="job-card">
-        <div class="job-header">
-          <div class="job-status-dot ${job.status}"></div>
-          <div class="job-name" title="${job.filename}">${job.filename}</div>
-          <div class="job-time">${timeAgo}</div>
-          <button class="job-delete" onclick="deleteJob('${job.id}')" title="Eliminar">🗑</button>
-        </div>
-        <div class="job-platforms">${badges}</div>
-        ${errorHtml}
-      </div>`;
+    return `<div class="job-item">
+      <div class="job-row">
+        <div class="status-dot ${j.status}"></div>
+        <div class="job-name" title="${j.filename}">${j.filename}</div>
+        <div class="job-time">${timeAgo(j.created_at)}</div>
+        <button class="job-del" onclick="deleteJob('${j.id}')">🗑</button>
+      </div>
+      <div class="result-badges">${badges}</div>
+      ${linkHtml}
+    </div>`;
   }).join('');
 }
 
 async function deleteJob(id) {
-  try {
-    await fetch(`${API}/jobs/${id}`, { method: 'DELETE' });
-    loadJobs();
-  } catch { toast('No se pudo eliminar', 'error'); }
+  try { await api('/api/jobs/' + id, { method: 'DELETE' }); loadJobs(); }
+  catch { toast('No se pudo eliminar', 'err'); }
 }
 
-// ── Server health ─────────────────────────────────────────────────────────────
-async function checkServer() {
+// ── Accounts ─────────────────────────────────────────────────────────────────
+async function loadConnections() {
   try {
-    await fetch(`${API}/health`);
-    document.getElementById('serverDot').style.background = 'var(--green)';
-  } catch {
-    document.getElementById('serverDot').style.background = 'var(--red)';
-  }
+    connectionsStatus = await api('/api/connect/status');
+    const yt = connectionsStatus.youtube;
+    document.getElementById('ytDot').classList.toggle('connected', !!yt);
+    document.getElementById('ytSub').textContent = yt ? `✓ ${yt.channel_name || 'Conectado'}` : 'No conectado';
+    document.getElementById('ytBtn').textContent = yt ? 'Desconectar' : 'Conectar';
+    document.getElementById('ytBtn').onclick = yt ? disconnectYoutube : connectYoutube;
+  } catch {}
+}
+
+async function connectYoutube() {
+  try {
+    const { url } = await api('/api/connect/youtube');
+    window.location.href = url;
+  } catch { toast('Error al conectar con Google', 'err'); }
+}
+
+async function disconnectYoutube() {
+  try { await api('/api/connect/youtube', { method: 'DELETE' }); loadConnections(); toast('YouTube desconectado', 'ok'); }
+  catch { toast('Error al desconectar', 'err'); }
+}
+
+// ── Billing ───────────────────────────────────────────────────────────────────
+async function upgrade(plan) {
+  try {
+    const { url } = await api('/api/billing/checkout', { method: 'POST', body: { plan } });
+    window.location.href = url;
+  } catch (err) { toast(err.message, 'err'); }
+}
+
+async function manageSubscription() {
+  try {
+    const { url } = await api('/api/billing/portal');
+    window.location.href = url;
+  } catch (err) { toast(err.message, 'err'); }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-function formatSize(bytes) {
-  if (bytes < 1024) return bytes + ' B';
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+async function api(url, opts = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) };
+  const res = await fetch(url, { ...opts, headers, body: opts.body ? JSON.stringify(opts.body) : undefined });
+  const data = await res.json();
+  if (!res.ok) throw Object.assign(new Error(data.error || 'Error'), data);
+  return data;
 }
 
-function formatTimeAgo(ts) {
-  const diff = Date.now() - new Date(ts).getTime();
-  const m = Math.floor(diff / 60000);
-  if (m < 1) return 'ahora mismo';
-  if (m < 60) return `hace ${m}m`;
+async function apiForm(url, formData) {
+  const headers = token ? { Authorization: 'Bearer ' + token } : {};
+  const res = await fetch(url, { method: 'POST', headers, body: formData });
+  const data = await res.json();
+  if (!res.ok) throw Object.assign(new Error(data.error || 'Error'), data);
+  return data;
+}
+
+function countChars(el, countId, max) {
+  document.getElementById(countId).textContent = `${el.value.length} / ${max}`;
+}
+
+function fmt(bytes) {
+  if (bytes < 1e6) return (bytes / 1e3).toFixed(0) + ' KB';
+  return (bytes / 1e6).toFixed(1) + ' MB';
+}
+
+function timeAgo(ts) {
+  const m = Math.floor((Date.now() - new Date(ts)) / 60000);
+  if (m < 1) return 'ahora';
+  if (m < 60) return `${m}m`;
   const h = Math.floor(m / 60);
-  if (h < 24) return `hace ${h}h`;
-  return `hace ${Math.floor(h/24)}d`;
+  if (h < 24) return `${h}h`;
+  return `${Math.floor(h / 24)}d`;
 }
 
 function toast(msg, type = '') {
   const t = document.createElement('div');
   t.className = 'toast ' + type;
   t.textContent = msg;
-  document.getElementById('toastContainer').appendChild(t);
+  document.getElementById('toastWrap').appendChild(t);
   setTimeout(() => t.remove(), 3500);
 }
-
-// ── Init ──────────────────────────────────────────────────────────────────────
-checkServer();
-setInterval(checkServer, 30000);
-
-// Auto-refresh queue every 5s when visible
-setInterval(() => {
-  if (document.getElementById('section-queue').classList.contains('active')) loadJobs();
-}, 5000);
 </script>
 </body>
 </html>

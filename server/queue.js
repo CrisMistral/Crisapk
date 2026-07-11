@@ -1,10 +1,8 @@
-const db = require('./db');
+const { jobs, connections } = require('./db');
 const processVideo = require('./ffmpeg');
-const tiktokBot = require('./bots/tiktok');
-const instagramBot = require('./bots/instagram');
-const youtubeBot = require('./bots/youtube');
+const youtube = require('./publishers/youtube');
 
-const BOTS = { tiktok: tiktokBot, instagram: instagramBot, youtube: youtubeBot };
+const PUBLISHERS = { youtube };
 
 let isProcessing = false;
 const pendingIds = [];
@@ -19,67 +17,68 @@ async function processNext() {
   if (!jobId) { isProcessing = false; return; }
 
   isProcessing = true;
-  const job = db.getJob(jobId);
+  const job = jobs.get(jobId);
   if (!job) { processNext(); return; }
 
   console.log(`\n⚙️  Job ${jobId.slice(0, 8)} — ${job.filename}`);
-  db.updateJob(jobId, { status: 'processing' });
+  jobs.update(jobId, { status: 'processing' });
 
+  // Process video with FFmpeg
   let processedFile = job.file;
-
-  // Step 1: FFmpeg processing
   try {
-    console.log('📹 Procesando video con FFmpeg...');
+    console.log('📹 FFmpeg...');
     processedFile = await processVideo(job.file);
-    console.log('✅ Video procesado');
   } catch (err) {
-    console.error('❌ FFmpeg error:', err.message);
-    db.updateJob(jobId, { status: 'error', error: `FFmpeg: ${err.message}` });
+    console.error('❌ FFmpeg:', err.message);
+    jobs.update(jobId, { status: 'error', error: `FFmpeg: ${err.message}` });
     processNext();
     return;
   }
 
-  // Step 2: Publish to each platform
+  // Publish to each platform
   const platforms = JSON.parse(job.platforms || '[]');
   const results = {};
 
-  for (let i = 0; i < platforms.length; i++) {
-    const platform = platforms[i];
-    const bot = BOTS[platform];
+  for (const platform of platforms) {
+    const publisher = PUBLISHERS[platform];
+    const conn = connections.get(job.user_id, platform);
 
-    if (!bot) {
-      results[platform] = { success: false, error: 'Bot no disponible' };
+    if (!publisher) {
+      results[platform] = { success: false, error: 'Publisher no disponible' };
+      continue;
+    }
+    if (!conn) {
+      results[platform] = { success: false, error: `Cuenta de ${platform} no conectada` };
       continue;
     }
 
-    console.log(`\n🤖 Publicando en ${platform}...`);
-    await jitter(2000, 6000);
+    console.log(`🤖 Publicando en ${platform}...`);
+    await jitter(1000, 3000);
 
     try {
-      const result = await bot.publish({
+      const result = await publisher.publish({
         file: processedFile,
         description: job.description,
-        hashtags: job.hashtags
+        hashtags: job.hashtags,
+        accessToken: conn.access_token,
+        refreshToken: conn.refresh_token
       });
       results[platform] = { success: true, ...result };
-      console.log(`✅ ${platform}: publicado`);
+      console.log(`✅ ${platform}:`, result.url || 'publicado');
     } catch (err) {
-      console.error(`❌ ${platform}: ${err.message}`);
+      console.error(`❌ ${platform}:`, err.message);
       results[platform] = { success: false, error: err.message };
     }
-
-    // Gap between platforms to avoid pattern detection
-    if (i < platforms.length - 1) await jitter(8000, 20000);
   }
 
   const allFailed = Object.values(results).every(r => !r.success);
-  db.updateJob(jobId, {
+  jobs.update(jobId, {
     status: allFailed ? 'error' : 'done',
     results: JSON.stringify(results)
   });
 
-  console.log(`\n✅ Job ${jobId.slice(0, 8)} → ${allFailed ? 'error' : 'done'}`);
-  await jitter(3000, 8000);
+  console.log(`✅ Job ${jobId.slice(0, 8)} → ${allFailed ? 'error' : 'done'}`);
+  await jitter(2000, 5000);
   processNext();
 }
 
@@ -88,8 +87,8 @@ function jitter(min, max) {
 }
 
 function startProcessor() {
-  const pending = db.getPendingJobs();
-  if (pending.length > 0) {
+  const pending = jobs.getPending();
+  if (pending.length) {
     console.log(`📋 Retomando ${pending.length} job(s) pendientes`);
     pending.forEach(j => pendingIds.push(j.id));
     processNext();

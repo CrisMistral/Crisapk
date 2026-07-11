@@ -1,21 +1,24 @@
 {
-  "name": "video-auto-publish-bot",
+  "name": "videobot-saas",
   "version": "1.0.0",
-  "description": "Auto-publish videos to TikTok, Instagram and YouTube via Playwright bots",
+  "description": "SaaS — Auto-publish videos to YouTube, Instagram, TikTok",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "save-session": "node scripts/save-session.js",
     "install-browsers": "npx playwright install chromium --with-deps"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "fluent-ffmpeg": "^2.1.2",
+    "googleapis": "^140.0.1",
+    "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "playwright": "^1.44.1",
+    "stripe": "^16.0.0",
     "uuid": "^10.0.0"
   },
   "engines": {
