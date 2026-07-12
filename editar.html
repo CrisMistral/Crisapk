@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Editor de obras — What Maria Paints</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#fff;--bg2:#F7F7F5;--border:#E8E8E8;--text:#111;--text2:#888;--ok:#1f7a44;--sans:'DM Sans',-apple-system,sans-serif;--serif:'Playfair Display',Georgia,serif;--r:6px}
+body{font-family:var(--sans);background:var(--bg2);color:var(--text);line-height:1.55}
+a{color:inherit}
+.wrap{max-width:880px;margin:0 auto;padding:1.5rem 1.2rem 6rem}
+h1{font-family:var(--serif);font-size:1.6rem;font-weight:600;margin-bottom:.3rem}
+.lead{color:var(--text2);font-size:.9rem;margin-bottom:1.2rem}
+.guide{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.2rem;margin-bottom:1.5rem;font-size:.86rem}
+.guide h2{font-size:.95rem;margin-bottom:.5rem}
+.guide ol{margin:.3rem 0 0 1.1rem;display:flex;flex-direction:column;gap:.35rem;color:var(--text2)}
+.guide a{color:var(--text);font-weight:500}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:1rem;display:grid;grid-template-columns:120px 1fr;gap:1rem}
+.card.sold{opacity:.72}
+.thumb{width:120px;height:150px;border-radius:4px;background:var(--bg2) center/cover no-repeat;border:1px solid var(--border);position:relative;overflow:hidden}
+.thumb .tag{position:absolute;top:4px;left:4px;background:var(--text);color:#fff;font-size:.6rem;padding:.15rem .4rem;border-radius:2px}
+.fields{display:flex;flex-direction:column;gap:.55rem;min-width:0}
+.row{display:flex;gap:.6rem;flex-wrap:wrap}
+.f{display:flex;flex-direction:column;gap:.2rem;flex:1;min-width:120px}
+label{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text2)}
+input,textarea,select{font-family:var(--sans);font-size:.88rem;padding:.45rem .55rem;border:1px solid var(--border);border-radius:4px;background:#fff;width:100%}
+input:focus,textarea:focus{outline:none;border-color:var(--text)}
+textarea{resize:vertical;min-height:48px}
+.inline{display:flex;align-items:center;gap:.4rem;font-size:.85rem}
+.inline input{width:auto}
+.btn{font-family:var(--sans);border:none;cursor:pointer;border-radius:4px;font-weight:500;font-size:.82rem;padding:.5rem .9rem;transition:opacity .2s}
+.btn-dark{background:var(--text);color:#fff}.btn-dark:hover{opacity:.82}
+.btn-line{background:#fff;border:1px solid var(--border);color:var(--text)}.btn-line:hover{border-color:var(--text)}
+.btn-mini{font-size:.74rem;padding:.32rem .6rem}
+.btn-del{color:#b00;background:#fff;border:1px solid #f0caca}
+.tallas{display:flex;flex-direction:column;gap:.35rem}
+.talla{display:flex;gap:.4rem;align-items:center}
+.talla input:first-child{flex:2}.talla input:last-child{flex:1}
+.head-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:.8rem 1.2rem;display:flex;gap:.8rem;align-items:center;justify-content:center;z-index:10}
+.bar .status{font-size:.8rem;color:var(--text2)}
+.sectionlabel{font-family:var(--serif);font-size:1.15rem;margin:1.6rem 0 .6rem}
+.pricewrap{position:relative}.pricewrap::before{content:'€';position:absolute;left:.5rem;top:50%;transform:translateY(-50%);color:var(--text2);font-size:.85rem}
+.pricewrap input{padding-left:1.3rem}
+@media(max-width:620px){.card{grid-template-columns:1fr}.thumb{width:100%;height:200px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Editor de obras</h1>
+  <p class="lead">Cambia precios, textos, disponibilidad y fotos. Cuando termines, pulsa <strong>Descargar</strong> y sube el archivo siguiendo los 3 pasos de abajo.</p>
+
+  <div class="guide">
+    <h2>📋 Cómo guardar tus cambios (3 pasos)</h2>
+    <ol>
+      <li>Pulsa <strong>«Descargar obras.json»</strong> (botón inferior). Se guardará un archivo llamado <code>obras.json</code>.</li>
+      <li>Abre <a id="uploadlink" href="https://github.com/CrisMistral/Crisapk/upload/main" target="_blank" rel="noopener">esta página de GitHub</a> y arrastra ahí el archivo <code>obras.json</code> que acabas de descargar.</li>
+      <li>Baja y pulsa el botón verde <strong>«Commit changes»</strong>. ¡Listo! En 1–2 minutos tu web se actualiza sola.</li>
+    </ol>
+  </div>
+
+  <div class="head-actions">
+    <button class="btn btn-line" onclick="addObra('original')">+ Añadir cuadro</button>
+    <button class="btn btn-line" onclick="addObra('print')">+ Añadir lámina</button>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<div class="bar">
+  <span class="status" id="status">Cargando…</span>
+  <button class="btn btn-dark" onclick="download()">⬇ Descargar obras.json</button>
+</div>
+
+<script>
+let OBRAS = [];
+
+fetch('obras.json',{cache:'no-store'})
+  .then(r=>r.json())
+  .then(d=>{ OBRAS=d; render(); setStatus(OBRAS.length+' obras cargadas'); })
+  .catch(()=>{ setStatus('⚠ No se pudo cargar obras.json'); });
+
+function setStatus(m){ document.getElementById('status').textContent=m; }
+
+function fotoStyle(f){ return f?`background-image:url('${f.replace(/'/g,"\\'")}')`:''; }
+
+function render(){
+  const list=document.getElementById('list');
+  list.innerHTML='';
+  // originales primero, láminas después
+  const orden=[...OBRAS].sort((a,b)=> (a.tipo===b.tipo?0:(a.tipo==='original'?-1:1)));
+  let lastTipo=null;
+  orden.forEach(p=>{
+    if(p.tipo!==lastTipo){
+      const h=document.createElement('div');
+      h.className='sectionlabel';
+      h.textContent = p.tipo==='original' ? 'Cuadros originales' : 'Láminas';
+      list.appendChild(h); lastTipo=p.tipo;
+    }
+    list.appendChild(cardFor(p));
+  });
+}
+
+function cardFor(p){
+  const card=document.createElement('div');
+  card.className='card'+(p.disponible?'':' sold');
+  const isPrint=p.tipo==='print';
+  card.innerHTML=`
+    <div>
+      <div class="thumb" style="${fotoStyle(p.foto)}">${p.disponible?'':'<span class="tag">Vendido</span>'}</div>
+      <button class="btn btn-line btn-mini" style="width:100%;margin-top:.4rem" onclick="pickPhoto(${p.id})">📷 Cambiar foto</button>
+    </div>
+    <div class="fields">
+      <div class="f"><label>Título</label><input value="${esc(p.nombre)}" onchange="upd(${p.id},'nombre',this.value)"></div>
+      <div class="row">
+        <div class="f"><label>Técnica</label><input value="${esc(p.tecnica||'')}" onchange="upd(${p.id},'tecnica',this.value)"></div>
+        <div class="f"><label>Medidas</label><input value="${esc(p.medidas||'')}" onchange="upd(${p.id},'medidas',this.value)"></div>
+      </div>
+      ${isPrint ? tallasBlock(p) : `
+      <div class="row">
+        <div class="f" style="max-width:140px"><label>Precio</label><div class="pricewrap"><input type="number" min="0" value="${p.precio||0}" onchange="upd(${p.id},'precio',+this.value)"></div></div>
+        <div class="f"><label>&nbsp;</label><label class="inline"><input type="checkbox" ${p.disponible?'checked':''} onchange="upd(${p.id},'disponible',this.checked); render()"> A la venta (si lo desmarcas, aparece «Vendido»)</label></div>
+      </div>`}
+      <div class="f"><label>Descripción</label><textarea onchange="upd(${p.id},'descripcion',this.value)">${esc(p.descripcion||'')}</textarea></div>
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <span style="font-size:.72rem;color:var(--text2)">${isPrint?'Lámina':'Original'} · id ${p.id}</span>
+        <button class="btn btn-del btn-mini" onclick="del(${p.id})">Eliminar</button>
+      </div>
+    </div>`;
+  return card;
+}
+
+function tallasBlock(p){
+  const rows=(p.tallas||[]).map((t,i)=>`
+    <div class="talla">
+      <input value="${esc(t[0])}" onchange="updTalla(${p.id},${i},0,this.value)" placeholder="Nombre del tamaño">
+      <div class="pricewrap"><input type="number" min="0" value="${t[1]}" onchange="updTalla(${p.id},${i},1,+this.value)"></div>
+      <button class="btn btn-del btn-mini" onclick="delTalla(${p.id},${i})">✕</button>
+    </div>`).join('');
+  return `<div class="f"><label>Tamaños y precios de la lámina</label><div class="tallas">${rows}
+      <button class="btn btn-line btn-mini" style="align-self:flex-start" onclick="addTalla(${p.id})">+ Añadir tamaño</button>
+    </div></div>
+    <label class="inline"><input type="checkbox" ${p.disponible?'checked':''} onchange="upd(${p.id},'disponible',this.checked); render()"> A la venta</label>`;
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function find(id){ return OBRAS.find(o=>o.id===id); }
+function upd(id,k,v){ const o=find(id); if(o){o[k]=v; if(k!=='disponible'&&k!=='precio') setStatus('Cambio guardado en memoria · recuerda Descargar');} setStatus('Cambios sin guardar · pulsa Descargar'); }
+function updTalla(id,i,j,v){ const o=find(id); if(o&&o.tallas[i]){o.tallas[i][j]=v; if(j===1)o.precio=Math.min(...o.tallas.map(t=>t[1]));} setStatus('Cambios sin guardar · pulsa Descargar'); }
+function addTalla(id){ const o=find(id); o.tallas=o.tallas||[]; o.tallas.push(['Nuevo tamaño',20]); render(); }
+function delTalla(id,i){ const o=find(id); o.tallas.splice(i,1); render(); }
+
+function del(id){ if(confirm('¿Eliminar esta obra?')){ OBRAS=OBRAS.filter(o=>o.id!==id); render(); setStatus('Obra eliminada · pulsa Descargar'); } }
+
+function addObra(tipo){
+  const id=Math.max(0,...OBRAS.map(o=>o.id))+1;
+  const base={id,tipo,nombre:tipo==='print'?'Nueva lámina':'Nueva obra',tecnica:'',medidas:'',foto:'',descripcion:'',edicion:'',ficha:[],disponible:true,artClass:'art-1'};
+  if(tipo==='print'){ base.tallas=[['A4 · 21×29,7 cm',18],['A3 · 29,7×42 cm',25]]; base.precio=18; }
+  else { base.precio=100; }
+  OBRAS.unshift(base); render(); window.scrollTo(0,0); setStatus('Obra añadida · pulsa Descargar');
+}
+
+// ── Cambiar foto: la imagen se redimensiona y se incrusta en obras.json ──
+let photoTarget=null, fileInput;
+function pickPhoto(id){ photoTarget=id; fileInput.click(); }
+function setupFileInput(){
+  fileInput=document.createElement('input');
+  fileInput.type='file'; fileInput.accept='image/*';
+  fileInput.onchange=()=>{
+    const file=fileInput.files[0]; if(!file) return;
+    const img=new Image();
+    img.onload=()=>{
+      const max=1000; let{width:w,height:h}=img;
+      if(Math.max(w,h)>max){ if(w>=h){h=Math.round(h*max/w);w=max;} else {w=Math.round(w*max/h);h=max;} }
+      const c=document.createElement('canvas'); c.width=w; c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      const data=c.toDataURL('image/jpeg',0.82);
+      const o=find(photoTarget); if(o){ o.foto=data; render(); setStatus('Foto cambiada · pulsa Descargar'); }
+      fileInput.value='';
+    };
+    img.src=URL.createObjectURL(file);
+  };
+}
+setupFileInput();
+
+function download(){
+  // recalcula precio mínimo de láminas por si acaso
+  OBRAS.forEach(o=>{ if(o.tallas&&o.tallas.length) o.precio=Math.min(...o.tallas.map(t=>t[1])); });
+  const blob=new Blob([JSON.stringify(OBRAS,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='obras.json'; a.click();
+  setStatus('✅ Descargado. Ahora súbelo a GitHub (pasos de arriba)');
+}
+</script>
+</body>
+</html>

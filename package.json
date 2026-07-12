@@ -1,0 +1,9 @@
+{
+  "name": "what-maria-paints",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Art shop for What Maria Paints",
+  "dependencies": {
+    "stripe": "^16.0.0"
+  }
+}
