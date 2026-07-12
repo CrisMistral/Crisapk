@@ -14,41 +14,36 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;color:var(--text)}
-
 .screen{display:none;min-height:100vh;padding:16px 16px 36px}
 .screen.active{display:block}
 .max-w{max-width:440px;margin:0 auto;padding-top:12px}
 
-/* Topbar */
 .topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
 .back-btn{background:rgba(26,107,100,.12);border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--teal-dark)}
 .topbar h1{font-size:1.15rem;font-weight:700;color:var(--teal-dark)}
 
-/* Home */
-.home-header{text-align:center;margin-bottom:16px}
+.home-header{text-align:center;margin-bottom:12px}
 .home-header h1{font-size:1.6rem;font-weight:800;color:var(--teal-dark);margin-bottom:4px}
-.home-header p{font-size:.88rem;color:var(--text-soft)}
-.home-quokka{display:flex;justify-content:center;margin-bottom:16px;animation:float 3s ease-in-out infinite}
+.home-header p{font-size:.85rem;color:var(--text-soft)}
+.home-quokka{display:flex;justify-content:center;margin-bottom:12px;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.bubble{background:rgba(255,255,255,.8);border:2px solid var(--mint-mid);border-radius:16px;padding:10px 16px;font-size:.85rem;font-weight:600;color:var(--teal-dark);text-align:center;margin:0 auto 16px;max-width:260px}
+.bubble{background:rgba(255,255,255,.8);border:2px solid var(--mint-mid);border-radius:16px;padding:10px 16px;font-size:.85rem;font-weight:600;color:var(--teal-dark);text-align:center;margin:0 auto 16px;max-width:280px}
 
-/* Nav cards */
 .nav-cards{display:flex;flex-direction:column;gap:10px}
 .nav-card{border:none;border-radius:16px;padding:16px 18px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;color:#fff;cursor:pointer;text-align:left;display:flex;align-items:center;gap:14px;width:100%;transition:transform .1s,filter .1s}
 .nav-card:active{transform:scale(.97);filter:brightness(.9)}
 .nav-card .nic{font-size:1.5rem}
 .nav-card .info{display:flex;flex-direction:column;gap:2px}
 .nav-card .sub{font-size:.75rem;font-weight:400;opacity:.88}
-.c-test{background:linear-gradient(135deg,var(--teal-dark),var(--teal))}
-.c-recipes{background:linear-gradient(135deg,var(--teal),var(--teal-light))}
-.c-shop{background:linear-gradient(135deg,#f59e0b,#f97316)}
+.c-comida{background:linear-gradient(135deg,var(--teal-dark),var(--teal))}
+.c-cena{background:linear-gradient(135deg,#3b82f6,var(--teal))}
+.c-test{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+.c-shop{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
 
-/* Cards genéricos */
-.card{background:rgba(255,255,255,.82);border-radius:18px;padding:20px;border:2px solid var(--mint-mid);margin-bottom:14px;box-shadow:0 2px 12px rgba(38,166,154,.08)}
-.card h2{font-size:1.05rem;font-weight:700;color:var(--teal-dark);margin-bottom:6px}
-.card p{font-size:.85rem;color:var(--text-soft);line-height:1.5}
+.card{background:rgba(255,255,255,.82);border-radius:18px;padding:18px;border:2px solid var(--mint-mid);margin-bottom:12px}
+.card h2{font-size:1rem;font-weight:700;color:var(--teal-dark);margin-bottom:5px}
+.card p{font-size:.84rem;color:var(--text-soft);line-height:1.5}
 
-/* Botones */
 .btn-row{display:flex;gap:8px;margin-top:12px}
 .btn{border:none;border-radius:12px;padding:13px 18px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;flex:1;transition:transform .1s,filter .1s}
 .btn:active{transform:scale(.97)}
@@ -56,61 +51,67 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .btn-secondary{background:var(--mint-soft);color:var(--teal-dark);border:2px solid var(--mint-mid)}
 .btn-full{width:100%}
 
-/* Test de receta */
-.test-q h2{font-size:1.1rem;font-weight:700;color:var(--teal-dark);margin-bottom:14px}
-.opt-btn{width:100%;border:2px solid var(--mint-mid);border-radius:14px;padding:14px 16px;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:600;color:var(--teal-dark);background:rgba(255,255,255,.8);cursor:pointer;text-align:left;margin-bottom:8px;transition:border-color .15s,background .15s}
-.opt-btn:active{border-color:var(--teal);background:var(--mint-soft)}
+/* Tabs comida/cena */
+.tabs{display:flex;gap:6px;margin-bottom:16px}
+.tab{flex:1;padding:10px;border:2px solid var(--mint-mid);border-radius:12px;background:rgba(255,255,255,.7);font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;color:var(--text-soft);transition:all .2s;text-align:center}
+.tab.active{background:var(--teal-dark);color:#fff;border-color:var(--teal-dark)}
 
-/* Recetas grid */
-.recipes-grid{display:flex;flex-direction:column;gap:12px}
-.recipe-card{background:rgba(255,255,255,.85);border-radius:18px;padding:18px;border:2px solid var(--mint-mid);cursor:pointer;transition:transform .1s,border-color .1s}
+/* Recipe cards */
+.recipe-card{background:rgba(255,255,255,.85);border-radius:18px;padding:16px;border:2px solid var(--mint-mid);margin-bottom:10px;cursor:pointer;transition:transform .1s,border-color .1s}
 .recipe-card:active{transform:scale(.98);border-color:var(--teal)}
-.recipe-card .r-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.recipe-card .r-emoji{font-size:2.2rem}
-.recipe-card h3{font-size:1rem;font-weight:700;color:var(--teal-dark)}
-.recipe-card .time-tag{background:var(--teal);color:#fff;border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:700;margin-top:3px;display:inline-block}
-.recipe-card p{font-size:.82rem;color:var(--text-soft);line-height:1.5}
-.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.tag{background:var(--mint-soft);border:1px solid var(--mint-mid);color:var(--teal-dark);border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:600}
+.r-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.r-emoji{font-size:2rem;flex-shrink:0}
+.r-info h3{font-size:.95rem;font-weight:700;color:var(--teal-dark)}
+.time-tag{background:var(--teal);color:#fff;border-radius:999px;padding:2px 9px;font-size:.7rem;font-weight:700;margin-top:3px;display:inline-block}
+.nutrient-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.nut-chip{background:var(--mint-soft);border:1px solid var(--mint-mid);color:var(--teal-dark);border-radius:999px;padding:2px 8px;font-size:.68rem;font-weight:600}
+.recipe-desc{font-size:.8rem;color:var(--text-soft);line-height:1.4;margin-top:6px}
 
-/* Detalle receta */
-.section-title{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin-bottom:8px}
-.ingredient-list{font-size:.9rem;line-height:2;color:var(--text)}
-.ingredient-list li{list-style:none;padding:2px 0;border-bottom:1px solid var(--mint);display:flex;gap:8px}
-.ingredient-list li:last-child{border:none}
-.ingredient-list li::before{content:"•";color:var(--teal);font-weight:700}
-.tip-box{background:var(--mint-soft);border-left:4px solid var(--teal);border-radius:0 12px 12px 0;padding:12px 14px;font-size:.85rem;color:var(--text);line-height:1.5;margin-bottom:14px}
+/* Detail */
+.section-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin-bottom:8px}
+.ingr-list{list-style:none;font-size:.88rem;line-height:1}
+.ingr-list li{padding:7px 0;border-bottom:1px solid var(--mint);display:flex;gap:8px;align-items:flex-start}
+.ingr-list li:last-child{border:none}
+.ingr-list li::before{content:"•";color:var(--teal);font-weight:700;flex-shrink:0}
+.tip-box{background:var(--mint-soft);border-left:4px solid var(--teal);border-radius:0 12px 12px 0;padding:12px 14px;font-size:.83rem;color:var(--text);line-height:1.5;margin-bottom:14px}
+.nutri-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.nutri-cell{background:rgba(255,255,255,.8);border:2px solid var(--mint-mid);border-radius:12px;padding:10px;text-align:center}
+.nutri-cell .val{font-size:1.2rem;font-weight:800;color:var(--teal-dark)}
+.nutri-cell .lbl{font-size:.65rem;color:var(--text-soft);margin-top:2px}
 
-/* Cooking guide */
-.step-box{background:var(--mint-soft);border:2px solid var(--mint-mid);border-radius:18px;padding:22px;text-align:center;margin-bottom:16px}
-.step-num{font-size:.75rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.step-text{font-size:1.05rem;font-weight:600;color:var(--teal-dark);line-height:1.6;margin-bottom:16px}
-.step-timer{font-size:3.2rem;font-weight:800;color:var(--teal-dark);font-variant-numeric:tabular-nums;margin-bottom:4px}
-.step-timer-label{font-size:.75rem;color:var(--text-soft)}
-.progress-bar-wrap{background:var(--mint-mid);border-radius:999px;height:5px;margin-bottom:16px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--teal-dark),var(--teal-light));border-radius:999px;transition:width .6s}
-.steps-mini{display:flex;justify-content:center;gap:5px;margin-bottom:14px}
-.step-dot{width:8px;height:8px;border-radius:50%;background:var(--mint-mid);transition:all .3s}
-.step-dot.done{background:var(--teal)}
-.step-dot.active{background:var(--teal-light);transform:scale(1.4)}
-.done-box{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:18px;padding:28px;text-align:center;margin-bottom:16px}
+/* Cooking */
+.step-box{background:var(--mint-soft);border:2px solid var(--mint-mid);border-radius:18px;padding:22px;text-align:center;margin-bottom:14px}
+.step-num{font-size:.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.step-text{font-size:1.02rem;font-weight:600;color:var(--teal-dark);line-height:1.6;margin-bottom:14px}
+.step-timer{font-size:3rem;font-weight:800;color:var(--teal-dark);font-variant-numeric:tabular-nums;margin-bottom:2px}
+.step-timer-lbl{font-size:.72rem;color:var(--text-soft)}
+.prog-wrap{background:var(--mint-mid);border-radius:999px;height:5px;margin-bottom:14px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal-dark),var(--teal-light));border-radius:999px;transition:width .6s}
+.dots{display:flex;justify-content:center;gap:5px;margin-bottom:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mint-mid);transition:all .3s}
+.dot.done{background:var(--teal)}.dot.active{background:var(--teal-light);transform:scale(1.4)}
+.done-box{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:18px;padding:28px;text-align:center;margin-bottom:14px}
 .done-box .big{font-size:3rem;margin-bottom:8px}
 .done-box h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
 .done-box p{font-size:.88rem;opacity:.9}
 
-/* Shopping list */
-.shop-category{margin-bottom:16px}
-.shop-category h3{font-size:.8rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--mint-mid)}
-.shop-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--mint)}
+/* Test */
+.opt-btn{width:100%;border:2px solid var(--mint-mid);border-radius:14px;padding:13px 16px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:600;color:var(--teal-dark);background:rgba(255,255,255,.8);cursor:pointer;text-align:left;margin-bottom:8px}
+.opt-btn:active{border-color:var(--teal);background:var(--mint-soft)}
+.result-box{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:18px;padding:22px;text-align:center;margin-bottom:14px}
+.result-box h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
+.result-box p{font-size:.88rem;opacity:.9;line-height:1.5}
+
+/* Shopping */
+.shop-cat h3{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--mint-mid)}
+.shop-cat{margin-bottom:16px}
+.shop-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--mint)}
 .shop-item:last-child{border:none}
 .shop-item input{margin-top:3px;width:18px;height:18px;accent-color:var(--teal);flex-shrink:0;cursor:pointer}
-.shop-item label{font-size:.88rem;color:var(--text);line-height:1.4;cursor:pointer}
+.shop-item label{font-size:.86rem;color:var(--text);line-height:1.4;cursor:pointer}
 .shop-item label strong{color:var(--teal-dark)}
-.shop-item label small{display:block;color:var(--text-soft);font-size:.75rem;margin-top:1px}
-.shop-item.checked label{text-decoration:line-through;opacity:.5}
-.result-box{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:18px;padding:24px;text-align:center;margin-bottom:16px}
-.result-box h2{font-size:1.4rem;font-weight:800;margin-bottom:8px}
-.result-box p{font-size:.9rem;opacity:.9;line-height:1.5}
+.shop-item label small{display:block;color:var(--text-soft);font-size:.73rem;margin-top:1px}
+.shop-item.ck label{text-decoration:line-through;opacity:.45}
 </style>
 </head>
 <body>
@@ -120,10 +121,10 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div class="max-w">
   <div class="home-header">
     <h1>🍳 Comer Rico</h1>
-    <p>Simple, sin estrés, sin tomate</p>
+    <p>Sin estrés · sin tomate · nutritivo</p>
   </div>
   <div class="home-quokka">
-    <svg viewBox="0 0 110 130" width="100" height="118" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 110 130" width="96" height="113" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="28" cy="22" rx="13" ry="16" fill="#33b5a7"/>
       <ellipse cx="82" cy="22" rx="13" ry="16" fill="#33b5a7"/>
       <ellipse cx="28" cy="23" rx="7" ry="9" fill="#5dcfc2"/>
@@ -139,24 +140,27 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
       <ellipse cx="87" cy="96" rx="11" ry="8" fill="#33b5a7" transform="rotate(20 87 96)"/>
       <ellipse cx="42" cy="126" rx="12" ry="6" fill="#2da098"/>
       <ellipse cx="68" cy="126" rx="12" ry="6" fill="#2da098"/>
-      <!-- chef hat -->
-      <rect x="41" y="18" width="28" height="10" rx="3" fill="white" opacity=".9"/>
-      <ellipse cx="55" cy="18" rx="14" ry="9" fill="white" opacity=".9"/>
+      <rect x="42" y="17" width="26" height="9" rx="3" fill="white" opacity=".9"/>
+      <ellipse cx="55" cy="17" rx="13" ry="8" fill="white" opacity=".9"/>
     </svg>
   </div>
-  <div class="bubble">¡A cocinar sin agobios! 🌿</div>
+  <div class="bubble">¿Qué cocinamos hoy? 🌿</div>
   <div class="nav-cards">
     <button class="nav-card c-test" onclick="startTest()">
       <span class="nic">🤔</span>
-      <div class="info"><span>¿QUÉ COCINO HOY?</span><span class="sub">Te ayudo a elegir según cómo estás</span></div>
+      <div class="info"><span>¿QUÉ COCINO HOY?</span><span class="sub">Test rápido según cómo estás</span></div>
     </button>
-    <button class="nav-card c-recipes" onclick="go('recipes')">
-      <span class="nic">🍽️</span>
-      <div class="info"><span>VER RECETAS</span><span class="sub">Bowl de quinoa · Sopa de calabaza</span></div>
+    <button class="nav-card c-comida" onclick="go('recipes');setTab('comida')">
+      <span class="nic">☀️</span>
+      <div class="info"><span>COMIDAS</span><span class="sub">5 recetas completas y nutritivas</span></div>
+    </button>
+    <button class="nav-card c-cena" onclick="go('recipes');setTab('cena')">
+      <span class="nic">🌙</span>
+      <div class="info"><span>CENAS</span><span class="sub">5 cenas ligeras y fáciles</span></div>
     </button>
     <button class="nav-card c-shop" onclick="go('shopping')">
       <span class="nic">🛒</span>
-      <div class="info"><span>LISTA DE COMPRAS</span><span class="sub">7 días para 1 persona</span></div>
+      <div class="info"><span>LISTA DE COMPRAS</span><span class="sub">Todo para 7 días · 1 persona</span></div>
     </button>
   </div>
 </div>
@@ -165,406 +169,423 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <!-- TEST -->
 <div id="v-test" class="screen">
 <div class="max-w">
-  <div class="topbar">
-    <button class="back-btn" onclick="go('home')">←</button>
-    <h1>¿Qué cocino hoy?</h1>
-  </div>
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>¿Qué cocino hoy?</h1></div>
   <div id="test-content"></div>
 </div>
 </div>
 
-<!-- RECIPES LIST -->
+<!-- RECIPES -->
 <div id="v-recipes" class="screen">
 <div class="max-w">
-  <div class="topbar">
-    <button class="back-btn" onclick="go('home')">←</button>
-    <h1>Recetas</h1>
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1 id="recipes-title">Recetas</h1></div>
+  <div class="tabs">
+    <button class="tab active" id="tab-comida" onclick="setTab('comida')">☀️ Comidas</button>
+    <button class="tab" id="tab-cena" onclick="setTab('cena')">🌙 Cenas</button>
   </div>
-  <div class="recipes-grid" id="recipes-grid"></div>
+  <div id="recipes-list"></div>
 </div>
 </div>
 
-<!-- RECIPE DETAIL -->
-<div id="v-recipe-detail" class="screen">
+<!-- DETAIL -->
+<div id="v-detail" class="screen">
 <div class="max-w">
-  <div class="topbar">
-    <button class="back-btn" id="recipe-back">←</button>
-    <h1 id="detail-title"></h1>
-  </div>
+  <div class="topbar"><button class="back-btn" id="detail-back">←</button><h1 id="detail-title"></h1></div>
   <div id="detail-content"></div>
 </div>
 </div>
 
-<!-- COOKING GUIDE -->
+<!-- COOKING -->
 <div id="v-cooking" class="screen">
 <div class="max-w">
-  <div class="topbar">
-    <button class="back-btn" onclick="stopCooking();go('recipe-detail')">←</button>
-    <h1 id="cooking-title"></h1>
-  </div>
-  <div id="cooking-content"></div>
+  <div class="topbar"><button class="back-btn" onclick="stopCook();go('detail')">←</button><h1 id="cook-title"></h1></div>
+  <div id="cook-content"></div>
 </div>
 </div>
 
-<!-- SHOPPING LIST -->
+<!-- SHOPPING -->
 <div id="v-shopping" class="screen">
 <div class="max-w">
-  <div class="topbar">
-    <button class="back-btn" onclick="go('home')">←</button>
-    <h1>Lista de Compras</h1>
-  </div>
-  <div class="card" style="margin-bottom:16px">
-    <p>Marca lo que ya tienes o lo que coges en el súper. Se guarda automáticamente 💚</p>
-  </div>
-  <div id="shopping-list"></div>
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>Lista de Compras</h1></div>
+  <div class="card" style="margin-bottom:14px"><p>Para 7 días · 1 persona · sin tomate. Marca según vas comprando — se guarda automáticamente 💚</p></div>
+  <div id="shop-list"></div>
   <div class="btn-row">
     <button class="btn btn-secondary" onclick="shareList()">📱 Compartir</button>
-    <button class="btn btn-secondary" onclick="clearAll()">↺ Borrar marcas</button>
+    <button class="btn btn-secondary" onclick="clearShop()">↺ Borrar marcas</button>
   </div>
 </div>
 </div>
 
 <script>
-const RECIPES = [
-  {
-    id:'quinoa', emoji:'🥣', name:'Bowl de Quinoa', time:'15 min',
-    tags:['Super fácil','Sin tomate','1 olla'],
-    desc:'Se cocina sola. Solo cortas el pepino y mezclas.',
-    tip:'La quinoa prelavada no necesita lavarse. Si te queda tiempo, añade más aceitunas — están ricas.',
-    ingredients:[
-      '½ taza quinoa prelavada',
-      '½ pepino',
-      'Aceitunas negras (las que quieras)',
-      '50g queso feta (ya en dados)',
-      '2 cdas aceite de oliva',
-      '½ limón',
-      'Sal al gusto'
-    ],
+/* ─── DATOS ─── */
+const RECIPES = {
+comida:[
+  { id:'quinoa', emoji:'🥣', name:'Bowl de Quinoa', time:'15 min',
+    kcal:'420', prot:'18g', tip:'La quinoa prelavada no necesita lavarse. Si te queda algo, guárdalo en un tupper — aguanta 2 días en la nevera.',
+    tags:['Vegetariano','Sin gluten','1 olla'],
+    desc:'Proteína completa + grasa buena. Se cocina sola mientras cortas el pepino.',
+    nutrients:[{v:'420',l:'kcal'},{v:'18g',l:'proteína'},{v:'22g',l:'grasa sana'}],
+    ingredients:['½ taza quinoa prelavada','½ pepino en trozos','Aceitunas negras al gusto','50g queso feta (en dados)','2 cdas aceite de oliva','½ limón (zumo)','Sal'],
     steps:[
-      {text:'Pon 1 taza de agua en una olla y enciende el fuego. Espera a que hierva (verás burbujitas pequeñas)', time:3, voice:'Primer paso: pon una taza de agua en la olla y enciende el fuego. Espera a que hierva'},
-      {text:'Echa la quinoa, baja el fuego a medio, tapa la olla. Pon una alarma de 12 minutos y olvídate', time:12, voice:'Echa la quinoa, baja el fuego, tapa la olla y pon doce minutos de alarma. La quinoa se cocina sola'},
-      {text:'Mientras esperas, corta el pepino en trozos pequeños. No importa la forma', time:3, voice:'Mientras esperas, corta el pepino en trozos del tamaño que quieras'},
-      {text:'Pon las aceitunas y el queso feta en un bowl grande', time:1, voice:'Pon las aceitunas y el queso feta en un bowl grande donde vayas a comer'},
-      {text:'Cuando suene la alarma: apaga el fuego y deja reposar 2 minutos con la olla tapada', time:2, voice:'Cuando suene la alarma, apaga el fuego y deja reposar dos minutos con la tapa puesta'},
-      {text:'Echa la quinoa en el bowl, añade el pepino, aceite de oliva, zumo de medio limón y sal. ¡Mezcla y a comer!', time:1, voice:'Echa la quinoa en el bowl, añade el pepino, aceite, limón y sal. Mezcla y a comer'}
-    ]
-  },
-  {
-    id:'calabaza', emoji:'🍜', name:'Sopa de Calabaza', time:'12 min',
-    tags:['Ultra fácil','Sin tomate','1 olla'],
-    desc:'Calabaza congelada directo a la olla. Casi sin cortar nada.',
-    tip:'Usa calabaza CONGELADA (ya cortada) y caldo de brick. Si no tienes batidora, aplasta con un tenedor — queda igual de rica.',
-    ingredients:[
-      '250g calabaza congelada (ya cortada)',
-      '½ cebolla pequeña',
-      '1 vaso caldo de verduras (brick)',
-      '½ lata leche de coco',
-      '1 cda aceite de oliva',
-      'Cúrcuma (opcional)',
-      'Sal al gusto'
-    ],
+      {text:'Pon 1 taza de agua en una olla, enciende fuego medio-alto y espera a que hierva',time:3,voice:'Pon una taza de agua en la olla y enciende el fuego. Espera a que hierva'},
+      {text:'Echa la quinoa, baja el fuego, tapa la olla y pon alarma de 12 minutos. No tienes que vigilar nada',time:12,voice:'Echa la quinoa, baja el fuego, tapa y pon doce minutos de alarma. La quinoa se cocina sola'},
+      {text:'Mientras esperas: corta el pepino en trozos del tamaño que quieras y ponlos en un bowl',time:3,voice:'Corta el pepino y ponlo en el bowl donde vayas a comer'},
+      {text:'Añade las aceitunas y el queso feta al bowl',time:1,voice:'Añade aceitunas y queso feta'},
+      {text:'Cuando suene la alarma: apaga el fuego y espera 2 minutos con la olla tapada',time:2,voice:'Apaga el fuego y espera dos minutos con la tapa puesta'},
+      {text:'Vierte la quinoa en el bowl, añade aceite, zumo de limón y sal. Mezcla y a comer',time:1,voice:'Vierte la quinoa, añade aceite, limón y sal. Mezcla y a comer'}
+    ]},
+  { id:'pollo', emoji:'🍗', name:'Pollo al Limón con Arroz', time:'22 min',
+    tags:['Proteína','Sin gluten','2 fuegos'],
+    desc:'Plato completo: hidratos + proteína magra. El arroz se hace solo.',
+    nutrients:[{v:'510',l:'kcal'},{v:'38g',l:'proteína'},{v:'52g',l:'hidratos'}],
+    tip:'El truco es no mover el pollo hasta que se despegue solo de la sartén — así queda dorado. Si quemas el arroz, pon el fuego más bajo y tapa.',
+    ingredients:['1 pechuga de pollo fileteada','½ taza arroz blanco','1 taza agua','1 limón (zumo + ralladura)','1 diente ajo (o ajo en polvo)','1 cda aceite de oliva','Sal y perejil (opcional)'],
     steps:[
-      {text:'Corta la cebolla en trozos (no importa cómo, luego se tritura todo)', time:2, voice:'Corta la cebolla en trozos, no importa el tamaño porque luego lo trituramos todo'},
-      {text:'Pon aceite en la olla, enciende fuego medio y echa la cebolla. Remueve cada minuto durante 3 minutos', time:3, voice:'Pon una cucharada de aceite, enciende el fuego medio, echa la cebolla y remueve cada minuto durante tres minutos'},
-      {text:'Echa la calabaza congelada directamente a la olla (no hay que descongelarla)', time:1, voice:'Echa la calabaza congelada directamente, sin descongelar'},
-      {text:'Añade el caldo de brick y un poco de sal. Sube el fuego hasta que hierva', time:2, voice:'Añade el caldo y la sal. Sube el fuego hasta que hierva'},
-      {text:'Cuando hierva, baja el fuego a medio. Pon alarma de 5 minutos. Puedes hacer otra cosa', time:5, voice:'Cuando hierva baja el fuego y pon cinco minutos de alarma. Puedes irte a hacer otra cosa'},
-      {text:'Apaga el fuego. Tritura con batidora de mano o aplasta con tenedor hasta que quede cremoso', time:2, voice:'Apaga el fuego y tritura con la batidora. Si no tienes, aplasta con un tenedor hasta que quede cremoso'},
-      {text:'Añade la leche de coco, remueve suavemente y listo. ¡Sírvelo caliente!', time:1, voice:'Añade la leche de coco, remueve y listo. A disfrutar de tu sopa calentita'}
-    ]
-  }
-];
+      {text:'Pon el arroz con 1 taza de agua y sal en una olla. Lleva a ebullición, baja el fuego al mínimo, tapa y pon 18 minutos',time:18,voice:'Pon el arroz con agua y sal, lleva a ebullición, baja el fuego al mínimo y tapa. Dieciocho minutos'},
+      {text:'Mientras el arroz se hace: sala el pollo y ponlo en una sartén con aceite a fuego medio-alto',time:3,voice:'Sala el pollo y ponlo en la sartén con aceite a fuego medio-alto'},
+      {text:'Cocina 4 minutos sin moverlo. Cuando se despegue solo, dale la vuelta',time:4,voice:'Cuatro minutos sin moverlo. Cuando se despegue solo, dale la vuelta'},
+      {text:'Otros 4 minutos por el otro lado. Exprímele el limón por encima y apaga',time:4,voice:'Cuatro minutos más, exprime el limón por encima y apaga el fuego'},
+      {text:'Sirve el arroz con el pollo encima. Listo',time:1,voice:'Sirve el arroz y el pollo encima. Buen provecho'}
+    ]},
+  { id:'lentejas', emoji:'🫘', name:'Lentejas Express', time:'12 min',
+    tags:['Vegetariano','Sin gluten','Hierro'],
+    desc:'Lentejas cocidas de bote — ya están listas, solo calentar y condimentar.',
+    nutrients:[{v:'380',l:'kcal'},{v:'22g',l:'proteína'},{v:'9mg',l:'hierro'}],
+    tip:'Las lentejas de bote son igual de nutritivas que las secas. Escúrrelas y lávalas bien para quitarles el líquido de conserva.',
+    ingredients:['1 bote lentejas cocidas (400g)','1 puñado espinacas congeladas','½ cebolla','1 cda aceite de oliva','1 cdita comino (opcional)','Sal'],
+    steps:[
+      {text:'Pica la cebolla en trozos. Ponla en una olla con aceite a fuego medio y rehoga 3 minutos removiendo',time:3,voice:'Pica la cebolla y ponla en la olla con aceite. Tres minutos removiendo de vez en cuando'},
+      {text:'Añade las espinacas congeladas directamente (sin descongelar). Remueve hasta que se deshagan (2 min)',time:2,voice:'Echa las espinacas congeladas y remueve hasta que se deshagan, unos dos minutos'},
+      {text:'Escurre y lava las lentejas del bote. Añádelas a la olla con sal y comino si tienes',time:1,voice:'Escurre las lentejas, lávalas y échalas a la olla. Añade sal y comino'},
+      {text:'Calienta todo junto 5 minutos a fuego medio. Remueve de vez en cuando',time:5,voice:'Calienta cinco minutos a fuego medio removiendo de vez en cuando. Ya está listo'},
+    ]},
+  { id:'salmon', emoji:'🐟', name:'Salmón con Brócoli', time:'20 min',
+    tags:['Omega-3','Sin gluten','Al horno'],
+    desc:'Omega-3 + vitaminas. Todo en una bandeja de horno — sin ensuciar nada más.',
+    nutrients:[{v:'480',l:'kcal'},{v:'42g',l:'proteína'},{v:'28g',l:'omega-3'}],
+    tip:'Si el salmón es congelado, sácalo del congelador la noche anterior o ponlo 15 min en agua fría. El brócoli congelado va directo al horno.',
+    ingredients:['1 filete salmón (150-200g)','200g brócoli congelado','1 cda aceite de oliva','½ limón','Sal y pimienta','Ajo en polvo (opcional)'],
+    steps:[
+      {text:'Enciende el horno a 200°C (o el grill fuerte si no tienes horno convencional). Pon papel de horno en una bandeja',time:2,voice:'Enciende el horno a doscientos grados y pon papel de horno en la bandeja'},
+      {text:'Pon el brócoli congelado en la bandeja, riégalo con aceite y sal. Al horno 10 minutos',time:10,voice:'Pon el brócoli con aceite y sal en la bandeja y al horno diez minutos'},
+      {text:'Saca la bandeja, coloca el salmón encima del brócoli. Sala, echa ajo en polvo y zumo de limón',time:1,voice:'Coloca el salmón encima del brócoli, sala y exprime el limón'},
+      {text:'Vuelve al horno otros 10-12 minutos hasta que el salmón esté opaco por dentro',time:12,voice:'Al horno otros doce minutos hasta que el salmón esté opaco. Listo para comer'}
+    ]},
+  { id:'tortilla', emoji:'🥚', name:'Tortilla de Espinacas', time:'12 min',
+    tags:['Vegetariano','Sin gluten','Hierro'],
+    desc:'Proteína + hierro. Rápida y llena mucho. Con pan integral queda completa.',
+    nutrients:[{v:'360',l:'kcal'},{v:'20g',l:'proteína'},{v:'5mg',l:'hierro'}],
+    tip:'No remuevas demasiado los huevos — deja que cuaje por debajo antes de darle la vuelta. Si te rompe, dobla por la mitad como una tortilla francesa.',
+    ingredients:['3 huevos','1 puñado espinacas congeladas (80g)','30g queso rallado','1 cda aceite de oliva','Sal','Pan integral (para acompañar)'],
+    steps:[
+      {text:'Descongela las espinacas en el microondas 2 minutos (o en la sartén). Escúrrelas bien apretando con un tenedor',time:2,voice:'Descongela las espinacas en el microondas dos minutos y escúrrelas bien'},
+      {text:'Bate los 3 huevos en un bol con sal. Añade las espinacas y el queso rallado. Mezcla',time:2,voice:'Bate los huevos con sal, añade espinacas y queso. Mezcla bien'},
+      {text:'Calienta aceite en sartén a fuego medio. Vierte la mezcla. Deja cuajar 4 minutos sin tocar',time:4,voice:'Pon aceite en la sartén, vierte la mezcla y deja cuajar cuatro minutos sin moverla'},
+      {text:'Dale la vuelta con un plato o tapa. Otros 3 minutos y lista',time:3,voice:'Dale la vuelta ayudándote de un plato y cocina tres minutos más. Lista para comer'}
+    ]}
+],
+cena:[
+  { id:'sopa-cal', emoji:'🍜', name:'Sopa de Calabaza', time:'12 min',
+    tags:['Vegetariano','Sin gluten','Ligera'],
+    desc:'Cremosa y reconfortante. Casi no hay que cortar nada — la calabaza va congelada.',
+    nutrients:[{v:'220',l:'kcal'},{v:'4g',l:'proteína'},{v:'Vit A',l:'antioxid.'}],
+    tip:'Si no tienes batidora de mano, aplasta con un tenedor — queda rústica pero igual de rica. La leche de coco la hace más cremosa y saciante.',
+    ingredients:['250g calabaza congelada (ya cortada)','½ cebolla pequeña','1 vaso caldo de verduras (brick)','½ lata leche de coco','1 cda aceite de oliva','Cúrcuma opcional','Sal'],
+    steps:[
+      {text:'Pica la cebolla en trozos. Ponla con aceite en una olla a fuego medio, remueve 3 minutos',time:3,voice:'Pica la cebolla y rehógala en la olla con aceite durante tres minutos'},
+      {text:'Echa la calabaza congelada directamente (sin descongelar). Añade el caldo y la sal. Sube el fuego',time:2,voice:'Echa la calabaza congelada, añade el caldo y la sal, sube el fuego'},
+      {text:'Cuando hierva, baja el fuego a medio. Alarma de 5 minutos',time:5,voice:'Cuando hierva baja el fuego y pon cinco minutos de alarma'},
+      {text:'Apaga el fuego y tritura con la batidora. Añade la leche de coco y remueve. Listo',time:2,voice:'Apaga, tritura, añade leche de coco y remueve. Lista tu sopa calentita'}
+    ]},
+  { id:'garbanzos', emoji:'🥗', name:'Garbanzos con Pepino', time:'5 min',
+    tags:['Sin cocción','Vegetariano','Rápida'],
+    desc:'Sin fogones. Abrir un bote, cortar pepino y aliñar. Listo.',
+    nutrients:[{v:'310',l:'kcal'},{v:'14g',l:'proteína'},{v:'10g',l:'fibra'}],
+    tip:'Los garbanzos de bote están perfectamente cocidos. Lávalos bien con agua fría para quitarles el sabor metálico.',
+    ingredients:['1 bote garbanzos cocidos (400g)','1 pepino','Aceitunas negras','Zumo de 1 limón','2 cdas aceite de oliva','Orégano','Sal'],
+    steps:[
+      {text:'Escurre y lava los garbanzos bajo el grifo con agua fría',time:1,voice:'Escurre y lava los garbanzos con agua fría'},
+      {text:'Corta el pepino en rodajas o trozos',time:2,voice:'Corta el pepino en rodajas o trozos del tamaño que quieras'},
+      {text:'Mezcla todo en un bol: garbanzos, pepino, aceitunas. Aliña con limón, aceite, orégano y sal',time:2,voice:'Mezcla todo en el bol y aliña con limón, aceite, orégano y sal. Listo en cinco minutos'}
+    ]},
+  { id:'tortilla-fr', emoji:'🍳', name:'Tortilla Francesa con Queso', time:'8 min',
+    tags:['Rápida','Sin gluten','Proteína'],
+    desc:'2 huevos + queso. El clásico de las cenas ligeras pero que llena bien.',
+    nutrients:[{v:'280',l:'kcal'},{v:'18g',l:'proteína'},{v:'20g',l:'grasa'}],
+    tip:'La clave es el fuego medio y no dejar que los bordes se quemen antes de que el centro cuaje. Dobla por la mitad cuando todavía esté ligeramente líquida por encima.',
+    ingredients:['2 huevos','30g queso en lonchas o rallado','1 cda aceite de oliva','Sal','Pan integral (opcional)'],
+    steps:[
+      {text:'Bate 2 huevos con sal en un bol pequeño',time:1,voice:'Bate los dos huevos con sal'},
+      {text:'Calienta aceite en sartén a fuego medio. Vierte los huevos batidos',time:1,voice:'Calienta aceite en la sartén y vierte los huevos'},
+      {text:'Cuando los bordes estén cuajados, coloca el queso en el centro y dobla la tortilla por la mitad',time:3,voice:'Cuando los bordes cuajen, pon el queso en el centro y dobla por la mitad'},
+      {text:'Otros 2 minutos a fuego bajo y lista. Acompáñala con pan si quieres',time:2,voice:'Dos minutos más a fuego bajo. Sirve con pan si quieres'}
+    ]},
+  { id:'zanahoria', emoji:'🥕', name:'Crema de Zanahoria', time:'18 min',
+    tags:['Vegetariano','Sin gluten','Vitamina A'],
+    desc:'Dulce, cremosa y digestiva. Perfecta para cenar cuando el estómago pide algo suave.',
+    nutrients:[{v:'190',l:'kcal'},{v:'3g',l:'proteína'},{v:'Vit A',l:'betacarot.'}],
+    tip:'Las zanahorias baby congeladas son perfectas aquí — no hay que pelar ni cortar. La leche de coco le da cuerpo pero si no tienes, ponle un chorrito de leche normal.',
+    ingredients:['300g zanahorias (frescas o congeladas)','1 cda aceite de oliva','½ cebolla','1 vaso caldo de verduras','½ lata leche de coco','Jengibre en polvo (opcional)','Sal'],
+    steps:[
+      {text:'Pica la cebolla. Ponla con aceite en una olla a fuego medio, 3 minutos',time:3,voice:'Pica la cebolla y rehógala tres minutos con aceite'},
+      {text:'Añade las zanahorias y el caldo. Sube el fuego hasta que hierva',time:2,voice:'Añade zanahorias y caldo. Sube el fuego hasta que hierva'},
+      {text:'Baja el fuego a medio y cocina 10 minutos tapado',time:10,voice:'Baja el fuego y cocina diez minutos tapado'},
+      {text:'Tritura bien. Añade la leche de coco, mezcla y sirve',time:3,voice:'Tritura todo, añade la leche de coco, mezcla y sirve. Tu crema calentita lista'}
+    ]},
+  { id:'hummus', emoji:'🧆', name:'Hummus con Pita y Crudités', time:'5 min',
+    tags:['Sin cocción','Vegetariano','Rápida'],
+    desc:'Cena de emergencia: abrir, cortar, mojar. Sin cocinar nada.',
+    nutrients:[{v:'340',l:'kcal'},{v:'12g',l:'proteína'},{v:'14g',l:'fibra'}],
+    tip:'El hummus comprado está igual de bien que el casero. Busca el de supermercado sin ingredientes raros. El pan de pita calienta en 1 minuto en la sartén sin aceite.',
+    ingredients:['1 tarrina hummus (200g)','2 panes de pita','1 pepino','2 zanahorias medianas','Aceite de oliva','Pimentón (opcional)'],
+    steps:[
+      {text:'Corta el pepino en bastoncitos y la zanahoria en rodajas',time:3,voice:'Corta el pepino en bastoncitos y las zanahorias en rodajas'},
+      {text:'Calienta el pan de pita en una sartén sin aceite, 30 segundos por lado',time:1,voice:'Calienta el pan de pita treinta segundos por cada lado en una sartén sin aceite'},
+      {text:'Pon el hummus en un plato, un chorrito de aceite encima y pimentón si tienes. Sirve con el pan y las verduras',time:1,voice:'Sirve el hummus con el pan y las verduras. Cena lista en cinco minutos'}
+    ]}
+]};
 
 const SHOPPING = [
-  { cat:'🥬 Verduras', items:[
-    {id:'calabaza-c',name:'Calabaza CONGELADA cortada',qty:'2 bolsas 500g',loc:'Sección congelados'},
+  {cat:'🥬 Verduras y frutas', items:[
+    {id:'calabaza',name:'Calabaza CONGELADA',qty:'2 bolsas 500g',loc:'Sección congelados'},
+    {id:'brocoli',name:'Brócoli CONGELADO',qty:'1 bolsa 500g',loc:'Sección congelados'},
+    {id:'espinacas',name:'Espinacas CONGELADAS',qty:'1 bolsa 500g',loc:'Sección congelados'},
     {id:'pepinos',name:'Pepinos',qty:'4 unidades',loc:'Verduras frescas'},
-    {id:'cebollas',name:'Cebollas pequeñas',qty:'4 unidades',loc:'Verduras frescas'},
+    {id:'cebollas',name:'Cebollas medianas',qty:'3 unidades',loc:'Verduras frescas'},
+    {id:'zanahorias',name:'Zanahorias',qty:'500g (o congeladas)',loc:'Verduras frescas o congelados'},
     {id:'limones',name:'Limones',qty:'4 unidades',loc:'Frutas'}
   ]},
-  { cat:'🥛 Lácteos', items:[
-    {id:'feta',name:'Queso feta en dados',qty:'1 paquete 200g',loc:'Quesos / nevera'}
+  {cat:'🥩 Proteínas', items:[
+    {id:'pollo',name:'Pechuga pollo fileteada',qty:'400g',loc:'Carnicería / frío'},
+    {id:'salmon',name:'Filetes salmón',qty:'2 filetes (300g)',loc:'Pescadería o congelados'},
+    {id:'huevos',name:'Huevos',qty:'1 docena',loc:'Lácteos / pasillo básicos'}
   ]},
-  { cat:'🌾 Secos', items:[
-    {id:'quinoa',name:'Quinoa PRELAVADA',qty:'1 paquete 500g',loc:'Arroz / legumbres / zona sana'}
+  {cat:'🥛 Lácteos', items:[
+    {id:'feta',name:'Queso feta en dados',qty:'1 paquete 200g',loc:'Quesos / nevera'},
+    {id:'queso-rallado',name:'Queso rallado',qty:'1 bolsa pequeña',loc:'Quesos / nevera'}
   ]},
-  { cat:'🫒 Conservas', items:[
-    {id:'aceitunas',name:'Aceitunas negras',qty:'2 tarritos pequeños',loc:'Conservas'},
+  {cat:'🌾 Secos y cereales', items:[
+    {id:'quinoa',name:'Quinoa PRELAVADA',qty:'1 paquete 500g',loc:'Arroz / legumbres / zona sana'},
+    {id:'arroz',name:'Arroz blanco',qty:'1 paquete 500g',loc:'Arroz'},
+    {id:'pan-integral',name:'Pan integral de molde',qty:'1 paquete',loc:'Panadería / pan de molde'},
+    {id:'pita',name:'Pan de pita',qty:'4 unidades',loc:'Panadería / panes especiales'}
+  ]},
+  {cat:'🫒 Conservas y tarros', items:[
+    {id:'garbanzos',name:'Garbanzos cocidos (bote)',qty:'2 botes 400g',loc:'Conservas / legumbres'},
+    {id:'lentejas',name:'Lentejas cocidas (bote)',qty:'2 botes 400g',loc:'Conservas / legumbres'},
+    {id:'aceitunas',name:'Aceitunas negras',qty:'2 tarritos',loc:'Conservas'},
+    {id:'hummus',name:'Hummus',qty:'1 tarrina 200g',loc:'Refrigerados / comida preparada'},
     {id:'coco',name:'Leche de coco',qty:'2 latas',loc:'Cocina internacional / leches vegetales'},
-    {id:'caldo',name:'Caldo de verduras BRICK',qty:'2 briks de 1L',loc:'Caldos / sopas'}
+    {id:'caldo',name:'Caldo de verduras BRICK',qty:'2 briks 1L',loc:'Caldos / sopas'}
   ]},
-  { cat:'🧂 Básicos', items:[
+  {cat:'🧂 Básicos', items:[
     {id:'aceite',name:'Aceite de oliva',qty:'1 botella',loc:'Aceites'},
     {id:'sal',name:'Sal',qty:'1 paquete',loc:'Sal / especias'},
-    {id:'curcuma',name:'Cúrcuma (OPCIONAL)',qty:'1 botecito',loc:'Especias'}
+    {id:'curcuma',name:'Cúrcuma',qty:'1 botecito',loc:'Especias'},
+    {id:'comino',name:'Comino',qty:'1 botecito',loc:'Especias'},
+    {id:'ajo-polvo',name:'Ajo en polvo',qty:'1 botecito',loc:'Especias'}
   ]}
 ];
 
-const TEST_STEPS = [
-  { q:'¿Cómo está tu energía ahora?', opts:[
-    {label:'😴 Baja — estoy cansado/a', val:'baja'},
-    {label:'😊 Normal', val:'normal'},
-    {label:'⚡ Alta, tengo energía', val:'alta'}
-  ]},
-  { q:'¿Qué te pide el cuerpo?', opts:[
-    {label:'🥗 Algo fresco y ligero', val:'fresco'},
-    {label:'🍲 Algo caliente y reconfortante', val:'caliente'},
-    {label:'🍽️ Algo completo y nutritivo', val:'completo'}
-  ]},
-  { q:'¿Cuánto tiempo tienes?', opts:[
-    {label:'⚡ Poco — lo más rápido', val:'poco'},
-    {label:'⏱️ Unos 15 minutos', val:'medio'},
-    {label:'🕐 Sin prisa', val:'mucho'}
-  ]}
+const TEST = [
+  {q:'¿Comida o cena?',opts:[{l:'☀️ Comida (la principal)',v:'comida'},{l:'🌙 Cena (algo más ligero)',v:'cena'}]},
+  {q:'¿Cómo está tu energía ahora?',opts:[{l:'😴 Baja — mínimo esfuerzo',v:'baja'},{l:'😊 Normal',v:'normal'},{l:'⚡ Alta, puedo cocinar bien',v:'alta'}]},
+  {q:'¿Qué te apetece?',opts:[{l:'🥗 Algo fresco / sin calor',v:'frio'},{l:'🍲 Algo caliente y reconfortante',v:'calor'},{l:'🍽️ Algo completo con proteína',v:'proteina'}]}
 ];
 
-// ── State ──
-let currentRecipeId = null;
-let cookStep = 0, cookPlaying = false, cookTimer = 0, cookInterval = null;
-let testStep = 0, testAnswers = [];
-let fromTest = false;
+let curRecipeId=null,curMeal='comida',testStep=0,testAns=[];
+let cookStep=0,cookPlaying=false,cookTimer=0,cookInt=null;
 
-function beep(freq=600,dur=0.2){
-  try{const c=new(window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator();const g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=freq;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);o.start();o.stop(c.currentTime+dur);}catch(e){}
-}
+function beep(f=600,d=.2){try{const c=new(window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator();const g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
 function vibrate(ms=60){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
-function speak(text){try{if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='es-ES';u.rate=.88;speechSynthesis.speak(u);}catch(e){}}
+function speak(t){try{if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.88;speechSynthesis.speak(u);}catch(e){}}
 
-function go(view){
+function go(v){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('v-'+view).classList.add('active');
-  if(view==='recipes') renderRecipes();
-  if(view==='shopping') renderShopping();
+  document.getElementById('v-'+v).classList.add('active');
+  if(v==='shopping')renderShop();
 }
 
-// ── TEST ──
-function startTest(){
-  testStep=0; testAnswers=[];
-  go('test');
-  renderTest();
-}
+/* ── TEST ── */
+function startTest(){testStep=0;testAns=[];go('test');renderTest();}
 function renderTest(){
   const el=document.getElementById('test-content');
-  if(testStep>=TEST_STEPS.length){
-    // resultado
-    const rec=pickRecipe();
-    const r=RECIPES.find(r=>r.id===rec);
-    el.innerHTML=`
-      <div class="result-box">
-        <div style="font-size:3rem;margin-bottom:8px">${r.emoji}</div>
-        <h2>Te recomiendo: ${r.name}</h2>
-        <p>En ${r.time}, con lo que tienes en casa 💚</p>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="openRecipeFromTest('${r.id}')">Ver receta →</button>
-      <button class="btn btn-secondary btn-full" style="margin-top:8px" onclick="startTest()">Repetir test</button>
-    `;
+  if(testStep>=TEST.length){
+    const rec=pickRec();
+    const r=RECIPES[testAns[0]].find(r=>r.id===rec);
+    el.innerHTML=`<div class="result-box"><div style="font-size:3rem;margin-bottom:8px">${r.emoji}</div><h2>${r.name}</h2><p>${r.tags.join(' · ')}</p></div>
+    <button class="btn btn-primary btn-full" onclick="openRecipe('${testAns[0]}','${r.id}','test')">Ver receta →</button>
+    <button class="btn btn-secondary btn-full" style="margin-top:8px" onclick="startTest()">Repetir test</button>`;
     return;
   }
-  const s=TEST_STEPS[testStep];
-  el.innerHTML=`
-    <div class="card test-q">
-      <p style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);margin-bottom:10px">Pregunta ${testStep+1} de ${TEST_STEPS.length}</p>
-      <h2>${s.q}</h2>
-    </div>
-    ${s.opts.map(o=>`<button class="opt-btn" onclick="testAnswer('${o.val}')">${o.label}</button>`).join('')}
-  `;
+  const s=TEST[testStep];
+  el.innerHTML=`<div class="card"><p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);margin-bottom:8px">Pregunta ${testStep+1} de ${TEST.length}</p><h2 style="font-size:1.05rem;font-weight:700;color:var(--teal-dark)">${s.q}</h2></div>
+  ${s.opts.map(o=>`<button class="opt-btn" onclick="testAns_('${o.v}')">${o.l}</button>`).join('')}`;
 }
-function testAnswer(val){
-  beep(400,.1);vibrate(30);
-  testAnswers.push(val);
-  testStep++;
-  renderTest();
-}
-function pickRecipe(){
-  let sc={quinoa:0,calabaza:0};
-  // energía baja → sopa más fácil
-  if(testAnswers[0]==='baja') sc.calabaza+=2;
-  if(testAnswers[0]==='alta') sc.quinoa+=1;
-  // tipo
-  if(testAnswers[1]==='fresco'||testAnswers[1]==='completo') sc.quinoa+=2;
-  if(testAnswers[1]==='caliente') sc.calabaza+=3;
-  // tiempo
-  if(testAnswers[2]==='poco') sc.calabaza+=2;
-  return sc.calabaza>sc.quinoa?'calabaza':'quinoa';
-}
-function openRecipeFromTest(id){
-  fromTest=true;
-  openRecipe(id);
+function testAns_(v){beep(400,.1);vibrate(30);testAns.push(v);testStep++;renderTest();}
+function pickRec(){
+  const meal=testAns[0];const energy=testAns[1];const type=testAns[2];
+  const pool=RECIPES[meal];
+  if(meal==='cena'){
+    if(energy==='baja'||type==='frio') return pool.find(r=>r.id==='garbanzos'||r.id==='hummus')?pool[1].id:pool[0].id;
+    if(type==='calor') return 'sopa-cal';
+    if(type==='proteina') return 'tortilla-fr';
+    return pool[Math.floor(Math.random()*pool.length)].id;
+  }
+  if(energy==='baja') return 'lentejas';
+  if(type==='frio') return 'quinoa';
+  if(type==='calor') return 'sopa-cal';
+  if(type==='proteina') return energy==='alta'?'salmon':'pollo';
+  return pool[Math.floor(Math.random()*pool.length)].id;
 }
 
-// ── RECIPES ──
-function renderRecipes(){
-  const el=document.getElementById('recipes-grid');
-  el.innerHTML=RECIPES.map(r=>`
-    <div class="recipe-card" onclick="openRecipe('${r.id}')">
-      <div class="r-head">
-        <span class="r-emoji">${r.emoji}</span>
-        <div>
-          <h3>${r.name}</h3>
-          <span class="time-tag">${r.time}</span>
-        </div>
+/* ── RECIPES LIST ── */
+function setTab(tab){
+  curMeal=tab;
+  document.getElementById('tab-comida').classList.toggle('active',tab==='comida');
+  document.getElementById('tab-cena').classList.toggle('active',tab==='cena');
+  document.getElementById('recipes-title').textContent=tab==='comida'?'Comidas':'Cenas';
+  renderRecipeList();
+}
+function renderRecipeList(){
+  const el=document.getElementById('recipes-list');
+  el.innerHTML=RECIPES[curMeal].map(r=>`
+    <div class="recipe-card" onclick="openRecipe('${curMeal}','${r.id}','recipes')">
+      <div class="r-head"><span class="r-emoji">${r.emoji}</span>
+        <div class="r-info"><h3>${r.name}</h3><span class="time-tag">${r.time}</span></div>
       </div>
-      <p>${r.desc}</p>
-      <div class="tags">${r.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-    </div>
-  `).join('');
-}
-function openRecipe(id){
-  currentRecipeId=id;
-  const r=RECIPES.find(r=>r.id===id);
-  document.getElementById('detail-title').textContent=r.name;
-  document.getElementById('recipe-back').onclick=()=>go(fromTest?'test':'recipes');
-  const el=document.getElementById('detail-content');
-  el.innerHTML=`
-    <div class="card" style="margin-bottom:14px">
-      <div style="font-size:2.5rem;text-align:center;margin-bottom:10px">${r.emoji}</div>
-      <div class="tags" style="justify-content:center;margin-bottom:10px">${r.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-    </div>
-    <div class="tip-box">💡 ${r.tip}</div>
-    <p class="section-title">Ingredientes (1 persona)</p>
-    <div class="card" style="margin-bottom:16px">
-      <ul class="ingredient-list">${r.ingredients.map(i=>`<li>${i}</li>`).join('')}</ul>
-    </div>
-    <button class="btn btn-primary btn-full" onclick="startCooking('${r.id}')">🎵 Guía paso a paso →</button>
-  `;
-  go('recipe-detail');
+      <p class="recipe-desc">${r.desc}</p>
+      <div class="nutrient-row">${r.tags.map(t=>`<span class="nut-chip">${t}</span>`).join('')}</div>
+    </div>`).join('');
 }
 
-// ── COOKING ──
-function startCooking(id){
-  currentRecipeId=id;
-  const r=RECIPES.find(r=>r.id===id);
-  document.getElementById('cooking-title').textContent=r.name;
-  cookStep=0; cookPlaying=false; cookTimer=0;
-  if(cookInterval){clearInterval(cookInterval);cookInterval=null;}
-  go('cooking');
-  renderCooking();
+/* ── DETAIL ── */
+function openRecipe(meal,id,from){
+  curMeal=meal;curRecipeId=id;
+  const r=RECIPES[meal].find(r=>r.id===id);
+  document.getElementById('detail-title').textContent=r.name;
+  document.getElementById('detail-back').onclick=()=>go(from==='test'?'test':'recipes');
+  document.getElementById('detail-content').innerHTML=`
+    <div class="card" style="text-align:center;margin-bottom:12px">
+      <div style="font-size:2.8rem;margin-bottom:10px">${r.emoji}</div>
+      <div class="nutrient-row" style="justify-content:center">${r.tags.map(t=>`<span class="nut-chip">${t}</span>`).join('')}</div>
+    </div>
+    <div class="nutri-box">${r.nutrients.map(n=>`<div class="nutri-cell"><div class="val">${n.v}</div><div class="lbl">${n.l}</div></div>`).join('')}</div>
+    <div class="tip-box">💡 ${r.tip}</div>
+    <p class="section-label">Ingredientes (1 persona)</p>
+    <div class="card" style="margin-bottom:14px">
+      <ul class="ingr-list">${r.ingredients.map(i=>`<li>${i}</li>`).join('')}</ul>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="startCook('${meal}','${id}')">🎵 Guía paso a paso →</button>
+  `;
+  go('detail');
 }
-function stopCooking(){
-  if(cookInterval){clearInterval(cookInterval);cookInterval=null;}
+
+/* ── COOKING ── */
+function startCook(meal,id){
+  curMeal=meal;curRecipeId=id;
+  const r=RECIPES[meal].find(r=>r.id===id);
+  document.getElementById('cook-title').textContent=r.name;
+  cookStep=0;cookPlaying=false;cookTimer=0;
+  if(cookInt){clearInterval(cookInt);cookInt=null;}
+  go('cooking');renderCook();
+}
+function stopCook(){
+  if(cookInt){clearInterval(cookInt);cookInt=null;}
   cookPlaying=false;
   try{speechSynthesis.cancel();}catch(e){}
 }
-function renderCooking(){
-  const r=RECIPES.find(r=>r.id===currentRecipeId);
-  const el=document.getElementById('cooking-content');
+function renderCook(){
+  const r=RECIPES[curMeal].find(r=>r.id===curRecipeId);
+  const el=document.getElementById('cook-content');
   if(cookStep>=r.steps.length){
-    el.innerHTML=`
-      <div class="done-box">
-        <div class="big">🎉</div>
-        <h2>¡Listo, a comer!</h2>
-        <p>Lo has hecho genial 💚</p>
-      </div>
-      <button class="btn btn-secondary btn-full" onclick="go('home')">🏠 Inicio</button>
-      <button class="btn btn-primary btn-full" style="margin-top:8px" onclick="startCooking('${currentRecipeId}')">Repetir receta</button>
-    `;
+    el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>¡A comer!</h2><p>Lo has hecho genial 💚</p></div>
+    <button class="btn btn-secondary btn-full" onclick="go('home')">🏠 Inicio</button>
+    <button class="btn btn-primary btn-full" style="margin-top:8px" onclick="startCook('${curMeal}','${curRecipeId}')">Repetir</button>`;
     return;
   }
-  const step=r.steps[cookStep];
+  const s=r.steps[cookStep];
   const pct=(cookStep/r.steps.length)*100;
-  const dots=r.steps.map((_,i)=>`<div class="step-dot ${i<cookStep?'done':i===cookStep?'active':''}"></div>`).join('');
-  const t=cookPlaying?cookTimer:step.time*60;
+  const dots=r.steps.map((_,i)=>`<div class="dot ${i<cookStep?'done':i===cookStep?'active':''}"></div>`).join('');
+  const t=cookPlaying&&cookTimer>0?cookTimer:s.time*60;
   const mm=String(Math.floor(t/60)).padStart(2,'0');
   const ss=String(t%60).padStart(2,'0');
   el.innerHTML=`
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-    <div class="steps-mini">${dots}</div>
+    <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>
+    <div class="dots">${dots}</div>
     <div class="step-box">
       <div class="step-num">Paso ${cookStep+1} de ${r.steps.length}</div>
-      <div class="step-text">${step.text}</div>
-      <div class="step-timer" id="cook-timer">${mm}:${ss}</div>
-      <div class="step-timer-label">minutos restantes</div>
+      <div class="step-text">${s.text}</div>
+      <div class="step-timer" id="ct">${mm}:${ss}</div>
+      <div class="step-timer-lbl">minutos restantes</div>
     </div>
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="cookToggle()">${cookPlaying?'⏸ Pausar':'▶ Iniciar'}</button>
       <button class="btn btn-primary" onclick="cookNext()">Siguiente →</button>
-    </div>
-  `;
+    </div>`;
 }
 function cookToggle(){
   if(!cookPlaying){
     cookPlaying=true;
-    const r=RECIPES.find(r=>r.id===currentRecipeId);
+    const r=RECIPES[curMeal].find(r=>r.id===curRecipeId);
     if(!cookTimer||cookTimer<=0) cookTimer=r.steps[cookStep].time*60;
-    speak(r.steps[cookStep].voice);
-    vibrate(50);
-    cookInterval=setInterval(cookTick,1000);
+    speak(r.steps[cookStep].voice);vibrate(50);
+    cookInt=setInterval(cookTick,1000);
   } else {
     cookPlaying=false;
-    if(cookInterval){clearInterval(cookInterval);cookInterval=null;}
+    if(cookInt){clearInterval(cookInt);cookInt=null;}
     try{speechSynthesis.cancel();}catch(e){}
   }
-  renderCooking();
+  renderCook();
 }
 function cookTick(){
   cookTimer--;
-  const el=document.getElementById('cook-timer');
+  const el=document.getElementById('ct');
   if(el) el.textContent=String(Math.floor(cookTimer/60)).padStart(2,'0')+':'+String(cookTimer%60).padStart(2,'0');
-  if(cookTimer<=0) cookAdvance();
+  if(cookTimer<=0)cookAdv();
 }
-function cookAdvance(){
-  if(cookInterval){clearInterval(cookInterval);cookInterval=null;}
-  const r=RECIPES.find(r=>r.id===currentRecipeId);
-  cookStep++;
-  cookPlaying=false; cookTimer=0;
-  if(cookStep<r.steps.length){
-    beep(600,.15);vibrate(60);
-    renderCooking();
-  } else {
-    beep(800,.2);setTimeout(()=>beep(1000,.3),250);
-    vibrate([80,50,80]);
-    renderCooking();
-  }
+function cookAdv(){
+  if(cookInt){clearInterval(cookInt);cookInt=null;}
+  const r=RECIPES[curMeal].find(r=>r.id===curRecipeId);
+  cookStep++;cookPlaying=false;cookTimer=0;
+  if(cookStep<r.steps.length){beep(600,.15);vibrate(60);}
+  else{beep(800,.2);setTimeout(()=>beep(1000,.3),250);vibrate([80,50,80]);}
+  renderCook();
 }
-function cookNext(){
-  if(cookInterval){clearInterval(cookInterval);cookInterval=null;}
-  cookPlaying=false; cookTimer=0;
-  cookAdvance();
-}
+function cookNext(){if(cookInt){clearInterval(cookInt);cookInt=null;}cookPlaying=false;cookTimer=0;cookAdv();}
 
-// ── SHOPPING ──
-function loadChecked(){try{return JSON.parse(localStorage.getItem('cris_comida_shop')||'{}');}catch(e){return{};}}
-function saveChecked(d){try{localStorage.setItem('cris_comida_shop',JSON.stringify(d));}catch(e){}}
-
-function renderShopping(){
-  const el=document.getElementById('shopping-list');
-  const checked=loadChecked();
+/* ── SHOPPING ── */
+function getChecked(){try{return JSON.parse(localStorage.getItem('cris_comida_shop')||'{}');}catch(e){return{};}}
+function setChecked(d){try{localStorage.setItem('cris_comida_shop',JSON.stringify(d));}catch(e){}}
+function renderShop(){
+  const el=document.getElementById('shop-list');
+  const ck=getChecked();
   el.innerHTML=SHOPPING.map(cat=>`
-    <div class="shop-category">
+    <div class="shop-cat">
       <h3>${cat.cat}</h3>
       ${cat.items.map(item=>`
-        <div class="shop-item ${checked[item.id]?'checked':''}" id="si-${item.id}">
-          <input type="checkbox" id="cb-${item.id}" ${checked[item.id]?'checked':''} onchange="toggleShop('${item.id}',this.checked)">
+        <div class="shop-item ${ck[item.id]?'ck':''}" id="si-${item.id}">
+          <input type="checkbox" id="cb-${item.id}" ${ck[item.id]?'checked':''} onchange="toggleItem('${item.id}',this.checked)">
           <label for="cb-${item.id}"><strong>${item.name}</strong> — ${item.qty}<small>${item.loc}</small></label>
         </div>`).join('')}
-    </div>
-  `).join('')+'<div class="card" style="background:var(--mint-soft);border:2px solid var(--mint-mid)"><p>✅ Con esta compra tienes para 7 días (1 almuerzo + 1 cena por día)</p></div>';
+    </div>`).join('')+
+  `<div class="card" style="background:var(--mint-soft);border:2px solid var(--mint-mid);margin-top:4px"><p style="font-size:.84rem">Con esta compra tienes <strong>5 comidas + 5 cenas distintas</strong> para toda la semana 💚</p></div>`;
 }
-function toggleShop(id,val){
+function toggleItem(id,val){
   beep(400,.08);
-  const d=loadChecked();
-  d[id]=val;
-  saveChecked(d);
-  const el=document.getElementById('si-'+id);
-  if(el) el.classList.toggle('checked',val);
+  const d=getChecked();d[id]=val;setChecked(d);
+  document.getElementById('si-'+id).classList.toggle('ck',val);
 }
-function clearAll(){
-  saveChecked({});
-  renderShopping();
-}
+function clearShop(){setChecked({});renderShop();}
 function shareList(){
-  const lines=['🛒 Lista de compras — Cris App\n'];
-  SHOPPING.forEach(cat=>{
-    lines.push('\n'+cat.cat);
-    cat.items.forEach(i=>lines.push('☐ '+i.name+' — '+i.qty+' ['+i.loc+']'));
-  });
+  const lines=['🛒 Lista de compras — Cris App (7 días)\n'];
+  SHOPPING.forEach(cat=>{lines.push('\n'+cat.cat);cat.items.forEach(i=>lines.push('☐ '+i.name+' — '+i.qty+' ['+i.loc+']'));});
   const text=lines.join('\n');
-  if(navigator.share){
-    navigator.share({title:'Lista de compras',text}).catch(()=>{});
-  } else if(navigator.clipboard){
-    navigator.clipboard.writeText(text).then(()=>alert('📋 Lista copiada. Pégala en WhatsApp o notas 💚'));
-  }
+  if(navigator.share) navigator.share({title:'Lista de compras Cris',text}).catch(()=>{});
+  else if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>alert('📋 Lista copiada 💚'));
 }
+
+// init
+renderRecipeList();
 </script>
 </body>
 </html>
