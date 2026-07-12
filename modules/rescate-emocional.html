@@ -7,855 +7,633 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --teal:#26a69a;--teal-dark:#1a6b64;--teal-light:#4dd0e1;
-  --mint:#d6f0eb;--mint-mid:#b8e4dd;--mint-soft:#e8f8f5;
-}
+:root{--teal:#26a69a;--teal-dark:#1a6b64;--teal-light:#4dd0e1;--mint:#d6f0eb;--mint-mid:#b8e4dd;--mint-soft:#e8f8f5;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;color:var(--teal-dark)}
-
-.screen{display:none;min-height:100vh;padding:16px 16px 32px}
+.screen{display:none;min-height:100vh;padding:16px 16px 80px}
 .screen.active{display:block}
-.max-w{max-width:440px;margin:0 auto;padding-top:16px}
-
-.topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
-.back-btn{background:rgba(26,107,100,.12);border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--teal-dark)}
-.topbar h1{font-size:1.2rem;font-weight:700;color:var(--teal-dark)}
-
-.home-header{text-align:center;margin-bottom:16px}
-.home-header h1{font-size:1.5rem;font-weight:800;color:var(--teal-dark)}
-.home-header p{font-size:.88rem;color:var(--teal);margin-top:4px}
-/* quokka in home */
-.home-quokka{display:flex;justify-content:center;margin-bottom:20px;animation:float 3s ease-in-out infinite}
+.mw{max-width:440px;margin:0 auto;padding-top:8px}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.back{background:rgba(26,107,100,.12);border:none;border-radius:50%;width:44px;height:44px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--teal-dark);font-weight:700}
+.topbar h1{font-size:1.1rem;font-weight:700;color:var(--teal-dark)}
+/* HOME */
+.home-hdr{text-align:center;margin-bottom:14px}
+.home-hdr h1{font-size:1.5rem;font-weight:800;color:var(--teal-dark)}
+.home-hdr p{font-size:.85rem;color:var(--teal);margin-top:3px}
+.home-q{display:flex;justify-content:center;margin-bottom:18px;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
-.nav-cards{display:flex;flex-direction:column;gap:10px}
-.nav-card{border:none;border-radius:18px;padding:16px 20px;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;color:#fff;cursor:pointer;text-align:left;display:flex;align-items:center;gap:14px;width:100%;transition:transform .1s,filter .1s}
-.nav-card:active{transform:scale(.97);filter:brightness(.9)}
-.nav-card .nic{font-size:1.5rem}
-.nav-card .info{display:flex;flex-direction:column;gap:2px}
-.nav-card .sub{font-size:.78rem;font-weight:400;opacity:.85}
-.c-rescue{background:linear-gradient(135deg,#ef4444,#f97316)}
-.c-meditations{background:linear-gradient(135deg,var(--teal),var(--teal-light))}
-.c-tasks{background:linear-gradient(135deg,#f59e0b,#ef4444)}
-.c-emotion{background:linear-gradient(135deg,#4dd0e1,#26a69a)}
-
-.tec-card{background:rgba(255,255,255,.8);border-radius:20px;padding:24px;box-shadow:0 4px 16px rgba(38,166,154,.12);margin-bottom:20px}
-.tec-tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:700;margin-bottom:10px;color:#fff}
-.tec-card h2{font-size:1.5rem;font-weight:800;margin-bottom:4px;color:var(--teal-dark)}
-.tec-card .tec-desc{font-size:.85rem;color:var(--teal);margin-bottom:20px}
-.step-box{background:var(--mint-soft);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;border:2px solid var(--mint-mid)}
-.step-num{font-size:.8rem;font-weight:700;color:var(--teal);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
-.step-name{font-size:1.6rem;font-weight:800;color:var(--teal-dark);margin-bottom:8px}
-.step-instr{font-size:.95rem;color:#3d5a58;line-height:1.5}
-.step-timer{font-size:3.5rem;font-weight:800;color:var(--teal);margin:16px 0 8px;font-variant-numeric:tabular-nums}
-.progress-dots{display:flex;justify-content:center;gap:6px;margin-bottom:20px}
+.acard{border:none;border-radius:20px;padding:18px 20px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:left;display:flex;align-items:center;gap:16px;width:100%;transition:transform .1s,filter .1s;margin-bottom:10px}
+.acard:active{transform:scale(.97);filter:brightness(.92)}
+.aicon{font-size:2rem;flex-shrink:0;line-height:1}
+.ainfo{display:flex;flex-direction:column;gap:3px}
+.atitle{font-size:1rem;font-weight:800;color:#fff}
+.asub{font-size:.76rem;font-weight:500;color:rgba(255,255,255,.88)}
+.c-sos{background:linear-gradient(135deg,#ef4444,#f97316)}
+.c-know{background:linear-gradient(135deg,var(--teal-dark),var(--teal))}
+.c-find{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+.c-calm{background:rgba(255,255,255,.7);border:2px solid var(--mint-mid)!important}
+.c-calm .atitle{color:var(--teal-dark)}
+.c-calm .asub{color:var(--teal)}
+/* SECTION LABEL */
+.slabel{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin:16px 0 8px}
+/* TECHNIQUE LIST */
+.tlist{display:flex;flex-direction:column;gap:8px}
+.titem{background:rgba(255,255,255,.82);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;width:100%;text-align:left;border:2px solid var(--mint-mid);transition:transform .1s}
+.titem:active{transform:scale(.98)}
+.tico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.tinfo h3{font-size:.92rem;font-weight:700;color:var(--teal-dark)}
+.tinfo p{font-size:.74rem;color:var(--teal);margin-top:2px;line-height:1.3}
+/* GUIDED TECHNIQUE */
+.tcard{background:rgba(255,255,255,.88);border-radius:20px;padding:20px;box-shadow:0 4px 16px rgba(38,166,154,.1);margin-bottom:16px}
+.ttag{display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;margin-bottom:10px;color:#fff}
+.tdesc{font-size:.82rem;color:var(--teal);margin-bottom:14px;line-height:1.4}
+.sbox{background:var(--mint-soft);border-radius:16px;padding:20px;text-align:center;margin-bottom:14px;border:2px solid var(--mint-mid)}
+.snum{font-size:.72rem;font-weight:700;color:var(--teal);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.sname{font-size:1.4rem;font-weight:800;color:var(--teal-dark);margin-bottom:8px}
+.sinstr{font-size:.88rem;color:#3d5a58;line-height:1.5}
+.stimer{font-size:3.5rem;font-weight:800;color:var(--teal);margin:12px 0 4px;font-variant-numeric:tabular-nums}
+.dots{display:flex;justify-content:center;gap:6px;margin-bottom:14px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--mint-mid);transition:background .3s}
-.dot.done{background:var(--teal)}
-.dot.active{background:var(--teal-light);transform:scale(1.3)}
-.btn-row{display:flex;gap:10px}
-.btn{border:none;border-radius:12px;padding:14px 20px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;flex:1;transition:transform .1s,filter .1s}
-.btn:active{transform:scale(.97);filter:brightness(.9)}
-.btn-primary{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff}
-.btn-secondary{background:var(--mint-soft);color:var(--teal-dark);border:2px solid var(--mint-mid)}
-.btn-full{width:100%;margin-top:12px}
-.done-card{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:20px;padding:28px;text-align:center;margin-bottom:20px}
-.done-card .big{font-size:3rem;margin-bottom:8px}
-.done-card h2{font-size:1.4rem;font-weight:800;margin-bottom:6px}
-.done-card p{font-size:.9rem;opacity:.9}
-
-.med-list{display:flex;flex-direction:column;gap:12px}
-.med-item{background:rgba(255,255,255,.8);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer;border:none;border:2px solid var(--mint-mid);width:100%;text-align:left;transition:transform .1s}
-.med-item:active{transform:scale(.98)}
-.med-icon{font-size:2rem;flex-shrink:0}
-.med-info h3{font-size:1rem;font-weight:700;color:var(--teal-dark)}
-.med-info p{font-size:.8rem;color:var(--teal);margin-top:2px}
-.speed-row{display:flex;gap:8px;margin-bottom:20px}
-.speed-btn{flex:1;padding:10px;border:2px solid var(--mint-mid);border-radius:10px;background:rgba(255,255,255,.7);font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;color:var(--teal);transition:all .2s}
-.speed-btn.active{border-color:var(--teal);background:var(--teal);color:#fff}
-
-.eis-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.eis-cell{border-radius:14px;padding:14px 12px;min-height:140px;cursor:pointer;transition:transform .1s;border:2px solid transparent}
-.eis-cell:active{transform:scale(.98)}
-.eis-cell.selected{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.5)}
-.eis-q1{background:linear-gradient(135deg,#ef4444,#f97316)}
-.eis-q2{background:linear-gradient(135deg,var(--teal-dark),var(--teal))}
-.eis-q3{background:linear-gradient(135deg,#f59e0b,#f97316)}
-.eis-q4{background:linear-gradient(135deg,#6b7280,#9ca3af)}
-.eis-cell h3{font-size:.75rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
-.eis-cell .eis-sub{font-size:.7rem;color:rgba(255,255,255,.85);margin-bottom:10px}
-.eis-cell .task-chip{background:rgba(255,255,255,.28);color:#fff;border-radius:6px;padding:3px 7px;font-size:.72rem;font-weight:600;display:block;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.eis-panel{background:rgba(255,255,255,.8);border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid var(--mint-mid)}
-.eis-panel h3{font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--teal-dark)}
-.task-input-row{display:flex;gap:8px}
-.task-input{flex:1;padding:12px 14px;border:2px solid var(--mint-mid);border-radius:10px;font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;background:var(--mint-soft)}
-.task-input:focus{border-color:var(--teal)}
-.add-btn{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:12px 16px;font-size:1.2rem;cursor:pointer}
-.task-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
-.task-row{display:flex;align-items:center;justify-content:space-between;background:var(--mint-soft);border-radius:8px;padding:8px 10px;border:1px solid var(--mint-mid)}
-.task-row span{font-size:.85rem;flex:1;color:var(--teal-dark)}
-.del-btn{background:none;border:none;cursor:pointer;color:#ef4444;font-size:1rem;padding:2px 6px}
-
-.emo-card{background:rgba(255,255,255,.8);border-radius:20px;padding:24px;box-shadow:0 4px 16px rgba(38,166,154,.1);margin-bottom:20px;border:2px solid var(--mint-mid)}
-.emo-card h2{font-size:1.1rem;font-weight:700;color:var(--teal-dark);margin-bottom:6px}
-.emo-card p{font-size:.85rem;color:var(--teal);margin-bottom:14px}
-textarea.emo-input{width:100%;padding:12px;border:2px solid var(--mint-mid);border-radius:12px;font-family:'Outfit',sans-serif;font-size:.9rem;resize:none;height:120px;outline:none;line-height:1.5;background:var(--mint-soft);color:var(--teal-dark)}
-textarea.emo-input:focus{border-color:var(--teal)}
-.emotion-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.emo-btn{border:none;border-radius:14px;padding:16px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:center;transition:transform .1s}
-.emo-btn:active{transform:scale(.97)}
-.emo-btn .big-emoji{font-size:2rem;display:block;margin-bottom:4px}
-.emo-btn .emo-label{font-size:.85rem;font-weight:700;color:var(--teal-dark)}
-.range-display{font-size:4rem;font-weight:800;text-align:center;color:var(--teal-dark);padding:10px 0}
-.range-input{width:100%;accent-color:var(--teal);height:6px;cursor:pointer}
-.range-labels{display:flex;justify-content:space-between;font-size:.75rem;color:var(--teal);margin-top:6px}
-.control-options{display:flex;flex-direction:column;gap:10px}
-.ctrl-btn{background:rgba(255,255,255,.8);border:2px solid var(--mint-mid);border-radius:14px;padding:16px;text-align:left;cursor:pointer;font-family:'Outfit',sans-serif;transition:border-color .2s;width:100%}
-.ctrl-btn:active{border-color:var(--teal)}
-.ctrl-btn .lbl{font-size:1rem;font-weight:700;color:var(--teal-dark)}
-.ctrl-btn .desc{font-size:.8rem;color:var(--teal);margin-top:2px}
-.result-card{border-radius:20px;padding:28px;text-align:center;margin-bottom:16px}
-.result-actuar{background:linear-gradient(135deg,#ef4444,#f97316);color:#fff}
-.result-ajustar{background:linear-gradient(135deg,#f59e0b,#eab308);color:#fff}
-.result-reconocimiento{background:linear-gradient(135deg,var(--teal),var(--teal-light));color:#fff}
-.result-soltar{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff}
-.result-card h1{font-size:1.8rem;font-weight:800;margin-bottom:8px}
-.result-card p{font-size:1rem;opacity:.95;line-height:1.5}
-.summary-box{background:rgba(255,255,255,.8);border-radius:16px;padding:16px;margin-bottom:12px;border:2px solid var(--mint-mid)}
-.summary-box .row{font-size:.85rem;padding:4px 0;border-bottom:1px solid var(--mint);color:var(--teal-dark)}
-.summary-box .row:last-child{border:none}
-.summary-box .row strong{color:var(--teal-dark)}
-.actions-box{background:var(--mint-soft);border-radius:14px;padding:16px;margin-bottom:16px;border:2px solid var(--mint-mid)}
-.actions-box p{font-size:.85rem;font-weight:700;color:var(--teal-dark);margin-bottom:10px}
-.actions-box input{width:100%;padding:10px 12px;border:2px solid var(--mint-mid);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.88rem;margin-bottom:8px;outline:none;background:#fff;color:var(--teal-dark)}
-.actions-box input:focus{border-color:var(--teal)}
-
-.progress-bar-wrap{background:var(--mint-mid);border-radius:999px;height:4px;margin-bottom:8px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--teal-dark),var(--teal-light));border-radius:999px;transition:width .5s}
+.dot.done{background:var(--teal)}.dot.active{background:var(--teal-light);transform:scale(1.3)}
+.pbar{background:var(--mint-mid);border-radius:999px;height:4px;margin-bottom:8px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--teal-dark),var(--teal-light));border-radius:999px;transition:width .5s}
+/* BUTTONS */
+.btn{border:none;border-radius:12px;padding:14px 18px;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:transform .1s,filter .1s}
+.btn:active{transform:scale(.97);filter:brightness(.92)}
+.bpri{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff}
+.bsec{background:rgba(255,255,255,.82);color:var(--teal-dark);border:2px solid var(--mint-mid)}
+.bful{width:100%}
+.brow{display:flex;gap:10px}.brow .btn{flex:1}
+/* DONE */
+.done{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:20px;padding:28px;text-align:center;margin-bottom:18px}
+.done .big{font-size:3rem;margin-bottom:8px}
+.done h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
+.done p{font-size:.88rem;opacity:.9}
+/* EMOTION GRID */
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.etile{border:none;border-radius:18px;padding:18px 12px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:center;transition:transform .1s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.etile:active{transform:scale(.96)}
+.etile .be{font-size:2.2rem}
+.etile .el{font-size:.85rem;font-weight:700;color:rgba(0,0,0,.65)}
+/* EMOTION DETAIL */
+.ecard{background:rgba(255,255,255,.92);border-radius:20px;padding:22px;margin-bottom:14px;box-shadow:0 4px 20px rgba(38,166,154,.1)}
+.ehead{text-align:center;margin-bottom:18px}
+.ebig{font-size:3.5rem;display:block;margin-bottom:6px}
+.ename{font-size:1.4rem;font-weight:800;color:var(--teal-dark)}
+.irow{background:var(--mint-soft);border-radius:12px;padding:13px;margin-bottom:9px;border:2px solid var(--mint-mid)}
+.irow.hi{border-color:var(--teal)}
+.ilbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin-bottom:4px}
+.ival{font-size:.92rem;font-weight:700;color:var(--teal-dark)}
+.isub{font-size:.76rem;color:var(--teal);margin-top:3px;line-height:1.3}
+/* FIND EMOTION */
+.qcard{background:rgba(255,255,255,.88);border-radius:20px;padding:22px;margin-bottom:14px;border:2px solid var(--mint-mid)}
+.qcard h2{font-size:1.05rem;font-weight:700;color:var(--teal-dark);margin-bottom:14px;line-height:1.3}
+.qopts{display:flex;flex-direction:column;gap:8px}
+.qbtn{background:var(--mint-soft);border:2px solid var(--mint-mid);border-radius:12px;padding:14px 16px;text-align:left;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:600;color:var(--teal-dark);width:100%;line-height:1.3}
+.qbtn:active{border-color:var(--teal);background:var(--mint-mid)}
+/* MEDITATIONS */
+.mlist{display:flex;flex-direction:column;gap:10px}
+.mitem{background:rgba(255,255,255,.82);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;border:2px solid var(--mint-mid);width:100%;text-align:left;transition:transform .1s}
+.mitem:active{transform:scale(.98)}
+.mico{font-size:2rem;flex-shrink:0}
+.minfo h3{font-size:.95rem;font-weight:700;color:var(--teal-dark)}
+.minfo p{font-size:.78rem;color:var(--teal);margin-top:2px}
+.sprow{display:flex;gap:8px;margin-bottom:18px}
+.spbtn{flex:1;padding:10px;border:2px solid var(--mint-mid);border-radius:10px;background:rgba(255,255,255,.7);font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--teal)}
+.spbtn.active{border-color:var(--teal);background:var(--teal);color:#fff}
 </style>
 </head>
 <body>
 
 <!-- HOME -->
 <div id="v-home" class="screen active">
-  <div class="max-w">
-    <div class="home-header">
-      <h1>Botiquín Emocional</h1>
-      <p>Herramientas para momentos difíciles</p>
-    </div>
-    <!-- Quokka mascot sitting calm -->
-    <div class="home-quokka">
-      <svg viewBox="0 0 110 130" width="110" height="128" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="28" cy="22" rx="13" ry="16" fill="#33b5a7"/>
-        <ellipse cx="82" cy="22" rx="13" ry="16" fill="#33b5a7"/>
-        <ellipse cx="28" cy="23" rx="7" ry="9" fill="#5dcfc2"/>
-        <ellipse cx="82" cy="23" rx="7" ry="9" fill="#5dcfc2"/>
-        <ellipse cx="55" cy="93" rx="34" ry="36" fill="#33b5a7"/>
-        <ellipse cx="55" cy="97" rx="20" ry="25" fill="#5dcfc2" opacity=".65"/>
-        <circle cx="55" cy="50" r="30" fill="#33b5a7"/>
-        <circle cx="43" cy="47" r="6" fill="#0f4d47"/><circle cx="45" cy="45" r="2.5" fill="white"/>
-        <circle cx="67" cy="47" r="6" fill="#0f4d47"/><circle cx="69" cy="45" r="2.5" fill="white"/>
-        <ellipse cx="55" cy="58" rx="5" ry="4" fill="#0f4d47"/>
-        <path d="M46 65 Q55 74 64 65" stroke="#0f4d47" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <ellipse cx="23" cy="96" rx="11" ry="8" fill="#33b5a7" transform="rotate(-20 23 96)"/>
-        <ellipse cx="87" cy="96" rx="11" ry="8" fill="#33b5a7" transform="rotate(20 87 96)"/>
-        <ellipse cx="42" cy="126" rx="12" ry="6" fill="#2da098"/>
-        <ellipse cx="68" cy="126" rx="12" ry="6" fill="#2da098"/>
-      </svg>
-    </div>
-    <div class="nav-cards">
-      <button class="nav-card c-rescue" onclick="rescueRandom()">
-        <span class="nic">🚨</span>
-        <div class="info">
-          <span>RESCATE EMOCIONAL</span>
-          <span class="sub">Técnica aleatoria para salir del bucle</span>
-        </div>
-      </button>
-      <button class="nav-card c-meditations" onclick="go('meditations')">
-        <span class="nic">🧘</span>
-        <div class="info">
-          <span>MEDITACIONES</span>
-          <span class="sub">Guiadas con pasos y tiempo</span>
-        </div>
-      </button>
-      <button class="nav-card c-tasks" onclick="go('tasks')">
-        <span class="nic">📋</span>
-        <div class="info">
-          <span>ORGANIZAR TAREAS</span>
-          <span class="sub">Matriz de Eisenhower</span>
-        </div>
-      </button>
-      <button class="nav-card c-emotion" onclick="go('emotion');S.emoStep=0;S.emoData={problem:'',emotion:'',intensity:5,control:''};renderEmotion()">
-        <span class="nic">💭</span>
-        <div class="info">
-          <span>PROCESAR EMOCIÓN</span>
-          <span class="sub">4 pasos para entender qué sientes</span>
-        </div>
-      </button>
-    </div>
+<div class="mw">
+  <div class="home-hdr">
+    <h1>Botiquín Emocional 🧰</h1>
+    <p>¿Qué necesitas ahora mismo?</p>
   </div>
+  <div class="home-q">
+    <svg viewBox="0 0 110 130" width="96" height="112" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="28" cy="22" rx="13" ry="16" fill="#33b5a7"/><ellipse cx="82" cy="22" rx="13" ry="16" fill="#33b5a7"/>
+      <ellipse cx="28" cy="23" rx="7" ry="9" fill="#5dcfc2"/><ellipse cx="82" cy="23" rx="7" ry="9" fill="#5dcfc2"/>
+      <ellipse cx="55" cy="93" rx="34" ry="36" fill="#33b5a7"/>
+      <ellipse cx="55" cy="97" rx="20" ry="25" fill="#5dcfc2" opacity=".65"/>
+      <circle cx="55" cy="50" r="30" fill="#33b5a7"/>
+      <circle cx="43" cy="47" r="6" fill="#0f4d47"/><circle cx="45" cy="45" r="2.5" fill="white"/>
+      <circle cx="67" cy="47" r="6" fill="#0f4d47"/><circle cx="69" cy="45" r="2.5" fill="white"/>
+      <ellipse cx="55" cy="58" rx="5" ry="4" fill="#0f4d47"/>
+      <path d="M46 65 Q55 74 64 65" stroke="#0f4d47" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <ellipse cx="23" cy="96" rx="11" ry="8" fill="#33b5a7" transform="rotate(-20 23 96)"/>
+      <ellipse cx="87" cy="96" rx="11" ry="8" fill="#33b5a7" transform="rotate(20 87 96)"/>
+      <ellipse cx="42" cy="126" rx="12" ry="6" fill="#2da098"/><ellipse cx="68" cy="126" rx="12" ry="6" fill="#2da098"/>
+    </svg>
+  </div>
+  <button class="acard c-sos" onclick="go('techniques')">
+    <span class="aicon">🚨</span>
+    <div class="ainfo"><span class="atitle">NECESITO AYUDA YA</span><span class="asub">Técnicas para salir del bucle ahora mismo</span></div>
+  </button>
+  <button class="acard c-know" onclick="go('emotions')">
+    <span class="aicon">💭</span>
+    <div class="ainfo"><span class="atitle">SÉ QUÉ SIENTO</span><span class="asub">Entiende tu emoción y qué puedes hacer</span></div>
+  </button>
+  <button class="acard c-find" onclick="go('find-emotion')">
+    <span class="aicon">❓</span>
+    <div class="ainfo"><span class="atitle">NO SÉ QUÉ SIENTO</span><span class="asub">Ayúdame a identificar lo que me pasa</span></div>
+  </button>
+  <button class="acard c-calm" onclick="go('meditations')">
+    <span class="aicon">🧘</span>
+    <div class="ainfo"><span class="atitle">MEDITAR</span><span class="asub">Meditaciones guiadas para calmarme</span></div>
+  </button>
+</div>
 </div>
 
-<!-- RESCUE DETAIL -->
-<div id="v-rescue" class="screen">
-  <div class="max-w">
-    <div class="topbar">
-      <button class="back-btn" onclick="stopTimer();go('home')">🏠</button>
-      <h1>Rescate Emocional</h1>
-    </div>
-    <div id="rescue-content"></div>
+<!-- TECHNIQUES LIST -->
+<div id="v-techniques" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1>Técnicas de Rescate</h1>
   </div>
+  <div id="tech-list"></div>
+</div>
+</div>
+
+<!-- TECHNIQUE DETAIL -->
+<div id="v-technique-detail" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" id="tec-back">←</button>
+    <h1 id="tec-title">Técnica</h1>
+  </div>
+  <div id="tec-content"></div>
+</div>
+</div>
+
+<!-- EMOTIONS GRID -->
+<div id="v-emotions" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1>¿Qué sientes?</h1>
+  </div>
+  <p style="font-size:.83rem;color:var(--teal);margin-bottom:14px">Toca lo que más se acerca a lo que sientes ahora mismo</p>
+  <div class="egrid" id="emo-grid"></div>
+</div>
+</div>
+
+<!-- EMOTION DETAIL -->
+<div id="v-emotion-detail" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" id="emo-back">←</button>
+    <h1>Tu emoción</h1>
+  </div>
+  <div id="emo-detail"></div>
+</div>
+</div>
+
+<!-- FIND EMOTION -->
+<div id="v-find-emotion" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1>Vamos a descubrirlo</h1>
+  </div>
+  <div id="find-content"></div>
+</div>
 </div>
 
 <!-- MEDITATIONS LIST -->
 <div id="v-meditations" class="screen">
-  <div class="max-w">
-    <div class="topbar">
-      <button class="back-btn" onclick="go('home')">←</button>
-      <h1>Meditaciones</h1>
-    </div>
-    <div class="med-list" id="med-list"></div>
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1>Meditaciones</h1>
   </div>
+  <div class="mlist" id="med-list"></div>
+</div>
 </div>
 
 <!-- MEDITATION DETAIL -->
 <div id="v-meditation-detail" class="screen">
-  <div class="max-w">
-    <div class="topbar">
-      <button class="back-btn" onclick="stopTimer();go('meditations')">←</button>
-      <h1 id="med-title"></h1>
-    </div>
-    <div class="speed-row">
-      <button class="speed-btn" id="sp-lento" onclick="setSpeed('lento')">Lento</button>
-      <button class="speed-btn active" id="sp-normal" onclick="setSpeed('normal')">Normal</button>
-      <button class="speed-btn" id="sp-rapido" onclick="setSpeed('rapido')">Rápido</button>
-    </div>
-    <div id="med-content"></div>
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="stopTimer();go('meditations')">←</button>
+    <h1 id="med-title"></h1>
   </div>
+  <div class="sprow">
+    <button class="spbtn" id="sp-lento" onclick="setSpeed('lento')">Lento</button>
+    <button class="spbtn active" id="sp-normal" onclick="setSpeed('normal')">Normal</button>
+    <button class="spbtn" id="sp-rapido" onclick="setSpeed('rapido')">Rápido</button>
+  </div>
+  <div id="med-content"></div>
 </div>
-
-<!-- TASKS (Eisenhower) -->
-<div id="v-tasks" class="screen">
-  <div class="max-w">
-    <div class="topbar">
-      <button class="back-btn" onclick="go('home')">←</button>
-      <h1>Organizar Tareas</h1>
-    </div>
-    <div id="tasks-content"></div>
-  </div>
-</div>
-
-<!-- EMOTION MATRIX -->
-<div id="v-emotion" class="screen">
-  <div class="max-w">
-    <div class="topbar">
-      <button class="back-btn" id="emo-back-btn">←</button>
-      <h1 id="emo-title">Procesar Emoción</h1>
-    </div>
-    <div id="emotion-content"></div>
-  </div>
 </div>
 
 <script>
 const RESCUES = [
-  { id:1, name:"5-4-3-2-1", icon:"👁️", color:"#3b82f6", category:"Anclaje",
-    desc:"Anclaje sensorial para salir del piloto automático",
+  { id:3, name:"Agua fría (crisis)", icon:"🧊", color:"#0ea5e9",
+    when:"Cuando la emoción es insoportable — crisis total",
+    desc:"Cambia tu química corporal en segundos",
     steps:[
-      {text:"5 VES",instruction:"Nombra 5 cosas que puedes ver ahora mismo",time:20},
-      {text:"4 TOCAS",instruction:"Siente 4 texturas distintas con tus manos",time:20},
-      {text:"3 ESCUCHAS",instruction:"Identifica 3 sonidos a tu alrededor",time:20},
-      {text:"2 HUELES",instruction:"Encuentra 2 aromas en el ambiente",time:15},
-      {text:"1 SABOREAS",instruction:"Detecta el sabor en tu boca ahora mismo",time:10}
+      {text:"AGUA FRÍA",instruction:"Pon agua fría en tu cara o muñecas durante 30 segundos. Activa el reflejo de inmersión",time:30},
+      {text:"MUÉVETE",instruction:"Corre en el sitio o haz jumping jacks con toda tu energía",time:60},
+      {text:"PARA",instruction:"Para. Respira. Siente cómo tu cuerpo empieza a calmarse",time:30},
+      {text:"RELAJA",instruction:"Relaja hombros, mandíbula, manos. Músculo a músculo",time:30}
     ]},
-  { id:2, name:"Respiración 4-7-8", icon:"🌬️", color:"#10b981", category:"Respiración",
-    desc:"Activa el nervio vago para calmar el sistema nervioso",
+  { id:2, name:"Respiración 4-7-8", icon:"🌬️", color:"#10b981",
+    when:"Cuando la ansiedad o el pánico se activan",
+    desc:"Calma el sistema nervioso en minutos",
     steps:[
-      {text:"INHALA",instruction:"Inhala lentamente por la nariz contando hasta 4",time:4},
-      {text:"MANTÉN",instruction:"Retén el aire suavemente — cuenta hasta 7",time:7},
-      {text:"EXHALA",instruction:"Exhala completamente por la boca en 8 tiempos",time:8},
-      {text:"INHALA",instruction:"Segunda ronda — inhala por la nariz",time:4},
-      {text:"MANTÉN",instruction:"Retén el aire suavemente",time:7},
-      {text:"EXHALA",instruction:"Exhala completamente, suelta toda la tensión",time:8}
+      {text:"INHALA 4",instruction:"Inhala lentamente por la nariz contando hasta 4",time:4},
+      {text:"MANTÉN 7",instruction:"Retén el aire suavemente, cuenta hasta 7",time:7},
+      {text:"EXHALA 8",instruction:"Exhala completamente por la boca en 8 tiempos. Suelta todo",time:8},
+      {text:"INHALA 4",instruction:"Segunda ronda — inhala de nuevo por la nariz",time:4},
+      {text:"MANTÉN 7",instruction:"Retén suavemente",time:7},
+      {text:"EXHALA 8",instruction:"Exhala todo. Nota cómo te vas calmando",time:8}
     ]},
-  { id:3, name:"TIPP", icon:"🧊", color:"#0ea5e9", category:"Crisis",
-    desc:"Cambia tu química corporal cuando la emoción es insoportable",
+  { id:1, name:"5-4-3-2-1", icon:"👁️", color:"#3b82f6",
+    when:"Cuando tu mente no para de girar o estás disociada",
+    desc:"Ancla los sentidos al momento presente",
     steps:[
-      {text:"TEMPERATURA",instruction:"Agua fría en cara o muñecas durante 30 segundos",time:30},
-      {text:"INTENSIDAD",instruction:"Corre en el sitio o haz jumping jacks con toda tu energía",time:60},
-      {text:"PAUSA",instruction:"Para y respira. Siente cómo tu cuerpo empieza a calmarse",time:30},
-      {text:"RELAJACIÓN",instruction:"Relaja músculo a músculo: hombros, mandíbula, manos",time:30}
+      {text:"5 VES",instruction:"Nombra 5 cosas que puedes ver ahora mismo a tu alrededor",time:25},
+      {text:"4 TOCAS",instruction:"Siente 4 texturas distintas con tus manos. ¿Cómo son?",time:25},
+      {text:"3 ESCUCHAS",instruction:"Identifica 3 sonidos diferentes a tu alrededor",time:20},
+      {text:"2 HUELES",instruction:"Encuentra 2 aromas en el ambiente donde estás",time:15},
+      {text:"1 SABOREAS",instruction:"Detecta el sabor que hay en tu boca ahora mismo",time:10}
     ]},
-  { id:4, name:"Movimiento", icon:"🏃", color:"#f59e0b", category:"Energía",
-    desc:"Descarga el cortisol con movimiento intencional",
+  { id:4, name:"Movimiento", icon:"🏃", color:"#f59e0b",
+    when:"Cuando sientes tensión, rabia o frustración acumulada",
+    desc:"Descarga el cortisol con movimiento",
     steps:[
-      {text:"SACUDE",instruction:"Sacude brazos y piernas durante 30 segundos",time:30},
-      {text:"SALTA",instruction:"10 jumping jacks. Cuenta en voz alta",time:20},
-      {text:"RESPIRA",instruction:"Manos en rodillas, respira profundo 3 veces",time:15},
+      {text:"SACUDE",instruction:"Sacude brazos y piernas durante 30 segundos. Déjalo caer todo",time:30},
+      {text:"SALTA",instruction:"10 jumping jacks. Cuenta en voz alta mientras los haces",time:20},
+      {text:"RESPIRA",instruction:"Manos en rodillas, inclinada. Respira profundo 3 veces",time:15},
       {text:"OBSERVA",instruction:"¿Cómo está tu cuerpo ahora? Nótalo sin juzgar",time:15}
     ]},
-  { id:5, name:"Escritura libre", icon:"✍️", color:"#8b5cf6", category:"Procesamiento",
-    desc:"Saca el ruido mental al papel sin filtros",
+  { id:7, name:"Defusión ACT", icon:"🧠", color:"#6366f1",
+    when:"Cuando un pensamiento te engancha y no puedes parar",
+    desc:"Crea distancia del pensamiento sin luchar",
     steps:[
-      {text:"PREPARA",instruction:"Coge papel o abre notas. Sin filtros, sin borrar",time:10},
-      {text:"ESCRIBE",instruction:"Escribe todo lo que sientes sin parar. Que fluya",time:120},
-      {text:"LEE",instruction:"Lee lo que escribiste una vez. Sin juzgar",time:30},
-      {text:"SUELTA",instruction:"Cierra el papel. Ya salió de ti — eso es suficiente",time:10}
+      {text:"IDENTIFICA",instruction:"¿Cuál es el pensamiento que más te engancha ahora? Solo uno",time:15},
+      {text:"NÓMBRALO",instruction:"Di en voz alta: 'Estoy teniendo el pensamiento de que...' y complétalo",time:15},
+      {text:"AGRADECE",instruction:"Di a tu mente: 'Gracias por el aviso. No necesito actuar ahora'",time:15},
+      {text:"VUELVE",instruction:"Pon atención en algo físico: la silla, tus pies, el aire que entra",time:15}
     ]},
-  { id:6, name:"Auto-compasión", icon:"🤝", color:"#ec4899", category:"Autocompasión",
+  { id:6, name:"Auto-compasión", icon:"🤍", color:"#ec4899",
+    when:"Cuando te castigas, sientes culpa o vergüenza",
     desc:"Trátate como tratarías a alguien que quieres",
     steps:[
-      {text:"RECONOCE",instruction:"Pon una mano en el corazón. Esto es dolor, y es real",time:15},
-      {text:"HUMANIDAD",instruction:"Recuerda: todos sufrimos a veces. No estás solo/a",time:15},
-      {text:"AMABILIDAD",instruction:"Di en voz baja: 'Que esté bien. Que encuentre paz'",time:20},
-      {text:"RESPIRA",instruction:"Siente el calor de tu mano en el pecho. Quédate aquí",time:20}
+      {text:"RECONOCE",instruction:"Pon una mano en el corazón. Esto es dolor, y es real. No lo minimices",time:15},
+      {text:"HUMANIDAD",instruction:"Recuerda: todas las personas sufrimos a veces. No estás sola",time:15},
+      {text:"AMABILIDAD",instruction:"Di en voz baja: 'Que esté bien. Que me trate con cariño'",time:20},
+      {text:"QUÉDATE",instruction:"Siente el calor de tu mano en el pecho. Respira. Aquí está el consuelo",time:20}
     ]},
-  { id:7, name:"Defusión ACT", icon:"🧠", color:"#6366f1", category:"Cognitivo",
-    desc:"Crea distancia del pensamiento que te engancha",
+  { id:5, name:"Escritura libre", icon:"✍️", color:"#8b5cf6",
+    when:"Cuando necesitas sacar lo que tienes dentro",
+    desc:"Vacía la mente sin filtros",
     steps:[
-      {text:"NOTA",instruction:"¿Cuál es el pensamiento que más te engancha ahora?",time:15},
-      {text:"NOMBRA",instruction:"Di: 'Estoy teniendo el pensamiento de que...' (en voz alta)",time:15},
-      {text:"GRACIAS",instruction:"Di a tu mente: 'Gracias por el aviso. No necesito actuar ahora'",time:15},
-      {text:"VUELVE",instruction:"Pon atención en algo físico: la silla, tus pies, el aire",time:15}
+      {text:"PREPARA",instruction:"Coge papel o notas. Sin filtros — lo que salga está bien",time:10},
+      {text:"ESCRIBE",instruction:"Escribe todo lo que sientes sin parar, sin borrar. Que fluya",time:120},
+      {text:"LEE",instruction:"Lee lo que escribiste una vez. Sin juzgar",time:30},
+      {text:"SUELTA",instruction:"Cierra o guarda. Ya salió de ti. Eso es suficiente",time:10}
     ]},
-  { id:8, name:"Conexión social", icon:"📞", color:"#14b8a6", category:"Conexión",
-    desc:"Rompe el aislamiento con un gesto pequeño",
+  { id:8, name:"Conectar", icon:"📞", color:"#14b8a6",
+    when:"Cuando te sientes sola o aislada",
+    desc:"Un gesto pequeño rompe el aislamiento",
     steps:[
-      {text:"ELIGE",instruction:"Piensa en una persona con la que te sientas seguro/a",time:10},
-      {text:"CONTACTA",instruction:"Mándale un audio, un mensaje o llámala",time:60},
-      {text:"RECIBE",instruction:"Si no puede, está bien. Ya hiciste el gesto — eso cuenta",time:15},
-      {text:"CIERRA",instruction:"Has roto el aislamiento. Eso es valentía",time:10}
+      {text:"ELIGE",instruction:"Piensa en una persona con la que te sientas segura. Solo una",time:10},
+      {text:"CONTACTA",instruction:"Mándale un audio, un mensaje o llámala ahora mismo",time:60},
+      {text:"RECIBE",instruction:"Si no puede responder, está bien. Ya hiciste el gesto — eso cuenta",time:15},
+      {text:"RECONOCE",instruction:"Has roto el aislamiento. Eso es valentía",time:10}
     ]}
 ];
 
+const TEC_GROUPS = [
+  {label:"🔥 Para cuando estás en crisis total", ids:[3]},
+  {label:"🫁 Para calmar la ansiedad o el pánico", ids:[2]},
+  {label:"👁️ Para salir del bucle mental", ids:[1]},
+  {label:"💪 Para descargar rabia o frustración", ids:[4]},
+  {label:"🧠 Para el pensamiento que no para", ids:[7]},
+  {label:"🤍 Para la culpa o la vergüenza", ids:[6]},
+  {label:"✍️ Para soltar lo que pesa", ids:[5]},
+  {label:"🫂 Para cuando te sientes sola", ids:[8]}
+];
+
+const EMOTIONS = [
+  {id:'ansiedad', emoji:'😰', label:'Ansiedad', color:'#fef3c7',
+    impulse:'Evitar o escapar de lo que da miedo',
+    need:'Sentirte segura',
+    helps:'Respiración lenta', helpsDesc:'Calma el sistema nervioso activado', tecId:2},
+  {id:'rabia', emoji:'😠', label:'Rabia', color:'#fee2e2',
+    impulse:'Atacar, gritar o explotar',
+    need:'Poner un límite claro',
+    helps:'Decirlo con claridad', helpsDesc:'Primero descarga con movimiento, luego expresa', tecId:4},
+  {id:'tristeza', emoji:'😢', label:'Tristeza', color:'#dbeafe',
+    impulse:'Encerrarte y no ver a nadie',
+    need:'Consuelo y compañía',
+    helps:'Contactar a alguien', helpsDesc:'Un mensaje pequeño rompe el aislamiento', tecId:8},
+  {id:'celos', emoji:'💚', label:'Celos', color:'#d1fae5',
+    impulse:'Aferrarte, controlar o revisar',
+    need:'Sentirte segura en la relación',
+    helps:'Pedir lo que necesitas de forma directa', helpsDesc:'Escribe primero lo que sientes', tecId:5},
+  {id:'culpa', emoji:'😔', label:'Culpa', color:'#ede9fe',
+    impulse:'Rumiar y castigarte',
+    need:'Reparar lo que ocurrió',
+    helps:'Disculparte o hacer algo concreto', helpsDesc:'La auto-compasión te ayuda a actuar sin castigarte', tecId:6},
+  {id:'vergüenza', emoji:'😳', label:'Vergüenza', color:'#fce7f3',
+    impulse:'Esconderte o desaparecer',
+    need:'Compasión hacia ti misma',
+    helps:'Mano en el corazón', helpsDesc:'La auto-compasión es el antídoto de la vergüenza', tecId:6},
+  {id:'agobio', emoji:'😵', label:'Agobio', color:'#ffedd5',
+    impulse:'Quedarte paralizada',
+    need:'Reducir la carga',
+    helps:'Un solo paso pequeño ahora', helpsDesc:'El anclaje sensorial te saca del bucle', tecId:1},
+  {id:'soledad', emoji:'🫂', label:'Soledad', color:'#e0f2fe',
+    impulse:'Aislarte todavía más',
+    need:'Conexión real',
+    helps:'Escribir a alguien ahora mismo', helpsDesc:'Aunque sea un mensaje corto', tecId:8},
+  {id:'frustración', emoji:'😤', label:'Frustración', color:'#ffedd5',
+    impulse:'Rendirte o estallar',
+    need:'Flexibilidad y un nuevo enfoque',
+    helps:'Moverte y luego replanificar', helpsDesc:'El movimiento descarga y aclara la mente', tecId:4},
+  {id:'entumecimiento', emoji:'😑', label:'Entumecimiento', color:'#f1f5f9',
+    impulse:'Desconectarte del todo',
+    need:'Volver a sentirte segura',
+    helps:'Movimiento suave', helpsDesc:'El cuerpo en movimiento te trae de vuelta', tecId:4}
+];
+
+const BODY_OPTIONS = [
+  {label:'⚡ Tensión, agitación, corazón acelerado', ids:['ansiedad','rabia','frustración']},
+  {label:'🪨 Pesadez, cansancio, querer esconderte', ids:['tristeza','culpa','vergüenza']},
+  {label:'🧊 Bloqueada, paralizada, no puedo pensar', ids:['agobio','entumecimiento']},
+  {label:'🕳️ Vacío, distancia, como si nada importara', ids:['soledad','entumecimiento','tristeza']}
+];
+
 const MEDITATIONS = [
-  { id:1, name:"Respiración consciente", duration:"5 min", icon:"🌿",
+  {id:1, name:"Respiración consciente", duration:"5 min", icon:"🌿",
     steps:[
-      {text:"Ponte cómodo/a",instruction:"Siéntate o túmbate. Cierra los ojos si quieres",time:15},
-      {text:"Respira natural",instruction:"Solo observa tu respiración sin cambiarla",time:20},
-      {text:"Inhala...",instruction:"Nota cómo el aire entra. Siente el pecho o el abdomen",time:20},
-      {text:"Exhala...",instruction:"Nota cómo el aire sale. Relájate un poco más",time:20},
-      {text:"Pensamientos",instruction:"Si aparece un pensamiento, salúdalo y vuelve al aire",time:25},
+      {text:"Ponte cómoda",instruction:"Siéntate o túmbate. Cierra los ojos si quieres",time:15},
+      {text:"Respira natural",instruction:"Solo observa tu respiración sin cambiarla. No hay que hacer nada",time:20},
+      {text:"Inhala...",instruction:"Nota cómo el aire entra. Siente el pecho o el abdomen subir",time:20},
+      {text:"Exhala...",instruction:"Nota cómo el aire sale. Relájate un poco más en cada exhalación",time:20},
+      {text:"Pensamientos",instruction:"Si aparece un pensamiento, salúdalo sin agarrarlo y vuelve al aire",time:25},
       {text:"Cierre",instruction:"Abre los ojos suavemente. Lleva esta calma contigo",time:15}
     ]},
-  { id:2, name:"Escaneo corporal", duration:"8 min", icon:"🧘",
+  {id:2, name:"Escaneo corporal", duration:"8 min", icon:"🧘",
     steps:[
-      {text:"Empieza",instruction:"Túmbate boca arriba. Cierra los ojos",time:15},
+      {text:"Empieza",instruction:"Túmbate boca arriba. Cierra los ojos. Sin prisa",time:15},
       {text:"Pies",instruction:"Lleva la atención a tus pies. Siente su peso y temperatura",time:30},
       {text:"Piernas",instruction:"Sube por tus piernas. Nota cualquier tensión o calor",time:30},
       {text:"Abdomen",instruction:"Siente tu vientre subir y bajar con cada respiración",time:30},
       {text:"Pecho y brazos",instruction:"Nota el corazón. Relaja los hombros y los brazos",time:30},
-      {text:"Cara",instruction:"Relaja la mandíbula, la frente, los ojos",time:25},
+      {text:"Cara",instruction:"Relaja la mandíbula, la frente, los ojos. Todo suave",time:25},
       {text:"Todo el cuerpo",instruction:"Siente el cuerpo completo. Estás aquí, ahora",time:25},
-      {text:"Regresa",instruction:"Mueve los dedos. Abre los ojos. Bienvenido/a de vuelta",time:20}
+      {text:"Regresa",instruction:"Mueve los dedos. Abre los ojos. Bienvenida de vuelta",time:20}
     ]},
-  { id:3, name:"Amabilidad Metta", duration:"6 min", icon:"💜",
+  {id:3, name:"Amabilidad hacia ti", duration:"6 min", icon:"💜",
     steps:[
-      {text:"Siéntate",instruction:"Cómodo/a, espalda suelta. Ojos cerrados",time:15},
-      {text:"Para ti",instruction:"Mano en el corazón. 'Que esté bien. Que sea feliz'",time:25},
-      {text:"Alguien querido",instruction:"Piensa en alguien que amas. Envíale esa calidez",time:25},
-      {text:"Alguien neutral",instruction:"Alguien que no conoces. Envíale también calidez",time:25},
-      {text:"Alguien difícil",instruction:"Alguien difícil. 'Que esté bien' — solo inténtalo",time:25},
-      {text:"Todos los seres",instruction:"Expande a todos: 'Que todos estemos bien'",time:25},
-      {text:"Cierre",instruction:"Vuelve a ti. Abre los ojos suavemente",time:15}
+      {text:"Siéntate",instruction:"Cómoda, espalda suelta. Ojos cerrados",time:15},
+      {text:"Para ti",instruction:"Mano en el corazón. Di: 'Que esté bien. Que sea feliz. Que esté en paz'",time:25},
+      {text:"Alguien querido",instruction:"Piensa en alguien que amas. Envíale esa misma calidez",time:25},
+      {text:"Alguien difícil",instruction:"Alguien difícil. Solo intenta: 'Que esté bien'. No tienes que sentirlo perfectamente",time:25},
+      {text:"Todos",instruction:"Expande a todos: 'Que todos estemos bien'",time:25},
+      {text:"Cierre",instruction:"Vuelve a ti. Abre los ojos suavemente. Gracias",time:15}
     ]},
-  { id:4, name:"Vipassana express", duration:"10 min", icon:"🌊",
+  {id:4, name:"Observar sin agarrar", duration:"10 min", icon:"🌊",
     steps:[
-      {text:"Postura",instruction:"Siéntate derecho/a pero sin tensión. Cierra los ojos",time:15},
+      {text:"Postura",instruction:"Siéntate derecha pero sin tensión. Cierra los ojos",time:15},
       {text:"Ancla",instruction:"Lleva la atención a tus pies en el suelo",time:30},
-      {text:"Observa",instruction:"Nota sensaciones que surgen sin agarrarte a ellas",time:60},
-      {text:"Sin juicio",instruction:"Agradable, desagradable, neutro — solo nota",time:60},
-      {text:"Impermanencia",instruction:"Todo cambia. Cada sensación surge y pasa",time:60},
-      {text:"Ecuanimidad",instruction:"No hay nada que arreglar. Solo observar",time:60},
+      {text:"Observa",instruction:"Nota sensaciones que surgen. No las sigas, solo observa",time:60},
+      {text:"Sin juicio",instruction:"Agradable, desagradable, neutro — solo nota. No hay nada que arreglar",time:60},
+      {text:"Todo pasa",instruction:"Cada sensación surge y se va por sí sola",time:60},
       {text:"Cierre",instruction:"Poco a poco vuelve. Abre los ojos. Gracias por este tiempo",time:20}
     ]}
 ];
 
-const QUAD_INFO = {
-  q1:{label:"URGENTE + IMPORTANTE",sub:"Haz esto ahora",emoji:"🔥",cls:"eis-q1"},
-  q2:{label:"IMPORTANTE, NO URGENTE",sub:"Planifica cuándo",emoji:"📅",cls:"eis-q2"},
-  q3:{label:"URGENTE, NO IMPORTANTE",sub:"Delega si puedes",emoji:"⚡",cls:"eis-q3"},
-  q4:{label:"NI URGENTE NI IMPORTANTE",sub:"Elimina o ignora",emoji:"🗑️",cls:"eis-q4"}
-};
-
-const EMO_COLORS = {
-  tristeza:{bg:"#dbeafe",emoji:"😢"},
-  ansiedad:{bg:"#fef9c3",emoji:"😰"},
-  enojo:{bg:"#fee2e2",emoji:"😠"},
-  culpa:{bg:"#f3e8ff",emoji:"😔"},
-  vacio:{bg:"#f3f4f6",emoji:"😶"},
-  confusion:{bg:"#ffedd5",emoji:"😕"}
-};
-
 const SPEED = {lento:1.5, normal:1, rapido:0.7};
-
 const S = {
   view:'home',
-  rescueCurrent:null, rescueUsed:[], rescueStep:0, rescuePlaying:false, rescueTimer:0, rescueDone:false,
-  medCurrent:null, medStep:0, medPlaying:false, medTimer:0, medSpeed:'normal', medDone:false,
-  eisTasks:{q1:[],q2:[],q3:[],q4:[]}, eisSel:'q1', eisNewTask:'',
-  emoStep:0, emoData:{problem:'',emotion:'',intensity:5,control:''}
+  tecCurrent:null, tecStep:0, tecPlaying:false, tecTimer:0, tecDone:false, tecSource:'techniques',
+  emoSource:'emotions', findStep:0, findMatches:[],
+  medCurrent:null, medStep:0, medPlaying:false, medTimer:0, medSpeed:'normal', medDone:false
 };
-
 let timerInterval = null;
 
-function beep(freq=600, dur=0.2) {
-  try {
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const o = ctx.createOscillator(); const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.frequency.value = freq;
-    g.gain.setValueAtTime(0.3, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+dur);
-    o.start(); o.stop(ctx.currentTime+dur);
-  } catch(e) {}
-}
+function beep(f=600,d=0.2){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+function vibrate(ms=80){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
+function speak(t){try{if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=0.9;window.speechSynthesis.speak(u);}catch(e){}}
+function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}}
 
-function vibrate(ms=80) { try { if(navigator.vibrate) navigator.vibrate(ms); } catch(e) {} }
-
-function speak(text) {
-  try {
-    if(!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'es-ES'; u.rate = 0.9;
-    window.speechSynthesis.speak(u);
-  } catch(e) {}
-}
-
-function stopTimer() {
-  if(timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-  try { if(window.speechSynthesis) window.speechSynthesis.cancel(); } catch(e) {}
-}
-
-function go(view) {
+function go(view){
   stopTimer();
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('v-'+view).classList.add('active');
-  S.view = view;
+  S.view=view;
+  if(view==='techniques') renderTecList();
+  if(view==='emotions') renderEmoGrid();
+  if(view==='find-emotion'){S.findStep=0;S.findMatches=[];renderFind();}
   if(view==='meditations') renderMedList();
-  if(view==='tasks') renderTasks();
 }
 
-/* ===== RESCUE ===== */
-function rescueRandom() {
+/* ── TECHNIQUES ── */
+function renderTecList(){
+  document.getElementById('tech-list').innerHTML = TEC_GROUPS.map(g=>`
+    <div class="slabel">${g.label}</div>
+    <div class="tlist">
+    ${g.ids.map(id=>{const t=RESCUES.find(r=>r.id===id);return`
+      <button class="titem" onclick="startTec(${t.id},'techniques')">
+        <div class="tico" style="background:${t.color}22">${t.icon}</div>
+        <div class="tinfo"><h3>${t.name}</h3><p>${t.desc}</p></div>
+      </button>`;}).join('')}
+    </div>`).join('');
+}
+
+function startTec(id, source){
   beep(400); vibrate(50);
-  const available = RESCUES.filter(r => !S.rescueUsed.includes(r.id));
-  const pool = available.length ? available : RESCUES;
-  const tec = pool[Math.floor(Math.random()*pool.length)];
-  S.rescueUsed = [...S.rescueUsed, tec.id];
-  if(S.rescueUsed.length >= RESCUES.length) S.rescueUsed = [];
-  S.rescueCurrent = tec; S.rescueStep = 0;
-  S.rescuePlaying = false; S.rescueTimer = 0; S.rescueDone = false;
-  go('rescue');
-  renderRescue();
+  S.tecCurrent=RESCUES.find(r=>r.id===id);
+  S.tecStep=0; S.tecPlaying=false; S.tecTimer=0; S.tecDone=false; S.tecSource=source||'techniques';
+  document.getElementById('tec-title').textContent=S.tecCurrent.name;
+  document.getElementById('tec-back').onclick=()=>{stopTimer();go(S.tecSource);};
+  go('technique-detail');
+  renderTec();
 }
 
-function renderRescue() {
-  const tec = S.rescueCurrent;
-  if(!tec) return;
-  const el = document.getElementById('rescue-content');
-
-  if(S.rescueDone) {
-    el.innerHTML = `
-      <div class="done-card">
-        <div class="big">🎉</div>
-        <h2>¡Técnica completada!</h2>
-        <p>${tec.name}</p>
-      </div>
-      <p style="text-align:center;color:#718096;font-size:.9rem;margin-bottom:20px">¿Cómo te sientes ahora?</p>
-      <div class="btn-row">
-        <button class="btn btn-secondary" onclick="go('home')">🏠 Inicio</button>
-        <button class="btn btn-primary" onclick="rescueRandom()">Otra técnica</button>
+function renderTec(){
+  const tec=S.tecCurrent; if(!tec)return;
+  const el=document.getElementById('tec-content');
+  if(S.tecDone){
+    el.innerHTML=`<div class="done"><div class="big">🎉</div><h2>¡Lo conseguiste!</h2><p>${tec.name}</p></div>
+      <p style="text-align:center;color:var(--teal);font-size:.88rem;margin-bottom:18px">¿Cómo te sientes ahora?</p>
+      <div class="brow">
+        <button class="btn bsec" onclick="go('home')">🏠 Inicio</button>
+        <button class="btn bpri" onclick="go('techniques')">Otra técnica</button>
       </div>`;
     return;
   }
-
-  const step = tec.steps[S.rescueStep];
-  const pct = (S.rescueStep/tec.steps.length)*100;
-  const dots = tec.steps.map((_,i) =>
-    `<div class="dot ${i<S.rescueStep?'done':i===S.rescueStep?'active':''}"></div>`
-  ).join('');
-
-  el.innerHTML = `
-    <div class="tec-card">
-      <span class="tec-tag" style="background:${tec.color}">${tec.category}</span>
-      <h2>${tec.icon} ${tec.name}</h2>
-      <p class="tec-desc">${tec.desc}</p>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-      <div class="progress-dots">${dots}</div>
-      <div class="step-box">
-        <div class="step-num">Paso ${S.rescueStep+1} de ${tec.steps.length}</div>
-        <div class="step-name">${step.text}</div>
-        <div class="step-instr">${step.instruction}</div>
-        <div class="step-timer" id="rescue-timer">${S.rescuePlaying ? S.rescueTimer : step.time}</div>
+  const step=tec.steps[S.tecStep];
+  const pct=(S.tecStep/tec.steps.length)*100;
+  const dots=tec.steps.map((_,i)=>`<div class="dot ${i<S.tecStep?'done':i===S.tecStep?'active':''}"></div>`).join('');
+  el.innerHTML=`
+    <div class="tcard">
+      <span class="ttag" style="background:${tec.color}">${tec.icon} ${tec.name}</span>
+      <div class="tdesc">${tec.desc}</div>
+      <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
+      <div class="dots">${dots}</div>
+      <div class="sbox">
+        <div class="snum">Paso ${S.tecStep+1} de ${tec.steps.length}</div>
+        <div class="sname">${step.text}</div>
+        <div class="sinstr">${step.instruction}</div>
+        <div class="stimer" id="tec-timer">${S.tecPlaying?S.tecTimer:step.time}</div>
       </div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="rescueToggle()">${S.rescuePlaying ? '⏸ Pausar' : '▶ Iniciar'}</button>
-      <button class="btn btn-primary" onclick="rescueNext()">Siguiente →</button>
-    </div>
-    <button class="btn btn-secondary btn-full" style="margin-top:8px" onclick="rescueRandom()">🔀 Otra técnica</button>`;
+    <div class="brow">
+      <button class="btn bsec" onclick="tecToggle()">${S.tecPlaying?'⏸ Pausar':'▶ Iniciar'}</button>
+      <button class="btn bpri" onclick="tecNext()">Siguiente →</button>
+    </div>`;
 }
 
-function rescueToggle() {
-  if(!S.rescuePlaying) {
-    S.rescuePlaying = true;
-    S.rescueTimer = S.rescueCurrent.steps[S.rescueStep].time;
-    speak(S.rescueCurrent.steps[S.rescueStep].instruction);
-    timerInterval = setInterval(rescueTick, 1000);
-  } else {
-    S.rescuePlaying = false; stopTimer();
-  }
-  renderRescue();
+function tecToggle(){
+  if(!S.tecPlaying){
+    S.tecPlaying=true; S.tecTimer=S.tecCurrent.steps[S.tecStep].time;
+    speak(S.tecCurrent.steps[S.tecStep].instruction);
+    timerInterval=setInterval(tecTick,1000);
+  } else {S.tecPlaying=false; stopTimer();}
+  renderTec();
 }
-
-function rescueTick() {
-  S.rescueTimer--;
-  const el = document.getElementById('rescue-timer');
-  if(el) el.textContent = S.rescueTimer;
-  if(S.rescueTimer <= 0) rescueAdvance();
+function tecTick(){S.tecTimer--;const el=document.getElementById('tec-timer');if(el)el.textContent=S.tecTimer;if(S.tecTimer<=0)tecAdv();}
+function tecAdv(){
+  stopTimer(); const tec=S.tecCurrent;
+  if(S.tecStep<tec.steps.length-1){
+    beep(600,0.15);vibrate(60);S.tecStep++;S.tecPlaying=true;S.tecTimer=tec.steps[S.tecStep].time;
+    renderTec(); speak(tec.steps[S.tecStep].instruction); timerInterval=setInterval(tecTick,1000);
+  } else {beep(800,0.2);setTimeout(()=>beep(1000,0.3),250);vibrate([80,50,80]);S.tecDone=true;S.tecPlaying=false;renderTec();}
 }
+function tecNext(){stopTimer();S.tecPlaying=false;tecAdv();}
 
-function rescueAdvance() {
-  stopTimer();
-  const tec = S.rescueCurrent;
-  if(S.rescueStep < tec.steps.length-1) {
-    beep(600, 0.15); vibrate(60);
-    S.rescueStep++;
-    S.rescuePlaying = true;
-    S.rescueTimer = tec.steps[S.rescueStep].time;
-    renderRescue();
-    speak(tec.steps[S.rescueStep].instruction);
-    timerInterval = setInterval(rescueTick, 1000);
-  } else {
-    beep(800, 0.2); setTimeout(()=>beep(1000, 0.3), 250);
-    vibrate([80,50,80]);
-    S.rescueDone = true; S.rescuePlaying = false;
-    renderRescue();
-  }
-}
-
-function rescueNext() { stopTimer(); S.rescuePlaying = false; rescueAdvance(); }
-
-/* ===== MEDITATIONS ===== */
-function renderMedList() {
-  const el = document.getElementById('med-list');
-  el.innerHTML = MEDITATIONS.map(m => `
-    <button class="med-item" onclick="startMeditation(${m.id})">
-      <span class="med-icon">${m.icon}</span>
-      <div class="med-info">
-        <h3>${m.name}</h3>
-        <p>${m.duration} · ${m.steps.length} pasos</p>
-      </div>
+/* ── EMOTIONS ── */
+function renderEmoGrid(){
+  document.getElementById('emo-grid').innerHTML=EMOTIONS.map(e=>`
+    <button class="etile" style="background:${e.color}" onclick="showEmo('${e.id}','emotions')">
+      <span class="be">${e.emoji}</span><span class="el">${e.label}</span>
     </button>`).join('');
 }
 
-function startMeditation(id) {
-  beep(400); vibrate(40);
-  S.medCurrent = MEDITATIONS.find(m=>m.id===id);
-  S.medStep = 0; S.medPlaying = false; S.medTimer = 0; S.medDone = false;
-  document.getElementById('med-title').textContent = S.medCurrent.name;
-  go('meditation-detail');
-  renderMedStep();
-}
-
-function setSpeed(sp) {
-  S.medSpeed = sp;
-  ['lento','normal','rapido'].forEach(s => {
-    document.getElementById('sp-'+s).classList.toggle('active', s===sp);
-  });
-}
-
-function renderMedStep() {
-  const med = S.medCurrent;
-  if(!med) return;
-  const el = document.getElementById('med-content');
-
-  if(S.medDone) {
-    el.innerHTML = `
-      <div class="done-card">
-        <div class="big">🙏</div>
-        <h2>Meditación completada</h2>
-        <p>${med.name}</p>
+function showEmo(id, source){
+  beep(400,0.1); vibrate(30);
+  S.emoSource=source||'emotions';
+  const e=EMOTIONS.find(x=>x.id===id);
+  const tec=RESCUES.find(r=>r.id===e.tecId);
+  document.getElementById('emo-back').onclick=()=>go(S.emoSource);
+  document.getElementById('emo-detail').innerHTML=`
+    <div class="ecard">
+      <div class="ehead"><span class="ebig">${e.emoji}</span><div class="ename">${e.label}</div></div>
+      <div class="irow"><div class="ilbl">Tu impulso va a ser...</div><div class="ival">${e.impulse}</div></div>
+      <div class="irow"><div class="ilbl">Lo que realmente necesitas</div><div class="ival">${e.need}</div></div>
+      <div class="irow hi">
+        <div class="ilbl">Qué puede ayudarte ahora</div>
+        <div class="ival">${e.helps}</div>
+        <div class="isub">${e.helpsDesc}</div>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-secondary" onclick="go('meditations')">← Lista</button>
-        <button class="btn btn-primary" onclick="startMeditation(${med.id})">Repetir</button>
+    </div>
+    <button class="btn bpri bful" onclick="startTec(${tec.id},'emotion-detail')">${tec.icon} Empezar: ${tec.name}</button>
+    <button class="btn bsec bful" style="margin-top:10px" onclick="go('${S.emoSource}')">← Elegir otra emoción</button>`;
+  go('emotion-detail');
+}
+
+/* ── FIND EMOTION ── */
+function renderFind(){
+  const el=document.getElementById('find-content');
+  if(S.findStep===0){
+    el.innerHTML=`
+      <div class="qcard">
+        <h2>¿Qué notas en tu cuerpo ahora mismo?</h2>
+        <div class="qopts">
+          ${BODY_OPTIONS.map((o,i)=>`<button class="qbtn" onclick="findPick(${i})">${o.label}</button>`).join('')}
+        </div>
+      </div>
+      <p style="font-size:.78rem;color:var(--teal);text-align:center">Elige lo que más se acerca, no tiene que ser exacto</p>`;
+  } else {
+    const emos=S.findMatches.map(id=>EMOTIONS.find(e=>e.id===id)).filter(Boolean);
+    el.innerHTML=`
+      <div class="qcard"><h2>Puede que estés sintiendo...</h2></div>
+      <div class="egrid">
+        ${emos.map(e=>`<button class="etile" style="background:${e.color}" onclick="showEmo('${e.id}','find-emotion')">
+          <span class="be">${e.emoji}</span><span class="el">${e.label}</span></button>`).join('')}
+      </div>
+      <button class="btn bsec bful" style="margin-top:4px" onclick="S.findStep=0;renderFind()">← Intentarlo de nuevo</button>`;
+  }
+}
+function findPick(i){beep(400,0.1);vibrate(30);S.findMatches=BODY_OPTIONS[i].ids;S.findStep=1;renderFind();}
+
+/* ── MEDITATIONS ── */
+function renderMedList(){
+  document.getElementById('med-list').innerHTML=MEDITATIONS.map(m=>`
+    <button class="mitem" onclick="startMed(${m.id})">
+      <span class="mico">${m.icon}</span>
+      <div class="minfo"><h3>${m.name}</h3><p>${m.duration} · ${m.steps.length} pasos</p></div>
+    </button>`).join('');
+}
+function startMed(id){
+  beep(400);vibrate(40);
+  S.medCurrent=MEDITATIONS.find(m=>m.id===id);
+  S.medStep=0;S.medPlaying=false;S.medTimer=0;S.medDone=false;
+  document.getElementById('med-title').textContent=S.medCurrent.name;
+  go('meditation-detail'); renderMedStep();
+}
+function setSpeed(sp){
+  S.medSpeed=sp;
+  ['lento','normal','rapido'].forEach(s=>document.getElementById('sp-'+s).classList.toggle('active',s===sp));
+}
+function renderMedStep(){
+  const med=S.medCurrent; if(!med)return;
+  const el=document.getElementById('med-content');
+  if(S.medDone){
+    el.innerHTML=`<div class="done"><div class="big">🙏</div><h2>Meditación completada</h2><p>${med.name}</p></div>
+      <div class="brow">
+        <button class="btn bsec" onclick="go('meditations')">← Lista</button>
+        <button class="btn bpri" onclick="startMed(${med.id})">Repetir</button>
       </div>`;
     return;
   }
-
-  const step = med.steps[S.medStep];
-  const pct = (S.medStep/med.steps.length)*100;
-  const dots = med.steps.map((_,i) =>
-    `<div class="dot ${i<S.medStep?'done':i===S.medStep?'active':''}"></div>`
-  ).join('');
-  const t = S.medPlaying ? S.medTimer : Math.round(step.time*SPEED[S.medSpeed]);
-
-  el.innerHTML = `
-    <div class="tec-card">
-      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-      <div class="progress-dots" style="margin-top:8px">${dots}</div>
-      <div class="step-box">
-        <div class="step-num">Paso ${S.medStep+1} de ${med.steps.length}</div>
-        <div class="step-name">${step.text}</div>
-        <div class="step-instr">${step.instruction}</div>
-        <div class="step-timer" id="med-timer">${t}</div>
+  const step=med.steps[S.medStep];
+  const pct=(S.medStep/med.steps.length)*100;
+  const dots=med.steps.map((_,i)=>`<div class="dot ${i<S.medStep?'done':i===S.medStep?'active':''}"></div>`).join('');
+  const t=S.medPlaying?S.medTimer:Math.round(step.time*SPEED[S.medSpeed]);
+  el.innerHTML=`
+    <div class="tcard">
+      <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
+      <div class="dots" style="margin-top:8px">${dots}</div>
+      <div class="sbox">
+        <div class="snum">Paso ${S.medStep+1} de ${med.steps.length}</div>
+        <div class="sname">${step.text}</div>
+        <div class="sinstr">${step.instruction}</div>
+        <div class="stimer" id="med-timer">${t}</div>
       </div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="medToggle()">${S.medPlaying?'⏸ Pausar':'▶ Iniciar'}</button>
-      <button class="btn btn-primary" onclick="medNext()">Siguiente →</button>
+    <div class="brow">
+      <button class="btn bsec" onclick="medToggle()">${S.medPlaying?'⏸ Pausar':'▶ Iniciar'}</button>
+      <button class="btn bpri" onclick="medNext()">Siguiente →</button>
     </div>`;
 }
-
-function medToggle() {
-  if(!S.medPlaying) {
-    S.medPlaying = true;
-    const step = S.medCurrent.steps[S.medStep];
-    S.medTimer = Math.round(step.time*SPEED[S.medSpeed]);
-    speak(step.instruction);
-    timerInterval = setInterval(medTick, 1000);
-  } else { S.medPlaying = false; stopTimer(); }
+function medToggle(){
+  if(!S.medPlaying){
+    S.medPlaying=true;const step=S.medCurrent.steps[S.medStep];
+    S.medTimer=Math.round(step.time*SPEED[S.medSpeed]);speak(step.instruction);
+    timerInterval=setInterval(medTick,1000);
+  } else {S.medPlaying=false;stopTimer();}
   renderMedStep();
 }
-
-function medTick() {
-  S.medTimer--;
-  const el = document.getElementById('med-timer');
-  if(el) el.textContent = S.medTimer;
-  if(S.medTimer <= 0) medAdvance();
+function medTick(){S.medTimer--;const el=document.getElementById('med-timer');if(el)el.textContent=S.medTimer;if(S.medTimer<=0)medAdv();}
+function medAdv(){
+  stopTimer(); const med=S.medCurrent;
+  if(S.medStep<med.steps.length-1){
+    beep(500,0.2);vibrate(40);S.medStep++;S.medPlaying=true;
+    S.medTimer=Math.round(med.steps[S.medStep].time*SPEED[S.medSpeed]);
+    renderMedStep();speak(med.steps[S.medStep].instruction);timerInterval=setInterval(medTick,1000);
+  } else {beep(700,0.3);setTimeout(()=>beep(900,0.4),300);vibrate([60,40,60]);S.medDone=true;S.medPlaying=false;renderMedStep();}
 }
-
-function medAdvance() {
-  stopTimer();
-  const med = S.medCurrent;
-  if(S.medStep < med.steps.length-1) {
-    beep(500, 0.2); vibrate(40);
-    S.medStep++;
-    S.medPlaying = true;
-    S.medTimer = Math.round(med.steps[S.medStep].time*SPEED[S.medSpeed]);
-    renderMedStep();
-    speak(med.steps[S.medStep].instruction);
-    timerInterval = setInterval(medTick, 1000);
-  } else {
-    beep(700,0.3); setTimeout(()=>beep(900,0.4),300);
-    vibrate([60,40,60]);
-    S.medDone = true; S.medPlaying = false;
-    renderMedStep();
-  }
-}
-
-function medNext() { stopTimer(); S.medPlaying = false; medAdvance(); }
-
-/* ===== EISENHOWER ===== */
-function renderTasks() {
-  const el = document.getElementById('tasks-content');
-  const q = QUAD_INFO;
-  el.innerHTML = `
-    <div class="eis-grid">
-      ${['q1','q2','q3','q4'].map(k=>`
-        <div class="eis-cell ${q[k].cls} ${S.eisSel===k?'selected':''}" onclick="eisSelect('${k}')">
-          <h3>${q[k].emoji}</h3>
-          <div class="eis-sub">${q[k].sub}</div>
-          ${S.eisTasks[k].slice(0,3).map(t=>`<span class="task-chip">${t}</span>`).join('')}
-          ${S.eisTasks[k].length>3?`<span class="task-chip">+${S.eisTasks[k].length-3} más</span>`:''}
-        </div>`).join('')}
-    </div>
-    <div class="eis-panel">
-      <h3>${q[S.eisSel].emoji} ${q[S.eisSel].label} <span style="font-size:.75rem;color:#9ca3af;font-weight:400">${q[S.eisSel].sub}</span></h3>
-      <div class="task-input-row">
-        <input class="task-input" id="eis-input" placeholder="Añade una tarea..." value="${S.eisNewTask}" oninput="S.eisNewTask=this.value" onkeydown="if(event.key==='Enter')eisAdd()">
-        <button class="add-btn" onclick="eisAdd()">+</button>
-      </div>
-      <div class="task-list">
-        ${S.eisTasks[S.eisSel].map((t,i)=>`
-          <div class="task-row">
-            <span>${t}</span>
-            <button class="del-btn" onclick="eisDel('${S.eisSel}',${i})">✕</button>
-          </div>`).join('')}
-      </div>
-    </div>`;
-}
-
-function eisSelect(k) { beep(300,0.1); S.eisSel=k; renderTasks(); }
-
-function eisAdd() {
-  const inp = document.getElementById('eis-input');
-  const v = (inp ? inp.value : S.eisNewTask).trim();
-  if(!v) return;
-  beep(500,0.1); vibrate(30);
-  S.eisTasks[S.eisSel] = [...S.eisTasks[S.eisSel], v];
-  S.eisNewTask = '';
-  saveTasks(); renderTasks();
-  const i = document.getElementById('eis-input');
-  if(i) i.focus();
-}
-
-function eisDel(k,i) {
-  beep(300,0.1);
-  S.eisTasks[k] = S.eisTasks[k].filter((_,j)=>j!==i);
-  saveTasks(); renderTasks();
-}
-
-function saveTasks() {
-  try { localStorage.setItem('cris_rescate_tasks_v1', JSON.stringify(S.eisTasks)); } catch(e) {}
-}
-
-function loadTasks() {
-  try {
-    const d = localStorage.getItem('cris_rescate_tasks_v1');
-    if(d) S.eisTasks = JSON.parse(d);
-  } catch(e) {}
-}
-
-/* ===== EMOTION MATRIX ===== */
-function renderEmotion() {
-  const el = document.getElementById('emotion-content');
-  const back = document.getElementById('emo-back-btn');
-  const title = document.getElementById('emo-title');
-
-  if(S.emoStep === 0) {
-    title.textContent = 'Procesar Emoción';
-    back.onclick = () => go('home');
-    el.innerHTML = `
-      <div class="emo-card">
-        <h2>Paso 1 de 4 — El Problema</h2>
-        <p>¿Qué situación te está pesando?</p>
-        <textarea class="emo-input" id="emo-prob" placeholder="Ej: No puedo dejar de pensar en lo que pasó...">${S.emoData.problem}</textarea>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="emoNext(0)" id="emo-next-0" ${S.emoData.problem?'':'disabled'} style="opacity:${S.emoData.problem?1:.5}">Siguiente →</button>`;
-    const ta = document.getElementById('emo-prob');
-    if(ta) ta.oninput = e => {
-      S.emoData.problem = e.target.value;
-      const btn = document.getElementById('emo-next-0');
-      if(btn) { btn.disabled = !e.target.value; btn.style.opacity = e.target.value ? 1 : .5; }
-    };
-  }
-
-  else if(S.emoStep === 1) {
-    title.textContent = 'Nombra la Emoción';
-    back.onclick = () => { S.emoStep=0; renderEmotion(); };
-    const emotions = [
-      {v:'tristeza',l:'Tristeza / Pena'},{v:'ansiedad',l:'Ansiedad / Miedo'},
-      {v:'enojo',l:'Enojo / Rabia'},{v:'culpa',l:'Culpa / Vergüenza'},
-      {v:'vacio',l:'Vacío'},{v:'confusion',l:'Confusión'}
-    ];
-    el.innerHTML = `
-      <div class="emo-card">
-        <h2>Paso 2 de 4 — La Emoción</h2>
-        <p>¿Qué sientes principalmente?</p>
-      </div>
-      <div class="emotion-grid">
-        ${emotions.map(em=>`
-          <button class="emo-btn" style="background:${EMO_COLORS[em.v].bg}" onclick="emoSelectEmotion('${em.v}')">
-            <span class="big-emoji">${EMO_COLORS[em.v].emoji}</span>
-            <div class="emo-label">${em.l}</div>
-          </button>`).join('')}
-      </div>`;
-  }
-
-  else if(S.emoStep === 2) {
-    title.textContent = 'Intensidad';
-    back.onclick = () => { S.emoStep=1; renderEmotion(); };
-    el.innerHTML = `
-      <div class="emo-card">
-        <h2>Paso 3 de 4 — Intensidad</h2>
-        <p>¿Cuánto pesa ahora, del 1 al 10?</p>
-        <div class="range-display" id="range-val">${S.emoData.intensity}</div>
-        <input type="range" class="range-input" min="1" max="10" value="${S.emoData.intensity}" id="emo-range">
-        <div class="range-labels"><span>Leve</span><span>Insoportable</span></div>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="emoNext(2)">Siguiente →</button>`;
-    const r = document.getElementById('emo-range');
-    if(r) r.oninput = e => {
-      S.emoData.intensity = parseInt(e.target.value);
-      const d = document.getElementById('range-val');
-      if(d) d.textContent = S.emoData.intensity;
-    };
-  }
-
-  else if(S.emoStep === 3) {
-    title.textContent = '¿Puedes actuar?';
-    back.onclick = () => { S.emoStep=2; renderEmotion(); };
-    el.innerHTML = `
-      <div class="emo-card">
-        <h2>Paso 4 de 4 — Control</h2>
-        <p>¿Puedes hacer algo al respecto?</p>
-      </div>
-      <div class="control-options">
-        <button class="ctrl-btn" onclick="emoSelectControl('si')">
-          <div class="lbl">✅ Sí, depende de mí</div>
-          <div class="desc">Puedo actuar o cambiar algo</div>
-        </button>
-        <button class="ctrl-btn" onclick="emoSelectControl('parcial')">
-          <div class="lbl">⚠️ Parcialmente</div>
-          <div class="desc">Puedo influir algo, pero no todo</div>
-        </button>
-        <button class="ctrl-btn" onclick="emoSelectControl('no')">
-          <div class="lbl">❌ No depende de mí</div>
-          <div class="desc">Son factores externos</div>
-        </button>
-      </div>`;
-  }
-
-  else if(S.emoStep === 4) {
-    const result = classifyEmotion();
-    const CONFIGS = {
-      actuar:{title:'💪 ACTUAR YA',cls:'result-actuar',msg:'Tienes capacidad de cambiar esto. Empieza con un paso pequeño hoy.',
-        advice:['Escribe 3 acciones concretas y elige la más pequeña','El movimiento genera claridad — actúa antes de sentirte listo/a','Usa el Eisenhower para priorizarlo']},
-      ajustar:{title:'🛠️ AJUSTAR',cls:'result-ajustar',msg:'No lo puedes cambiar todo, pero sí algo. Busca el margen de influencia.',
-        advice:['Identifica qué parte SÍ controlas y enfócate ahí','Acepta lo que no puedes cambiar — no es rendirse','Ajusta expectativas con compasión hacia ti']},
-      reconocimiento:{title:'❤️ RECONOCIMIENTO',cls:'result-reconocimiento',msg:'La emoción es suave. Reconócela y sigue adelante.',
-        advice:['Valida lo que sientes sin dramatizar','¿Qué necesitas en este momento?','Un gesto de cuidado propio ayuda mucho']},
-      soltar:{title:'🧘 SOLTAR',cls:'result-soltar',msg:'Esto está fuera de tu control. Tu trabajo es soltar y no añadir más sufrimiento.',
-        advice:['Practica Defusión ACT: observa el pensamiento sin agarrarlo','No luches contra lo que no cambia — agota más','Una técnica de anclaje puede ayudarte ahora mismo']}
-    };
-    const cfg = CONFIGS[result];
-    title.textContent = 'Resultado';
-    back.onclick = () => { S.emoStep=0; S.emoData={problem:'',emotion:'',intensity:5,control:''}; renderEmotion(); };
-    el.innerHTML = `
-      <div class="result-card ${cfg.cls}">
-        <h1>${cfg.title}</h1>
-        <p>${cfg.msg}</p>
-      </div>
-      <div class="summary-box">
-        <div class="row"><strong>Situación:</strong> ${S.emoData.problem}</div>
-        <div class="row"><strong>Emoción:</strong> ${S.emoData.emotion} ${EMO_COLORS[S.emoData.emotion]?.emoji||''}</div>
-        <div class="row"><strong>Intensidad:</strong> ${S.emoData.intensity}/10</div>
-      </div>
-      ${result==='actuar'?`<div class="actions-box">
-        <p>3 acciones concretas:</p>
-        <input type="text" placeholder="1. ">
-        <input type="text" placeholder="2. ">
-        <input type="text" placeholder="3. ">
-      </div>`:''}
-      <div class="summary-box" style="margin-bottom:16px">
-        <div class="row" style="font-weight:700;margin-bottom:6px">Sugerencias</div>
-        ${cfg.advice.map(a=>`<div class="row">• ${a}</div>`).join('')}
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-secondary" onclick="go('home')">🏠 Inicio</button>
-        <button class="btn btn-primary" onclick="S.emoStep=0;S.emoData={problem:'',emotion:'',intensity:5,control:''};renderEmotion()">Nueva emoción</button>
-      </div>`;
-  }
-}
-
-function emoNext(step) { beep(400,0.1); vibrate(30); S.emoStep=step+1; renderEmotion(); }
-
-function emoSelectEmotion(v) { beep(500,0.1); vibrate(30); S.emoData.emotion=v; S.emoStep=2; renderEmotion(); }
-
-function emoSelectControl(v) { beep(500,0.1); vibrate(30); S.emoData.control=v; S.emoStep=4; renderEmotion(); }
-
-function classifyEmotion() {
-  const {intensity, control} = S.emoData;
-  if(intensity >= 7 && (control==='si'||control==='parcial')) return 'actuar';
-  if(intensity >= 4 && intensity <= 6 && (control==='si'||control==='parcial')) return 'ajustar';
-  if(intensity <= 3) return 'reconocimiento';
-  return 'soltar';
-}
-
-loadTasks();
+function medNext(){stopTimer();S.medPlaying=false;medAdv();}
 </script>
 </body>
 </html>
