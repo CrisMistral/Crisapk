@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cris App - HIIT</title>
+<title>Cris - Entrenamientos</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:10px}
@@ -49,7 +49,7 @@ button:disabled{background:#a0aec0;cursor:not-allowed;transform:none}
 <div class="app">
 
 <div id="home" class="screen active">
-<h1>🔥 HIIT - Entrenamiento</h1>
+<h1>🔥 Entrenamiento Semanal</h1>
 <div class="stats">
 <div class="stat"><div class="stat-value" id="total-workouts">0</div>Entrenamientos</div>
 <div class="stat"><div class="stat-value" id="total-time">0</div>Minutos</div>
@@ -105,39 +105,39 @@ button:disabled{background:#a0aec0;cursor:not-allowed;transform:none}
 <script>
 const data={
 lunes:[
-{name:'Jumping Jacks',desc:'<div class="exercise-main">SALTA ABRIENDO PIERNAS Y SUBIENDO BRAZOS, VUELVE A LA POSICIÓN INICIAL. RITMO CONSTANTE.</div><div class="exercise-details">🎯 NOTA: deltoides (hombros), cuádriceps (frente muslos), pantorrillas, cardio • siente: calor en piernas y brazos • aterrizaje suave en pies</div>',img:'🤸‍♀️',time:60,sets:4,rest:20},
+{name:'Saltos de Tijera',desc:'<div class="exercise-main">SALTA ABRIENDO PIERNAS Y SUBIENDO BRAZOS, VUELVE A LA POSICIÓN INICIAL. RITMO CONSTANTE.</div><div class="exercise-details">🎯 NOTA: deltoides (hombros), cuádriceps (frente muslos), pantorrillas, cardio • siente: calor en piernas y brazos • aterrizaje suave en pies</div>',img:'🤸‍♀️',time:60,sets:4,rest:20},
 {name:'Sentadillas',desc:'<div class="exercise-main">BAJA COMO SENTÁNDOTE EN SILLA, ESPALDA RECTA, PESO EN TALONES. SUBE CON GLÚTEOS.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteo mayor (nalgas), isquiotibiales (atrás muslos) • siente: tensión en glúteos al subir, peso en talones • rodillas alineadas con pies</div>',img:'🏋️‍♀️',time:50,sets:4,rest:20},
 {name:'Plancha',desc:'<div class="exercise-main">CUERPO RECTO COMO TABLA, BRAZOS EXTENDIDOS. CONTRAE ABDOMEN Y RESPIRA CONTROLADO.</div><div class="exercise-details">🎯 NOTA: recto abdominal (abdomen frontal), transverso abdominal (faja profunda), deltoides (hombros) • siente: activación intensa del abdomen • no hundir cadera</div>',img:'🏊‍♀️',time:45,sets:3,rest:15},
 {name:'Burpees suaves',desc:'<div class="exercise-main">SENTADILLA-PLANCHA-FLEXIÓN-SALTO. SECUENCIA COMPLETA A RITMO CONTROLADO.</div><div class="exercise-details">🎯 NOTA: todo el cuerpo - pectorales (pecho), cuádriceps, glúteos, deltoides, core • siente: fatiga total corporal • técnica sobre velocidad</div>',img:'🏃‍♀️',time:50,sets:3,rest:25},
 {name:'Flexiones rodillas',desc:'<div class="exercise-main">PLANCHA CON RODILLAS APOYADAS. BAJA PECHO AL SUELO, EMPUJA MANTENIENDO LÍNEA RECTA.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), deltoides anterior (frente hombros) • siente: estiramiento en pecho al bajar, contracción al subir</div>',img:'💪',time:45,sets:3,rest:20}
 ],
 martes:[
-{name:'High Knees',desc:'<div class="exercise-main">CORRE EN EL LUGAR ELEVANDO RODILLAS A LA CADERA. TORSO ERGUIDO, BRAZOS ACTIVOS.</div><div class="exercise-details">🎯 NOTA: hip flexores (frente cadera), cuádriceps (frente muslos), pantorrillas • siente: elevación intensa de rodillas, trabajo cardiovascular • torso estable</div>',img:'🦵',time:55,sets:4,rest:20},
+{name:'Rodillas Altas',desc:'<div class="exercise-main">CORRE EN EL LUGAR ELEVANDO RODILLAS A LA CADERA. TORSO ERGUIDO, BRAZOS ACTIVOS.</div><div class="exercise-details">🎯 NOTA: flexores de cadera (frente cadera), cuádriceps (frente muslos), pantorrillas • siente: elevación intensa de rodillas, trabajo cardiovascular • torso estable</div>',img:'🦵',time:55,sets:4,rest:20},
 {name:'Flexiones rodillas',desc:'<div class="exercise-main">PLANCHA CON RODILLAS APOYADAS. BAJA PECHO, EMPUJA MANTENIENDO CUERPO RECTO.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), core (abdomen) • siente: trabajo intenso en pecho y brazos • control bajada-subida</div>',img:'💪',time:50,sets:4,rest:20},
-{name:'Mountain Climbers',desc:'<div class="exercise-main">PLANCHA ALTERNANDO RODILLAS AL PECHO RÁPIDAMENTE. CADERAS ESTABLES.</div><div class="exercise-details">🎯 NOTA: core completo, hip flexores, deltoides (hombros), cardio • siente: abdomen trabajando constantemente • cadera inmóvil</div>',img:'🏃‍♂️',time:45,sets:3,rest:15},
+{name:'Escaladores',desc:'<div class="exercise-main">PLANCHA ALTERNANDO RODILLAS AL PECHO RÁPIDAMENTE. CADERAS ESTABLES.</div><div class="exercise-details">🎯 NOTA: core completo, flexores de cadera, deltoides (hombros), cardio • siente: abdomen trabajando constantemente • cadera inmóvil</div>',img:'🏃‍♂️',time:45,sets:3,rest:15},
 {name:'Plancha lateral',desc:'<div class="exercise-main">DE LADO EN ANTEBRAZO, CUERPO RECTO Y ALINEADO. CADERA ELEVADA DEL SUELO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costado abdomen), cuadrado lumbar (espalda baja), glúteo medio • siente: intensa contracción lateral • no caer cadera</div>',img:'🏄‍♀️',time:40,sets:3,rest:20},
 {name:'Saltos estrella',desc:'<div class="exercise-main">DESDE SENTADILLA SALTA EXTENDIENDO BRAZOS Y PIERNAS COMO ESTRELLA.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteos, deltoides, aductores (interior muslos) • siente: explosividad total corporal • aterrizaje controlado</div>',img:'⭐',time:40,sets:3,rest:20}
 ],
 miercoles:[
-{name:'Jump Squats',desc:'<div class="exercise-main">SENTADILLA EXPLOSIVA SALTANDO LO MÁS ALTO POSIBLE. ATERRIZA EN SENTADILLA.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteo mayor (nalgas), pantorrillas, core • siente: potencia explosiva en piernas • aterrizaje suave en sentadilla</div>',img:'🦘',time:55,sets:4,rest:25},
-{name:'Push Ups',desc:'<div class="exercise-main">FLEXIONES COMPLETAS DESDE PIES. PECHO CASI TOCA SUELO, CUERPO RECTO.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), deltoides, core profundo • siente: estiramiento pectoral intenso • cuerpo como tabla rígida</div>',img:'💪',time:50,sets:4,rest:25},
-{name:'Bicicleta abdominal',desc:'<div class="exercise-main">ACOSTADO ALTERNA CODOS A RODILLAS OPUESTAS. ESPALDA BAJA EN SUELO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costados abdomen), recto abdominal, hip flexores • siente: rotación intensa en costados • control sobre velocidad</div>',img:'🚴‍♀️',time:60,sets:3,rest:20},
+{name:'Sentadillas con Salto',desc:'<div class="exercise-main">SENTADILLA EXPLOSIVA SALTANDO LO MÁS ALTO POSIBLE. ATERRIZA EN SENTADILLA.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteo mayor (nalgas), pantorrillas, core • siente: potencia explosiva en piernas • aterrizaje suave en sentadilla</div>',img:'🦘',time:55,sets:4,rest:25},
+{name:'Flexiones Completas',desc:'<div class="exercise-main">FLEXIONES COMPLETAS DESDE PIES. PECHO CASI TOCA SUELO, CUERPO RECTO.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), deltoides, core profundo • siente: estiramiento pectoral intenso • cuerpo como tabla rígida</div>',img:'💪',time:50,sets:4,rest:25},
+{name:'Bicicleta abdominal',desc:'<div class="exercise-main">ACOSTADO ALTERNA CODOS A RODILLAS OPUESTAS. ESPALDA BAJA EN SUELO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costados abdomen), recto abdominal, flexores de cadera • siente: rotación intensa en costados • control sobre velocidad</div>',img:'🚴‍♀️',time:60,sets:3,rest:20},
 {name:'Plancha toque hombro',desc:'<div class="exercise-main">PLANCHA TOCANDO HOMBROS ALTERNADAMENTE. CADERAS INMÓVILES.</div><div class="exercise-details">🎯 NOTA: core anti-rotacional, deltoides estabilizadores, glúteos • siente: desafío constante de equilibrio • movimiento controlado</div>',img:'🏊‍♀️',time:45,sets:3,rest:20},
-{name:'Squat pulses',desc:'<div class="exercise-main">POSICIÓN BAJA DE SENTADILLA CON PULSOS PEQUEÑOS. TENSIÓN CONSTANTE.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteos, aductores (interior muslos) • siente: quemadura intensa en piernas • tensión constante</div>',img:'🔥',time:40,sets:3,rest:20}
+{name:'Sentadilla con Pulsos',desc:'<div class="exercise-main">POSICIÓN BAJA DE SENTADILLA CON PULSOS PEQUEÑOS. TENSIÓN CONSTANTE.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteos, aductores (interior muslos) • siente: quemadura intensa en piernas • tensión constante</div>',img:'🔥',time:40,sets:3,rest:20}
 ],
 jueves:[
-{name:'Skater Jumps',desc:'<div class="exercise-main">SALTOS LATERALES ALTERNOS IMITANDO PATINADOR. PIERNA ATRÁS CRUZADA.</div><div class="exercise-details">🎯 NOTA: glúteo medio (lateral cadera), cuádriceps, aductores, estabilizadores • siente: trabajo lateral intenso • equilibrio dinámico</div>',img:'🛹',time:55,sets:4,rest:25},
+{name:'Saltos Laterales',desc:'<div class="exercise-main">SALTOS LATERALES ALTERNOS IMITANDO PATINADOR. PIERNA ATRÁS CRUZADA.</div><div class="exercise-details">🎯 NOTA: glúteo medio (lateral cadera), cuádriceps, aductores, estabilizadores • siente: trabajo lateral intenso • equilibrio dinámico</div>',img:'🛹',time:55,sets:4,rest:25},
 {name:'Flexiones diamante',desc:'<div class="exercise-main">FLEXIONES CON MANOS FORMANDO DIAMANTE BAJO EL PECHO. ENFOQUE TRÍCEPS.</div><div class="exercise-details">🎯 NOTA: tríceps (atrás brazos), pectorales internos, deltoides anterior • siente: concentración intensa en tríceps • brazos más que pecho</div>',img:'💎',time:45,sets:4,rest:25},
 {name:'Plancha frontal',desc:'<div class="exercise-main">MANTÉN PLANCHA CON BRAZOS EXTENDIDOS. RESPIRACIÓN CONTROLADA.</div><div class="exercise-details">🎯 NOTA: core completo, erectores espinales (espalda), deltoides • siente: activación profunda abdominal sostenida • respiración continua</div>',img:'🏊‍♀️',time:50,sets:3,rest:25},
 {name:'Burpees modificados',desc:'<div class="exercise-main">BURPEES COMPLETOS A RITMO CONTROLADO. SECUENCIA COMPLETA.</div><div class="exercise-details">🎯 NOTA: cuerpo completo - pectorales, cuádriceps, glúteos, core, deltoides • siente: coordinación muscular total • ritmo sostenible</div>',img:'🏃‍♀️',time:50,sets:3,rest:25},
-{name:'Lunges alternos',desc:'<div class="exercise-main">PASO ADELANTE, RODILLAS A 90°. EMPUJA CON TALÓN PARA VOLVER.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteos, isquiotibiales (atrás muslo), estabilizadores • siente: trabajo unilateral intenso • equilibrio y fuerza</div>',img:'🚶‍♀️',time:45,sets:3,rest:20}
+{name:'Zancadas Alternas',desc:'<div class="exercise-main">PASO ADELANTE, RODILLAS A 90°. EMPUJA CON TALÓN PARA VOLVER.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteos, isquiotibiales (atrás muslo), estabilizadores • siente: trabajo unilateral intenso • equilibrio y fuerza</div>',img:'🚶‍♀️',time:45,sets:3,rest:20}
 ],
 viernes:[
-{name:'Jumping Jacks',desc:'<div class="exercise-main">JUMPING JACKS INTENSOS PARA ACTIVAR SISTEMA COMPLETO. PREPARACIÓN FINAL.</div><div class="exercise-details">🎯 NOTA: deltoides (hombros), cuádriceps, pantorrillas, sistema cardiovascular • siente: activación completa corporal • preparación máxima</div>',img:'🤸‍♀️',time:60,sets:4,rest:20},
+{name:'Saltos de Tijera',desc:'<div class="exercise-main">SALTOS DE TIJERA INTENSOS PARA ACTIVAR EL SISTEMA COMPLETO. PREPARACIÓN FINAL.</div><div class="exercise-details">🎯 NOTA: deltoides (hombros), cuádriceps, pantorrillas, sistema cardiovascular • siente: activación completa corporal • preparación máxima</div>',img:'🤸‍♀️',time:60,sets:4,rest:20},
 {name:'Sentadillas con salto',desc:'<div class="exercise-main">SENTADILLAS EXPLOSIVAS A MÁXIMA INTENSIDAD. CADA REP AL MÁXIMO.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteo mayor, pantorrillas, core estabilizador • siente: explosividad máxima en piernas • cada salto al máximo</div>',img:'🦘',time:55,sets:4,rest:25},
 {name:'Plancha lateral',desc:'<div class="exercise-main">PLANCHA LATERAL MÁXIMO TIEMPO. DESAFÍO MENTAL Y FÍSICO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costado abdomen), cuadrado lumbar, glúteo medio • siente: resistencia isométrica intensa lateral • desafío mental</div>',img:'🏄‍♀️',time:40,sets:3,rest:20},
 {name:'Burpees',desc:'<div class="exercise-main">BURPEES COMPLETOS SIN MODIFICACIONES. DESAFÍO FINAL SEMANAL.</div><div class="exercise-details">🎯 NOTA: todo el cuerpo - pectorales, cuádriceps, glúteos, core, deltoides • siente: límite máximo capacidad física • forma técnica perfecta</div>',img:'🔥',time:50,sets:3,rest:30},
-{name:'Cardio finisher',desc:'<div class="exercise-main">COMBINACIÓN LIBRE: JUMPING JACKS, HIGH KNEES, MOUNTAIN CLIMBERS.</div><div class="exercise-details">🎯 NOTA: sistema cardiovascular completo, piernas, core, hombros • siente: esfuerzo cardiovascular máximo • culminación semanal</div>',img:'💥',time:45,sets:3,rest:15}
+{name:'Final Explosivo',desc:'<div class="exercise-main">COMBINACIÓN LIBRE: SALTOS DE TIJERA, RODILLAS ALTAS, ESCALADORES.</div><div class="exercise-details">🎯 NOTA: sistema cardiovascular completo, piernas, core, hombros • siente: esfuerzo cardiovascular máximo • culminación semanal</div>',img:'💥',time:45,sets:3,rest:15}
 ]
 };
 

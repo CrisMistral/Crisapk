@@ -16,7 +16,6 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
 .back{background:rgba(26,107,100,.12);border:none;border-radius:50%;width:44px;height:44px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--teal-dark);font-weight:700}
 .topbar h1{font-size:1.1rem;font-weight:700;color:var(--teal-dark)}
-/* HOME */
 .home-hdr{text-align:center;margin-bottom:14px}
 .home-hdr h1{font-size:1.5rem;font-weight:800;color:var(--teal-dark)}
 .home-hdr p{font-size:.85rem;color:var(--teal);margin-top:3px}
@@ -34,16 +33,13 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .c-calm{background:rgba(255,255,255,.7);border:2px solid var(--mint-mid)!important}
 .c-calm .atitle{color:var(--teal-dark)}
 .c-calm .asub{color:var(--teal)}
-/* SECTION LABEL */
 .slabel{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin:16px 0 8px}
-/* TECHNIQUE LIST */
 .tlist{display:flex;flex-direction:column;gap:8px}
 .titem{background:rgba(255,255,255,.82);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;width:100%;text-align:left;border:2px solid var(--mint-mid);transition:transform .1s}
 .titem:active{transform:scale(.98)}
 .tico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
 .tinfo h3{font-size:.92rem;font-weight:700;color:var(--teal-dark)}
 .tinfo p{font-size:.74rem;color:var(--teal);margin-top:2px;line-height:1.3}
-/* GUIDED TECHNIQUE */
 .tcard{background:rgba(255,255,255,.88);border-radius:20px;padding:20px;box-shadow:0 4px 16px rgba(38,166,154,.1);margin-bottom:16px}
 .ttag{display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;margin-bottom:10px;color:#fff}
 .tdesc{font-size:.82rem;color:var(--teal);margin-bottom:14px;line-height:1.4}
@@ -57,25 +53,21 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .dot.done{background:var(--teal)}.dot.active{background:var(--teal-light);transform:scale(1.3)}
 .pbar{background:var(--mint-mid);border-radius:999px;height:4px;margin-bottom:8px;overflow:hidden}
 .pfill{height:100%;background:linear-gradient(90deg,var(--teal-dark),var(--teal-light));border-radius:999px;transition:width .5s}
-/* BUTTONS */
 .btn{border:none;border-radius:12px;padding:14px 18px;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:transform .1s,filter .1s}
 .btn:active{transform:scale(.97);filter:brightness(.92)}
 .bpri{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff}
 .bsec{background:rgba(255,255,255,.82);color:var(--teal-dark);border:2px solid var(--mint-mid)}
 .bful{width:100%}
 .brow{display:flex;gap:10px}.brow .btn{flex:1}
-/* DONE */
 .done{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:20px;padding:28px;text-align:center;margin-bottom:18px}
 .done .big{font-size:3rem;margin-bottom:8px}
 .done h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
 .done p{font-size:.88rem;opacity:.9}
-/* EMOTION GRID */
 .egrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .etile{border:none;border-radius:18px;padding:18px 12px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:center;transition:transform .1s;display:flex;flex-direction:column;align-items:center;gap:6px}
 .etile:active{transform:scale(.96)}
 .etile .be{font-size:2.2rem}
 .etile .el{font-size:.85rem;font-weight:700;color:rgba(0,0,0,.65)}
-/* EMOTION DETAIL */
 .ecard{background:rgba(255,255,255,.92);border-radius:20px;padding:22px;margin-bottom:14px;box-shadow:0 4px 20px rgba(38,166,154,.1)}
 .ehead{text-align:center;margin-bottom:18px}
 .ebig{font-size:3.5rem;display:block;margin-bottom:6px}
@@ -85,13 +77,11 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .ilbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin-bottom:4px}
 .ival{font-size:.92rem;font-weight:700;color:var(--teal-dark)}
 .isub{font-size:.76rem;color:var(--teal);margin-top:3px;line-height:1.3}
-/* FIND EMOTION */
 .qcard{background:rgba(255,255,255,.88);border-radius:20px;padding:22px;margin-bottom:14px;border:2px solid var(--mint-mid)}
 .qcard h2{font-size:1.05rem;font-weight:700;color:var(--teal-dark);margin-bottom:14px;line-height:1.3}
 .qopts{display:flex;flex-direction:column;gap:8px}
 .qbtn{background:var(--mint-soft);border:2px solid var(--mint-mid);border-radius:12px;padding:14px 16px;text-align:left;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:600;color:var(--teal-dark);width:100%;line-height:1.3}
 .qbtn:active{border-color:var(--teal);background:var(--mint-mid)}
-/* MEDITATIONS */
 .mlist{display:flex;flex-direction:column;gap:10px}
 .mitem{background:rgba(255,255,255,.82);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;border:2px solid var(--mint-mid);width:100%;text-align:left;transition:transform .1s}
 .mitem:active{transform:scale(.98)}
@@ -105,7 +95,6 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </head>
 <body>
 
-<!-- HOME -->
 <div id="v-home" class="screen active">
 <div class="mw">
   <div class="home-hdr">
@@ -147,7 +136,6 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
-<!-- TECHNIQUES LIST -->
 <div id="v-techniques" class="screen">
 <div class="mw">
   <div class="topbar">
@@ -158,7 +146,6 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
-<!-- TECHNIQUE DETAIL -->
 <div id="v-technique-detail" class="screen">
 <div class="mw">
   <div class="topbar">
@@ -169,7 +156,6 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
-<!-- EMOTIONS GRID -->
 <div id="v-emotions" class="screen">
 <div class="mw">
   <div class="topbar">
@@ -181,7 +167,6 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
-<!-- EMOTION DETAIL -->
 <div id="v-emotion-detail" class="screen">
 <div class="mw">
   <div class="topbar">
@@ -192,7 +177,6 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
-<!-- FIND EMOTION -->
 <div id="v-find-emotion" class="screen">
 <div class="mw">
   <div class="topbar">
@@ -203,7 +187,6 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
-<!-- MEDITATIONS LIST -->
 <div id="v-meditations" class="screen">
 <div class="mw">
   <div class="topbar">
@@ -214,7 +197,6 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
-<!-- MEDITATION DETAIL -->
 <div id="v-meditation-detail" class="screen">
 <div class="mw">
   <div class="topbar">
@@ -237,7 +219,7 @@ const RESCUES = [
     desc:"Cambia tu química corporal en segundos",
     steps:[
       {text:"AGUA FRÍA",instruction:"Pon agua fría en tu cara o muñecas durante 30 segundos. Activa el reflejo de inmersión",time:30},
-      {text:"MUÉVETE",instruction:"Corre en el sitio o haz jumping jacks con toda tu energía",time:60},
+      {text:"MUÉVETE",instruction:"Corre en el sitio o haz saltos con toda tu energía",time:60},
       {text:"PARA",instruction:"Para. Respira. Siente cómo tu cuerpo empieza a calmarse",time:30},
       {text:"RELAJA",instruction:"Relaja hombros, mandíbula, manos. Músculo a músculo",time:30}
     ]},
@@ -267,11 +249,11 @@ const RESCUES = [
     desc:"Descarga el cortisol con movimiento",
     steps:[
       {text:"SACUDE",instruction:"Sacude brazos y piernas durante 30 segundos. Déjalo caer todo",time:30},
-      {text:"SALTA",instruction:"10 jumping jacks. Cuenta en voz alta mientras los haces",time:20},
+      {text:"SALTA",instruction:"10 saltos de tijera. Cuenta en voz alta mientras los haces",time:20},
       {text:"RESPIRA",instruction:"Manos en rodillas, inclinada. Respira profundo 3 veces",time:15},
       {text:"OBSERVA",instruction:"¿Cómo está tu cuerpo ahora? Nótalo sin juzgar",time:15}
     ]},
-  { id:7, name:"Defusión ACT", icon:"🧠", color:"#6366f1",
+  { id:7, name:"Defusión cognitiva", icon:"🧠", color:"#6366f1",
     when:"Cuando un pensamiento te engancha y no puedes parar",
     desc:"Crea distancia del pensamiento sin luchar",
     steps:[
@@ -314,7 +296,7 @@ const TEC_GROUPS = [
   {label:"🫁 Para calmar la ansiedad o el pánico", ids:[2]},
   {label:"👁️ Para salir del bucle mental", ids:[1]},
   {label:"💪 Para descargar rabia o frustración", ids:[4]},
-  {label:"🧠 Para el pensamiento que no para", ids:[7]},
+  {label:"🧠 Para el pensamiento que te engancha", ids:[7]},
   {label:"🤍 Para la culpa o la vergüenza", ids:[6]},
   {label:"✍️ Para soltar lo que pesa", ids:[5]},
   {label:"🫂 Para cuando te sientes sola", ids:[8]}
@@ -436,7 +418,6 @@ function go(view){
   if(view==='meditations') renderMedList();
 }
 
-/* ── TECHNIQUES ── */
 function renderTecList(){
   document.getElementById('tech-list').innerHTML = TEC_GROUPS.map(g=>`
     <div class="slabel">${g.label}</div>
@@ -473,7 +454,7 @@ function renderTec(){
   }
   const step=tec.steps[S.tecStep];
   const pct=(S.tecStep/tec.steps.length)*100;
-  const dots=tec.steps.map((_,i)=>`<div class="dot ${i<S.tecStep?'done':i===S.tecStep?'active':''}"></div>`).join('');
+  const dots=tec.steps.map((_,i)=>`<div class="dot ${i<S.tecStep?'done':i===S.tecStep?'active':''}" ></div>`).join('');
   el.innerHTML=`
     <div class="tcard">
       <span class="ttag" style="background:${tec.color}">${tec.icon} ${tec.name}</span>
@@ -511,7 +492,6 @@ function tecAdv(){
 }
 function tecNext(){stopTimer();S.tecPlaying=false;tecAdv();}
 
-/* ── EMOTIONS ── */
 function renderEmoGrid(){
   document.getElementById('emo-grid').innerHTML=EMOTIONS.map(e=>`
     <button class="etile" style="background:${e.color}" onclick="showEmo('${e.id}','emotions')">
@@ -541,7 +521,6 @@ function showEmo(id, source){
   go('emotion-detail');
 }
 
-/* ── FIND EMOTION ── */
 function renderFind(){
   const el=document.getElementById('find-content');
   if(S.findStep===0){
@@ -566,7 +545,6 @@ function renderFind(){
 }
 function findPick(i){beep(400,0.1);vibrate(30);S.findMatches=BODY_OPTIONS[i].ids;S.findStep=1;renderFind();}
 
-/* ── MEDITATIONS ── */
 function renderMedList(){
   document.getElementById('med-list').innerHTML=MEDITATIONS.map(m=>`
     <button class="mitem" onclick="startMed(${m.id})">
@@ -598,7 +576,7 @@ function renderMedStep(){
   }
   const step=med.steps[S.medStep];
   const pct=(S.medStep/med.steps.length)*100;
-  const dots=med.steps.map((_,i)=>`<div class="dot ${i<S.medStep?'done':i===S.medStep?'active':''}"></div>`).join('');
+  const dots=med.steps.map((_,i)=>`<div class="dot ${i<S.medStep?'done':i===S.medStep?'active':''}" ></div>`).join('');
   const t=S.medPlaying?S.medTimer:Math.round(step.time*SPEED[S.medSpeed]);
   el.innerHTML=`
     <div class="tcard">
