@@ -7,232 +7,304 @@
 <title>Cris</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --turq:#26a69a;
-    --turq-light:#4dd0e1;
-    --lavanda:#e8e6fb;
-    --lavanda-soft:#f3f1ff;
-    --bg:#f0f9ff;
-    --text:#2d3748;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent;}
-  html,body{height:100%;}
-  body{
-    background:linear-gradient(160deg,var(--bg) 0%, var(--lavanda-soft) 50%, #ffffff 100%);
-    min-height:100vh;
-    color:var(--text);
-    overflow-x:hidden;
-  }
+:root{
+  --mint-bg:#d6f0eb;
+  --mint-mid:#b8e4dd;
+  --mint-deep:#8dcfc7;
+  --teal:#26a69a;
+  --teal-dark:#1a6b64;
+  --teal-body:#33b5a7;
+  --teal-belly:#5dcfc2;
+  --teal-outline:#0f4d47;
+  --text:#1a6b64;
+  --text-soft:#3d8880;
+  --white-card:rgba(255,255,255,0.72);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--mint-bg);
+  min-height:100vh;
+  color:var(--text);
+  overflow-x:hidden;
+}
 
-  /* ---------- DASHBOARD ---------- */
-  #dashboard{
-    max-width:520px;
-    margin:0 auto;
-    padding:24px 18px 40px;
-  }
-  .hero{
-    text-align:center;
-    margin-bottom:22px;
-  }
-  .hero .mascot{
-    font-size:4.2rem;
-    animation:bounce 2.4s ease-in-out infinite;
-  }
-  @keyframes bounce{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-10px) rotate(3deg);}}
-  .hero h1{
-    color:var(--turq);
-    font-size:2rem;
-    font-weight:800;
-    letter-spacing:1px;
-    margin-top:4px;
-  }
-  .hero p{
-    color:#7a8a99;
-    font-size:0.95rem;
-    margin-top:4px;
-  }
-  #greeting{
-    font-weight:700;
-    color:var(--turq);
-  }
+/* ── DASHBOARD ── */
+#dashboard{
+  max-width:440px;
+  margin:0 auto;
+  padding:24px 18px 48px;
+}
 
-  .grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-    margin-top:8px;
-  }
-  .module-card{
-    background:#fff;
-    border-radius:20px;
-    padding:18px 12px;
-    text-align:center;
-    box-shadow:0 6px 16px rgba(38,166,154,0.10);
-    cursor:pointer;
-    border:2px solid transparent;
-    transition:transform .12s, border-color .12s;
-    position:relative;
-  }
-  .module-card:active{
-    transform:scale(0.96);
-    border-color:var(--turq-light);
-  }
-  .module-card .icon{
-    font-size:2.2rem;
-    margin-bottom:8px;
-    display:block;
-  }
-  .module-card .title{
-    font-size:0.92rem;
-    font-weight:700;
-    color:var(--text);
-    line-height:1.2;
-  }
-  .module-card .sub{
-    font-size:0.72rem;
-    color:#9aa5b1;
-    margin-top:4px;
-  }
-  .module-card.pending{
-    opacity:0.55;
-  }
-  .module-card .badge{
-    position:absolute;
-    top:8px;
-    right:8px;
-    background:var(--lavanda);
-    color:#6c5ce7;
-    font-size:0.6rem;
-    font-weight:700;
-    padding:3px 7px;
-    border-radius:999px;
-  }
+/* Header greeting */
+.hero{
+  text-align:center;
+  margin-bottom:4px;
+}
+.greeting-row{
+  font-size:1.5rem;
+  font-weight:800;
+  color:var(--teal-dark);
+  margin-bottom:2px;
+}
+.hero-sub{
+  font-size:.88rem;
+  color:var(--text-soft);
+  margin-bottom:20px;
+}
 
-  .footer-note{
-    text-align:center;
-    margin-top:28px;
-    font-size:0.72rem;
-    color:#b3bcc4;
-    line-height:1.6;
-  }
+/* Quokka + bubble */
+.quokka-zone{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:24px;
+  position:relative;
+}
+.quokka-wrap{
+  animation:float 3.2s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-9px);}
+}
+.bubble{
+  background:var(--white-card);
+  border:2px solid var(--mint-mid);
+  border-radius:18px;
+  padding:10px 16px;
+  font-size:.88rem;
+  font-weight:600;
+  color:var(--teal-dark);
+  max-width:260px;
+  text-align:center;
+  margin-bottom:10px;
+  position:relative;
+  box-shadow:0 2px 12px rgba(38,166,154,.12);
+}
+.bubble::after{
+  content:'';
+  position:absolute;
+  bottom:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  border:5px solid transparent;
+  border-top-color:var(--mint-mid);
+}
 
-  /* ---------- VISOR DE MÓDULOS ---------- */
-  #viewer{
-    position:fixed;
-    inset:0;
-    background:#fff;
-    display:none;
-    z-index:100;
-  }
-  #viewer.show{display:block;}
-  #viewer iframe{
-    width:100%;
-    height:100%;
-    border:none;
-    display:block;
-  }
-  #homeBtn{
-    position:fixed;
-    bottom:18px;
-    left:18px;
-    width:52px;
-    height:52px;
-    border-radius:50%;
-    background:var(--turq);
-    color:#fff;
-    border:none;
-    font-size:1.4rem;
-    box-shadow:0 4px 14px rgba(38,166,154,0.4);
-    z-index:101;
-    display:none;
-    align-items:center;
-    justify-content:center;
-  }
-  #homeBtn.show{display:flex;}
-  #homeBtn:active{transform:scale(0.92);}
+/* Module grid */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:4px;
+}
+.module-card{
+  background:var(--white-card);
+  border-radius:20px;
+  padding:18px 10px 14px;
+  text-align:center;
+  cursor:pointer;
+  border:2px solid var(--mint-mid);
+  transition:transform .12s, background .12s, border-color .12s;
+  position:relative;
+  box-shadow:0 3px 10px rgba(38,166,154,.10);
+}
+.module-card:active{
+  transform:scale(0.95);
+  background:var(--mint-mid);
+  border-color:var(--teal);
+}
+.module-card .icon{
+  font-size:2rem;
+  display:block;
+  margin-bottom:8px;
+}
+.module-card .title{
+  font-size:.9rem;
+  font-weight:700;
+  color:var(--teal-dark);
+  line-height:1.2;
+}
+.module-card .sub{
+  font-size:.7rem;
+  color:var(--text-soft);
+  margin-top:3px;
+  font-weight:500;
+}
+
+.footer-note{
+  text-align:center;
+  margin-top:28px;
+  font-size:.72rem;
+  color:var(--text-soft);
+  line-height:1.7;
+  opacity:.7;
+}
+
+/* ── MODULE VIEWER ── */
+#viewer{
+  position:fixed;
+  inset:0;
+  background:#fff;
+  display:none;
+  z-index:100;
+}
+#viewer.show{display:block;}
+#viewer iframe{
+  width:100%;
+  height:100%;
+  border:none;
+  display:block;
+}
+#homeBtn{
+  position:fixed;
+  bottom:20px;
+  left:18px;
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  font-size:1.4rem;
+  box-shadow:0 4px 16px rgba(38,166,154,.45);
+  z-index:101;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+#homeBtn.show{display:flex;}
+#homeBtn:active{transform:scale(.9);}
 </style>
 </head>
 <body>
 
 <div id="dashboard">
   <div class="hero">
-    <div class="mascot">🦘</div>
-    <h1>Cris</h1>
-    <p><span id="greeting">¡Hola!</span> ¿qué te ayudo a hacer hoy?</p>
+    <div class="greeting-row" id="greeting">¡Hola, Cris!</div>
+    <div class="hero-sub">¿en qué te ayudo hoy?</div>
   </div>
 
-  <div class="grid" id="moduleGrid">
-    <!-- Las tarjetas se generan con JS -->
+  <div class="quokka-zone">
+    <div class="bubble" id="bubble-msg">¡Aquí estoy! Elige un módulo 🌿</div>
+    <div class="quokka-wrap">
+      <!-- Quokka SVG kawaii teal -->
+      <svg viewBox="0 0 110 130" width="120" height="140" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ears -->
+        <ellipse cx="28" cy="22" rx="13" ry="16" fill="#33b5a7"/>
+        <ellipse cx="82" cy="22" rx="13" ry="16" fill="#33b5a7"/>
+        <!-- Inner ears -->
+        <ellipse cx="28" cy="23" rx="7" ry="9" fill="#5dcfc2"/>
+        <ellipse cx="82" cy="23" rx="7" ry="9" fill="#5dcfc2"/>
+        <!-- Body -->
+        <ellipse cx="55" cy="93" rx="34" ry="36" fill="#33b5a7"/>
+        <!-- Belly -->
+        <ellipse cx="55" cy="97" rx="20" ry="25" fill="#5dcfc2" opacity="0.65"/>
+        <!-- Head -->
+        <circle cx="55" cy="50" r="30" fill="#33b5a7"/>
+        <!-- Left eye -->
+        <circle cx="43" cy="47" r="6" fill="#0f4d47"/>
+        <circle cx="45" cy="45" r="2.5" fill="white"/>
+        <!-- Right eye -->
+        <circle cx="67" cy="47" r="6" fill="#0f4d47"/>
+        <circle cx="69" cy="45" r="2.5" fill="white"/>
+        <!-- Nose -->
+        <ellipse cx="55" cy="58" rx="5" ry="4" fill="#0f4d47"/>
+        <!-- Smile -->
+        <path d="M46 65 Q55 74 64 65" stroke="#0f4d47" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <!-- Left arm -->
+        <ellipse cx="23" cy="96" rx="11" ry="8" fill="#33b5a7" transform="rotate(-20 23 96)"/>
+        <!-- Right arm -->
+        <ellipse cx="87" cy="96" rx="11" ry="8" fill="#33b5a7" transform="rotate(20 87 96)"/>
+        <!-- Feet -->
+        <ellipse cx="42" cy="126" rx="12" ry="6" fill="#2da098"/>
+        <ellipse cx="68" cy="126" rx="12" ry="6" fill="#2da098"/>
+      </svg>
+    </div>
   </div>
+
+  <div class="grid" id="moduleGrid"></div>
 
   <div class="footer-note">
     Cris · tu compañera de cada día 💚<br>
-    Toca un módulo para empezar. Siempre puedes volver aquí con el botón 🏠
+    Toca 🏠 para volver aquí desde cualquier módulo
   </div>
 </div>
 
+<!-- Visor de módulos -->
 <div id="viewer">
   <iframe id="moduleFrame" title="Módulo de Cris"></iframe>
 </div>
 <button id="homeBtn" title="Volver al inicio">🏠</button>
 
 <script>
-  const modules = [
-    { icon:'🍅', title:'Rutina Diaria', sub:'Pomodoro y tareas', file:'modules/rutina-diaria.html' },
-    { icon:'💪', title:'Ejercicios', sub:'HIIT semanal', file:'modules/ejercicios-hiit.html' },
-    { icon:'🍲', title:'Comer Rico', sub:'Recetas y compras', file:'modules/comida.html' },
-    { icon:'🧹', title:'Limpieza', sub:'Plan progresivo', file:'modules/limpieza.html' },
-    { icon:'🎨', title:'Intereses', sub:'Aprender cada día', file:'modules/intereses.html' },
-    { icon:'💚', title:'Botiquín Emocional', sub:'Rescate y calma', file:'modules/rescate-emocional.html', pending:true },
-    { icon:'🌙', title:'Rutina Nocturna', sub:'Con Shiné', file:'modules/rutina-nocturna.html' },
-    { icon:'🧩', title:'Juegos Mentales', sub:'Agilidad y enfoque', file:'modules/juegos.html', pending:true }
-  ];
+const modules = [
+  { icon:'🍅', title:'Rutina Diaria',    sub:'Pomodoro y tareas',  file:'modules/rutina-diaria.html' },
+  { icon:'💪', title:'Ejercicios',       sub:'HIIT semanal',       file:'modules/ejercicios-hiit.html' },
+  { icon:'🍲', title:'Comer Rico',       sub:'Recetas y compras',  file:'modules/comida.html' },
+  { icon:'🧹', title:'Limpieza',         sub:'Plan progresivo',    file:'modules/limpieza.html' },
+  { icon:'🎨', title:'Intereses',        sub:'Aprender cada día',  file:'modules/intereses.html' },
+  { icon:'🫀', title:'Botiquín Emocional',sub:'Rescate y calma',   file:'modules/rescate-emocional.html' },
+  { icon:'🌙', title:'Rutina Nocturna',  sub:'Cierre del día',     file:'modules/rutina-nocturna.html' },
+  { icon:'🐍', title:'Juegos Mentales',  sub:'Snake y agilidad',   file:'modules/juegos.html' }
+];
 
-  const grid = document.getElementById('moduleGrid');
-  modules.forEach(m=>{
-    const card = document.createElement('div');
-    card.className = 'module-card' + (m.pending ? ' pending' : '');
-    card.innerHTML = `
-      ${m.pending ? '<span class="badge">pronto</span>' : ''}
-      <span class="icon">${m.icon}</span>
-      <div class="title">${m.title}</div>
-      <div class="sub">${m.sub}</div>
-    `;
-    card.addEventListener('click', ()=> openModule(m.file));
-    grid.appendChild(card);
+const BUBBLES = [
+  '¡Aquí estoy! Elige un módulo 🌿',
+  '¿Cómo estás hoy? 🫶',
+  '¡Tú puedes con esto! 💚',
+  'Un paso a la vez, sin prisa 🐾',
+  '¡Estoy contigo! Elige algo 🌱',
+  'Respira. Vamos juntos 🌬️'
+];
+
+// Saludo según hora
+function setGreeting(){
+  const h = new Date().getHours();
+  let txt;
+  if(h < 12) txt = '¡Buenos días!';
+  else if(h < 19) txt = '¡Buenas tardes!';
+  else txt = '¡Buenas noches!';
+  document.getElementById('greeting').textContent = txt;
+  document.getElementById('bubble-msg').textContent =
+    BUBBLES[Math.floor(Math.random()*BUBBLES.length)];
+}
+setGreeting();
+
+// Generar tarjetas
+const grid = document.getElementById('moduleGrid');
+modules.forEach(m => {
+  const card = document.createElement('div');
+  card.className = 'module-card';
+  card.innerHTML = `<span class="icon">${m.icon}</span><div class="title">${m.title}</div><div class="sub">${m.sub}</div>`;
+  card.addEventListener('click', () => openModule(m.file));
+  grid.appendChild(card);
+});
+
+function openModule(file){
+  document.getElementById('moduleFrame').src = file;
+  document.getElementById('viewer').classList.add('show');
+  document.getElementById('homeBtn').classList.add('show');
+}
+
+document.getElementById('homeBtn').addEventListener('click', () => {
+  document.getElementById('viewer').classList.remove('show');
+  document.getElementById('homeBtn').classList.remove('show');
+  document.getElementById('moduleFrame').src = '';
+});
+
+// PWA service worker
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
   });
-
-  function openModule(file){
-    const frame = document.getElementById('moduleFrame');
-    frame.src = file;
-    document.getElementById('viewer').classList.add('show');
-    document.getElementById('homeBtn').classList.add('show');
-  }
-
-  document.getElementById('homeBtn').addEventListener('click', ()=>{
-    document.getElementById('viewer').classList.remove('show');
-    document.getElementById('homeBtn').classList.remove('show');
-    document.getElementById('moduleFrame').src = '';
-  });
-
-  // Saludo según la hora
-  function setGreeting(){
-    const h = new Date().getHours();
-    let txt;
-    if(h < 12) txt = '¡Buenos días!';
-    else if(h < 19) txt = '¡Buenas tardes!';
-    else txt = '¡Buenas noches!';
-    document.getElementById('greeting').textContent = txt;
-  }
-  setGreeting();
-
-  // Registrar service worker (PWA)
-  if('serviceWorker' in navigator){
-    window.addEventListener('load', ()=>{
-      navigator.serviceWorker.register('service-worker.js').catch(()=>{});
-    });
-  }
+}
 </script>
 </body>
 </html>
