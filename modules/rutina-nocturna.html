@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Cris — Rutina Nocturna</title>
+<style>
+:root{
+  --bg1:#0f0f23;--bg2:#1a1a3a;--bg3:#2d1b69;
+  --accent:#4fd1c7;--accent2:#7c3aed;--accent3:#f59e0b;
+  --card:rgba(255,255,255,0.08);
+  --text:#f8fafc;--text-dim:#cbd5e1;--text-soft:#94a3b8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: radial-gradient(ellipse at top, var(--bg3) 0%, var(--bg2) 50%, var(--bg1) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, var(--text), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin: 2px 0 0 0;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79,209,199,0.4);
+}
+
+.btn.sec {
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.step-visual {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.timer {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.step-counter {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+
+.progress {
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.3s ease;
+}
+
+.stretch-item {
+  background: rgba(255,255,255,0.08);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border-left: 3px solid var(--accent);
+}
+
+.stretch-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.stretch-desc {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.stretch-time {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+}
+
+.note {
+  background: rgba(79,209,199,0.1);
+  border: 1px solid rgba(79,209,199,0.2);
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+}
+
+.meditation-intro {
+  background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(79,209,199,0.1));
+  border: 1px solid rgba(124,58,237,0.3);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.meditation-step {
+  background: rgba(255,255,255,0.08);
+  padding: 14px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 3px solid var(--accent2);
+}
+
+.meditation-phase {
+  font-weight: 600;
+  color: var(--accent2);
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.meditation-instruction {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.meditation-closing {
+  background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(124,58,237,0.1));
+  border: 1px solid rgba(245,158,11,0.3);
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.phrase {
+  background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(79,209,199,0.1));
+  border: 1px solid rgba(245,158,11,0.3);
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.phrase em {
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--accent3);
+  display: block;
+  margin-top: 8px;
+}
+
+.disconnection-warning {
+  background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(245,158,11,0.15));
+  border: 2px solid rgba(239,68,68,0.4);
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.disconnection-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fca5a5;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.disconnection-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.fomo-reminder {
+  background: rgba(124,58,237,0.2);
+  border: 1px solid rgba(124,58,237,0.4);
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.fomo-quote {
+  font-weight: 600;
+  color: var(--accent2);
+  font-size: 1.05rem;
+  display: block;
+  margin-top: 8px;
+}
+
+.hidden { display: none; }
+
+.dim {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s;
+  z-index: 100;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Pantalla principal -->
+  <div id="home">
+    <div class="header">
+      <div class="logo">🌙</div>
+      <div>
+        <h1 class="title">Cris — Rutina Nocturna</h1>
+        <p class="subtitle">Ritual diario para un sueño reparador</p>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3 style="margin:0 0 8px 0">Plan de 25 minutos</h3>
+      <p style="margin:0;color:var(--text-dim);font-size:0.9rem">
+        Orden → Higiene + Skincare → Estiramientos → Meditación Shiné → Desconexión
+      </p>
+      <button class="btn" onclick="startRoutine()">▶️ Comenzar rutina</button>
+      <div style="font-size:0.8rem;color:var(--text-soft);margin-top:8px;text-align:center">
+        💡 Horario ideal: 21:30-22:00
+      </div>
+    </div>
+    
+    <button class="btn sec" onclick="showInfo()">ℹ️ Ver información</button>
+  </div>
+
+  <!-- Pantalla de rutina -->
+  <div id="routine" class="hidden">
+    <div class="step-visual">
+      <div>
+        <h3 id="stepTitle" style="margin:0 0 4px 0">Paso</h3>
+        <p id="stepDesc" style="margin:0;color:var(--text-dim);font-size:0.9rem">Descripción</p>
+      </div>
+      <div style="text-align:right">
+        <div class="timer" id="timer">05:00</div>
+        <div class="step-counter" id="counter">1/5</div>
+      </div>
+    </div>
+    
+    <div class="progress">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    
+    <div id="stepContent"></div>
+    
+    <div class="controls">
+      <button class="btn sec" id="pauseBtn" onclick="pauseRoutine()">⏸️ Pausar</button>
+      <button class="btn" onclick="nextStep()">⏭️ Siguiente</button>
+    </div>
+  </div>
+
+  <!-- Pantalla de información -->
+  <div id="info" class="hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h2 style="margin:0;font-size:1.2rem">ℹ️ Información</h2>
+      <button class="btn sec" onclick="showHome()" style="padding:6px 12px;font-size:0.8rem">← Volver</button>
+    </div>
+    
+    <div class="card">
+      <h4 style="margin:0 0 12px 0">🌙 Beneficios de la rutina</h4>
+      <p style="font-size:0.9rem;line-height:1.5;color:var(--text-dim);margin:0">
+        Esta rutina de 25 minutos prepara tu mente y cuerpo para un sueño reparador. 
+        Incluye meditación Shiné (budista) para calmar la mente antes de dormir.
+      </p>
+    </div>
+    
+    <div class="card">
+      <h4 style="margin:0 0 12px 0">⏰ Horario recomendado</h4>
+      <div style="font-size:0.9rem;color:var(--text-dim)">
+        <div style="margin-bottom:8px">🌅 <strong>21:30</strong> - Inicio de la rutina</div>
+        <div style="margin-bottom:8px">🧴 <strong>21:35</strong> - Higiene y skincare</div>
+        <div style="margin-bottom:8px">🧘‍♀️ <strong>21:45</strong> - Estiramientos y meditación Shiné</div>
+        <div>📱 <strong>21:55</strong> - Desconexión digital</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="dim" class="dim"></div>
+
+<script>
+const steps = [
+  {
+    title: '🏠 Orden ligero',
+    desc: 'Recoge objetos visibles del área de descanso',
+    duration: 180
+  },
+  {
+    title: '🧴 Higiene y skincare',  
+    desc: 'Cuidado dental, facial y preparación para dormir',
+    duration: 300,
+    checklist: ['Cepillar dientes', 'Desmaquillar/limpiar cara', 'Aplicar crema hidratante', 'Crema contorno de ojos', 'Poner pijama cómodo']
+  },
+  {
+    title: '🧘‍♀️ Estiramientos suaves',
+    desc: 'Secuencia de estiramientos para liberar tensión del día',
+    duration: 300,
+    stretches: [
+      {
+        name: 'Cuello y hombros',
+        desc: 'Gira la cabeza lentamente hacia ambos lados. Eleva los hombros y suéltalos.',
+        time: '30-45 seg'
+      },
+      {
+        name: 'Brazos y muñecas', 
+        desc: 'Extiende un brazo, tira suavemente con la otra mano. Rota las muñecas.',
+        time: '30 seg cada brazo'
+      },
+      {
+        name: 'Espalda alta',
+        desc: 'Entrelaza dedos, estira brazos hacia arriba. Inclínate suavemente a cada lado.',
+        time: '30 seg cada lado'
+      },
+      {
+        name: 'Columna vertebral',
+        desc: 'Sentado, gira el torso lentamente a la derecha y luego a la izquierda.',
+        time: '30 seg cada lado'
+      },
+      {
+        name: 'Caderas y piernas',
+        desc: 'De pie, dobla una rodilla hacia el pecho. Cambia de pierna.',
+        time: '20 seg cada pierna'
+      },
+      {
+        name: 'Tobillos',
+        desc: 'Sentado o de pie, rota los tobillos en círculos. Flexiona y extiende los pies.',
+        time: '20 seg cada pie'
+      }
+    ]
+  },
+  {
+    title: '🕯️ Meditación Shiné',
+    desc: 'Meditación de calma mental y respiración consciente',
+    duration: 300,
+    meditation: {
+      intro: 'Shiné significa "morar en calma". Es una práctica budista básica de atención plena.',
+      steps: [
+        {
+          phase: 'Postura (30 seg)',
+          instruction: 'Siéntate cómodamente con la espalda recta pero relajada. Manos sobre los muslos o en tu regazo. Ojos suavemente cerrados o con mirada baja.'
+        },
+        {
+          phase: 'Respiración natural (1 min)',
+          instruction: 'Observa tu respiración sin cambiarla. Nota cómo el aire entra y sale. Si tu mente divaga, gentilmente regresa a la respiración.'
+        },
+        {
+          phase: 'Cuenta regresiva (2 min)',
+          instruction: 'Cuenta 21 respiraciones hacia atrás. En cada exhalación: 21... 20... 19... Si pierdes la cuenta, vuelve a empezar desde 21.'
+        },
+        {
+          phase: 'Respiración libre (1 min)',
+          instruction: 'Deja de contar. Solo observa tu respiración naturalmente. Pensamientos van y vienen como nubes. Tú eres el cielo.'
+        },
+        {
+          phase: 'Masaje entrecejo (30 seg)',
+          instruction: 'Con el dedo índice o medio, masajea suavemente el entrecejo en círculos horarios durante 30-60 segundos.'
+        }
+      ],
+      closing: 'Abre los ojos lentamente. Has cultivado shiné: la mente en calma.'
+    }
+  },
+  {
+    title: '📱 Desconexión Digital',
+    desc: 'Frase de liberación y guardar dispositivos',
+    duration: 180,
+    phrase: true,
+    disconnection: true
+  }
+];
+
+let currentStep = 0;
+let timeRemaining = 0;
+let timer = null;
+let isRunning = false;
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function showView(viewId) {
+  document.getElementById('home').classList.add('hidden');
+  document.getElementById('routine').classList.add('hidden');
+  document.getElementById('info').classList.add('hidden');
+  document.getElementById(viewId).classList.remove('hidden');
+}
+
+function showHome() {
+  stopTimer();
+  currentStep = 0;
+  isRunning = false;
+  document.getElementById('pauseBtn').textContent = '⏸️ Pausar';
+  showView('home');
+}
+
+function showInfo() {
+  showView('info');
+}
+
+function startRoutine() {
+  currentStep = 0;
+  showView('routine');
+  loadStep(0);
+  startTimer();
+}
+
+function loadStep(stepIndex) {
+  const step = steps[stepIndex];
+  timeRemaining = step.duration;
+  
+  document.getElementById('stepTitle').textContent = step.title;
+  document.getElementById('stepDesc').textContent = step.desc;
+  document.getElementById('counter').textContent = `${stepIndex + 1}/${steps.length}`;
+  document.getElementById('timer').textContent = formatTime(timeRemaining);
+  
+  const progress = (stepIndex / steps.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+  
+  const content = document.getElementById('stepContent');
+  content.innerHTML = '';
+  
+  if (step.checklist) {
+    const div = document.createElement('div');
+    div.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent)">✅ Lista de verificación:</div>';
+    step.checklist.forEach(item => {
+      const checkItem = document.createElement('label');
+      checkItem.className = 'check-item';
+      checkItem.innerHTML = `<input type="checkbox"> <span>${item}</span>`;
+      div.appendChild(checkItem);
+    });
+    content.appendChild(div);
+  }
+  
+  if (step.stretches) {
+    const div = document.createElement('div');
+    div.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent)">🧘‍♀️ Secuencia de estiramientos:</div>';
+    
+    step.stretches.forEach((stretch, i) => {
+      const stretchEl = document.createElement('div');
+      stretchEl.className = 'stretch-item';
+      stretchEl.innerHTML = `
+        <div class="stretch-name">${i + 1}. ${stretch.name}</div>
+        <div class="stretch-desc">${stretch.desc}</div>
+        <div class="stretch-time">⏱️ ${stretch.time}</div>
+      `;
+      div.appendChild(stretchEl);
+    });
+    
+    const tip = document.createElement('div');
+    tip.className = 'note';
+    tip.innerHTML = '<strong>💡 Consejos:</strong> Respira profundamente durante cada estiramiento. No fuerces, solo llega hasta donde te sientas cómodo. Si sientes dolor, para inmediatamente.';
+    div.appendChild(tip);
+    
+    content.appendChild(div);
+  }
+  
+  if (step.meditation) {
+    const med = step.meditation;
+    
+    const intro = document.createElement('div');
+    intro.className = 'meditation-intro';
+    intro.textContent = med.intro;
+    content.appendChild(intro);
+    
+    const stepsDiv = document.createElement('div');
+    stepsDiv.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent2)">🧘 Guía paso a paso:</div>';
+    
+    med.steps.forEach(medStep => {
+      const stepEl = document.createElement('div');
+      stepEl.className = 'meditation-step';
+      stepEl.innerHTML = `
+        <div class="meditation-phase">${medStep.phase}</div>
+        <div class="meditation-instruction">${medStep.instruction}</div>
+      `;
+      stepsDiv.appendChild(stepEl);
+    });
+    
+    content.appendChild(stepsDiv);
+    
+    const closing = document.createElement('div');
+    closing.className = 'meditation-closing';
+    closing.textContent = '🙏 ' + med.closing;
+    content.appendChild(closing);
+  }
+  
+  if (step.phrase) {
+    const phrase = document.createElement('div');
+    phrase.className = 'phrase';
+    phrase.innerHTML = `
+      <strong>🌙 Frase de liberación</strong>
+      <em>"Con amor dejo atrás el día y me sumerjo en un sueño tranquilo, en la seguridad de que el mañana cuidará de sí mismo"</em>
+    `;
+    content.appendChild(phrase);
+  }
+  
+  if (step.disconnection) {
+    const warning = document.createElement('div');
+    warning.className = 'disconnection-warning';
+    warning.innerHTML = `
+      <div class="disconnection-title">⚠️ DESCONEXIÓN TOTAL ⚠️</div>
+      <div class="disconnection-text">
+        <strong>Ahora debes guardar tu móvil en OTRA HABITACIÓN.</strong><br>
+        No lo dejes en tu mesita de noche. No lo pongas cerca de tu cama.<br>
+        <strong>Llévalo lejos de tu dormitorio.</strong>
+      </div>
+    `;
+    content.appendChild(warning);
+    
+    const fomo = document.createElement('div');
+    fomo.className = 'fomo-reminder';
+    fomo.innerHTML = `
+      💭 Si sientes tentación de mirarlo a medianoche, recuerda:<br>
+      <span class="fomo-quote">"Nada que pueda pasar en WhatsApp, Instagram o email entre las 22:00 y las 7:00 merece sacrificar tu descanso."</span><br><br>
+      <strong>El mundo seguirá girando sin ti por 8 horas.</strong><br>
+      Todo puede esperar hasta mañana. Tu sueño NO puede esperar.
+    `;
+    content.appendChild(fomo);
+  }
+}
+
+function startTimer() {
+  if (timer) clearInterval(timer);
+  timer = setInterval(() => {
+    if (timeRemaining > 0) {
+      timeRemaining--;
+      document.getElementById('timer').textContent = formatTime(timeRemaining);
+    } else {
+      nextStep();
+    }
+  }, 1000);
+  isRunning = true;
+}
+
+function stopTimer() {
+  if (timer) clearInterval(timer);
+  timer = null;
+  isRunning = false;
+}
+
+function pauseRoutine() {
+  const btn = document.getElementById('pauseBtn');
+  if (isRunning) {
+    stopTimer();
+    btn.textContent = '▶️ Reanudar';
+  } else {
+    startTimer();
+    btn.textContent = '⏸️ Pausar';
+  }
+}
+
+function nextStep() {
+  stopTimer();
+  currentStep++;
+  if (currentStep < steps.length) {
+    loadStep(currentStep);
+    startTimer();
+  } else {
+    finishRoutine();
+  }
+}
+
+function finishRoutine() {
+  stopTimer();
+  document.getElementById('timer').textContent = '00:00';
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('stepTitle').textContent = '🎉 ¡Rutina completada!';
+  document.getElementById('stepDesc').textContent = 'Preparado para un sueño reparador';
+  document.getElementById('stepContent').innerHTML = '';
+  
+  const controlsDiv = document.querySelector('.controls');
+  controlsDiv.innerHTML = '<button class="btn" onclick="showHome()">🏠 Volver al inicio</button>';
+  
+  setTimeout(() => {
+    document.getElementById('dim').style.opacity = '0.8';
+    setTimeout(() => {
+      alert('¡Rutina completada! 🌙\n\n✅ RECUERDA: Guarda el móvil LEJOS de tu cama.\n\n📱 → 🚪 → 😴\n\n¡Que tengas dulces sueños!');
+      showHome();
+      document.getElementById('dim').style.opacity = '0';
+    }, 2000);
+  }, 1000);
+}
+</script>
+
+</body>
+</html>

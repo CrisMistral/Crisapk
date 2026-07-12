@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cris App - Limpieza Progresiva</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .app {
+            max-width: 450px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { color: #2d3748; font-size: 1.8rem; margin-bottom: 5px; }
+        .header .subtitle { color: #718096; font-size: 0.9rem; }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: #f7fafc;
+            padding: 5px;
+            border-radius: 12px;
+        }
+        .tab {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.85rem;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .day-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 18px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .day-btn:hover { transform: translateY(-2px); }
+        .day-btn.express {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            grid-column: 1 / -1;
+            color: #2d3748;
+        }
+        .day-btn.general {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            grid-column: 1 / -1;
+        }
+        .task-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task { 
+            padding: 15px;
+            margin: 10px 0;
+            background: #f7fafc;
+            border-radius: 12px;
+            border-left: 4px solid #e2e8f0;
+        }
+        .task.current {
+            background: linear-gradient(135deg, #90cdf4, #63b3ed);
+            color: white;
+        }
+        .task.completed { 
+            background: #c6f6d5;
+            opacity: 0.7;
+        }
+        .timer-display {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            color: #2d3748;
+            font-family: monospace;
+            margin: 20px 0;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: white;
+            min-width: 100px;
+        }
+        .btn-primary { background: linear-gradient(135deg, #48bb78, #38a169); }
+        .btn-secondary { background: linear-gradient(135deg, #ed8936, #dd6b20); }
+        .btn-danger { background: linear-gradient(135deg, #fc8181, #e53e3e); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .calendar {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            position: relative;
+        }
+        .cal-day.today { border: 2px solid #667eea; font-weight: 700; }
+        .cal-day.completed { background: #c6f6d5; }
+        .cal-day.completed::after {
+            content: "✓";
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 0.6rem;
+            color: #38a169;
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: #2d3748; }
+        .stat-label { font-size: 0.8rem; color: #718096; }
+        .config-box {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        .config-title { font-weight: 700; margin-bottom: 15px; }
+        .toggle-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .toggle {
+            width: 50px;
+            height: 26px;
+            background: #cbd5e0;
+            border-radius: 13px;
+            position: relative;
+            transition: background 0.3s;
+        }
+        .toggle.active { background: #48bb78; }
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .toggle.active::after { transform: translateX(24px); }
+        input[type="time"], input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .edit-task {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .edit-task input[type="text"] { flex: 1; }
+        .edit-task input[type="number"] { width: 70px; }
+        .day-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .day-pill {
+            padding: 8px 15px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .day-pill.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .message {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 15px 0;
+            font-style: italic;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <h1>🧹 Cris App</h1>
+            <div class="subtitle">Tu asistente de limpieza progresiva</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="changeTab('home')">🏠 Inicio</button>
+            <button class="tab" onclick="changeTab('history')">📅 Historial</button>
+            <button class="tab" onclick="changeTab('config')">⚙️ Config</button>
+            <button class="tab" onclick="changeTab('edit')">✏️ Editar</button>
+        </div>
+
+        <!-- HOME -->
+        <div id="home" class="screen active">
+            <div class="message">💪 ¡Cada día un paso más hacia un hogar perfecto!</div>
+            <div class="days-grid" id="daysGrid"></div>
+        </div>
+
+        <!-- TASKS -->
+        <div id="tasks" class="screen">
+            <div class="task-header">
+                <div id="taskDay">Día</div>
+                <div id="taskProgress">0/0</div>
+            </div>
+            <div id="tasksList"></div>
+            <div class="timer-display" id="timer">00:00</div>
+            <div class="controls">
+                <button class="btn btn-primary" id="startBtn" onclick="startTask()">▶️ Iniciar</button>
+                <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTask()" disabled>⏸️ Pausar</button>
+                <button class="btn btn-danger" id="skipBtn" onclick="skipTask()" disabled>⏭️ Saltar</button>
+                <button class="btn" onclick="changeTab('home')">🏠 Volver</button>
+            </div>
+            <div id="completionMsg" style="display:none;"></div>
+        </div>
+
+        <!-- HISTORY -->
+        <div id="history" class="screen">
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button class="btn btn-secondary" onclick="changeMonth(-1)">◀</button>
+                    <strong id="calTitle">Mes</strong>
+                    <button class="btn btn-secondary" onclick="changeMonth(1)">▶</button>
+                </div>
+                <div class="calendar-grid" id="calGrid"></div>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value" id="statMonth">0</div>
+                        <div class="stat-label">Este mes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="statStreak">0</div>
+                        <div class="stat-label">Racha</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONFIG -->
+        <div id="config" class="screen">
+            <div class="config-box">
+                <div class="config-title">⏰ Recordatorios</div>
+                <div class="toggle-box" onclick="toggleNotif()">
+                    <span>Activar notificaciones</span>
+                    <div class="toggle" id="notifToggle"></div>
+                </div>
+                <div id="timeBox" style="display:none;">
+                    <input type="time" id="notifTime" value="09:00">
+                    <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="saveNotifTime()">💾 Guardar</button>
+                </div>
+            </div>
+            <div class="config-box">
+                <div class="config-title">📊 Datos</div>
+                <button class="btn btn-danger" style="width:100%;" onclick="resetHistory()">🗑️ Resetear historial</button>
+            </div>
+        </div>
+
+        <!-- EDIT -->
+        <div id="edit" class="screen">
+            <div class="config-box">
+                <div class="config-title">✏️ Personalizar tareas</div>
+                <div class="day-pills" id="editDays"></div>
+                <div id="editBox" style="display:none;">
+                    <div id="editTasksList"></div>
+                    <button class="btn btn-primary" style="width:100%; margin:10px 0;" onclick="addEditTask()">➕ Añadir</button>
+                    <button class="btn btn-primary" style="width:100%; margin-bottom:10px;" onclick="saveEdit()">💾 Guardar</button>
+                    <button class="btn btn-secondary" style="width:100%;" onclick="restoreOriginal()">🔄 Restaurar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ORIGINALS = {
+            "Lunes": [{n:"Limpiar encimera y fregadero",d:5},{n:"Limpiar electrodomésticos",d:4},{n:"Barrer y fregar suelo cocina",d:6},{n:"Vaciar basura",d:3}],
+            "Martes": [{n:"Limpiar lavabo",d:4},{n:"Limpiar espejo",d:3},{n:"Limpiar inodoro",d:5},{n:"Suelo baño",d:5}],
+            "Miércoles": [{n:"Quitar polvo",d:6},{n:"Limpiar mesa",d:4},{n:"Suelo salón",d:7},{n:"Ordenar sofá",d:3}],
+            "Jueves": [{n:"Hacer cama",d:5},{n:"Limpiar muebles",d:4},{n:"Suelo dormitorio",d:5},{n:"Ordenar mesillas",d:3}],
+            "Viernes": [{n:"Barrer entrada",d:4},{n:"Limpiar puerta",d:3},{n:"Polvo pasillo",d:5},{n:"Recoger objetos",d:5}],
+            "Sábado": [{n:"Limpiar microondas",d:4},{n:"Estante nevera",d:5},{n:"Balda despensa",d:5},{n:"Vitrocerámica",d:4}],
+            "Domingo": [{n:"Ordenar cajón armario",d:5},{n:"Organizar mesilla",d:4},{n:"Doblar ropa",d:6},{n:"Planificar semana",d:3}],
+            "Limpieza General": [{n:"Recoger objetos",d:5},{n:"Encimera",d:5},{n:"Fregadero",d:5},{n:"Suelo cocina",d:5},{n:"Lavabo",d:5},{n:"Inodoro",d:5},{n:"Suelo baño",d:5},{n:"Polvo salón",d:5},{n:"Sofá",d:5},{n:"Suelo salón",d:5},{n:"Camas",d:5},{n:"Mesillas",d:5},{n:"Suelo dormitorio",d:5},{n:"Papeleras",d:5},{n:"Espejos",d:5},{n:"Entrada",d:5}]
+        };
+
+        let tasks = {};
+        let current = {day:'', tasks:[], idx:0, time:0, total:0, timer:null, paused:false, done:0};
+        let viewMonth = new Date();
+        let editDay = '';
+
+        function init() {
+            const saved = localStorage.getItem('tasks');
+            tasks = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(ORIGINALS));
+            renderDays();
+            renderEditDays();
+            loadNotifConfig();
+            startNotifCheck();
+        }
+
+        function save() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function renderDays() {
+            const grid = document.getElementById('daysGrid');
+            grid.innerHTML = '';
+            
+            const express = document.createElement('button');
+            express.className = 'day-btn express';
+            express.innerHTML = '⚡ Express<br><small>15 minutos</small>';
+            express.onclick = () => selectExpress();
+            grid.appendChild(express);
+
+            ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'].forEach(d => {
+                const btn = document.createElement('button');
+                btn.className = 'day-btn';
+                btn.textContent = d;
+                btn.onclick = () => selectDay(d);
+                grid.appendChild(btn);
+            });
+
+            const gen = document.createElement('button');
+            gen.className = 'day-btn general';
+            gen.innerHTML = '🏠 Limpieza General<br><small>Toda la casa</small>';
+            gen.onclick = () => selectDay('Limpieza General');
+            grid.appendChild(gen);
+        }
+
+        function selectExpress() {
+            const all = [];
+            ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'].forEach(d => {
+                if(tasks[d]) tasks[d].forEach(t => all.push({...t,d:5}));
+            });
+            const picked = [];
+            for(let i=0; i<3 && all.length>0; i++) {
+                const idx = Math.floor(Math.random()*all.length);
+                picked.push(all[idx]);
+                all.splice(idx,1);
+            }
+            current = {day:'Express ⚡', tasks:picked, idx:0, time:0, total:0, timer:null, paused:false, done:0};
+            showTasks();
+        }
+
+        function selectDay(d) {
+            current = {day:d, tasks:[...tasks[d]], idx:0, time:0, total:0, timer:null, paused:false, done:0};
+            showTasks();
+        }
+
+        function showTasks() {
+            document.getElementById('taskDay').textContent = current.day;
+            document.getElementById('taskProgress').textContent = `${current.done}/${current.tasks.length}`;
+            
+            const list = document.getElementById('tasksList');
+            list.innerHTML = '';
+            current.tasks.forEach((t,i) => {
+                const div = document.createElement('div');
+                div.className = 'task';
+                if(i < current.idx) div.classList.add('completed');
+                if(i === current.idx) div.classList.add('current');
+                div.innerHTML = `<strong>${t.n}</strong><div style="font-size:0.9em;opacity:0.8;">${t.d} min</div>`;
+                list.appendChild(div);
+            });
+
+            document.getElementById('timer').textContent = '00:00';
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('pauseBtn').disabled = true;
+            document.getElementById('skipBtn').disabled = true;
+            document.getElementById('completionMsg').style.display = 'none';
+            
+            changeTab('tasks');
+        }
+
+        function startTask() {
+            if(current.idx >= current.tasks.length) {
+                complete();
+                return;
+            }
+            
+            const task = current.tasks[current.idx];
+            current.total = task.d * 60;
+            current.time = current.total;
+            
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('pauseBtn').disabled = false;
+            document.getElementById('skipBtn').disabled = false;
+            
+            if(current.timer) clearInterval(current.timer);
+            current.timer = setInterval(tick, 1000);
+            current.paused = false;
+            
+            speak(`Iniciando: ${task.n}`);
+        }
+
+        function tick() {
+            if(current.time <= 0) {
+                clearInterval(current.timer);
+                current.done++;
+                current.idx++;
+                
+                if(current.idx >= current.tasks.length) {
+                    complete();
+                } else {
+                    setTimeout(startTask, 2000);
+                }
+                
+                document.getElementById('taskProgress').textContent = `${current.done}/${current.tasks.length}`;
+                showTasks();
+                return;
+            }
+            
+            current.time--;
+            const m = Math.floor(current.time/60);
+            const s = current.time%60;
+            document.getElementById('timer').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+
+        function pauseTask() {
+            if(current.paused) {
+                current.timer = setInterval(tick, 1000);
+                document.getElementById('pauseBtn').textContent = '⏸️ Pausar';
+                current.paused = false;
+            } else {
+                clearInterval(current.timer);
+                document.getElementById('pauseBtn').textContent = '▶️ Reanudar';
+                current.paused = true;
+            }
+        }
+
+        function skipTask() {
+            clearInterval(current.timer);
+            current.idx++;
+            if(current.idx >= current.tasks.length) {
+                complete();
+            } else {
+                setTimeout(startTask, 1000);
+            }
+            showTasks();
+        }
+
+        function complete() {
+            clearInterval(current.timer);
+            saveCompletion(current.day);
+            
+            const msg = document.getElementById('completionMsg');
+            msg.style.display = 'block';
+            msg.className = 'message';
+            msg.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+            msg.style.color = 'white';
+            msg.innerHTML = `<h2>🎉 ¡Completado!</h2><p>¡Excelente trabajo con ${current.day}!</p>`;
+            
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('pauseBtn').disabled = true;
+            document.getElementById('skipBtn').disabled = true;
+            
+            speak('¡Excelente trabajo! Has completado todas las tareas.');
+        }
+
+        function saveCompletion(day) {
+            const today = new Date().toISOString().split('T')[0];
+            const hist = JSON.parse(localStorage.getItem('history') || '{}');
+            if(!hist[today]) hist[today] = [];
+            if(!hist[today].includes(day)) hist[today].push(day);
+            localStorage.setItem('history', JSON.stringify(hist));
+        }
+
+        function changeTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab).classList.add('active');
+            
+            if(tab === 'history') renderCalendar();
+        }
+
+        function renderCalendar() {
+            const y = viewMonth.getFullYear();
+            const m = viewMonth.getMonth();
+            const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            
+            document.getElementById('calTitle').textContent = `${months[m]} ${y}`;
+            
+            const grid = document.getElementById('calGrid');
+            grid.innerHTML = '';
+            
+            ['D','L','M','X','J','V','S'].forEach(d => {
+                const div = document.createElement('div');
+                div.textContent = d;
+                div.style.fontWeight = '600';
+                div.style.fontSize = '0.75rem';
+                div.style.padding = '8px 0';
+                div.style.textAlign = 'center';
+                grid.appendChild(div);
+            });
+            
+            const first = new Date(y, m, 1);
+            const last = new Date(y, m+1, 0);
+            const startDay = first.getDay();
+            
+            const hist = JSON.parse(localStorage.getItem('history') || '{}');
+            const today = new Date().toISOString().split('T')[0];
+            
+            for(let i=0; i<startDay; i++) {
+                const div = document.createElement('div');
+                grid.appendChild(div);
+            }
+            
+            for(let d=1; d<=last.getDate(); d++) {
+                const date = new Date(y, m, d);
+                const dateStr = date.toISOString().split('T')[0];
+                
+                const div = document.createElement('div');
+                div.className = 'cal-day';
+                div.textContent = d;
+                
+                if(dateStr === today) div.classList.add('today');
+                if(hist[dateStr] && hist[dateStr].length > 0) div.classList.add('completed');
+                
+                grid.appendChild(div);
+            }
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            const hist = JSON.parse(localStorage.getItem('history') || '{}');
+            const y = viewMonth.getFullYear();
+            const m = viewMonth.getMonth();
+            
+            let monthCount = 0;
+            Object.keys(hist).forEach(d => {
+                const date = new Date(d);
+                if(date.getMonth()===m && date.getFullYear()===y && hist[d].length>0) monthCount++;
+            });
+            
+            document.getElementById('statMonth').textContent = monthCount;
+            document.getElementById('statTotal').textContent = Object.keys(hist).length;
+            document.getElementById('statStreak').textContent = calcStreak(hist);
+        }
+
+        function calcStreak(hist) {
+            const dates = Object.keys(hist).sort().reverse();
+            let streak = 0;
+            let curr = new Date();
+            curr.setHours(0,0,0,0);
+            
+            for(let d of dates) {
+                const date = new Date(d);
+                date.setHours(0,0,0,0);
+                const diff = Math.floor((curr-date)/(1000*60*60*24));
+                if(diff === streak) streak++;
+                else break;
+            }
+            return streak;
+        }
+
+        function changeMonth(dir) {
+            viewMonth.setMonth(viewMonth.getMonth() + dir);
+            renderCalendar();
+        }
+
+        function loadNotifConfig() {
+            const active = localStorage.getItem('notifActive') === 'true';
+            const time = localStorage.getItem('notifTime') || '09:00';
+            
+            document.getElementById('notifToggle').classList.toggle('active', active);
+            document.getElementById('notifTime').value = time;
+            document.getElementById('timeBox').style.display = active ? 'block' : 'none';
+        }
+
+        function toggleNotif() {
+            const toggle = document.getElementById('notifToggle');
+            const active = !toggle.classList.contains('active');
+            
+            if(active) {
+                if('Notification' in window) {
+                    Notification.requestPermission().then(p => {
+                        if(p === 'granted') {
+                            toggle.classList.add('active');
+                            document.getElementById('timeBox').style.display = 'block';
+                            localStorage.setItem('notifActive', 'true');
+                        } else {
+                            alert('❌ Permiso denegado');
+                        }
+                    });
+                } else {
+                    alert('❌ No soportado');
+                }
+            } else {
+                toggle.classList.remove('active');
+                document.getElementById('timeBox').style.display = 'none';
+                localStorage.setItem('notifActive', 'false');
+            }
+        }
+
+        function saveNotifTime() {
+            const time = document.getElementById('notifTime').value;
+            localStorage.setItem('notifTime', time);
+            alert(`✅ Guardado para las ${time}`);
+        }
+
+        function startNotifCheck() {
+            setInterval(checkNotif, 60000);
+            checkNotif();
+        }
+
+        function checkNotif() {
+            if(localStorage.getItem('notifActive') !== 'true') return;
+            
+            const time = localStorage.getItem('notifTime') || '09:00';
+            const now = new Date();
+            const nowTime = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            
+            if(nowTime === time) {
+                const last = localStorage.getItem('lastNotif');
+                const today = now.toISOString().split('T')[0];
+                
+                if(last !== today) {
+                    if('Notification' in window && Notification.permission === 'granted') {
+                        new Notification('🧹 Cris App', {body: '¡Hora de tu rutina de limpieza!'});
+                    }
+                    localStorage.setItem('lastNotif', today);
+                }
+            }
+        }
+
+        function renderEditDays() {
+            const cont = document.getElementById('editDays');
+            cont.innerHTML = '';
+            Object.keys(tasks).forEach(d => {
+                const btn = document.createElement('button');
+                btn.className = 'day-pill';
+                btn.textContent = d;
+                btn.onclick = () => selectEditDay(d);
+                cont.appendChild(btn);
+            });
+        }
+
+        function selectEditDay(d) {
+            editDay = d;
+            document.querySelectorAll('.day-pill').forEach(p => p.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('editBox').style.display = 'block';
+            renderEditTasks();
+        }
+
+        function renderEditTasks() {
+            const cont = document.getElementById('editTasksList');
+            cont.innerHTML = '';
+            
+            if(!tasks[editDay]) return;
+            
+            tasks[editDay].forEach((t, i) => {
+                const div = document.createElement('div');
+                div.className = 'edit-task';
+                div.innerHTML = `
+                    <input type="text" value="${t.n}" data-idx="${i}">
+                    <input type="number" value="${t.d}" min="1" max="60" data-idx="${i}">
+                    <button class="btn btn-danger" onclick="deleteTask(${i})">🗑️</button>
+                `;
+                cont.appendChild(div);
+            });
+        }
+
+        function addEditTask() {
+            if(!editDay) return;
+            tasks[editDay].push({n:'Nueva tarea', d:5});
+            renderEditTasks();
+        }
+
+        function deleteTask(idx) {
+            if(confirm('¿Eliminar esta tarea?')) {
+                tasks[editDay].splice(idx, 1);
+                renderEditTasks();
+            }
+        }
+
+        function saveEdit() {
+            const inputs = document.querySelectorAll('#editTasksList input[type="text"]');
+            const nums = document.querySelectorAll('#editTasksList input[type="number"]');
+            
+            const newTasks = [];
+            inputs.forEach((inp, i) => {
+                const name = inp.value.trim();
+                const dur = parseInt(nums[i].value);
+                if(name && dur > 0) {
+                    newTasks.push({n:name, d:dur});
+                }
+            });
+            
+            tasks[editDay] = newTasks;
+            save();
+            renderDays();
+            alert('✅ Guardado correctamente');
+        }
+
+        function restoreOriginal() {
+            if(confirm('¿Restaurar tareas originales?')) {
+                if(ORIGINALS[editDay]) {
+                    tasks[editDay] = JSON.parse(JSON.stringify(ORIGINALS[editDay]));
+                    save();
+                    renderEditTasks();
+                    renderDays();
+                    alert('✅ Restaurado');
+                }
+            }
+        }
+
+        function resetHistory() {
+            if(confirm('¿Eliminar todo el historial?')) {
+                localStorage.removeItem('history');
+                renderCalendar();
+                alert('✅ Historial eliminado');
+            }
+        }
+
+        function speak(txt) {
+            if('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(txt);
+                u.lang = 'es-ES';
+                u.rate = 0.9;
+                speechSynthesis.speak(u);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

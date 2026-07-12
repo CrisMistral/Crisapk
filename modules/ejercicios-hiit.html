@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cris App - HIIT</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:10px}
+.app{max-width:400px;margin:0 auto;background:rgba(255,255,255,0.95);border-radius:15px;padding:20px;box-shadow:0 6px 25px rgba(0,0,0,0.15)}
+h1{text-align:center;color:#4a5568;margin-bottom:20px;font-size:1.5rem;font-weight:bold}
+.screen{display:none}
+.screen.active{display:block}
+button{background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;padding:12px 16px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;transition:all 0.3s;width:100%}
+button:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(102,126,234,0.4)}
+button:disabled{background:#a0aec0;cursor:not-allowed;transform:none}
+.back{background:#718096;margin-bottom:15px}
+.completed{background:linear-gradient(135deg,#48bb78,#38a169)!important}
+.day-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
+.exercise{text-align:center}
+.exercise h2{color:#4a5568;margin-bottom:10px;font-size:1.3rem}
+.img-placeholder{width:100%;height:120px;background:linear-gradient(135deg,#f7fafc,#edf2f7);border:2px solid #e2e8f0;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:3rem;margin:12px 0}
+.desc{margin:10px 0;background:#f7fafc;padding:12px;border-radius:10px;border-left:4px solid #667eea;max-height:200px;overflow-y:auto}
+.exercise-main{font-size:14px;font-weight:bold;color:#4a5568;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
+.exercise-details{font-size:10px;color:#718096;text-transform:lowercase}
+.timer{font-size:2.5rem;font-weight:bold;color:#4a5568;margin:15px 0}
+.timer.warning{color:#f56565}
+.timer.rest{color:#48bb78}
+.progress-bar{background:#e2e8f0;height:8px;border-radius:4px;margin:15px 0;overflow:hidden}
+.progress-fill{background:linear-gradient(90deg,#667eea,#764ba2);height:100%;transition:width 0.4s ease}
+.controls{display:flex;gap:8px;margin:15px 0}
+.controls button{flex:1;padding:12px 8px;font-size:13px}
+.phase-indicator{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;margin:10px 0;display:inline-block}
+.phase-indicator.rest{background:linear-gradient(135deg,#48bb78,#38a169)}
+.overview-content{background:#f7fafc;border-radius:10px;padding:15px;margin:15px 0;max-height:350px;overflow-y:auto}
+.exercise-overview{background:white;border-radius:8px;padding:10px;margin:8px 0;border-left:4px solid #667eea}
+.exercise-overview h3{color:#4a5568;font-size:13px;font-weight:bold;margin-bottom:3px}
+.exercise-sets{color:#667eea;font-size:11px;font-weight:600}
+.total-time{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:10px;border-radius:8px;text-align:center;font-weight:bold;margin:10px 0}
+.start-workout{background:linear-gradient(135deg,#48bb78,#38a169)!important;font-size:16px;font-weight:bold;padding:15px;margin-top:15px}
+.quokka{font-size:3rem;margin:20px 0;animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.stats{display:flex;justify-content:space-around;background:#f7fafc;border-radius:10px;padding:10px;margin:10px 0;font-size:11px}
+.stat{text-align:center;color:#4a5568}
+.stat-value{font-weight:bold;font-size:16px;color:#667eea}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div id="home" class="screen active">
+<h1>🔥 HIIT - Entrenamiento</h1>
+<div class="stats">
+<div class="stat"><div class="stat-value" id="total-workouts">0</div>Entrenamientos</div>
+<div class="stat"><div class="stat-value" id="total-time">0</div>Minutos</div>
+<div class="stat"><div class="stat-value" id="streak">0</div>Racha</div>
+</div>
+<div class="day-grid">
+<button id="btn-lunes">🔥 Lunes</button>
+<button id="btn-martes">💪 Martes</button>
+<button id="btn-miercoles">🚀 Miércoles</button>
+<button id="btn-jueves">⚡ Jueves</button>
+<button id="btn-viernes">🎯 Viernes</button>
+</div>
+</div>
+
+<div id="overview" class="screen">
+<button class="back" id="overview-back">← Volver</button>
+<h1 id="overview-title">📋 Rutina</h1>
+<div id="overview-content" class="overview-content"></div>
+<button id="start-workout" class="start-workout">🚀 Comenzar</button>
+</div>
+
+<div id="workout" class="screen">
+<button class="back" id="back-btn">← Volver</button>
+<div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+<div class="exercise">
+<div class="phase-indicator" id="phase">Ejercicio</div>
+<h2 id="name"></h2>
+<div id="img" class="img-placeholder">🏃‍♂️</div>
+<div id="desc" class="desc"></div>
+<div id="time" class="timer">00:30</div>
+<div class="controls">
+<button id="start">▶ Iniciar</button>
+<button id="pause" disabled>⏸ Pausar</button>
+<button id="next">⏭ Siguiente</button>
+</div>
+<div id="counter"></div>
+</div>
+</div>
+
+<div id="done" class="screen">
+<div class="quokka">🦘</div>
+<h2>¡Entrenamiento Completado!</h2>
+<div class="stats">
+<div class="stat"><div class="stat-value" id="session-time">0</div>Minutos</div>
+<div class="stat"><div class="stat-value" id="session-exercises">0</div>Ejercicios</div>
+</div>
+<p style="color:#667eea;margin:15px 0">¡Excelente trabajo! 💪</p>
+<button id="home-btn">🏠 Volver</button>
+</div>
+
+</div>
+
+<script>
+const data={
+lunes:[
+{name:'Jumping Jacks',desc:'<div class="exercise-main">SALTA ABRIENDO PIERNAS Y SUBIENDO BRAZOS, VUELVE A LA POSICIÓN INICIAL. RITMO CONSTANTE.</div><div class="exercise-details">🎯 NOTA: deltoides (hombros), cuádriceps (frente muslos), pantorrillas, cardio • siente: calor en piernas y brazos • aterrizaje suave en pies</div>',img:'🤸‍♀️',time:60,sets:4,rest:20},
+{name:'Sentadillas',desc:'<div class="exercise-main">BAJA COMO SENTÁNDOTE EN SILLA, ESPALDA RECTA, PESO EN TALONES. SUBE CON GLÚTEOS.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteo mayor (nalgas), isquiotibiales (atrás muslos) • siente: tensión en glúteos al subir, peso en talones • rodillas alineadas con pies</div>',img:'🏋️‍♀️',time:50,sets:4,rest:20},
+{name:'Plancha',desc:'<div class="exercise-main">CUERPO RECTO COMO TABLA, BRAZOS EXTENDIDOS. CONTRAE ABDOMEN Y RESPIRA CONTROLADO.</div><div class="exercise-details">🎯 NOTA: recto abdominal (abdomen frontal), transverso abdominal (faja profunda), deltoides (hombros) • siente: activación intensa del abdomen • no hundir cadera</div>',img:'🏊‍♀️',time:45,sets:3,rest:15},
+{name:'Burpees suaves',desc:'<div class="exercise-main">SENTADILLA-PLANCHA-FLEXIÓN-SALTO. SECUENCIA COMPLETA A RITMO CONTROLADO.</div><div class="exercise-details">🎯 NOTA: todo el cuerpo - pectorales (pecho), cuádriceps, glúteos, deltoides, core • siente: fatiga total corporal • técnica sobre velocidad</div>',img:'🏃‍♀️',time:50,sets:3,rest:25},
+{name:'Flexiones rodillas',desc:'<div class="exercise-main">PLANCHA CON RODILLAS APOYADAS. BAJA PECHO AL SUELO, EMPUJA MANTENIENDO LÍNEA RECTA.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), deltoides anterior (frente hombros) • siente: estiramiento en pecho al bajar, contracción al subir</div>',img:'💪',time:45,sets:3,rest:20}
+],
+martes:[
+{name:'High Knees',desc:'<div class="exercise-main">CORRE EN EL LUGAR ELEVANDO RODILLAS A LA CADERA. TORSO ERGUIDO, BRAZOS ACTIVOS.</div><div class="exercise-details">🎯 NOTA: hip flexores (frente cadera), cuádriceps (frente muslos), pantorrillas • siente: elevación intensa de rodillas, trabajo cardiovascular • torso estable</div>',img:'🦵',time:55,sets:4,rest:20},
+{name:'Flexiones rodillas',desc:'<div class="exercise-main">PLANCHA CON RODILLAS APOYADAS. BAJA PECHO, EMPUJA MANTENIENDO CUERPO RECTO.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), core (abdomen) • siente: trabajo intenso en pecho y brazos • control bajada-subida</div>',img:'💪',time:50,sets:4,rest:20},
+{name:'Mountain Climbers',desc:'<div class="exercise-main">PLANCHA ALTERNANDO RODILLAS AL PECHO RÁPIDAMENTE. CADERAS ESTABLES.</div><div class="exercise-details">🎯 NOTA: core completo, hip flexores, deltoides (hombros), cardio • siente: abdomen trabajando constantemente • cadera inmóvil</div>',img:'🏃‍♂️',time:45,sets:3,rest:15},
+{name:'Plancha lateral',desc:'<div class="exercise-main">DE LADO EN ANTEBRAZO, CUERPO RECTO Y ALINEADO. CADERA ELEVADA DEL SUELO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costado abdomen), cuadrado lumbar (espalda baja), glúteo medio • siente: intensa contracción lateral • no caer cadera</div>',img:'🏄‍♀️',time:40,sets:3,rest:20},
+{name:'Saltos estrella',desc:'<div class="exercise-main">DESDE SENTADILLA SALTA EXTENDIENDO BRAZOS Y PIERNAS COMO ESTRELLA.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteos, deltoides, aductores (interior muslos) • siente: explosividad total corporal • aterrizaje controlado</div>',img:'⭐',time:40,sets:3,rest:20}
+],
+miercoles:[
+{name:'Jump Squats',desc:'<div class="exercise-main">SENTADILLA EXPLOSIVA SALTANDO LO MÁS ALTO POSIBLE. ATERRIZA EN SENTADILLA.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteo mayor (nalgas), pantorrillas, core • siente: potencia explosiva en piernas • aterrizaje suave en sentadilla</div>',img:'🦘',time:55,sets:4,rest:25},
+{name:'Push Ups',desc:'<div class="exercise-main">FLEXIONES COMPLETAS DESDE PIES. PECHO CASI TOCA SUELO, CUERPO RECTO.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), deltoides, core profundo • siente: estiramiento pectoral intenso • cuerpo como tabla rígida</div>',img:'💪',time:50,sets:4,rest:25},
+{name:'Bicicleta abdominal',desc:'<div class="exercise-main">ACOSTADO ALTERNA CODOS A RODILLAS OPUESTAS. ESPALDA BAJA EN SUELO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costados abdomen), recto abdominal, hip flexores • siente: rotación intensa en costados • control sobre velocidad</div>',img:'🚴‍♀️',time:60,sets:3,rest:20},
+{name:'Plancha toque hombro',desc:'<div class="exercise-main">PLANCHA TOCANDO HOMBROS ALTERNADAMENTE. CADERAS INMÓVILES.</div><div class="exercise-details">🎯 NOTA: core anti-rotacional, deltoides estabilizadores, glúteos • siente: desafío constante de equilibrio • movimiento controlado</div>',img:'🏊‍♀️',time:45,sets:3,rest:20},
+{name:'Squat pulses',desc:'<div class="exercise-main">POSICIÓN BAJA DE SENTADILLA CON PULSOS PEQUEÑOS. TENSIÓN CONSTANTE.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteos, aductores (interior muslos) • siente: quemadura intensa en piernas • tensión constante</div>',img:'🔥',time:40,sets:3,rest:20}
+],
+jueves:[
+{name:'Skater Jumps',desc:'<div class="exercise-main">SALTOS LATERALES ALTERNOS IMITANDO PATINADOR. PIERNA ATRÁS CRUZADA.</div><div class="exercise-details">🎯 NOTA: glúteo medio (lateral cadera), cuádriceps, aductores, estabilizadores • siente: trabajo lateral intenso • equilibrio dinámico</div>',img:'🛹',time:55,sets:4,rest:25},
+{name:'Flexiones diamante',desc:'<div class="exercise-main">FLEXIONES CON MANOS FORMANDO DIAMANTE BAJO EL PECHO. ENFOQUE TRÍCEPS.</div><div class="exercise-details">🎯 NOTA: tríceps (atrás brazos), pectorales internos, deltoides anterior • siente: concentración intensa en tríceps • brazos más que pecho</div>',img:'💎',time:45,sets:4,rest:25},
+{name:'Plancha frontal',desc:'<div class="exercise-main">MANTÉN PLANCHA CON BRAZOS EXTENDIDOS. RESPIRACIÓN CONTROLADA.</div><div class="exercise-details">🎯 NOTA: core completo, erectores espinales (espalda), deltoides • siente: activación profunda abdominal sostenida • respiración continua</div>',img:'🏊‍♀️',time:50,sets:3,rest:25},
+{name:'Burpees modificados',desc:'<div class="exercise-main">BURPEES COMPLETOS A RITMO CONTROLADO. SECUENCIA COMPLETA.</div><div class="exercise-details">🎯 NOTA: cuerpo completo - pectorales, cuádriceps, glúteos, core, deltoides • siente: coordinación muscular total • ritmo sostenible</div>',img:'🏃‍♀️',time:50,sets:3,rest:25},
+{name:'Lunges alternos',desc:'<div class="exercise-main">PASO ADELANTE, RODILLAS A 90°. EMPUJA CON TALÓN PARA VOLVER.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteos, isquiotibiales (atrás muslo), estabilizadores • siente: trabajo unilateral intenso • equilibrio y fuerza</div>',img:'🚶‍♀️',time:45,sets:3,rest:20}
+],
+viernes:[
+{name:'Jumping Jacks',desc:'<div class="exercise-main">JUMPING JACKS INTENSOS PARA ACTIVAR SISTEMA COMPLETO. PREPARACIÓN FINAL.</div><div class="exercise-details">🎯 NOTA: deltoides (hombros), cuádriceps, pantorrillas, sistema cardiovascular • siente: activación completa corporal • preparación máxima</div>',img:'🤸‍♀️',time:60,sets:4,rest:20},
+{name:'Sentadillas con salto',desc:'<div class="exercise-main">SENTADILLAS EXPLOSIVAS A MÁXIMA INTENSIDAD. CADA REP AL MÁXIMO.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteo mayor, pantorrillas, core estabilizador • siente: explosividad máxima en piernas • cada salto al máximo</div>',img:'🦘',time:55,sets:4,rest:25},
+{name:'Plancha lateral',desc:'<div class="exercise-main">PLANCHA LATERAL MÁXIMO TIEMPO. DESAFÍO MENTAL Y FÍSICO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costado abdomen), cuadrado lumbar, glúteo medio • siente: resistencia isométrica intensa lateral • desafío mental</div>',img:'🏄‍♀️',time:40,sets:3,rest:20},
+{name:'Burpees',desc:'<div class="exercise-main">BURPEES COMPLETOS SIN MODIFICACIONES. DESAFÍO FINAL SEMANAL.</div><div class="exercise-details">🎯 NOTA: todo el cuerpo - pectorales, cuádriceps, glúteos, core, deltoides • siente: límite máximo capacidad física • forma técnica perfecta</div>',img:'🔥',time:50,sets:3,rest:30},
+{name:'Cardio finisher',desc:'<div class="exercise-main">COMBINACIÓN LIBRE: JUMPING JACKS, HIGH KNEES, MOUNTAIN CLIMBERS.</div><div class="exercise-details">🎯 NOTA: sistema cardiovascular completo, piernas, core, hombros • siente: esfuerzo cardiovascular máximo • culminación semanal</div>',img:'💥',time:45,sets:3,rest:15}
+]
+};
+
+let day,ex=0,timer,left=0,running=false,currentSet=1,isResting=false,audioCtx,sessionStart,totalExercises=0;
+
+function show(id){
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
+
+function showHome(){
+show('home');
+stop();
+loadCompleted();
+updateStats();
+}
+
+function startDay(d){
+day=d;
+showOverview();
+}
+
+function showOverview(){
+const exercises=data[day];
+let totalTime=0;
+let html='<div class="total-time">🕐 '+day.charAt(0).toUpperCase()+day.slice(1)+'</div>';
+
+exercises.forEach((ex,i)=>{
+const exTime=ex.time*ex.sets+ex.rest*(ex.sets-1);
+totalTime+=exTime;
+html+=`<div class="exercise-overview">
+<h3>${i+1}. ${ex.name} ${ex.img}</h3>
+<div class="exercise-sets">${ex.sets} series × ${ex.time}s + ${ex.rest}s descanso</div>
+</div>`;
+});
+
+html+=`<div class="total-time">⏱️ Tiempo total: ${Math.ceil(totalTime/60)} min</div>`;
+document.getElementById('overview-content').innerHTML=html;
+show('overview');
+}
+
+function startWorkout(){
+ex=0;currentSet=1;isResting=false;totalExercises=0;
+sessionStart=Date.now();
+show('workout');
+initAudio();
+load();
+}
+
+function load(){
+const curr=data[day][ex];
+document.getElementById('name').textContent=curr.name;
+document.getElementById('desc').innerHTML=curr.desc;
+document.getElementById('img').textContent=curr.img;
+document.getElementById('counter').textContent=`${ex+1}/${data[day].length} - Serie ${currentSet}/${curr.sets}`;
+document.getElementById('progress').style.width=((ex+((currentSet-1)/curr.sets))/data[day].length*100)+'%';
+
+const phase=document.getElementById('phase');
+const timer=document.getElementById('time');
+if(isResting){
+phase.textContent='Descanso';
+phase.className='phase-indicator rest';
+timer.className='timer rest';
+left=curr.rest;
+document.getElementById('img').textContent='⏸️';
+document.getElementById('desc').innerHTML='<div class="exercise-main">DESCANSA Y PREPÁRATE PARA LA SIGUIENTE SERIE</div><div class="exercise-details">respiración profunda • hidratación • preparación mental</div>';
+}else{
+phase.textContent='Ejercicio';
+phase.className='phase-indicator';
+timer.className='timer';
+left=curr.time;
+document.getElementById('img').textContent=curr.img;
+document.getElementById('desc').innerHTML=curr.desc;
+totalExercises++;
+}
+updateTime();
+reset();
+}
+
+function updateTime(){
+const m=Math.floor(left/60);
+const s=left%60;
+document.getElementById('time').textContent=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+const timer=document.getElementById('time');
+if(left<=10 && left>0 && !isResting){
+timer.classList.add('warning');
+}else{
+timer.classList.remove('warning');
+}
+}
+
+function reset(){
+document.getElementById('start').disabled=false;
+document.getElementById('start').innerHTML=isResting?'⏸️ Iniciar descanso':'▶️ Iniciar ejercicio';
+document.getElementById('pause').disabled=true;
+clearInterval(timer);
+running=false;
+}
+
+function start(){
+if(!running){
+running=true;
+document.getElementById('start').disabled=true;
+document.getElementById('pause').disabled=false;
+timer=setInterval(()=>{
+left--;
+updateTime();
+if(left<=5 && left>0)playSound(left<=3?[800,1000]:[600,800],100);
+if(left<=0){
+clearInterval(timer);
+running=false;
+document.getElementById('pause').disabled=true;
+document.getElementById('start').disabled=true;
+document.getElementById('start').innerHTML=isResting?'🚀 ¡A ejercitarse!':'✅ ¡Completado!';
+playSound([800,1000,1200],400);
+}
+},1000);
+}
+}
+
+function pause(){
+clearInterval(timer);
+running=false;
+document.getElementById('start').disabled=false;
+document.getElementById('start').innerHTML=isResting?'▶️ Reanudar descanso':'▶️ Reanudar ejercicio';
+document.getElementById('pause').disabled=true;
+}
+
+function stop(){clearInterval(timer);running=false;}
+
+function next(){
+const curr=data[day][ex];
+if(isResting){
+isResting=false;
+load();
+return;
+}
+if(currentSet<curr.sets){
+currentSet++;
+isResting=true;
+load();
+}else{
+if(ex+1<data[day].length){
+ex++;
+currentSet=1;
+isResting=false;
+load();
+}else{
+completeWorkout();
+}
+}
+}
+
+function completeWorkout(){
+const sessionTime=Math.round((Date.now()-sessionStart)/60000);
+localStorage.setItem(day+'_done','1');
+let totalWorkouts=parseInt(localStorage.getItem('totalWorkouts')||'0')+1;
+let totalMinutes=parseInt(localStorage.getItem('totalMinutes')||'0')+sessionTime;
+localStorage.setItem('totalWorkouts',totalWorkouts);
+localStorage.setItem('totalMinutes',totalMinutes);
+document.getElementById('session-time').textContent=sessionTime;
+document.getElementById('session-exercises').textContent=totalExercises;
+show('done');
+playSound([600,800,1000,1200],600);
+}
+
+function loadCompleted(){
+Object.keys(data).forEach(d=>{
+const btn=document.getElementById('btn-'+d);
+if(localStorage.getItem(d+'_done')){
+btn.classList.add('completed');
+}else{
+btn.classList.remove('completed');
+}
+});
+}
+
+function updateStats(){
+document.getElementById('total-workouts').textContent=localStorage.getItem('totalWorkouts')||'0';
+document.getElementById('total-time').textContent=localStorage.getItem('totalMinutes')||'0';
+document.getElementById('streak').textContent='0';
+}
+
+function initAudio(){
+if(!audioCtx){
+audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+}
+}
+
+function playSound(freq,duration){
+if(!audioCtx)return;
+if(Array.isArray(freq)){
+freq.forEach((f,i)=>{
+setTimeout(()=>playSingleTone(f,duration/freq.length),i*(duration/freq.length));
+});
+}else{
+playSingleTone(freq,duration);
+}
+}
+
+function playSingleTone(freq,duration){
+const osc=audioCtx.createOscillator();
+const gain=audioCtx.createGain();
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+osc.frequency.value=freq;
+osc.type='sine';
+gain.gain.setValueAtTime(0.1,audioCtx.currentTime);
+gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+duration/1000);
+osc.start(audioCtx.currentTime);
+osc.stop(audioCtx.currentTime+duration/1000);
+}
+
+['lunes','martes','miercoles','jueves','viernes'].forEach(d=>
+document.getElementById('btn-'+d).addEventListener('click',()=>startDay(d))
+);
+document.getElementById('overview-back').addEventListener('click',showHome);
+document.getElementById('start-workout').addEventListener('click',startWorkout);
+document.getElementById('back-btn').addEventListener('click',showHome);
+document.getElementById('home-btn').addEventListener('click',showHome);
+document.getElementById('start').addEventListener('click',start);
+document.getElementById('pause').addEventListener('click',pause);
+document.getElementById('next').addEventListener('click',next);
+
+loadCompleted();
+updateStats();
+</script>
+</body>
+</html>
