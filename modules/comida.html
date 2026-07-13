@@ -146,7 +146,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
     </button>
     <button class="nav-card c-shop" onclick="go('shopping')">
       <span class="nic">🛒</span>
-      <div class="info"><span>LISTA DE COMPRAS</span><span class="sub">Básicos de temporada · 1 persona</span></div>
+      <div class="info"><span>LISTA DE COMPRAS</span><span class="sub">Tus recetas + básicos de temporada</span></div>
     </button>
   </div>
 </div>
@@ -195,7 +195,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div id="v-shopping" class="screen">
 <div class="max-w">
   <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>Lista de Compras</h1></div>
-  <div class="card" style="margin-bottom:14px"><p>Básicos de temporada para 7 días · 1 persona · sin tomate. Marca según vas comprando 💚</p></div>
+  <div class="card" style="margin-bottom:14px"><p>Tus recetas elegidas + básicos de 7 días · 1 persona · sin tomate. Marca según vas comprando 💚</p></div>
   <div id="shop-list"></div>
   <div class="btn-row">
     <button class="btn btn-secondary" onclick="shareList()">📱 Compartir</button>
@@ -540,19 +540,19 @@ const MONTHS = [
  ]},
 
 {id:'jul',name:'Julio',emoji:'🌞',
- season:['Tomate','Pimiento','Berenjena','Calabacín','Sandía','Maíz','Pepino'],
- tip:'Julio es el mes del tomate. Busca los de mercado local — son más dulces y baratos que los de super.',
+ season:['Pimiento','Berenjena','Calabacín','Sandía','Maíz','Pepino','Melón'],
+ tip:'En julio la huerta explota: pimiento, calabacín y pepino a mejor precio. En mercado local, más barato y sabroso.',
  comidas:[
-  {id:'jul-c1',emoji:'🥗',name:'Ensalada de Garbanzos con Tomate',time:'5 min',budget:'€',
-   harvard:{veg:'Tomate · pepino',prot:'Garbanzos',grain:'—'},
+  {id:'jul-c1',emoji:'🥗',name:'Ensalada de Garbanzos, Pepino y Maíz',time:'5 min',budget:'€',
+   harvard:{veg:'Pepino · pimiento',prot:'Garbanzos',grain:'Maíz'},
    tags:['Vegetariano','Sin cocción','Verano'],
    desc:'Sin fogones. Proteína + verdura de temporada en 5 minutos. Perfecta para el calor.',
-   nutrients:[{v:'320',l:'kcal'},{v:'14g',l:'proteína'},{v:'10g',l:'fibra'}],
-   tip:'El tomate de verano tiene mucho jugo — no tires el líquido que suelta, mézclalo con el aliño.',
-   ingredients:['1 bote garbanzos (400g)','2 tomates de temporada','1 pepino','Aceitunas negras','2 cdas aceite de oliva','Sal, orégano'],
+   nutrients:[{v:'330',l:'kcal'},{v:'14g',l:'proteína'},{v:'10g',l:'fibra'}],
+   tip:'El pepino y el pimiento de verano están crujientes y baratos. El maíz de lata da el toque dulce.',
+   ingredients:['1 bote garbanzos (400g)','1 pepino','½ pimiento rojo','½ lata maíz dulce','Aceitunas negras','2 cdas aceite de oliva','Sal, orégano'],
    steps:[
     {text:'Escurre y lava los garbanzos. Pon en un bol grande',time:1,voice:'Escurre y lava los garbanzos'},
-    {text:'Trocea los tomates y pepino. Añade al bol con aceitunas',time:2,voice:'Trocea los tomates y pepino y añade al bol con aceitunas'},
+    {text:'Trocea el pepino y el pimiento. Añade al bol con el maíz y las aceitunas',time:2,voice:'Trocea el pepino y el pimiento y añade al bol con el maíz y las aceitunas'},
     {text:'Aliña con aceite, sal y orégano. Mezcla y a comer',time:1,voice:'Aliña con aceite, sal y orégano y listo'}
    ]},
   {id:'jul-c2',emoji:'🍆',name:'Arroz con Berenjena y Garbanzos',time:'20 min',budget:'€',
@@ -569,17 +569,17 @@ const MONTHS = [
    ]}
  ],
  cenas:[
-  {id:'jul-n1',emoji:'🥤',name:'Gazpacho Andaluz',time:'5 min',budget:'€',
-   harvard:{veg:'Tomate · pimiento · pepino',prot:'—',grain:'Pan (guarnición)'},
+  {id:'jul-n1',emoji:'🥒',name:'Sopa Fría de Pepino y Yogur',time:'5 min',budget:'€',
+   harvard:{veg:'Pepino',prot:'Yogur',grain:'Pan (guarnición)'},
    tags:['Vegetariano','Sin cocción','Refrescante'],
-   desc:'El gazpacho de verano. Con los tomates de temporada sabe completamente diferente.',
-   nutrients:[{v:'160',l:'kcal'},{v:'3g',l:'proteína'},{v:'Vit C',l:'antioxid.'}],
-   tip:'Prepara el gazpacho la noche anterior — de un día para otro sabe mucho mejor. Guárdalo en la nevera bien tapado.',
-   ingredients:['4 tomates maduros','½ pepino','½ pimiento rojo','1 diente ajo','3 cdas aceite de oliva','1 cda vinagre de vino','Sal'],
+   desc:'La alternativa al gazpacho sin tomate. Fresquísima y lista en 5 minutos.',
+   nutrients:[{v:'180',l:'kcal'},{v:'8g',l:'proteína'},{v:'Calcio',l:'mineral'}],
+   tip:'Prepárala la noche anterior y guárdala en la nevera bien tapada — muy fría sabe el doble de buena.',
+   ingredients:['2 pepinos','2 yogures naturales','1 diente ajo pequeño','2 cdas aceite de oliva','Zumo de ½ limón','Sal, menta o hierbabuena'],
    steps:[
-    {text:'Trocea todos los vegetales. Ponlos en el vaso de la batidora',time:2,voice:'Trocea tomates, pepino y pimiento y ponlos en el vaso'},
-    {text:'Añade ajo, aceite, vinagre y sal. Tritura bien durante 1 minuto',time:1,voice:'Añade ajo, aceite, vinagre y sal. Tritura un minuto bien'},
-    {text:'Prueba de sal. Cuela si quieres textura más fina. Sirve muy frío',time:1,voice:'Prueba de sal y sirve muy frío'}
+    {text:'Pela y trocea los pepinos. Ponlos en el vaso de la batidora',time:2,voice:'Pela y trocea los pepinos y ponlos en el vaso de la batidora'},
+    {text:'Añade yogur, ajo, aceite, limón y sal. Tritura 1 minuto',time:1,voice:'Añade el yogur, el ajo, el aceite y el limón. Tritura un minuto'},
+    {text:'Prueba de sal. Sirve muy fría con hojitas de menta',time:1,voice:'Prueba de sal y sirve muy fría con menta'}
    ]},
   {id:'jul-n2',emoji:'🌶️',name:'Pimiento Relleno de Atún',time:'15 min',budget:'€',
    harvard:{veg:'Pimiento',prot:'Atún',grain:'Arroz (opcional)'},
@@ -596,7 +596,7 @@ const MONTHS = [
  ]},
 
 {id:'ago',name:'Agosto',emoji:'🏖️',
- season:['Tomate','Pimiento','Berenjena','Calabacín','Sandía','Melón','Maíz'],
+ season:['Pimiento','Berenjena','Calabacín','Sandía','Melón','Maíz','Pepino'],
  tip:'En agosto los fogones menos tiempo mejor. Aprovecha los platos fríos con los vegetales de temporada.',
  comidas:[
   {id:'ago-c1',emoji:'🥣',name:'Bowl de Quinoa con Pisto',time:'22 min',budget:'€',
@@ -625,17 +625,17 @@ const MONTHS = [
    ]}
  ],
  cenas:[
-  {id:'ago-n1',emoji:'🍅',name:'Salmorejo con Huevo',time:'5 min',budget:'€',
-   harvard:{veg:'Tomate',prot:'Huevo duro',grain:'Pan integral'},
-   tags:['Sin cocción','Refrescante','Verano'],
-   desc:'Más espeso que el gazpacho. Con huevo duro encima se convierte en una cena completa.',
-   nutrients:[{v:'260',l:'kcal'},{v:'10g',l:'proteína'},{v:'Licopeno',l:'antioxid.'}],
-   tip:'El pan duro del día anterior va perfecto — le da cuerpo al salmorejo. Sin pan queda más líquido como gazpacho.',
-   ingredients:['4 tomates maduros','1 rebanada pan duro','1 diente ajo','3 cdas aceite de oliva','Sal','1 huevo duro'],
+  {id:'ago-n1',emoji:'🍈',name:'Ajoblanco con Melón',time:'10 min',budget:'€',
+   harvard:{veg:'Melón (fruta)',prot:'Almendras',grain:'Pan integral'},
+   tags:['Vegetariano','Sin cocción','Verano'],
+   desc:'La sopa fría andaluza más antigua — y sin tomate. Con el melón de agosto es un lujo barato.',
+   nutrients:[{v:'280',l:'kcal'},{v:'9g',l:'proteína'},{v:'Vit E',l:'antioxid.'}],
+   tip:'El pan duro del día anterior va perfecto — le da cuerpo. Si no tienes almendra molida, vale un puñado de almendras crudas.',
+   ingredients:['50g almendras crudas o molidas','1 rebanada pan duro','1 diente ajo pequeño','3 cdas aceite de oliva','1 cda vinagre','1 vaso agua muy fría','Melón en dados'],
    steps:[
-    {text:'Cuece el huevo 8 min en agua hirviendo. Pela y reserva',time:8,voice:'Cuece el huevo ocho minutos, enfría y pela'},
-    {text:'Trocea los tomates y el pan. Tritura con ajo, aceite y sal hasta que quede muy fino',time:2,voice:'Tritura los tomates con el pan, ajo, aceite y sal hasta que quede fino'},
-    {text:'Sirve muy frío con el huevo duro picado encima',time:1,voice:'Sirve frío con el huevo duro picado encima'}
+    {text:'Remoja el pan en agua. Ponlo en la batidora con almendras, ajo, aceite y vinagre',time:2,voice:'Remoja el pan y ponlo en la batidora con las almendras, el ajo, el aceite y el vinagre'},
+    {text:'Añade el vaso de agua muy fría y tritura hasta que quede muy fino',time:2,voice:'Añade el agua fría y tritura hasta que quede muy fino'},
+    {text:'Sirve muy frío con los dados de melón por encima',time:1,voice:'Sirve muy frío con los dados de melón por encima'}
    ]},
   {id:'ago-n2',emoji:'🍆',name:'Berenjena a la Plancha con Queso',time:'15 min',budget:'€',
    harvard:{veg:'Berenjena',prot:'Queso',grain:'Pan integral'},
@@ -1034,6 +1034,7 @@ function openRecipe(id){
     <div class="card" style="margin-bottom:14px">
       <ul class="ingr-list">${r.ingredients.map(i=>`<li>${i}</li>`).join('')}</ul>
     </div>
+    <button class="btn btn-secondary" style="margin-bottom:8px" onclick="addToShop('${r.id}')">🛒 Añadir ingredientes a la compra</button>
     <button class="btn btn-primary" onclick="startCook()">🎵 Guía paso a paso →</button>`;
   go('detail');
 }
@@ -1132,10 +1133,46 @@ function testAnswer(v){beep(400,.1);vibrate(30);testAns.push(v);testStep++;rende
 /* ── SHOPPING ── */
 function getChecked(){try{return JSON.parse(localStorage.getItem('cris_comida_shop')||'{}');}catch(e){return{};}}
 function setChecked(d){try{localStorage.setItem('cris_comida_shop',JSON.stringify(d));}catch(e){}}
+function getShopRecipes(){try{return JSON.parse(localStorage.getItem('cris_comida_shop_recetas')||'[]');}catch(e){return[];}}
+function setShopRecipes(a){try{localStorage.setItem('cris_comida_shop_recetas',JSON.stringify(a));}catch(e){}}
+function addToShop(id){
+  const list=getShopRecipes();
+  if(!list.includes(id)){list.push(id);setShopRecipes(list);}
+  beep(700,.12);vibrate(50);
+  go('shopping');
+}
+function removeFromShop(id){
+  setShopRecipes(getShopRecipes().filter(x=>x!==id));
+  const ck=getChecked();
+  Object.keys(ck).forEach(k=>{if(k.indexOf('r-'+id+'-')===0)delete ck[k];});
+  setChecked(ck);
+  renderShop();
+}
 function renderShop(){
   const el=document.getElementById('shop-list');
   const ck=getChecked();
-  el.innerHTML=SHOPPING.map(cat=>`
+  const recipes=getShopRecipes().map(findRecipe).filter(Boolean);
+
+  const recHtml=recipes.length
+    ?recipes.map(r=>`
+      <div class="shop-cat">
+        <h3 style="display:flex;justify-content:space-between;align-items:center">
+          <span>${r.emoji} ${r.name}</span>
+          <button onclick="removeFromShop('${r.id}')" style="border:none;background:var(--mint);color:var(--teal-dark);font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:700;border-radius:10px;padding:4px 10px;cursor:pointer">✕ quitar</button>
+        </h3>
+        ${r.ingredients.map((ing,i)=>{const iid='r-'+r.id+'-'+i;return `
+          <div class="shop-item ${ck[iid]?'ck':''}" id="si-${iid}">
+            <input type="checkbox" id="cb-${iid}" ${ck[iid]?'checked':''} onchange="toggleItem('${iid}',this.checked)">
+            <label for="cb-${iid}">${ing}</label>
+          </div>`;}).join('')}
+      </div>`).join('')
+    :`<div class="card" style="margin-bottom:16px"><p>💡 Abre cualquier receta y pulsa <strong>«🛒 Añadir ingredientes a la compra»</strong> — aparecerán aquí, listos para marcar.</p></div>`;
+
+  el.innerHTML=`
+    <p class="section-label">🍳 Para tus recetas</p>
+    ${recHtml}
+    <p class="section-label" style="margin-top:20px">🧺 Básicos de temporada (7 días)</p>
+    ${SHOPPING.map(cat=>`
     <div class="shop-cat">
       <h3>${cat.cat}</h3>
       ${cat.items.map(item=>`
@@ -1143,12 +1180,14 @@ function renderShop(){
           <input type="checkbox" id="cb-${item.id}" ${ck[item.id]?'checked':''} onchange="toggleItem('${item.id}',this.checked)">
           <label for="cb-${item.id}"><strong>${item.name}</strong> — ${item.qty}<small>${item.loc}</small></label>
         </div>`).join('')}
-    </div>`).join('');
+    </div>`).join('')}`;
 }
 function toggleItem(id,val){beep(400,.08);const d=getChecked();d[id]=val;setChecked(d);document.getElementById('si-'+id).classList.toggle('ck',val);}
 function clearShop(){setChecked({});renderShop();}
 function shareList(){
   const lines=['🛒 Compra de temporada — Cris\n'];
+  const recipes=getShopRecipes().map(findRecipe).filter(Boolean);
+  recipes.forEach(r=>{lines.push('\n'+r.emoji+' '+r.name);r.ingredients.forEach(i=>lines.push('☐ '+i));});
   SHOPPING.forEach(cat=>{lines.push('\n'+cat.cat);cat.items.forEach(i=>lines.push('☐ '+i.name+' — '+i.qty));});
   const text=lines.join('\n');
   if(navigator.share)navigator.share({title:'Lista de compras Cris',text}).catch(()=>{});
