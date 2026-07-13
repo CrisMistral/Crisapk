@@ -1,814 +1,648 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cris App - Limpieza Progresiva</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .app {
-            max-width: 450px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-        .header { text-align: center; margin-bottom: 25px; }
-        .header h1 { color: #2d3748; font-size: 1.8rem; margin-bottom: 5px; }
-        .header .subtitle { color: #718096; font-size: 0.9rem; }
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            background: #f7fafc;
-            padding: 5px;
-            border-radius: 12px;
-        }
-        .tab {
-            flex: 1;
-            padding: 10px;
-            background: transparent;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #4a5568;
-            font-size: 0.85rem;
-        }
-        .tab.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-        .screen { display: none; }
-        .screen.active { display: block; }
-        .days-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .day-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 18px 12px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .day-btn:hover { transform: translateY(-2px); }
-        .day-btn.express {
-            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-            grid-column: 1 / -1;
-            color: #2d3748;
-        }
-        .day-btn.general {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            grid-column: 1 / -1;
-        }
-        .task-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .task { 
-            padding: 15px;
-            margin: 10px 0;
-            background: #f7fafc;
-            border-radius: 12px;
-            border-left: 4px solid #e2e8f0;
-        }
-        .task.current {
-            background: linear-gradient(135deg, #90cdf4, #63b3ed);
-            color: white;
-        }
-        .task.completed { 
-            background: #c6f6d5;
-            opacity: 0.7;
-        }
-        .timer-display {
-            font-size: 3rem;
-            font-weight: 700;
-            text-align: center;
-            color: #2d3748;
-            font-family: monospace;
-            margin: 20px 0;
-        }
-        .controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            color: white;
-            min-width: 100px;
-        }
-        .btn-primary { background: linear-gradient(135deg, #48bb78, #38a169); }
-        .btn-secondary { background: linear-gradient(135deg, #ed8936, #dd6b20); }
-        .btn-danger { background: linear-gradient(135deg, #fc8181, #e53e3e); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .calendar {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 12px;
-        }
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            align-items: center;
-        }
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-        }
-        .cal-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            position: relative;
-        }
-        .cal-day.today { border: 2px solid #667eea; font-weight: 700; }
-        .cal-day.completed { background: #c6f6d5; }
-        .cal-day.completed::after {
-            content: "✓";
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            font-size: 0.6rem;
-            color: #38a169;
-        }
-        .stats {
-            display: flex;
-            gap: 20px;
-            justify-content: space-around;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #e2e8f0;
-        }
-        .stat { text-align: center; }
-        .stat-value { font-size: 1.5rem; font-weight: 700; color: #2d3748; }
-        .stat-label { font-size: 0.8rem; color: #718096; }
-        .config-box {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-        }
-        .config-title { font-weight: 700; margin-bottom: 15px; }
-        .toggle-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-        .toggle {
-            width: 50px;
-            height: 26px;
-            background: #cbd5e0;
-            border-radius: 13px;
-            position: relative;
-            transition: background 0.3s;
-        }
-        .toggle.active { background: #48bb78; }
-        .toggle::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.3s;
-        }
-        .toggle.active::after { transform: translateX(24px); }
-        input[type="time"], input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-        .edit-task {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-        .edit-task input[type="text"] { flex: 1; }
-        .edit-task input[type="number"] { width: 70px; }
-        .day-pills {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-        .day-pill {
-            padding: 8px 15px;
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        .day-pill.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        .message {
-            background: rgba(102, 126, 234, 0.1);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            margin: 15px 0;
-            font-style: italic;
-            color: #4a5568;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Limpieza Progresiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#26a69a;--td:#1a6b64;--mint:#d6f0eb;--mm:#b8e4dd;--ms:#e8f8f5;--fg:#1a2e2b;--fg2:#4a7069;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color:var(--fg);}
+.screen{display:none;flex-direction:column;min-height:100vh;padding:16px 16px 40px;}
+.screen.active{display:flex;}
+
+.hdr{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-top:4px;}
+.hdr-back{width:42px;height:42px;border:none;background:white;border-radius:13px;font-size:1.3rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hdr-title{font-size:1.3rem;font-weight:800;color:var(--td);}
+
+/* Motiv banner */
+.motiv{background:var(--mint);border-radius:14px;padding:13px 16px;font-size:0.9rem;color:var(--td);font-weight:600;text-align:center;line-height:1.45;margin-bottom:16px;}
+
+/* Mode cards (home) */
+.mode-card{border:none;cursor:pointer;text-align:left;width:100%;padding:22px 20px;border-radius:22px;display:block;margin-bottom:14px;}
+.mode-card:active{transform:scale(.99);}
+.mc-em{font-size:2.6rem;display:block;margin-bottom:8px;}
+.mc-title{font-size:1.35rem;font-weight:800;color:white;display:block;}
+.mc-sub{font-size:0.88rem;color:rgba(255,255,255,.88);display:block;margin-top:4px;line-height:1.4;}
+.mc-pill{display:inline-block;background:rgba(255,255,255,.22);color:white;border-radius:20px;padding:5px 12px;font-size:0.82rem;font-weight:700;margin-top:12px;}
+
+/* Today hint */
+.today-hint{background:linear-gradient(135deg,var(--teal),var(--td));color:white;border-radius:18px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer;border:none;width:100%;text-align:left;}
+.today-hint:active{transform:scale(.99);}
+.th-tag{font-size:0.72rem;font-weight:700;opacity:.82;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.th-name{font-size:1.15rem;font-weight:800;}
+.th-sub{font-size:0.85rem;opacity:.85;margin-top:3px;}
+.th-em{font-size:2.8rem;margin-left:auto;}
+
+/* Week strip */
+.week-strip{display:flex;gap:6px;margin-bottom:20px;}
+.wd{flex:1;background:white;border-radius:12px;padding:9px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.wd.done{background:var(--teal);}
+.wd.today{box-shadow:0 0 0 2.5px var(--teal);}
+.wd-l{font-size:0.65rem;font-weight:700;color:var(--fg2);text-transform:uppercase;}
+.wd.done .wd-l,.wd.done .wd-e{color:white;}
+.wd-e{font-size:1.05rem;}
+
+/* Week zone list */
+.zone-row{background:white;border:none;border-radius:16px;padding:15px 14px;margin-bottom:10px;cursor:pointer;width:100%;text-align:left;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:12px;}
+.zone-row:active{transform:scale(.99);}
+.zr-em{font-size:2.1rem;width:42px;text-align:center;flex-shrink:0;}
+.zr-info{flex:1;min-width:0;}
+.zr-name{font-size:1rem;font-weight:700;}
+.zr-day{font-size:0.8rem;color:var(--fg2);margin-top:2px;}
+.zr-dots{display:flex;gap:4px;margin-top:7px;}
+.zr-dot{width:7px;height:7px;border-radius:50%;background:var(--mm);}
+.zr-dot.done{background:var(--teal);}
+.zr-badge{background:var(--teal);color:white;border-radius:20px;padding:5px 12px;font-size:0.8rem;font-weight:700;flex-shrink:0;}
+.zr-arrow{color:var(--fg2);font-size:1.3rem;flex-shrink:0;}
+.zone-today .zr-name{color:var(--teal);}
+
+/* Section label */
+.sec-label{font-size:0.78rem;font-weight:700;color:var(--fg2);text-transform:uppercase;letter-spacing:.07em;margin:4px 0 10px;}
+
+/* SESSION */
+.zone-banner{background:var(--mint);border-radius:11px;padding:7px 14px;font-size:0.85rem;font-weight:700;color:var(--teal);text-align:center;margin-bottom:10px;}
+.sess-prog{text-align:center;font-size:0.9rem;color:var(--fg2);margin-bottom:14px;font-weight:600;}
+
+.task-big{border-radius:20px;padding:22px;margin-bottom:14px;text-align:center;transition:background .25s,transform .15s;}
+.tb-ready{background:var(--mm);}
+.tb-active{background:var(--teal);}
+.tb-active .tb-name{color:white;}
+.tb-active .tb-tip{color:rgba(255,255,255,.87);}
+.tb-finish{background:#d1fae5;}
+.tb-em{font-size:2.8rem;display:block;margin-bottom:8px;}
+.tb-name{font-size:1.2rem;font-weight:800;color:var(--td);display:block;margin-bottom:6px;line-height:1.25;}
+.tb-tip{font-size:0.84rem;color:var(--fg2);line-height:1.45;display:block;}
+
+.timer-wrap{text-align:center;margin:10px 0 8px;}
+.timer-dig{font-size:3.6rem;font-weight:800;color:var(--td);letter-spacing:.02em;line-height:1;}
+.timer-lbl{font-size:0.8rem;color:var(--fg2);margin-top:4px;}
+
+.pbar-outer{height:8px;background:var(--mm);border-radius:4px;margin:0 0 14px;overflow:hidden;}
+.pbar-inner{height:100%;background:var(--teal);border-radius:4px;transition:width .5s;}
+
+.ctrl-row{display:flex;gap:8px;margin-bottom:14px;}
+.cbtn{flex:1;border:none;border-radius:14px;padding:15px 8px;font-family:'Outfit',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;}
+.cb-start{background:var(--teal);color:white;}
+.cb-pause{background:var(--mm);color:var(--td);}
+.cb-skip{background:white;color:var(--fg2);border:2px solid var(--mm);}
+.cbtn:disabled{opacity:.38;pointer-events:none;}
+
+/* Queue */
+.queue{margin-top:4px;}
+.qi{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:6px;background:white;}
+.qi-done{background:var(--mint);opacity:.75;}
+.qi-cur{background:var(--mm);}
+.qi-num{width:24px;height:24px;border-radius:50%;background:var(--mm);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--td);flex-shrink:0;}
+.qi-done .qi-num,.qi-cur .qi-num{background:var(--teal);color:white;}
+.qi-name{font-size:0.87rem;font-weight:600;flex:1;}
+.qi-dur{font-size:0.78rem;color:var(--fg2);}
+
+/* Done */
+.done-hero{text-align:center;padding:28px 0 18px;}
+.done-em{font-size:4.5rem;display:block;margin-bottom:10px;}
+.done-t{font-size:1.8rem;font-weight:800;color:var(--td);margin-bottom:6px;}
+.done-s{font-size:0.95rem;color:var(--fg2);line-height:1.4;}
+.done-stats{display:flex;gap:12px;margin:18px 0;}
+.ds{flex:1;background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.ds-v{font-size:1.9rem;font-weight:800;color:var(--teal);}
+.ds-l{font-size:0.8rem;color:var(--fg2);margin-top:2px;}
+
+.btn-f{display:block;width:100%;border:none;border-radius:14px;padding:16px;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px;}
+.btn-teal{background:var(--teal);color:white;}
+.btn-white{background:white;color:var(--td);}
+
+/* Express button */
+.express-btn{
+  display:flex;align-items:center;gap:14px;width:100%;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#f59e0b,#d97706);color:white;
+  border-radius:18px;padding:18px 20px;margin-bottom:14px;
+}
+.express-btn:active{transform:scale(.99);}
+
+/* Flash */
+.flash{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(26,107,100,.93);color:white;border-radius:20px;padding:18px 28px;font-size:1.1rem;font-weight:700;z-index:999;pointer-events:none;opacity:0;transition:opacity .25s;text-align:center;}
+</style>
 </head>
 <body>
-    <div class="app">
-        <div class="header">
-            <h1>🧹 Cris App</h1>
-            <div class="subtitle">Tu asistente de limpieza progresiva</div>
-        </div>
 
-        <div class="tabs">
-            <button class="tab active" onclick="changeTab('home')">🏠 Inicio</button>
-            <button class="tab" onclick="changeTab('history')">📅 Historial</button>
-            <button class="tab" onclick="changeTab('config')">⚙️ Config</button>
-            <button class="tab" onclick="changeTab('edit')">✏️ Editar</button>
-        </div>
+<!-- ▌HOME ▐ -->
+<div id="v-home" class="screen active">
+  <div style="padding:6px 0 2px;">
+    <div style="font-size:1.9rem;font-weight:800;color:var(--td);line-height:1.1;">🧹 Limpieza</div>
+    <div style="font-size:0.9rem;color:var(--fg2);margin-top:3px;font-weight:600;">15-20 min al día · sin agobios</div>
+  </div>
 
-        <!-- HOME -->
-        <div id="home" class="screen active">
-            <div class="message">💪 ¡Cada día un paso más hacia un hogar perfecto!</div>
-            <div class="days-grid" id="daysGrid"></div>
-        </div>
+  <div class="motiv" id="home-motiv" style="margin-top:14px;"></div>
 
-        <!-- TASKS -->
-        <div id="tasks" class="screen">
-            <div class="task-header">
-                <div id="taskDay">Día</div>
-                <div id="taskProgress">0/0</div>
-            </div>
-            <div id="tasksList"></div>
-            <div class="timer-display" id="timer">00:00</div>
-            <div class="controls">
-                <button class="btn btn-primary" id="startBtn" onclick="startTask()">▶️ Iniciar</button>
-                <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTask()" disabled>⏸️ Pausar</button>
-                <button class="btn btn-danger" id="skipBtn" onclick="skipTask()" disabled>⏭️ Saltar</button>
-                <button class="btn" onclick="changeTab('home')">🏠 Volver</button>
-            </div>
-            <div id="completionMsg" style="display:none;"></div>
-        </div>
-
-        <!-- HISTORY -->
-        <div id="history" class="screen">
-            <div class="calendar">
-                <div class="calendar-header">
-                    <button class="btn btn-secondary" onclick="changeMonth(-1)">◀</button>
-                    <strong id="calTitle">Mes</strong>
-                    <button class="btn btn-secondary" onclick="changeMonth(1)">▶</button>
-                </div>
-                <div class="calendar-grid" id="calGrid"></div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-value" id="statMonth">0</div>
-                        <div class="stat-label">Este mes</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="statStreak">0</div>
-                        <div class="stat-label">Racha</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="statTotal">0</div>
-                        <div class="stat-label">Total</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CONFIG -->
-        <div id="config" class="screen">
-            <div class="config-box">
-                <div class="config-title">⏰ Recordatorios</div>
-                <div class="toggle-box" onclick="toggleNotif()">
-                    <span>Activar notificaciones</span>
-                    <div class="toggle" id="notifToggle"></div>
-                </div>
-                <div id="timeBox" style="display:none;">
-                    <input type="time" id="notifTime" value="09:00">
-                    <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="saveNotifTime()">💾 Guardar</button>
-                </div>
-            </div>
-            <div class="config-box">
-                <div class="config-title">📊 Datos</div>
-                <button class="btn btn-danger" style="width:100%;" onclick="resetHistory()">🗑️ Resetear historial</button>
-            </div>
-        </div>
-
-        <!-- EDIT -->
-        <div id="edit" class="screen">
-            <div class="config-box">
-                <div class="config-title">✏️ Personalizar tareas</div>
-                <div class="day-pills" id="editDays"></div>
-                <div id="editBox" style="display:none;">
-                    <div id="editTasksList"></div>
-                    <button class="btn btn-primary" style="width:100%; margin:10px 0;" onclick="addEditTask()">➕ Añadir</button>
-                    <button class="btn btn-primary" style="width:100%; margin-bottom:10px;" onclick="saveEdit()">💾 Guardar</button>
-                    <button class="btn btn-secondary" style="width:100%;" onclick="restoreOriginal()">🔄 Restaurar</button>
-                </div>
-            </div>
-        </div>
+  <button class="today-hint" id="home-today" onclick="startTodayZone()">
+    <div>
+      <div class="th-tag">Hoy toca</div>
+      <div class="th-name" id="td-name">Cocina</div>
+      <div class="th-sub" id="td-sub">6 tareas · ~18 min</div>
     </div>
+    <div class="th-em" id="td-em">🍳</div>
+  </button>
 
-    <script>
-        const ORIGINALS = {
-            "Lunes": [{n:"Limpiar encimera y fregadero",d:5},{n:"Limpiar electrodomésticos",d:4},{n:"Barrer y fregar suelo cocina",d:6},{n:"Vaciar basura",d:3}],
-            "Martes": [{n:"Limpiar lavabo",d:4},{n:"Limpiar espejo",d:3},{n:"Limpiar inodoro",d:5},{n:"Suelo baño",d:5}],
-            "Miércoles": [{n:"Quitar polvo",d:6},{n:"Limpiar mesa",d:4},{n:"Suelo salón",d:7},{n:"Ordenar sofá",d:3}],
-            "Jueves": [{n:"Hacer cama",d:5},{n:"Limpiar muebles",d:4},{n:"Suelo dormitorio",d:5},{n:"Ordenar mesillas",d:3}],
-            "Viernes": [{n:"Barrer entrada",d:4},{n:"Limpiar puerta",d:3},{n:"Polvo pasillo",d:5},{n:"Recoger objetos",d:5}],
-            "Sábado": [{n:"Limpiar microondas",d:4},{n:"Estante nevera",d:5},{n:"Balda despensa",d:5},{n:"Vitrocerámica",d:4}],
-            "Domingo": [{n:"Ordenar cajón armario",d:5},{n:"Organizar mesilla",d:4},{n:"Doblar ropa",d:6},{n:"Planificar semana",d:3}],
-            "Limpieza General": [{n:"Recoger objetos",d:5},{n:"Encimera",d:5},{n:"Fregadero",d:5},{n:"Suelo cocina",d:5},{n:"Lavabo",d:5},{n:"Inodoro",d:5},{n:"Suelo baño",d:5},{n:"Polvo salón",d:5},{n:"Sofá",d:5},{n:"Suelo salón",d:5},{n:"Camas",d:5},{n:"Mesillas",d:5},{n:"Suelo dormitorio",d:5},{n:"Papeleras",d:5},{n:"Espejos",d:5},{n:"Entrada",d:5}]
-        };
+  <div class="week-strip" id="home-week"></div>
 
-        let tasks = {};
-        let current = {day:'', tasks:[], idx:0, time:0, total:0, timer:null, paused:false, done:0};
-        let viewMonth = new Date();
-        let editDay = '';
+  <div class="sec-label">Elige tu modo</div>
 
-        function init() {
-            const saved = localStorage.getItem('tasks');
-            tasks = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(ORIGINALS));
-            renderDays();
-            renderEditDays();
-            loadNotifConfig();
-            startNotifCheck();
-        }
+  <button class="express-btn" onclick="startExpress()">
+    <span style="font-size:2rem;">⚡</span>
+    <div style="flex:1;text-align:left;">
+      <div style="font-size:1.1rem;font-weight:800;">Express — Recoge ahora</div>
+      <div style="font-size:0.84rem;opacity:.88;margin-top:2px;">5 tareas rápidas · toda la casa</div>
+    </div>
+    <span class="mc-pill" style="margin:0;white-space:nowrap;">~15 min</span>
+  </button>
 
-        function save() {
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        }
+  <button class="mode-card" style="background:linear-gradient(135deg,#26a69a,#1a6b64);" onclick="go('v-week')">
+    <span class="mc-em">📅</span>
+    <span class="mc-title">Plan de 5 días</span>
+    <span class="mc-sub">Una zona de la casa cada día.<br>El viernes el hogar está limpio.</span>
+    <span class="mc-pill">15-20 min/día</span>
+  </button>
 
-        function renderDays() {
-            const grid = document.getElementById('daysGrid');
-            grid.innerHTML = '';
-            
-            const express = document.createElement('button');
-            express.className = 'day-btn express';
-            express.innerHTML = '⚡ Express<br><small>15 minutos</small>';
-            express.onclick = () => selectExpress();
-            grid.appendChild(express);
+  <button class="mode-card" style="background:linear-gradient(135deg,#7c3aed,#a855f7);" onclick="startGeneral()">
+    <span class="mc-em">🏠</span>
+    <span class="mc-title">Limpieza Completa</span>
+    <span class="mc-sub">Todas las zonas de una vez.<br>Para cuando tienes energía extra.</span>
+    <span class="mc-pill">~90 min</span>
+  </button>
+</div>
 
-            ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'].forEach(d => {
-                const btn = document.createElement('button');
-                btn.className = 'day-btn';
-                btn.textContent = d;
-                btn.onclick = () => selectDay(d);
-                grid.appendChild(btn);
-            });
+<!-- ▌WEEK VIEW ▐ -->
+<div id="v-week" class="screen">
+  <div class="hdr">
+    <button class="hdr-back" onclick="go('v-home')">←</button>
+    <span class="hdr-title">Plan semanal</span>
+  </div>
+  <div class="motiv" id="week-motiv"></div>
+  <div id="week-zones"></div>
+</div>
 
-            const gen = document.createElement('button');
-            gen.className = 'day-btn general';
-            gen.innerHTML = '🏠 Limpieza General<br><small>Toda la casa</small>';
-            gen.onclick = () => selectDay('Limpieza General');
-            grid.appendChild(gen);
-        }
+<!-- ▌SESSION ▐ -->
+<div id="v-session" class="screen">
+  <div class="hdr">
+    <button class="hdr-back" onclick="exitSession()">←</button>
+    <span class="hdr-title" id="sess-hdr">Limpieza</span>
+  </div>
+  <div class="zone-banner" id="sess-banner" style="display:none;"></div>
+  <div class="sess-prog" id="sess-prog">Tarea 1 de 6</div>
 
-        function selectExpress() {
-            const all = [];
-            ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'].forEach(d => {
-                if(tasks[d]) tasks[d].forEach(t => all.push({...t,d:5}));
-            });
-            const picked = [];
-            for(let i=0; i<3 && all.length>0; i++) {
-                const idx = Math.floor(Math.random()*all.length);
-                picked.push(all[idx]);
-                all.splice(idx,1);
-            }
-            current = {day:'Express ⚡', tasks:picked, idx:0, time:0, total:0, timer:null, paused:false, done:0};
-            showTasks();
-        }
+  <div class="task-big tb-ready" id="task-big">
+    <span class="tb-em" id="tb-em">🧹</span>
+    <span class="tb-name" id="tb-name">—</span>
+    <span class="tb-tip" id="tb-tip"></span>
+  </div>
 
-        function selectDay(d) {
-            current = {day:d, tasks:[...tasks[d]], idx:0, time:0, total:0, timer:null, paused:false, done:0};
-            showTasks();
-        }
+  <div class="timer-wrap">
+    <div class="timer-dig" id="timer-dig">00:00</div>
+    <div class="timer-lbl" id="timer-lbl">Pulsa Iniciar para empezar</div>
+  </div>
 
-        function showTasks() {
-            document.getElementById('taskDay').textContent = current.day;
-            document.getElementById('taskProgress').textContent = `${current.done}/${current.tasks.length}`;
-            
-            const list = document.getElementById('tasksList');
-            list.innerHTML = '';
-            current.tasks.forEach((t,i) => {
-                const div = document.createElement('div');
-                div.className = 'task';
-                if(i < current.idx) div.classList.add('completed');
-                if(i === current.idx) div.classList.add('current');
-                div.innerHTML = `<strong>${t.n}</strong><div style="font-size:0.9em;opacity:0.8;">${t.d} min</div>`;
-                list.appendChild(div);
-            });
+  <div class="pbar-outer"><div class="pbar-inner" id="pbar" style="width:0%"></div></div>
 
-            document.getElementById('timer').textContent = '00:00';
-            document.getElementById('startBtn').disabled = false;
-            document.getElementById('pauseBtn').disabled = true;
-            document.getElementById('skipBtn').disabled = true;
-            document.getElementById('completionMsg').style.display = 'none';
-            
-            changeTab('tasks');
-        }
+  <div class="ctrl-row">
+    <button class="cbtn cb-start" id="btn-start" onclick="sessStart()">▶ Iniciar</button>
+    <button class="cbtn cb-pause" id="btn-pause" onclick="sessPause()" disabled>⏸ Pausa</button>
+    <button class="cbtn cb-skip" id="btn-skip" onclick="sessSkip()">Saltar ⏭</button>
+  </div>
 
-        function startTask() {
-            if(current.idx >= current.tasks.length) {
-                complete();
-                return;
-            }
-            
-            const task = current.tasks[current.idx];
-            current.total = task.d * 60;
-            current.time = current.total;
-            
-            document.getElementById('startBtn').disabled = true;
-            document.getElementById('pauseBtn').disabled = false;
-            document.getElementById('skipBtn').disabled = false;
-            
-            if(current.timer) clearInterval(current.timer);
-            current.timer = setInterval(tick, 1000);
-            current.paused = false;
-            
-            speak(`Iniciando: ${task.n}`);
-        }
+  <div class="queue" id="task-queue"></div>
+</div>
 
-        function tick() {
-            if(current.time <= 0) {
-                clearInterval(current.timer);
-                current.done++;
-                current.idx++;
-                
-                if(current.idx >= current.tasks.length) {
-                    complete();
-                } else {
-                    setTimeout(startTask, 2000);
-                }
-                
-                document.getElementById('taskProgress').textContent = `${current.done}/${current.tasks.length}`;
-                showTasks();
-                return;
-            }
-            
-            current.time--;
-            const m = Math.floor(current.time/60);
-            const s = current.time%60;
-            document.getElementById('timer').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        }
+<!-- ▌DONE ▐ -->
+<div id="v-done" class="screen">
+  <div class="done-hero">
+    <span class="done-em" id="done-em">🎉</span>
+    <div class="done-t" id="done-title">¡Zona lista!</div>
+    <div class="done-s" id="done-sub"></div>
+  </div>
+  <div class="done-stats">
+    <div class="ds"><div class="ds-v" id="done-tasks">—</div><div class="ds-l">tareas</div></div>
+    <div class="ds"><div class="ds-v" id="done-time">—</div><div class="ds-l">minutos</div></div>
+  </div>
+  <div class="motiv" id="done-motiv"></div>
+  <button class="btn-f btn-teal" onclick="go('v-week')">📅 Ver el plan semanal</button>
+  <button class="btn-f btn-white" onclick="go('v-home')">🏠 Volver al inicio</button>
+</div>
 
-        function pauseTask() {
-            if(current.paused) {
-                current.timer = setInterval(tick, 1000);
-                document.getElementById('pauseBtn').textContent = '⏸️ Pausar';
-                current.paused = false;
-            } else {
-                clearInterval(current.timer);
-                document.getElementById('pauseBtn').textContent = '▶️ Reanudar';
-                current.paused = true;
-            }
-        }
+<div class="flash" id="flash-el"></div>
 
-        function skipTask() {
-            clearInterval(current.timer);
-            current.idx++;
-            if(current.idx >= current.tasks.length) {
-                complete();
-            } else {
-                setTimeout(startTask, 1000);
-            }
-            showTasks();
-        }
+<script>
+const ZONES=[
+  {id:'cocina',name:'Cocina',emoji:'🍳',day:1,dayName:'Lunes',
+   tasks:[
+    {n:'Ordenar y recoger la cocina',e:'📦',d:3,tip:'Pon cada cosa en su sitio antes de limpiar'},
+    {n:'Limpiar encimeras y salpicaderos',e:'✨',d:5,tip:'Spray desengrasante, pasa el paño de izquierda a derecha'},
+    {n:'Vitrocerámica o fogones',e:'🔥',d:5,tip:'Con la vitro fría usa el rasquetón para manchas rebeldes'},
+    {n:'Fregadero y grifo',e:'💧',d:3,tip:'Un poco de limpiacristales en el grifo lo deja brillante'},
+    {n:'Exterior de electrodomésticos',e:'🤍',d:3,tip:'Frigo, microondas, cafetera — solo la superficie exterior'},
+    {n:'Barrer y pasar la mopa',e:'🧹',d:5,tip:'Empieza desde el fondo y avanza hacia la puerta'},
+  ]},
+  {id:'bano',name:'Baño',emoji:'🛁',day:2,dayName:'Martes',
+   tasks:[
+    {n:'Ordenar el tocador',e:'🪥',d:2,tip:'Tira lo que esté caducado o vacío'},
+    {n:'Lavabo y grifo',e:'💧',d:4,tip:'Deja el limpiador actuar 2 minutos antes de aclarar'},
+    {n:'Espejo y superficies',e:'🪞',d:3,tip:'Papel de periódico con limpiacristales — cero rayas'},
+    {n:'Inodoro por dentro y por fuera',e:'🚽',d:5,tip:'Empieza por el exterior, termina con el interior'},
+    {n:'Ducha o bañera',e:'🚿',d:4,tip:'Spray antical en el grifo, deja actuar mientras limpias el fondo'},
+    {n:'Barrer y fregar el suelo',e:'🧹',d:4,tip:'El baño es pequeño — esto va rapidísimo'},
+  ]},
+  {id:'salon',name:'Salón',emoji:'🛋️',day:3,dayName:'Miércoles',
+   tasks:[
+    {n:'Recoger y poner cada cosa en su sitio',e:'📦',d:3,tip:'Un cesto para lo que no sabe dónde va'},
+    {n:'Quitar polvo a los muebles',e:'🌬️',d:5,tip:'Empieza por lo alto: estanterías, TV, marcos'},
+    {n:'Limpiar pantallas y tecnología',e:'📺',d:3,tip:'Paño de microfibra seco — nunca agua directa'},
+    {n:'Sacudir cojines y mantas',e:'🛋️',d:3,tip:'Sacúdelos en el balcón o junto a la ventana'},
+    {n:'Barrer o aspirar el suelo',e:'🌀',d:5,tip:'Debajo del sofá también — ese polvo acecha'},
+    {n:'Fregar o pasar la mopa',e:'🧹',d:5,tip:'Agua caliente con un chorrito de friegasuelos'},
+  ]},
+  {id:'dormitorio',name:'Dormitorio',emoji:'🛏️',day:4,dayName:'Jueves',
+   tasks:[
+    {n:'Recoger ropa y objetos del suelo',e:'👕',d:2,tip:'Ropa limpia al armario, sucia al cesto'},
+    {n:'Quitar polvo a los muebles',e:'🌬️',d:5,tip:'Armario, cómoda, mesilla — de arriba a abajo'},
+    {n:'Una balda del armario',e:'📂',d:5,tip:'Solo una balda: dobla, recoloca, desecha lo que no uses'},
+    {n:'Limpiar las mesillas',e:'🕯️',d:3,tip:'Quita todo, limpia la superficie, vuelve a poner'},
+    {n:'Cambiar fundas de almohada',e:'🛌',d:3,tip:'Una vez a la semana marca la diferencia'},
+    {n:'Aspirar o fregar el suelo',e:'🧹',d:5,tip:'Aprovecha para sacar lo que haya debajo de la cama'},
+  ]},
+  {id:'comunes',name:'Zonas Comunes',emoji:'🚪',day:5,dayName:'Viernes',
+   tasks:[
+    {n:'Recoger entrada y pasillo',e:'🚪',d:3,tip:'Zapatos al zapatero, bolsas y paraguas colgados'},
+    {n:'Limpiar la puerta de entrada',e:'🔑',d:3,tip:'La manilla y los bordes acumulan mugre invisible'},
+    {n:'Quitar polvo del pasillo',e:'🌬️',d:3,tip:'Cuadros, espejos y superficies del pasillo'},
+    {n:'Balcón o terraza',e:'🌿',d:5,tip:'Barre primero, luego riega las plantas si toca'},
+    {n:'Papeleras de toda la casa',e:'🗑️',d:3,tip:'Vacía y pon bolsa nueva en cada una'},
+    {n:'Fregar suelo pasillo y entrada',e:'🧹',d:4,tip:'Lo primero que ves al entrar — que brille'},
+  ]},
+];
 
-        function complete() {
-            clearInterval(current.timer);
-            saveCompletion(current.day);
-            
-            const msg = document.getElementById('completionMsg');
-            msg.style.display = 'block';
-            msg.className = 'message';
-            msg.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
-            msg.style.color = 'white';
-            msg.innerHTML = `<h2>🎉 ¡Completado!</h2><p>¡Excelente trabajo con ${current.day}!</p>`;
-            
-            document.getElementById('startBtn').disabled = true;
-            document.getElementById('pauseBtn').disabled = true;
-            document.getElementById('skipBtn').disabled = true;
-            
-            speak('¡Excelente trabajo! Has completado todas las tareas.');
-        }
+const MOTIVS=[
+  '✨ 15 minutos de hoy = casa reluciente el viernes',
+  '🧠 Tu cerebro descansa cuando el espacio está despejado',
+  '💪 Una zona al día. Sin más. Sin agobios.',
+  '🎯 No tienes que hacerlo todo. Solo lo de hoy.',
+  '🌟 Cada tarea terminada es una pequeña victoria.',
+  '⏱️ El temporizador trabaja por ti — solo tienes que empezar.',
+  '🫂 Estás cuidando de tu hogar y de ti. Eso importa.',
+];
 
-        function saveCompletion(day) {
-            const today = new Date().toISOString().split('T')[0];
-            const hist = JSON.parse(localStorage.getItem('history') || '{}');
-            if(!hist[today]) hist[today] = [];
-            if(!hist[today].includes(day)) hist[today].push(day);
-            localStorage.setItem('history', JSON.stringify(hist));
-        }
+// ── State ──────────────────────────────────────────────
+let S={tasks:[],idx:0,timeLeft:0,totalSecs:0,interval:null,paused:false,
+       mode:'zone',zoneId:null,sessionStart:null,tasksDone:0};
+let _utt=null;
 
-        function changeTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(tab).classList.add('active');
-            
-            if(tab === 'history') renderCalendar();
-        }
+// ── Utils ──────────────────────────────────────────────
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
 
-        function renderCalendar() {
-            const y = viewMonth.getFullYear();
-            const m = viewMonth.getMonth();
-            const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-            
-            document.getElementById('calTitle').textContent = `${months[m]} ${y}`;
-            
-            const grid = document.getElementById('calGrid');
-            grid.innerHTML = '';
-            
-            ['D','L','M','X','J','V','S'].forEach(d => {
-                const div = document.createElement('div');
-                div.textContent = d;
-                div.style.fontWeight = '600';
-                div.style.fontSize = '0.75rem';
-                div.style.padding = '8px 0';
-                div.style.textAlign = 'center';
-                grid.appendChild(div);
-            });
-            
-            const first = new Date(y, m, 1);
-            const last = new Date(y, m+1, 0);
-            const startDay = first.getDay();
-            
-            const hist = JSON.parse(localStorage.getItem('history') || '{}');
-            const today = new Date().toISOString().split('T')[0];
-            
-            for(let i=0; i<startDay; i++) {
-                const div = document.createElement('div');
-                grid.appendChild(div);
-            }
-            
-            for(let d=1; d<=last.getDate(); d++) {
-                const date = new Date(y, m, d);
-                const dateStr = date.toISOString().split('T')[0];
-                
-                const div = document.createElement('div');
-                div.className = 'cal-day';
-                div.textContent = d;
-                
-                if(dateStr === today) div.classList.add('today');
-                if(hist[dateStr] && hist[dateStr].length > 0) div.classList.add('completed');
-                
-                grid.appendChild(div);
-            }
-            
-            updateStats();
-        }
+function getWeekKey(){
+  const d=new Date(),y=d.getFullYear();
+  const start=new Date(y,0,1);
+  const w=Math.ceil(((d-start)/86400000+start.getDay()+1)/7);
+  return `lim-w${w}-${y}`;
+}
+function getProgress(){return JSON.parse(localStorage.getItem(getWeekKey())||'{}');}
+function markDone(zoneId){
+  const p=getProgress();p[zoneId]=true;
+  localStorage.setItem(getWeekKey(),JSON.stringify(p));
+}
+function todayZone(){
+  const day=new Date().getDay();
+  const z=ZONES.find(z=>z.day===day);
+  if(z)return z;
+  const prog=getProgress();
+  return ZONES.find(z=>!prog[z.id])||ZONES[0];
+}
 
-        function updateStats() {
-            const hist = JSON.parse(localStorage.getItem('history') || '{}');
-            const y = viewMonth.getFullYear();
-            const m = viewMonth.getMonth();
-            
-            let monthCount = 0;
-            Object.keys(hist).forEach(d => {
-                const date = new Date(d);
-                if(date.getMonth()===m && date.getFullYear()===y && hist[d].length>0) monthCount++;
-            });
-            
-            document.getElementById('statMonth').textContent = monthCount;
-            document.getElementById('statTotal').textContent = Object.keys(hist).length;
-            document.getElementById('statStreak').textContent = calcStreak(hist);
-        }
+function speak(t){
+  try{
+    if(!window.speechSynthesis)return;
+    window.speechSynthesis.cancel();
+    if(window.speechSynthesis.paused)window.speechSynthesis.resume();
+    _utt=new SpeechSynthesisUtterance(t);
+    _utt.lang='es-ES';_utt.rate=.88;
+    const v=window.speechSynthesis.getVoices().find(v=>v.lang.startsWith('es'));
+    if(v)_utt.voice=v;
+    window.speechSynthesis.speak(_utt);
+  }catch(e){}
+}
+function beep(freq,dur){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.type='sine';o.frequency.value=freq||660;
+    g.gain.setValueAtTime(0,ctx.currentTime);
+    g.gain.linearRampToValueAtTime(.25,ctx.currentTime+.02);
+    g.gain.linearRampToValueAtTime(0,ctx.currentTime+(dur||.3));
+    o.start();o.stop(ctx.currentTime+(dur||.3)+.05);
+  }catch(e){}
+}
+function flash(msg){
+  const el=document.getElementById('flash-el');
+  el.textContent=msg;el.style.opacity='1';
+  clearTimeout(flash._t);
+  flash._t=setTimeout(()=>el.style.opacity='0',2000);
+}
 
-        function calcStreak(hist) {
-            const dates = Object.keys(hist).sort().reverse();
-            let streak = 0;
-            let curr = new Date();
-            curr.setHours(0,0,0,0);
-            
-            for(let d of dates) {
-                const date = new Date(d);
-                date.setHours(0,0,0,0);
-                const diff = Math.floor((curr-date)/(1000*60*60*24));
-                if(diff === streak) streak++;
-                else break;
-            }
-            return streak;
-        }
+// ── Navigation ─────────────────────────────────────────
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='v-home')initHome();
+  if(id==='v-week')initWeek();
+}
 
-        function changeMonth(dir) {
-            viewMonth.setMonth(viewMonth.getMonth() + dir);
-            renderCalendar();
-        }
+// ── Home ───────────────────────────────────────────────
+function initHome(){
+  document.getElementById('home-motiv').textContent=
+    MOTIVS[new Date().getDay()%MOTIVS.length];
 
-        function loadNotifConfig() {
-            const active = localStorage.getItem('notifActive') === 'true';
-            const time = localStorage.getItem('notifTime') || '09:00';
-            
-            document.getElementById('notifToggle').classList.toggle('active', active);
-            document.getElementById('notifTime').value = time;
-            document.getElementById('timeBox').style.display = active ? 'block' : 'none';
-        }
+  const tz=todayZone();
+  const prog=getProgress();
+  const already=prog[tz.id];
+  const total=tz.tasks.reduce((a,t)=>a+t.d,0);
 
-        function toggleNotif() {
-            const toggle = document.getElementById('notifToggle');
-            const active = !toggle.classList.contains('active');
-            
-            if(active) {
-                if('Notification' in window) {
-                    Notification.requestPermission().then(p => {
-                        if(p === 'granted') {
-                            toggle.classList.add('active');
-                            document.getElementById('timeBox').style.display = 'block';
-                            localStorage.setItem('notifActive', 'true');
-                        } else {
-                            alert('❌ Permiso denegado');
-                        }
-                    });
-                } else {
-                    alert('❌ No soportado');
-                }
-            } else {
-                toggle.classList.remove('active');
-                document.getElementById('timeBox').style.display = 'none';
-                localStorage.setItem('notifActive', 'false');
-            }
-        }
+  document.getElementById('td-name').textContent=
+    already?`${tz.name} ✓`:tz.name;
+  document.getElementById('td-sub').textContent=
+    already?'¡Ya la tienes limpia esta semana!':`${tz.tasks.length} tareas · ~${total} min`;
+  document.getElementById('td-em').textContent=tz.emoji;
 
-        function saveNotifTime() {
-            const time = document.getElementById('notifTime').value;
-            localStorage.setItem('notifTime', time);
-            alert(`✅ Guardado para las ${time}`);
-        }
+  renderWeekStrip('home-week');
+}
 
-        function startNotifCheck() {
-            setInterval(checkNotif, 60000);
-            checkNotif();
-        }
+function renderWeekStrip(cid){
+  const prog=getProgress();
+  const el=document.getElementById(cid);
+  el.innerHTML='';
+  const today=new Date().getDay();
+  ZONES.forEach(z=>{
+    const done=prog[z.id];
+    const isToday=z.day===today;
+    const d=document.createElement('div');
+    d.className='wd'+(done?' done':'')+(isToday?' today':'');
+    d.innerHTML=`<span class="wd-l">${z.dayName.slice(0,3)}</span><span class="wd-e">${done?'✓':z.emoji}</span>`;
+    el.appendChild(d);
+  });
+}
 
-        function checkNotif() {
-            if(localStorage.getItem('notifActive') !== 'true') return;
-            
-            const time = localStorage.getItem('notifTime') || '09:00';
-            const now = new Date();
-            const nowTime = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-            
-            if(nowTime === time) {
-                const last = localStorage.getItem('lastNotif');
-                const today = now.toISOString().split('T')[0];
-                
-                if(last !== today) {
-                    if('Notification' in window && Notification.permission === 'granted') {
-                        new Notification('🧹 Cris App', {body: '¡Hora de tu rutina de limpieza!'});
-                    }
-                    localStorage.setItem('lastNotif', today);
-                }
-            }
-        }
+function startTodayZone(){startZone(todayZone().id);}
 
-        function renderEditDays() {
-            const cont = document.getElementById('editDays');
-            cont.innerHTML = '';
-            Object.keys(tasks).forEach(d => {
-                const btn = document.createElement('button');
-                btn.className = 'day-pill';
-                btn.textContent = d;
-                btn.onclick = () => selectEditDay(d);
-                cont.appendChild(btn);
-            });
-        }
+// ── Week view ──────────────────────────────────────────
+function initWeek(){
+  const prog=getProgress();
+  const done=Object.values(prog).filter(Boolean).length;
+  const el=document.getElementById('week-motiv');
+  if(done===0)el.textContent='🏁 Empieza por donde quieras — cada zona cuenta';
+  else if(done<5)el.textContent=`🌟 ${done} de 5 zonas listas esta semana. ¡Vas genial!`;
+  else el.textContent='🏆 ¡Casa entera limpia! Te lo has ganado.';
 
-        function selectEditDay(d) {
-            editDay = d;
-            document.querySelectorAll('.day-pill').forEach(p => p.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('editBox').style.display = 'block';
-            renderEditTasks();
-        }
+  const cont=document.getElementById('week-zones');
+  cont.innerHTML='';
+  const today=new Date().getDay();
 
-        function renderEditTasks() {
-            const cont = document.getElementById('editTasksList');
-            cont.innerHTML = '';
-            
-            if(!tasks[editDay]) return;
-            
-            tasks[editDay].forEach((t, i) => {
-                const div = document.createElement('div');
-                div.className = 'edit-task';
-                div.innerHTML = `
-                    <input type="text" value="${t.n}" data-idx="${i}">
-                    <input type="number" value="${t.d}" min="1" max="60" data-idx="${i}">
-                    <button class="btn btn-danger" onclick="deleteTask(${i})">🗑️</button>
-                `;
-                cont.appendChild(div);
-            });
-        }
+  ZONES.forEach(z=>{
+    const isDone=prog[z.id];
+    const isToday=z.day===today;
+    const total=z.tasks.reduce((a,t)=>a+t.d,0);
+    const dots=z.tasks.map(()=>`<div class="zr-dot${isDone?' done':''}"></div>`).join('');
+    const badge=isDone
+      ?`<span class="zr-badge">✓ Lista</span>`
+      :`<span class="zr-arrow">›</span>`;
+    const todayTag=isToday
+      ?`<span style="color:var(--teal);font-weight:700;font-size:.82rem;"> · Hoy</span>`:
+      '';
 
-        function addEditTask() {
-            if(!editDay) return;
-            tasks[editDay].push({n:'Nueva tarea', d:5});
-            renderEditTasks();
-        }
+    const btn=document.createElement('button');
+    btn.className='zone-row'+(isToday?' zone-today':'');
+    btn.innerHTML=`
+      <span class="zr-em">${z.emoji}</span>
+      <div class="zr-info">
+        <div class="zr-name">${z.name}${todayTag}</div>
+        <div class="zr-day">${z.dayName} · ~${total} min</div>
+        <div class="zr-dots">${dots}</div>
+      </div>
+      ${badge}`;
+    btn.onclick=()=>startZone(z.id);
+    cont.appendChild(btn);
+  });
+}
 
-        function deleteTask(idx) {
-            if(confirm('¿Eliminar esta tarea?')) {
-                tasks[editDay].splice(idx, 1);
-                renderEditTasks();
-            }
-        }
+// ── Start zone ─────────────────────────────────────────
+function startZone(zoneId){
+  const zone=ZONES.find(z=>z.id===zoneId);if(!zone)return;
+  S={tasks:[...zone.tasks],idx:0,timeLeft:0,totalSecs:0,interval:null,
+     paused:false,mode:'zone',zoneId,sessionStart:Date.now(),tasksDone:0};
+  document.getElementById('sess-hdr').textContent=zone.name;
+  const banner=document.getElementById('sess-banner');
+  banner.textContent=`${zone.emoji} ${zone.name} · ${zone.dayName}`;
+  banner.style.display='block';
+  renderSession();
+  go('v-session');
+  setTimeout(()=>speak(`Empezamos con ${zone.name}. Primera tarea: ${zone.tasks[0].n}.`),400);
+}
 
-        function saveEdit() {
-            const inputs = document.querySelectorAll('#editTasksList input[type="text"]');
-            const nums = document.querySelectorAll('#editTasksList input[type="number"]');
-            
-            const newTasks = [];
-            inputs.forEach((inp, i) => {
-                const name = inp.value.trim();
-                const dur = parseInt(nums[i].value);
-                if(name && dur > 0) {
-                    newTasks.push({n:name, d:dur});
-                }
-            });
-            
-            tasks[editDay] = newTasks;
-            save();
-            renderDays();
-            alert('✅ Guardado correctamente');
-        }
+// ── Start express ──────────────────────────────────────
+function startExpress(){
+  // One task from each zone (the "recoger" or quickest task), max 3 min each
+  const EXPRESS_TASKS=[
+    {n:'Recoge objetos de la cocina',e:'📦',d:3,tip:'Cada cosa a su sitio, encimera despejada'},
+    {n:'Recoge el baño',e:'🪥',d:2,tip:'Objetos a su sitio, tira lo que no sirva'},
+    {n:'Recoge el salón',e:'🛋️',d:3,tip:'Cojines en su sitio, mesitas despejadas'},
+    {n:'Recoge el dormitorio',e:'👕',d:2,tip:'Ropa al armario o al cesto, nada en el suelo'},
+    {n:'Recoge la entrada y el pasillo',e:'🚪',d:2,tip:'Zapatos al zapatero, abrigos colgados'},
+  ];
+  // Shuffle for variety
+  const shuffled=[...EXPRESS_TASKS].sort(()=>Math.random()-.5);
+  S={tasks:shuffled,idx:0,timeLeft:0,totalSecs:0,interval:null,
+     paused:false,mode:'express',zoneId:'express',sessionStart:Date.now(),tasksDone:0};
+  document.getElementById('sess-hdr').textContent='Express ⚡';
+  const banner=document.getElementById('sess-banner');
+  banner.textContent='⚡ Recogida rápida · 5 tareas · ~12 min';
+  banner.style.display='block';
+  renderSession();
+  go('v-session');
+  setTimeout(()=>speak(`Recogida express. Empezamos: ${shuffled[0].n}.`),400);
+}
 
-        function restoreOriginal() {
-            if(confirm('¿Restaurar tareas originales?')) {
-                if(ORIGINALS[editDay]) {
-                    tasks[editDay] = JSON.parse(JSON.stringify(ORIGINALS[editDay]));
-                    save();
-                    renderEditTasks();
-                    renderDays();
-                    alert('✅ Restaurado');
-                }
-            }
-        }
+// ── Start general ──────────────────────────────────────
+function startGeneral(){
+  const all=[];
+  ZONES.forEach(z=>z.tasks.forEach(t=>all.push({...t,_zone:z.name,_ze:z.emoji})));
+  S={tasks:all,idx:0,timeLeft:0,totalSecs:0,interval:null,
+     paused:false,mode:'general',zoneId:'all',sessionStart:Date.now(),tasksDone:0};
+  document.getElementById('sess-hdr').textContent='Limpieza Completa';
+  document.getElementById('sess-banner').style.display='none';
+  renderSession();
+  go('v-session');
+  setTimeout(()=>speak(`¡Empezamos la limpieza completa! Primera tarea: ${all[0].n}.`),400);
+}
 
-        function resetHistory() {
-            if(confirm('¿Eliminar todo el historial?')) {
-                localStorage.removeItem('history');
-                renderCalendar();
-                alert('✅ Historial eliminado');
-            }
-        }
+// ── Session render ─────────────────────────────────────
+function renderSession(){
+  if(S.idx>=S.tasks.length){finishSession();return;}
+  const t=S.tasks[S.idx];
 
-        function speak(txt) {
-            if('speechSynthesis' in window) {
-                speechSynthesis.cancel();
-                const u = new SpeechSynthesisUtterance(txt);
-                u.lang = 'es-ES';
-                u.rate = 0.9;
-                speechSynthesis.speak(u);
-            }
-        }
+  // Banner for general mode zone transitions
+  if(S.mode==='general'){
+    const banner=document.getElementById('sess-banner');
+    const prev=S.idx>0?S.tasks[S.idx-1]._zone:null;
+    if(!prev||t._zone!==prev){
+      banner.textContent=`${t._ze} Ahora: ${t._zone}`;
+      banner.style.display='block';
+    } else {
+      banner.style.display='none';
+    }
+  }
 
-        init();
-    </script>
+  document.getElementById('sess-prog').textContent=`Tarea ${S.idx+1} de ${S.tasks.length}`;
+
+  // Task card
+  const card=document.getElementById('task-big');
+  card.className='task-big tb-ready';
+  document.getElementById('tb-em').textContent=t.e;
+  document.getElementById('tb-name').textContent=t.n;
+  document.getElementById('tb-tip').textContent=t.tip||'';
+
+  // Timer
+  S.timeLeft=t.d*60;S.totalSecs=t.d*60;
+  document.getElementById('timer-dig').textContent=fmt(S.timeLeft);
+  document.getElementById('timer-lbl').textContent='Pulsa Iniciar para empezar';
+
+  // Progress bar (% tasks done)
+  document.getElementById('pbar').style.width=
+    S.tasks.length?(S.tasksDone/S.tasks.length*100)+'%':'0%';
+
+  // Controls
+  document.getElementById('btn-start').disabled=false;
+  document.getElementById('btn-start').textContent='▶ Iniciar';
+  document.getElementById('btn-pause').disabled=true;
+  document.getElementById('btn-pause').textContent='⏸ Pausa';
+  document.getElementById('btn-skip').disabled=false;
+
+  renderQueue();
+}
+
+function renderQueue(){
+  const cont=document.getElementById('task-queue');
+  cont.innerHTML='';
+  const from=Math.max(0,S.idx-1);
+  const to=Math.min(S.tasks.length,S.idx+4);
+  for(let i=from;i<to;i++){
+    const t=S.tasks[i];
+    const div=document.createElement('div');
+    const cls=i<S.idx?'qi qi-done':i===S.idx?'qi qi-cur':'qi';
+    div.className=cls;
+    div.innerHTML=`<div class="qi-num">${i<S.idx?'✓':i+1}</div>
+      <span class="qi-name">${t.n}</span>
+      <span class="qi-dur">${t.d} min</span>`;
+    cont.appendChild(div);
+  }
+}
+
+// ── Session controls ───────────────────────────────────
+function sessStart(){
+  if(S.interval)clearInterval(S.interval);
+  S.paused=false;
+  S.interval=setInterval(tick,1000);
+  document.getElementById('task-big').className='task-big tb-active';
+  document.getElementById('btn-start').disabled=true;
+  document.getElementById('btn-pause').disabled=false;
+  document.getElementById('timer-lbl').textContent='minutos restantes';
+  speak(S.tasks[S.idx].n);
+}
+
+function sessPause(){
+  if(S.paused){
+    S.interval=setInterval(tick,1000);S.paused=false;
+    document.getElementById('btn-pause').textContent='⏸ Pausa';
+    speak('Continuando.');
+  }else{
+    clearInterval(S.interval);S.paused=true;
+    document.getElementById('btn-pause').textContent='▶ Reanudar';
+  }
+}
+
+function sessSkip(){
+  clearInterval(S.interval);S.interval=null;
+  S.tasksDone++;S.idx++;
+  if(S.idx<S.tasks.length){
+    renderSession();
+    setTimeout(()=>speak(`Siguiente: ${S.tasks[S.idx].n}`),300);
+  }else{finishSession();}
+}
+
+function tick(){
+  S.timeLeft--;
+  document.getElementById('timer-dig').textContent=fmt(S.timeLeft);
+  if(S.timeLeft===60)speak('Queda un minuto.');
+  if(S.timeLeft===10)speak('Diez segundos.');
+  if(S.timeLeft<=0){
+    clearInterval(S.interval);S.interval=null;
+    beep(660,.15);setTimeout(()=>beep(880,.2),200);
+    flash('¡Tarea completada! ✓');
+    document.getElementById('task-big').className='task-big tb-finish';
+    S.tasksDone++;S.idx++;
+    if(S.idx>=S.tasks.length){
+      speak('¡Has terminado! Fantástico trabajo.');
+      setTimeout(finishSession,2200);
+    }else{
+      speak(`¡Muy bien! Siguiente: ${S.tasks[S.idx].n}`);
+      setTimeout(()=>{renderSession();sessStart();},2500);
+    }
+  }
+}
+
+function exitSession(){
+  clearInterval(S.interval);S.interval=null;
+  window.speechSynthesis&&window.speechSynthesis.cancel();
+  go('v-home');
+}
+
+// ── Finish ─────────────────────────────────────────────
+function finishSession(){
+  clearInterval(S.interval);S.interval=null;
+  if(S.mode==='zone')markDone(S.zoneId);
+  else if(S.mode==='general')ZONES.forEach(z=>markDone(z.id));
+
+  const elapsed=Math.max(1,Math.round((Date.now()-S.sessionStart)/60000));
+  const prog=getProgress();
+  const doneCount=Object.values(prog).filter(Boolean).length;
+
+  let em,title,sub;
+  if(S.mode==='express'){
+    em='⚡';title='¡Express completado!';
+    sub='La casa está recogida. Eso es todo lo que necesitabas.';
+  }else if(S.mode==='general'){
+    em='🏠';title='¡Casa limpia!';
+    sub='Has limpiado toda la casa de una vez. Eres increíble.';
+  }else{
+    const zone=ZONES.find(z=>z.id===S.zoneId);
+    em=zone?zone.emoji:'✨';
+    title=`¡${zone?zone.name:'Zona'} lista!`;
+    sub=doneCount>=5?'¡Y ya está toda la casa! 🎉':`${doneCount} de 5 zonas completadas esta semana.`;
+  }
+
+  document.getElementById('done-em').textContent=em;
+  document.getElementById('done-title').textContent=title;
+  document.getElementById('done-sub').textContent=sub;
+  document.getElementById('done-tasks').textContent=S.tasksDone;
+  document.getElementById('done-time').textContent=elapsed;
+  document.getElementById('done-motiv').textContent=
+    doneCount>=5?'🏆 Esta semana ya solo toca mantener. ¡Lo has conseguido!':
+    `Quedan ${5-doneCount} zona${5-doneCount===1?'':'s'} para que la casa esté perfecta.`;
+
+  go('v-done');
+}
+
+// ── Boot ───────────────────────────────────────────────
+initHome();
+</script>
 </body>
 </html>

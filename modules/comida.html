@@ -1,874 +1,1163 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comer Rico - Fácil y Simple</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #ffe0b3 0%, #f5f5dc 100%); min-height: 100vh; color: #5d4e37; padding: 20px; font-size: 18px; }
-        .container { max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 25px; backdrop-filter: blur(10px); }
-        .header { text-align: center; margin-bottom: 30px; }
-        .chef { font-size: 60px; margin-bottom: 15px; }
-        .title { font-size: 2.2rem; color: #ff8c42; margin-bottom: 10px; }
-        .subtitle { color: #8b7355; font-size: 1.2rem; line-height: 1.5; }
-        
-        .difficulty-note { background: rgba(77, 208, 225, 0.2); padding: 15px; border-radius: 15px; margin-bottom: 25px; border-left: 5px solid #4dd0e1; }
-        .difficulty-note strong { color: #ff8c42; font-size: 1.1rem; }
-        
-        .recipes { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
-        .recipe { background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        
-        .recipe-header { text-align: center; margin-bottom: 15px; }
-        .emoji { font-size: 3.5rem; margin-bottom: 10px; }
-        .recipe-title { font-size: 1.4rem; color: #5d4e37; margin-bottom: 8px; font-weight: bold; }
-        .time { background: linear-gradient(45deg, #4dd0e1, #26c6da); color: white; padding: 8px 15px; border-radius: 15px; font-size: 1rem; font-weight: bold; display: inline-block; }
-        
-        .simplicity-tags { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
-        .tag { background: #66bb6a; color: white; padding: 6px 12px; border-radius: 12px; font-size: 0.9rem; font-weight: bold; }
-        
-        .tools-needed { background: rgba(255, 215, 0, 0.1); padding: 12px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #FFD700; }
-        .tools-needed h4 { color: #ff8c42; margin-bottom: 8px; font-size: 1rem; }
-        .tool-list { font-size: 0.95rem; line-height: 1.6; }
-        
-        .ingredients { margin-bottom: 15px; }
-        .ingredients h4 { color: #ff8c42; margin-bottom: 8px; font-size: 1.1rem; }
-        .ingredient-list { font-size: 1rem; line-height: 1.8; color: #5d4e37; background: rgba(255, 255, 255, 0.8); padding: 12px; border-radius: 10px; }
-        
-        .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-        .btn { padding: 12px 20px; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: all 0.3s ease; }
-        .btn-primary { background: linear-gradient(45deg, #ff8c42, #ff6b35); color: white; }
-        .btn-secondary { background: linear-gradient(45deg, #4dd0e1, #26c6da); color: white; }
-        .btn:hover { transform: translateY(-2px); }
-        .btn:active { transform: scale(0.98); }
-        
-        .shopping { background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); margin-top: 30px; }
-        .shopping-title { color: #ff8c42; font-size: 1.6rem; text-align: center; margin-bottom: 20px; }
-        
-        .shopping-help { background: rgba(77, 208, 225, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
-        .shopping-help h4 { color: #4dd0e1; margin-bottom: 10px; }
-        
-        .shopping-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 20px; }
-        .category { background: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 12px; border-left: 5px solid #4dd0e1; }
-        .category-title { color: #4dd0e1; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; }
-        .shopping-item { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 1rem; line-height: 1.5; }
-        .shopping-item input { margin-top: 4px; transform: scale(1.3); accent-color: #4dd0e1; flex-shrink: 0; }
-        .shopping-item.completed { text-decoration: line-through; opacity: 0.6; }
-        .shopping-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-        
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); }
-        .modal-content { background: white; margin: 2% auto; padding: 25px; border-radius: 20px; width: 95%; max-width: 650px; max-height: 90vh; overflow-y: auto; }
-        .close { float: right; font-size: 32px; font-weight: bold; cursor: pointer; color: #aaa; line-height: 1; }
-        .close:hover { color: #ff6b35; }
-        
-        .audio-guide { background: rgba(255, 140, 66, 0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-        .timer { font-size: 2.5rem; font-weight: bold; color: #ff8c42; text-align: center; margin-bottom: 15px; }
-        .audio-controls { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-        .current-step { background: white; padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 6px solid #ff8c42; }
-        .step-text { font-size: 1.3rem; line-height: 1.8; color: #5d4e37; margin-bottom: 12px; font-weight: 500; }
-        .step-timer { color: #4dd0e1; font-weight: bold; font-size: 1.1rem; }
-        .steps-list { background: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 12px; }
-        .step-item { padding: 12px; margin-bottom: 10px; background: white; border-radius: 10px; font-size: 1.05rem; line-height: 1.6; }
-        .step-item.active { background: linear-gradient(45deg, #FFD700, #FFA500); color: white; transform: scale(1.02); }
-        .step-item.completed { background: #e8f5e8; }
-        
-        .visual-help { background: rgba(102, 187, 106, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #66bb6a; }
-        .visual-help h4 { color: #66bb6a; margin-bottom: 8px; }
-        
-        @media (max-width: 768px) { 
-            .recipes { grid-template-columns: 1fr; }
-            .shopping-grid { grid-template-columns: 1fr; }
-            .title { font-size: 1.8rem; }
-            body { font-size: 16px; }
-            .step-text { font-size: 1.1rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Comer Rico — Cris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#26a69a;--teal-dark:#1a6b64;--teal-light:#4dd0e1;--mint:#d6f0eb;--mint-mid:#b8e4dd;--mint-soft:#e8f8f5;--text:#1a6b64;--text-soft:#3d8880}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;color:var(--text)}
+.screen{display:none;min-height:100vh;padding:16px 16px 48px}
+.screen.active{display:block}
+.max-w{max-width:440px;margin:0 auto;padding-top:12px}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.back-btn{background:rgba(26,107,100,.12);border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--teal-dark)}
+.topbar h1{font-size:1.15rem;font-weight:700;color:var(--teal-dark)}
+.home-header{text-align:center;margin-bottom:16px}
+.home-header h1{font-size:1.6rem;font-weight:800;color:var(--teal-dark);margin-bottom:4px}
+.home-header p{font-size:.85rem;color:var(--text-soft)}
+.bubble{background:rgba(255,255,255,.8);border:2px solid var(--mint-mid);border-radius:16px;padding:10px 16px;font-size:.85rem;font-weight:600;color:var(--teal-dark);text-align:center;margin:0 auto 16px;max-width:300px}
+.nav-cards{display:flex;flex-direction:column;gap:10px}
+.nav-card{border:none;border-radius:16px;padding:16px 18px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;color:#fff;cursor:pointer;text-align:left;display:flex;align-items:center;gap:14px;width:100%;transition:transform .1s,filter .1s}
+.nav-card:active{transform:scale(.97);filter:brightness(.9)}
+.nav-card .nic{font-size:1.5rem}
+.nav-card .info{display:flex;flex-direction:column;gap:2px}
+.nav-card .sub{font-size:.75rem;font-weight:400;opacity:.88}
+.c-season{background:linear-gradient(135deg,#059669,var(--teal))}
+.c-months{background:linear-gradient(135deg,var(--teal-dark),#0369a1)}
+.c-test{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+.c-shop{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
+/* Month grid */
+.months-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.month-tile{background:rgba(255,255,255,.82);border:2px solid var(--mint-mid);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;transition:transform .1s,border-color .1s}
+.month-tile:active{transform:scale(.95);border-color:var(--teal)}
+.month-tile.current{border-color:var(--teal);background:rgba(38,166,154,.08)}
+.month-tile .m-emoji{font-size:1.6rem;display:block;margin-bottom:4px}
+.month-tile .m-name{font-size:.8rem;font-weight:700;color:var(--teal-dark)}
+/* Season banner */
+.season-banner{background:rgba(255,255,255,.82);border:2px solid var(--mint-mid);border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.season-banner .sb-title{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--teal);margin-bottom:6px}
+.season-chips{display:flex;flex-wrap:wrap;gap:6px}
+.s-chip{background:var(--mint-soft);border:1px solid var(--mint-mid);border-radius:999px;padding:4px 10px;font-size:.75rem;font-weight:600;color:var(--teal-dark)}
+.season-tip{font-size:.78rem;color:var(--text-soft);margin-top:8px;line-height:1.4}
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:14px}
+.tab{flex:1;padding:10px;border:2px solid var(--mint-mid);border-radius:12px;background:rgba(255,255,255,.7);font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;color:var(--text-soft);text-align:center}
+.tab.active{background:var(--teal-dark);color:#fff;border-color:var(--teal-dark)}
+/* Recipe cards */
+.recipe-card{background:rgba(255,255,255,.85);border-radius:18px;padding:16px;border:2px solid var(--mint-mid);margin-bottom:10px;cursor:pointer;transition:transform .1s,border-color .1s}
+.recipe-card:active{transform:scale(.98);border-color:var(--teal)}
+.r-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.r-emoji{font-size:2rem;flex-shrink:0}
+.r-info h3{font-size:.95rem;font-weight:700;color:var(--teal-dark)}
+.r-badges{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap}
+.badge{border-radius:999px;padding:2px 9px;font-size:.68rem;font-weight:700}
+.b-time{background:var(--teal);color:#fff}
+.b-budget{background:#fef3c7;color:#92400e}
+.recipe-desc{font-size:.8rem;color:var(--text-soft);line-height:1.4;margin-top:6px}
+.tag-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.tag{background:var(--mint-soft);border:1px solid var(--mint-mid);color:var(--teal-dark);border-radius:999px;padding:2px 8px;font-size:.65rem;font-weight:600}
+/* Detail */
+.card{background:rgba(255,255,255,.82);border-radius:18px;padding:18px;border:2px solid var(--mint-mid);margin-bottom:12px}
+.card h2{font-size:1rem;font-weight:700;color:var(--teal-dark);margin-bottom:5px}
+.card p{font-size:.84rem;color:var(--text-soft);line-height:1.5}
+.section-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin-bottom:8px}
+/* Harvard plate */
+.harvard-plate{display:flex;gap:6px;margin-bottom:14px}
+.hp-seg{border-radius:12px;padding:10px 8px;text-align:center;flex-shrink:0}
+.hp-veg{background:#dcfce7;color:#166534;flex:2}
+.hp-prot{background:#fef3c7;color:#92400e;flex:1}
+.hp-grain{background:#dbeafe;color:#1e40af;flex:1}
+.hp-seg .hp-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:3px}
+.hp-seg .hp-what{font-size:.72rem;font-weight:600;line-height:1.3}
+.nutri-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.nutri-cell{background:rgba(255,255,255,.8);border:2px solid var(--mint-mid);border-radius:12px;padding:10px;text-align:center}
+.nutri-cell .val{font-size:1.2rem;font-weight:800;color:var(--teal-dark)}
+.nutri-cell .lbl{font-size:.65rem;color:var(--text-soft);margin-top:2px}
+.tip-box{background:var(--mint-soft);border-left:4px solid var(--teal);border-radius:0 12px 12px 0;padding:12px 14px;font-size:.83rem;color:var(--text);line-height:1.5;margin-bottom:14px}
+.ingr-list{list-style:none;font-size:.88rem}
+.ingr-list li{padding:7px 0;border-bottom:1px solid var(--mint);display:flex;gap:8px;align-items:flex-start}
+.ingr-list li:last-child{border:none}
+.ingr-list li::before{content:"•";color:var(--teal);font-weight:700;flex-shrink:0}
+/* Buttons */
+.btn{border:none;border-radius:12px;padding:13px 18px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;width:100%}
+.btn-secondary{background:var(--mint-soft);color:var(--teal-dark);border:2px solid var(--mint-mid);width:100%}
+.btn-row{display:flex;gap:8px;margin-top:12px}
+.btn-row .btn{flex:1}
+/* Cooking */
+.step-box{background:var(--mint-soft);border:2px solid var(--mint-mid);border-radius:18px;padding:22px;text-align:center;margin-bottom:14px}
+.step-num{font-size:.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.step-text{font-size:1.02rem;font-weight:600;color:var(--teal-dark);line-height:1.6;margin-bottom:14px}
+.step-timer{font-size:3rem;font-weight:800;color:var(--teal-dark);font-variant-numeric:tabular-nums;margin-bottom:2px}
+.step-timer-lbl{font-size:.72rem;color:var(--text-soft)}
+.prog-wrap{background:var(--mint-mid);border-radius:999px;height:5px;margin-bottom:12px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal-dark),var(--teal-light));border-radius:999px;transition:width .6s}
+.dots{display:flex;justify-content:center;gap:5px;margin-bottom:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mint-mid)}
+.dot.done{background:var(--teal)}.dot.active{background:var(--teal-light);transform:scale(1.4)}
+.done-box{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:18px;padding:28px;text-align:center;margin-bottom:14px}
+.done-box .big{font-size:3rem;margin-bottom:8px}
+.done-box h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
+.done-box p{font-size:.88rem;opacity:.9}
+/* Test */
+.opt-btn{width:100%;border:2px solid var(--mint-mid);border-radius:14px;padding:13px 16px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:600;color:var(--teal-dark);background:rgba(255,255,255,.8);cursor:pointer;text-align:left;margin-bottom:8px}
+.opt-btn:active{border-color:var(--teal);background:var(--mint-soft)}
+.result-box{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:18px;padding:22px;text-align:center;margin-bottom:14px}
+.result-box h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
+.result-box p{font-size:.88rem;opacity:.9;line-height:1.5}
+/* Shopping */
+.shop-cat h3{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--mint-mid)}
+.shop-cat{margin-bottom:16px}
+.shop-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--mint)}
+.shop-item:last-child{border:none}
+.shop-item input{margin-top:3px;width:18px;height:18px;accent-color:var(--teal);flex-shrink:0;cursor:pointer}
+.shop-item label{font-size:.86rem;color:var(--text);line-height:1.4;cursor:pointer}
+.shop-item label strong{color:var(--teal-dark)}
+.shop-item label small{display:block;color:var(--text-soft);font-size:.73rem;margin-top:1px}
+.shop-item.ck label{text-decoration:line-through;opacity:.45}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="chef">👨‍🍳🐨</div>
-            <h1 class="title">Comer Rico (Versión Fácil)</h1>
-            <p class="subtitle">🌟 Recetas SUPER SIMPLES • Sin tomate • Solo utensilios básicos<br>✨ Perfecto si cocinar te cuesta • Paso a paso claro y sencillo</p>
+
+<div id="v-home" class="screen active">
+<div class="max-w">
+  <div class="home-header">
+    <h1>🍳 Comer Rico</h1>
+    <p>De temporada · sin tomate · plato Harvard</p>
+  </div>
+  <div class="bubble" id="home-bubble">¿Qué cocinamos hoy? 🌿</div>
+  <div class="nav-cards">
+    <button class="nav-card c-season" onclick="goCurrentMonth()">
+      <span class="nic">📅</span>
+      <div class="info"><span id="home-month-label">ESTE MES</span><span class="sub" id="home-season-sub">Cargando temporada...</span></div>
+    </button>
+    <button class="nav-card c-months" onclick="go('months')">
+      <span class="nic">🗓️</span>
+      <div class="info"><span>TODOS LOS MESES</span><span class="sub">Recetas de temporada todo el año</span></div>
+    </button>
+    <button class="nav-card c-test" onclick="startTest()">
+      <span class="nic">🤔</span>
+      <div class="info"><span>¿QUÉ COCINO HOY?</span><span class="sub">Test rápido según cómo estás</span></div>
+    </button>
+    <button class="nav-card c-shop" onclick="go('shopping')">
+      <span class="nic">🛒</span>
+      <div class="info"><span>LISTA DE COMPRAS</span><span class="sub">Básicos de temporada · 1 persona</span></div>
+    </button>
+  </div>
+</div>
+</div>
+
+<div id="v-months" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>Elige el mes</h1></div>
+  <div class="months-grid" id="months-grid"></div>
+</div>
+</div>
+
+<div id="v-month" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="go('months')">←</button><h1 id="month-title">Enero</h1></div>
+  <div class="season-banner" id="season-banner"></div>
+  <div class="tabs">
+    <button class="tab active" id="tab-c" onclick="setMealTab('comidas')">☀️ Comidas</button>
+    <button class="tab" id="tab-n" onclick="setMealTab('cenas')">🌙 Cenas</button>
+  </div>
+  <div id="month-recipes"></div>
+</div>
+</div>
+
+<div id="v-detail" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" id="detail-back">←</button><h1 id="detail-title"></h1></div>
+  <div id="detail-content"></div>
+</div>
+</div>
+
+<div id="v-cooking" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="stopCook();go('detail')">←</button><h1 id="cook-title"></h1></div>
+  <div id="cook-content"></div>
+</div>
+</div>
+
+<div id="v-test" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>¿Qué cocino hoy?</h1></div>
+  <div id="test-content"></div>
+</div>
+</div>
+
+<div id="v-shopping" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>Lista de Compras</h1></div>
+  <div class="card" style="margin-bottom:14px"><p>Básicos de temporada para 7 días · 1 persona · sin tomate. Marca según vas comprando 💚</p></div>
+  <div id="shop-list"></div>
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="shareList()">📱 Compartir</button>
+    <button class="btn btn-secondary" onclick="clearShop()">↺ Borrar marcas</button>
+  </div>
+</div>
+</div>
+
+<script>
+/* ── DATOS ── */
+const MONTHS = [
+{id:'ene',name:'Enero',emoji:'❄️',
+ season:['Puerro','Brócoli','Coliflor','Zanahoria','Col','Naranja'],
+ tip:'Las verduras de raíz aguantan toda la semana en la nevera. Compra en mercado para ahorrar.',
+ comidas:[
+  {id:'ene-c1',emoji:'🥘',name:'Sopa de Puerro y Lentejas',time:'20 min',budget:'€',
+   harvard:{veg:'Puerro · zanahoria',prot:'Lentejas',grain:'—'},
+   tags:['Vegetariano','Sin gluten'],
+   desc:'Caldito que calienta el cuerpo en invierno. Las lentejas de bote hacen este plato muy rápido.',
+   nutrients:[{v:'370',l:'kcal'},{v:'18g',l:'proteína'},{v:'9mg',l:'hierro'}],
+   tip:'Usa lentejas de bote — ya están cocidas. Solo necesitan 5 min de calor para absorber el sabor.',
+   ingredients:['1 puerro','2 zanahorias','1 bote lentejas cocidas (400g)','1L caldo de verduras','1 cda aceite de oliva','Sal, comino'],
+   steps:[
+    {text:'Corta el puerro y zanahoria en rodajas. Rehoga con aceite en olla a fuego medio 5 min removiendo',time:5,voice:'Corta puerro y zanahoria en rodajas y rehoga con aceite cinco minutos'},
+    {text:'Añade el caldo, sube el fuego hasta que hierva, baja a medio y cocina 10 min tapado',time:10,voice:'Añade el caldo, hierve, baja a fuego medio y tapa diez minutos'},
+    {text:'Escurre las lentejas y añádelas con sal y comino. 5 min más removiendo y lista',time:5,voice:'Añade las lentejas escurridas con sal y comino. Cinco minutos más y listo'}
+   ]},
+  {id:'ene-c2',emoji:'🥣',name:'Arroz con Brócoli y Huevo',time:'18 min',budget:'€',
+   harvard:{veg:'Brócoli',prot:'Huevo',grain:'Arroz'},
+   tags:['Vegetariano','Sin gluten','1 olla'],
+   desc:'El brócoli congelado se cocina encima del arroz sin esfuerzo. Rápido y completo.',
+   nutrients:[{v:'420',l:'kcal'},{v:'16g',l:'proteína'},{v:'48g',l:'hidratos'}],
+   tip:'El brócoli congelado va directo a la olla sin descongelar. El huevo puede ir frito si no dominas el pochado.',
+   ingredients:['½ taza arroz blanco','150g brócoli congelado','1 huevo','1 taza agua','1 cda aceite de oliva','Sal, ajo en polvo'],
+   steps:[
+    {text:'Pon arroz, agua y sal en olla. Hierve, baja al mínimo, tapa. Pon 15 min de alarma',time:15,voice:'Pon el arroz con agua y sal. Hierve, baja al mínimo y tapa quince minutos'},
+    {text:'A los 10 min: pon el brócoli congelado encima del arroz sin mezclar. Tapa de nuevo',time:0,voice:'A los diez minutos pon el brócoli encima del arroz y vuelve a tapar'},
+    {text:'Fríe el huevo en sartén aparte con aceite. Sirve arroz+brócoli con el huevo encima y ajo en polvo',time:3,voice:'Fríe el huevo y sírvelo encima del arroz con brócoli y ajo en polvo'}
+   ]}
+ ],
+ cenas:[
+  {id:'ene-n1',emoji:'🍵',name:'Crema de Coliflor',time:'15 min',budget:'€',
+   harvard:{veg:'Coliflor',prot:'—',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Ligera'],
+   desc:'Cremosa, suave y reconfortante. La coliflor congelada va directa a la olla.',
+   nutrients:[{v:'200',l:'kcal'},{v:'7g',l:'proteína'},{v:'Vit C',l:'inmunidad'}],
+   tip:'Tritura bien para que quede suave. Un chorrito de leche de coco al final la hace más cremosa.',
+   ingredients:['300g coliflor congelada','½ cebolla','1 vaso caldo de verduras','1 cda aceite de oliva','Sal, nuez moscada','Pan integral para acompañar'],
+   steps:[
+    {text:'Pica la cebolla. Rehoga con aceite en olla 3 min a fuego medio',time:3,voice:'Pica la cebolla y rehoga tres minutos con aceite'},
+    {text:'Añade la coliflor congelada y el caldo. Sube el fuego. Al hervir, baja a medio y tapa 10 min',time:10,voice:'Añade la coliflor y el caldo. Hierve, baja y tapa diez minutos'},
+    {text:'Tritura con batidora de mano, añade sal y nuez moscada. Sirve con pan integral',time:2,voice:'Tritura todo, añade sal y sirve con pan integral'}
+   ]},
+  {id:'ene-n2',emoji:'🍳',name:'Tortilla de Puerro',time:'10 min',budget:'€',
+   harvard:{veg:'Puerro',prot:'Huevo',grain:'Pan integral (opcional)'},
+   tags:['Vegetariano','Sin gluten','Rápida'],
+   desc:'El puerro da sabor dulce y suave. Proteína + verdura en 10 minutos.',
+   nutrients:[{v:'260',l:'kcal'},{v:'16g',l:'proteína'},{v:'5g',l:'grasa sana'}],
+   tip:'Rehoga bien el puerro hasta que esté transparente — así no sabe crudo dentro de la tortilla.',
+   ingredients:['1 puerro (parte blanca)','2 huevos','1 cda aceite de oliva','Sal'],
+   steps:[
+    {text:'Corta el puerro en rodajas finas. Rehoga con aceite 5 min a fuego medio hasta que ablande',time:5,voice:'Corta el puerro y rehógalo cinco minutos hasta que esté blando'},
+    {text:'Bate huevos con sal. Vierte sobre el puerro a fuego medio-bajo. 3 min sin mover',time:3,voice:'Bate los huevos con sal y viértelos sobre el puerro. Tres minutos sin moverla'},
+    {text:'Dale la vuelta con un plato. 2 min más y lista',time:2,voice:'Dale la vuelta con un plato y cocina dos minutos más'}
+   ]}
+ ]},
+
+{id:'feb',name:'Febrero',emoji:'🫧',
+ season:['Espinacas','Brócoli','Coliflor','Puerro','Naranja','Acelgas'],
+ tip:'Las espinacas frescas son más baratas en febrero. Las congeladas funcionan igual de bien.',
+ comidas:[
+  {id:'feb-c1',emoji:'🥗',name:'Bowl de Espinacas y Garbanzos',time:'10 min',budget:'€',
+   harvard:{veg:'Espinacas',prot:'Garbanzos',grain:'—'},
+   tags:['Vegetariano','Sin cocción','Rápida'],
+   desc:'Sin fogones. Abrir el bote, mezclar y aliñar. Listo en 10 minutos.',
+   nutrients:[{v:'340',l:'kcal'},{v:'16g',l:'proteína'},{v:'10g',l:'fibra'}],
+   tip:'Si las espinacas son frescas, están listas tal cual. Si son congeladas, descongela y escurre bien.',
+   ingredients:['1 bote garbanzos (400g)','2 puñados espinacas frescas','30g queso feta','Zumo de ½ limón','2 cdas aceite de oliva','Sal, comino'],
+   steps:[
+    {text:'Escurre y lava los garbanzos con agua fría',time:1,voice:'Escurre y lava los garbanzos'},
+    {text:'Pon las espinacas en un bowl, añade los garbanzos y el feta desmenuzado',time:2,voice:'Mezcla en un bowl las espinacas, garbanzos y feta'},
+    {text:'Aliña con limón, aceite, sal y comino. Mezcla y a comer',time:1,voice:'Aliña con limón, aceite y sal. Mezcla y listo'}
+   ]},
+  {id:'feb-c2',emoji:'🍗',name:'Pollo con Brócoli al Limón',time:'20 min',budget:'€',
+   harvard:{veg:'Brócoli',prot:'Pollo',grain:'Arroz'},
+   tags:['Sin gluten','Proteína'],
+   desc:'Pollo jugoso con brócoli y arroz. Dos fuegos pero muy sencillo.',
+   nutrients:[{v:'490',l:'kcal'},{v:'38g',l:'proteína'},{v:'48g',l:'hidratos'}],
+   tip:'No muevas el pollo hasta que se despegue solo de la sartén — así queda dorado y jugoso.',
+   ingredients:['1 pechuga de pollo fileteada','150g brócoli congelado','½ taza arroz','1 limón','1 cda aceite de oliva','Sal, ajo en polvo'],
+   steps:[
+    {text:'Pon arroz con agua y sal en olla. Hierve, baja al mínimo, tapa 15 min. A los 10 min añade el brócoli encima',time:15,voice:'Pon el arroz a cocer quince minutos y a los diez añade el brócoli encima'},
+    {text:'Sala el pollo. Sartén con aceite a fuego medio-alto. 4 min sin moverlo. Voltea',time:4,voice:'Sala el pollo y cocínalo en sartén cuatro minutos sin moverlo'},
+    {text:'4 min más, exprime el limón encima y apaga. Sirve con arroz y brócoli',time:4,voice:'Cuatro minutos más, exprime el limón y sirve con el arroz y el brócoli'}
+   ]}
+ ],
+ cenas:[
+  {id:'feb-n1',emoji:'🥣',name:'Crema de Brócoli y Cúrcuma',time:'12 min',budget:'€',
+   harvard:{veg:'Brócoli',prot:'—',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Antiinflamatoria'],
+   desc:'El brócoli congelado y la cúrcuma hacen una crema reconfortante y antiinflamatoria.',
+   nutrients:[{v:'180',l:'kcal'},{v:'8g',l:'proteína'},{v:'Vit C',l:'inmunidad'}],
+   tip:'La cúrcuma necesita un poquito de pimienta negra para activarse. Añade una pizca al triturar.',
+   ingredients:['250g brócoli congelado','½ cebolla','1 vaso caldo de verduras','1 cda aceite de oliva','½ cdita cúrcuma','Pizca pimienta negra','Sal'],
+   steps:[
+    {text:'Rehoga cebolla con aceite 3 min. Añade brócoli congelado y caldo',time:3,voice:'Rehoga la cebolla tres minutos, añade el brócoli y el caldo'},
+    {text:'Hierve y cocina 8 min tapado a fuego medio',time:8,voice:'Hierve y cocina ocho minutos tapado'},
+    {text:'Añade cúrcuma, pimienta y sal. Tritura hasta que quede suave',time:1,voice:'Añade cúrcuma, pimienta y sal. Tritura hasta que esté suave'}
+   ]},
+  {id:'feb-n2',emoji:'🥚',name:'Espinacas con Huevo Pochado',time:'8 min',budget:'€',
+   harvard:{veg:'Espinacas',prot:'Huevo',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Rápida'],
+   desc:'Espinacas salteadas con ajo y un huevo pochado encima. Cena sencilla y nutritiva.',
+   nutrients:[{v:'220',l:'kcal'},{v:'14g',l:'proteína'},{v:'Hierro',l:'espinacas'}],
+   tip:'Para el huevo pochado: agua hirviendo con una pizca de vinagre, remueve para hacer un remolino y echa el huevo. 3 min.',
+   ingredients:['2 puñados espinacas','1 huevo','1 diente ajo (o ajo en polvo)','1 cda aceite de oliva','Sal','Pan integral'],
+   steps:[
+    {text:'Saltea las espinacas con ajo y aceite 3 min a fuego medio hasta que reduzcan',time:3,voice:'Saltea las espinacas con ajo y aceite tres minutos'},
+    {text:'En paralelo: hierve agua, añade pizca de vinagre, remueve y echa el huevo. 3 min',time:3,voice:'Hierve agua con vinagre, remueve y echa el huevo. Tres minutos'},
+    {text:'Sirve espinacas con el huevo encima y pan integral al lado',time:1,voice:'Sirve las espinacas con el huevo pochado encima y pan al lado'}
+   ]}
+ ]},
+
+{id:'mar',name:'Marzo',emoji:'🌱',
+ season:['Espárragos','Guisantes','Alcachofas','Fresas','Acelgas'],
+ tip:'Los espárragos frescos son más baratos que los de bote y se cocinan rápido a la plancha.',
+ comidas:[
+  {id:'mar-c1',emoji:'🌿',name:'Quinoa con Espárragos y Huevo',time:'15 min',budget:'€',
+   harvard:{veg:'Espárragos',prot:'Huevo',grain:'Quinoa'},
+   tags:['Vegetariano','Sin gluten','Primavera'],
+   desc:'Los espárragos de temporada con quinoa y huevo duro. Plato de primavera completo.',
+   nutrients:[{v:'400',l:'kcal'},{v:'18g',l:'proteína'},{v:'22g',l:'grasa sana'}],
+   tip:'Los espárragos blancos de bote también sirven. Escúrrelos y hazlos 2 min a la plancha.',
+   ingredients:['½ taza quinoa prelavada','1 manojo espárragos','2 huevos','1 cda aceite de oliva','Zumo de ½ limón','Sal'],
+   steps:[
+    {text:'Hierve quinoa con 1 taza agua y sal. Al hervir, baja al mínimo y tapa 12 min',time:12,voice:'Hierve la quinoa con agua y sal. Al hervir baja al mínimo y tapa doce minutos'},
+    {text:'Cuece los huevos 8 min en agua hirviendo. Enfría y pela',time:8,voice:'Cuece los huevos ocho minutos. Enfría con agua fría y pela'},
+    {text:'Plancha los espárragos con aceite y sal 4 min. Sirve todo junto con limón',time:4,voice:'Plancha los espárragos cuatro minutos y sirve todo con un chorro de limón'}
+   ]},
+  {id:'mar-c2',emoji:'🐟',name:'Arroz con Guisantes y Atún',time:'18 min',budget:'€',
+   harvard:{veg:'Guisantes',prot:'Atún',grain:'Arroz'},
+   tags:['Sin gluten','Proteína','Barato'],
+   desc:'Clásico de temporada. El atún en lata es la proteína más barata y práctica.',
+   nutrients:[{v:'430',l:'kcal'},{v:'28g',l:'proteína'},{v:'50g',l:'hidratos'}],
+   tip:'El atún va al final, fuera del fuego — así no se reseca. Escúrrelo bien del aceite de la lata.',
+   ingredients:['½ taza arroz','100g guisantes (congelados o de bote)','1 lata atún al natural','1 cda aceite de oliva','Sal, perejil (opcional)'],
+   steps:[
+    {text:'Hierve arroz con agua y sal 15-18 min. En los últimos 5 min añade los guisantes encima',time:18,voice:'Hierve el arroz y en los últimos cinco minutos añade los guisantes encima'},
+    {text:'Escurre el atún. Mezcla arroz+guisantes con el atún, aceite y sal',time:2,voice:'Escurre el atún y mezcla todo con aceite y sal'}
+   ]}
+ ],
+ cenas:[
+  {id:'mar-n1',emoji:'🥚',name:'Espárragos a la Plancha con Huevo',time:'8 min',budget:'€',
+   harvard:{veg:'Espárragos',prot:'Huevo',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Rápida'],
+   desc:'Cena express de primavera. Los espárragos verdes a la plancha están listos en 4 minutos.',
+   nutrients:[{v:'210',l:'kcal'},{v:'14g',l:'proteína'},{v:'Ácido fólico',l:'primavera'}],
+   tip:'Los espárragos están listos cuando cambian a verde brillante y puedes pincharlos fácilmente.',
+   ingredients:['1 manojo espárragos verdes','1 huevo','1 cda aceite de oliva','Sal gruesa','Pan integral'],
+   steps:[
+    {text:'Calienta sartén a fuego fuerte con aceite. Plancha los espárragos 4 min con sal',time:4,voice:'Plancha los espárragos con aceite y sal cuatro minutos a fuego fuerte'},
+    {text:'En la misma sartén baja el fuego y fríe el huevo. 2 min',time:2,voice:'Baja el fuego y fríe el huevo en la misma sartén dos minutos'},
+    {text:'Sirve espárragos con el huevo encima y pan integral',time:1,voice:'Sirve los espárragos con el huevo y pan integral al lado'}
+   ]},
+  {id:'mar-n2',emoji:'🫛',name:'Bowl de Guisantes con Feta',time:'5 min',budget:'€',
+   harvard:{veg:'Guisantes',prot:'Feta',grain:'—'},
+   tags:['Vegetariano','Sin cocción','Rápida'],
+   desc:'Guisantes cocidos con queso feta y menta. Fresco, rápido y sin fogones.',
+   nutrients:[{v:'280',l:'kcal'},{v:'14g',l:'proteína'},{v:'8g',l:'fibra'}],
+   tip:'Usa guisantes de bote escurridos — ya están cocidos. Los congelados necesitan solo 3 min de microondas.',
+   ingredients:['1 bote guisantes cocidos (400g)','50g queso feta','1 cda aceite de oliva','Zumo de ½ limón','Menta fresca o seca','Sal'],
+   steps:[
+    {text:'Escurre y lava los guisantes. Ponlos en un bowl',time:1,voice:'Escurre y lava los guisantes'},
+    {text:'Desmenúzales el feta encima. Aliña con aceite, limón, menta y sal. Listo',time:2,voice:'Añade el feta desmenuzado, aliña con aceite y limón y listo'}
+   ]}
+ ]},
+
+{id:'abr',name:'Abril',emoji:'🌸',
+ season:['Espárragos','Habas','Guisantes','Fresas','Alcachofas'],
+ tip:'Las habas frescas de temporada son muy baratas. Congeladas van directas a la sartén.',
+ comidas:[
+  {id:'abr-c1',emoji:'🌱',name:'Arroz con Habas y Pollo',time:'22 min',budget:'€',
+   harvard:{veg:'Habas',prot:'Pollo',grain:'Arroz'},
+   tags:['Sin gluten','Primavera'],
+   desc:'Las habas de temporada con pollo y arroz. Sabor de primavera con ingredientes baratos.',
+   nutrients:[{v:'480',l:'kcal'},{v:'34g',l:'proteína'},{v:'52g',l:'hidratos'}],
+   tip:'Las habas congeladas no necesitan descongelarse — van directas a la sartén. El tiempo de cocción es el mismo.',
+   ingredients:['1 pechuga pollo en trozos','150g habas (frescas o congeladas)','½ taza arroz','1 cda aceite de oliva','1 diente ajo','Sal, perejil'],
+   steps:[
+    {text:'Pon el arroz a cocer con agua y sal. 15-18 min según el tipo',time:18,voice:'Pon el arroz a cocer con agua y sal dieciocho minutos'},
+    {text:'Saltea el pollo en trozos con aceite y ajo 5 min a fuego medio-alto hasta que esté dorado',time:5,voice:'Saltea el pollo con ajo cinco minutos hasta que esté dorado'},
+    {text:'Añade las habas al pollo. 5 min más a fuego medio. Sirve con el arroz',time:5,voice:'Añade las habas y cocina cinco minutos más. Sirve con el arroz'}
+   ]},
+  {id:'abr-c2',emoji:'🍝',name:'Pasta Integral con Espárragos y Huevo',time:'15 min',budget:'€',
+   harvard:{veg:'Espárragos',prot:'Huevo',grain:'Pasta integral'},
+   tags:['Vegetariano','Primavera'],
+   desc:'Pasta con espárragos salteados y huevo. Simple, rápido y llena mucho.',
+   nutrients:[{v:'460',l:'kcal'},{v:'18g',l:'proteína'},{v:'58g',l:'hidratos'}],
+   tip:'La pasta integral sacia más que la blanca y tiene más fibra. Cuécela al dente — luego termina en la sartén.',
+   ingredients:['80g pasta integral','1 manojo espárragos verdes','1 huevo','2 cdas aceite de oliva','1 diente ajo','Sal, queso rallado'],
+   steps:[
+    {text:'Hierve agua con sal. Cuece la pasta según el paquete (8-10 min). Reserva un poco del agua',time:10,voice:'Cuece la pasta en agua con sal según las instrucciones'},
+    {text:'Saltea espárragos cortados con ajo y aceite 4 min. Añade la pasta escurrida y mezcla',time:4,voice:'Saltea los espárragos cuatro minutos, añade la pasta y mezcla'},
+    {text:'Haz un hueco, casca el huevo y remueve todo 1 min. Apaga, añade queso',time:2,voice:'Casca el huevo en la sartén, remueve un minuto y añade queso rallado'}
+   ]}
+ ],
+ cenas:[
+  {id:'abr-n1',emoji:'🥚',name:'Tortilla de Espárragos',time:'10 min',budget:'€',
+   harvard:{veg:'Espárragos',prot:'Huevo',grain:'Pan integral (opcional)'},
+   tags:['Vegetariano','Sin gluten','Rápida'],
+   desc:'Los espárragos verdes rehogados dentro de la tortilla. Clásico de primavera.',
+   nutrients:[{v:'240',l:'kcal'},{v:'16g',l:'proteína'},{v:'8g',l:'grasa sana'}],
+   tip:'Corta los espárragos en trozos de 2 cm — así se reparten bien por toda la tortilla.',
+   ingredients:['1 manojo espárragos verdes','2 huevos','1 cda aceite de oliva','Sal'],
+   steps:[
+    {text:'Corta espárragos en trozos. Saltea con aceite y sal 4 min a fuego medio',time:4,voice:'Corta los espárragos y saltéalos cuatro minutos con aceite y sal'},
+    {text:'Bate los huevos con sal, vierte sobre los espárragos. 3 min a fuego bajo sin mover',time:3,voice:'Bate los huevos y viértelos. Tres minutos sin mover'},
+    {text:'Dale la vuelta con un plato. 2 min más y lista',time:2,voice:'Dale la vuelta y cocina dos minutos más'}
+   ]},
+  {id:'abr-n2',emoji:'🍵',name:'Crema de Guisantes',time:'12 min',budget:'€',
+   harvard:{veg:'Guisantes',prot:'—',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Ligera'],
+   desc:'Verde, dulce y suave. Los guisantes congelados van directos a la olla.',
+   nutrients:[{v:'190',l:'kcal'},{v:'9g',l:'proteína'},{v:'Vit K',l:'primavera'}],
+   tip:'Un toque de menta al triturar le da mucha frescura. Sin batidora, aplasta con tenedor — queda más rústica.',
+   ingredients:['250g guisantes congelados','½ cebolla','1 vaso caldo de verduras','1 cda aceite de oliva','Menta (opcional)','Sal'],
+   steps:[
+    {text:'Rehoga cebolla con aceite 3 min. Añade guisantes y caldo',time:3,voice:'Rehoga la cebolla tres minutos y añade los guisantes y el caldo'},
+    {text:'Hierve y cocina 8 min a fuego medio tapado',time:8,voice:'Hierve y cocina ocho minutos tapado'},
+    {text:'Añade menta y sal. Tritura hasta que quede suave',time:1,voice:'Añade menta y sal y tritura hasta que esté suave'}
+   ]}
+ ]},
+
+{id:'may',name:'Mayo',emoji:'🌿',
+ season:['Habas','Guisantes','Espárragos','Fresas','Cerezas','Calabacín (primeros)'],
+ tip:'Las fresas de temporada están en su mejor momento y precio. Son perfectas de postre.',
+ comidas:[
+  {id:'may-c1',emoji:'🫘',name:'Lentejas con Habas y Zanahoria',time:'18 min',budget:'€',
+   harvard:{veg:'Habas · zanahoria',prot:'Lentejas',grain:'—'},
+   tags:['Vegetariano','Sin gluten','Hierro'],
+   desc:'Lentejas de bote + habas de temporada = plato de hierro y proteína vegetal baratísimo.',
+   nutrients:[{v:'360',l:'kcal'},{v:'20g',l:'proteína'},{v:'11mg',l:'hierro'}],
+   tip:'Las habas congeladas van directas a la olla. Son mucho más baratas que las frescas y igual de buenas.',
+   ingredients:['1 bote lentejas cocidas (400g)','150g habas congeladas','1 zanahoria','½ cebolla','1 cda aceite de oliva','Sal, comino, pimentón'],
+   steps:[
+    {text:'Pica cebolla y zanahoria. Rehoga con aceite 5 min a fuego medio',time:5,voice:'Pica cebolla y zanahoria y rehoga cinco minutos con aceite'},
+    {text:'Añade las habas congeladas y 1 vaso de agua. Cocina 8 min tapado',time:8,voice:'Añade las habas y agua. Cocina ocho minutos tapado'},
+    {text:'Añade las lentejas escurridas, sal, comino y pimentón. 5 min más y listo',time:5,voice:'Añade las lentejas, sal y comino. Cinco minutos más y listo'}
+   ]},
+  {id:'may-c2',emoji:'🍝',name:'Pasta con Atún y Guisantes',time:'15 min',budget:'€',
+   harvard:{veg:'Guisantes',prot:'Atún',grain:'Pasta integral'},
+   tags:['Proteína','Barato','Rápida'],
+   desc:'Pasta integral con guisantes y atún. La proteína más económica en el plato más fácil.',
+   nutrients:[{v:'440',l:'kcal'},{v:'26g',l:'proteína'},{v:'55g',l:'hidratos'}],
+   tip:'El atún va fuera del fuego al final — así queda jugoso y no se reseca. Añade un chorrito de limón para potenciar el sabor.',
+   ingredients:['80g pasta integral','100g guisantes congelados','1 lata atún al natural','2 cdas aceite de oliva','Zumo de ½ limón','Sal'],
+   steps:[
+    {text:'Cuece la pasta en agua con sal según el paquete. En los últimos 3 min añade los guisantes a la misma olla',time:12,voice:'Cuece la pasta y en los últimos tres minutos añade los guisantes a la misma olla'},
+    {text:'Escurre todo. Mezcla con atún escurrido, aceite, limón y sal. Listo',time:2,voice:'Escurre, mezcla con el atún, aceite y limón. Listo'}
+   ]}
+ ],
+ cenas:[
+  {id:'may-n1',emoji:'🥚',name:'Revuelto de Espárragos y Queso',time:'8 min',budget:'€',
+   harvard:{veg:'Espárragos',prot:'Huevo · queso',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Rápida'],
+   desc:'Los huevos revueltos con espárragos son la cena más rápida de temporada.',
+   nutrients:[{v:'280',l:'kcal'},{v:'18g',l:'proteína'},{v:'20g',l:'grasa sana'}],
+   tip:'El revuelto sale mejor a fuego medio-bajo y removiendo lentamente — los huevos quedan cremosos, no secos.',
+   ingredients:['2 huevos','1 manojo espárragos verdes','30g queso rallado','1 cda aceite de oliva','Sal'],
+   steps:[
+    {text:'Corta espárragos en trozos. Saltea con aceite 4 min a fuego medio',time:4,voice:'Corta los espárragos y saltéalos cuatro minutos con aceite'},
+    {text:'Bate los huevos con sal. Vierte sobre los espárragos a fuego medio-bajo removiendo suave',time:3,voice:'Vierte los huevos batidos y remueve suavemente tres minutos'},
+    {text:'Apaga cuando todavía estén cremosos. Añade queso rallado encima',time:1,voice:'Apaga cuando estén cremosos y añade el queso rallado'}
+   ]},
+  {id:'may-n2',emoji:'🥗',name:'Ensalada de Habas con Feta',time:'5 min',budget:'€',
+   harvard:{veg:'Habas',prot:'Feta',grain:'—'},
+   tags:['Vegetariano','Sin cocción','Rápida'],
+   desc:'Sin fogones. Habas cocidas de bote con feta y un aliño de limón.',
+   nutrients:[{v:'270',l:'kcal'},{v:'14g',l:'proteína'},{v:'9g',l:'fibra'}],
+   tip:'Las habas de bote están cocidas — solo hay que escurrirlas y lavarlas. Si usas congeladas, 3 min en microondas.',
+   ingredients:['1 bote habas cocidas','50g queso feta','Zumo de ½ limón','2 cdas aceite de oliva','Menta fresca o seca','Sal'],
+   steps:[
+    {text:'Escurre y lava las habas. Ponlas en un bowl',time:1,voice:'Escurre y lava las habas'},
+    {text:'Añade el feta desmenuzado, limón, aceite, menta y sal. Mezcla suavemente y listo',time:2,voice:'Añade feta, limón, aceite y menta. Mezcla suavemente y listo'}
+   ]}
+ ]},
+
+{id:'jun',name:'Junio',emoji:'☀️',
+ season:['Calabacín','Pimiento','Pepino','Melocotón','Albaricoques','Judías verdes'],
+ tip:'En junio bajan los precios de todas las hortalizas. Es el mejor momento para comer fresco.',
+ comidas:[
+  {id:'jun-c1',emoji:'🥗',name:'Bowl de Quinoa con Calabacín',time:'15 min',budget:'€',
+   harvard:{veg:'Calabacín · pepino',prot:'Queso feta',grain:'Quinoa'},
+   tags:['Vegetariano','Sin gluten','Fresco'],
+   desc:'Calabacín a la plancha con quinoa fría y feta. Fresquito para el calor.',
+   nutrients:[{v:'390',l:'kcal'},{v:'16g',l:'proteína'},{v:'22g',l:'grasa sana'}],
+   tip:'Deja enfriar la quinoa antes de mezclarla con el calabacín — así el bowl está fresquito.',
+   ingredients:['½ taza quinoa','1 calabacín','50g queso feta','½ pepino','2 cdas aceite de oliva','Zumo de limón','Sal'],
+   steps:[
+    {text:'Hierve quinoa con 1 taza agua y sal. Al hervir baja al mínimo y tapa 12 min',time:12,voice:'Hierve la quinoa con agua y sal doce minutos al mínimo'},
+    {text:'Plancha el calabacín en rodajas con aceite y sal 4 min por lado',time:4,voice:'Plancha el calabacín con aceite cuatro minutos'},
+    {text:'Mezcla quinoa, calabacín, pepino en trozos y feta. Aliña con limón y aceite',time:2,voice:'Mezcla todo con el feta y aliña con limón'}
+   ]},
+  {id:'jun-c2',emoji:'🍗',name:'Pollo con Pimientos y Arroz',time:'22 min',budget:'€',
+   harvard:{veg:'Pimiento',prot:'Pollo',grain:'Arroz'},
+   tags:['Sin gluten','Verano'],
+   desc:'Los pimientos de verano tienen mucho sabor. Con pollo y arroz forma un plato completo.',
+   nutrients:[{v:'500',l:'kcal'},{v:'36g',l:'proteína'},{v:'50g',l:'hidratos'}],
+   tip:'Los pimientos se ablandan rápido con el calor. No los tapes — así se hacen sin vapor y quedan más sabrosos.',
+   ingredients:['1 pechuga pollo fileteada','1 pimiento rojo o verde','½ taza arroz','1 cda aceite de oliva','Sal, pimentón, ajo en polvo'],
+   steps:[
+    {text:'Pon arroz a cocer con agua y sal 18 min',time:18,voice:'Pon el arroz a cocer dieciocho minutos'},
+    {text:'Saltea el pollo 4 min. Añade pimiento en tiras y pimentón. Cocina 5 min más',time:9,voice:'Saltea el pollo cuatro minutos, añade el pimiento y cocina cinco minutos más'},
+    {text:'Sirve pollo con pimientos encima del arroz',time:1,voice:'Sirve el pollo con pimientos sobre el arroz'}
+   ]}
+ ],
+ cenas:[
+  {id:'jun-n1',emoji:'🥒',name:'Gazpacho Verde con Pan',time:'5 min',budget:'€',
+   harvard:{veg:'Pepino · calabacín',prot:'—',grain:'Pan integral'},
+   tags:['Vegetariano','Sin cocción','Refrescante'],
+   desc:'Pepino y calabacín triturados con aceite. Fresquísimo y sin fuego para los días de calor.',
+   nutrients:[{v:'180',l:'kcal'},{v:'4g',l:'proteína'},{v:'Vit C',l:'hidratación'}],
+   tip:'Mete todos los ingredientes en la nevera 1 hora antes de triturarlo — mucho más fresco y rico.',
+   ingredients:['1 pepino grande','½ calabacín crudo','2 cdas aceite de oliva','Zumo de ½ limón','1 diente ajo','Sal','Pan integral'],
+   steps:[
+    {text:'Trocea pepino y calabacín crudo sin pelar. Ponlos en el vaso de la batidora',time:1,voice:'Trocea el pepino y el calabacín y ponlos en el vaso'},
+    {text:'Añade ajo, aceite, limón y sal. Tritura hasta que quede suave. Prueba de sal',time:2,voice:'Añade ajo, aceite, limón y sal. Tritura todo'},
+    {text:'Sirve frío con pan integral. Si queda muy espeso añade un poco de agua',time:1,voice:'Sirve frío con pan integral'}
+   ]},
+  {id:'jun-n2',emoji:'🥚',name:'Tortilla de Calabacín',time:'10 min',budget:'€',
+   harvard:{veg:'Calabacín',prot:'Huevo',grain:'Pan integral (opcional)'},
+   tags:['Vegetariano','Sin gluten','Rápida'],
+   desc:'El calabacín de verano en tortilla. Muy jugosa y sencilla.',
+   nutrients:[{v:'240',l:'kcal'},{v:'15g',l:'proteína'},{v:'12g',l:'grasa sana'}],
+   tip:'El calabacín suelta mucha agua — ponlo en la sartén con sal y espera a que evapore antes de echar los huevos.',
+   ingredients:['1 calabacín pequeño','2 huevos','1 cda aceite de oliva','Sal'],
+   steps:[
+    {text:'Ralla o corta el calabacín fino. Saltea con aceite y sal 4 min hasta que el agua evapore',time:4,voice:'Saltea el calabacín con sal cuatro minutos hasta que evapore el agua'},
+    {text:'Bate los huevos con sal. Vierte sobre el calabacín a fuego medio-bajo. 3 min sin mover',time:3,voice:'Bate los huevos y viértelos. Tres minutos sin mover'},
+    {text:'Dale la vuelta y 2 min más. Lista',time:2,voice:'Dale la vuelta y dos minutos más'}
+   ]}
+ ]},
+
+{id:'jul',name:'Julio',emoji:'🌞',
+ season:['Tomate','Pimiento','Berenjena','Calabacín','Sandía','Maíz','Pepino'],
+ tip:'Julio es el mes del tomate. Busca los de mercado local — son más dulces y baratos que los de super.',
+ comidas:[
+  {id:'jul-c1',emoji:'🥗',name:'Ensalada de Garbanzos con Tomate',time:'5 min',budget:'€',
+   harvard:{veg:'Tomate · pepino',prot:'Garbanzos',grain:'—'},
+   tags:['Vegetariano','Sin cocción','Verano'],
+   desc:'Sin fogones. Proteína + verdura de temporada en 5 minutos. Perfecta para el calor.',
+   nutrients:[{v:'320',l:'kcal'},{v:'14g',l:'proteína'},{v:'10g',l:'fibra'}],
+   tip:'El tomate de verano tiene mucho jugo — no tires el líquido que suelta, mézclalo con el aliño.',
+   ingredients:['1 bote garbanzos (400g)','2 tomates de temporada','1 pepino','Aceitunas negras','2 cdas aceite de oliva','Sal, orégano'],
+   steps:[
+    {text:'Escurre y lava los garbanzos. Pon en un bol grande',time:1,voice:'Escurre y lava los garbanzos'},
+    {text:'Trocea los tomates y pepino. Añade al bol con aceitunas',time:2,voice:'Trocea los tomates y pepino y añade al bol con aceitunas'},
+    {text:'Aliña con aceite, sal y orégano. Mezcla y a comer',time:1,voice:'Aliña con aceite, sal y orégano y listo'}
+   ]},
+  {id:'jul-c2',emoji:'🍆',name:'Arroz con Berenjena y Garbanzos',time:'20 min',budget:'€',
+   harvard:{veg:'Berenjena',prot:'Garbanzos',grain:'Arroz'},
+   tags:['Vegetariano','Sin gluten','Verano'],
+   desc:'La berenjena de verano con garbanzos y arroz. Plato mediterráneo y económico.',
+   nutrients:[{v:'420',l:'kcal'},{v:'16g',l:'proteína'},{v:'52g',l:'hidratos'}],
+   tip:'Corta la berenjena en dados y sala antes de cocinarla — así pierde el amargor y absorbe menos aceite.',
+   ingredients:['1 berenjena','1 bote garbanzos (400g)','½ taza arroz','1 cda aceite de oliva','1 diente ajo','Sal, comino, pimentón'],
+   steps:[
+    {text:'Pon arroz a cocer con agua y sal 18 min',time:18,voice:'Pon el arroz a cocer dieciocho minutos'},
+    {text:'Mientras: saltea berenjena en dados con ajo y aceite 8 min hasta que esté dorada',time:8,voice:'Saltea la berenjena en dados con ajo ocho minutos hasta que esté dorada'},
+    {text:'Añade garbanzos escurridos, comino y pimentón. 3 min más. Sirve con el arroz',time:3,voice:'Añade los garbanzos con comino tres minutos más y sirve con el arroz'}
+   ]}
+ ],
+ cenas:[
+  {id:'jul-n1',emoji:'🥤',name:'Gazpacho Andaluz',time:'5 min',budget:'€',
+   harvard:{veg:'Tomate · pimiento · pepino',prot:'—',grain:'Pan (guarnición)'},
+   tags:['Vegetariano','Sin cocción','Refrescante'],
+   desc:'El gazpacho de verano. Con los tomates de temporada sabe completamente diferente.',
+   nutrients:[{v:'160',l:'kcal'},{v:'3g',l:'proteína'},{v:'Vit C',l:'antioxid.'}],
+   tip:'Prepara el gazpacho la noche anterior — de un día para otro sabe mucho mejor. Guárdalo en la nevera bien tapado.',
+   ingredients:['4 tomates maduros','½ pepino','½ pimiento rojo','1 diente ajo','3 cdas aceite de oliva','1 cda vinagre de vino','Sal'],
+   steps:[
+    {text:'Trocea todos los vegetales. Ponlos en el vaso de la batidora',time:2,voice:'Trocea tomates, pepino y pimiento y ponlos en el vaso'},
+    {text:'Añade ajo, aceite, vinagre y sal. Tritura bien durante 1 minuto',time:1,voice:'Añade ajo, aceite, vinagre y sal. Tritura un minuto bien'},
+    {text:'Prueba de sal. Cuela si quieres textura más fina. Sirve muy frío',time:1,voice:'Prueba de sal y sirve muy frío'}
+   ]},
+  {id:'jul-n2',emoji:'🌶️',name:'Pimiento Relleno de Atún',time:'15 min',budget:'€',
+   harvard:{veg:'Pimiento',prot:'Atún',grain:'Arroz (opcional)'},
+   tags:['Sin gluten','Verano'],
+   desc:'Pimientos de verano rellenos de atún. Sin horno — se hacen en la sartén.',
+   nutrients:[{v:'280',l:'kcal'},{v:'22g',l:'proteína'},{v:'12g',l:'grasa sana'}],
+   tip:'Los pimientos italianos o de piquillo son perfectos para rellenar. Corta la parte superior y vacía las semillas.',
+   ingredients:['2 pimientos (italianos o de piquillo)','2 latas atún al natural','2 cdas aceite de oliva','Sal, orégano','Zumo de limón'],
+   steps:[
+    {text:'Mezcla el atún escurrido con aceite, limón, sal y orégano en un bowl',time:2,voice:'Mezcla el atún con aceite, limón y orégano'},
+    {text:'Corta la parte superior de los pimientos y vacía las semillas. Rellena con la mezcla de atún',time:3,voice:'Vacía los pimientos y rellénalos con el atún'},
+    {text:'Calienta en sartén tapada a fuego medio 8 min hasta que el pimiento esté tierno',time:8,voice:'Cocina en sartén tapada ocho minutos hasta que el pimiento ablande'}
+   ]}
+ ]},
+
+{id:'ago',name:'Agosto',emoji:'🏖️',
+ season:['Tomate','Pimiento','Berenjena','Calabacín','Sandía','Melón','Maíz'],
+ tip:'En agosto los fogones menos tiempo mejor. Aprovecha los platos fríos con los vegetales de temporada.',
+ comidas:[
+  {id:'ago-c1',emoji:'🥣',name:'Bowl de Quinoa con Pisto',time:'22 min',budget:'€',
+   harvard:{veg:'Calabacín · pimiento · berenjena',prot:'Huevo (opcional)',grain:'Quinoa'},
+   tags:['Vegetariano','Sin gluten','Mediterráneo'],
+   desc:'Pisto de verano con verduras de temporada sobre quinoa. Plato completo y nutritivo.',
+   nutrients:[{v:'410',l:'kcal'},{v:'14g',l:'proteína'},{v:'22g',l:'grasa sana'}],
+   tip:'El pisto mejora de un día para otro — prepara el doble y guarda la mitad para mañana.',
+   ingredients:['½ taza quinoa','1 calabacín','1 pimiento rojo','1 berenjena pequeña','1 cda aceite de oliva','1 diente ajo','Sal, orégano'],
+   steps:[
+    {text:'Hierve quinoa con agua y sal 12 min al mínimo tapado',time:12,voice:'Hierve la quinoa doce minutos tapada al mínimo'},
+    {text:'Trocea todas las verduras en dados. Saltea con ajo y aceite 10 min a fuego medio removiendo',time:10,voice:'Saltea todas las verduras en dados con ajo diez minutos'},
+    {text:'Añade orégano y sal al pisto. Sirve sobre la quinoa',time:1,voice:'Añade orégano y sirve el pisto sobre la quinoa'}
+   ]},
+  {id:'ago-c2',emoji:'🐟',name:'Salmón al Papillote con Calabacín',time:'15 min',budget:'€€',
+   harvard:{veg:'Calabacín',prot:'Salmón',grain:'—'},
+   tags:['Sin gluten','Omega-3','Verano'],
+   desc:'El papillote cocina el salmón con su propio vapor. Sin ensuciar y sin olor.',
+   nutrients:[{v:'380',l:'kcal'},{v:'34g',l:'proteína'},{v:'22g',l:'omega-3'}],
+   tip:'Papillote = papel de horno doblado en sobre. El vapor que queda dentro cocina perfectamente el pescado.',
+   ingredients:['1 filete salmón (150g)','1 calabacín en rodajas','1 cda aceite de oliva','Zumo de ½ limón','Sal, eneldo (opcional)','Papel de horno'],
+   steps:[
+    {text:'Enciende horno a 200°C. Pon el calabacín en rodajas sobre papel de horno',time:2,voice:'Enciende el horno a doscientos grados'},
+    {text:'Coloca el salmón encima, añade aceite, limón y sal. Dobla el papel cerrando bien como un sobre',time:2,voice:'Pon el salmón encima, añade aceite y limón y cierra el papel bien'},
+    {text:'Hornea 12 min. El paquete se infla — es buena señal. Abre con cuidado del vapor',time:12,voice:'Hornea doce minutos. Abre con cuidado del vapor caliente'}
+   ]}
+ ],
+ cenas:[
+  {id:'ago-n1',emoji:'🍅',name:'Salmorejo con Huevo',time:'5 min',budget:'€',
+   harvard:{veg:'Tomate',prot:'Huevo duro',grain:'Pan integral'},
+   tags:['Sin cocción','Refrescante','Verano'],
+   desc:'Más espeso que el gazpacho. Con huevo duro encima se convierte en una cena completa.',
+   nutrients:[{v:'260',l:'kcal'},{v:'10g',l:'proteína'},{v:'Licopeno',l:'antioxid.'}],
+   tip:'El pan duro del día anterior va perfecto — le da cuerpo al salmorejo. Sin pan queda más líquido como gazpacho.',
+   ingredients:['4 tomates maduros','1 rebanada pan duro','1 diente ajo','3 cdas aceite de oliva','Sal','1 huevo duro'],
+   steps:[
+    {text:'Cuece el huevo 8 min en agua hirviendo. Pela y reserva',time:8,voice:'Cuece el huevo ocho minutos, enfría y pela'},
+    {text:'Trocea los tomates y el pan. Tritura con ajo, aceite y sal hasta que quede muy fino',time:2,voice:'Tritura los tomates con el pan, ajo, aceite y sal hasta que quede fino'},
+    {text:'Sirve muy frío con el huevo duro picado encima',time:1,voice:'Sirve frío con el huevo duro picado encima'}
+   ]},
+  {id:'ago-n2',emoji:'🍆',name:'Berenjena a la Plancha con Queso',time:'15 min',budget:'€',
+   harvard:{veg:'Berenjena',prot:'Queso',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Verano'],
+   desc:'Rodajas de berenjena doradas con queso fundido. Simple y sabroso.',
+   nutrients:[{v:'240',l:'kcal'},{v:'12g',l:'proteína'},{v:'10g',l:'grasa sana'}],
+   tip:'Sala las rodajas 10 min antes de cocinarlas y sécalas con papel — así quedan crujientes y no se empapan de aceite.',
+   ingredients:['1 berenjena grande','60g queso mozzarella o queso para fundir','1 cda aceite de oliva','Sal, orégano'],
+   steps:[
+    {text:'Corta la berenjena en rodajas de 1 cm. Sala y deja 5 min. Seca con papel',time:5,voice:'Corta en rodajas, sala y espera cinco minutos. Seca con papel'},
+    {text:'Plancha con aceite a fuego medio-alto 4 min por lado hasta que estén doradas',time:8,voice:'Plancha cuatro minutos por cada lado hasta que estén doradas'},
+    {text:'Añade el queso encima, tapa 2 min hasta que funda. Añade orégano',time:2,voice:'Pon el queso encima y tapa dos minutos hasta que funda'}
+   ]}
+ ]},
+
+{id:'sep',name:'Septiembre',emoji:'🍂',
+ season:['Calabaza','Setas','Uvas','Higos','Berenjena','Pimiento'],
+ tip:'Las setas de temporada son baratas en septiembre. Si son congeladas, van directas a la sartén.',
+ comidas:[
+  {id:'sep-c1',emoji:'🎃',name:'Crema de Calabaza con Lentejas',time:'18 min',budget:'€',
+   harvard:{veg:'Calabaza',prot:'Lentejas',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Otoño'],
+   desc:'La calabaza congelada hace esta crema muy rápida. Las lentejas la convierten en plato completo.',
+   nutrients:[{v:'380',l:'kcal'},{v:'16g',l:'proteína'},{v:'Betacaroteno',l:'vitamina A'}],
+   tip:'La calabaza congelada ya está cortada y pelada. Es la versión más práctica y barata.',
+   ingredients:['250g calabaza congelada','1 bote lentejas cocidas (400g)','½ cebolla','1 vaso caldo de verduras','1 cda aceite de oliva','Sal, cúrcuma, jengibre'],
+   steps:[
+    {text:'Rehoga cebolla con aceite 3 min. Añade calabaza congelada y caldo',time:3,voice:'Rehoga la cebolla tres minutos y añade la calabaza y el caldo'},
+    {text:'Hierve y cocina 12 min tapado a fuego medio hasta que la calabaza esté tierna',time:12,voice:'Hierve y cocina doce minutos hasta que la calabaza esté tierna'},
+    {text:'Tritura. Añade lentejas escurridas, cúrcuma, sal. Calienta 3 min más',time:3,voice:'Tritura, añade las lentejas escurridas con cúrcuma y calienta tres minutos más'}
+   ]},
+  {id:'sep-c2',emoji:'🍄',name:'Arroz con Setas y Pollo',time:'22 min',budget:'€',
+   harvard:{veg:'Setas',prot:'Pollo',grain:'Arroz'},
+   tags:['Sin gluten','Otoño'],
+   desc:'El sabor de las setas de temporada con pollo y arroz. Plato de otoño completo.',
+   nutrients:[{v:'480',l:'kcal'},{v:'34g',l:'proteína'},{v:'50g',l:'hidratos'}],
+   tip:'Las setas no necesitan mucha agua — cocinan en su propio jugo. No pongas tapa cuando las saltees.',
+   ingredients:['1 pechuga pollo en trozos','150g setas (frescas o congeladas)','½ taza arroz','1 cda aceite de oliva','1 diente ajo','Sal, perejil'],
+   steps:[
+    {text:'Pon arroz a cocer con agua y sal 18 min',time:18,voice:'Pon el arroz a cocer con agua y sal dieciocho minutos'},
+    {text:'Saltea el pollo con aceite y ajo 5 min. Añade las setas. Cocina 6 min sin tapar',time:11,voice:'Saltea el pollo cinco minutos, añade las setas y cocina seis minutos sin tapar'},
+    {text:'Añade sal y perejil. Sirve con el arroz',time:1,voice:'Añade sal y perejil y sirve con el arroz'}
+   ]}
+ ],
+ cenas:[
+  {id:'sep-n1',emoji:'🍵',name:'Sopa de Setas con Pan',time:'12 min',budget:'€',
+   harvard:{veg:'Setas',prot:'—',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Otoño'],
+   desc:'Las setas tienen un sabor intenso que convierte el caldo en algo especial.',
+   nutrients:[{v:'180',l:'kcal'},{v:'6g',l:'proteína'},{v:'Vitamina D',l:'setas'}],
+   tip:'Un chorrito de salsa de soja al final intensifica mucho el sabor. Solo una cucharadita.',
+   ingredients:['150g setas variadas','½ cebolla','1 diente ajo','1L caldo de verduras','1 cda aceite de oliva','Sal, perejil','Pan integral'],
+   steps:[
+    {text:'Pica cebolla y ajo. Rehoga con aceite 3 min. Añade las setas troceadas y saltea 4 min',time:7,voice:'Rehoga cebolla y ajo tres minutos, añade las setas y saltea cuatro minutos'},
+    {text:'Añade el caldo. Hierve y cocina 5 min. Añade sal y perejil',time:5,voice:'Añade el caldo, hierve cinco minutos y añade sal y perejil'},
+    {text:'Sirve con pan integral tostado',time:1,voice:'Sirve con pan integral'}
+   ]},
+  {id:'sep-n2',emoji:'🥣',name:'Quinoa con Berenjena Asada',time:'18 min',budget:'€',
+   harvard:{veg:'Berenjena',prot:'Queso feta',grain:'Quinoa'},
+   tags:['Vegetariano','Sin gluten','Otoño'],
+   desc:'Berenjena asada con quinoa y feta. Versión otoñal del bowl mediterráneo.',
+   nutrients:[{v:'380',l:'kcal'},{v:'14g',l:'proteína'},{v:'22g',l:'grasa sana'}],
+   tip:'La berenjena asada en el horno queda más suave y sin amargor que en la sartén. Vale la pena encender el horno.',
+   ingredients:['1 berenjena','½ taza quinoa','50g queso feta','2 cdas aceite de oliva','Sal, orégano','Zumo de limón'],
+   steps:[
+    {text:'Enciende horno a 200°C. Corta berenjena en dados, mezcla con aceite y sal. Hornea 12 min',time:12,voice:'Hornea la berenjena en dados con aceite y sal doce minutos a doscientos grados'},
+    {text:'Hierve quinoa con agua y sal 12 min al mínimo tapado',time:12,voice:'Hierve la quinoa doce minutos al mínimo tapada'},
+    {text:'Mezcla quinoa con berenjena asada, feta desmenuzado, limón y orégano',time:2,voice:'Mezcla quinoa con berenjena, feta y limón'}
+   ]}
+ ]},
+
+{id:'oct',name:'Octubre',emoji:'🍁',
+ season:['Calabaza','Setas','Coliflor','Remolacha','Manzana','Pera','Castañas'],
+ tip:'La calabaza dura semanas en casa sin nevera. Compra una entera — es mucho más barata que en bolsas.',
+ comidas:[
+  {id:'oct-c1',emoji:'🎃',name:'Bowl de Calabaza y Lentejas',time:'20 min',budget:'€',
+   harvard:{veg:'Calabaza',prot:'Lentejas',grain:'Arroz integral'},
+   tags:['Vegetariano','Sin gluten','Otoño'],
+   desc:'La calabaza asada con lentejas y arroz es un plato de otoño completo y muy barato.',
+   nutrients:[{v:'420',l:'kcal'},{v:'18g',l:'proteína'},{v:'Betacaroteno',l:'vitamina A'}],
+   tip:'Puedes usar calabaza congelada o de bote para hacerlo más rápido. El resultado es igual de bueno.',
+   ingredients:['250g calabaza (congelada o fresca)','1 bote lentejas (400g)','½ taza arroz','1 cda aceite de oliva','Sal, comino, cúrcuma'],
+   steps:[
+    {text:'Pon arroz a cocer 18 min. En paralelo: pon calabaza en dados en sartén con aceite a fuego medio',time:10,voice:'Pon el arroz a cocer y en paralelo saltea la calabaza en dados con aceite'},
+    {text:'Cocina la calabaza 10 min removiendo hasta que esté tierna. Añade comino y cúrcuma',time:10,voice:'Cocina la calabaza diez minutos hasta que ablande. Añade comino y cúrcuma'},
+    {text:'Añade las lentejas escurridas y sal. 2 min más. Sirve con el arroz',time:2,voice:'Añade las lentejas, sal y sirve con el arroz'}
+   ]},
+  {id:'oct-c2',emoji:'🍝',name:'Pasta con Setas y Queso',time:'18 min',budget:'€',
+   harvard:{veg:'Setas',prot:'Queso',grain:'Pasta integral'},
+   tags:['Vegetariano','Otoño'],
+   desc:'Las setas con pasta integral y queso es el plato de otoño más reconfortante.',
+   nutrients:[{v:'460',l:'kcal'},{v:'18g',l:'proteína'},{v:'55g',l:'hidratos'}],
+   tip:'Reserva un poco del agua de cocer la pasta — ayuda a emulsionar la salsa y que se pegue bien a la pasta.',
+   ingredients:['80g pasta integral','150g setas','30g queso rallado','1 diente ajo','2 cdas aceite de oliva','Sal, perejil'],
+   steps:[
+    {text:'Cuece la pasta en agua con sal según el paquete. Reserva ½ vaso del agua',time:10,voice:'Cuece la pasta y reserva medio vaso del agua de cocción'},
+    {text:'Saltea setas con ajo y aceite 6 min a fuego medio sin tapar',time:6,voice:'Saltea las setas con ajo seis minutos sin tapar'},
+    {text:'Mezcla pasta escurrida con las setas y un poco del agua reservada. Añade queso y perejil',time:2,voice:'Mezcla la pasta con las setas, agua de cocción, queso y perejil'}
+   ]}
+ ],
+ cenas:[
+  {id:'oct-n1',emoji:'🍵',name:'Crema de Calabaza Especiada',time:'12 min',budget:'€',
+   harvard:{veg:'Calabaza',prot:'—',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Otoño'],
+   desc:'Dulce, cremosa y reconfortante. Con jengibre y cúrcuma tiene un toque cálido que sienta bien en otoño.',
+   nutrients:[{v:'200',l:'kcal'},{v:'4g',l:'proteína'},{v:'Betacaroteno',l:'vitamina A'}],
+   tip:'La leche de coco la hace más cremosa y saciante. Sin ella también queda rica con solo el caldo.',
+   ingredients:['300g calabaza congelada','½ cebolla','1 vaso caldo de verduras','½ lata leche de coco','1 cda aceite de oliva','Jengibre en polvo, cúrcuma, sal'],
+   steps:[
+    {text:'Rehoga cebolla con aceite 3 min. Añade calabaza congelada y caldo',time:3,voice:'Rehoga la cebolla y añade la calabaza con el caldo'},
+    {text:'Hierve y cocina 8 min tapado. Apaga el fuego',time:8,voice:'Hierve y cocina ocho minutos tapado'},
+    {text:'Tritura. Añade leche de coco, cúrcuma, jengibre y sal. Mezcla y sirve',time:1,voice:'Tritura, añade leche de coco y especias. Sirve caliente'}
+   ]},
+  {id:'oct-n2',emoji:'🍄',name:'Setas con Huevo y Ajo',time:'8 min',budget:'€',
+   harvard:{veg:'Setas',prot:'Huevo',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Rápida'],
+   desc:'Las setas salteadas con ajo y un huevo encima. La cena de otoño más sencilla.',
+   nutrients:[{v:'230',l:'kcal'},{v:'14g',l:'proteína'},{v:'Vitamina D',l:'setas'}],
+   tip:'No pongas tapa cuando saltees las setas — el vapor las cocinaría y quedarían blandas en lugar de doradas.',
+   ingredients:['150g setas','1 diente ajo','1 huevo','1 cda aceite de oliva','Sal, perejil','Pan integral'],
+   steps:[
+    {text:'Saltea las setas con ajo y aceite a fuego fuerte 5 min sin tapar. Salan al final',time:5,voice:'Saltea las setas con ajo a fuego fuerte cinco minutos sin tapar'},
+    {text:'Haz un hueco en la sartén, fríe el huevo a fuego medio 2 min',time:2,voice:'Haz un hueco y fríe el huevo dos minutos'},
+    {text:'Sirve con pan integral y perejil picado',time:1,voice:'Sirve con pan y perejil picado'}
+   ]}
+ ]},
+
+{id:'nov',name:'Noviembre',emoji:'🌧️',
+ season:['Puerro','Setas','Col','Coliflor','Mandarina','Naranja','Calabaza'],
+ tip:'El puerro es el vegetal más infrautilizado del invierno. Es baratísimo y da mucho sabor.',
+ comidas:[
+  {id:'nov-c1',emoji:'🥣',name:'Sopa de Puerro y Pollo',time:'22 min',budget:'€',
+   harvard:{veg:'Puerro · zanahoria',prot:'Pollo',grain:'—'},
+   tags:['Sin gluten','Reconfortante','Invierno'],
+   desc:'La sopa de puerro y pollo es el plato más reconfortante de noviembre.',
+   nutrients:[{v:'340',l:'kcal'},{v:'28g',l:'proteína'},{v:'12g',l:'hidratos'}],
+   tip:'El pollo de muslo desmenuzado queda más jugoso que el de pechuga en la sopa. Es también más barato.',
+   ingredients:['1 pechuga pollo (o 2 muslos)','2 puerros','1 zanahoria','1L caldo de pollo','1 cda aceite de oliva','Sal, perejil'],
+   steps:[
+    {text:'Corta puerros y zanahoria. Rehoga con aceite en olla grande 5 min a fuego medio',time:5,voice:'Corta puerros y zanahoria y rehoga cinco minutos con aceite'},
+    {text:'Añade el pollo entero y el caldo. Hierve, baja a fuego lento y cocina 15 min tapado',time:15,voice:'Añade el pollo y el caldo. Hierve y cocina quince minutos a fuego lento'},
+    {text:'Saca el pollo, desmenúzalo y vuelve a la olla. Añade perejil y sal',time:2,voice:'Desmenúza el pollo y devuélvelo a la olla con perejil y sal'}
+   ]},
+  {id:'nov-c2',emoji:'🫘',name:'Lentejas con Setas',time:'18 min',budget:'€',
+   harvard:{veg:'Setas · zanahoria',prot:'Lentejas',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Hierro'],
+   desc:'Las lentejas con setas de otoño son una combinación excepcional de sabor y nutrición.',
+   nutrients:[{v:'370',l:'kcal'},{v:'20g',l:'proteína'},{v:'11mg',l:'hierro'}],
+   tip:'Las setas deshidratadas dan mucho sabor al caldo. Remójalas 10 min en agua caliente antes de usar.',
+   ingredients:['1 bote lentejas (400g)','150g setas','1 zanahoria','½ cebolla','1 cda aceite de oliva','Sal, pimentón, ajo'],
+   steps:[
+    {text:'Pica cebolla y zanahoria. Rehoga con aceite y ajo 5 min',time:5,voice:'Pica cebolla y zanahoria y rehoga con ajo cinco minutos'},
+    {text:'Añade las setas troceadas. Saltea 5 min sin tapar. Añade pimentón',time:5,voice:'Añade las setas y saltea cinco minutos sin tapar'},
+    {text:'Añade lentejas escurridas y ½ vaso agua. Sal. Cocina 8 min removiendo',time:8,voice:'Añade las lentejas con agua y sal. Cocina ocho minutos removiendo'}
+   ]}
+ ],
+ cenas:[
+  {id:'nov-n1',emoji:'🍵',name:'Crema de Coliflor y Puerro',time:'12 min',budget:'€',
+   harvard:{veg:'Coliflor · puerro',prot:'—',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Reconfortante'],
+   desc:'La combinación de coliflor y puerro da una crema suave y muy aromática.',
+   nutrients:[{v:'190',l:'kcal'},{v:'7g',l:'proteína'},{v:'Vit C',l:'inmunidad'}],
+   tip:'El puerro le da un sabor más dulce y suave a la crema que la cebolla. Es el secreto de esta receta.',
+   ingredients:['200g coliflor congelada','1 puerro','1 vaso caldo de verduras','1 cda aceite de oliva','Sal, nuez moscada','Pan integral'],
+   steps:[
+    {text:'Corta el puerro en rodajas. Rehoga con aceite 4 min a fuego medio',time:4,voice:'Corta el puerro y rehoga cuatro minutos con aceite'},
+    {text:'Añade coliflor congelada y caldo. Hierve y cocina 8 min tapado',time:8,voice:'Añade la coliflor y el caldo. Hierve y cocina ocho minutos'},
+    {text:'Tritura bien. Añade nuez moscada y sal. Sirve con pan',time:1,voice:'Tritura, añade nuez moscada y sirve con pan'}
+   ]},
+  {id:'nov-n2',emoji:'🥬',name:'Col Salteada con Huevo y Ajo',time:'8 min',budget:'€',
+   harvard:{veg:'Col',prot:'Huevo',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Rápida','Barata'],
+   desc:'La col es la verdura más barata del invierno y queda muy bien salteada con ajo y huevo.',
+   nutrients:[{v:'210',l:'kcal'},{v:'13g',l:'proteína'},{v:'Vit C',l:'inmunidad'}],
+   tip:'La col necesita fuego alto para saltear — así queda ligeramente dorada y no blanda. Muévela poco.',
+   ingredients:['¼ col (repollo o col rizada)','1 diente ajo','1 huevo','1 cda aceite de oliva','Sal','Pan integral'],
+   steps:[
+    {text:'Corta la col en tiras finas. Saltea con ajo y aceite a fuego alto 4 min sin tapar',time:4,voice:'Saltea la col en tiras con ajo a fuego alto cuatro minutos'},
+    {text:'Añade sal, empuja la col a los lados y fríe el huevo en el centro 3 min',time:3,voice:'Añade sal y fríe el huevo en el centro de la sartén tres minutos'},
+    {text:'Sirve con pan integral',time:1,voice:'Sirve con pan integral'}
+   ]}
+ ]},
+
+{id:'dic',name:'Diciembre',emoji:'🎄',
+ season:['Brócoli','Puerro','Col','Coliflor','Naranja','Setas','Mandarina'],
+ tip:'En diciembre el brócoli está en su mejor momento. Fresco o congelado, es la verdura del mes.',
+ comidas:[
+  {id:'dic-c1',emoji:'🥣',name:'Bowl de Quinoa con Brócoli y Salmón',time:'18 min',budget:'€€',
+   harvard:{veg:'Brócoli',prot:'Salmón',grain:'Quinoa'},
+   tags:['Sin gluten','Omega-3'],
+   desc:'Plato completo de invierno con omega-3, proteína y verdura de temporada.',
+   nutrients:[{v:'490',l:'kcal'},{v:'36g',l:'proteína'},{v:'24g',l:'omega-3'}],
+   tip:'El salmón congelado en filete es mucho más barato que el fresco. Descongélalo la noche anterior.',
+   ingredients:['½ taza quinoa','1 filete salmón (150g)','150g brócoli congelado','1 cda aceite de oliva','Zumo de limón','Sal, eneldo'],
+   steps:[
+    {text:'Hierve quinoa 12 min al mínimo. A los 8 min pon el brócoli encima sin mezclar',time:12,voice:'Hierve la quinoa doce minutos y a los ocho pon el brócoli encima'},
+    {text:'Sala el salmón. Plancha con aceite 3 min por lado a fuego medio-alto',time:6,voice:'Plancha el salmón con aceite tres minutos por cada lado'},
+    {text:'Sirve quinoa+brócoli con el salmón encima. Exprime el limón y añade eneldo',time:1,voice:'Sirve todo junto, exprime el limón y añade eneldo'}
+   ]},
+  {id:'dic-c2',emoji:'🫘',name:'Lentejas con Puerro y Zanahoria',time:'20 min',budget:'€',
+   harvard:{veg:'Puerro · zanahoria',prot:'Lentejas',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Hierro'],
+   desc:'Las lentejas de invierno con puerro y zanahoria. El plato más barato y más nutritivo del mes.',
+   nutrients:[{v:'360',l:'kcal'},{v:'18g',l:'proteína'},{v:'9mg',l:'hierro'}],
+   tip:'Un chorro de vinagre de vino al servir activa la absorción del hierro de las lentejas. Un truco sencillo.',
+   ingredients:['1 bote lentejas (400g)','1 puerro','1 zanahoria','½ cebolla','1 cda aceite de oliva','Sal, pimentón, laurel'],
+   steps:[
+    {text:'Pica cebolla, puerro y zanahoria. Rehoga con aceite y laurel 5 min',time:5,voice:'Pica las verduras y rehoga con aceite y laurel cinco minutos'},
+    {text:'Añade ½ vaso agua y pimentón. Cocina 10 min a fuego medio tapado',time:10,voice:'Añade agua y pimentón. Cocina diez minutos tapado'},
+    {text:'Añade lentejas escurridas y sal. 5 min más y listo',time:5,voice:'Añade las lentejas con sal y cocina cinco minutos más'}
+   ]}
+ ],
+ cenas:[
+  {id:'dic-n1',emoji:'🍵',name:'Crema de Puerro',time:'12 min',budget:'€',
+   harvard:{veg:'Puerro',prot:'—',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Reconfortante'],
+   desc:'La crema de puerro es la más suave y reconfortante de todas. Perfecta para el frío.',
+   nutrients:[{v:'180',l:'kcal'},{v:'5g',l:'proteína'},{v:'Folato',l:'puerro'}],
+   tip:'Usa la parte verde del puerro también — da más sabor y no hay razón para tirarla.',
+   ingredients:['2 puerros (todo, incluida la parte verde)','1 vaso caldo de verduras','1 cda aceite de oliva','Sal, nuez moscada','Pan integral'],
+   steps:[
+    {text:'Corta los puerros en rodajas. Rehoga con aceite en olla 4 min a fuego medio',time:4,voice:'Corta los puerros y rehoga cuatro minutos con aceite'},
+    {text:'Añade el caldo. Hierve y cocina 8 min tapado',time:8,voice:'Añade el caldo, hierve y cocina ocho minutos tapado'},
+    {text:'Tritura. Añade nuez moscada y sal. Sirve con pan tostado',time:1,voice:'Tritura, añade nuez moscada y sirve con pan tostado'}
+   ]},
+  {id:'dic-n2',emoji:'🥦',name:'Brócoli con Huevo y Queso',time:'10 min',budget:'€',
+   harvard:{veg:'Brócoli',prot:'Huevo · queso',grain:'Pan integral'},
+   tags:['Vegetariano','Sin gluten','Rápida'],
+   desc:'Brócoli al vapor con huevo frito y queso rallado. La cena de diciembre más rápida.',
+   nutrients:[{v:'280',l:'kcal'},{v:'18g',l:'proteína'},{v:'Vit C',l:'brócoli'}],
+   tip:'El brócoli al microondas tarda solo 4 minutos con un poco de agua — mucho más rápido que hervido.',
+   ingredients:['200g brócoli (fresco o congelado)','1 huevo','30g queso rallado','1 cda aceite de oliva','Sal'],
+   steps:[
+    {text:'Brócoli al microondas: ponlo en un bol con 2 cdas agua, tapa con film 4 min',time:4,voice:'Pon el brócoli con agua en un bol tapado en el microondas cuatro minutos'},
+    {text:'Fríe el huevo con aceite en sartén 2 min',time:2,voice:'Fríe el huevo con aceite dos minutos'},
+    {text:'Sirve brócoli con el huevo encima y queso rallado. Añade sal',time:1,voice:'Sirve el brócoli con el huevo y queso rallado'}
+   ]}
+ ]}
+];
+
+const SHOPPING = [
+  {cat:'❄️ Congelados (base siempre en casa)', items:[
+    {id:'brocoli-c',name:'Brócoli CONGELADO',qty:'1 bolsa 500g',loc:'Congelados'},
+    {id:'espinacas-c',name:'Espinacas CONGELADAS',qty:'1 bolsa 500g',loc:'Congelados'},
+    {id:'guisantes-c',name:'Guisantes CONGELADOS',qty:'1 bolsa 500g',loc:'Congelados'},
+    {id:'habas-c',name:'Habas CONGELADAS',qty:'1 bolsa 400g',loc:'Congelados'},
+    {id:'calabaza-c',name:'Calabaza CONGELADA',qty:'1 bolsa 500g',loc:'Congelados'}
+  ]},
+  {cat:'🫘 Conservas (proteína barata)', items:[
+    {id:'lentejas',name:'Lentejas cocidas (bote)',qty:'2 botes 400g',loc:'Conservas'},
+    {id:'garbanzos',name:'Garbanzos cocidos (bote)',qty:'2 botes 400g',loc:'Conservas'},
+    {id:'atun',name:'Atún al natural (lata)',qty:'4 latas',loc:'Conservas'},
+    {id:'aceitunas',name:'Aceitunas negras',qty:'1 tarro',loc:'Conservas'},
+    {id:'caldo',name:'Caldo de verduras BRICK',qty:'2 briks 1L',loc:'Sopas/caldos'}
+  ]},
+  {cat:'🥚 Frescos básicos', items:[
+    {id:'huevos',name:'Huevos',qty:'1 docena',loc:'Lácteos'},
+    {id:'feta',name:'Queso feta',qty:'1 paquete 200g',loc:'Quesos'},
+    {id:'queso-r',name:'Queso rallado',qty:'1 bolsa pequeña',loc:'Quesos'}
+  ]},
+  {cat:'🌾 Secos y cereales', items:[
+    {id:'quinoa',name:'Quinoa PRELAVADA',qty:'1 paquete 500g',loc:'Arroces/cereales'},
+    {id:'arroz',name:'Arroz blanco',qty:'1 paquete 500g',loc:'Arroces'},
+    {id:'pasta-i',name:'Pasta integral',qty:'1 paquete 500g',loc:'Pastas'},
+    {id:'pan-i',name:'Pan integral de molde',qty:'1 paquete',loc:'Pan de molde'}
+  ]},
+  {cat:'🧂 Especias que no pueden faltar', items:[
+    {id:'aceite',name:'Aceite de oliva',qty:'1 botella',loc:'Aceites'},
+    {id:'curcuma',name:'Cúrcuma',qty:'1 botecito',loc:'Especias'},
+    {id:'comino',name:'Comino',qty:'1 botecito',loc:'Especias'},
+    {id:'pimenton',name:'Pimentón dulce',qty:'1 botecito',loc:'Especias'},
+    {id:'ajo-p',name:'Ajo en polvo',qty:'1 botecito',loc:'Especias'}
+  ]}
+];
+
+const TEST_Q = [
+  {q:'¿Comida o cena?',opts:[{l:'☀️ Comida',v:'comida'},{l:'🌙 Cena',v:'cena'}]},
+  {q:'¿Cuánto tiempo tienes?',opts:[{l:'⚡ Menos de 10 min',v:'rapida'},{l:'🕐 15-20 min',v:'normal'},{l:'🍳 Puedo con 20+ min',v:'larga'}]},
+  {q:'¿Cómo estás de energía?',opts:[{l:'🪫 Agotada',v:'baja'},{l:'😊 Bien',v:'bien'}]}
+];
+
+/* ── ESTADO ── */
+let curMonth=new Date().getMonth(),curMeal='comidas',curRecipe=null,cookStep=0,cookPlaying=false,cookTimer=0,cookInt=null,testStep=0,testAns=[];
+
+/* ── AUDIO ── */
+function beep(f=600,d=.2){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+function vibrate(ms=60){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
+let _utt=null;
+function speak(t){
+  try{
+    if(!window.speechSynthesis)return;
+    window.speechSynthesis.cancel();
+    if(window.speechSynthesis.paused)window.speechSynthesis.resume();
+    _utt=new SpeechSynthesisUtterance(t);
+    _utt.lang='es-ES';_utt.rate=.88;
+    const voices=window.speechSynthesis.getVoices();
+    const esVoice=voices.find(v=>v.lang.startsWith('es'));
+    if(esVoice)_utt.voice=esVoice;
+    window.speechSynthesis.speak(_utt);
+  }catch(e){}
+}
+
+/* ── NAVEGACIÓN ── */
+function go(v){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('v-'+v).classList.add('active');
+  window.scrollTo(0,0);
+  if(v==='shopping')renderShop();
+}
+
+/* ── HOME ── */
+function initHome(){
+  const m=MONTHS[curMonth];
+  document.getElementById('home-month-label').textContent='MES ACTUAL: '+m.name.toUpperCase();
+  document.getElementById('home-season-sub').textContent='Temporada: '+m.season.slice(0,3).join(', ');
+}
+function goCurrentMonth(){go('month');renderMonthView();}
+
+/* ── MONTHS GRID ── */
+function renderMonthsGrid(){
+  const today=new Date().getMonth();
+  document.getElementById('months-grid').innerHTML=MONTHS.map((m,i)=>`
+    <div class="month-tile ${i===today?'current':''}" onclick="selectMonth(${i})">
+      <span class="m-emoji">${m.emoji}</span>
+      <span class="m-name">${m.name}</span>
+    </div>`).join('');
+}
+function selectMonth(i){curMonth=i;go('month');renderMonthView();}
+
+/* ── MONTH VIEW ── */
+function setMealTab(tab){
+  curMeal=tab;
+  document.getElementById('tab-c').classList.toggle('active',tab==='comidas');
+  document.getElementById('tab-n').classList.toggle('active',tab==='cenas');
+  renderRecipeList();
+}
+function renderMonthView(){
+  const m=MONTHS[curMonth];
+  document.getElementById('month-title').textContent=m.emoji+' '+m.name;
+  document.getElementById('season-banner').innerHTML=`
+    <div class="sb-title">🌿 De temporada en ${m.name}</div>
+    <div class="season-chips">${m.season.map(s=>`<span class="s-chip">${s}</span>`).join('')}</div>
+    <div class="season-tip">${m.tip}</div>`;
+  curMeal='comidas';
+  document.getElementById('tab-c').classList.add('active');
+  document.getElementById('tab-n').classList.remove('active');
+  renderRecipeList();
+}
+function renderRecipeList(){
+  const recipes=MONTHS[curMonth][curMeal];
+  document.getElementById('month-recipes').innerHTML=recipes.map(r=>`
+    <div class="recipe-card" onclick="openRecipe('${r.id}')">
+      <div class="r-head">
+        <span class="r-emoji">${r.emoji}</span>
+        <div class="r-info">
+          <h3>${r.name}</h3>
+          <div class="r-badges"><span class="badge b-time">${r.time}</span><span class="badge b-budget">${r.budget}</span></div>
         </div>
+      </div>
+      <p class="recipe-desc">${r.desc}</p>
+      <div class="tag-row">${r.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>`).join('');
+}
 
-        <div class="difficulty-note" style="background: rgba(255, 193, 7, 0.2); border-left: 5px solid #FFC107;">
-            <strong>⚠️ IMPORTANTE - Lee esto primero:</strong><br>
-            <span style="font-size: 1.05rem;">
-                Antes de cocinar, necesitas tener los ingredientes en casa.<br>
-                👇 Mira primero la lista de compras abajo y ve al súper.<br>
-                Cuando tengas todo, vuelve aquí y elige tu receta.
-            </span>
-        </div>
-
-        <!-- LISTA DE COMPRAS PRIMERO -->
-        <div class="shopping" style="margin-bottom: 40px;">
-            <h3 class="shopping-title">🛒 PASO 1: Tu Lista de Compras (7 días para 1 persona)</h3>
-            
-            <div class="shopping-help">
-                <h4>📍 Cómo funciona:</h4>
-                1️⃣ <strong>Guarda o imprime esta lista AHORA</strong><br>
-                2️⃣ Ve al supermercado con tu móvil o lista impresa<br>
-                3️⃣ Compra todo lo que está marcado<br>
-                4️⃣ Cuando llegues a casa con todo, vuelve aquí para cocinar<br><br>
-                💡 <strong>Con esta compra puedes comer 7 días</strong> (1 almuerzo + 1 cena cada día)
-            </div>
-
-            <div class="shopping-grid">
-                <div class="category">
-                    <div class="category-title">🥬 Verduras (refrigerado/congelado)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="calabaza" onchange="toggleItem(this)">
-                        <label for="calabaza"><strong>Calabaza CONGELADA cortada</strong> - 2 bolsas (500g cada una) [Sección congelados]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="pepinos" onchange="toggleItem(this)">
-                        <label for="pepinos"><strong>Pepinos</strong> - 4 unidades [Verduras frescas]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="cebollas" onchange="toggleItem(this)">
-                        <label for="cebollas"><strong>Cebollas pequeñas</strong> - 4 unidades [Verduras frescas]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="limones" onchange="toggleItem(this)">
-                        <label for="limones"><strong>Limones</strong> - 4 unidades [Frutas]</label>
-                    </div>
-                </div>
-
-                <div class="category">
-                    <div class="category-title">🥛 Lácteos (nevera)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="queso-feta" onchange="toggleItem(this)">
-                        <label for="queso-feta"><strong>Queso feta</strong> - 1 paquete 200g (ya cortado en dados) [Quesos]</label>
-                    </div>
-                </div>
-
-                <div class="category">
-                    <div class="category-title">🌾 Cereales (pasillo seco)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="quinoa" onchange="toggleItem(this)">
-                        <label for="quinoa"><strong>Quinoa PRELAVADA</strong> - 1 paquete 500g [Arroz/Legumbres o comida sana]</label>
-                    </div>
-                </div>
-
-                <div class="category">
-                    <div class="category-title">🫒 Conservas (pasillo latas)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="aceitunas" onchange="toggleItem(this)">
-                        <label for="aceitunas"><strong>Aceitunas negras</strong> - 2 tarritos pequeños [Conservas]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="leche-coco" onchange="toggleItem(this)">
-                        <label for="leche-coco"><strong>Leche de coco</strong> - 2 latas [Cocina internacional o leches vegetales]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="caldo-verduras" onchange="toggleItem(this)">
-                        <label for="caldo-verduras"><strong>Caldo de verduras en BRICK</strong> - 2 briks de 1 litro [Caldos/Sopas]</label>
-                    </div>
-                </div>
-
-                <div class="category">
-                    <div class="category-title">🧂 Básicos (si no tienes)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="aceite-oliva" onchange="toggleItem(this)">
-                        <label for="aceite-oliva"><strong>Aceite de oliva</strong> - 1 botella [Aceites]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="sal" onchange="toggleItem(this)">
-                        <label for="sal"><strong>Sal</strong> - 1 paquete [Sal/Especias]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="curcuma" onchange="toggleItem(this)">
-                        <label for="curcuma"><strong>Cúrcuma</strong> - 1 botecito (OPCIONAL) [Especias]</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="shopping-actions">
-                <button class="btn btn-secondary" onclick="shareList()">📱 Enviar lista a mi móvil</button>
-                <button class="btn btn-primary" onclick="downloadList()">💾 Descargar para imprimir</button>
-                <button class="btn btn-secondary" onclick="clearCompleted()">🗑️ Borrar marcados</button>
-            </div>
-
-            <div style="background: rgba(76, 175, 80, 0.15); padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #4CAF50;">
-                <strong style="color: #4CAF50;">✅ ¿Ya tienes todo comprado?</strong><br>
-                <span style="font-size: 1.05rem;">¡Perfecto! Ahora sí puedes elegir qué cocinar hoy 👇</span>
-            </div>
-        </div>
-
-        <!-- TEST DE SUGERENCIAS -->
-        <div id="suggestionTest" class="difficulty-note" style="cursor: pointer; transition: all 0.3s ease;" onclick="startTest()">
-            <strong>🤔 PASO 2: ¿No sabes qué cocinar hoy?</strong><br>
-            <span style="font-size: 1.1rem;">👉 HAZ CLIC AQUÍ y te ayudo a elegir según cómo te sientes</span>
-        </div>
-
-        <div class="difficulty-note">
-            <strong>💚 Recuerda:</strong><br>
-            ✓ Sin técnicas complicadas<br>
-            ✓ Con utensilios que todos tienen<br>
-            ✓ Pasos cortos y claros<br>
-            ✓ Audio que te guía en todo momento
-        </div>
-
-        <h2 style="text-align: center; color: #ff8c42; margin: 30px 0 20px 0; font-size: 1.8rem;">
-            🍽️ PASO 3: Elige tu Receta de Hoy
-        </h2>
-
-        <div class="recipes">
-            <div class="recipe">
-                <div class="recipe-header">
-                    <div class="emoji">🥣</div>
-                    <h3 class="recipe-title">Bowl Fácil con Quinoa</h3>
-                    <div class="time">Solo 15 min</div>
-                </div>
-                
-                <div class="simplicity-tags">
-                    <span class="tag">✓ Super fácil</span>
-                    <span class="tag">✓ Sin tomate</span>
-                    <span class="tag">✓ 1 olla</span>
-                </div>
-
-                <div class="tools-needed">
-                    <h4>🔧 Solo necesitas:</h4>
-                    <div class="tool-list">
-                        • 1 olla (cualquiera)<br>
-                        • 1 cuchillo (no importa si no es bueno)<br>
-                        • 1 bowl para comer<br>
-                        • 1 tenedor
-                    </div>
-                </div>
-
-                <div class="ingredients">
-                    <h4>🥘 Ingredientes (1 persona):</h4>
-                    <div class="ingredient-list">
-                        • 1/2 taza quinoa (la venden prelavada)<br>
-                        • 1/2 pepino<br>
-                        • Aceitunas de lata (las que quieras)<br>
-                        • Queso feta (50g, ya viene cortado)<br>
-                        • Aceite de oliva<br>
-                        • 1/2 limón<br>
-                        • Sal
-                    </div>
-                </div>
-
-                <div class="visual-help">
-                    <h4>💡 Tip para neurodivergentes:</h4>
-                    Esta receta NO necesita estar pendiente de nada. La quinoa se cocina sola y todo lo demás es cortar y mezclar. ¡Sin estrés!
-                </div>
-
-                <div class="actions">
-                    <button class="btn btn-primary" onclick="startAudio('lunch')">🎵 Audio Paso a Paso</button>
-                    <button class="btn btn-secondary" onclick="viewIngredients('lunch')">📋 Ver Lista</button>
-                </div>
-            </div>
-
-            <div class="recipe">
-                <div class="recipe-header">
-                    <div class="emoji">🍜</div>
-                    <h3 class="recipe-title">Sopa de Calabaza Express</h3>
-                    <div class="time">Solo 12 min</div>
-                </div>
-                
-                <div class="simplicity-tags">
-                    <span class="tag">✓ Ultra fácil</span>
-                    <span class="tag">✓ Sin tomate</span>
-                    <span class="tag">✓ 1 olla</span>
-                </div>
-
-                <div class="tools-needed">
-                    <h4>🔧 Solo necesitas:</h4>
-                    <div class="tool-list">
-                        • 1 olla<br>
-                        • 1 cuchillo o pelador<br>
-                        • Licuadora de mano (o tenedor para aplastar)<br>
-                        • 1 bowl para comer
-                    </div>
-                </div>
-
-                <div class="ingredients">
-                    <h4>🥘 Ingredientes (1 persona):</h4>
-                    <div class="ingredient-list">
-                        • Calabaza congelada (250g) → ¡Ya viene cortada!<br>
-                        • 1/2 cebolla pequeña<br>
-                        • 1 vaso de caldo de brick (200ml)<br>
-                        • 1/2 lata leche de coco<br>
-                        • Aceite de oliva<br>
-                        • Cúrcuma (opcional)<br>
-                        • Sal
-                    </div>
-                </div>
-
-                <div class="visual-help">
-                    <h4>💡 Tip para neurodivergentes:</h4>
-                    Usa calabaza CONGELADA (ya cortada) y caldo de BRICK. ¡No necesitas pelar ni cortar casi nada! Si no tienes licuadora, aplasta con un tenedor.
-                </div>
-
-                <div class="actions">
-                    <button class="btn btn-primary" onclick="startAudio('dinner')">🎵 Audio Paso a Paso</button>
-                    <button class="btn btn-secondary" onclick="viewIngredients('dinner')">📋 Ver Lista</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="shopping">
-            <h3 class="shopping-title">🛒 Lista de Compras FÁCIL (7 días)</h3>
-            
-            <div class="shopping-help">
-                <h4>📍 Cómo usar esta lista:</h4>
-                ✓ Llévala al súper en tu móvil<br>
-                ✓ Marca cada cosa cuando la cojas<br>
-                ✓ Todo está en la sección que dice (no tienes que buscar)<br>
-                ✓ Si algo no lo encuentras, pregunta o saltátelo
-            </div>
-
-            <div class="shopping-grid">
-                <div class="category">
-                    <div class="category-title">🥬 Verduras (refrigerado/congelado)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="calabaza" onchange="toggleItem(this)">
-                        <label for="calabaza"><strong>Calabaza CONGELADA cortada</strong> - 2 bolsas (500g cada una) [Sección congelados]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="pepinos" onchange="toggleItem(this)">
-                        <label for="pepinos"><strong>Pepinos</strong> - 4 unidades [Verduras frescas]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="cebollas" onchange="toggleItem(this)">
-                        <label for="cebollas"><strong>Cebollas pequeñas</strong> - 4 unidades [Verduras frescas]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="limones" onchange="toggleItem(this)">
-                        <label for="limones"><strong>Limones</strong> - 4 unidades [Frutas]</label>
-                    </div>
-                </div>
-
-                <div class="category">
-                    <div class="category-title">🥛 Lácteos (nevera)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="queso-feta" onchange="toggleItem(this)">
-                        <label for="queso-feta"><strong>Queso feta</strong> - 1 paquete 200g (ya cortado en dados) [Quesos]</label>
-                    </div>
-                </div>
-
-                <div class="category">
-                    <div class="category-title">🌾 Cereales (pasillo seco)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="quinoa" onchange="toggleItem(this)">
-                        <label for="quinoa"><strong>Quinoa PRELAVADA</strong> - 1 paquete 500g [Arroz/Legumbres o comida sana]</label>
-                    </div>
-                </div>
-
-                <div class="category">
-                    <div class="category-title">🫒 Conservas (pasillo latas)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="aceitunas" onchange="toggleItem(this)">
-                        <label for="aceitunas"><strong>Aceitunas negras</strong> - 2 tarritos pequeños [Conservas]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="leche-coco" onchange="toggleItem(this)">
-                        <label for="leche-coco"><strong>Leche de coco</strong> - 2 latas [Cocina internacional o leches vegetales]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="caldo-verduras" onchange="toggleItem(this)">
-                        <label for="caldo-verduras"><strong>Caldo de verduras en BRICK</strong> - 2 briks de 1 litro [Caldos/Sopas]</label>
-                    </div>
-                </div>
-
-                <div class="category">
-                    <div class="category-title">🧂 Básicos (si no tienes)</div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="aceite-oliva" onchange="toggleItem(this)">
-                        <label for="aceite-oliva"><strong>Aceite de oliva</strong> - 1 botella [Aceites]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="sal" onchange="toggleItem(this)">
-                        <label for="sal"><strong>Sal</strong> - 1 paquete [Sal/Especias]</label>
-                    </div>
-                    <div class="shopping-item">
-                        <input type="checkbox" id="curcuma" onchange="toggleItem(this)">
-                        <label for="curcuma"><strong>Cúrcuma</strong> - 1 botecito (OPCIONAL) [Especias]</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="shopping-actions">
-                <button class="btn btn-secondary" onclick="shareList()">📱 Enviar lista a mi móvil</button>
-                <button class="btn btn-primary" onclick="downloadList()">💾 Descargar para imprimir</button>
-                <button class="btn btn-secondary" onclick="clearCompleted()">🗑️ Borrar marcados</button>
-            </div>
-        </div>
+/* ── DETAIL ── */
+function findRecipe(id){
+  for(const m of MONTHS){
+    for(const r of m.comidas)if(r.id===id)return r;
+    for(const r of m.cenas)if(r.id===id)return r;
+  }
+  return null;
+}
+function openRecipe(id){
+  curRecipe=findRecipe(id);
+  if(!curRecipe)return;
+  const r=curRecipe;
+  document.getElementById('detail-title').textContent=r.name;
+  document.getElementById('detail-back').onclick=()=>go('month');
+  document.getElementById('detail-content').innerHTML=`
+    <div class="card" style="text-align:center;margin-bottom:12px">
+      <div style="font-size:2.8rem;margin-bottom:10px">${r.emoji}</div>
+      <div class="tag-row" style="justify-content:center">${r.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+        <span class="badge b-time" style="font-size:.75rem;padding:4px 10px">${r.time}</span>
+        <span class="badge b-budget" style="font-size:.75rem;padding:4px 10px">${r.budget}/persona</span>
+      </div>
     </div>
-
-    <!-- Modal de Test de Sugerencias -->
-    <div id="testModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeTest()">&times;</span>
-            
-            <div id="testContent">
-                <h2 style="color: #ff8c42; margin-bottom: 20px; text-align: center;">🤔 ¿Qué te apetece hoy?</h2>
-                
-                <div style="background: rgba(77, 208, 225, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 25px; text-align: center;">
-                    <strong style="color: #4dd0e1;">Solo 4 preguntas fáciles</strong><br>
-                    Te ayudaré a elegir la receta perfecta para ti hoy 😊
-                </div>
-
-                <div id="question1" class="test-question">
-                    <h3 style="color: #5d4e37; margin-bottom: 15px;">1️⃣ ¿Cómo está tu energía hoy?</h3>
-                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(1, 'baja')">
-                        😴 Baja - Estoy cansado/a
-                    </button>
-                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(1, 'media')">
-                        😊 Normal - Estoy bien
-                    </button>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="answer(1, 'alta')">
-                        ⚡ Alta - Tengo energía
-                    </button>
-                </div>
-
-                <div id="question2" class="test-question" style="display: none;">
-                    <h3 style="color: #5d4e37; margin-bottom: 15px;">2️⃣ ¿Qué tipo de comida te pide el cuerpo?</h3>
-                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(2, 'ligero')">
-                        🥗 Algo ligero y fresco
-                    </button>
-                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(2, 'caliente')">
-                        🍲 Algo caliente y reconfortante
-                    </button>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="answer(2, 'completo')">
-                        🍽️ Algo completo y nutritivo
-                    </button>
-                </div>
-
-                <div id="question3" class="test-question" style="display: none;">
-                    <h3 style="color: #5d4e37; margin-bottom: 15px;">3️⃣ ¿Cuánto tiempo puedes dedicar?</h3>
-                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(3, 'poco')">
-                        ⚡ Poco - Lo más rápido posible
-                    </button>
-                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(3, 'medio')">
-                        ⏱️ Normal - Unos 15 minutos está bien
-                    </button>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="answer(3, 'mucho')">
-                        🕐 Tengo tiempo - Sin prisa
-                    </button>
-                </div>
-
-                <div id="question4" class="test-question" style="display: none;">
-                    <h3 style="color: #5d4e37; margin-bottom: 15px;">4️⃣ ¿Te apetece algo con proteína animal hoy?</h3>
-                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(4, 'si')">
-                        🐟 Sí - Me apetece pescado/pollo
-                    </button>
-                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="answer(4, 'no')">
-                        🌱 No - Prefiero vegetariano
-                    </button>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="answer(4, 'indiferente')">
-                        🤷 Me da igual
-                    </button>
-                </div>
-
-                <div id="result" class="test-question" style="display: none;">
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 4rem; margin-bottom: 15px;" id="resultEmoji"></div>
-                        <h3 style="color: #ff8c42; margin-bottom: 15px;" id="resultTitle"></h3>
-                        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px;" id="resultText"></p>
-                    </div>
-                    <button class="btn btn-primary" style="width: 100%; font-size: 1.1rem;" onclick="goToRecipe()">
-                        ✨ Ver la receta recomendada
-                    </button>
-                    <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="restartTest()">
-                        🔄 Repetir el test
-                    </button>
-                </div>
-            </div>
-        </div>
+    <p class="section-label">Plato Harvard</p>
+    <div class="harvard-plate">
+      <div class="hp-seg hp-veg"><span class="hp-label">🥦 ½ Verdura</span><span class="hp-what">${r.harvard.veg}</span></div>
+      <div class="hp-seg hp-prot"><span class="hp-label">💪 ¼ Proteína</span><span class="hp-what">${r.harvard.prot}</span></div>
+      <div class="hp-seg hp-grain"><span class="hp-label">🌾 ¼ Cereal</span><span class="hp-what">${r.harvard.grain}</span></div>
     </div>
-
-    <div id="audioModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeAudio()">&times;</span>
-            
-            <div id="audioContent">
-                <h2 id="recipeTitle" style="color: #ff8c42; margin-bottom: 20px;"></h2>
-                
-                <div class="audio-guide">
-                    <div class="timer" id="totalTimer">00:00</div>
-                    
-                    <div class="audio-controls">
-                        <button class="btn btn-primary" id="playBtn" onclick="play()">▶️ Empezar</button>
-                        <button class="btn btn-secondary" onclick="pause()">⏸️ Pausa</button>
-                        <button class="btn btn-secondary" onclick="reset()">🔄 Empezar de nuevo</button>
-                    </div>
-
-                    <div class="current-step">
-                        <div class="step-text" id="stepText">Presiona "Empezar" y te iré guiando paso a paso 😊</div>
-                        <div class="step-timer" id="stepTimer">⏱️ Tiempo del paso: --:--</div>
-                    </div>
-                </div>
-
-                <div class="steps-list">
-                    <h4 style="color: #ff8c42; margin-bottom: 12px; font-size: 1.2rem;">📝 Todos los pasos (para que veas que es fácil):</h4>
-                    <div id="stepsList"></div>
-                </div>
-            </div>
-        </div>
+    <div class="nutri-box">${r.nutrients.map(n=>`<div class="nutri-cell"><div class="val">${n.v}</div><div class="lbl">${n.l}</div></div>`).join('')}</div>
+    <div class="tip-box">💡 ${r.tip}</div>
+    <p class="section-label">Ingredientes (1 persona)</p>
+    <div class="card" style="margin-bottom:14px">
+      <ul class="ingr-list">${r.ingredients.map(i=>`<li>${i}</li>`).join('')}</ul>
     </div>
+    <button class="btn btn-primary" onclick="startCook()">🎵 Guía paso a paso →</button>`;
+  go('detail');
+}
 
-    <script>
-        const recipes = {
-            lunch: {
-                title: '🥣 Bowl Fácil con Quinoa',
-                ingredients: "Ingredientes (1 persona):\n• 1/2 taza quinoa prelavada\n• 1/2 pepino\n• Aceitunas de lata (las que quieras)\n• 50g queso feta (ya cortado)\n• 2 cdas aceite de oliva\n• 1/2 limón\n• Sal",
-                steps: [
-                    {text: "Pon 1 taza de agua en una olla y enciende el fuego. Espera a que hierva (verás burbujitas)", time: 3, audio: "Primer paso muy fácil: Pon una taza de agua en una olla cualquiera y enciende el fuego. Espera a que hierva, verás burbujitas"},
-                    {text: "Echa la quinoa en el agua hirviendo, baja el fuego a medio, tapa la olla y pon un temporizador de 12 minutos. ¡Ya está! No tienes que hacer nada más", time: 12, audio: "Segundo paso: Echa la quinoa en el agua, baja el fuego a medio o bajo, tapa la olla y pon la alarma del móvil en doce minutos. Ahora la quinoa se cocina sola, no tienes que vigilar nada"},
-                    {text: "Mientras la quinoa se cocina, corta el pepino en trozos. No importa cómo lo cortes, solo que sean pequeños para poder comerlos", time: 3, audio: "Tercer paso: Mientras esperas, corta el pepino en trozos pequeños. No te preocupes por cómo queden, solo que puedas comerlos fácilmente"},
-                    {text: "Abre el bote de aceitunas, escúrrelas y ponlas en un bowl grande", time: 1, audio: "Cuarto paso súper fácil: Abre el bote de aceitunas, quítales el agua y ponlas en un bowl grande donde vayas a comer"},
-                    {text: "Añade el queso feta al bowl (si viene en dados ya está listo, si no rómpelo con las manos)", time: 1, audio: "Quinto paso: Añade el queso feta al bowl. Si viene en dados perfecto, si no rómpelo con las manos en trozos"},
-                    {text: "Cuando suene la alarma, apaga el fuego, destapa la olla y deja reposar 2 minutos. La quinoa absorberá el agua que quede", time: 2, audio: "Cuando suene la alarma, apaga el fuego, destapa la olla y espera dos minutitos. La quinoa absorberá el agua que quede"},
-                    {text: "Echa la quinoa en el bowl con todo lo demás, añade aceite de oliva y exprime medio limón por encima. Mezcla y ¡a comer!", time: 2, audio: "Último paso: Echa toda la quinoa en el bowl, añade dos cucharadas de aceite de oliva, exprime medio limón por encima, mezcla todo y ya está. ¡A comer!"}
-                ]
-            },
-            dinner: {
-                title: '🍜 Sopa de Calabaza Express',
-                ingredients: "Ingredientes (1 persona):\n• 250g calabaza congelada (ya cortada)\n• 1/2 cebolla pequeña\n• 1 vaso (200ml) caldo de brick\n• 1/2 lata leche de coco\n• 1 cda aceite de oliva\n• Sal",
-                steps: [
-                    {text: "Corta la cebolla en trozos (no importa mucho cómo, se va a triturar después)", time: 2, audio: "Primer paso: Corta la cebolla en trozos. No te preocupes por cómo queden porque luego lo vamos a triturar todo"},
-                    {text: "Pon aceite en una olla, enciende el fuego medio y echa la cebolla. Remueve de vez en cuando durante 3 minutos", time: 3, audio: "Segundo paso: Pon una cucharada de aceite en la olla, enciende el fuego medio y echa la cebolla. Remueve un poco cada minuto durante tres minutos"},
-                    {text: "Echa la calabaza congelada directamente en la olla (no hay que descongelarla antes)", time: 1, audio: "Tercer paso súper fácil: Echa la calabaza congelada directamente a la olla, no hace falta descongelarla"},
-                    {text: "Añade el vaso de caldo y un poco de sal. Sube el fuego hasta que hierva", time: 2, audio: "Cuarto paso: Añade un vaso de caldo de brick y un poco de sal. Sube el fuego hasta que hierva, verás burbujitas"},
-                    {text: "Cuando hierva, baja el fuego a medio y deja cocinar 5 minutos sin tapa. Puedes ir a hacer otra cosa", time: 5, audio: "Quinto paso: Cuando hierva, baja el fuego a medio y pon la alarma en cinco minutos. Puedes irte a hacer otra cosa, no pasa nada"},
-                    {text: "Apaga el fuego y tritura con la batidora de mano. Si no tienes, aplasta con un tenedor hasta que quede como puré", time: 2, audio: "Sexto paso: Apaga el fuego y tritura con la batidora de mano. Si no tienes batidora no pasa nada, usa un tenedor para aplastar hasta que parezca un puré"},
-                    {text: "Añade media lata de leche de coco, remueve y ¡ya está! Sírvelo en un bowl y a comer", time: 1, audio: "Último paso facilísimo: Añade media lata de leche de coco, remueve y ya está listo. Sírvelo en un bowl y a disfrutar de tu sopa calentita"}
-                ]
-            }
-        };
+/* ── COOKING ── */
+function startCook(){
+  cookStep=0;cookPlaying=false;cookTimer=0;
+  if(cookInt){clearInterval(cookInt);cookInt=null;}
+  document.getElementById('cook-title').textContent=curRecipe.name;
+  go('cooking');renderCook();
+}
+function stopCook(){
+  if(cookInt){clearInterval(cookInt);cookInt=null;}
+  cookPlaying=false;
+  try{speechSynthesis.cancel();}catch(e){}
+}
+function renderCook(){
+  const r=curRecipe;const el=document.getElementById('cook-content');
+  if(cookStep>=r.steps.length){
+    el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>¡A comer!</h2><p>Lo has hecho genial 💚</p></div>
+    <button class="btn btn-secondary" style="margin-bottom:8px" onclick="go('home')">🏠 Inicio</button>
+    <button class="btn btn-primary" onclick="startCook()">Repetir receta</button>`;
+    return;
+  }
+  const s=r.steps[cookStep];
+  const pct=(cookStep/r.steps.length)*100;
+  const dots=r.steps.map((_,i)=>`<div class="dot ${i<cookStep?'done':i===cookStep?'active':''}"></div>`).join('');
+  const t=cookPlaying&&cookTimer>0?cookTimer:s.time*60;
+  const mm=String(Math.floor(t/60)).padStart(2,'0'),ss=String(t%60).padStart(2,'0');
+  el.innerHTML=`
+    <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>
+    <div class="dots">${dots}</div>
+    <div class="step-box">
+      <div class="step-num">Paso ${cookStep+1} de ${r.steps.length}</div>
+      <div class="step-text">${s.text}</div>
+      ${s.time>0?`<div class="step-timer" id="ct">${mm}:${ss}</div><div class="step-timer-lbl">minutos restantes</div>`:''}
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="cookToggle()">${cookPlaying?'⏸ Pausar':'▶ Iniciar'}</button>
+      <button class="btn btn-primary" onclick="cookNext()">Siguiente →</button>
+    </div>`;
+}
+function cookToggle(){
+  if(!cookPlaying){
+    cookPlaying=true;
+    const s=curRecipe.steps[cookStep];
+    if(!cookTimer||cookTimer<=0)cookTimer=s.time*60;
+    speak(s.voice);vibrate(50);
+    if(s.time>0)cookInt=setInterval(cookTick,1000);
+  }else{
+    cookPlaying=false;
+    if(cookInt){clearInterval(cookInt);cookInt=null;}
+    try{speechSynthesis.cancel();}catch(e){}
+  }
+  renderCook();
+}
+function cookTick(){
+  cookTimer--;
+  const el=document.getElementById('ct');
+  if(el)el.textContent=String(Math.floor(cookTimer/60)).padStart(2,'0')+':'+String(cookTimer%60).padStart(2,'0');
+  if(cookTimer<=0)cookAdv();
+}
+function cookAdv(){
+  if(cookInt){clearInterval(cookInt);cookInt=null;}
+  cookStep++;cookPlaying=false;cookTimer=0;
+  if(cookStep<curRecipe.steps.length){beep(600,.15);vibrate(60);}
+  else{beep(800,.2);setTimeout(()=>beep(1000,.3),250);vibrate([80,50,80]);}
+  renderCook();
+}
+function cookNext(){if(cookInt){clearInterval(cookInt);cookInt=null;}cookPlaying=false;cookTimer=0;cookAdv();}
 
-        let currentRecipe = null, currentStep = 0, isPlaying = false, stepTimer = null, totalTimer = null, totalSeconds = 0, stepSeconds = 0;
-        
-        // Variables del test
-        let testAnswers = {
-            energy: null,
-            type: null,
-            time: null,
-            protein: null
-        };
-        let recommendedRecipe = null;
+/* ── TEST ── */
+function startTest(){testStep=0;testAns=[];go('test');renderTest();}
+function renderTest(){
+  const el=document.getElementById('test-content');
+  if(testStep>=TEST_Q.length){
+    const meal=testAns[0],speed=testAns[1];
+    const m=MONTHS[curMonth];
+    const pool=m[meal==='comida'?'comidas':'cenas'];
+    let pick=pool[0];
+    if(speed==='rapida'){const r=pool.find(r=>parseInt(r.time)<=10);if(r)pick=r;}
+    else if(speed==='normal'){const r=pool.find(r=>{const t=parseInt(r.time);return t>10&&t<=20;});if(r)pick=r;}
+    el.innerHTML=`<div class="result-box"><div style="font-size:3rem;margin-bottom:8px">${pick.emoji}</div>
+      <h2>${pick.name}</h2><p>${pick.time} · ${pick.tags.join(' · ')}</p></div>
+    <button class="btn btn-primary" style="margin-bottom:8px" onclick="openRecipe('${pick.id}')">Ver receta →</button>
+    <button class="btn btn-secondary" onclick="startTest()">Repetir test</button>`;
+    return;
+  }
+  const s=TEST_Q[testStep];
+  el.innerHTML=`<div class="card"><p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--teal);margin-bottom:6px">Pregunta ${testStep+1} de ${TEST_Q.length}</p>
+    <h2 style="font-size:1.05rem;font-weight:700;color:var(--teal-dark)">${s.q}</h2></div>
+    ${s.opts.map(o=>`<button class="opt-btn" onclick="testAnswer('${o.v}')">${o.l}</button>`).join('')}`;
+}
+function testAnswer(v){beep(400,.1);vibrate(30);testAns.push(v);testStep++;renderTest();}
 
-        // Sistema de test de sugerencias
-        function startTest() {
-            document.getElementById('testModal').style.display = 'block';
-            testAnswers = {energy: null, type: null, time: null, protein: null};
-            document.getElementById('question1').style.display = 'block';
-            document.getElementById('question2').style.display = 'none';
-            document.getElementById('question3').style.display = 'none';
-            document.getElementById('question4').style.display = 'none';
-            document.getElementById('result').style.display = 'none';
-        }
+/* ── SHOPPING ── */
+function getChecked(){try{return JSON.parse(localStorage.getItem('cris_comida_shop')||'{}');}catch(e){return{};}}
+function setChecked(d){try{localStorage.setItem('cris_comida_shop',JSON.stringify(d));}catch(e){}}
+function renderShop(){
+  const el=document.getElementById('shop-list');
+  const ck=getChecked();
+  el.innerHTML=SHOPPING.map(cat=>`
+    <div class="shop-cat">
+      <h3>${cat.cat}</h3>
+      ${cat.items.map(item=>`
+        <div class="shop-item ${ck[item.id]?'ck':''}" id="si-${item.id}">
+          <input type="checkbox" id="cb-${item.id}" ${ck[item.id]?'checked':''} onchange="toggleItem('${item.id}',this.checked)">
+          <label for="cb-${item.id}"><strong>${item.name}</strong> — ${item.qty}<small>${item.loc}</small></label>
+        </div>`).join('')}
+    </div>`).join('');
+}
+function toggleItem(id,val){beep(400,.08);const d=getChecked();d[id]=val;setChecked(d);document.getElementById('si-'+id).classList.toggle('ck',val);}
+function clearShop(){setChecked({});renderShop();}
+function shareList(){
+  const lines=['🛒 Compra de temporada — Cris\n'];
+  SHOPPING.forEach(cat=>{lines.push('\n'+cat.cat);cat.items.forEach(i=>lines.push('☐ '+i.name+' — '+i.qty));});
+  const text=lines.join('\n');
+  if(navigator.share)navigator.share({title:'Lista de compras Cris',text}).catch(()=>{});
+  else if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>alert('📋 Lista copiada 💚'));
+}
 
-        function answer(questionNum, value) {
-            // Guardar respuesta
-            if (questionNum === 1) testAnswers.energy = value;
-            if (questionNum === 2) testAnswers.type = value;
-            if (questionNum === 3) testAnswers.time = value;
-            if (questionNum === 4) testAnswers.protein = value;
-
-            // Ocultar pregunta actual
-            document.getElementById('question' + questionNum).style.display = 'none';
-
-            // Mostrar siguiente pregunta o resultado
-            if (questionNum < 4) {
-                document.getElementById('question' + (questionNum + 1)).style.display = 'block';
-            } else {
-                showResult();
-            }
-        }
-
-        function showResult() {
-            // Lógica de recomendación basada en respuestas
-            let score = {lunch: 0, dinner: 0};
-
-            // Energía baja → sopa (más fácil)
-            if (testAnswers.energy === 'baja') score.dinner += 3;
-            if (testAnswers.energy === 'alta') score.lunch += 2;
-
-            // Tipo de comida
-            if (testAnswers.type === 'ligero') score.lunch += 2;
-            if (testAnswers.type === 'caliente') score.dinner += 3;
-            if (testAnswers.type === 'completo') score.lunch += 2;
-
-            // Tiempo
-            if (testAnswers.time === 'poco') score.dinner += 2;
-            if (testAnswers.time === 'medio') score.lunch += 1;
-
-            // Proteína
-            if (testAnswers.protein === 'no') score.dinner += 2;
-            if (testAnswers.protein === 'si') score.lunch += 1;
-
-            // Determinar ganador
-            recommendedRecipe = score.dinner > score.lunch ? 'dinner' : 'lunch';
-
-            // Mostrar resultado personalizado
-            const resultEmoji = document.getElementById('resultEmoji');
-            const resultTitle = document.getElementById('resultTitle');
-            const resultText = document.getElementById('resultText');
-
-            if (recommendedRecipe === 'dinner') {
-                resultEmoji.textContent = '🍜';
-                resultTitle.textContent = 'Te recomiendo: Sopa de Calabaza Express';
-                
-                let reason = 'Esta receta es perfecta para ti hoy porque:\n\n';
-                if (testAnswers.energy === 'baja') reason += '✓ Es la más fácil y rápida (solo 12 minutos)\n';
-                if (testAnswers.type === 'caliente') reason += '✓ Es calentita y reconfortante\n';
-                if (testAnswers.protein === 'no') reason += '✓ Es 100% vegetariana\n';
-                reason += '✓ Casi no tienes que cortar nada (usa calabaza congelada)\n';
-                reason += '✓ Es suave y ligera para el estómago';
-                
-                resultText.textContent = reason;
-            } else {
-                resultEmoji.textContent = '🥣';
-                resultTitle.textContent = 'Te recomiendo: Bowl Fácil con Quinoa';
-                
-                let reason = 'Esta receta es perfecta para ti hoy porque:\n\n';
-                if (testAnswers.energy === 'alta') reason += '✓ Es completa y te dará buena energía\n';
-                if (testAnswers.type === 'ligero') reason += '✓ Es fresca y ligera\n';
-                if (testAnswers.type === 'completo') reason += '✓ Tiene proteínas, vitaminas y buenos nutrientes\n';
-                reason += '✓ Se cocina sola mientras haces otras cosas\n';
-                reason += '✓ Está rica fría o caliente';
-                
-                resultText.textContent = reason;
-            }
-
-            document.getElementById('result').style.display = 'block';
-        }
-
-        function goToRecipe() {
-            closeTest();
-            // Scroll a la receta recomendada
-            const recipeCards = document.querySelectorAll('.recipe');
-            const targetRecipe = recommendedRecipe === 'lunch' ? recipeCards[0] : recipeCards[1];
-            targetRecipe.scrollIntoView({behavior: 'smooth', block: 'center'});
-            
-            // Resaltar la receta recomendada
-            targetRecipe.style.border = '3px solid #FFD700';
-            targetRecipe.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.5)';
-            
-            setTimeout(() => {
-                alert(`✨ Esta es tu receta recomendada\n\n¡Cuando estés listo/a, dale a "Audio Paso a Paso" y yo te guío! 😊`);
-            }, 500);
-        }
-
-        function restartTest() {
-            document.getElementById('result').style.display = 'none';
-            startTest();
-        }
-
-        function closeTest() {
-            document.getElementById('testModal').style.display = 'none';
-        }
-
-        function startAudio(type) {
-            currentRecipe = recipes[type];
-            currentStep = 0;
-            totalSeconds = 0;
-            isPlaying = false;
-            
-            document.getElementById('audioModal').style.display = 'block';
-            document.getElementById('recipeTitle').textContent = currentRecipe.title;
-            
-            const stepsList = document.getElementById('stepsList');
-            stepsList.innerHTML = currentRecipe.steps.map((step, i) => `
-                <div class="step-item" id="step-${i}">
-                    <strong>Paso ${i + 1}:</strong> ${step.text}
-                    <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">
-                        ⏱️ ${step.time} minuto${step.time !== 1 ? 's' : ''}
-                    </div>
-                </div>
-            `).join('');
-            
-            document.getElementById('totalTimer').textContent = '00:00';
-            document.getElementById('stepText').textContent = 'Presiona "Empezar" y te iré guiando paso a paso 😊';
-            document.getElementById('stepTimer').textContent = '⏱️ Tiempo del paso: --:--';
-            document.getElementById('playBtn').innerHTML = '▶️ Empezar';
-            
-            document.querySelectorAll('.step-item').forEach(s => s.classList.remove('active', 'completed'));
-        }
-
-        function play() {
-            if (!currentRecipe) return;
-            if (!isPlaying) {
-                isPlaying = true;
-                document.getElementById('playBtn').innerHTML = '⏸️ Pausa';
-                if (currentStep === 0 && totalSeconds === 0) startTotalTimer();
-                playStep();
-            } else {
-                pause();
-            }
-        }
-
-        function pause() {
-            isPlaying = false;
-            document.getElementById('playBtn').innerHTML = '▶️ Seguir';
-            if (stepTimer) clearInterval(stepTimer);
-        }
-
-        function reset() {
-            isPlaying = false;
-            currentStep = 0;
-            totalSeconds = 0;
-            stepSeconds = 0;
-            document.getElementById('playBtn').innerHTML = '▶️ Empezar';
-            document.getElementById('totalTimer').textContent = '00:00';
-            document.getElementById('stepText').textContent = 'Presiona "Empezar" y te iré guiando paso a paso 😊';
-            document.getElementById('stepTimer').textContent = '⏱️ Tiempo del paso: --:--';
-            document.querySelectorAll('.step-item').forEach(s => s.classList.remove('active', 'completed'));
-            if (stepTimer) clearInterval(stepTimer);
-            if (totalTimer) clearInterval(totalTimer);
-        }
-
-        function startTotalTimer() {
-            totalTimer = setInterval(() => {
-                totalSeconds++;
-                const m = Math.floor(totalSeconds / 60);
-                const s = totalSeconds % 60;
-                document.getElementById('totalTimer').textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-
-        function playStep() {
-            if (currentStep >= currentRecipe.steps.length) {
-                complete();
-                return;
-            }
-
-            const step = currentRecipe.steps[currentStep];
-            
-            document.querySelectorAll('.step-item').forEach((item, i) => {
-                item.classList.remove('active');
-                if (i < currentStep) item.classList.add('completed');
-            });
-            
-            document.getElementById(`step-${currentStep}`).classList.add('active');
-            document.getElementById('stepText').textContent = step.text;
-            
-            setTimeout(() => {
-                if (isPlaying) alert(`🎵 ${step.audio}`);
-            }, 500);
-            
-            stepSeconds = step.time * 60;
-            updateTimer();
-            
-            stepTimer = setInterval(() => {
-                stepSeconds--;
-                updateTimer();
-                if (stepSeconds <= 0) {
-                    clearInterval(stepTimer);
-                    currentStep++;
-                    if (isPlaying) setTimeout(() => playStep(), 1000);
-                }
-            }, 1000);
-        }
-
-        function updateTimer() {
-            const m = Math.floor(stepSeconds / 60);
-            const s = stepSeconds % 60;
-            document.getElementById('stepTimer').textContent = `⏱️ Tiempo restante: ${m}:${s.toString().padStart(2, '0')}`;
-        }
-
-        function complete() {
-            isPlaying = false;
-            document.getElementById('playBtn').innerHTML = '✅ ¡Terminado!';
-            document.getElementById('stepText').textContent = '🎉 ¡Lo has conseguido! Ya tienes tu comida lista. ¡Buen provecho!';
-            document.getElementById('stepTimer').textContent = '✨ ¡Has cocinado con éxito!';
-            document.querySelectorAll('.step-item').forEach(s => {
-                s.classList.add('completed');
-                s.classList.remove('active');
-            });
-            if (stepTimer) clearInterval(stepTimer);
-            if (totalTimer) clearInterval(totalTimer);
-            setTimeout(() => alert('🎉 ¡Genial! Has cocinado algo delicioso. ¡Disfruta tu comida! 😊'), 1000);
-        }
-
-        function closeAudio() {
-            document.getElementById('audioModal').style.display = 'none';
-            if (stepTimer) clearInterval(stepTimer);
-            if (totalTimer) clearInterval(totalTimer);
-            isPlaying = false;
-            currentStep = 0;
-            totalSeconds = 0;
-        }
-
-        function viewIngredients(type) {
-            const recipe = recipes[type];
-            const cal = type === 'lunch' ? '385 calorías' : '220 calorías';
-            alert(`${recipe.title}\n\n${recipe.ingredients}\n\n🔥 ${cal} por porción\n\n💡 Tip: Puedes guardar esta lista en las notas de tu móvil`);
-        }
-
-        function toggleItem(cb) {
-            cb.parentElement.classList.toggle('completed', cb.checked);
-        }
-
-        function shareList() {
-            const text = "🛒 MI LISTA DE COMPRAS FÁCIL (7 días)\n\n🥬 VERDURAS (refrigerado/congelado):\n☐ Calabaza CONGELADA cortada - 2 bolsas 500g [congelados]\n☐ Pepinos - 4 unidades [verduras frescas]\n☐ Cebollas pequeñas - 4 unidades [verduras]\n☐ Limones - 4 unidades [frutas]\n\n🥛 LÁCTEOS (nevera):\n☐ Queso feta en dados - 1 paquete 200g [quesos]\n\n🌾 CEREALES (pasillo seco):\n☐ Quinoa PRELAVADA - 1 paquete 500g [arroz/legumbres]\n\n🫒 CONSERVAS (pasillo latas):\n☐ Aceitunas negras - 2 tarritos [conservas]\n☐ Leche de coco - 2 latas [cocina internacional]\n☐ Caldo verduras BRICK - 2 briks 1L [caldos]\n\n🧂 BÁSICOS (si no tienes):\n☐ Aceite oliva - 1 botella\n☐ Sal - 1 paquete\n☐ Cúrcuma - 1 botecito (opcional)\n\n💡 Marca con ✓ cuando cojas cada cosa";
-            
-            if (navigator.share) {
-                navigator.share({title: 'Mi Lista de Compras Fácil', text: text}).catch(() => {
-                    navigator.clipboard.writeText(text).then(() => alert('📋 Lista copiada. Pégala donde quieras (WhatsApp, notas...)'));
-                });
-            } else {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert('📋 ¡Lista copiada! Ahora puedes pegarla en:\n\n• Notas de tu móvil\n• WhatsApp (enviártela a ti)\n• Email\n• Donde prefieras');
-                }).catch(() => alert(text));
-            }
-        }
-
-        function downloadList() {
-            const text = "MI LISTA DE COMPRAS FACIL - 7 DIAS\n\nVERDURAS (refrigerado/congelado):\n□ Calabaza CONGELADA cortada - 2 bolsas 500g [seccion: congelados]\n□ Pepinos - 4 unidades [seccion: verduras frescas]\n□ Cebollas pequeñas - 4 unidades [seccion: verduras]\n□ Limones - 4 unidades [seccion: frutas]\n\nLACTEOS (nevera):\n□ Queso feta en dados - 1 paquete 200g [seccion: quesos]\n\nCEREALES (pasillo seco):\n□ Quinoa PRELAVADA - 1 paquete 500g [seccion: arroz/legumbres]\n\nCONSERVAS (pasillo latas):\n□ Aceitunas negras - 2 tarritos [seccion: conservas]\n□ Leche de coco - 2 latas [seccion: cocina internacional]\n□ Caldo verduras BRICK - 2 briks 1 litro [seccion: caldos]\n\nBASICOS (si no tienes en casa):\n□ Aceite oliva - 1 botella\n□ Sal - 1 paquete\n□ Curcuma - 1 botecito (OPCIONAL)\n\nCONSEJO: Lleva esta lista impresa o en el movil. Marca con X cuando cojas cada cosa.";
-            
-            try {
-                const blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'mi-lista-compras-facil.txt';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                alert('📥 ¡Lista descargada! Ahora puedes:\n\n• Imprimirla\n• Abrirla en tu móvil\n• Guardarla donde quieras');
-            } catch (error) {
-                alert('❌ No se pudo descargar automáticamente.\n\nPero puedes copiar la lista:\n\n' + text);
-            }
-        }
-
-        function clearCompleted() {
-            const items = document.querySelectorAll('.shopping-item.completed input');
-            items.forEach(cb => {
-                cb.checked = false;
-                cb.parentElement.classList.remove('completed');
-            });
-            if (items.length > 0) {
-                alert('🗑️ ¡Listo! Ya puedes volver a marcar las cosas para la próxima compra');
-            } else {
-                alert('ℹ️ No hay nada marcado todavía');
-            }
-        }
-
-        window.addEventListener('click', function(e) {
-            if (e.target === document.getElementById('audioModal')) closeAudio();
-            if (e.target === document.getElementById('testModal')) closeTest();
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                const message = '👨‍🍳 ¡Hola! Bienvenido/a a Comer Rico (versión fácil)\n\n' +
-                    '✨ Aquí TODO es super simple:\n' +
-                    '• Solo necesitas una olla y un cuchillo\n' +
-                    '• Los pasos son cortitos y claros\n' +
-                    '• El audio te guía en todo\n' +
-                    '• La lista de compras dice dónde está cada cosa\n\n' +
-                    '💚 Si no sabes qué cocinar, haz clic en "¿No sabes qué cocinar hoy?" y te ayudo a elegir';
-                alert(message);
-            }, 1500);
-        });
-    </script>
+// Init
+initHome();
+renderMonthsGrid();
+</script>
 </body>
 </html>
-            

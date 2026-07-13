@@ -1,7 +1,7 @@
 // Service Worker - Cris App
 // Cachea todos los módulos para que la app funcione sin conexión.
 
-const CACHE_NAME = 'cris-app-v1';
+const CACHE_NAME = 'cris-app-v5';
 
 const ASSETS = [
   './',
@@ -43,14 +43,32 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        // Guarda copia en caché para la próxima vez (solo GET, mismo origen)
-        if (event.request.method === 'GET' && response.ok) {
+  const req = event.request;
+  const isHTML = req.mode === 'navigate' || req.destination === 'document' ||
+                 (req.headers.get('accept') || '').includes('text/html');
+
+  if (isHTML) {
+    // HTML: red primero (siempre la última versión), caché solo sin conexión
+    event.respondWith(
+      fetch(req).then((response) => {
+        if (req.method === 'GET' && response.ok) {
           const respClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, respClone));
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, respClone));
+        }
+        return response;
+      }).catch(() => caches.match(req))
+    );
+    return;
+  }
+
+  // Resto (fuentes, iconos...): caché primero
+  event.respondWith(
+    caches.match(req).then((cached) => {
+      if (cached) return cached;
+      return fetch(req).then((response) => {
+        if (req.method === 'GET' && response.ok) {
+          const respClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, respClone));
         }
         return response;
       }).catch(() => cached);
