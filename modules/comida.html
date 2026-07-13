@@ -39,6 +39,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .wk-info{flex:1;cursor:pointer;min-width:0}
 .wk-name{font-size:.92rem;font-weight:700;color:var(--teal-dark)}
 .wk-meta{font-size:.75rem;color:var(--text-soft);margin-top:2px}
+.wk-ingr{font-size:.74rem;color:var(--text-soft);margin-top:5px;line-height:1.5;background:var(--mint-soft);border-radius:8px;padding:5px 8px}
 /* Month grid */
 .months-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .month-tile{background:rgba(255,255,255,.82);border:2px solid var(--mint-mid);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;transition:transform .1s,border-color .1s}
@@ -1008,6 +1009,15 @@ function menuKey(){const d=new Date(),y=d.getFullYear(),s=new Date(y,0,1),w=Math
 function getMenuDone(){try{return JSON.parse(localStorage.getItem(menuKey())||'{}');}catch(e){return{};}}
 function setMenuDone(d){try{localStorage.setItem(menuKey(),JSON.stringify(d));}catch(e){}}
 function remainingMenu(){const w=weekMenu(),d=getMenuDone();return {comidas:w.comidas.filter(r=>!d[r.id]),cenas:w.cenas.filter(r=>!d[r.id])};}
+function ingrLine(r){
+  const seen={},out=[];
+  r.ingredients.forEach(i=>{
+    if(PANTRY_RE.test(i))return;
+    const n=normIngr(i).toLowerCase();
+    if(!seen[n]){seen[n]=1;out.push(n);}
+  });
+  return out.length?out.join(' · '):'todo de despensa';
+}
 
 /* ── ESTADO ── */
 let curMonth=new Date().getMonth(),curMeal='comidas',curRecipe=null,cookStep=0,cookPlaying=false,cookTimer=0,cookInt=null,testStep=0,testAns=[];
@@ -1220,7 +1230,8 @@ function startPick(){
 }
 function suggCard(r,from){
   return `<div class="result-box"><div style="font-size:3rem;margin-bottom:8px">${r.emoji}</div>
-    <h2>${r.name}</h2><p>${r.time} · ${r.tags.join(' · ')}</p></div>
+    <h2>${r.name}</h2><p>${r.time} · ${r.tags.join(' · ')}</p>
+    <p style="margin-top:10px;background:rgba(255,255,255,.16);border-radius:10px;padding:8px 12px;font-size:.8rem">🧺 ${ingrLine(r)}</p></div>
     <button class="btn btn-primary" style="margin-bottom:8px" onclick="openRecipe('${r.id}','${from||'test'}')">Ver receta →</button>`;
 }
 function renderPick(){
@@ -1253,6 +1264,7 @@ function renderWeek(){
       <div class="wk-info" onclick="openRecipe('${r.id}','week')">
         <div class="wk-name">${r.emoji} ${r.name}</div>
         <div class="wk-meta">${r.time} · ${r.budget}${r.express?' · de despensa':''}</div>
+        ${done?'':`<div class="wk-ingr">🧺 ${ingrLine(r)}</div>`}
       </div>
     </div>`;};
   document.getElementById('week-list').innerHTML=
