@@ -2,368 +2,723 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cris - Entrenamientos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pilates — Cris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:10px}
-.app{max-width:400px;margin:0 auto;background:rgba(255,255,255,0.95);border-radius:15px;padding:20px;box-shadow:0 6px 25px rgba(0,0,0,0.15)}
-h1{text-align:center;color:#4a5568;margin-bottom:20px;font-size:1.5rem;font-weight:bold}
-.screen{display:none}
+:root{--teal:#26a69a;--teal-dark:#1a6b64;--teal-light:#4dd0e1;--mint:#d6f0eb;--mint-mid:#b8e4dd;--mint-soft:#e8f8f5;--text:#1a6b64;--text-soft:#3d8880}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;color:var(--text)}
+.screen{display:none;min-height:100vh;padding:16px 16px 48px}
 .screen.active{display:block}
-button{background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;padding:12px 16px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;transition:all 0.3s;width:100%}
-button:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(102,126,234,0.4)}
-button:disabled{background:#a0aec0;cursor:not-allowed;transform:none}
-.back{background:#718096;margin-bottom:15px}
-.completed{background:linear-gradient(135deg,#48bb78,#38a169)!important}
-.day-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
-.exercise{text-align:center}
-.exercise h2{color:#4a5568;margin-bottom:10px;font-size:1.3rem}
-.img-placeholder{width:100%;height:120px;background:linear-gradient(135deg,#f7fafc,#edf2f7);border:2px solid #e2e8f0;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:3rem;margin:12px 0}
-.desc{margin:10px 0;background:#f7fafc;padding:12px;border-radius:10px;border-left:4px solid #667eea;max-height:200px;overflow-y:auto}
-.exercise-main{font-size:14px;font-weight:bold;color:#4a5568;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
-.exercise-details{font-size:10px;color:#718096;text-transform:lowercase}
-.timer{font-size:2.5rem;font-weight:bold;color:#4a5568;margin:15px 0}
-.timer.warning{color:#f56565}
-.timer.rest{color:#48bb78}
-.progress-bar{background:#e2e8f0;height:8px;border-radius:4px;margin:15px 0;overflow:hidden}
-.progress-fill{background:linear-gradient(90deg,#667eea,#764ba2);height:100%;transition:width 0.4s ease}
-.controls{display:flex;gap:8px;margin:15px 0}
-.controls button{flex:1;padding:12px 8px;font-size:13px}
-.phase-indicator{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;margin:10px 0;display:inline-block}
-.phase-indicator.rest{background:linear-gradient(135deg,#48bb78,#38a169)}
-.overview-content{background:#f7fafc;border-radius:10px;padding:15px;margin:15px 0;max-height:350px;overflow-y:auto}
-.exercise-overview{background:white;border-radius:8px;padding:10px;margin:8px 0;border-left:4px solid #667eea}
-.exercise-overview h3{color:#4a5568;font-size:13px;font-weight:bold;margin-bottom:3px}
-.exercise-sets{color:#667eea;font-size:11px;font-weight:600}
-.total-time{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:10px;border-radius:8px;text-align:center;font-weight:bold;margin:10px 0}
-.start-workout{background:linear-gradient(135deg,#48bb78,#38a169)!important;font-size:16px;font-weight:bold;padding:15px;margin-top:15px}
-.quokka{font-size:3rem;margin:20px 0;animation:bounce 2s ease-in-out infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.stats{display:flex;justify-content:space-around;background:#f7fafc;border-radius:10px;padding:10px;margin:10px 0;font-size:11px}
-.stat{text-align:center;color:#4a5568}
-.stat-value{font-weight:bold;font-size:16px;color:#667eea}
+.max-w{max-width:440px;margin:0 auto;padding-top:12px}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.back-btn{background:rgba(26,107,100,.12);border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--teal-dark)}
+.topbar h1{font-size:1.15rem;font-weight:700;color:var(--teal-dark)}
+.home-header{text-align:center;margin-bottom:16px}
+.home-header h1{font-size:1.6rem;font-weight:800;color:var(--teal-dark);margin-bottom:4px}
+.home-header p{font-size:.85rem;color:var(--text-soft)}
+.bubble{background:rgba(255,255,255,.8);border:2px solid var(--mint-mid);border-radius:16px;padding:10px 16px;font-size:.85rem;font-weight:600;color:var(--teal-dark);text-align:center;margin:0 auto 20px;max-width:300px}
+.today-card{border-radius:20px;padding:22px;color:#fff;margin-bottom:16px;cursor:pointer;position:relative;overflow:hidden;transition:transform .1s}
+.today-card:active{transform:scale(.98)}
+.tc-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;opacity:.8;margin-bottom:4px}
+.tc-day{font-size:1.6rem;font-weight:800;margin-bottom:2px}
+.tc-focus{font-size:.9rem;opacity:.9;font-weight:600}
+.tc-meta{font-size:.78rem;opacity:.75;margin-top:6px}
+.tc-emoji{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:3.5rem;opacity:.3}
+.week-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin-bottom:10px}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px}
+.wday{border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;border:2px solid var(--mint-mid);background:rgba(255,255,255,.75);transition:transform .1s}
+.wday:active{transform:scale(.93)}
+.wday.today-mark{border-color:var(--teal);background:rgba(38,166,154,.1)}
+.wday .wd-emoji{font-size:1.2rem;display:block;margin-bottom:3px}
+.wday .wd-name{font-size:.6rem;font-weight:700;color:var(--teal-dark)}
+.day-header{border-radius:20px;padding:22px;color:#fff;margin-bottom:16px;position:relative;overflow:hidden}
+.dh-focus{font-size:1.1rem;font-weight:800;margin-bottom:4px}
+.dh-meta{font-size:.82rem;opacity:.85}
+.dh-emoji{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:3rem;opacity:.3}
+.day-intro{background:rgba(255,255,255,.82);border:2px solid var(--mint-mid);border-radius:14px;padding:14px;margin-bottom:14px;font-size:.84rem;color:var(--text);line-height:1.5}
+.ex-item{background:rgba(255,255,255,.82);border:2px solid var(--mint-mid);border-radius:14px;padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.ex-num{width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;font-size:.78rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ex-info{flex:1}
+.ex-name{font-size:.9rem;font-weight:700;color:var(--teal-dark)}
+.ex-meta{font-size:.72rem;color:var(--text-soft);margin-top:2px}
+.ex-emoji{font-size:1.5rem}
+.btn{border:none;border-radius:12px;padding:14px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;width:100%;transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;margin-top:4px}
+.btn-secondary{background:var(--mint-soft);color:var(--teal-dark);border:2px solid var(--mint-mid)}
+.btn-row{display:flex;gap:8px;margin-top:10px}
+.btn-row .btn{flex:1}
+/* Session */
+.s-prog{background:var(--mint-mid);border-radius:999px;height:6px;margin-bottom:12px;overflow:hidden}
+.s-fill{height:100%;background:linear-gradient(90deg,var(--teal-dark),var(--teal-light));border-radius:999px;transition:width .5s}
+.s-count{font-size:.72rem;font-weight:700;color:var(--text-soft);text-align:center;margin-bottom:10px}
+.dots{display:flex;justify-content:center;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mint-mid)}
+.dot.done{background:var(--teal)}.dot.active{background:var(--teal-light);transform:scale(1.4)}
+/* Figure animation */
+.anim-wrap{position:relative;width:100%;height:130px;margin-bottom:10px;border-radius:16px;overflow:hidden;background:var(--mint-soft)}
+.anim-wrap svg{position:absolute;inset:0;width:100%;height:100%}
+.anim-wrap svg.pose-b{animation:fade-b 3s ease-in-out infinite}
+.anim-wrap svg.pose-a{animation:fade-a 3s ease-in-out infinite}
+.anim-wrap.paused svg{animation-play-state:paused}
+@keyframes fade-a{0%,40%{opacity:1}55%,95%{opacity:0}100%{opacity:1}}
+@keyframes fade-b{0%,40%{opacity:0}55%,95%{opacity:1}100%{opacity:0}}
+/* Session box */
+.s-box{background:rgba(255,255,255,.9);border:2px solid var(--mint-mid);border-radius:18px;padding:18px;text-align:center;margin-bottom:12px}
+.s-phase{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:4px}
+.s-exname{font-size:1.1rem;font-weight:800;color:var(--teal-dark);margin-bottom:8px;line-height:1.3}
+.s-desc{font-size:.82rem;color:var(--text-soft);line-height:1.5;margin-bottom:10px;text-align:left}
+.s-timer{font-size:3.8rem;font-weight:800;color:var(--teal-dark);font-variant-numeric:tabular-nums;line-height:1;margin-bottom:2px}
+.s-timer.rest-c{color:#059669}.s-timer.sw-c{color:#d97706}
+.s-tlbl{font-size:.7rem;color:var(--text-soft)}
+.s-tip{background:var(--mint-soft);border-left:3px solid var(--teal);border-radius:0 10px 10px 0;padding:10px 12px;font-size:.78rem;color:var(--text);line-height:1.4;margin-bottom:10px;text-align:left}
+.done-box{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:20px;padding:32px;text-align:center;margin-bottom:14px}
+.done-box .big{font-size:3.5rem;margin-bottom:10px}
+.done-box h2{font-size:1.4rem;font-weight:800;margin-bottom:8px}
+.done-box p{font-size:.88rem;opacity:.9;line-height:1.5}
 </style>
 </head>
 <body>
-<div class="app">
 
-<div id="home" class="screen active">
-<h1>🔥 Entrenamiento Semanal</h1>
-<div class="stats">
-<div class="stat"><div class="stat-value" id="total-workouts">0</div>Entrenamientos</div>
-<div class="stat"><div class="stat-value" id="total-time">0</div>Minutos</div>
-<div class="stat"><div class="stat-value" id="streak">0</div>Racha</div>
-</div>
-<div class="day-grid">
-<button id="btn-lunes">🔥 Lunes</button>
-<button id="btn-martes">💪 Martes</button>
-<button id="btn-miercoles">🚀 Miércoles</button>
-<button id="btn-jueves">⚡ Jueves</button>
-<button id="btn-viernes">🎯 Viernes</button>
+<div id="v-home" class="screen active">
+<div class="max-w">
+  <div class="home-header"><h1>🧘 Pilates en Casa</h1><p>15–20 min · sin material · cuerpo completo</p></div>
+  <div class="bubble">¿Lista para mover el cuerpo? 💚</div>
+  <div class="today-card" id="today-card" onclick="openTodayDay()"></div>
+  <div class="week-title">Esta semana</div>
+  <div class="week-grid" id="week-grid"></div>
 </div>
 </div>
 
-<div id="overview" class="screen">
-<button class="back" id="overview-back">← Volver</button>
-<h1 id="overview-title">📋 Rutina</h1>
-<div id="overview-content" class="overview-content"></div>
-<button id="start-workout" class="start-workout">🚀 Comenzar</button>
-</div>
-
-<div id="workout" class="screen">
-<button class="back" id="back-btn">← Volver</button>
-<div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
-<div class="exercise">
-<div class="phase-indicator" id="phase">Ejercicio</div>
-<h2 id="name"></h2>
-<div id="img" class="img-placeholder">🏃‍♂️</div>
-<div id="desc" class="desc"></div>
-<div id="time" class="timer">00:30</div>
-<div class="controls">
-<button id="start">▶ Iniciar</button>
-<button id="pause" disabled>⏸ Pausar</button>
-<button id="next">⏭ Siguiente</button>
-</div>
-<div id="counter"></div>
+<div id="v-day" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1 id="day-title"></h1></div>
+  <div class="day-header" id="day-header"></div>
+  <div class="day-intro" id="day-intro"></div>
+  <div id="ex-list"></div>
+  <button class="btn btn-primary" onclick="startSession()">▶ Empezar sesión</button>
 </div>
 </div>
 
-<div id="done" class="screen">
-<div class="quokka">🦘</div>
-<h2>¡Entrenamiento Completado!</h2>
-<div class="stats">
-<div class="stat"><div class="stat-value" id="session-time">0</div>Minutos</div>
-<div class="stat"><div class="stat-value" id="session-exercises">0</div>Ejercicios</div>
+<div id="v-session" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="confirmStop()">←</button><h1 id="s-title"></h1></div>
+  <div class="s-prog"><div class="s-fill" id="s-fill"></div></div>
+  <div class="s-count" id="s-count"></div>
+  <div class="dots" id="s-dots"></div>
+  <div id="s-content"></div>
 </div>
-<p style="color:#667eea;margin:15px 0">¡Excelente trabajo! 💪</p>
-<button id="home-btn">🏠 Volver</button>
-</div>
-
 </div>
 
 <script>
-const data={
-lunes:[
-{name:'Saltos de Tijera',desc:'<div class="exercise-main">SALTA ABRIENDO PIERNAS Y SUBIENDO BRAZOS, VUELVE A LA POSICIÓN INICIAL. RITMO CONSTANTE.</div><div class="exercise-details">🎯 NOTA: deltoides (hombros), cuádriceps (frente muslos), pantorrillas, cardio • siente: calor en piernas y brazos • aterrizaje suave en pies</div>',img:'🤸‍♀️',time:60,sets:4,rest:20},
-{name:'Sentadillas',desc:'<div class="exercise-main">BAJA COMO SENTÁNDOTE EN SILLA, ESPALDA RECTA, PESO EN TALONES. SUBE CON GLÚTEOS.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteo mayor (nalgas), isquiotibiales (atrás muslos) • siente: tensión en glúteos al subir, peso en talones • rodillas alineadas con pies</div>',img:'🏋️‍♀️',time:50,sets:4,rest:20},
-{name:'Plancha',desc:'<div class="exercise-main">CUERPO RECTO COMO TABLA, BRAZOS EXTENDIDOS. CONTRAE ABDOMEN Y RESPIRA CONTROLADO.</div><div class="exercise-details">🎯 NOTA: recto abdominal (abdomen frontal), transverso abdominal (faja profunda), deltoides (hombros) • siente: activación intensa del abdomen • no hundir cadera</div>',img:'🏊‍♀️',time:45,sets:3,rest:15},
-{name:'Burpees suaves',desc:'<div class="exercise-main">SENTADILLA-PLANCHA-FLEXIÓN-SALTO. SECUENCIA COMPLETA A RITMO CONTROLADO.</div><div class="exercise-details">🎯 NOTA: todo el cuerpo - pectorales (pecho), cuádriceps, glúteos, deltoides, core • siente: fatiga total corporal • técnica sobre velocidad</div>',img:'🏃‍♀️',time:50,sets:3,rest:25},
-{name:'Flexiones rodillas',desc:'<div class="exercise-main">PLANCHA CON RODILLAS APOYADAS. BAJA PECHO AL SUELO, EMPUJA MANTENIENDO LÍNEA RECTA.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), deltoides anterior (frente hombros) • siente: estiramiento en pecho al bajar, contracción al subir</div>',img:'💪',time:45,sets:3,rest:20}
-],
-martes:[
-{name:'Rodillas Altas',desc:'<div class="exercise-main">CORRE EN EL LUGAR ELEVANDO RODILLAS A LA CADERA. TORSO ERGUIDO, BRAZOS ACTIVOS.</div><div class="exercise-details">🎯 NOTA: flexores de cadera (frente cadera), cuádriceps (frente muslos), pantorrillas • siente: elevación intensa de rodillas, trabajo cardiovascular • torso estable</div>',img:'🦵',time:55,sets:4,rest:20},
-{name:'Flexiones rodillas',desc:'<div class="exercise-main">PLANCHA CON RODILLAS APOYADAS. BAJA PECHO, EMPUJA MANTENIENDO CUERPO RECTO.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), core (abdomen) • siente: trabajo intenso en pecho y brazos • control bajada-subida</div>',img:'💪',time:50,sets:4,rest:20},
-{name:'Escaladores',desc:'<div class="exercise-main">PLANCHA ALTERNANDO RODILLAS AL PECHO RÁPIDAMENTE. CADERAS ESTABLES.</div><div class="exercise-details">🎯 NOTA: core completo, flexores de cadera, deltoides (hombros), cardio • siente: abdomen trabajando constantemente • cadera inmóvil</div>',img:'🏃‍♂️',time:45,sets:3,rest:15},
-{name:'Plancha lateral',desc:'<div class="exercise-main">DE LADO EN ANTEBRAZO, CUERPO RECTO Y ALINEADO. CADERA ELEVADA DEL SUELO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costado abdomen), cuadrado lumbar (espalda baja), glúteo medio • siente: intensa contracción lateral • no caer cadera</div>',img:'🏄‍♀️',time:40,sets:3,rest:20},
-{name:'Saltos estrella',desc:'<div class="exercise-main">DESDE SENTADILLA SALTA EXTENDIENDO BRAZOS Y PIERNAS COMO ESTRELLA.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteos, deltoides, aductores (interior muslos) • siente: explosividad total corporal • aterrizaje controlado</div>',img:'⭐',time:40,sets:3,rest:20}
-],
-miercoles:[
-{name:'Sentadillas con Salto',desc:'<div class="exercise-main">SENTADILLA EXPLOSIVA SALTANDO LO MÁS ALTO POSIBLE. ATERRIZA EN SENTADILLA.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteo mayor (nalgas), pantorrillas, core • siente: potencia explosiva en piernas • aterrizaje suave en sentadilla</div>',img:'🦘',time:55,sets:4,rest:25},
-{name:'Flexiones Completas',desc:'<div class="exercise-main">FLEXIONES COMPLETAS DESDE PIES. PECHO CASI TOCA SUELO, CUERPO RECTO.</div><div class="exercise-details">🎯 NOTA: pectorales (pecho), tríceps (atrás brazos), deltoides, core profundo • siente: estiramiento pectoral intenso • cuerpo como tabla rígida</div>',img:'💪',time:50,sets:4,rest:25},
-{name:'Bicicleta abdominal',desc:'<div class="exercise-main">ACOSTADO ALTERNA CODOS A RODILLAS OPUESTAS. ESPALDA BAJA EN SUELO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costados abdomen), recto abdominal, flexores de cadera • siente: rotación intensa en costados • control sobre velocidad</div>',img:'🚴‍♀️',time:60,sets:3,rest:20},
-{name:'Plancha toque hombro',desc:'<div class="exercise-main">PLANCHA TOCANDO HOMBROS ALTERNADAMENTE. CADERAS INMÓVILES.</div><div class="exercise-details">🎯 NOTA: core anti-rotacional, deltoides estabilizadores, glúteos • siente: desafío constante de equilibrio • movimiento controlado</div>',img:'🏊‍♀️',time:45,sets:3,rest:20},
-{name:'Sentadilla con Pulsos',desc:'<div class="exercise-main">POSICIÓN BAJA DE SENTADILLA CON PULSOS PEQUEÑOS. TENSIÓN CONSTANTE.</div><div class="exercise-details">🎯 NOTA: cuádriceps (frente muslos), glúteos, aductores (interior muslos) • siente: quemadura intensa en piernas • tensión constante</div>',img:'🔥',time:40,sets:3,rest:20}
-],
-jueves:[
-{name:'Saltos Laterales',desc:'<div class="exercise-main">SALTOS LATERALES ALTERNOS IMITANDO PATINADOR. PIERNA ATRÁS CRUZADA.</div><div class="exercise-details">🎯 NOTA: glúteo medio (lateral cadera), cuádriceps, aductores, estabilizadores • siente: trabajo lateral intenso • equilibrio dinámico</div>',img:'🛹',time:55,sets:4,rest:25},
-{name:'Flexiones diamante',desc:'<div class="exercise-main">FLEXIONES CON MANOS FORMANDO DIAMANTE BAJO EL PECHO. ENFOQUE TRÍCEPS.</div><div class="exercise-details">🎯 NOTA: tríceps (atrás brazos), pectorales internos, deltoides anterior • siente: concentración intensa en tríceps • brazos más que pecho</div>',img:'💎',time:45,sets:4,rest:25},
-{name:'Plancha frontal',desc:'<div class="exercise-main">MANTÉN PLANCHA CON BRAZOS EXTENDIDOS. RESPIRACIÓN CONTROLADA.</div><div class="exercise-details">🎯 NOTA: core completo, erectores espinales (espalda), deltoides • siente: activación profunda abdominal sostenida • respiración continua</div>',img:'🏊‍♀️',time:50,sets:3,rest:25},
-{name:'Burpees modificados',desc:'<div class="exercise-main">BURPEES COMPLETOS A RITMO CONTROLADO. SECUENCIA COMPLETA.</div><div class="exercise-details">🎯 NOTA: cuerpo completo - pectorales, cuádriceps, glúteos, core, deltoides • siente: coordinación muscular total • ritmo sostenible</div>',img:'🏃‍♀️',time:50,sets:3,rest:25},
-{name:'Zancadas Alternas',desc:'<div class="exercise-main">PASO ADELANTE, RODILLAS A 90°. EMPUJA CON TALÓN PARA VOLVER.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteos, isquiotibiales (atrás muslo), estabilizadores • siente: trabajo unilateral intenso • equilibrio y fuerza</div>',img:'🚶‍♀️',time:45,sets:3,rest:20}
-],
-viernes:[
-{name:'Saltos de Tijera',desc:'<div class="exercise-main">SALTOS DE TIJERA INTENSOS PARA ACTIVAR EL SISTEMA COMPLETO. PREPARACIÓN FINAL.</div><div class="exercise-details">🎯 NOTA: deltoides (hombros), cuádriceps, pantorrillas, sistema cardiovascular • siente: activación completa corporal • preparación máxima</div>',img:'🤸‍♀️',time:60,sets:4,rest:20},
-{name:'Sentadillas con salto',desc:'<div class="exercise-main">SENTADILLAS EXPLOSIVAS A MÁXIMA INTENSIDAD. CADA REP AL MÁXIMO.</div><div class="exercise-details">🎯 NOTA: cuádriceps, glúteo mayor, pantorrillas, core estabilizador • siente: explosividad máxima en piernas • cada salto al máximo</div>',img:'🦘',time:55,sets:4,rest:25},
-{name:'Plancha lateral',desc:'<div class="exercise-main">PLANCHA LATERAL MÁXIMO TIEMPO. DESAFÍO MENTAL Y FÍSICO.</div><div class="exercise-details">🎯 NOTA: oblicuos (costado abdomen), cuadrado lumbar, glúteo medio • siente: resistencia isométrica intensa lateral • desafío mental</div>',img:'🏄‍♀️',time:40,sets:3,rest:20},
-{name:'Burpees',desc:'<div class="exercise-main">BURPEES COMPLETOS SIN MODIFICACIONES. DESAFÍO FINAL SEMANAL.</div><div class="exercise-details">🎯 NOTA: todo el cuerpo - pectorales, cuádriceps, glúteos, core, deltoides • siente: límite máximo capacidad física • forma técnica perfecta</div>',img:'🔥',time:50,sets:3,rest:30},
-{name:'Final Explosivo',desc:'<div class="exercise-main">COMBINACIÓN LIBRE: SALTOS DE TIJERA, RODILLAS ALTAS, ESCALADORES.</div><div class="exercise-details">🎯 NOTA: sistema cardiovascular completo, piernas, core, hombros • siente: esfuerzo cardiovascular máximo • culminación semanal</div>',img:'💥',time:45,sets:3,rest:15}
-]
+/* ─── SVG ANIMATIONS ─── */
+// Each entry = [poseA_elements, poseB_elements]
+// ViewBox: 0 0 200 130 — profile/side view
+// Colors: body=#1a6b64, moving=#26a69a, mat=#b8e4dd
+const MAT = '<rect x="8" y="114" width="184" height="6" rx="3" fill="#b8e4dd"/>';
+
+// Shorthand helpers for compact SVG
+function C(x,y,r,f){return `<circle cx="${x}" cy="${y}" r="${r}" fill="${f||'#1a6b64'}"/>`;}
+function L(x1,y1,x2,y2,s,w){return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${s||'#1a6b64'}" stroke-width="${w||4}" stroke-linecap="round"/>`;}
+function P(d,s,w){return `<path d="${d}" stroke="${s||'#1a6b64'}" stroke-width="${w||4}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;}
+
+// Base: supine (lying on back, profile view, head LEFT, feet RIGHT, mat at y=114)
+// Head cx=22 cy=100, shoulders at x=32, hips at x=76, knees at ~x=102 y≈84/106, feet at x=126
+const SUP = (ky,sy,fy) => // knee-y, shin-y, foot-y
+  C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+
+  L(76,97,102,ky)+L(76,103,102,sy)+L(102,ky,126,fy)+L(102,sy,126,114)+
+  C(127,fy,5)+C(127,114,5);
+
+// Base: prone (lying face down, head LEFT, feet RIGHT)
+const PRN = () =>
+  C(22,102,8)+P('M30 100 L78 100','#1a6b64',5)+
+  L(44,100,44,88)+L(78,100,112,100)+L(112,100,130,112)+C(132,113,5);
+
+// Base: all-fours (quadruped, profile)
+const AFOURS = () =>
+  C(30,62,8)+L(38,62,110,62,'#1a6b64',5)+
+  L(50,62,50,100)+L(50,100,60,114,'#1a6b64',3.5)+
+  L(98,62,98,100)+L(98,100,108,114,'#1a6b64',3.5)+
+  C(55,114,6)+C(103,114,6);
+
+// Base: standing (front-profile, arms by sides)
+const STD = (hx,hy) =>
+  C(hx||100,hy||15,9)+L(100,24,100,72,'#1a6b64',5)+
+  L(100,38,74,62)+L(74,62,68,80)+
+  L(100,38,126,62)+L(126,62,132,80)+
+  L(100,72,86,114)+C(84,114,6)+
+  L(100,72,114,114)+C(116,114,6);
+
+// Base: side-lying (head LEFT, facing screen)
+const SIDE = (topKY, botKY) =>
+  C(22,88,8)+L(30,88,74,88,'#1a6b64',5)+
+  L(74,85,102,topKY||76)+L(102,topKY||76,128,84)+
+  L(74,91,102,botKY||100)+L(102,botKY||100,128,110)+
+  C(130,84,5)+C(130,110,5);
+
+// Base: seated (profile, legs out)
+const SEAT = () =>
+  C(50,22,9)+L(50,31,50,72,'#1a6b64',5)+
+  L(50,44,28,62)+L(28,62,22,80)+
+  L(50,44,72,62)+L(72,62,78,80)+
+  L(50,72,130,76,'#1a6b64',4)+C(132,76,6)+
+  L(50,72,140,86,'#1a6b64',4)+C(142,86,6);
+
+const SVGS = {
+  breathe:[
+    C(22,100,8)+P('M30 100 L76 100','#1a6b64',5)+L(44,100,44,116)+L(76,97,102,84)+L(76,103,102,106)+L(102,84,126,96)+L(102,106,126,114)+C(127,96,5)+C(127,114,5),
+    C(22,100,8)+P('M30 100 Q54 91 76 100','#26a69a',5)+L(44,100,44,116)+L(76,97,102,84)+L(76,103,102,106)+L(102,84,126,96)+L(102,106,126,114)+C(127,96,5,'#26a69a')+C(127,114,5)
+  ],
+  pelvic:[
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,97,102,84)+L(76,103,102,106)+L(102,84,126,97)+L(102,106,126,114)+C(127,97,5)+C(127,114,5),
+    C(22,102,8)+P('M30 102 Q53 98 76 94','#26a69a',5)+L(44,102,44,116)+L(76,91,102,80)+L(76,97,102,102)+L(102,80,126,94)+L(102,102,126,114)+C(127,94,5,'#26a69a')+C(127,114,5)
+  ],
+  hundred:[
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,97,102,84)+L(76,103,102,106)+L(102,84,126,97)+L(102,106,126,114)+C(127,97,5)+C(127,114,5),
+    C(22,94,8)+P('M30 96 Q53 90 76 96','#1a6b64',5)+L(44,96,66,90,'#26a69a',3.5)+L(76,94,110,78,'#26a69a',4)+L(76,98,110,88,'#26a69a',4)+C(112,78,5,'#26a69a')+C(112,88,5,'#26a69a')+L(44,112,66,106,'#26a69a',3.5)
+  ],
+  rollup:[
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,92,44,80,'#1a6b64',3.5)+L(44,80,58,76)+L(76,100,102,100)+L(102,100,130,100)+C(131,100,6),
+    C(50,28,9)+P('M50 37 Q44 54 38 70','#1a6b64',5)+L(38,44,22,56)+L(22,56,18,72)+L(38,44,54,56)+L(54,56,60,72)+L(38,70,90,76,'#1a6b64',4)+L(90,76,140,82,'#26a69a',3.5)+C(142,83,5,'#26a69a')
+  ],
+  legstretch:[
+    C(22,96,8)+P('M30 98 Q53 92 76 96','#1a6b64',5)+L(44,96,44,114)+L(76,93,130,80,'#26a69a',4)+C(131,80,5,'#26a69a')+L(76,99,102,105)+L(102,105,128,100,'#1a6b64',4)+C(129,100,5),
+    C(22,96,8)+P('M30 98 Q53 92 76 96','#1a6b64',5)+L(44,96,44,114)+L(76,93,102,100)+L(102,100,128,96,'#1a6b64',4)+C(129,96,5)+L(76,99,130,86,'#26a69a',4)+C(131,86,5,'#26a69a')
+  ],
+  crisscross:[
+    C(22,96,8)+P('M30 98 Q53 92 76 96','#1a6b64',5)+L(44,96,44,114)+L(76,93,102,80)+L(102,80,128,94)+L(76,99,102,106)+L(102,106,128,100)+C(129,94,5)+C(129,100,5),
+    C(22,96,8)+P('M30 94 Q48 88 62 100','#26a69a',5)+L(38,94,62,86,'#26a69a',3.5)+L(76,100,110,80,'#26a69a',4)+C(111,80,5,'#26a69a')+L(76,100,110,106)+L(110,106,136,100)+C(137,100,5)
+  ],
+  plank:[
+    C(22,78,8)+P('M30 78 L128 78','#1a6b64',5)+L(44,78,44,104)+C(46,106,6)+L(120,78,120,104)+C(122,106,6),
+    C(22,76,8)+P('M30 76 L128 76','#26a69a',5)+L(44,76,44,104)+C(46,106,6)+L(120,76,120,104)+C(122,106,6)+L(44,76,28,70,'#26a69a',3.5)+C(27,69,4,'#26a69a')
+  ],
+  sideplank:[
+    C(22,78,8)+P('M30 78 L128 78','#1a6b64',5)+L(44,78,44,104)+C(46,106,6)+L(120,78,120,104)+C(122,106,6),
+    C(22,68,8)+P('M30 70 L128 80','#26a69a',5)+L(78,75,78,106)+C(80,108,6)+L(100,76,124,60,'#26a69a',3.5)+C(124,58,5,'#26a69a')
+  ],
+  cobra:[
+    C(22,102,8)+P('M30 100 L110 100','#1a6b64',5)+L(50,100,50,88)+L(50,88,66,82)+L(110,100,138,110)+C(140,112,6),
+    C(22,88,8)+P('M30 94 Q60 78 80 100','#26a69a',5)+L(50,84,50,72,'#26a69a',3.5)+L(50,72,66,68,'#26a69a')+L(80,100,110,100)+L(110,100,138,112)+C(140,113,6)
+  ],
+  catcow:[
+    C(30,62,8)+P('M38 64 L110 64','#1a6b64',5)+L(50,64,50,100)+L(50,100,60,114,'#1a6b64',3.5)+L(98,64,98,100)+L(98,100,108,114,'#1a6b64',3.5)+C(55,114,6)+C(103,114,6),
+    C(30,72,8)+P('M38 66 Q74 82 110 66','#26a69a',5)+L(50,68,50,100)+L(50,100,60,114,'#1a6b64',3.5)+L(98,68,98,100)+L(98,100,108,114,'#1a6b64',3.5)+C(55,114,6)+C(103,114,6)
+  ],
+  bridge:[
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,97,102,84)+L(76,103,102,106)+L(102,84,126,98)+L(102,106,126,114)+C(127,98,5)+C(127,114,5),
+    C(22,100,8)+L(30,100,40,100)+P('M40 100 L78 74','#26a69a',5)+L(44,116,44,116)+L(78,71,104,80,'#26a69a',4)+L(78,77,104,86,'#26a69a',4)+L(104,80,128,96)+L(104,86,128,114)+C(129,96,5)+C(129,114,5)
+  ],
+  bridge1leg:[
+    C(22,100,8)+L(30,100,40,100)+P('M40 100 L78 74','#1a6b64',5)+L(78,71,104,80)+L(78,77,104,86)+L(104,80,128,96)+L(104,86,128,114)+C(129,96,5)+C(129,114,5),
+    C(22,100,8)+L(30,100,40,100)+P('M40 100 L78 74','#26a69a',5)+L(78,71,104,80)+L(104,80,128,96)+C(129,96,5)+L(78,71,108,60,'#26a69a',4)+C(109,58,5,'#26a69a')+L(104,86,128,114)+C(129,114,5)
+  ],
+  clamshell:[
+    C(22,88,8)+L(30,88,74,88,'#1a6b64',5)+L(44,88,44,114)+L(74,85,100,76)+L(74,91,100,100)+L(100,76,128,84)+L(100,100,128,110)+C(130,84,5)+C(130,110,5),
+    C(22,88,8)+L(30,88,74,88,'#1a6b64',5)+L(44,88,44,114)+L(74,91,100,100)+L(100,100,128,110)+C(130,110,5)+L(74,85,100,62,'#26a69a',4)+L(100,62,128,72,'#26a69a',4)+C(130,72,5,'#26a69a')
+  ],
+  sidekick:[
+    C(22,88,8)+L(30,88,74,88,'#1a6b64',5)+L(44,88,44,114)+L(74,85,100,76)+L(74,91,100,100)+L(100,76,128,84)+L(100,100,128,110)+C(130,84,5)+C(130,110,5),
+    C(22,88,8)+L(30,88,74,88,'#1a6b64',5)+L(44,88,44,114)+L(74,91,100,100)+L(100,100,128,110)+C(130,110,5)+L(74,84,108,84,'#26a69a',4)+C(110,84,5,'#26a69a')
+  ],
+  kickback:[
+    C(30,62,8)+P('M38 64 L110 64','#1a6b64',5)+L(50,64,50,100)+L(50,100,60,114)+L(98,64,98,100)+L(98,100,108,114)+C(55,114,6)+C(103,114,6),
+    C(30,62,8)+P('M38 64 L110 64','#1a6b64',5)+L(50,64,50,100)+L(50,100,60,114)+C(55,114,6)+L(98,64,98,100)+L(98,100,108,114)+C(103,114,6)+L(110,64,152,54,'#26a69a',4)+C(153,53,5,'#26a69a')
+  ],
+  swimming:[
+    C(22,102,8)+P('M30 100 L110 100','#1a6b64',5)+L(50,100,50,88)+L(50,88,70,82)+L(110,100,138,112)+C(140,113,6),
+    C(22,102,8)+P('M30 100 L110 100','#1a6b64',5)+L(50,100,26,86,'#26a69a',3.5)+C(24,85,4,'#26a69a')+L(50,100,50,88)+L(110,100,148,96,'#26a69a',4)+C(150,95,5,'#26a69a')+L(110,100,136,114)+C(138,115,6)
+  ],
+  superman:[
+    C(22,102,8)+P('M30 100 L110 100','#1a6b64',5)+L(50,100,50,88)+L(50,88,70,82)+L(110,100,138,112)+C(140,113,6),
+    C(22,102,8)+P('M30 100 L110 100','#1a6b64',5)+L(50,100,24,88,'#26a69a',3.5)+C(22,87,4,'#26a69a')+L(50,100,76,88,'#26a69a',3.5)+C(78,87,4,'#26a69a')+L(110,100,148,92,'#26a69a',4)+C(150,91,5,'#26a69a')+L(110,100,148,108,'#26a69a',4)+C(150,109,5,'#26a69a')
+  ],
+  thread:[
+    C(30,62,8)+P('M38 64 L110 64','#1a6b64',5)+L(50,64,50,100)+L(50,100,60,114)+L(98,64,98,100)+L(98,100,108,114)+C(55,114,6)+C(103,114,6),
+    C(30,62,8)+P('M38 64 L110 64','#1a6b64',5)+L(98,64,98,100)+L(98,100,108,114)+C(103,114,6)+L(50,64,50,100)+L(50,100,60,114)+C(55,114,6)+P('M38 64 Q10 80 22 94','#26a69a',3.5)+C(22,94,5,'#26a69a')
+  ],
+  childpose:[
+    C(30,62,8)+P('M38 64 L110 64','#1a6b64',5)+L(50,64,50,100)+L(50,100,60,114)+L(98,64,98,100)+L(98,100,108,114)+C(55,114,6)+C(103,114,6),
+    C(100,106,8)+P('M100 98 Q70 90 42 100','#26a69a',5)+L(100,106,100,114)+L(90,114,110,114)+L(42,100,42,114)+L(32,114,52,114)+L(42,100,14,92,'#26a69a',3.5)+C(12,91,4,'#26a69a')
+  ],
+  squat:[
+    C(100,15,9)+L(100,24,100,72,'#1a6b64',5)+L(100,38,74,62)+L(74,62,68,80)+L(100,38,126,62)+L(126,62,132,80)+L(100,72,86,114)+C(84,114,6)+L(100,72,114,114)+C(116,114,6),
+    C(100,32,9)+P('M100 41 Q100 60 100 70','#1a6b64',5)+L(100,52,72,64,'#26a69a')+L(72,64,64,80,'#26a69a')+L(100,52,128,64,'#26a69a')+L(128,64,136,80,'#26a69a')+L(100,70,82,90,'#26a69a',4)+L(82,90,78,114)+C(76,114,6)+L(100,70,118,90,'#26a69a',4)+L(118,90,122,114)+C(124,114,6)
+  ],
+  lunge:[
+    C(100,15,9)+L(100,24,100,72,'#1a6b64',5)+L(100,38,74,62)+L(74,62,68,80)+L(100,38,126,62)+L(126,62,132,80)+L(100,72,86,114)+C(84,114,6)+L(100,72,114,114)+C(116,114,6),
+    C(80,20,9)+P('M80 29 Q78 52 76 70','#1a6b64',5)+L(80,42,58,60)+L(58,60,54,78)+L(80,42,102,58,'#26a69a')+L(102,58,110,72,'#26a69a')+L(76,70,54,100,'#26a69a',4)+L(54,100,50,114)+C(48,114,6)+L(76,70,108,80,'#26a69a',4)+L(108,80,110,114)+C(112,114,6,'#26a69a')
+  ],
+  balance:[
+    C(100,15,9)+L(100,24,100,72,'#1a6b64',5)+L(100,38,74,62)+L(74,62,68,80)+L(100,38,126,62)+L(126,62,132,80)+L(100,72,86,114)+C(84,114,6)+L(100,72,114,114)+C(116,114,6),
+    C(100,15,9)+L(100,24,100,72,'#1a6b64',5)+L(100,38,70,56,'#26a69a')+C(68,57,4,'#26a69a')+L(100,38,130,56,'#26a69a')+C(132,57,4,'#26a69a')+L(100,72,88,114)+C(86,114,6)+L(100,72,116,96,'#26a69a',4)+L(116,96,130,86,'#26a69a',4)+C(132,85,5,'#26a69a')
+  ],
+  rolldown:[
+    C(100,15,9)+L(100,24,100,72,'#1a6b64',5)+L(100,38,74,62)+L(74,62,68,80)+L(100,38,126,62)+L(126,62,132,80)+L(100,72,86,114)+C(84,114,6)+L(100,72,114,114)+C(116,114,6),
+    C(74,34,9)+P('M72 42 Q62 60 54 80','#26a69a',5)+L(72,52,50,52)+L(50,52,44,68)+L(72,52,94,56)+L(94,56,100,72)+L(54,80,68,114)+C(66,114,6)+L(54,80,80,114)+C(82,114,6)+L(54,80,20,88,'#26a69a',3.5)+C(18,89,4,'#26a69a')
+  ],
+  pushup:[
+    C(22,78,8)+P('M30 78 L128 78','#1a6b64',5)+L(44,78,44,104)+C(46,106,6)+L(120,78,120,104)+C(122,106,6)+L(36,78,22,66)+L(22,66,16,54,'#1a6b64',3.5),
+    C(22,90,8)+P('M30 88 Q76 80 128 82','#26a69a',5)+L(44,88,44,106)+C(46,108,6)+L(120,82,120,106)+C(122,108,6)+L(36,88,14,78,'#26a69a',3.5)+C(12,77,4,'#26a69a')
+  ],
+  legcircle:[
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,97,102,84)+L(102,84,126,97)+L(76,103,114,103,'#26a69a',4)+C(115,103,5,'#26a69a'),
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,103,114,103)+C(115,103,5)+L(76,97,100,78,'#26a69a',4)+L(100,78,124,88,'#26a69a',4)+C(125,88,5,'#26a69a')
+  ],
+  scissors:[
+    C(22,96,8)+P('M30 98 Q53 92 76 96','#1a6b64',5)+L(44,96,44,114)+L(76,93,118,72,'#26a69a',4)+C(119,71,5,'#26a69a')+L(76,99,118,106)+C(119,106,5),
+    C(22,96,8)+P('M30 98 Q53 92 76 96','#1a6b64',5)+L(44,96,44,114)+L(76,93,118,100)+C(119,100,5)+L(76,99,118,80,'#26a69a',4)+C(119,79,5,'#26a69a')
+  ],
+  spinaltwist:[
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,97,102,84)+L(76,103,102,106)+L(102,84,126,97)+L(102,106,126,114)+C(127,97,5)+C(127,114,5),
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,103,102,106)+L(102,106,126,114)+C(127,114,5)+L(76,94,108,94,'#26a69a',4)+L(108,94,126,106,'#26a69a',4)+C(127,106,5,'#26a69a')
+  ],
+  figure4:[
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,97,102,84)+L(76,103,102,106)+L(102,84,126,97)+L(102,106,126,114)+C(127,97,5)+C(127,114,5),
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,103,102,106)+L(102,106,126,114)+C(127,114,5)+L(76,94,108,88,'#26a69a',4)+L(108,88,96,100,'#26a69a',4)+L(96,100,102,106,'#26a69a',3)
+  ],
+  seatedfwd:[
+    C(50,22,9)+L(50,31,50,72,'#1a6b64',5)+L(50,44,28,62)+L(28,62,22,80)+L(50,44,72,62)+L(72,62,78,80)+L(50,72,130,76,'#1a6b64',4)+C(132,76,6)+L(50,72,140,86)+C(142,86,6),
+    C(70,38,9)+P('M68 46 Q58 62 48 76','#26a69a',5)+L(68,54,46,56,'#26a69a')+L(46,56,40,72,'#26a69a')+L(68,54,90,56,'#26a69a')+L(90,56,94,72,'#26a69a')+L(48,76,130,84,'#1a6b64',4)+C(132,84,6)+L(48,76,138,92)+C(140,92,6)
+  ],
+  butterfly:[
+    C(50,22,9)+L(50,31,50,72,'#1a6b64',5)+L(50,44,28,62)+L(50,44,72,62)+L(50,72,74,92,'#1a6b64',4)+L(74,92,54,108,'#1a6b64',4)+C(52,110,5)+L(50,72,26,92,'#1a6b64',4)+L(26,92,46,108,'#1a6b64',4)+C(48,110,5)+C(50,110,8),
+    C(50,22,9)+L(50,31,50,72,'#1a6b64',5)+L(50,44,28,62)+L(50,44,72,62)+P('M50 72 Q80 84 60 100','#26a69a',4)+C(58,102,5,'#26a69a')+P('M50 72 Q20 84 40 100','#26a69a',4)+C(42,102,5,'#26a69a')+C(50,100,10,'#26a69a')
+  ],
+  lyingflat:[
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,100,140,100,'#1a6b64',4)+C(142,100,6),
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,96,20,88,'#26a69a',3.5)+C(18,87,4,'#26a69a')+L(44,104,20,112,'#26a69a',3.5)+C(18,113,4,'#26a69a')+L(76,100,140,100,'#1a6b64',4)+C(142,100,6)
+  ],
+  neck:[
+    C(100,15,9)+L(100,24,100,72,'#1a6b64',5)+L(100,38,74,62)+L(74,62,68,80)+L(100,38,126,62)+L(126,62,132,80)+L(100,72,86,114)+C(84,114,6)+L(100,72,114,114)+C(116,114,6),
+    C(108,18,9,'#26a69a')+L(104,26,100,72,'#1a6b64',5)+L(100,38,74,62)+L(74,62,68,80)+L(100,38,126,62)+L(126,62,132,80)+L(100,72,86,114)+C(84,114,6)+L(100,72,114,114)+C(116,114,6)
+  ],
+  shouldercircle:[
+    C(100,15,9)+L(100,24,100,72,'#1a6b64',5)+L(100,38,74,62)+L(74,62,68,80)+L(100,38,126,62)+L(126,62,132,80)+L(100,72,86,114)+C(84,114,6)+L(100,72,114,114)+C(116,114,6),
+    C(100,15,9)+L(100,24,100,72,'#1a6b64',5)+L(100,38,70,50,'#26a69a',4)+C(68,49,5,'#26a69a')+L(100,38,130,50,'#26a69a',4)+C(132,49,5,'#26a69a')+L(100,72,86,114)+C(84,114,6)+L(100,72,114,114)+C(116,114,6)
+  ],
+  hipcircle:[
+    C(100,15,9)+L(100,24,100,72,'#1a6b64',5)+L(100,38,74,62)+L(74,62,68,80)+L(100,38,126,62)+L(126,62,132,80)+L(100,72,86,114)+C(84,114,6)+L(100,72,114,114)+C(116,114,6),
+    C(100,15,9)+L(100,24,90,70,'#26a69a',5)+L(90,44,66,60,'#26a69a')+L(66,60,60,78,'#26a69a')+L(90,44,112,60)+L(112,60,118,78)+L(90,70,76,112)+C(74,114,6)+L(90,70,106,114)+C(108,114,6)
+  ],
+  kneehug:[
+    C(22,100,8)+L(30,100,76,100,'#1a6b64',5)+L(44,100,44,116)+L(76,97,102,84)+L(76,103,102,106)+L(102,84,126,97)+L(102,106,126,114)+C(127,97,5)+C(127,114,5),
+    C(22,100,8)+P('M30 100 Q53 95 76 100','#1a6b64',5)+L(44,100,44,116)+L(76,94,96,76,'#26a69a',4)+L(76,100,96,82,'#26a69a',4)+P('M44 94 Q70 80 96 76','#26a69a',3)+P('M44 100 Q68 86 96 82','#26a69a',3)+C(97,76,5,'#26a69a')+C(97,82,5,'#26a69a')
+  ]
 };
 
-let day,ex=0,timer,left=0,running=false,currentSet=1,isResting=false,audioCtx,sessionStart,totalExercises=0;
-
-function show(id){
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
+function getAnim(type, playing){
+  const poses=SVGS[type]||SVGS.breathe;
+  const p = playing ? '' : ' paused';
+  return `<div class="anim-wrap${p}">
+    <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" class="pose-a">${MAT}${poses[0]}</svg>
+    <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" class="pose-b">${MAT}${poses[1]}</svg>
+  </div>`;
 }
 
-function showHome(){
-show('home');
-stop();
-loadCompleted();
-updateStats();
+/* ─── DAYS DATA ─── */
+const DAYS=[
+{id:'lun',name:'Lunes',emoji:'🌀',focus:'Core Profundo',duration:'18 min',
+ color:'linear-gradient(135deg,#0369a1,#0891b2)',
+ intro:'Hoy trabajamos el centro — el transverso del abdomen. Busca la respiración antes de cada movimiento: inhala para prepararte, exhala para activar. Sin tensión en el cuello.',
+ exercises:[
+  {name:'Respiración de Activación',emoji:'🫁',anim:'breathe',duration:60,rest:10,
+   desc:'Tumbada boca arriba, rodillas dobladas, pies en el suelo. Inhala hinchando el vientre. Al exhalar, mete el ombligo hacia la columna sin aguantar la respiración.',
+   voice:'Respira profundo. Al exhalar activa el abdomen profundo.',
+   tip:'No muevas la pelvis — solo activa el abdomen. Esto es la base de todo el Pilates.'},
+  {name:'Inclinación Pélvica',emoji:'🔄',anim:'pelvic',duration:45,rest:10,
+   desc:'Boca arriba, rodillas dobladas. Alterna entre hundir la zona lumbar y pegarla al suelo. Lento y controlado.',
+   voice:'Mueve la pelvis suavemente. Primero hundes la lumbar, luego la pegas al suelo.',
+   tip:'El movimiento es pequeño. Aprende dónde está tu pelvis en neutro — esa posición la usarás en todo.'},
+  {name:'Las Cien — The Hundred',emoji:'💯',anim:'hundred',duration:60,rest:15,
+   desc:'Boca arriba. Eleva cabeza y hombros del suelo. Piernas a 45° o en mesa. Bombea los brazos arriba y abajo. Inhala 5 bombeos, exhala 5 bombeos.',
+   voice:'Cabeza arriba, brazos paralelos al suelo, bombea con ritmo. Inhala cinco, exhala cinco.',
+   tip:'Modificación: deja los pies apoyados si notas tensión en el cuello. Lo importante es la respiración.'},
+  {name:'Roll Up',emoji:'🌀',anim:'rollup',duration:75,rest:15,
+   desc:'Boca arriba, brazos arriba. Inhala. Al exhalar, sube vértebra a vértebra hasta sentarte. Estírate hacia los pies. Baja de vuelta igual. 8 repeticiones.',
+   voice:'Sube vértebra a vértebra. Lleva el ombligo hacia la columna durante toda la subida.',
+   tip:'Si no puedes subir completo, ayúdate con las manos en los muslos.'},
+  {name:'Estiramiento de Una Pierna',emoji:'🦵',anim:'legstretch',duration:60,rest:10,
+   desc:'Boca arriba. Eleva cabeza y hombros. Lleva una rodilla al pecho mientras extiendes la otra pierna. Alterna. El ombligo hundido en todo momento.',
+   voice:'Alterna rodillas al pecho. Ombligo hundido, cabeza estable.',
+   tip:'No dejes que la espalda se arquee cuando extiendes la pierna. Si pasa, sube más la pierna extendida.'},
+  {name:'Criss-Cross',emoji:'✂️',anim:'crisscross',duration:60,rest:15,
+   desc:'Boca arriba. Manos detrás de la cabeza. Lleva el codo derecho a la rodilla izquierda mientras extiendes la derecha. Alterna lento. No jalones el cuello.',
+   voice:'Rota hacia la rodilla que se acerca. Codo ancho, sin jalar el cuello.',
+   tip:'La rotación viene del tronco, no del cuello. Mira el techo mientras rotas.'},
+  {name:'Plancha de Pilates',emoji:'🏋️',anim:'plank',duration:45,rest:10,
+   desc:'En cuatro apoyos, baja a plancha sobre rodillas o completa. Ombligo hundido, caderas alineadas. Mantén sin colapsar la zona lumbar.',
+   voice:'Mantén la línea recta. Ombligo hacia la columna. Respira suave.',
+   tip:'En rodillas también está bien — lo importante es mantener la alineación de columna.'},
+  {name:'Cobra Suave',emoji:'🐍',anim:'cobra',duration:30,rest:0,
+   desc:'Boca abajo, manos bajo los hombros. Inhala. Al exhalar, eleva el pecho del suelo usando los músculos de la espalda. Mantén los codos cerca del cuerpo.',
+   voice:'Eleva el pecho con los músculos de la espalda. Hombros bajos, lejos de las orejas.',
+   tip:'La altura no importa — lo importante es que el movimiento venga de la espalda, no de los brazos.'}
+ ]},
+{id:'mar',name:'Martes',emoji:'🍑',focus:'Cadera y Glúteos',duration:'17 min',
+ color:'linear-gradient(135deg,#7c3aed,#a855f7)',
+ intro:'Hoy activamos la cadena posterior: glúteos, isquiotibiales y estabilizadores de cadera. Muchos ejercicios son en el suelo — usa una esterilla cómoda.',
+ exercises:[
+  {name:'Gato-Vaca',emoji:'🐱',anim:'catcow',duration:60,rest:10,
+   desc:'En cuatro apoyos. Inhala: hundes la tripa y subes el pecho (vaca). Exhala: redondeas la espalda como un gato. Fluye con la respiración.',
+   voice:'Inhala y abre el pecho. Exhala y redondea la columna.',
+   tip:'Mueve toda la columna, desde el cóccix hasta la cabeza. Sin bloquear ninguna vértebra.'},
+  {name:'Puente de Pilates',emoji:'🌉',anim:'bridge',duration:60,rest:15,
+   desc:'Boca arriba, rodillas dobladas. Al exhalar, eleva las caderas vértebra a vértebra desde el cóccix. Al inhalar, baja de la misma forma. 10 repeticiones.',
+   voice:'Sube vértebra a vértebra desde el cóccix. Baja igual de despacio.',
+   tip:'No cojas velocidad. El control articulado de la columna es el objetivo, no la altura.'},
+  {name:'Puente Monopodal',emoji:'🦶',anim:'bridge1leg',duration:45,rest:10,sides:2,
+   desc:'Desde el puente, extiende una pierna al aire. Mantén las caderas niveladas y el core activo. 8 repeticiones lentas. Cambia de lado.',
+   voice:'Caderas niveladas. La pierna extendida paralela a la doblada.',
+   tip:'Si las caderas caen hacia un lado, vuelve a tener los dos pies en el suelo.'},
+  {name:'Clamshell — Mejillón',emoji:'🦪',anim:'clamshell',duration:45,rest:10,sides:2,
+   desc:'De lado, caderas y rodillas dobladas a 90°. Mantén los pies juntos y sube la rodilla de arriba como una almeja que abre.',
+   voice:'Pies juntos, sube la rodilla sin mover la cadera. Sientes el glúteo medio trabajar.',
+   tip:'Si la cadera rueda hacia atrás cuando subes la rodilla, reduce el rango. El movimiento es pequeño pero efectivo.'},
+  {name:'Patada Lateral Tumbada',emoji:'↔️',anim:'sidekick',duration:45,rest:10,sides:2,
+   desc:'De lado, cuerpo alineado. Eleva la pierna de arriba a la altura de la cadera. Llévala hacia delante y hacia atrás de forma controlada. 10 reps cada dirección.',
+   voice:'Pierna a la altura de la cadera. Adelante y atrás, sin mover el tronco.',
+   tip:'Mantén el tronco firme — si se mueve cuando mueves la pierna, el core no está activo.'},
+  {name:'Kickback — Patada Trasera',emoji:'🦵',anim:'kickback',duration:45,rest:10,sides:2,
+   desc:'En cuatro apoyos. Mantén la espalda plana. Lleva una rodilla doblada hacia el techo apretando el glúteo. Baja sin tocar el suelo. 12 repeticiones.',
+   voice:'Aprieta el glúteo al subir. Espalda plana sin que la cadera rote.',
+   tip:'No arquees la zona lumbar cuando subes la pierna. El movimiento es pequeño y controlado.'},
+  {name:'Sentadilla Pilates',emoji:'🪑',anim:'squat',duration:45,rest:0,
+   desc:'De pie, pies a la anchura de caderas. Exhala y baja lentamente en 3 tiempos. Inhala arriba. Rodillas alineadas con los pies.',
+   voice:'Baja lento en tres tiempos. Rodillas sobre los pies, peso en los talones.',
+   tip:'En Pilates la sentadilla es lenta y consciente. Sin rebotar. Trabaja el control.'}
+ ]},
+{id:'mie',name:'Miércoles',emoji:'🌿',focus:'Espalda y Postura',duration:'18 min',
+ color:'linear-gradient(135deg,#059669,#10b981)',
+ intro:'Hoy cuidamos la espalda y la postura. Muchas personas tienen tensión acumulada en la zona cervical y torácica. Estos ejercicios la liberan suavemente.',
+ exercises:[
+  {name:'Movilidad de Cuello',emoji:'🔁',anim:'neck',duration:60,rest:10,
+   desc:'Sentada o de pie. Inclina la oreja al hombro, gira la barbilla al pecho, sube al otro lado. Medio círculo lento hacia delante. Nunca eches la cabeza atrás.',
+   voice:'Mueve el cuello suave y despacio. Solo la mitad del círculo — nunca hacia atrás.',
+   tip:'El cuello no necesita velocidad — necesita suavidad. Si sientes tensión, para y respira.'},
+  {name:'Apertura de Pecho',emoji:'🤗',anim:'shouldercircle',duration:60,rest:10,
+   desc:'Sentada, manos entrelazadas detrás de la nuca. Exhala y lleva los codos hacia delante. Inhala y abre los codos hacia atrás abriendo el pecho. 10 repeticiones.',
+   voice:'Codos adelante al exhalar. Codos atrás y pecho abierto al inhalar.',
+   tip:'Esta apertura contrarresta las horas frente al móvil o al ordenador.'},
+  {name:'Swimming — Natación',emoji:'🏊',anim:'swimming',duration:60,rest:15,
+   desc:'Boca abajo, brazos extendidos arriba. Eleva brazo derecho y pierna izquierda. Baja y sube el izquierdo con el derecho. Alterna como si nadaras.',
+   voice:'Brazos y piernas opuestos suben al mismo tiempo. Como si nadaras despacio.',
+   tip:'No levantes más de lo que la columna te permita cómodamente.'},
+  {name:'Superman — Extensión',emoji:'🦸',anim:'superman',duration:60,rest:15,
+   desc:'Boca abajo, brazos extendidos. Eleva simultáneamente ambos brazos y ambas piernas del suelo. Mantén 3 segundos. Baja. 10 repeticiones.',
+   voice:'Eleva todo a la vez y mantén. Frente mirando al suelo, sin subir la cabeza.',
+   tip:'Activa los glúteos para proteger la zona lumbar.'},
+  {name:'Thread the Needle — Aguja',emoji:'🪡',anim:'thread',duration:45,rest:10,sides:2,
+   desc:'En cuatro apoyos. Pasa el brazo derecho por debajo del cuerpo hacia la izquierda, dejando el hombro y oreja reposar en el suelo. Mantén 5 respiraciones.',
+   voice:'Desliza el brazo por debajo y descansa el hombro en el suelo. Respira profundo.',
+   tip:'Esta postura abre la zona torácica donde muchos guardamos la tensión.'},
+  {name:'Cobra Progresiva',emoji:'🐍',anim:'cobra',duration:60,rest:15,
+   desc:'Boca abajo. Empieza con la Cobra baja (codos en el suelo). Si te sientes bien, sube las manos y estira los brazos. Mantén 5 respiraciones. Baja.',
+   voice:'Sube despacio. Empieza en Cobra baja, avanza si lo permiten tus sensaciones.',
+   tip:'Sientes un estiramiento suave en el abdomen — eso es correcto.'},
+  {name:'Child\'s Pose con Extensión Lateral',emoji:'🌙',anim:'childpose',duration:45,rest:0,sides:2,
+   desc:'Desde posición de niño, extiende los brazos al frente. Luego camina las manos hacia un lado para estirar el lateral del cuerpo. Mantén y cambia.',
+   voice:'En posición de niño, camina las manos hacia un lado. Sientes el estiramiento en el costado.',
+   tip:'Respira profundo y suelta la tensión en cada exhalación.'}
+ ]},
+{id:'jue',name:'Jueves',emoji:'🦵',focus:'Piernas y Equilibrio',duration:'17 min',
+ color:'linear-gradient(135deg,#b45309,#d97706)',
+ intro:'Hoy trabajamos las piernas con control y precisión. En Pilates las piernas se mueven desde el centro — recuerda activar el abdomen antes de cada movimiento.',
+ exercises:[
+  {name:'Círculos de Cadera de Pie',emoji:'⭕',anim:'hipcircle',duration:60,rest:10,
+   desc:'De pie, manos en caderas. Dibuja círculos grandes con la cadera. 5 hacia un lado, 5 hacia el otro. Suave y fluido.',
+   voice:'Dibuja círculos grandes con la cadera. Moviliza toda la articulación.',
+   tip:'Afloja las rodillas y deja que el movimiento sea amplio.'},
+  {name:'Sentadilla Pilates con Pausa',emoji:'🪑',anim:'squat',duration:60,rest:15,
+   desc:'Baja en 3 tiempos, pausa 2 segundos abajo, sube en 3 tiempos. El tiempo bajo tensión hace el trabajo. 10 repeticiones.',
+   voice:'Baja tres tiempos, pausa, sube tres tiempos. Control total.',
+   tip:'La pausa abajo es donde más trabajas. Mantén el core activo.'},
+  {name:'Zancada Controlada',emoji:'🚶',anim:'lunge',duration:45,rest:10,sides:2,
+   desc:'De pie, da un paso largo hacia delante. Baja la rodilla trasera hacia el suelo. Vuelve. La rodilla delantera no pasa la punta del pie. 10 reps por lado.',
+   voice:'Rodilla trasera baja despacio. La rodilla delantera sobre el pie, sin pasarlo.',
+   tip:'Mantén el tronco vertical — no te inclines hacia delante.'},
+  {name:'Círculos de Pierna Tumbada',emoji:'🔵',anim:'legcircle',duration:45,rest:10,sides:2,
+   desc:'Boca arriba, una pierna extendida al techo. Dibuja círculos pequeños con la pierna desde la articulación de la cadera. 8 círculos hacia cada sentido.',
+   voice:'Pierna al techo. Dibuja círculos pequeños. La cadera no se mueve.',
+   tip:'La estabilidad de la pelvis es la clave aquí. Si la cadera se mueve, los círculos son demasiado grandes.'},
+  {name:'Tijeras — Scissors',emoji:'✂️',anim:'scissors',duration:60,rest:10,
+   desc:'Boca arriba, cabeza elevada. Lleva una pierna al techo mientras la otra se aleja del suelo. Alterna de forma controlada. Ombligo hundido.',
+   voice:'Alterna piernas de forma controlada. Ombligo hacia la columna.',
+   tip:'Si las piernas rectas te cuesta mucho, dobla la rodilla que se aleja del suelo.'},
+  {name:'Patadas en Decúbito Prono',emoji:'🦵',anim:'kickback',duration:45,rest:10,sides:2,
+   desc:'Boca abajo, frente en los brazos cruzados. Dobla una rodilla y lleva el talón hacia el glúteo. Extiende lentamente. 12 repeticiones por pierna.',
+   voice:'Talón al glúteo, baja despacio. Sientes el isquiotibial trabajar.',
+   tip:'Mantén las caderas pegadas al suelo durante todo el movimiento.'},
+  {name:'Equilibrio Monopodal',emoji:'🧍',anim:'balance',duration:30,rest:0,sides:2,
+   desc:'De pie. Levanta un pie del suelo. Mantén el equilibrio con los ojos abiertos. Si puedes, ciérralos. 30 segundos por pie.',
+   voice:'Pierna levantada. Mira un punto fijo. Activa el centro para estabilizarte.',
+   tip:'El equilibrio mejora con práctica. Si te ayudas con la pared al principio, perfecto.'}
+ ]},
+{id:'vie',name:'Viernes',emoji:'⭐',focus:'Cuerpo Completo',duration:'20 min',
+ color:'linear-gradient(135deg,#dc2626,#ea580c)',
+ intro:'El viernes integramos todo. Movimientos que conectan core, espalda, caderas y piernas. Termina la semana fuerte y consciente.',
+ exercises:[
+  {name:'Roll Down de Pie',emoji:'⬇️',anim:'rolldown',duration:60,rest:10,
+   desc:'De pie. Inhala. Al exhalar, deja caer la barbilla al pecho y rueda hacia abajo vértebra a vértebra hasta que las manos lleguen al suelo o lo más cerca posible. Sube igual.',
+   voice:'Rueda hacia abajo vértebra a vértebra. Cabeza pesada, columna que se despliega.',
+   tip:'Las rodillas pueden estar ligeramente dobladas.'},
+  {name:'Roll Up en Colchoneta',emoji:'🔄',anim:'rollup',duration:75,rest:15,
+   desc:'Boca arriba, brazos al techo. Sube vértebra a vértebra hasta sentarte. Estírate hacia los pies. Baja de vuelta articulado. 8 repeticiones lentas.',
+   voice:'Sube y baja vértebra a vértebra. El abdomen trabaja en toda la subida.',
+   tip:'Si no puedes subir del todo, ayúdate doblando las rodillas.'},
+  {name:'Push Up Pilates',emoji:'💪',anim:'pushup',duration:60,rest:15,
+   desc:'Empieza de pie, rueda hacia abajo hasta plancha. Haz 3 flexiones. Vuelve a caminar hacia los pies y rueda arriba. Ese ciclo completo son 5 repeticiones.',
+   voice:'Rueda abajo, tres flexiones, vuelve a subir. Un ciclo cada vez.',
+   tip:'Las flexiones se hacen con el cuerpo alineado. Si es muy difícil, hazlas sobre las rodillas.'},
+  {name:'Plancha con Rotación',emoji:'🌀',anim:'plank',duration:60,rest:15,
+   desc:'En plancha (manos o codos). Mantén 10 segundos. Rota a plancha lateral sobre la mano derecha 10 seg. Vuelve al centro. Rota al otro lado. Repite.',
+   voice:'Plancha central, rota a plancha lateral, vuelve. Caderas arriba al rotar.',
+   tip:'No dejes que las caderas caigan al rotar.'},
+  {name:'Plancha Lateral',emoji:'↗️',anim:'sideplank',duration:30,rest:10,sides:2,
+   desc:'Apoya un codo y el lado del pie. Eleva las caderas formando una línea recta. Mantén 30 segundos. Cambia de lado.',
+   voice:'Cuerpo recto como una tabla. Caderas arriba, núcleo activo.',
+   tip:'Modificación: apoya la rodilla de abajo en el suelo.'},
+  {name:'Puente Articulado',emoji:'🌉',anim:'bridge',duration:60,rest:10,
+   desc:'Boca arriba, rodillas dobladas. Eleva vértebra a vértebra hasta un puente completo. Mantén 3 segundos arriba. Baja articulado. 8 repeticiones.',
+   voice:'Sube y baja vértebra a vértebra. Sientes cada vértebra despegarse del suelo.',
+   tip:'Cuanto más lento lo hagas, más trabajo realizas.'},
+  {name:'Swan — El Cisne',emoji:'🦢',anim:'cobra',duration:60,rest:10,
+   desc:'Boca abajo, manos bajo los hombros. Exhala y sube el pecho usando los músculos de la espalda. Mantén. Inhala abajo. El movimiento va de la zona media de la espalda.',
+   voice:'Sube el pecho con la espalda. Hombros bajos. Sientes toda la columna extenderse.',
+   tip:'Es diferente a Cobra: en Swan el movimiento viene de la espalda media.'},
+  {name:'Spine Stretch — Estiramiento de Columna',emoji:'🧘',anim:'seatedfwd',duration:60,rest:0,
+   desc:'Sentada, piernas extendidas. Exhala y estírate hacia delante desde el abdomen, como si te doblaran a la mitad. Inhala y vuelve. 8 repeticiones.',
+   voice:'Exhala y redondea hacia delante. El ombligo se va hacia atrás mientras te estiras.',
+   tip:'No es un estiramiento de isquiotibiales — es una articulación de columna hacia delante.'}
+ ]},
+{id:'sab',name:'Sábado',emoji:'🌸',focus:'Estiramientos Profundos',duration:'20 min',
+ color:'linear-gradient(135deg,#0d9488,#14b8a6)',
+ intro:'El cuerpo necesita estirar lo que ha trabajado. Hoy no hay prisa — mantén cada postura y respira en ella. El estiramiento viene de la relajación, no de la fuerza.',
+ exercises:[
+  {name:'Child\'s Pose — Postura del Niño',emoji:'🌙',anim:'childpose',duration:90,rest:5,
+   desc:'Rodillas separadas, pies juntos. Siéntate sobre los talones y estira los brazos al frente. Frente al suelo. Respira profundo hacia la espalda.',
+   voice:'Respira hacia la espalda. Cada exhalación te relaja un poco más.',
+   tip:'Esta postura es un refugio. Puedes volver aquí siempre que necesites descanso.'},
+  {name:'Figura 4 — Cadera',emoji:'4️⃣',anim:'figure4',duration:90,rest:10,sides:2,
+   desc:'Boca arriba. Cruza el tobillo derecho sobre la rodilla izquierda. Lleva las piernas hacia el pecho hasta sentir el estiramiento en el glúteo. Mantén.',
+   voice:'Lleva las piernas hacia ti hasta sentir el estiramiento. Respira dentro de él.',
+   tip:'Si es muy intenso, mantén el pie apoyado en el suelo sin llevar las piernas al pecho.'},
+  {name:'Paloma Modificada',emoji:'🕊️',anim:'figure4',duration:90,rest:10,sides:2,
+   desc:'Desde cuatro apoyos, lleva la rodilla derecha hacia la mano derecha. Estira la pierna izquierda atrás. Baja hasta los antebrazos o la frente al suelo.',
+   voice:'Respira profundo hacia el glúteo y la cadera. Deja que la gravedad haga el trabajo.',
+   tip:'Este estiramiento puede ser intenso. Si es demasiado, vuelve a la Figura 4.'},
+  {name:'Mariposa',emoji:'🦋',anim:'butterfly',duration:60,rest:10,
+   desc:'Sentada, plantas de los pies juntas. Sujeta los pies con las manos. Inhala alto. Al exhalar, inclínate lentamente hacia delante desde las caderas.',
+   voice:'Inclínate hacia delante desde las caderas, no desde la espalda.',
+   tip:'No empujes las rodillas hacia abajo con los codos.'},
+  {name:'Isquiotibiales de Pie',emoji:'🦵',anim:'seatedfwd',duration:60,rest:10,sides:2,
+   desc:'De pie, extiende una pierna al frente apoyada en el talón. Inclínate hacia ella desde las caderas (no desde la espalda). Mantén la columna larga.',
+   voice:'Columna larga, inclínate desde las caderas. Sientes la parte de atrás de la pierna.',
+   tip:'La espalda debe quedar recta, no redondeada. Si se redondea, dobla ligeramente la rodilla.'},
+  {name:'Apertura de Pecho en Suelo',emoji:'💚',anim:'lyingflat',duration:60,rest:10,
+   desc:'Boca arriba. Extiende los brazos en cruz. Deja que los hombros y el pecho se abran hacia el suelo. Respira profundo y amplio. Suelta la tensión.',
+   voice:'Brazos en cruz, hombros al suelo. Respira expandiendo el pecho.',
+   tip:'Si tienes tensión en los hombros, pon una toalla doblada bajo cada hombro.'},
+  {name:'Torsión Espinal Tumbada',emoji:'🌀',anim:'spinaltwist',duration:60,rest:10,sides:2,
+   desc:'Boca arriba, rodillas dobladas. Lleva las rodillas al lado derecho. Brazos en cruz. Gira la cabeza al lado contrario si quieres. Mantén y respira.',
+   voice:'Rodillas a un lado, cabeza al otro. Respira profundo y suelta.',
+   tip:'No fuerces la torsión — deja que el peso de las piernas haga el trabajo.'},
+  {name:'Savasana — Relajación Final',emoji:'✨',anim:'lyingflat',duration:90,rest:0,
+   desc:'Boca arriba. Piernas extendidas, brazos ligeramente alejados del cuerpo. Cierra los ojos. Respira sin esfuerzo. Escanea el cuerpo y suelta toda tensión.',
+   voice:'Cierra los ojos. Respira sin controlar. Suelta el cuerpo completamente.',
+   tip:'Este descanso final consolida todo el trabajo de los estiramientos. No lo saltes.'}
+ ]},
+{id:'dom',name:'Domingo',emoji:'☀️',focus:'Movilidad Suave',duration:'15 min',
+ color:'linear-gradient(135deg,#0369a1,#7c3aed)',
+ intro:'El domingo es de movilidad y presencia. Movimientos suaves que mantienen el cuerpo ágil y preparan la mente para la semana que viene.',
+ exercises:[
+  {name:'Círculos de Columna de Pie',emoji:'⭕',anim:'hipcircle',duration:60,rest:10,
+   desc:'De pie, manos en caderas. Dibuja círculos amplios con el tronco superior. 5 a cada lado.',
+   voice:'Círculos amplios y suaves con el tronco. Sin forzar ningún rango.',
+   tip:'Este movimiento circular lubrica toda la columna. Hazlo muy despacio.'},
+  {name:'Círculos de Hombros',emoji:'🔄',anim:'shouldercircle',duration:60,rest:10,
+   desc:'Sentada o de pie. Sube los hombros hacia las orejas, llévalos atrás, bájalos. 8 círculos hacia atrás, 8 hacia delante. Muy amplio y lento.',
+   voice:'Círculos de hombros amplios hacia atrás. Sientes la apertura en el pecho.',
+   tip:'Los círculos hacia atrás deshacen la postura cerrada que acumulamos durante la semana.'},
+  {name:'Apertura de Pecho de Pie',emoji:'🤗',anim:'shouldercircle',duration:60,rest:10,
+   desc:'De pie. Entrelaza las manos detrás de la espalda. Inhala y abre el pecho hacia el techo. Mantén 5 respiraciones. Relaja. Repite 5 veces.',
+   voice:'Pecho al techo, manos entrelazadas atrás. Respira expansivo.',
+   tip:'Puedes apoyar las manos en el sacro y arquearte suavemente si no llegas a entrelazar.'},
+  {name:'Balanceo de Cadera',emoji:'🎵',anim:'hipcircle',duration:60,rest:10,
+   desc:'De pie, pies algo más separados. Balancea la cadera suavemente de lado a lado. Deja que los brazos cuelguen y sigan el movimiento.',
+   voice:'Balancea la cadera suavemente. Deja que el cuerpo se mueva con libertad.',
+   tip:'Este movimiento es casi una meditación en movimiento.'},
+  {name:'Rodillas al Pecho',emoji:'🤗',anim:'kneehug',duration:60,rest:10,
+   desc:'Boca arriba. Abraza ambas rodillas al pecho. Balancea suavemente de lado a lado como si te mecieras. Masajea la zona lumbar.',
+   voice:'Abraza las rodillas y balancea suave. El suelo masajea tu espalda.',
+   tip:'Puedes hacer círculos lentos con las rodillas para explorar diferentes zonas de la espalda.'},
+  {name:'Torsión Suave Tumbada',emoji:'🌀',anim:'spinaltwist',duration:60,rest:10,sides:2,
+   desc:'Boca arriba. Lleva una rodilla al pecho y luego crúzala al lado contrario con la mano. Extiende el brazo del mismo lado. Respira suave y mantén.',
+   voice:'Una rodilla cruzada al lado contrario. Respira suave en la torsión.',
+   tip:'No hace falta que la rodilla toque el suelo. Donde llegue, está bien.'},
+  {name:'Respiración Consciente',emoji:'🫁',anim:'breathe',duration:120,rest:0,
+   desc:'Cierra los ojos. Inhala 4 tiempos. Mantén 4. Exhala 6 tiempos. Mantén 2. Repite. Deja que cada ciclo te relaje un poco más.',
+   voice:'Inhala cuatro tiempos. Mantén. Exhala seis tiempos. Despacio, sin esfuerzo.',
+   tip:'Esta respiración activa el sistema nervioso parasimpático — la respuesta de calma del cuerpo.'}
+ ]}
+];
+
+/* ─── ESTADO ─── */
+const TODAY=new Date().getDay();
+let curDayIdx=0;
+let S={exIdx:0,side:1,phase:'ready',timer:0,interval:null};
+
+function todayDayIdx(){const m={1:0,2:1,3:2,4:3,5:4,6:5,0:6};return m[TODAY];}
+
+/* ─── AUDIO ─── */
+function beep(f=600,d=.2){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+function vibrate(ms=60){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
+let _utt=null;
+function speak(t){try{if(!window.speechSynthesis)return;window.speechSynthesis.cancel();if(window.speechSynthesis.paused)window.speechSynthesis.resume();_utt=new SpeechSynthesisUtterance(t);_utt.lang='es-ES';_utt.rate=.88;const v=window.speechSynthesis.getVoices();const ev=v.find(v=>v.lang.startsWith('es'));if(ev)_utt.voice=ev;window.speechSynthesis.speak(_utt);}catch(e){}}
+
+/* ─── NAV ─── */
+function go(v){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('v-'+v).classList.add('active');window.scrollTo(0,0);}
+
+/* ─── HOME ─── */
+function initHome(){
+  const ti=todayDayIdx(),d=DAYS[ti];
+  const tc=document.getElementById('today-card');
+  tc.style.background=d.color;
+  tc.innerHTML=`<div class="tc-label">Hoy · ${d.name}</div><div class="tc-day">${d.focus}</div><div class="tc-meta">${d.duration} · Pilates en casa</div><div class="tc-emoji">${d.emoji}</div>`;
+  const dayNames=['L','M','X','J','V','S','D'];
+  document.getElementById('week-grid').innerHTML=DAYS.map((d,i)=>`<div class="wday ${i===ti?'today-mark':''}" onclick="openDay(${i})"><span class="wd-emoji">${d.emoji}</span><span class="wd-name">${dayNames[i]}</span></div>`).join('');
+}
+function openTodayDay(){openDay(todayDayIdx());}
+
+/* ─── DAY ─── */
+function openDay(i){
+  curDayIdx=i;const d=DAYS[i];
+  document.getElementById('day-title').textContent=d.name;
+  const dh=document.getElementById('day-header');
+  dh.style.background=d.color;
+  dh.innerHTML=`<div class="dh-focus">${d.focus}</div><div class="dh-meta">${d.duration} · ${d.exercises.length} ejercicios</div><div class="dh-emoji">${d.emoji}</div>`;
+  document.getElementById('day-intro').textContent=d.intro;
+  document.getElementById('ex-list').innerHTML=d.exercises.map((ex,i)=>`<div class="ex-item"><div class="ex-num">${i+1}</div><div class="ex-info"><div class="ex-name">${ex.name}</div><div class="ex-meta">${ex.duration}s${ex.sides?' · cada lado':''}${ex.rest?' · '+ex.rest+'s descanso':''}</div></div><span class="ex-emoji">${ex.emoji}</span></div>`).join('');
+  go('day');
 }
 
-function startDay(d){
-day=d;
-showOverview();
+/* ─── SESSION ─── */
+function startSession(){
+  S={exIdx:0,side:1,phase:'ready',timer:0,interval:null};
+  document.getElementById('s-title').textContent=DAYS[curDayIdx].name+' · '+DAYS[curDayIdx].focus;
+  go('session');renderSession();
+}
+function confirmStop(){stopSession();go('day');}
+function stopSession(){stopTimer();try{speechSynthesis.cancel();}catch(e){}}
+function stopTimer(){if(S.interval){clearInterval(S.interval);S.interval=null;}}
+
+function renderSession(){
+  const d=DAYS[curDayIdx],total=d.exercises.length,el=document.getElementById('s-content');
+  if(S.phase==='done'){
+    document.getElementById('s-fill').style.width='100%';
+    document.getElementById('s-count').textContent='';
+    document.getElementById('s-dots').innerHTML='';
+    el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>¡Sesión completada!</h2><p>${d.name} · ${d.focus}<br>Bien hecho, Cris 💚</p></div><button class="btn btn-secondary" style="margin-bottom:8px" onclick="go('home')">🏠 Inicio</button><button class="btn btn-primary" onclick="startSession()">Repetir sesión</button>`;
+    beep(800,.2);setTimeout(()=>beep(1000,.3),250);vibrate([80,50,80]);return;
+  }
+  const ex=d.exercises[S.exIdx];
+  document.getElementById('s-fill').style.width=(S.exIdx/total*100)+'%';
+  document.getElementById('s-count').textContent=`Ejercicio ${S.exIdx+1} de ${total}`;
+  document.getElementById('s-dots').innerHTML=d.exercises.map((_,i)=>`<div class="dot ${i<S.exIdx?'done':i===S.exIdx?'active':''}"></div>`).join('');
+  const sideLabel=ex.sides===2?(S.side===1?' — Lado derecho':' — Lado izquierdo'):'';
+  let phaseLabel='',timerCls='',timerLbl='';
+  const playing=S.phase==='active';
+  if(S.phase==='ready'){phaseLabel='Prepárate';timerLbl='seg para empezar';}
+  else if(S.phase==='active'){phaseLabel='Activa ▶';timerLbl='segundos restantes';}
+  else if(S.phase==='paused'){phaseLabel='En pausa';timerLbl='segundos';}
+  else if(S.phase==='switch'){phaseLabel='¡Cambia de lado!';timerCls=' sw-c';timerLbl='seg';}
+  else if(S.phase==='rest'){phaseLabel='Descansa';timerCls=' rest-c';timerLbl='seg descanso';}
+  const showDesc=S.phase!=='rest'&&S.phase!=='switch';
+  el.innerHTML=`
+    ${getAnim(ex.anim||'breathe', playing)}
+    <div class="s-box">
+      <div class="s-phase">${phaseLabel}</div>
+      <div class="s-exname">${ex.name}${sideLabel}</div>
+      ${showDesc?`<div class="s-desc">${ex.desc}</div>`:'<div style="height:8px"></div>'}
+      <div class="s-timer${timerCls}" id="s-timer">${S.timer||ex.duration}</div>
+      <div class="s-tlbl">${timerLbl}</div>
+    </div>
+    ${showDesc?`<div class="s-tip">💡 ${ex.tip}</div>`:''}
+    <div class="btn-row">
+      ${(S.phase==='rest'||S.phase==='switch')?
+        `<button class="btn btn-primary" onclick="skipPhase()">Saltar →</button>`:
+        `<button class="btn btn-secondary" id="play-btn" onclick="togglePlay()">${playing?'⏸ Pausar':'▶ '+(S.phase==='ready'?'Empezar':'Reanudar')}</button>
+         <button class="btn btn-primary" onclick="skipPhase()">Siguiente →</button>`
+      }
+    </div>`;
 }
 
-function showOverview(){
-const exercises=data[day];
-let totalTime=0;
-let html='<div class="total-time">🕐 '+day.charAt(0).toUpperCase()+day.slice(1)+'</div>';
-
-exercises.forEach((ex,i)=>{
-const exTime=ex.time*ex.sets+ex.rest*(ex.sets-1);
-totalTime+=exTime;
-html+=`<div class="exercise-overview">
-<h3>${i+1}. ${ex.name} ${ex.img}</h3>
-<div class="exercise-sets">${ex.sets} series × ${ex.time}s + ${ex.rest}s descanso</div>
-</div>`;
-});
-
-html+=`<div class="total-time">⏱️ Tiempo total: ${Math.ceil(totalTime/60)} min</div>`;
-document.getElementById('overview-content').innerHTML=html;
-show('overview');
+function togglePlay(){
+  const ex=DAYS[curDayIdx].exercises[S.exIdx];
+  if(S.phase==='active'){
+    stopTimer();S.phase='paused';
+    try{speechSynthesis.cancel();}catch(e){}
+  }else{
+    if(S.phase==='ready'||S.phase==='paused'){
+      if(S.phase==='ready'){S.timer=ex.duration;speak(ex.voice);vibrate(50);}
+      S.phase='active';
+      if(ex.duration>0)S.interval=setInterval(sessionTick,1000);
+    }
+  }
+  renderSession();
 }
 
-function startWorkout(){
-ex=0;currentSet=1;isResting=false;totalExercises=0;
-sessionStart=Date.now();
-show('workout');
-initAudio();
-load();
+function sessionTick(){
+  S.timer--;
+  const el=document.getElementById('s-timer');
+  if(el)el.textContent=S.timer;
+  if(S.timer<=0){
+    stopTimer();
+    const ex=DAYS[curDayIdx].exercises[S.exIdx];
+    if(S.phase==='active'&&ex.sides===2&&S.side===1){
+      S.side=2;S.phase='switch';S.timer=5;
+      speak('Ahora el otro lado.');vibrate(60);
+      S.interval=setInterval(sessionTick,1000);
+    }else if(S.phase==='switch'){
+      S.phase='active';S.timer=ex.duration;
+      speak(ex.voice);vibrate(40);
+      S.interval=setInterval(sessionTick,1000);
+    }else if(S.phase==='active'&&ex.rest>0){
+      S.phase='rest';S.timer=ex.rest;
+      beep(600,.15);vibrate(60);speak('Descansa.');
+      S.interval=setInterval(sessionTick,1000);
+    }else{
+      advanceEx();
+    }
+    renderSession();
+  }
 }
 
-function load(){
-const curr=data[day][ex];
-document.getElementById('name').textContent=curr.name;
-document.getElementById('desc').innerHTML=curr.desc;
-document.getElementById('img').textContent=curr.img;
-document.getElementById('counter').textContent=`${ex+1}/${data[day].length} - Serie ${currentSet}/${curr.sets}`;
-document.getElementById('progress').style.width=((ex+((currentSet-1)/curr.sets))/data[day].length*100)+'%';
-
-const phase=document.getElementById('phase');
-const timer=document.getElementById('time');
-if(isResting){
-phase.textContent='Descanso';
-phase.className='phase-indicator rest';
-timer.className='timer rest';
-left=curr.rest;
-document.getElementById('img').textContent='⏸️';
-document.getElementById('desc').innerHTML='<div class="exercise-main">DESCANSA Y PREPÁRATE PARA LA SIGUIENTE SERIE</div><div class="exercise-details">respiración profunda • hidratación • preparación mental</div>';
-}else{
-phase.textContent='Ejercicio';
-phase.className='phase-indicator';
-timer.className='timer';
-left=curr.time;
-document.getElementById('img').textContent=curr.img;
-document.getElementById('desc').innerHTML=curr.desc;
-totalExercises++;
-}
-updateTime();
-reset();
+function skipPhase(){
+  stopTimer();
+  try{speechSynthesis.cancel();}catch(e){}
+  const ex=DAYS[curDayIdx].exercises[S.exIdx];
+  if(S.phase==='rest'){advanceEx();}
+  else if(S.phase==='switch'){S.phase='active';S.timer=ex.duration;S.interval=setInterval(sessionTick,1000);}
+  else if(ex.sides===2&&S.side===1){S.side=2;S.phase='switch';S.timer=5;S.interval=setInterval(sessionTick,1000);}
+  else if(ex.rest>0){S.phase='rest';S.timer=ex.rest;S.interval=setInterval(sessionTick,1000);}
+  else{advanceEx();}
+  renderSession();
 }
 
-function updateTime(){
-const m=Math.floor(left/60);
-const s=left%60;
-document.getElementById('time').textContent=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-const timer=document.getElementById('time');
-if(left<=10 && left>0 && !isResting){
-timer.classList.add('warning');
-}else{
-timer.classList.remove('warning');
-}
+function advanceEx(){
+  stopTimer();
+  const d=DAYS[curDayIdx];
+  S.exIdx++;S.side=1;S.timer=0;
+  if(S.exIdx>=d.exercises.length){S.phase='done';}
+  else{S.phase='ready';S.timer=d.exercises[S.exIdx].duration;beep(700,.12);vibrate(40);}
+  renderSession();
 }
 
-function reset(){
-document.getElementById('start').disabled=false;
-document.getElementById('start').innerHTML=isResting?'⏸️ Iniciar descanso':'▶️ Iniciar ejercicio';
-document.getElementById('pause').disabled=true;
-clearInterval(timer);
-running=false;
-}
-
-function start(){
-if(!running){
-running=true;
-document.getElementById('start').disabled=true;
-document.getElementById('pause').disabled=false;
-timer=setInterval(()=>{
-left--;
-updateTime();
-if(left<=5 && left>0)playSound(left<=3?[800,1000]:[600,800],100);
-if(left<=0){
-clearInterval(timer);
-running=false;
-document.getElementById('pause').disabled=true;
-document.getElementById('start').disabled=true;
-document.getElementById('start').innerHTML=isResting?'🚀 ¡A ejercitarse!':'✅ ¡Completado!';
-playSound([800,1000,1200],400);
-}
-},1000);
-}
-}
-
-function pause(){
-clearInterval(timer);
-running=false;
-document.getElementById('start').disabled=false;
-document.getElementById('start').innerHTML=isResting?'▶️ Reanudar descanso':'▶️ Reanudar ejercicio';
-document.getElementById('pause').disabled=true;
-}
-
-function stop(){clearInterval(timer);running=false;}
-
-function next(){
-const curr=data[day][ex];
-if(isResting){
-isResting=false;
-load();
-return;
-}
-if(currentSet<curr.sets){
-currentSet++;
-isResting=true;
-load();
-}else{
-if(ex+1<data[day].length){
-ex++;
-currentSet=1;
-isResting=false;
-load();
-}else{
-completeWorkout();
-}
-}
-}
-
-function completeWorkout(){
-const sessionTime=Math.round((Date.now()-sessionStart)/60000);
-localStorage.setItem(day+'_done','1');
-let totalWorkouts=parseInt(localStorage.getItem('totalWorkouts')||'0')+1;
-let totalMinutes=parseInt(localStorage.getItem('totalMinutes')||'0')+sessionTime;
-localStorage.setItem('totalWorkouts',totalWorkouts);
-localStorage.setItem('totalMinutes',totalMinutes);
-document.getElementById('session-time').textContent=sessionTime;
-document.getElementById('session-exercises').textContent=totalExercises;
-show('done');
-playSound([600,800,1000,1200],600);
-}
-
-function loadCompleted(){
-Object.keys(data).forEach(d=>{
-const btn=document.getElementById('btn-'+d);
-if(localStorage.getItem(d+'_done')){
-btn.classList.add('completed');
-}else{
-btn.classList.remove('completed');
-}
-});
-}
-
-function updateStats(){
-document.getElementById('total-workouts').textContent=localStorage.getItem('totalWorkouts')||'0';
-document.getElementById('total-time').textContent=localStorage.getItem('totalMinutes')||'0';
-document.getElementById('streak').textContent='0';
-}
-
-function initAudio(){
-if(!audioCtx){
-audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-}
-}
-
-function playSound(freq,duration){
-if(!audioCtx)return;
-if(Array.isArray(freq)){
-freq.forEach((f,i)=>{
-setTimeout(()=>playSingleTone(f,duration/freq.length),i*(duration/freq.length));
-});
-}else{
-playSingleTone(freq,duration);
-}
-}
-
-function playSingleTone(freq,duration){
-const osc=audioCtx.createOscillator();
-const gain=audioCtx.createGain();
-osc.connect(gain);
-gain.connect(audioCtx.destination);
-osc.frequency.value=freq;
-osc.type='sine';
-gain.gain.setValueAtTime(0.1,audioCtx.currentTime);
-gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+duration/1000);
-osc.start(audioCtx.currentTime);
-osc.stop(audioCtx.currentTime+duration/1000);
-}
-
-['lunes','martes','miercoles','jueves','viernes'].forEach(d=>
-document.getElementById('btn-'+d).addEventListener('click',()=>startDay(d))
-);
-document.getElementById('overview-back').addEventListener('click',showHome);
-document.getElementById('start-workout').addEventListener('click',startWorkout);
-document.getElementById('back-btn').addEventListener('click',showHome);
-document.getElementById('home-btn').addEventListener('click',showHome);
-document.getElementById('start').addEventListener('click',start);
-document.getElementById('pause').addEventListener('click',pause);
-document.getElementById('next').addEventListener('click',next);
-
-loadCompleted();
-updateStats();
+initHome();
 </script>
 </body>
 </html>
