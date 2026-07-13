@@ -59,13 +59,17 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .dot{width:8px;height:8px;border-radius:50%;background:var(--mint-mid)}
 .dot.done{background:var(--teal)}.dot.active{background:var(--teal-light);transform:scale(1.4)}
 /* Figure animation */
-.anim-wrap{position:relative;width:100%;height:130px;margin-bottom:10px;border-radius:16px;overflow:hidden;background:var(--mint-soft)}
+.anim-wrap{position:relative;width:100%;height:190px;margin-bottom:10px;border-radius:16px;overflow:hidden;background:var(--mint-soft);border:2px solid var(--mint-mid)}
 .anim-wrap svg{position:absolute;inset:0;width:100%;height:100%}
 .anim-wrap svg.pose-b{animation:fade-b 3s ease-in-out infinite}
 .anim-wrap svg.pose-a{animation:fade-a 3s ease-in-out infinite}
-.anim-wrap.paused svg{animation-play-state:paused}
+.anim-wrap.paused svg,.anim-wrap.paused .pose-lbl{animation-play-state:paused}
 @keyframes fade-a{0%,40%{opacity:1}55%,95%{opacity:0}100%{opacity:1}}
 @keyframes fade-b{0%,40%{opacity:0}55%,95%{opacity:1}100%{opacity:0}}
+.pose-lbl{position:absolute;bottom:8px;right:10px;font-size:.68rem;font-weight:800;color:var(--teal-dark);background:rgba(255,255,255,.8);border-radius:10px;padding:3px 10px;pointer-events:none}
+.pose-lbl.lbl-a{animation:fade-a 3s ease-in-out infinite}
+.pose-lbl.lbl-b{animation:fade-b 3s ease-in-out infinite;color:#fff;background:var(--teal)}
+.anim-tag{position:absolute;top:8px;left:10px;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);background:rgba(255,255,255,.8);border-radius:10px;padding:3px 10px;pointer-events:none}
 /* Session box */
 .s-box{background:rgba(255,255,255,.9);border:2px solid var(--mint-mid);border-radius:18px;padding:18px;text-align:center;margin-bottom:12px}
 .s-phase{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:4px}
@@ -99,7 +103,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
   <div class="day-header" id="day-header"></div>
   <div class="day-intro" id="day-intro"></div>
   <div id="ex-list"></div>
-  <button class="btn btn-primary" onclick="startSession()">▶ Empezar sesión</button>
+  <button class="btn btn-primary" onclick="startSession()">▶ Empezar sesión automática</button>
 </div>
 </div>
 
@@ -310,12 +314,21 @@ const SVGS = {
   ]
 };
 
-function getAnim(type, playing){
+// Engrosa trazos y agranda articulaciones para que la figura se lea a distancia
+function thicken(s){
+  return s
+    .replace(/stroke-width="([\d.]+)"/g,(m,w)=>`stroke-width="${(parseFloat(w)*1.5).toFixed(1)}"`)
+    .replace(/r="([\d.]+)"/g,(m,r)=>`r="${(parseFloat(r)*1.2).toFixed(1)}"`);
+}
+function getAnim(type, playing, tag){
   const poses=SVGS[type]||SVGS.breathe;
   const p = playing ? '' : ' paused';
   return `<div class="anim-wrap${p}">
-    <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" class="pose-a">${MAT}${poses[0]}</svg>
-    <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" class="pose-b">${MAT}${poses[1]}</svg>
+    <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" class="pose-a">${MAT}${thicken(poses[0])}</svg>
+    <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" class="pose-b">${MAT}${thicken(poses[1])}</svg>
+    ${tag?`<span class="anim-tag">${tag}</span>`:''}
+    <span class="pose-lbl lbl-a">1 · posición</span>
+    <span class="pose-lbl lbl-b">2 · movimiento</span>
   </div>`;
 }
 
@@ -605,15 +618,103 @@ function openDay(i){
   go('day');
 }
 
-/* ─── SESSION ─── */
+/* ─── SESSION (flujo automático: un toque y la sesión entera fluye sola) ─── */
+let wakeLock=null;
+async function keepAwake(){try{if('wakeLock' in navigator)wakeLock=await navigator.wakeLock.request('screen');}catch(e){}}
+function releaseAwake(){try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){}}
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'&&['prep','active','switch','rest'].includes(S.phase))keepAwake();
+});
+
 function startSession(){
-  S={exIdx:0,side:1,phase:'ready',timer:0,interval:null};
+  S={exIdx:0,side:1,phase:'idle',timer:0,interval:null,pausedPhase:null};
   document.getElementById('s-title').textContent=DAYS[curDayIdx].name+' · '+DAYS[curDayIdx].focus;
   go('session');renderSession();
 }
 function confirmStop(){stopSession();go('day');}
-function stopSession(){stopTimer();try{speechSynthesis.cancel();}catch(e){}}
+function stopSession(){stopTimer();releaseAwake();try{speechSynthesis.cancel();}catch(e){}}
 function stopTimer(){if(S.interval){clearInterval(S.interval);S.interval=null;}}
+
+function beginAll(){keepAwake();startPrep();}
+
+function startPrep(){
+  const ex=DAYS[curDayIdx].exercises[S.exIdx];
+  S.phase='prep';S.timer=8;S.side=1;
+  speak((S.exIdx===0?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.voice);
+  vibrate(50);
+  S.interval=setInterval(sessionTick,1000);
+  renderSession();
+}
+
+function sessionTick(){
+  S.timer--;
+  const el=document.getElementById('s-timer');
+  if(el)el.textContent=S.timer;
+  if(S.timer<=3&&S.timer>0&&(S.phase==='active'||S.phase==='prep'||S.phase==='rest'))beep(500,.08);
+  if(S.timer>0)return;
+  stopTimer();
+  const d=DAYS[curDayIdx],ex=d.exercises[S.exIdx];
+  if(S.phase==='prep'){
+    S.phase='active';S.timer=ex.duration;
+    beep(800,.15);vibrate(60);speak('¡Vamos!');
+    S.interval=setInterval(sessionTick,1000);
+  }else if(S.phase==='active'&&ex.sides===2&&S.side===1){
+    S.side=2;S.phase='switch';S.timer=5;
+    speak('Cambia de lado.');vibrate(60);
+    S.interval=setInterval(sessionTick,1000);
+  }else if(S.phase==='switch'){
+    S.phase='active';S.timer=ex.duration;
+    beep(800,.15);vibrate(40);
+    S.interval=setInterval(sessionTick,1000);
+  }else if(S.phase==='active'&&ex.rest>0&&S.exIdx<d.exercises.length-1){
+    S.phase='rest';S.timer=ex.rest;
+    beep(600,.15);vibrate(60);
+    speak('Muy bien. Descansa un momento.');
+    S.interval=setInterval(sessionTick,1000);
+  }else{
+    advanceEx();return;
+  }
+  renderSession();
+}
+
+function togglePlay(){
+  if(S.phase==='paused'){
+    S.phase=S.pausedPhase||'active';S.pausedPhase=null;
+    S.interval=setInterval(sessionTick,1000);
+    keepAwake();speak('Seguimos.');
+  }else if(['prep','active','switch','rest'].includes(S.phase)){
+    S.pausedPhase=S.phase;stopTimer();S.phase='paused';
+    try{speechSynthesis.cancel();}catch(e){}
+  }
+  renderSession();
+}
+
+function skipPhase(){
+  stopTimer();
+  try{speechSynthesis.cancel();}catch(e){}
+  const d=DAYS[curDayIdx],ex=d.exercises[S.exIdx];
+  const ph=S.phase==='paused'?(S.pausedPhase||'active'):S.phase;
+  S.pausedPhase=null;
+  if(ph==='prep'||ph==='switch'){
+    S.phase='active';S.timer=ex.duration;beep(800,.15);
+    S.interval=setInterval(sessionTick,1000);
+    renderSession();
+  }else if(ph==='active'&&ex.sides===2&&S.side===1){
+    S.side=2;S.phase='switch';S.timer=5;
+    S.interval=setInterval(sessionTick,1000);
+    renderSession();
+  }else{
+    advanceEx();
+  }
+}
+
+function advanceEx(){
+  stopTimer();
+  const d=DAYS[curDayIdx];
+  S.exIdx++;S.side=1;S.pausedPhase=null;
+  if(S.exIdx>=d.exercises.length){S.phase='done';releaseAwake();renderSession();}
+  else startPrep();
+}
 
 function renderSession(){
   const d=DAYS[curDayIdx],total=d.exercises.length,el=document.getElementById('s-content');
@@ -622,100 +723,53 @@ function renderSession(){
     document.getElementById('s-count').textContent='';
     document.getElementById('s-dots').innerHTML='';
     el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>¡Sesión completada!</h2><p>${d.name} · ${d.focus}<br>Bien hecho, Cris 💚</p></div><button class="btn btn-secondary" style="margin-bottom:8px" onclick="go('home')">🏠 Inicio</button><button class="btn btn-primary" onclick="startSession()">Repetir sesión</button>`;
-    beep(800,.2);setTimeout(()=>beep(1000,.3),250);vibrate([80,50,80]);return;
+    beep(800,.2);setTimeout(()=>beep(1000,.3),250);vibrate([80,50,80]);
+    speak('¡Sesión completada! Bien hecho.');
+    return;
   }
   const ex=d.exercises[S.exIdx];
   document.getElementById('s-fill').style.width=(S.exIdx/total*100)+'%';
   document.getElementById('s-count').textContent=`Ejercicio ${S.exIdx+1} de ${total}`;
   document.getElementById('s-dots').innerHTML=d.exercises.map((_,i)=>`<div class="dot ${i<S.exIdx?'done':i===S.exIdx?'active':''}"></div>`).join('');
-  const sideLabel=ex.sides===2?(S.side===1?' — Lado derecho':' — Lado izquierdo'):'';
-  let phaseLabel='',timerCls='',timerLbl='';
-  const playing=S.phase==='active';
-  if(S.phase==='ready'){phaseLabel='Prepárate';timerLbl='seg para empezar';}
-  else if(S.phase==='active'){phaseLabel='Activa ▶';timerLbl='segundos restantes';}
-  else if(S.phase==='paused'){phaseLabel='En pausa';timerLbl='segundos';}
+
+  if(S.phase==='idle'){
+    el.innerHTML=`
+      ${getAnim(ex.anim||'breathe',true,'Así se hace el primero')}
+      <div class="s-box">
+        <div class="s-phase">Sesión automática</div>
+        <div class="s-exname">${d.focus}</div>
+        <div class="s-desc">Dale a empezar y déjate llevar: la voz te guía, los ejercicios cambian solos y tú solo copias a la figura. No hace falta tocar el móvil hasta el final. 💚</div>
+      </div>
+      <button class="btn btn-primary" onclick="beginAll()">▶ Empezar — todo automático</button>`;
+    return;
+  }
+
+  const isRest=S.phase==='rest';
+  const nextEx=S.exIdx<total-1?d.exercises[S.exIdx+1]:null;
+  const showEx=(isRest&&nextEx)?nextEx:ex;
+  const playing=S.phase!=='paused';
+  const sideLabel=ex.sides===2&&!isRest?(S.side===1?' — Lado derecho':' — Lado izquierdo'):'';
+  let phaseLabel='',timerCls='',timerLbl='',animTag='';
+  if(S.phase==='prep'){phaseLabel='Colócate como la figura';timerLbl='seg para empezar';animTag='Prepárate';}
+  else if(S.phase==='active'){phaseLabel='Copia a la figura ▶';timerLbl='segundos restantes';}
+  else if(S.phase==='paused'){phaseLabel='En pausa';timerLbl='segundos';animTag='Pausa';}
   else if(S.phase==='switch'){phaseLabel='¡Cambia de lado!';timerCls=' sw-c';timerLbl='seg';}
-  else if(S.phase==='rest'){phaseLabel='Descansa';timerCls=' rest-c';timerLbl='seg descanso';}
-  const showDesc=S.phase!=='rest'&&S.phase!=='switch';
+  else if(isRest){phaseLabel='Descansa';timerCls=' rest-c';timerLbl='seg de descanso';animTag=nextEx?'Siguiente: '+nextEx.name:'';}
+  const showDesc=S.phase==='prep'||S.phase==='paused';
   el.innerHTML=`
-    ${getAnim(ex.anim||'breathe', playing)}
+    ${getAnim(showEx.anim||'breathe', playing, animTag)}
     <div class="s-box">
       <div class="s-phase">${phaseLabel}</div>
-      <div class="s-exname">${ex.name}${sideLabel}</div>
+      <div class="s-exname">${isRest&&nextEx?'Luego: '+nextEx.name:ex.name+sideLabel}</div>
       ${showDesc?`<div class="s-desc">${ex.desc}</div>`:'<div style="height:8px"></div>'}
-      <div class="s-timer${timerCls}" id="s-timer">${S.timer||ex.duration}</div>
+      <div class="s-timer${timerCls}" id="s-timer">${S.timer}</div>
       <div class="s-tlbl">${timerLbl}</div>
     </div>
     ${showDesc?`<div class="s-tip">💡 ${ex.tip}</div>`:''}
     <div class="btn-row">
-      ${(S.phase==='rest'||S.phase==='switch')?
-        `<button class="btn btn-primary" onclick="skipPhase()">Saltar →</button>`:
-        `<button class="btn btn-secondary" id="play-btn" onclick="togglePlay()">${playing?'⏸ Pausar':'▶ '+(S.phase==='ready'?'Empezar':'Reanudar')}</button>
-         <button class="btn btn-primary" onclick="skipPhase()">Siguiente →</button>`
-      }
+      <button class="btn btn-secondary" onclick="togglePlay()">${S.phase==='paused'?'▶ Seguir':'⏸ Pausa'}</button>
+      <button class="btn btn-primary" onclick="skipPhase()">Saltar →</button>
     </div>`;
-}
-
-function togglePlay(){
-  const ex=DAYS[curDayIdx].exercises[S.exIdx];
-  if(S.phase==='active'){
-    stopTimer();S.phase='paused';
-    try{speechSynthesis.cancel();}catch(e){}
-  }else{
-    if(S.phase==='ready'||S.phase==='paused'){
-      if(S.phase==='ready'){S.timer=ex.duration;speak(ex.voice);vibrate(50);}
-      S.phase='active';
-      if(ex.duration>0)S.interval=setInterval(sessionTick,1000);
-    }
-  }
-  renderSession();
-}
-
-function sessionTick(){
-  S.timer--;
-  const el=document.getElementById('s-timer');
-  if(el)el.textContent=S.timer;
-  if(S.timer<=0){
-    stopTimer();
-    const ex=DAYS[curDayIdx].exercises[S.exIdx];
-    if(S.phase==='active'&&ex.sides===2&&S.side===1){
-      S.side=2;S.phase='switch';S.timer=5;
-      speak('Ahora el otro lado.');vibrate(60);
-      S.interval=setInterval(sessionTick,1000);
-    }else if(S.phase==='switch'){
-      S.phase='active';S.timer=ex.duration;
-      speak(ex.voice);vibrate(40);
-      S.interval=setInterval(sessionTick,1000);
-    }else if(S.phase==='active'&&ex.rest>0){
-      S.phase='rest';S.timer=ex.rest;
-      beep(600,.15);vibrate(60);speak('Descansa.');
-      S.interval=setInterval(sessionTick,1000);
-    }else{
-      advanceEx();
-    }
-    renderSession();
-  }
-}
-
-function skipPhase(){
-  stopTimer();
-  try{speechSynthesis.cancel();}catch(e){}
-  const ex=DAYS[curDayIdx].exercises[S.exIdx];
-  if(S.phase==='rest'){advanceEx();}
-  else if(S.phase==='switch'){S.phase='active';S.timer=ex.duration;S.interval=setInterval(sessionTick,1000);}
-  else if(ex.sides===2&&S.side===1){S.side=2;S.phase='switch';S.timer=5;S.interval=setInterval(sessionTick,1000);}
-  else if(ex.rest>0){S.phase='rest';S.timer=ex.rest;S.interval=setInterval(sessionTick,1000);}
-  else{advanceEx();}
-  renderSession();
-}
-
-function advanceEx(){
-  stopTimer();
-  const d=DAYS[curDayIdx];
-  S.exIdx++;S.side=1;S.timer=0;
-  if(S.exIdx>=d.exercises.length){S.phase='done';}
-  else{S.phase='ready';S.timer=d.exercises[S.exIdx].duration;beep(700,.12);vibrate(40);}
-  renderSession();
 }
 
 initHome();
