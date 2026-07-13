@@ -404,7 +404,20 @@ let timerInterval = null;
 
 function beep(f=600,d=0.2){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
 function vibrate(ms=80){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
-function speak(t){try{if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=0.9;window.speechSynthesis.speak(u);}catch(e){}}
+let _utt=null;
+function speak(t){
+  try{
+    if(!window.speechSynthesis)return;
+    window.speechSynthesis.cancel();
+    if(window.speechSynthesis.paused)window.speechSynthesis.resume();
+    _utt=new SpeechSynthesisUtterance(t);
+    _utt.lang='es-ES';_utt.rate=0.9;
+    const voices=window.speechSynthesis.getVoices();
+    const esVoice=voices.find(v=>v.lang.startsWith('es'));
+    if(esVoice)_utt.voice=esVoice;
+    window.speechSynthesis.speak(_utt);
+  }catch(e){}
+}
 function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}}
 
 function go(view){

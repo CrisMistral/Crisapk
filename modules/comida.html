@@ -397,7 +397,20 @@ let cookStep=0,cookPlaying=false,cookTimer=0,cookInt=null;
 
 function beep(f=600,d=.2){try{const c=new(window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator();const g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
 function vibrate(ms=60){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
-function speak(t){try{if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.88;speechSynthesis.speak(u);}catch(e){}}
+let _utt=null;
+function speak(t){
+  try{
+    if(!window.speechSynthesis)return;
+    speechSynthesis.cancel();
+    if(speechSynthesis.paused)speechSynthesis.resume();
+    _utt=new SpeechSynthesisUtterance(t);
+    _utt.lang='es-ES';_utt.rate=.88;
+    const voices=speechSynthesis.getVoices();
+    const esVoice=voices.find(v=>v.lang.startsWith('es'));
+    if(esVoice)_utt.voice=esVoice;
+    speechSynthesis.speak(_utt);
+  }catch(e){}
+}
 
 function go(v){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
