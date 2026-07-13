@@ -114,6 +114,14 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 .btn-teal{background:var(--teal);color:white;}
 .btn-white{background:white;color:var(--td);}
 
+/* Express button */
+.express-btn{
+  display:flex;align-items:center;gap:14px;width:100%;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#f59e0b,#d97706);color:white;
+  border-radius:18px;padding:18px 20px;margin-bottom:14px;
+}
+.express-btn:active{transform:scale(.99);}
+
 /* Flash */
 .flash{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(26,107,100,.93);color:white;border-radius:20px;padding:18px 28px;font-size:1.1rem;font-weight:700;z-index:999;pointer-events:none;opacity:0;transition:opacity .25s;text-align:center;}
 </style>
@@ -141,6 +149,15 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
   <div class="week-strip" id="home-week"></div>
 
   <div class="sec-label">Elige tu modo</div>
+
+  <button class="express-btn" onclick="startExpress()">
+    <span style="font-size:2rem;">⚡</span>
+    <div style="flex:1;text-align:left;">
+      <div style="font-size:1.1rem;font-weight:800;">Express — Recoge ahora</div>
+      <div style="font-size:0.84rem;opacity:.88;margin-top:2px;">5 tareas rápidas · toda la casa</div>
+    </div>
+    <span class="mc-pill" style="margin:0;white-space:nowrap;">~15 min</span>
+  </button>
 
   <button class="mode-card" style="background:linear-gradient(135deg,#26a69a,#1a6b64);" onclick="go('v-week')">
     <span class="mc-em">📅</span>
@@ -431,6 +448,29 @@ function startZone(zoneId){
   setTimeout(()=>speak(`Empezamos con ${zone.name}. Primera tarea: ${zone.tasks[0].n}.`),400);
 }
 
+// ── Start express ──────────────────────────────────────
+function startExpress(){
+  // One task from each zone (the "recoger" or quickest task), max 3 min each
+  const EXPRESS_TASKS=[
+    {n:'Recoge objetos de la cocina',e:'📦',d:3,tip:'Cada cosa a su sitio, encimera despejada'},
+    {n:'Recoge el baño',e:'🪥',d:2,tip:'Objetos a su sitio, tira lo que no sirva'},
+    {n:'Recoge el salón',e:'🛋️',d:3,tip:'Cojines en su sitio, mesitas despejadas'},
+    {n:'Recoge el dormitorio',e:'👕',d:2,tip:'Ropa al armario o al cesto, nada en el suelo'},
+    {n:'Recoge la entrada y el pasillo',e:'🚪',d:2,tip:'Zapatos al zapatero, abrigos colgados'},
+  ];
+  // Shuffle for variety
+  const shuffled=[...EXPRESS_TASKS].sort(()=>Math.random()-.5);
+  S={tasks:shuffled,idx:0,timeLeft:0,totalSecs:0,interval:null,
+     paused:false,mode:'express',zoneId:'express',sessionStart:Date.now(),tasksDone:0};
+  document.getElementById('sess-hdr').textContent='Express ⚡';
+  const banner=document.getElementById('sess-banner');
+  banner.textContent='⚡ Recogida rápida · 5 tareas · ~12 min';
+  banner.style.display='block';
+  renderSession();
+  go('v-session');
+  setTimeout(()=>speak(`Recogida express. Empezamos: ${shuffled[0].n}.`),400);
+}
+
 // ── Start general ──────────────────────────────────────
 function startGeneral(){
   const all=[];
@@ -569,14 +609,17 @@ function exitSession(){
 function finishSession(){
   clearInterval(S.interval);S.interval=null;
   if(S.mode==='zone')markDone(S.zoneId);
-  else ZONES.forEach(z=>markDone(z.id));
+  else if(S.mode==='general')ZONES.forEach(z=>markDone(z.id));
 
   const elapsed=Math.max(1,Math.round((Date.now()-S.sessionStart)/60000));
   const prog=getProgress();
   const doneCount=Object.values(prog).filter(Boolean).length;
 
   let em,title,sub;
-  if(S.mode==='general'){
+  if(S.mode==='express'){
+    em='⚡';title='¡Express completado!';
+    sub='La casa está recogida. Eso es todo lo que necesitabas.';
+  }else if(S.mode==='general'){
     em='🏠';title='¡Casa limpia!';
     sub='Has limpiado toda la casa de una vez. Eres increíble.';
   }else{
