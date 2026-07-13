@@ -30,6 +30,15 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .c-months{background:linear-gradient(135deg,var(--teal-dark),#0369a1)}
 .c-test{background:linear-gradient(135deg,#f59e0b,#ef4444)}
 .c-shop{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
+.c-express{background:linear-gradient(135deg,#d97706,#f59e0b)}
+/* Week menu */
+.wk-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.85);border:2px solid var(--mint-mid);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.wk-check{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--teal);background:#fff;color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif}
+.wk-done .wk-check{background:var(--teal)}
+.wk-done .wk-name,.wk-done .wk-meta{text-decoration:line-through;opacity:.5}
+.wk-info{flex:1;cursor:pointer;min-width:0}
+.wk-name{font-size:.92rem;font-weight:700;color:var(--teal-dark)}
+.wk-meta{font-size:.75rem;color:var(--text-soft);margin-top:2px}
 /* Month grid */
 .months-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .month-tile{background:rgba(255,255,255,.82);border:2px solid var(--mint-mid);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;transition:transform .1s,border-color .1s}
@@ -132,21 +141,25 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
   </div>
   <div class="bubble" id="home-bubble">¿Qué cocinamos hoy? 🌿</div>
   <div class="nav-cards">
-    <button class="nav-card c-season" onclick="goCurrentMonth()">
+    <button class="nav-card c-test" onclick="startPick()">
+      <span class="nic">🍽️</span>
+      <div class="info"><span>¿QUÉ COMO HOY?</span><span class="sub" id="home-pick-sub">Elige entre lo que te queda</span></div>
+    </button>
+    <button class="nav-card c-season" onclick="go('week')">
       <span class="nic">📅</span>
-      <div class="info"><span id="home-month-label">ESTE MES</span><span class="sub" id="home-season-sub">Cargando temporada...</span></div>
+      <div class="info"><span>MENÚ DE LA SEMANA</span><span class="sub" id="home-week-sub">14 recetas · 1 sola compra</span></div>
+    </button>
+    <button class="nav-card c-shop" onclick="go('shopping')">
+      <span class="nic">🛒</span>
+      <div class="info"><span>LISTA DE LA COMPRA</span><span class="sub">Una compra · toda la semana</span></div>
+    </button>
+    <button class="nav-card c-express" onclick="go('basicos')">
+      <span class="nic">⚡</span>
+      <div class="info"><span>BÁSICOS SALVAVIDAS</span><span class="sub">Recetas de 10 min con despensa</span></div>
     </button>
     <button class="nav-card c-months" onclick="go('months')">
       <span class="nic">🗓️</span>
       <div class="info"><span>TODOS LOS MESES</span><span class="sub">Recetas de temporada todo el año</span></div>
-    </button>
-    <button class="nav-card c-test" onclick="startTest()">
-      <span class="nic">🤔</span>
-      <div class="info"><span>¿QUÉ COCINO HOY?</span><span class="sub">Test rápido según cómo estás</span></div>
-    </button>
-    <button class="nav-card c-shop" onclick="go('shopping')">
-      <span class="nic">🛒</span>
-      <div class="info"><span>LISTA DE COMPRAS</span><span class="sub">Tus recetas + básicos de temporada</span></div>
     </button>
   </div>
 </div>
@@ -187,15 +200,30 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 
 <div id="v-test" class="screen">
 <div class="max-w">
-  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>¿Qué cocino hoy?</h1></div>
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>¿Qué como hoy?</h1></div>
   <div id="test-content"></div>
+</div>
+</div>
+
+<div id="v-week" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>Menú de la semana</h1></div>
+  <div class="card" style="margin-bottom:14px" id="week-banner"></div>
+  <div id="week-list"></div>
+</div>
+</div>
+
+<div id="v-basicos" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>Básicos salvavidas</h1></div>
+  <div id="basicos-content"></div>
 </div>
 </div>
 
 <div id="v-shopping" class="screen">
 <div class="max-w">
   <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>Lista de Compras</h1></div>
-  <div class="card" style="margin-bottom:14px"><p>Tus recetas elegidas + básicos de 7 días · 1 persona · sin tomate. Marca según vas comprando 💚</p></div>
+  <div class="card" style="margin-bottom:14px"><p>Una sola compra para las 14 recetas de la semana + básicos salvavidas · 1 persona · sin tomate. Marca según vas comprando 💚</p></div>
   <div id="shop-list"></div>
   <div class="btn-row">
     <button class="btn btn-secondary" onclick="shareList()">📱 Compartir</button>
@@ -911,11 +939,75 @@ const SHOPPING = [
   ]}
 ];
 
-const TEST_Q = [
-  {q:'¿Comida o cena?',opts:[{l:'☀️ Comida',v:'comida'},{l:'🌙 Cena',v:'cena'}]},
-  {q:'¿Cuánto tiempo tienes?',opts:[{l:'⚡ Menos de 10 min',v:'rapida'},{l:'🕐 15-20 min',v:'normal'},{l:'🍳 Puedo con 20+ min',v:'larga'}]},
-  {q:'¿Cómo estás de energía?',opts:[{l:'🪫 Agotada',v:'baja'},{l:'😊 Bien',v:'bien'}]}
-];
+/* Recetas salvavidas: solo con básicos de despensa, ~10 min */
+const EXPRESS={
+ comidas:[
+  {id:'exp-c1',emoji:'🍝',name:'Pasta Exprés con Atún',time:'10 min',budget:'€',express:true,
+   harvard:{veg:'Guisantes',prot:'Atún',grain:'Pasta integral'},
+   tags:['Salvavidas','10 minutos'],
+   desc:'Todo de despensa. Cuando no hay energía ni compra, esta pasta salva el día.',
+   nutrients:[{v:'420',l:'kcal'},{v:'26g',l:'proteína'},{v:'55g',l:'hidratos'}],
+   tip:'Echa los guisantes congelados al agua de la pasta los últimos 3 minutos — una olla menos que fregar.',
+   ingredients:['80g pasta integral','1 lata atún al natural','Puñado guisantes congelados','2 cdas aceite de oliva','Ajo en polvo, orégano, sal'],
+   steps:[
+    {text:'Pon agua a hervir con sal y cuece la pasta el tiempo del paquete. Últimos 3 min: añade los guisantes congelados al agua',time:9,voice:'Cuece la pasta. Los últimos tres minutos añade los guisantes congelados al mismo agua'},
+    {text:'Escurre todo junto. Mezcla con el atún, aceite, ajo en polvo y orégano',time:1,voice:'Escurre y mezcla con el atún, el aceite y el orégano. Listo'}
+   ]},
+  {id:'exp-c2',emoji:'🍳',name:'Arroz Salteado con Huevo',time:'12 min',budget:'€',express:true,
+   harvard:{veg:'Guisantes',prot:'Huevo',grain:'Arroz'},
+   tags:['Salvavidas','Sin gluten'],
+   desc:'El plato de aprovechamiento perfecto. Con arroz de ayer sale en 6 minutos.',
+   nutrients:[{v:'400',l:'kcal'},{v:'16g',l:'proteína'},{v:'50g',l:'hidratos'}],
+   tip:'Si tienes arroz cocido de otro día (o un vasito de microondas), este plato sale en 6 minutos.',
+   ingredients:['½ taza arroz (o arroz de ayer)','2 huevos','Puñado guisantes congelados','1 cda aceite de oliva','Ajo en polvo, sal, pimentón'],
+   steps:[
+    {text:'Cuece el arroz 12 min (sáltate este paso si usas arroz de ayer o de vasito)',time:12,voice:'Cuece el arroz doce minutos. Si ya lo tienes cocido, salta este paso'},
+    {text:'Saltea los guisantes con aceite 2 min. Añade el arroz y saltea 2 min más',time:4,voice:'Saltea los guisantes dos minutos y añade el arroz'},
+    {text:'Haz hueco en el centro, casca los huevos y remueve hasta que cuajen. Sazona',time:2,voice:'Casca los huevos en el centro y remueve hasta que cuajen'}
+   ]}
+ ],
+ cenas:[
+  {id:'exp-n1',emoji:'🥚',name:'Revuelto de Espinacas con Pan',time:'8 min',budget:'€',express:true,
+   harvard:{veg:'Espinacas',prot:'Huevos',grain:'Pan integral'},
+   tags:['Salvavidas','Vegetariano'],
+   desc:'Cena completa en 8 minutos con lo que siempre hay en casa.',
+   nutrients:[{v:'320',l:'kcal'},{v:'20g',l:'proteína'},{v:'Hierro',l:'mineral'}],
+   tip:'Las espinacas congeladas van directas a la sartén — sueltan su agua y en 3 minutos están listas.',
+   ingredients:['3 huevos','2 puñados espinacas congeladas','1 rebanada pan integral','1 cda aceite de oliva','Sal, pimienta'],
+   steps:[
+    {text:'Saltea las espinacas congeladas con aceite 3 min hasta que pierdan el agua',time:3,voice:'Saltea las espinacas congeladas tres minutos'},
+    {text:'Bate los huevos con sal y añádelos. Remueve suave hasta que cuajen. Tuesta el pan',time:3,voice:'Añade los huevos batidos y remueve hasta que cuajen. Tuesta el pan'}
+   ]},
+  {id:'exp-n2',emoji:'🫘',name:'Garbanzos Salteados Especiados',time:'10 min',budget:'€',express:true,
+   harvard:{veg:'Espinacas',prot:'Garbanzos',grain:'—'},
+   tags:['Salvavidas','Vegetariano','Sin gluten'],
+   desc:'Bote de garbanzos + especias = cena caliente y rica sin pensar.',
+   nutrients:[{v:'350',l:'kcal'},{v:'15g',l:'proteína'},{v:'12g',l:'fibra'}],
+   tip:'El pimentón y el comino convierten un bote de garbanzos en algo delicioso. No los saltes.',
+   ingredients:['1 bote garbanzos (400g)','Puñado espinacas congeladas','1 cda aceite de oliva','Pimentón, comino, sal'],
+   steps:[
+    {text:'Escurre los garbanzos. Saltéalos con aceite a fuego medio-alto 5 min hasta que se doren',time:5,voice:'Escurre los garbanzos y saltéalos cinco minutos hasta que se doren'},
+    {text:'Añade las espinacas congeladas, pimentón y comino. 4 min más y listo',time:4,voice:'Añade las espinacas con pimentón y comino. Cuatro minutos más y listo'}
+   ]}
+ ]
+};
+
+/* Menú semanal: 14 recetas de la estación actual (6+1 comidas, 6+1 cenas) */
+const SEASON_GROUPS=[['dic','ene','feb'],['mar','abr','may'],['jun','jul','ago'],['sep','oct','nov']];
+function weekMenu(){
+  const curId=MONTHS[new Date().getMonth()].id;
+  const grp=SEASON_GROUPS.find(g=>g.includes(curId))||SEASON_GROUPS[0];
+  const order=[curId,...grp.filter(x=>x!==curId)];
+  const comidas=[],cenas=[];
+  order.forEach(id=>{const m=MONTHS.find(m=>m.id===id);if(m){comidas.push(...m.comidas);cenas.push(...m.cenas);}});
+  comidas.push(EXPRESS.comidas[0]);
+  cenas.push(EXPRESS.cenas[0]);
+  return {comidas,cenas};
+}
+function menuKey(){const d=new Date(),y=d.getFullYear(),s=new Date(y,0,1),w=Math.ceil(((d-s)/864e5+s.getDay()+1)/7);return 'cris_menu_w'+w+'_'+y;}
+function getMenuDone(){try{return JSON.parse(localStorage.getItem(menuKey())||'{}');}catch(e){return{};}}
+function setMenuDone(d){try{localStorage.setItem(menuKey(),JSON.stringify(d));}catch(e){}}
+function remainingMenu(){const w=weekMenu(),d=getMenuDone();return {comidas:w.comidas.filter(r=>!d[r.id]),cenas:w.cenas.filter(r=>!d[r.id])};}
 
 /* ── ESTADO ── */
 let curMonth=new Date().getMonth(),curMeal='comidas',curRecipe=null,cookStep=0,cookPlaying=false,cookTimer=0,cookInt=null,testStep=0,testAns=[];
@@ -944,13 +1036,19 @@ function go(v){
   document.getElementById('v-'+v).classList.add('active');
   window.scrollTo(0,0);
   if(v==='shopping')renderShop();
+  if(v==='week')renderWeek();
+  if(v==='basicos')renderBasicos();
+  if(v==='home')initHome();
 }
 
 /* ── HOME ── */
 function initHome(){
-  const m=MONTHS[curMonth];
-  document.getElementById('home-month-label').textContent='MES ACTUAL: '+m.name.toUpperCase();
-  document.getElementById('home-season-sub').textContent='Temporada: '+m.season.slice(0,3).join(', ');
+  const m=MONTHS[new Date().getMonth()];
+  document.getElementById('home-bubble').textContent='📅 '+m.name+' · temporada: '+m.season.slice(0,3).join(', ')+' 🌿';
+  const rem=remainingMenu();
+  const n=rem.comidas.length+rem.cenas.length;
+  document.getElementById('home-week-sub').textContent=n===14?'14 recetas · 1 sola compra':'Te quedan '+n+' de 14 esta semana';
+  document.getElementById('home-pick-sub').textContent=n?'Elige entre las '+n+' que te quedan':'Salvavidas de 10 min listos';
 }
 function goCurrentMonth(){go('month');renderMonthView();}
 
@@ -1006,14 +1104,18 @@ function findRecipe(id){
     for(const r of m.comidas)if(r.id===id)return r;
     for(const r of m.cenas)if(r.id===id)return r;
   }
+  for(const r of EXPRESS.comidas)if(r.id===id)return r;
+  for(const r of EXPRESS.cenas)if(r.id===id)return r;
   return null;
 }
-function openRecipe(id){
+let backView='month';
+function openRecipe(id,from){
+  backView=from||'month';
   curRecipe=findRecipe(id);
   if(!curRecipe)return;
   const r=curRecipe;
   document.getElementById('detail-title').textContent=r.name;
-  document.getElementById('detail-back').onclick=()=>go('month');
+  document.getElementById('detail-back').onclick=()=>go(backView);
   document.getElementById('detail-content').innerHTML=`
     <div class="card" style="text-align:center;margin-bottom:12px">
       <div style="font-size:2.8rem;margin-bottom:10px">${r.emoji}</div>
@@ -1054,7 +1156,10 @@ function stopCook(){
 function renderCook(){
   const r=curRecipe;const el=document.getElementById('cook-content');
   if(cookStep>=r.steps.length){
-    el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>¡A comer!</h2><p>Lo has hecho genial 💚</p></div>
+    const dn=getMenuDone();
+    const inWeek=weekMenu().comidas.concat(weekMenu().cenas).some(x=>x.id===r.id);
+    if(inWeek&&!dn[r.id]){dn[r.id]=true;setMenuDone(dn);}
+    el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>¡A comer!</h2><p>Lo has hecho genial 💚${inWeek?'<br><br>✓ Tachada del menú de la semana':''}</p></div>
     <button class="btn btn-secondary" style="margin-bottom:8px" onclick="go('home')">🏠 Inicio</button>
     <button class="btn btn-primary" onclick="startCook()">Repetir receta</button>`;
     return;
@@ -1106,29 +1211,76 @@ function cookAdv(){
 }
 function cookNext(){if(cookInt){clearInterval(cookInt);cookInt=null;}cookPlaying=false;cookTimer=0;cookAdv();}
 
-/* ── TEST ── */
-function startTest(){testStep=0;testAns=[];go('test');renderTest();}
-function renderTest(){
-  const el=document.getElementById('test-content');
-  if(testStep>=TEST_Q.length){
-    const meal=testAns[0],speed=testAns[1];
-    const m=MONTHS[curMonth];
-    const pool=m[meal==='comida'?'comidas':'cenas'];
-    let pick=pool[0];
-    if(speed==='rapida'){const r=pool.find(r=>parseInt(r.time)<=10);if(r)pick=r;}
-    else if(speed==='normal'){const r=pool.find(r=>{const t=parseInt(r.time);return t>10&&t<=20;});if(r)pick=r;}
-    el.innerHTML=`<div class="result-box"><div style="font-size:3rem;margin-bottom:8px">${pick.emoji}</div>
-      <h2>${pick.name}</h2><p>${pick.time} · ${pick.tags.join(' · ')}</p></div>
-    <button class="btn btn-primary" style="margin-bottom:8px" onclick="openRecipe('${pick.id}')">Ver receta →</button>
-    <button class="btn btn-secondary" onclick="startTest()">Repetir test</button>`;
-    return;
-  }
-  const s=TEST_Q[testStep];
-  el.innerHTML=`<div class="card"><p style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--teal);margin-bottom:6px">Pregunta ${testStep+1} de ${TEST_Q.length}</p>
-    <h2 style="font-size:1.05rem;font-weight:700;color:var(--teal-dark)">${s.q}</h2></div>
-    ${s.opts.map(o=>`<button class="opt-btn" onclick="testAnswer('${o.v}')">${o.l}</button>`).join('')}`;
+/* ── ¿QUÉ COMO HOY? (elige entre lo que queda del menú semanal) ── */
+let pickMeal='comidas',pickIdx=0;
+function startPick(){
+  pickMeal=new Date().getHours()<17?'comidas':'cenas';
+  pickIdx=0;
+  go('test');renderPick();
 }
-function testAnswer(v){beep(400,.1);vibrate(30);testAns.push(v);testStep++;renderTest();}
+function suggCard(r,from){
+  return `<div class="result-box"><div style="font-size:3rem;margin-bottom:8px">${r.emoji}</div>
+    <h2>${r.name}</h2><p>${r.time} · ${r.tags.join(' · ')}</p></div>
+    <button class="btn btn-primary" style="margin-bottom:8px" onclick="openRecipe('${r.id}','${from||'test'}')">Ver receta →</button>`;
+}
+function renderPick(){
+  const el=document.getElementById('test-content');
+  const rem=remainingMenu()[pickMeal];
+  const chip=(m,l)=>`<button class="tab ${pickMeal===m?'active':''}" onclick="pickMeal='${m}';pickIdx=0;renderPick()">${l}</button>`;
+  let body;
+  if(!rem.length){
+    body=`<div class="card" style="margin-bottom:12px"><p>¡Has tachado todas las ${pickMeal==='comidas'?'comidas':'cenas'} de la semana! 🎉<br>Pero los salvavidas de despensa nunca fallan:</p></div>`
+      +EXPRESS[pickMeal].map(r=>suggCard(r)).join('');
+  }else{
+    const r=rem[pickIdx%rem.length];
+    body=suggCard(r)
+      +(rem.length>1?`<button class="btn btn-secondary" style="margin-bottom:8px" onclick="pickIdx++;renderPick()">🔄 Otra opción (${rem.length} disponibles)</button>`:'')
+      +`<button class="btn btn-secondary" onclick="go('basicos')">⚡ Mejor algo de 10 minutos</button>`;
+  }
+  el.innerHTML=`<div class="tabs">${chip('comidas','☀️ Comida')}${chip('cenas','🌙 Cena')}</div>`+body;
+}
+
+/* ── MENÚ SEMANAL ── */
+function renderWeek(){
+  const w=weekMenu(),d=getMenuDone();
+  const rem=w.comidas.filter(r=>!d[r.id]).length+w.cenas.filter(r=>!d[r.id]).length;
+  document.getElementById('week-banner').innerHTML=rem
+    ?`<p>Te quedan <strong>${rem} de 14</strong> recetas esta semana. Marca ✓ al comerla — así siempre sabes qué puedes cocinar con lo que queda en la nevera 💚</p>`
+    :`<p>🎉 ¡Semana completada! El lunes el menú se reinicia solo.</p>`;
+  const row=r=>{const done=!!d[r.id];return `
+    <div class="wk-row ${done?'wk-done':''}">
+      <button class="wk-check" onclick="tickMenu('${r.id}')">${done?'✓':''}</button>
+      <div class="wk-info" onclick="openRecipe('${r.id}','week')">
+        <div class="wk-name">${r.emoji} ${r.name}</div>
+        <div class="wk-meta">${r.time} · ${r.budget}${r.express?' · de despensa':''}</div>
+      </div>
+    </div>`;};
+  document.getElementById('week-list').innerHTML=
+    `<p class="section-label">☀️ Comidas (7)</p>`+w.comidas.map(row).join('')+
+    `<p class="section-label" style="margin-top:16px">🌙 Cenas (7)</p>`+w.cenas.map(row).join('');
+}
+function tickMenu(id){
+  beep(500,.1);vibrate(40);
+  const d=getMenuDone();
+  if(d[id])delete d[id];else d[id]=true;
+  setMenuDone(d);
+  renderWeek();
+}
+
+/* ── BÁSICOS SALVAVIDAS ── */
+function renderBasicos(){
+  document.getElementById('basicos-content').innerHTML=`
+   <div class="card" style="margin-bottom:14px"><p>Con estos básicos siempre en casa nunca te quedas sin comer. Recetas de ~10 minutos, cero pensar ⚡</p></div>
+   <p class="section-label">Recetas salvavidas</p>
+   ${[...EXPRESS.comidas,...EXPRESS.cenas].map(r=>`
+     <div class="recipe-card" onclick="openRecipe('${r.id}','basicos')">
+      <div class="r-head"><span class="r-emoji">${r.emoji}</span>
+      <div class="r-info"><h3>${r.name}</h3>
+      <div class="r-badges"><span class="badge b-time">${r.time}</span><span class="badge b-budget">${r.budget}</span></div></div></div>
+      <p class="recipe-desc">${r.desc}</p></div>`).join('')}
+   <p class="section-label" style="margin-top:16px">Tu despensa salvavidas</p>
+   <div class="card"><ul class="ingr-list">${SHOPPING.flatMap(c=>c.items).map(i=>`<li>${i.name}</li>`).join('')}</ul></div>`;
+}
 
 /* ── SHOPPING ── */
 function getChecked(){try{return JSON.parse(localStorage.getItem('cris_comida_shop')||'{}');}catch(e){return{};}}
@@ -1148,13 +1300,62 @@ function removeFromShop(id){
   setChecked(ck);
   renderShop();
 }
+/* La compra semanal se genera sola desde las 14 recetas del menú.
+   Los ingredientes de despensa (aceite, especias...) se filtran: ya están en básicos. */
+const PANTRY_RE=/(aceite|(^|\s)sal\b|sal,|pimienta|orégano|oregano|comino|cúrcuma|curcuma|pimentón|pimenton|vinagre|ajo|especias|agua|papel de horno|eneldo|jengibre|menta|hierbabuena|laurel|curry)/i;
+function normIngr(s){
+  let t=s.replace(/\(.*?\)/g,'').trim();
+  t=t.replace(/^[\d½¼¾.,\/\s]+/,'');
+  t=t.replace(/^(cdas?|cucharadas?|cucharaditas?|g|gr|kg|ml|l|vasos?|tazas?|rebanadas?|filetes?|latas?|botes?|bolsas?|briks?|bricks?|puñados?|hojas?|rodajas?|ramas?|docenas?|paquetes?|zumo)\s+(de\s+)?/i,'');
+  t=t.replace(/^[\d½¼¾.,\/\s]+/,'');
+  t=t.replace(/\b(grande|pequeñ[oa]s?|crud[oa]s?|madur[oa]s?|fileteada|en rodajas|en dados|de temporada|o verde|o molid[oa]s)\b/gi,'').replace(/\s+/g,' ').trim();
+  const SING={'pepinos':'pepino','pimientos':'pimiento','berenjenas':'berenjena','calabacines':'calabacín','limones':'limón','zanahorias':'zanahoria','puerros':'puerro','cebollas':'cebolla','tomates':'tomate','yogures naturales':'yogur natural'};
+  if(SING[t.toLowerCase()])t=SING[t.toLowerCase()];
+  return t?t.charAt(0).toUpperCase()+t.slice(1):s;
+}
+function ingrCat(n){
+  const s=n.toLowerCase();
+  if(/congelad/.test(s))return '❄️ Congelados';
+  if(/(bote |lata|conserva|garbanzo|lenteja|alubia|atún|atun|aceituna|maíz|maiz|caldo)/.test(s))return '🫙 Conservas y botes';
+  if(/(huevo|queso|yogur|leche|feta|mozzarella|nata)/.test(s))return '🥚 Huevos y lácteos';
+  if(/(pollo|pavo|salmón|salmon|merluza|bacalao|pescado|carne|ternera|lomo)/.test(s))return '🍗 Carne y pescado';
+  if(/(arroz|pasta|quinoa|pan|cuscús|cuscus|avena|almendra|nuez|nueces)/.test(s))return '🌾 Cereales y frutos secos';
+  return '🥬 Frescos: fruta y verdura';
+}
+const CAT_ORDER=['🥬 Frescos: fruta y verdura','❄️ Congelados','🫙 Conservas y botes','🥚 Huevos y lácteos','🍗 Carne y pescado','🌾 Cereales y frutos secos'];
+function weeklyShop(){
+  const w=weekMenu(),map={};
+  [...w.comidas,...w.cenas].filter(r=>!r.express).forEach(r=>{
+    r.ingredients.forEach(ing=>{
+      if(PANTRY_RE.test(ing))return;
+      const n=normIngr(ing),k=n.toLowerCase();
+      if(!map[k])map[k]={name:n,count:0};
+      map[k].count++;
+    });
+  });
+  const cats={};
+  Object.values(map).forEach(it=>{const c=ingrCat(it.name);(cats[c]=cats[c]||[]).push(it);});
+  Object.values(cats).forEach(a=>a.sort((x,y)=>x.name.localeCompare(y.name)));
+  return cats;
+}
+function slugIngr(n){return 'w-'+n.toLowerCase().replace(/[^a-z0-9ñáéíóúü]+/g,'-');}
+
 function renderShop(){
   const el=document.getElementById('shop-list');
   const ck=getChecked();
-  const recipes=getShopRecipes().map(findRecipe).filter(Boolean);
+  const cats=weeklyShop();
 
-  const recHtml=recipes.length
-    ?recipes.map(r=>`
+  const weekHtml=CAT_ORDER.filter(c=>cats[c]).map(c=>`
+    <div class="shop-cat"><h3>${c}</h3>
+    ${cats[c].map(it=>{const id=slugIngr(it.name);return `
+      <div class="shop-item ${ck[id]?'ck':''}" id="si-${id}">
+        <input type="checkbox" id="cb-${id}" ${ck[id]?'checked':''} onchange="toggleItem('${id}',this.checked)">
+        <label for="cb-${id}"><strong>${it.name}</strong>${it.count>1?`<small>en ${it.count} recetas del menú</small>`:''}</label>
+      </div>`;}).join('')}</div>`).join('');
+
+  const recipes=getShopRecipes().map(r=>findRecipe(r)).filter(Boolean);
+  const extrasHtml=recipes.length
+    ?`<p class="section-label" style="margin-top:20px">➕ Extras que añadiste tú</p>`+recipes.map(r=>`
       <div class="shop-cat">
         <h3 style="display:flex;justify-content:space-between;align-items:center">
           <span>${r.emoji} ${r.name}</span>
@@ -1166,12 +1367,13 @@ function renderShop(){
             <label for="cb-${iid}">${ing}</label>
           </div>`;}).join('')}
       </div>`).join('')
-    :`<div class="card" style="margin-bottom:16px"><p>💡 Abre cualquier receta y pulsa <strong>«🛒 Añadir ingredientes a la compra»</strong> — aparecerán aquí, listos para marcar.</p></div>`;
+    :'';
 
   el.innerHTML=`
-    <p class="section-label">🍳 Para tus recetas</p>
-    ${recHtml}
-    <p class="section-label" style="margin-top:20px">🧺 Básicos de temporada (7 días)</p>
+    <p class="section-label">📅 La compra de la semana — cubre las 14 recetas</p>
+    ${weekHtml}
+    ${extrasHtml}
+    <p class="section-label" style="margin-top:20px">🧺 Básicos salvavidas (revisa que no falten)</p>
     ${SHOPPING.map(cat=>`
     <div class="shop-cat">
       <h3>${cat.cat}</h3>
@@ -1185,10 +1387,14 @@ function renderShop(){
 function toggleItem(id,val){beep(400,.08);const d=getChecked();d[id]=val;setChecked(d);document.getElementById('si-'+id).classList.toggle('ck',val);}
 function clearShop(){setChecked({});renderShop();}
 function shareList(){
-  const lines=['🛒 Compra de temporada — Cris\n'];
-  const recipes=getShopRecipes().map(findRecipe).filter(Boolean);
-  recipes.forEach(r=>{lines.push('\n'+r.emoji+' '+r.name);r.ingredients.forEach(i=>lines.push('☐ '+i));});
-  SHOPPING.forEach(cat=>{lines.push('\n'+cat.cat);cat.items.forEach(i=>lines.push('☐ '+i.name+' — '+i.qty));});
+  const lines=['🛒 Compra de la semana — Cris\n'];
+  const cats=weeklyShop();
+  CAT_ORDER.filter(c=>cats[c]).forEach(c=>{
+    lines.push('\n'+c);
+    cats[c].forEach(i=>lines.push('☐ '+i.name+(i.count>1?' (en '+i.count+' recetas)':'')));
+  });
+  lines.push('\n🧺 BÁSICOS SALVAVIDAS');
+  SHOPPING.forEach(cat=>{cat.items.forEach(i=>lines.push('☐ '+i.name+' — '+i.qty));});
   const text=lines.join('\n');
   if(navigator.share)navigator.share({title:'Lista de compras Cris',text}).catch(()=>{});
   else if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>alert('📋 Lista copiada 💚'));
