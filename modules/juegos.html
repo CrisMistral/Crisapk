@@ -10,7 +10,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Outfit','Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent;}
 :root{--turq:#26a69a;--turq-l:#4dd0e1;--lavanda:#e8e6fb;--bg:#f0f9ff;--text:#2d3748;}
-html,body{height:100%;background:linear-gradient(160deg,var(--bg) 0%,var(--lavanda) 60%,#fff 100%);}
+html,body{height:100%;background:#e8f8f5;}
 body{display:flex;flex-direction:column;align-items:center;min-height:100vh;color:var(--text);padding:14px 12px 32px;}
 
 h1{color:var(--turq);font-size:1.4rem;font-weight:800;margin-bottom:2px;text-align:center;}
@@ -66,30 +66,12 @@ canvas{display:block;}
 }
 .lvl-btn.active{border-color:var(--turq);background:var(--turq);color:#fff;}
 
-/* D-PAD */
-.dpad{
-  display:grid;
-  grid-template-columns:repeat(3,54px);
-  grid-template-rows:repeat(3,54px);
-  gap:5px;
-  margin-top:14px;
-}
-.dpad-btn{
-  background:#fff;border:none;border-radius:12px;
-  font-size:1.4rem;cursor:pointer;
-  box-shadow:0 2px 8px rgba(38,166,154,.13);
-  transition:transform .08s, background .08s;
-  display:flex;align-items:center;justify-content:center;
-  user-select:none;
-}
-.dpad-btn:active,.dpad-btn.pressed{transform:scale(.88);background:var(--lavanda);}
-.dpad-empty{background:transparent;box-shadow:none;}
 </style>
 </head>
 <body>
 
 <h1>🐍 Snake</h1>
-<p class="sub">Entrena el enfoque y los reflejos</p>
+<p class="sub">Desliza el dedo · la serpiente te sigue</p>
 
 <!-- NIVEL -->
 <div class="levels">
@@ -121,7 +103,7 @@ canvas{display:block;}
   <div class="overlay" id="overlayStart">
     <div class="ov-emoji">🦘</div>
     <h2>Snake</h2>
-    <p class="ov-msg">Come sin chocar contigo misma<br>Usa el D-pad o desliza en la pantalla</p>
+    <p class="ov-msg">Arrastra el dedo por la pantalla<br>y la serpiente te sigue 🫰</p>
     <button class="btn" onclick="startGame()">▶ Jugar</button>
   </div>
 
@@ -135,23 +117,10 @@ canvas{display:block;}
   </div>
 </div>
 
-<!-- D-PAD -->
-<div class="dpad">
-  <div class="dpad-empty"></div>
-  <button class="dpad-btn" id="dUp"    ontouchstart="press(event,'U')" onmousedown="press(event,'U')">▲</button>
-  <div class="dpad-empty"></div>
-  <button class="dpad-btn" id="dLeft"  ontouchstart="press(event,'L')" onmousedown="press(event,'L')">◀</button>
-  <div class="dpad-empty"></div>
-  <button class="dpad-btn" id="dRight" ontouchstart="press(event,'R')" onmousedown="press(event,'R')">▶</button>
-  <div class="dpad-empty"></div>
-  <button class="dpad-btn" id="dDown"  ontouchstart="press(event,'D')" onmousedown="press(event,'D')">▼</button>
-  <div class="dpad-empty"></div>
-</div>
-
 <script>
 // ===== CONFIG =====
-const SPEEDS = [200, 130, 75]; // ms/tick por nivel
-const COLS = 20, ROWS = 20;
+const SPEEDS = [300, 220, 150]; // ms/tick por nivel — ritmo tranquilo
+const COLS = 16, ROWS = 16;
 
 const C = {
   bg:       '#f8fdfc',
@@ -237,10 +206,12 @@ function tick() {
   draw();
 }
 
+const FRUITS = ['🍓','🍎','🫐','🍊','🍉','🥝','🍇','🍒'];
 function placeFood() {
   let p;
   do { p = {x:Math.floor(Math.random()*COLS), y:Math.floor(Math.random()*ROWS)}; }
   while(snake.some(s => s.x===p.x && s.y===p.y));
+  p.emoji = FRUITS[Math.floor(Math.random()*FRUITS.length)];
   food = p;
 }
 
@@ -260,7 +231,7 @@ function over() {
   document.getElementById('finalScore').textContent = score + ' pts';
   document.getElementById('endMsg').textContent     = isRecord
     ? '¡Nuevo récord personal! 🎉'
-    : eaten > 0 ? `Comiste ${eaten} ${eaten===1?'manzana':'manzanas'} 🍎` : 'Intenta aguantar más';
+    : eaten > 0 ? `Comiste ${eaten} ${eaten===1?'fruta':'frutas'} 🍓` : 'Sin prisa — otra ronda tranquila';
 
   document.getElementById('overlayEnd').classList.remove('hidden');
 }
@@ -287,29 +258,13 @@ function draw() {
   const w = canvas.width, h = canvas.height;
   ctx.clearRect(0, 0, w, h);
 
-  // Fondo
-  ctx.fillStyle = C.bg;
-  ctx.fillRect(0, 0, w, h);
+  // Tablero a cuadros suaves (tipo pradera)
+  drawBoard(w, h);
 
-  // Grid
-  ctx.strokeStyle = C.grid;
-  ctx.lineWidth = 0.5;
-  for(let x = 0; x <= COLS; x++) {
-    ctx.beginPath(); ctx.moveTo(x*cellW, 0); ctx.lineTo(x*cellW, h); ctx.stroke();
-  }
-  for(let y = 0; y <= ROWS; y++) {
-    ctx.beginPath(); ctx.moveTo(0, y*cellH); ctx.lineTo(w, y*cellH); ctx.stroke();
-  }
-
-  // Comida
-  const fx = food.x * cellW + cellW/2, fy = food.y * cellH + cellH/2;
-  const fr = Math.min(cellW, cellH) * 0.37;
-  ctx.beginPath(); ctx.arc(fx, fy, fr+3, 0, Math.PI*2);
-  ctx.fillStyle = C.foodGlow; ctx.fill();
-  ctx.beginPath(); ctx.arc(fx, fy, fr, 0, Math.PI*2);
-  ctx.fillStyle = C.food; ctx.fill();
-  ctx.beginPath(); ctx.arc(fx - fr*0.28, fy - fr*0.28, fr*0.22, 0, Math.PI*2);
-  ctx.fillStyle = 'rgba(255,255,255,.65)'; ctx.fill();
+  // Comida: fruta de verdad
+  ctx.font = `${Math.floor(cellW * 0.85)}px serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(food.emoji, food.x*cellW + cellW/2, food.y*cellH + cellH/2 + cellH*0.04);
 
   // Serpiente
   snake.forEach((seg, i) => {
@@ -360,13 +315,19 @@ function rrect(x, y, w, h, r) {
   ctx.closePath();
 }
 
+function drawBoard(w, h) {
+  for(let x = 0; x < COLS; x++) {
+    for(let y = 0; y < ROWS; y++) {
+      ctx.fillStyle = (x + y) % 2 === 0 ? '#f4fcfa' : '#e9f7f3';
+      ctx.fillRect(x*cellW, y*cellH, cellW, cellH);
+    }
+  }
+}
+
 function drawIdle() {
   if(!ctx || !canvas.width) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = C.grid; ctx.lineWidth = 0.5;
-  for(let x=0;x<=COLS;x++){ctx.beginPath();ctx.moveTo(x*cellW,0);ctx.lineTo(x*cellW,canvas.height);ctx.stroke();}
-  for(let y=0;y<=ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*cellH);ctx.lineTo(canvas.width,y*cellH);ctx.stroke();}
+  drawBoard(canvas.width, canvas.height);
 }
 
 // ===== CONTROLS =====
@@ -376,14 +337,6 @@ document.addEventListener('keydown', e => {
   if((e.key===' '||e.key==='Enter') && !playing) startGame();
 });
 
-function press(e, d) {
-  e.preventDefault();
-  const btn = e.currentTarget;
-  btn.classList.add('pressed');
-  setTimeout(() => btn.classList.remove('pressed'), 120);
-  setDir(d);
-}
-
 function setDir(d) {
   if(!playing) { startGame(); return; }
   const map = {U:{x:0,y:-1},D:{x:0,y:1},L:{x:-1,y:0},R:{x:1,y:0}};
@@ -392,20 +345,25 @@ function setDir(d) {
   nextDir = nd;
 }
 
+// Arrastre continuo: la serpiente sigue el dedo por toda la pantalla,
+// sin levantar el dedo ni apuntar con precisión. Umbral de 22px por giro.
 function setupTouchOnCanvas() {
-  const c = document.getElementById('game');
-  c.addEventListener('touchstart', e => {
+  const THRESHOLD = 22;
+  document.addEventListener('touchstart', e => {
     touchStart = {x: e.touches[0].clientX, y: e.touches[0].clientY};
   }, {passive:true});
-  c.addEventListener('touchend', e => {
+  document.addEventListener('touchmove', e => {
     if(!touchStart) return;
-    const dx = e.changedTouches[0].clientX - touchStart.x;
-    const dy = e.changedTouches[0].clientY - touchStart.y;
-    touchStart = null;
-    if(Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+    if(playing) e.preventDefault(); // evita el scroll mientras juegas
+    const t = e.touches[0];
+    const dx = t.clientX - touchStart.x;
+    const dy = t.clientY - touchStart.y;
+    if(Math.abs(dx) < THRESHOLD && Math.abs(dy) < THRESHOLD) return;
     if(Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? 'R' : 'L');
     else setDir(dy > 0 ? 'D' : 'U');
-  }, {passive:true});
+    touchStart = {x: t.clientX, y: t.clientY}; // nueva ancla: se puede encadenar giros
+  }, {passive:false});
+  document.addEventListener('touchend', () => { touchStart = null; }, {passive:true});
 }
 
 // ===== AUDIO =====
