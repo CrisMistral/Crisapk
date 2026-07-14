@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="es">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Cris — Rutina Nocturna</title>
@@ -16,7 +19,7 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Outfit', -apple-system, 'Segoe UI', Roboto, sans-serif;
   background: radial-gradient(ellipse at top, var(--bg3) 0%, var(--bg2) 50%, var(--bg1) 100%);
   color: var(--text);
   min-height: 100vh;
@@ -510,6 +513,20 @@ function showInfo() {
   showView('info');
 }
 
+let _utt = null;
+function speak(t) {
+  try {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+    _utt = new SpeechSynthesisUtterance(t);
+    _utt.lang = 'es-ES'; _utt.rate = .82; _utt.pitch = .95;
+    const v = window.speechSynthesis.getVoices().find(v => v.lang.startsWith('es'));
+    if (v) _utt.voice = v;
+    window.speechSynthesis.speak(_utt);
+  } catch (e) {}
+}
+
 function startRoutine() {
   currentStep = 0;
   showView('routine');
@@ -520,7 +537,8 @@ function startRoutine() {
 function loadStep(stepIndex) {
   const step = steps[stepIndex];
   timeRemaining = step.duration;
-  
+  speak(step.title.replace(/[^\wáéíóúñÁÉÍÓÚÑ\s]/g, '') + '. ' + step.desc);
+
   document.getElementById('stepTitle').textContent = step.title;
   document.getElementById('stepDesc').textContent = step.desc;
   document.getElementById('counter').textContent = `${stepIndex + 1}/${steps.length}`;
@@ -610,22 +628,20 @@ function loadStep(stepIndex) {
     const warning = document.createElement('div');
     warning.className = 'disconnection-warning';
     warning.innerHTML = `
-      <div class="disconnection-title">⚠️ DESCONEXIÓN TOTAL ⚠️</div>
+      <div class="disconnection-title">🌙 Último paso: el móvil a dormir</div>
       <div class="disconnection-text">
-        <strong>Ahora debes guardar tu móvil en OTRA HABITACIÓN.</strong><br>
-        No lo dejes en tu mesita de noche. No lo pongas cerca de tu cama.<br>
-        <strong>Llévalo lejos de tu dormitorio.</strong>
+        Lleva el móvil a <strong>otra habitación</strong> y déjalo cargando allí.<br>
+        Es un regalo que le haces a tu yo de mañana. 💚
       </div>
     `;
     content.appendChild(warning);
-    
+
     const fomo = document.createElement('div');
     fomo.className = 'fomo-reminder';
     fomo.innerHTML = `
-      💭 Si sientes tentación de mirarlo a medianoche, recuerda:<br>
-      <span class="fomo-quote">"Nada que pueda pasar en WhatsApp, Instagram o email entre las 22:00 y las 7:00 merece sacrificar tu descanso."</span><br><br>
-      <strong>El mundo seguirá girando sin ti por 8 horas.</strong><br>
-      Todo puede esperar hasta mañana. Tu sueño NO puede esperar.
+      💭 Si a medianoche te tienta mirarlo, recuerda:<br>
+      <span class="fomo-quote">"Nada de lo que pase en el móvil entre las 22:00 y las 7:00 es más importante que tu descanso."</span><br><br>
+      El mundo puede esperar 8 horas. Tú necesitas dormir 🫂
     `;
     content.appendChild(fomo);
   }
@@ -680,17 +696,21 @@ function finishRoutine() {
   document.getElementById('stepDesc').textContent = 'Preparado para un sueño reparador';
   document.getElementById('stepContent').innerHTML = '';
   
+  document.getElementById('stepContent').innerHTML = `
+    <div class="phrase" style="text-align:center">
+      <strong>🌙 Ya está. Lo has hecho genial.</strong><br><br>
+      <em>Guarda el móvil en otra habitación 📱→🚪<br>y déjate caer en la cama 😴</em><br><br>
+      Dulces sueños, Cris 💜
+    </div>`;
+
   const controlsDiv = document.querySelector('.controls');
   controlsDiv.innerHTML = '<button class="btn" onclick="showHome()">🏠 Volver al inicio</button>';
-  
+
+  speak('Rutina completada. Guarda el móvil en otra habitación y a dormir. Dulces sueños.');
   setTimeout(() => {
     document.getElementById('dim').style.opacity = '0.8';
-    setTimeout(() => {
-      alert('¡Rutina completada! 🌙\n\n✅ RECUERDA: Guarda el móvil LEJOS de tu cama.\n\n📱 → 🚪 → 😴\n\n¡Que tengas dulces sueños!');
-      showHome();
-      document.getElementById('dim').style.opacity = '0';
-    }, 2000);
-  }, 1000);
+    setTimeout(() => { document.getElementById('dim').style.opacity = '0'; }, 4000);
+  }, 1500);
 }
 </script>
 
