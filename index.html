@@ -96,6 +96,31 @@ body{
   border-top-color:var(--mint-mid);
 }
 
+/* ── TODAY PANEL ── */
+#today-panel{
+  background:var(--white-card);
+  border:2px solid var(--mint-mid);
+  border-radius:20px;
+  padding:14px;
+  margin-bottom:18px;
+  box-shadow:0 3px 10px rgba(38,166,154,.10);
+}
+.tp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.tp-title{font-size:.95rem;font-weight:800;color:var(--teal-dark);text-transform:capitalize;}
+.tp-eco{border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:999px;padding:6px 12px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;}
+.tp-eco.on{background:#fef3c7;border-color:#f59e0b;color:#92400e;}
+.tp-eco-msg{background:#fef9ec;border:1.5px solid #fde9b8;border-radius:12px;padding:9px 12px;font-size:.78rem;color:#92400e;font-weight:600;margin-bottom:10px;line-height:1.45;}
+.tp-row{display:flex;align-items:center;gap:11px;width:100%;border:none;background:var(--mint-bg);border-radius:14px;padding:11px 12px;margin-bottom:7px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;transition:transform .1s;}
+.tp-row:last-child{margin-bottom:0;}
+.tp-row:active{transform:scale(.98);}
+.tp-row.done{opacity:.6;}
+.tp-em{font-size:1.5rem;flex-shrink:0;}
+.tp-info{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0;}
+.tp-t{font-size:.86rem;font-weight:700;color:var(--teal-dark);}
+.tp-row.done .tp-t{text-decoration:line-through;}
+.tp-s{font-size:.72rem;color:var(--text-soft);font-weight:500;}
+.tp-arrow{font-size:1.1rem;color:var(--teal);font-weight:800;flex-shrink:0;}
+
 /* Module grid */
 .grid{
   display:grid;
@@ -229,6 +254,8 @@ body{
     </div>
   </div>
 
+  <div id="today-panel"></div>
+
   <div class="grid" id="moduleGrid"></div>
 
   <div class="footer-note">
@@ -277,6 +304,68 @@ function setGreeting(){
 }
 setGreeting();
 
+/* ── PANEL HOY (lee el progreso real de cada módulo en localStorage) ── */
+const PILATES={1:['🌀','Core Profundo','18 min'],2:['🍑','Cadera y Glúteos','17 min'],3:['🌿','Espalda y Postura','18 min'],4:['🦵','Piernas y Equilibrio','17 min'],5:['⭐','Cuerpo Completo','20 min'],6:['🌸','Estiramientos Profundos','20 min'],0:['☀️','Movilidad Suave','15 min']};
+const ZONES={1:['🍳','Cocina','cocina'],2:['🛁','Baño','bano'],3:['🛋️','Salón','salon'],4:['🛏️','Dormitorio','dormitorio'],5:['🚪','Zonas Comunes','comunes']};
+
+function weekNum(){const d=new Date(),y=d.getFullYear(),s=new Date(y,0,1);return Math.ceil(((d-s)/864e5+s.getDay()+1)/7);}
+function lsJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return{};}}
+function todayStr(){return new Date().toISOString().split('T')[0];}
+function isEco(){return localStorage.getItem('cris_eco_day')===todayStr();}
+
+function toggleEco(){
+  if(isEco())localStorage.removeItem('cris_eco_day');
+  else localStorage.setItem('cris_eco_day',todayStr());
+  renderToday();
+}
+
+function renderToday(){
+  const el=document.getElementById('today-panel');
+  const d=new Date(),day=d.getDay(),h=d.getHours();
+  const eco=isEco();
+  const w=weekNum(),y=d.getFullYear();
+  const rows=[];
+
+  if(eco){
+    rows.push({e:'🫁',t:'Respira 2 minutos',s:'Con eso ya cuenta',f:'modules/rescate-emocional.html'});
+    rows.push({e:'🧘',t:'Movilidad suave',s:'Solo lo que te apetezca, sin más',f:'modules/ejercicios-hiit.html#suave'});
+    rows.push({e:'🧹',t:'Recoge 3 cosas',s:'Express corto, sin presión',f:'modules/limpieza.html#express'});
+    rows.push({e:'🍽️',t:'Receta salvavidas',s:'10 min de despensa y comes',f:'modules/comida.html#basicos'});
+  }else{
+    const p=PILATES[day];
+    rows.push({e:p[0],t:'Pilates: '+p[1],s:p[2]+' · manos libres',f:'modules/ejercicios-hiit.html'});
+
+    if(ZONES[day]){
+      const z=ZONES[day];
+      const done=!!lsJSON('lim-w'+w+'-'+y)[z[2]];
+      rows.push({e:z[0],t:'Limpieza: '+z[1],s:done?'¡Ya está hecha!':'~18 min · 6 pasos',f:'modules/limpieza.html',done});
+    }else{
+      rows.push({e:'⚡',t:'Finde: limpieza libre',s:'¿Un express de 15 min?',f:'modules/limpieza.html#express'});
+    }
+
+    const menuDone=Object.values(lsJSON('cris_menu_w'+w+'_'+y)).filter(Boolean).length;
+    const left=Math.max(0,14-menuDone);
+    rows.push({e:'🍽️',t:h<17?'¿Qué comes hoy?':'¿Qué cenas hoy?',s:left>0?'Te quedan '+left+' recetas del menú':'Menú de la semana completado 🎉',f:'modules/comida.html'});
+
+    if(h>=20)rows.push({e:'🌙',t:'Rutina nocturna',s:'25 min · cierre del día',f:'modules/rutina-nocturna.html'});
+  }
+
+  const dias=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  el.innerHTML=`
+    <div class="tp-head">
+      <span class="tp-title">${eco?'🪫 Hoy, en modo eco':'✨ Hoy, '+dias[day]}</span>
+      <button class="tp-eco ${eco?'on':''}" onclick="toggleEco()">${eco?'💪 Volver a normal':'🪫 Modo eco'}</button>
+    </div>
+    ${eco?'<div class="tp-eco-msg">Día de poca batería — lo mínimo cuenta. Hacer poco también es cuidarte 💚</div>':''}
+    ${rows.map(r=>`
+      <button class="tp-row${r.done?' done':''}" onclick="openModule('${r.f}')">
+        <span class="tp-em">${r.e}</span>
+        <span class="tp-info"><span class="tp-t">${r.t}</span><span class="tp-s">${r.s}</span></span>
+        <span class="tp-arrow">${r.done?'✓':'›'}</span>
+      </button>`).join('')}`;
+}
+renderToday();
+
 // Generar tarjetas
 const grid = document.getElementById('moduleGrid');
 modules.forEach(m => {
@@ -297,6 +386,7 @@ document.getElementById('homeBtn').addEventListener('click', () => {
   document.getElementById('viewer').classList.remove('show');
   document.getElementById('homeBtn').classList.remove('show');
   document.getElementById('moduleFrame').src = '';
+  renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
 });
 
 // PWA service worker
