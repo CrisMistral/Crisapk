@@ -83,6 +83,13 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .done-box .big{font-size:3.5rem;margin-bottom:10px}
 .done-box h2{font-size:1.4rem;font-weight:800;margin-bottom:8px}
 .done-box p{font-size:.88rem;opacity:.9;line-height:1.5}
+
+.calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
+
+/* Anillo de tiempo: se vacía según pasa — para ver cuánto queda sin leer números */
+.tring{width:176px;height:176px;border-radius:50%;margin:4px auto 10px;display:flex;align-items:center;justify-content:center;background:conic-gradient(#26a69a 360deg,#cde9e4 0);flex-shrink:0;}
+.tring-in{width:144px;height:144px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;text-align:center;}
+.tring .s-timer{font-size:2.6rem;margin-bottom:0}
 </style>
 </head>
 <body>
@@ -118,6 +125,13 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 
 <script>
+/* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
+function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
+function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
+if(__cfg().calm)document.documentElement.classList.add('calm');
+
+function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
+
 /* ─── SVG ANIMATIONS ─── */
 // Each entry = [poseA_elements, poseB_elements]
 // ViewBox: 0 0 200 130 — profile/side view
@@ -587,10 +601,10 @@ let S={exIdx:0,side:1,phase:'ready',timer:0,interval:null};
 function todayDayIdx(){const m={1:0,2:1,3:2,4:3,5:4,6:5,0:6};return m[TODAY];}
 
 /* ─── AUDIO ─── */
-function beep(f=600,d=.2){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
-function vibrate(ms=60){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
+function beep(f=600,d=.2){if(!__allow('sound'))return;try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+function vibrate(ms=60){if(!__allow('vib'))return;try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
 let _utt=null;
-function speak(t){try{if(!window.speechSynthesis)return;window.speechSynthesis.cancel();if(window.speechSynthesis.paused)window.speechSynthesis.resume();_utt=new SpeechSynthesisUtterance(t);_utt.lang='es-ES';_utt.rate=.88;const v=window.speechSynthesis.getVoices();const ev=v.find(v=>v.lang.startsWith('es'));if(ev)_utt.voice=ev;window.speechSynthesis.speak(_utt);}catch(e){}}
+function speak(t){try{if(!__allow('voice'))return;if(!window.speechSynthesis)return;window.speechSynthesis.cancel();if(window.speechSynthesis.paused)window.speechSynthesis.resume();_utt=new SpeechSynthesisUtterance(t);_utt.lang='es-ES';_utt.rate=.88;const v=window.speechSynthesis.getVoices();const ev=v.find(v=>v.lang.startsWith('es'));if(ev)_utt.voice=ev;window.speechSynthesis.speak(_utt);}catch(e){}}
 
 /* ─── NAV ─── */
 function go(v){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('v-'+v).classList.add('active');window.scrollTo(0,0);}
@@ -627,7 +641,7 @@ document.addEventListener('visibilitychange',()=>{
 });
 
 function startSession(){
-  S={exIdx:0,side:1,phase:'idle',timer:0,interval:null,pausedPhase:null};
+  S={exIdx:0,side:1,phase:'idle',timer:0,total:0,interval:null,pausedPhase:null};
   document.getElementById('s-title').textContent=DAYS[curDayIdx].name+' · '+DAYS[curDayIdx].focus;
   go('session');renderSession();
 }
@@ -639,7 +653,7 @@ function beginAll(){keepAwake();startPrep();}
 
 function startPrep(){
   const ex=DAYS[curDayIdx].exercises[S.exIdx];
-  S.phase='prep';S.timer=8;S.side=1;
+  S.phase='prep';S.timer=8;S.total=8;S.side=1;
   speak((S.exIdx===0?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.voice);
   vibrate(50);
   S.interval=setInterval(sessionTick,1000);
@@ -650,24 +664,25 @@ function sessionTick(){
   S.timer--;
   const el=document.getElementById('s-timer');
   if(el)el.textContent=S.timer;
+  __ring('s-ring',S.total?S.timer/S.total:0);
   if(S.timer<=3&&S.timer>0&&(S.phase==='active'||S.phase==='prep'||S.phase==='rest'))beep(500,.08);
   if(S.timer>0)return;
   stopTimer();
   const d=DAYS[curDayIdx],ex=d.exercises[S.exIdx];
   if(S.phase==='prep'){
-    S.phase='active';S.timer=ex.duration;
+    S.phase='active';S.timer=ex.duration;S.total=ex.duration;
     beep(800,.15);vibrate(60);speak('¡Vamos!');
     S.interval=setInterval(sessionTick,1000);
   }else if(S.phase==='active'&&ex.sides===2&&S.side===1){
-    S.side=2;S.phase='switch';S.timer=5;
+    S.side=2;S.phase='switch';S.timer=5;S.total=5;
     speak('Cambia de lado.');vibrate(60);
     S.interval=setInterval(sessionTick,1000);
   }else if(S.phase==='switch'){
-    S.phase='active';S.timer=ex.duration;
+    S.phase='active';S.timer=ex.duration;S.total=ex.duration;
     beep(800,.15);vibrate(40);
     S.interval=setInterval(sessionTick,1000);
   }else if(S.phase==='active'&&ex.rest>0&&S.exIdx<d.exercises.length-1){
-    S.phase='rest';S.timer=ex.rest;
+    S.phase='rest';S.timer=ex.rest;S.total=ex.rest;
     beep(600,.15);vibrate(60);
     speak('Muy bien. Descansa un momento.');
     S.interval=setInterval(sessionTick,1000);
@@ -696,11 +711,11 @@ function skipPhase(){
   const ph=S.phase==='paused'?(S.pausedPhase||'active'):S.phase;
   S.pausedPhase=null;
   if(ph==='prep'||ph==='switch'){
-    S.phase='active';S.timer=ex.duration;beep(800,.15);
+    S.phase='active';S.timer=ex.duration;S.total=ex.duration;beep(800,.15);
     S.interval=setInterval(sessionTick,1000);
     renderSession();
   }else if(ph==='active'&&ex.sides===2&&S.side===1){
-    S.side=2;S.phase='switch';S.timer=5;
+    S.side=2;S.phase='switch';S.timer=5;S.total=5;
     S.interval=setInterval(sessionTick,1000);
     renderSession();
   }else{
@@ -762,14 +777,15 @@ function renderSession(){
       <div class="s-phase">${phaseLabel}</div>
       <div class="s-exname">${isRest&&nextEx?'Luego: '+nextEx.name:ex.name+sideLabel}</div>
       ${showDesc?`<div class="s-desc">${ex.desc}</div>`:'<div style="height:8px"></div>'}
-      <div class="s-timer${timerCls}" id="s-timer">${S.timer}</div>
-      <div class="s-tlbl">${timerLbl}</div>
+      <div class="tring" id="s-ring"><div class="tring-in"><div class="s-timer${timerCls}" id="s-timer">${S.timer}</div>
+      <div class="s-tlbl">${timerLbl}</div></div></div>
     </div>
     ${showDesc?`<div class="s-tip">💡 ${ex.tip}</div>`:''}
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="togglePlay()">${S.phase==='paused'?'▶ Seguir':'⏸ Pausa'}</button>
       <button class="btn btn-primary" onclick="skipPhase()">Saltar →</button>
     </div>`;
+  __ring('s-ring',S.total?S.timer/S.total:0);
 }
 
 initHome();
