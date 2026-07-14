@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Cris - Rutina Diaria</title>
@@ -16,7 +19,7 @@
     --longbreak:#ffd54f;
     --text:#2d3748;
   }
-  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Outfit','Segoe UI',system-ui,sans-serif;}
   body{
     background:linear-gradient(135deg,var(--bg) 0%,var(--lavanda-soft) 100%);
     min-height:100vh;
@@ -180,6 +183,8 @@
 
     <!-- CONFIG VIEW -->
     <div id="configView">
+      <button class="btn-main" id="quickStartBtn" style="margin-bottom:14px;">⚡ EMPEZAR YA — 25 min y a por ello</button>
+      <div style="font-size:0.75rem;opacity:.6;text-align:center;margin-bottom:10px;">o personaliza tu sesión:</div>
       <div class="pill-row">
         <button class="pill" data-preset="clasico">Clásico</button>
         <button class="pill" data-preset="intenso">Intenso</button>
@@ -328,16 +333,18 @@
   function vibrate(pattern){
     if(navigator.vibrate) navigator.vibrate(pattern);
   }
+  let _utt = null;
   function speak(text){
-    if('speechSynthesis' in window){
-      try{
-        speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'es-ES';
-        u.rate = 0.95;
-        speechSynthesis.speak(u);
-      }catch(e){}
-    }
+    try{
+      if(!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      if(window.speechSynthesis.paused) window.speechSynthesis.resume();
+      _utt = new SpeechSynthesisUtterance(text);
+      _utt.lang = 'es-ES'; _utt.rate = 0.9;
+      const v = window.speechSynthesis.getVoices().find(v=>v.lang.startsWith('es'));
+      if(v) _utt.voice = v;
+      window.speechSynthesis.speak(_utt);
+    }catch(e){}
   }
   function showToast(msg, ms=2200){
     const t = document.getElementById('toast');
@@ -571,10 +578,14 @@
     completeBlock();
   });
   document.getElementById('resetBtn').addEventListener('click', ()=>{
-    if(confirm('¿Reiniciar la sesión y volver a la configuración?')){
-      speak('Sesión reiniciada');
-      resetSession();
-    }
+    speak('Sesión reiniciada');
+    showToast('🔁 Sesión reiniciada');
+    resetSession();
+  });
+  document.getElementById('quickStartBtn').addEventListener('click', ()=>{
+    state.blocks = JSON.parse(JSON.stringify(presets.clasico));
+    renderConfig();
+    startSession();
   });
 
   // ---- Tareas: agregar ----

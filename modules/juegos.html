@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Juegos Mentales · Cris</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Outfit','Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent;}
 :root{--turq:#26a69a;--turq-l:#4dd0e1;--lavanda:#e8e6fb;--bg:#f0f9ff;--text:#2d3748;}
 html,body{height:100%;background:linear-gradient(160deg,var(--bg) 0%,var(--lavanda) 60%,#fff 100%);}
 body{display:flex;flex-direction:column;align-items:center;min-height:100vh;color:var(--text);padding:14px 12px 32px;}
@@ -124,7 +127,7 @@ canvas{display:block;}
 
   <div class="overlay hidden" id="overlayEnd">
     <div class="ov-emoji" id="endEmoji">💥</div>
-    <h2 id="endTitle">Game Over</h2>
+    <h2 id="endTitle">¡Fin de la partida!</h2>
     <div class="final-score" id="finalScore">0 pts</div>
     <p class="ov-msg" id="endMsg"></p>
     <button class="btn" onclick="startGame()">🔄 Otra vez</button>
@@ -253,7 +256,7 @@ function over() {
 
   const medal = score >= 200 ? '🏆' : score >= 100 ? '🥈' : score >= 50 ? '💚' : '😅';
   document.getElementById('endEmoji').textContent   = medal;
-  document.getElementById('endTitle').textContent   = score >= 100 ? '¡Increíble!' : score > 0 ? '¡Buen intento!' : 'Game Over';
+  document.getElementById('endTitle').textContent   = score >= 100 ? '¡Increíble!' : score > 0 ? '¡Buen intento!' : '¡Fin de la partida!';
   document.getElementById('finalScore').textContent = score + ' pts';
   document.getElementById('endMsg').textContent     = isRecord
     ? '¡Nuevo récord personal! 🎉'

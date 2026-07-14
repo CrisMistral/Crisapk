@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intereses - Cris (Sistema de Progreso Diario)</title>
@@ -12,8 +15,8 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+            font-family: 'Outfit', -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #e8f8f5;
             color: #2c3e50;
             min-height: 100vh;
         }
@@ -1250,9 +1253,8 @@
             
             // Actualizar botones de preset
             document.querySelectorAll(`#${section} .preset-btn`).forEach(btn => {
-                btn.classList.remove('active');
+                btn.classList.toggle('active', parseInt(btn.textContent) === minutes);
             });
-            event.target.classList.add('active');
         }
 
         function startTimer(section) {
@@ -1328,13 +1330,9 @@
             // Notificación visual y sonora
             showTimerNotification(section);
             
-            // Auto-completar la actividad si el tiempo fue completado
+            // Auto-completar la actividad al terminar el tiempo — sin popups que interrumpen
             if (timers[section].timeLeft === 0) {
-                setTimeout(() => {
-                    if (confirm(`¡Tiempo completado para ${getSectionName(section)}! ¿Marcar como completado?`)) {
-                        completeActivity(section);
-                    }
-                }, 1000);
+                setTimeout(() => { completeActivity(section); }, 800);
             }
         }
 
@@ -1432,16 +1430,15 @@
 
         // Gestión de datos
         function saveAppData() {
-            window.appDataStorage = JSON.stringify(appData);
+            try { localStorage.setItem('cris_intereses', JSON.stringify(appData)); } catch (e) {}
         }
 
         function loadAppData() {
-            if (window.appDataStorage) {
-                try {
-                    appData = JSON.parse(window.appDataStorage);
-                } catch (e) {
-                    console.log("Error loading data, using defaults");
-                }
+            try {
+                const saved = localStorage.getItem('cris_intereses');
+                if (saved) appData = JSON.parse(saved);
+            } catch (e) {
+                console.log("Error loading data, using defaults");
             }
         }
 
