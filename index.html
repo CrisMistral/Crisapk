@@ -218,6 +218,17 @@ body{
 }
 #sosBtn:active{transform:scale(.93);}
 
+/* ── Recordatorios ── */
+#notifBtn{
+  width:100%;border:2px solid var(--mint-mid);background:var(--white-card);color:var(--teal-dark);
+  border-radius:16px;padding:14px;font-family:'Outfit',sans-serif;
+  font-size:.92rem;font-weight:700;cursor:pointer;margin-bottom:10px;
+}
+#notifBtn.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+#notifTimes{background:var(--white-card);border:2px solid var(--mint-mid);border-radius:16px;padding:12px 14px;margin-bottom:10px;}
+.nt-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:.86rem;font-weight:600;color:var(--teal-dark);}
+.nt-row input{border:2px solid var(--mint-mid);border-radius:10px;padding:6px 10px;font-family:'Outfit',sans-serif;font-size:.9rem;color:var(--teal-dark);background:#fff;}
+
 /* ── Ajustes rápidos ── */
 .cfg-zone{margin-top:22px;}
 #calmBtn{
@@ -236,7 +247,7 @@ body{
 .cfg-note{font-size:.72rem;color:var(--text-soft);text-align:center;margin-top:8px;opacity:.8;}
 
 /* ── Quokka asomado agarrando el panel ── */
-.quokka-peek{display:flex;justify-content:center;margin-bottom:-24px;position:relative;z-index:0;}
+.quokka-peek{display:flex;justify-content:center;margin-bottom:-7px;position:relative;z-index:0;}
 .tp-wrap{position:relative;z-index:1;}
 .q-paw{position:absolute;top:-13px;width:44px;z-index:2;pointer-events:none;}
 .q-paw.l{left:16%;transform:rotate(-6deg);}
@@ -257,54 +268,74 @@ body{
     <div class="bubble" id="bubble-msg">¡Aquí estoy! Elige un módulo 🌿</div>
   </div>
 
-  <!-- Quokka realista-kawaii asomado detrás del panel -->
+  <!-- Quokka realista asomado detrás del panel -->
   <div class="quokka-peek">
-    <svg viewBox="0 0 150 96" width="175" xmlns="http://www.w3.org/2000/svg" aria-label="Quokka, tu acompañante">
-      <!-- Orejas -->
-      <circle cx="42" cy="16" r="13" fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5"/>
-      <circle cx="108" cy="16" r="13" fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5"/>
-      <ellipse cx="42" cy="17" rx="6.5" ry="7" fill="#d9a18b"/>
-      <ellipse cx="108" cy="17" rx="6.5" ry="7" fill="#d9a18b"/>
-      <!-- Cabeza con mofletes (silueta de quokka) -->
-      <path d="M75 6 C52 6 35 20 31 40 C19 42 12 55 16 65 C20 75 33 80 45 77 C53 87 66 92 75 92 C84 92 97 87 105 77 C117 80 130 75 134 65 C138 55 131 42 119 40 C115 20 98 6 75 6 Z"
-            fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5" stroke-linejoin="round"/>
-      <!-- Pelaje de la frente -->
-      <path d="M67 8 Q71 3 75 8 M73 9 Q77 4 81 9" stroke="#7c5a38" stroke-width="2" stroke-linecap="round" fill="none" opacity=".7"/>
-      <!-- Hocico claro -->
-      <ellipse cx="75" cy="67" rx="26" ry="19" fill="#ecd9b8"/>
-      <!-- Ojos grandes kawaii -->
-      <circle cx="55" cy="47" r="7" fill="#2f2013"/>
-      <circle cx="57.5" cy="44.5" r="2.6" fill="#fff"/>
-      <circle cx="53" cy="49" r="1.2" fill="#fff" opacity=".8"/>
-      <circle cx="95" cy="47" r="7" fill="#2f2013"/>
-      <circle cx="97.5" cy="44.5" r="2.6" fill="#fff"/>
-      <circle cx="93" cy="49" r="1.2" fill="#fff" opacity=".8"/>
-      <!-- Mejillas sonrosadas -->
-      <ellipse cx="42" cy="61" rx="6.5" ry="4" fill="#e2836d" opacity=".35"/>
-      <ellipse cx="108" cy="61" rx="6.5" ry="4" fill="#e2836d" opacity=".35"/>
-      <!-- Nariz -->
-      <path d="M69 56 Q75 51.5 81 56 Q81 62.5 75 65.5 Q69 62.5 69 56 Z" fill="#4e3423"/>
-      <!-- La famosa sonrisa del quokka -->
-      <path d="M75 65.5 Q75 70 69 71.5 M75 65.5 Q75 70 81 71.5" stroke="#4e3423" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-      <path d="M63 70 Q75 81 87 70 Q75 76 63 70 Z" fill="#8a4a3a"/>
-      <ellipse cx="75" cy="74.5" rx="4" ry="2" fill="#e2836d"/>
-      <!-- Bigotes -->
-      <path d="M36 58 L20 54 M37 64 L20 63 M36 70 L21 72" stroke="#7c5a38" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
-      <path d="M114 58 L130 54 M113 64 L130 63 M114 70 L129 72" stroke="#7c5a38" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+    <svg viewBox="46 36 420 348" width="195" xmlns="http://www.w3.org/2000/svg" aria-label="Quokka, tu acompañante">
+      <defs>
+        <radialGradient id="qfur" cx="50%" cy="38%" r="75%">
+          <stop offset="0%" stop-color="#a08a66"/><stop offset="55%" stop-color="#8d7757"/><stop offset="100%" stop-color="#6e5a42"/>
+        </radialGradient>
+        <radialGradient id="qmuzzle" cx="50%" cy="40%" r="70%">
+          <stop offset="0%" stop-color="#e8d8b4"/><stop offset="70%" stop-color="#d3bf95"/><stop offset="100%" stop-color="#bda87e"/>
+        </radialGradient>
+        <radialGradient id="qearIn" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#3d3023"/><stop offset="100%" stop-color="#5c4a36"/>
+        </radialGradient>
+        <linearGradient id="qnose" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4d3c2f"/><stop offset="100%" stop-color="#291d14"/>
+        </linearGradient>
+      </defs>
+      <circle cx="148" cy="118" r="52" fill="url(#qfur)" stroke="#5a482f" stroke-width="5"/>
+      <ellipse cx="152" cy="122" rx="28" ry="32" fill="url(#qearIn)"/>
+      <circle cx="364" cy="118" r="52" fill="url(#qfur)" stroke="#5a482f" stroke-width="5"/>
+      <ellipse cx="360" cy="122" rx="28" ry="32" fill="url(#qearIn)"/>
+      <path d="M112 90 L102 78 M128 74 L122 60 M148 68 L146 52" stroke="#5a482f" stroke-width="4" stroke-linecap="round" opacity=".6"/>
+      <path d="M400 90 L410 78 M384 74 L390 60 M364 68 L366 52" stroke="#5a482f" stroke-width="4" stroke-linecap="round" opacity=".6"/>
+      <path d="M256 62 C 186 62, 132 104, 118 166 C 78 174, 52 214, 62 252 C 71 288, 108 308, 148 302 C 172 348, 214 372, 256 372 C 298 372, 340 348, 364 302 C 404 308, 441 288, 450 252 C 460 214, 434 174, 394 166 C 380 104, 326 62, 256 62 Z"
+            fill="url(#qfur)" stroke="#5a482f" stroke-width="6" stroke-linejoin="round"/>
+      <g stroke="#5f4d38" stroke-width="3.5" stroke-linecap="round" opacity=".45" fill="none">
+        <path d="M226 68 Q232 56 240 66"/><path d="M248 64 Q256 52 264 64"/><path d="M272 66 Q280 56 286 68"/>
+        <path d="M96 216 Q84 214 78 222"/><path d="M94 244 Q82 246 78 254"/>
+        <path d="M416 216 Q428 214 434 222"/><path d="M418 244 Q430 246 434 254"/>
+      </g>
+      <ellipse cx="172" cy="204" rx="44" ry="38" fill="#6e5a42" opacity=".35"/>
+      <ellipse cx="340" cy="204" rx="44" ry="38" fill="#6e5a42" opacity=".35"/>
+      <ellipse cx="256" cy="304" rx="118" ry="92" fill="url(#qmuzzle)"/>
+      <circle cx="172" cy="204" r="27" fill="#1c130c"/>
+      <circle cx="181" cy="194" r="8.5" fill="#fff" opacity=".95"/>
+      <circle cx="164" cy="212" r="4" fill="#fff" opacity=".5"/>
+      <circle cx="340" cy="204" r="27" fill="#1c130c"/>
+      <circle cx="349" cy="194" r="8.5" fill="#fff" opacity=".95"/>
+      <circle cx="332" cy="212" r="4" fill="#fff" opacity=".5"/>
+      <path d="M232 268 Q256 252 280 268 Q286 288 268 300 Q256 306 244 300 Q226 288 232 268 Z" fill="url(#qnose)"/>
+      <ellipse cx="247" cy="270" rx="8" ry="5" fill="#7a6650" opacity=".55"/>
+      <path d="M256 304 L256 326" stroke="#33261d" stroke-width="6" stroke-linecap="round"/>
+      <path d="M256 326 C 234 348, 196 344, 178 318" stroke="#33261d" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M256 326 C 278 348, 316 344, 334 318" stroke="#33261d" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M232 336 Q256 362 280 336 Q256 348 232 336 Z" fill="#7d4636"/>
+      <path d="M244 344 Q256 352 268 344 Q256 356 244 344 Z" fill="#d98a72"/>
+      <g stroke="#3f3122" stroke-width="3" stroke-linecap="round" opacity=".55" fill="none">
+        <path d="M180 286 Q130 278 92 286"/><path d="M182 300 Q132 300 94 312"/><path d="M186 314 Q140 322 106 338"/>
+        <path d="M332 286 Q382 278 420 286"/><path d="M330 300 Q380 300 418 312"/><path d="M326 314 Q372 322 406 338"/>
+      </g>
+      <g fill="#8a734f" opacity=".6">
+        <circle cx="200" cy="292" r="2.5"/><circle cx="210" cy="304" r="2.5"/><circle cx="198" cy="314" r="2.5"/>
+        <circle cx="312" cy="292" r="2.5"/><circle cx="302" cy="304" r="2.5"/><circle cx="314" cy="314" r="2.5"/>
+      </g>
     </svg>
   </div>
 
   <div class="tp-wrap">
     <!-- Patitas agarrando el borde del panel -->
     <svg class="q-paw l" viewBox="0 0 44 28" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 28 L5 15 Q5 3 22 3 Q39 3 39 15 L39 28 Z" fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5"/>
-      <line x1="16" y1="7" x2="16" y2="19" stroke="#7c5a38" stroke-width="2" stroke-linecap="round"/>
-      <line x1="28" y1="7" x2="28" y2="19" stroke="#7c5a38" stroke-width="2" stroke-linecap="round"/>
+      <path d="M5 28 L5 15 Q5 3 22 3 Q39 3 39 15 L39 28 Z" fill="#8d7757" stroke="#5a482f" stroke-width="2.5"/>
+      <line x1="16" y1="7" x2="16" y2="19" stroke="#5a482f" stroke-width="2" stroke-linecap="round"/>
+      <line x1="28" y1="7" x2="28" y2="19" stroke="#5a482f" stroke-width="2" stroke-linecap="round"/>
     </svg>
     <svg class="q-paw r" viewBox="0 0 44 28" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 28 L5 15 Q5 3 22 3 Q39 3 39 15 L39 28 Z" fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5"/>
-      <line x1="16" y1="7" x2="16" y2="19" stroke="#7c5a38" stroke-width="2" stroke-linecap="round"/>
-      <line x1="28" y1="7" x2="28" y2="19" stroke="#7c5a38" stroke-width="2" stroke-linecap="round"/>
+      <path d="M5 28 L5 15 Q5 3 22 3 Q39 3 39 15 L39 28 Z" fill="#8d7757" stroke="#5a482f" stroke-width="2.5"/>
+      <line x1="16" y1="7" x2="16" y2="19" stroke="#5a482f" stroke-width="2" stroke-linecap="round"/>
+      <line x1="28" y1="7" x2="28" y2="19" stroke="#5a482f" stroke-width="2" stroke-linecap="round"/>
     </svg>
     <div id="today-panel" style="background:#fdfefd;"></div>
   </div>
@@ -312,6 +343,12 @@ body{
   <div class="grid" id="moduleGrid"></div>
 
   <div class="cfg-zone">
+    <button id="notifBtn" onclick="toggleNotif()">🔕 Activar recordatorios</button>
+    <div id="notifTimes" style="display:none;">
+      <div class="nt-row"><span>☀️ Empezar el día</span><input type="time" id="nt-m" value="09:30" onchange="saveNotifTimes()"></div>
+      <div class="nt-row"><span>🌙 Rutina nocturna</span><input type="time" id="nt-n" value="21:30" onchange="saveNotifTimes()"></div>
+      <div class="cfg-note">Suenan con la app abierta o instalada en la pantalla de inicio</div>
+    </div>
     <button id="calmBtn" onclick="toggleCalm()">🕯️ Reducir estímulos</button>
     <div class="cfg-chips">
       <button id="c-voice" onclick="toggleCfg('voice')">🗣️ Voz</button>
@@ -388,6 +425,71 @@ function renderCfg(){
 }
 if(getCfg().calm)document.documentElement.classList.add('calm');
 
+/* ── RECORDATORIOS (notificaciones locales mientras la app está abierta) ── */
+function getNotifCfg(){try{return JSON.parse(localStorage.getItem('cris_notif')||'{}');}catch(e){return{};}}
+function setNotifCfg(n){try{localStorage.setItem('cris_notif',JSON.stringify(n));}catch(e){}}
+function toggleNotif(){
+  const n=getNotifCfg();
+  if(n.on){n.on=false;setNotifCfg(n);renderNotif();return;}
+  if(!('Notification' in window)){
+    document.getElementById('bubble-msg').textContent='Este navegador no soporta notificaciones 😔';
+    return;
+  }
+  Notification.requestPermission().then(p=>{
+    if(p==='granted'){
+      const n2=getNotifCfg();
+      n2.on=true;n2.m=n2.m||'09:30';n2.n=n2.n||'21:30';
+      setNotifCfg(n2);
+      fireNotif('🦘 ¡Recordatorios activados!','Te avisaré con cariño, sin agobios 💚');
+    }else{
+      document.getElementById('bubble-msg').textContent='Sin permiso no puedo avisarte 🥺 — actívalo en ajustes del navegador';
+    }
+    renderNotif();
+  });
+}
+function saveNotifTimes(){
+  const n=getNotifCfg();
+  n.m=document.getElementById('nt-m').value;
+  n.n=document.getElementById('nt-n').value;
+  setNotifCfg(n);
+}
+function renderNotif(){
+  const n=getNotifCfg();
+  const b=document.getElementById('notifBtn');
+  b.classList.toggle('on',!!n.on);
+  b.textContent=n.on?'🔔 Recordatorios activados — toca para apagar':'🔕 Activar recordatorios';
+  document.getElementById('notifTimes').style.display=n.on?'block':'none';
+  if(n.m)document.getElementById('nt-m').value=n.m;
+  if(n.n)document.getElementById('nt-n').value=n.n;
+}
+function fireNotif(title,body){
+  try{
+    if(navigator.serviceWorker&&navigator.serviceWorker.controller){
+      navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,{body,icon:'icons/icon-192.png',badge:'icons/icon-192.png'}));
+    }else{
+      new Notification(title,{body,icon:'icons/icon-192.png'});
+    }
+  }catch(e){try{new Notification(title,{body});}catch(_){}}
+}
+function checkNotif(){
+  const n=getNotifCfg();
+  if(!n.on||!('Notification' in window)||Notification.permission!=='granted')return;
+  const now=new Date();
+  const hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  const today=now.toISOString().split('T')[0];
+  if(n.m&&hm===n.m&&n.lastM!==today){
+    n.lastM=today;setNotifCfg(n);
+    const day=now.getDay();
+    const zona=ZONES[day]?ZONES[day][1]:'finde tranquilo';
+    fireNotif('🦘 ¡Buenos días, Cris!','Hoy toca: '+PILATES[day][1]+' y '+zona+'. Un pasito y ya está 💚');
+  }
+  if(n.n&&hm===n.n&&n.lastN!==today){
+    n.lastN=today;setNotifCfg(n);
+    fireNotif('🌙 Hora de cerrar el día','Tu rutina nocturna te espera: 25 min y a dormir de lujo 💜');
+  }
+}
+setInterval(checkNotif,30000);
+
 /* ── PANEL HOY (lee el progreso real de cada módulo en localStorage) ── */
 const PILATES={1:['🌀','Core Profundo','18 min'],2:['🍑','Cadera y Glúteos','17 min'],3:['🌿','Espalda y Postura','18 min'],4:['🦵','Piernas y Equilibrio','17 min'],5:['⭐','Cuerpo Completo','20 min'],6:['🌸','Estiramientos Profundos','20 min'],0:['☀️','Movilidad Suave','15 min']};
 const ZONES={1:['🍳','Cocina','cocina'],2:['🛁','Baño','bano'],3:['🛋️','Salón','salon'],4:['🛏️','Dormitorio','dormitorio'],5:['🚪','Zonas Comunes','comunes']};
@@ -450,6 +552,7 @@ function renderToday(){
 }
 renderToday();
 renderCfg();
+renderNotif();
 
 // Generar tarjetas
 const grid = document.getElementById('moduleGrid');
