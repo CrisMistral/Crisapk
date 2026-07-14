@@ -451,23 +451,28 @@ const steps = [
       intro: 'Shiné significa "morar en calma". Es una práctica budista básica de atención plena.',
       steps: [
         {
-          phase: 'Postura (30 seg)',
+          secs: 30,
+          phase: 'Postura',
           instruction: 'Siéntate cómodamente con la espalda recta pero relajada. Manos sobre los muslos o en tu regazo. Ojos suavemente cerrados o con mirada baja.'
         },
         {
-          phase: 'Respiración natural (1 min)',
+          secs: 60,
+          phase: 'Respiración natural',
           instruction: 'Observa tu respiración sin cambiarla. Nota cómo el aire entra y sale. Si tu mente divaga, gentilmente regresa a la respiración.'
         },
         {
-          phase: 'Cuenta regresiva (2 min)',
+          secs: 120,
+          phase: 'Cuenta regresiva',
           instruction: 'Cuenta 21 respiraciones hacia atrás. En cada exhalación: 21... 20... 19... Si pierdes la cuenta, vuelve a empezar desde 21.'
         },
         {
-          phase: 'Respiración libre (1 min)',
+          secs: 60,
+          phase: 'Respiración libre',
           instruction: 'Deja de contar. Solo observa tu respiración naturalmente. Pensamientos van y vienen como nubes. Tú eres el cielo.'
         },
         {
-          phase: 'Masaje entrecejo (30 seg)',
+          secs: 30,
+          phase: 'Masaje del entrecejo',
           instruction: 'Con el dedo índice o medio, masajea suavemente el entrecejo en círculos horarios durante 30-60 segundos.'
         }
       ],
@@ -586,32 +591,25 @@ function loadStep(stepIndex) {
   }
   
   if (step.meditation) {
+    // Una fase a la vez: avanza sola con el temporizador y la voz guía
     const med = step.meditation;
-    
+
     const intro = document.createElement('div');
     intro.className = 'meditation-intro';
     intro.textContent = med.intro;
     content.appendChild(intro);
-    
-    const stepsDiv = document.createElement('div');
-    stepsDiv.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent2)">🧘 Guía paso a paso:</div>';
-    
-    med.steps.forEach(medStep => {
-      const stepEl = document.createElement('div');
-      stepEl.className = 'meditation-step';
-      stepEl.innerHTML = `
-        <div class="meditation-phase">${medStep.phase}</div>
-        <div class="meditation-instruction">${medStep.instruction}</div>
-      `;
-      stepsDiv.appendChild(stepEl);
-    });
-    
-    content.appendChild(stepsDiv);
-    
-    const closing = document.createElement('div');
-    closing.className = 'meditation-closing';
-    closing.textContent = '🙏 ' + med.closing;
-    content.appendChild(closing);
+
+    const dots = document.createElement('div');
+    dots.id = 'medDots';
+    dots.style.cssText = 'display:flex;gap:6px;justify-content:center;margin:12px 0;';
+    content.appendChild(dots);
+
+    const box = document.createElement('div');
+    box.id = 'medPhaseBox';
+    content.appendChild(box);
+
+    medPhaseIdx = -1;
+    updateMedPhase(0);
   }
   
   if (step.phrase) {
@@ -647,12 +645,39 @@ function loadStep(stepIndex) {
   }
 }
 
+let medPhaseIdx = -1;
+function updateMedPhase(elapsed) {
+  const step = steps[currentStep];
+  if (!step || !step.meditation) return;
+  const med = step.meditation;
+  let acc = 0, idx = med.steps.length - 1;
+  for (let i = 0; i < med.steps.length; i++) {
+    if (elapsed < acc + med.steps[i].secs) { idx = i; break; }
+    acc += med.steps[i].secs;
+  }
+  if (idx === medPhaseIdx) return;
+  medPhaseIdx = idx;
+  const ph = med.steps[idx];
+  const box = document.getElementById('medPhaseBox');
+  if (box) box.innerHTML = `
+    <div class="meditation-step" style="border-left-color:var(--accent)">
+      <div class="meditation-phase">🧘 Fase ${idx + 1} de ${med.steps.length}: ${ph.phase} · ${ph.secs >= 60 ? Math.round(ph.secs / 60) + ' min' : ph.secs + ' seg'}</div>
+      <div class="meditation-instruction" style="font-size:1rem;line-height:1.7">${ph.instruction}</div>
+    </div>`;
+  const dots = document.getElementById('medDots');
+  if (dots) dots.innerHTML = med.steps.map((_, i) =>
+    `<span style="width:9px;height:9px;border-radius:50%;background:${i < idx ? 'var(--accent)' : i === idx ? 'var(--accent2)' : 'rgba(255,255,255,.18)'}"></span>`).join('');
+  speak(ph.instruction);
+}
+
 function startTimer() {
   if (timer) clearInterval(timer);
   timer = setInterval(() => {
     if (timeRemaining > 0) {
       timeRemaining--;
       document.getElementById('timer').textContent = formatTime(timeRemaining);
+      const st = steps[currentStep];
+      if (st && st.meditation) updateMedPhase(st.duration - timeRemaining);
     } else {
       nextStep();
     }

@@ -44,6 +44,11 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .ttag{display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;margin-bottom:10px;color:#fff}
 .tdesc{font-size:.82rem;color:var(--teal);margin-bottom:14px;line-height:1.4}
 .sbox{background:var(--mint-soft);border-radius:16px;padding:20px;text-align:center;margin-bottom:14px;border:2px solid var(--mint-mid)}
+/* Círculo de respiración: respira a la vez que él */
+.breath-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 0 8px;}
+.breath-circle{width:110px;height:110px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#a7e8df,var(--teal));box-shadow:0 0 42px rgba(38,166,154,.4);animation:breathe-anim var(--bdur,10s) ease-in-out infinite;}
+.breath-circle.paused{animation-play-state:paused;}
+.breath-hint{font-size:.74rem;color:var(--teal-dark);font-weight:600;margin-top:12px;opacity:.75;}
 .snum{font-size:.72rem;font-weight:700;color:var(--teal);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
 .sname{font-size:1.4rem;font-weight:800;color:var(--teal-dark);margin-bottom:8px}
 .sinstr{font-size:.88rem;color:#3d5a58;line-height:1.5}
@@ -353,7 +358,7 @@ const BODY_OPTIONS = [
 ];
 
 const MEDITATIONS = [
-  {id:1, name:"Respiración consciente", duration:"5 min", icon:"🌿",
+  {id:1, name:"Respiración consciente", icon:"🌿", breath:{in:4,out:6},
     steps:[
       {text:"Ponte cómoda",instruction:"Siéntate o túmbate. Cierra los ojos si quieres",time:15},
       {text:"Respira natural",instruction:"Solo observa tu respiración sin cambiarla. No hay que hacer nada",time:20},
@@ -362,7 +367,7 @@ const MEDITATIONS = [
       {text:"Pensamientos",instruction:"Si aparece un pensamiento, salúdalo sin agarrarlo y vuelve al aire",time:25},
       {text:"Cierre",instruction:"Abre los ojos suavemente. Lleva esta calma contigo",time:15}
     ]},
-  {id:2, name:"Escaneo corporal", duration:"8 min", icon:"🧘",
+  {id:2, name:"Escaneo corporal", icon:"🧘", breath:{in:5,out:5},
     steps:[
       {text:"Empieza",instruction:"Túmbate boca arriba. Cierra los ojos. Sin prisa",time:15},
       {text:"Pies",instruction:"Lleva la atención a tus pies. Siente su peso y temperatura",time:30},
@@ -373,7 +378,7 @@ const MEDITATIONS = [
       {text:"Todo el cuerpo",instruction:"Siente el cuerpo completo. Estás aquí, ahora",time:25},
       {text:"Regresa",instruction:"Mueve los dedos. Abre los ojos. Bienvenida de vuelta",time:20}
     ]},
-  {id:3, name:"Amabilidad hacia ti", duration:"6 min", icon:"💜",
+  {id:3, name:"Amabilidad hacia ti", icon:"💜", breath:{in:5,out:5},
     steps:[
       {text:"Siéntate",instruction:"Cómoda, espalda suelta. Ojos cerrados",time:15},
       {text:"Para ti",instruction:"Mano en el corazón. Di: 'Que esté bien. Que sea feliz. Que esté en paz'",time:25},
@@ -382,7 +387,7 @@ const MEDITATIONS = [
       {text:"Todos",instruction:"Expande a todos: 'Que todos estemos bien'",time:25},
       {text:"Cierre",instruction:"Vuelve a ti. Abre los ojos suavemente. Gracias",time:15}
     ]},
-  {id:4, name:"Observar sin agarrar", duration:"10 min", icon:"🌊",
+  {id:4, name:"Observar sin agarrar", icon:"🌊", breath:{in:5,out:5},
     steps:[
       {text:"Postura",instruction:"Siéntate derecha pero sin tensión. Cierra los ojos",time:15},
       {text:"Ancla",instruction:"Lleva la atención a tus pies en el suelo",time:30},
@@ -390,8 +395,29 @@ const MEDITATIONS = [
       {text:"Sin juicio",instruction:"Agradable, desagradable, neutro — solo nota. No hay nada que arreglar",time:60},
       {text:"Todo pasa",instruction:"Cada sensación surge y se va por sí sola",time:60},
       {text:"Cierre",instruction:"Poco a poco vuelve. Abre los ojos. Gracias por este tiempo",time:20}
+    ]},
+  {id:5, name:"Respiración 4-7-8", icon:"🌬️", breath:{in:4,hold:7,out:8},
+    steps:[
+      {text:"Prepárate",instruction:"Siéntate cómoda con la espalda apoyada. Este ritmo calma el sistema nervioso en minutos",time:15},
+      {text:"Aprende el ritmo",instruction:"Inhala por la nariz contando 4. Mantén el aire contando 7. Suelta por la boca contando 8, como soplando una vela",time:20},
+      {text:"Ciclo 1",instruction:"Sigue el círculo: inhala 4... mantén 7... exhala 8",time:20},
+      {text:"Ciclo 2",instruction:"Otra vez. Inhala 4... mantén 7... suelta despacio 8",time:20},
+      {text:"Ciclo 3",instruction:"Vas muy bien. Inhala... mantén... y suelta todo el aire",time:20},
+      {text:"Ciclo 4",instruction:"Último ciclo. Nota cómo el cuerpo pesa un poco más",time:20},
+      {text:"Cierre",instruction:"Respira normal. Nota la diferencia. Puedes repetirla cuando quieras",time:15}
+    ]},
+  {id:6, name:"Tu lugar seguro", icon:"🏝️", breath:{in:5,out:5},
+    steps:[
+      {text:"Cierra los ojos",instruction:"Ponte cómoda. Vamos a construir un refugio en tu mente",time:15},
+      {text:"Imagina el lugar",instruction:"Un sitio donde te sientes completamente a salvo. Real o inventado: una playa, un bosque, tu cama, una cabaña",time:30},
+      {text:"Míralo",instruction:"¿Qué ves a tu alrededor? Los colores, la luz, las formas. Tómate tu tiempo",time:30},
+      {text:"Escúchalo",instruction:"¿Qué se oye ahí? ¿Olas, pájaros, lluvia suave, silencio?",time:30},
+      {text:"Siéntelo",instruction:"¿Qué temperatura hace? ¿Qué tocas? Nota la seguridad en el cuerpo",time:30},
+      {text:"Ancla",instruction:"Pon una mano en el pecho. Este lugar es tuyo. Puedes volver siempre que lo necesites",time:25},
+      {text:"Regresa",instruction:"Despídete por ahora. Abre los ojos despacio. El refugio queda contigo",time:20}
     ]}
 ];
+function medDur(m){const s=m.steps.reduce((a,x)=>a+x.time,0);return Math.max(1,Math.round(s/60))+' min';}
 
 const SPEED = {lento:1.5, normal:1, rapido:0.7};
 const S = {
@@ -562,13 +588,26 @@ function renderMedList(){
   document.getElementById('med-list').innerHTML=MEDITATIONS.map(m=>`
     <button class="mitem" onclick="startMed(${m.id})">
       <span class="mico">${m.icon}</span>
-      <div class="minfo"><h3>${m.name}</h3><p>${m.duration} · ${m.steps.length} pasos</p></div>
+      <div class="minfo"><h3>${m.name}</h3><p>${medDur(m)} · ${m.steps.length} pasos · avanza sola con voz</p></div>
     </button>`).join('');
+}
+function setBreathAnim(b){
+  // Genera la animación del círculo con el ritmo de esta meditación
+  const hold=b.hold||0, total=b.in+hold+b.out;
+  const pIn=(b.in/total*100).toFixed(1), pHold=((b.in+hold)/total*100).toFixed(1);
+  let st=document.getElementById('breath-style');
+  if(!st){st=document.createElement('style');st.id='breath-style';document.head.appendChild(st);}
+  st.textContent=`@keyframes breathe-anim{0%{transform:scale(.55)}${pIn}%{transform:scale(1)}${pHold}%{transform:scale(1)}100%{transform:scale(.55)}}`;
+  document.documentElement.style.setProperty('--bdur',total+'s');
+}
+function breathHint(b){
+  return b.hold?`Inhala ${b.in} · mantén ${b.hold} · exhala ${b.out}`:`Inhala ${b.in} · exhala ${b.out}`;
 }
 function startMed(id){
   beep(400);vibrate(40);
   S.medCurrent=MEDITATIONS.find(m=>m.id===id);
   S.medStep=0;S.medPlaying=false;S.medTimer=0;S.medDone=false;
+  setBreathAnim(S.medCurrent.breath||{in:4,out:6});
   document.getElementById('med-title').textContent=S.medCurrent.name;
   go('meditation-detail'); renderMedStep();
 }
@@ -591,10 +630,15 @@ function renderMedStep(){
   const pct=(S.medStep/med.steps.length)*100;
   const dots=med.steps.map((_,i)=>`<div class="dot ${i<S.medStep?'done':i===S.medStep?'active':''}" ></div>`).join('');
   const t=S.medPlaying?S.medTimer:Math.round(step.time*SPEED[S.medSpeed]);
+  const b=med.breath||{in:4,out:6};
   el.innerHTML=`
     <div class="tcard">
       <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
       <div class="dots" style="margin-top:8px">${dots}</div>
+      <div class="breath-wrap">
+        <div class="breath-circle${S.medPlaying?'':' paused'}"></div>
+        <div class="breath-hint">🌬️ Respira con el círculo · ${breathHint(b)}</div>
+      </div>
       <div class="sbox">
         <div class="snum">Paso ${S.medStep+1} de ${med.steps.length}</div>
         <div class="sname">${step.text}</div>
