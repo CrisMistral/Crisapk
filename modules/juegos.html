@@ -66,6 +66,8 @@ canvas{display:block;}
 }
 .lvl-btn.active{border-color:var(--turq);background:var(--turq);color:#fff;}
 
+
+.calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
 </style>
 </head>
 <body>
@@ -118,6 +120,11 @@ canvas{display:block;}
 </div>
 
 <script>
+/* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
+function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
+function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
+if(__cfg().calm)document.documentElement.classList.add('calm');
+
 // ===== CONFIG =====
 const SPEEDS = [300, 220, 150]; // ms/tick por nivel — ritmo tranquilo
 const COLS = 16, ROWS = 16;
@@ -367,7 +374,7 @@ function setupTouchOnCanvas() {
 }
 
 // ===== AUDIO =====
-function beep(freq=600, dur=80) {
+function beep(freq=600, dur=80) {if(!__allow('sound'))return;
   try {
     const a = new (window.AudioContext||window.webkitAudioContext)();
     const o = a.createOscillator(), g = a.createGain();
@@ -380,7 +387,7 @@ function beep(freq=600, dur=80) {
 }
 
 function beepFail() { beep(280,140); setTimeout(()=>beep(200,180),150); }
-function vib(ms) { try{navigator.vibrate(ms);}catch(e){} }
+function vib(ms) {if(!__allow('vib'))return; try{navigator.vibrate(ms);}catch(e){} }
 </script>
 </body>
 </html>

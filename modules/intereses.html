@@ -90,6 +90,13 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 .done-em{font-size:4.5rem;display:block;margin-bottom:10px;}
 .done-t{font-size:1.7rem;font-weight:800;color:var(--td);margin-bottom:6px;}
 .done-s{font-size:0.95rem;color:var(--fg2);line-height:1.5;}
+
+.calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
+
+/* Anillo de tiempo: se vacía según pasa — para ver cuánto queda sin leer números */
+.tring{width:176px;height:176px;border-radius:50%;margin:4px auto 10px;display:flex;align-items:center;justify-content:center;background:conic-gradient(#26a69a 360deg,#cde9e4 0);flex-shrink:0;}
+.tring-in{width:144px;height:144px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;text-align:center;}
+.tring .timer-dig{font-size:2.4rem}
 </style>
 </head>
 <body>
@@ -143,6 +150,13 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 </div>
 
 <script>
+/* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
+function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
+function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
+if(__cfg().calm)document.documentElement.classList.add('calm');
+
+function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
+
 /* ── DATOS: 6 intereses × 5 días ── */
 const INTERESTS=[
  {id:'musica',name:'Música',emoji:'🎻',mins:10,color:'linear-gradient(135deg,#7c3aed,#a855f7)',
@@ -236,7 +250,7 @@ function setNote(intId,txt){const d=getData();d.notes=d.notes||{};d.notes[intId]
 
 /* ── Utils ── */
 function speak(t){
-  try{
+  try{if(!__allow('voice'))return;
     if(!window.speechSynthesis)return;
     window.speechSynthesis.cancel();
     if(window.speechSynthesis.paused)window.speechSynthesis.resume();
@@ -248,7 +262,7 @@ function speak(t){
   }catch(e){}
 }
 function beep(f,d){
-  try{
+  try{if(!__allow('sound'))return;
     const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();
     o.connect(g);g.connect(c.destination);o.frequency.value=f||660;
     g.gain.setValueAtTime(.2,c.currentTime);
@@ -256,7 +270,7 @@ function beep(f,d){
     o.start();o.stop(c.currentTime+(d||.2));
   }catch(e){}
 }
-function vibrate(p){try{navigator.vibrate&&navigator.vibrate(p||50);}catch(e){}}
+function vibrate(p){if(!__allow('vib'))return;try{navigator.vibrate&&navigator.vibrate(p||50);}catch(e){}}
 function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
 function findInt(id){return INTERESTS.find(i=>i.id===id);}
 function nextPending(it){const done=getDone(it.id);for(let i=0;i<it.days.length;i++)if(!done[i])return i;return -1;}
@@ -352,15 +366,17 @@ function openAct(intId,dayIdx){
     ${day.deep?`<button class="deep-btn" onclick="document.getElementById('deep-box').classList.toggle('open')">🔬 ¿Quieres profundizar? (opcional)</button>
     <div class="deep-box" id="deep-box">${day.deep}</div>`:''}
     <div class="timer-zone">
-      <div class="timer-dig" id="t-dig">${fmt(cur.timer)}</div>
-      <div class="timer-lbl" id="t-lbl">cuando quieras, sin presión</div>
-      <div class="pbar-outer"><div class="pbar-inner" id="t-bar" style="width:0%"></div></div>
+      <div class="tring" id="t-ring"><div class="tring-in">
+        <div class="timer-dig" id="t-dig">${fmt(cur.timer)}</div>
+        <div class="timer-lbl" id="t-lbl">sin presión</div>
+      </div></div>
     </div>
     <button class="btn-f btn-teal" id="t-start" onclick="actStart()">▶ Empezar ${it.mins} min</button>
     <button class="btn-f btn-soft" onclick="actDone()">✓ Ya lo he hecho</button>
     <textarea class="note-area" id="act-note" placeholder="📝 Nota rápida (opcional)— se guarda sola">${getNote(intId)}</textarea>
   `;
   document.getElementById('act-note').addEventListener('input',e=>setNote(intId,e.target.value));
+  __ring('t-ring',1);
   go('v-act');
 }
 
@@ -382,8 +398,7 @@ function actStart(){
     cur.timer--;
     const dig=document.getElementById('t-dig');
     if(dig)dig.textContent=fmt(cur.timer);
-    const bar=document.getElementById('t-bar');
-    if(bar)bar.style.width=((cur.total-cur.timer)/cur.total*100)+'%';
+    __ring('t-ring',cur.total?cur.timer/cur.total:0);
     if(cur.timer===60)speak('Queda un minuto.');
     if(cur.timer<=0){
       clearInterval(cur.interval);cur.interval=null;

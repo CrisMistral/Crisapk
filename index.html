@@ -206,6 +206,43 @@ body{
 }
 #homeBtn.show{display:flex;}
 #homeBtn:active{transform:scale(.9);}
+
+/* ── SOS flotante: botiquín a un toque desde cualquier sitio ── */
+#sosBtn{
+  position:fixed;bottom:20px;right:18px;z-index:200;
+  background:linear-gradient(135deg,#e35d6a,#ef8354);color:#fff;
+  border:none;border-radius:999px;padding:14px 20px;
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:.95rem;
+  box-shadow:0 4px 18px rgba(227,93,106,.45);cursor:pointer;
+  display:flex;align-items:center;gap:7px;
+}
+#sosBtn:active{transform:scale(.93);}
+
+/* ── Ajustes rápidos ── */
+.cfg-zone{margin-top:22px;}
+#calmBtn{
+  width:100%;border:2px solid #f3d9a4;background:#fdf6e3;color:#8a6410;
+  border-radius:16px;padding:14px;font-family:'Outfit',sans-serif;
+  font-size:.92rem;font-weight:700;cursor:pointer;margin-bottom:10px;
+}
+#calmBtn.on{background:#8a6410;border-color:#8a6410;color:#fff;}
+.cfg-chips{display:flex;gap:8px;}
+.cfg-chips button{
+  flex:1;border:2px solid var(--mint-mid);background:var(--white-card);color:var(--teal-dark);
+  border-radius:12px;padding:10px 4px;font-family:'Outfit',sans-serif;
+  font-size:.76rem;font-weight:700;cursor:pointer;
+}
+.cfg-chips button.off{opacity:.4;text-decoration:line-through;}
+.cfg-note{font-size:.72rem;color:var(--text-soft);text-align:center;margin-top:8px;opacity:.8;}
+
+/* ── Quokka asomado agarrando el panel ── */
+.quokka-peek{display:flex;justify-content:center;margin-bottom:-24px;position:relative;z-index:0;}
+.tp-wrap{position:relative;z-index:1;}
+.q-paw{position:absolute;top:-13px;width:44px;z-index:2;pointer-events:none;}
+.q-paw.l{left:16%;transform:rotate(-6deg);}
+.q-paw.r{right:16%;transform:rotate(6deg);}
+
+.calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
 </style>
 </head>
 <body>
@@ -216,47 +253,73 @@ body{
     <div class="hero-sub">¿en qué te ayudo hoy?</div>
   </div>
 
-  <div class="quokka-zone">
+  <div class="quokka-zone" style="margin-bottom:0;">
     <div class="bubble" id="bubble-msg">¡Aquí estoy! Elige un módulo 🌿</div>
-    <div class="quokka-wrap">
-      <!-- Quokka SVG kawaii teal -->
-      <svg viewBox="0 0 110 130" width="120" height="140" xmlns="http://www.w3.org/2000/svg">
-        <!-- Ears -->
-        <ellipse cx="28" cy="22" rx="13" ry="16" fill="#33b5a7"/>
-        <ellipse cx="82" cy="22" rx="13" ry="16" fill="#33b5a7"/>
-        <!-- Inner ears -->
-        <ellipse cx="28" cy="23" rx="7" ry="9" fill="#5dcfc2"/>
-        <ellipse cx="82" cy="23" rx="7" ry="9" fill="#5dcfc2"/>
-        <!-- Body -->
-        <ellipse cx="55" cy="93" rx="34" ry="36" fill="#33b5a7"/>
-        <!-- Belly -->
-        <ellipse cx="55" cy="97" rx="20" ry="25" fill="#5dcfc2" opacity="0.65"/>
-        <!-- Head -->
-        <circle cx="55" cy="50" r="30" fill="#33b5a7"/>
-        <!-- Left eye -->
-        <circle cx="43" cy="47" r="6" fill="#0f4d47"/>
-        <circle cx="45" cy="45" r="2.5" fill="white"/>
-        <!-- Right eye -->
-        <circle cx="67" cy="47" r="6" fill="#0f4d47"/>
-        <circle cx="69" cy="45" r="2.5" fill="white"/>
-        <!-- Nose -->
-        <ellipse cx="55" cy="58" rx="5" ry="4" fill="#0f4d47"/>
-        <!-- Smile -->
-        <path d="M46 65 Q55 74 64 65" stroke="#0f4d47" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <!-- Left arm -->
-        <ellipse cx="23" cy="96" rx="11" ry="8" fill="#33b5a7" transform="rotate(-20 23 96)"/>
-        <!-- Right arm -->
-        <ellipse cx="87" cy="96" rx="11" ry="8" fill="#33b5a7" transform="rotate(20 87 96)"/>
-        <!-- Feet -->
-        <ellipse cx="42" cy="126" rx="12" ry="6" fill="#2da098"/>
-        <ellipse cx="68" cy="126" rx="12" ry="6" fill="#2da098"/>
-      </svg>
-    </div>
   </div>
 
-  <div id="today-panel"></div>
+  <!-- Quokka realista-kawaii asomado detrás del panel -->
+  <div class="quokka-peek">
+    <svg viewBox="0 0 150 96" width="175" xmlns="http://www.w3.org/2000/svg" aria-label="Quokka, tu acompañante">
+      <!-- Orejas -->
+      <circle cx="42" cy="16" r="13" fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5"/>
+      <circle cx="108" cy="16" r="13" fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5"/>
+      <ellipse cx="42" cy="17" rx="6.5" ry="7" fill="#d9a18b"/>
+      <ellipse cx="108" cy="17" rx="6.5" ry="7" fill="#d9a18b"/>
+      <!-- Cabeza con mofletes (silueta de quokka) -->
+      <path d="M75 6 C52 6 35 20 31 40 C19 42 12 55 16 65 C20 75 33 80 45 77 C53 87 66 92 75 92 C84 92 97 87 105 77 C117 80 130 75 134 65 C138 55 131 42 119 40 C115 20 98 6 75 6 Z"
+            fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5" stroke-linejoin="round"/>
+      <!-- Pelaje de la frente -->
+      <path d="M67 8 Q71 3 75 8 M73 9 Q77 4 81 9" stroke="#7c5a38" stroke-width="2" stroke-linecap="round" fill="none" opacity=".7"/>
+      <!-- Hocico claro -->
+      <ellipse cx="75" cy="67" rx="26" ry="19" fill="#ecd9b8"/>
+      <!-- Ojos grandes kawaii -->
+      <circle cx="55" cy="47" r="7" fill="#2f2013"/>
+      <circle cx="57.5" cy="44.5" r="2.6" fill="#fff"/>
+      <circle cx="53" cy="49" r="1.2" fill="#fff" opacity=".8"/>
+      <circle cx="95" cy="47" r="7" fill="#2f2013"/>
+      <circle cx="97.5" cy="44.5" r="2.6" fill="#fff"/>
+      <circle cx="93" cy="49" r="1.2" fill="#fff" opacity=".8"/>
+      <!-- Mejillas sonrosadas -->
+      <ellipse cx="42" cy="61" rx="6.5" ry="4" fill="#e2836d" opacity=".35"/>
+      <ellipse cx="108" cy="61" rx="6.5" ry="4" fill="#e2836d" opacity=".35"/>
+      <!-- Nariz -->
+      <path d="M69 56 Q75 51.5 81 56 Q81 62.5 75 65.5 Q69 62.5 69 56 Z" fill="#4e3423"/>
+      <!-- La famosa sonrisa del quokka -->
+      <path d="M75 65.5 Q75 70 69 71.5 M75 65.5 Q75 70 81 71.5" stroke="#4e3423" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      <path d="M63 70 Q75 81 87 70 Q75 76 63 70 Z" fill="#8a4a3a"/>
+      <ellipse cx="75" cy="74.5" rx="4" ry="2" fill="#e2836d"/>
+      <!-- Bigotes -->
+      <path d="M36 58 L20 54 M37 64 L20 63 M36 70 L21 72" stroke="#7c5a38" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+      <path d="M114 58 L130 54 M113 64 L130 63 M114 70 L129 72" stroke="#7c5a38" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+    </svg>
+  </div>
+
+  <div class="tp-wrap">
+    <!-- Patitas agarrando el borde del panel -->
+    <svg class="q-paw l" viewBox="0 0 44 28" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 28 L5 15 Q5 3 22 3 Q39 3 39 15 L39 28 Z" fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5"/>
+      <line x1="16" y1="7" x2="16" y2="19" stroke="#7c5a38" stroke-width="2" stroke-linecap="round"/>
+      <line x1="28" y1="7" x2="28" y2="19" stroke="#7c5a38" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <svg class="q-paw r" viewBox="0 0 44 28" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 28 L5 15 Q5 3 22 3 Q39 3 39 15 L39 28 Z" fill="#b98d5f" stroke="#7c5a38" stroke-width="2.5"/>
+      <line x1="16" y1="7" x2="16" y2="19" stroke="#7c5a38" stroke-width="2" stroke-linecap="round"/>
+      <line x1="28" y1="7" x2="28" y2="19" stroke="#7c5a38" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div id="today-panel" style="background:#fdfefd;"></div>
+  </div>
 
   <div class="grid" id="moduleGrid"></div>
+
+  <div class="cfg-zone">
+    <button id="calmBtn" onclick="toggleCalm()">🕯️ Reducir estímulos</button>
+    <div class="cfg-chips">
+      <button id="c-voice" onclick="toggleCfg('voice')">🗣️ Voz</button>
+      <button id="c-sound" onclick="toggleCfg('sound')">🔔 Sonido</button>
+      <button id="c-vib" onclick="toggleCfg('vib')">📳 Vibración</button>
+    </div>
+    <div class="cfg-note">Los ajustes se aplican a toda la app</div>
+  </div>
 
   <div class="footer-note">
     Cris · tu compañera de cada día 💚<br>
@@ -269,6 +332,7 @@ body{
   <iframe id="moduleFrame" title="Módulo de Cris"></iframe>
 </div>
 <button id="homeBtn" title="Volver al inicio">🏠</button>
+<button id="sosBtn" title="Botiquín de emergencia" onclick="openModule('modules/rescate-emocional.html')">🫀 SOS</button>
 
 <script>
 const modules = [
@@ -303,6 +367,26 @@ function setGreeting(){
     BUBBLES[Math.floor(Math.random()*BUBBLES.length)];
 }
 setGreeting();
+
+/* ── AJUSTES GLOBALES (voz/sonido/vibración/reducir estímulos) ── */
+function getCfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
+function setCfgStore(c){try{localStorage.setItem('cris_cfg',JSON.stringify(c));}catch(e){}}
+function toggleCfg(k){const c=getCfg();c[k]=c[k]===false;setCfgStore(c);renderCfg();}
+function toggleCalm(){
+  const c=getCfg();c.calm=c.calm!==true;setCfgStore(c);
+  document.documentElement.classList.toggle('calm',c.calm);
+  renderCfg();
+}
+function renderCfg(){
+  const c=getCfg();
+  document.getElementById('c-voice').classList.toggle('off',c.voice===false||c.calm===true);
+  document.getElementById('c-sound').classList.toggle('off',c.sound===false||c.calm===true);
+  document.getElementById('c-vib').classList.toggle('off',c.vib===false||c.calm===true);
+  const cb=document.getElementById('calmBtn');
+  cb.classList.toggle('on',c.calm===true);
+  cb.textContent=c.calm?'🕯️ Modo calma activo — toca para salir':'🕯️ Reducir estímulos';
+}
+if(getCfg().calm)document.documentElement.classList.add('calm');
 
 /* ── PANEL HOY (lee el progreso real de cada módulo en localStorage) ── */
 const PILATES={1:['🌀','Core Profundo','18 min'],2:['🍑','Cadera y Glúteos','17 min'],3:['🌿','Espalda y Postura','18 min'],4:['🦵','Piernas y Equilibrio','17 min'],5:['⭐','Cuerpo Completo','20 min'],6:['🌸','Estiramientos Profundos','20 min'],0:['☀️','Movilidad Suave','15 min']};
@@ -365,6 +449,7 @@ function renderToday(){
       </button>`).join('')}`;
 }
 renderToday();
+renderCfg();
 
 // Generar tarjetas
 const grid = document.getElementById('moduleGrid');

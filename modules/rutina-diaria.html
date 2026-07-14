@@ -167,6 +167,13 @@
     display:none;z-index:60;
   }
   .toast.show{display:block;}
+
+.calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
+
+/* Anillo de tiempo: se vacía según pasa — para ver cuánto queda sin leer números */
+.tring{width:176px;height:176px;border-radius:50%;margin:4px auto 10px;display:flex;align-items:center;justify-content:center;background:conic-gradient(#26a69a 360deg,#cde9e4 0);flex-shrink:0;}
+.tring-in{width:144px;height:144px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;text-align:center;}
+.tring .timer-display{font-size:2.3rem;margin-bottom:0;letter-spacing:1px}
 </style>
 </head>
 <body>
@@ -213,7 +220,7 @@
     <div id="sessionView" style="display:none;">
       <div style="text-align:center;">
         <div class="session-title" id="blockLabel"></div>
-        <div class="timer-display" id="timeLeft">00:00</div>
+        <div class="tring" id="blk-ring"><div class="tring-in"><div class="timer-display" id="timeLeft">00:00</div><div style="font-size:0.7rem;color:#666;">restante</div></div></div>
         <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
         <div class="dots-row" id="dotsRow"></div>
         <div class="session-info" id="sessionInfo"></div>
@@ -251,6 +258,13 @@
 <div class="toast" id="toast"></div>
 
 <script>
+/* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
+function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
+function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
+if(__cfg().calm)document.documentElement.classList.add('calm');
+
+function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
+
 (function(){
   const STORAGE_KEY = 'cris_rutina_diaria_v1';
 
@@ -317,7 +331,7 @@
 
   // ---- Audio / Feedback ----
   let audioCtx;
-  function beep(freq=880, dur=0.15){
+  function beep(freq=880, dur=0.15){if(!__allow('sound'))return;
     try{
       audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
       const o = audioCtx.createOscillator();
@@ -330,12 +344,12 @@
       o.start(); o.stop(audioCtx.currentTime + dur);
     }catch(e){}
   }
-  function vibrate(pattern){
+  function vibrate(pattern){if(!__allow('vib'))return;
     if(navigator.vibrate) navigator.vibrate(pattern);
   }
   let _utt = null;
   function speak(text){
-    try{
+    try{if(!__allow('voice'))return;
       if(!window.speechSynthesis) return;
       window.speechSynthesis.cancel();
       if(window.speechSynthesis.paused) window.speechSynthesis.resume();
@@ -392,6 +406,7 @@
     document.getElementById('blockLabel').textContent = `${getBlockIcon(block.type)} ${block.label.toUpperCase()}`;
     document.getElementById('blockLabel').style.color = getBlockColorVar(block.type);
     document.getElementById('timeLeft').textContent = formatTime(state.blockTimeLeft);
+    __ring('blk-ring', state.blockTotalTime > 0 ? state.blockTimeLeft/state.blockTotalTime : 0);
 
     const progress = state.blockTotalTime > 0 ? ((state.blockTotalTime - state.blockTimeLeft)/state.blockTotalTime)*100 : 0;
     document.getElementById('progressFill').style.width = progress + '%';
