@@ -1,7 +1,7 @@
 // Service Worker - Cris App
 // Cachea todos los módulos para que la app funcione sin conexión.
 
-const CACHE_NAME = 'cris-app-v6';
+const CACHE_NAME = 'cris-app-v7';
 
 const ASSETS = [
   './',
@@ -14,7 +14,10 @@ const ASSETS = [
   './modules/intereses.html',
   './modules/rutina-nocturna.html',
   './modules/rescate-emocional.html',
-  './modules/juegos.html'
+  './modules/juegos.html',
+  './quico/quico_head_happy.png',
+  './quico/quico_head_calm.png',
+  './quico/quico_head_proud.png'
 ];
 
 self.addEventListener('install', (event) => {
