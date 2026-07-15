@@ -326,6 +326,10 @@ const EMOTIONS = [
     impulse:'Evitar o escapar de lo que da miedo',
     need:'Sentirte segura',
     helps:'Respiración lenta', helpsDesc:'Calma el sistema nervioso activado', tecId:2},
+  {id:'miedo', emoji:'😨', label:'Miedo', color:'#e0e7ff',
+    impulse:'Huir, congelarte o buscar protección',
+    need:'Sentirte a salvo y protegida',
+    helps:'Anclarte al aquí y ahora', helpsDesc:'Nombra lo que ves y tocas: el peligro no está en este momento', tecId:1},
   {id:'rabia', emoji:'😠', label:'Rabia', color:'#fee2e2',
     impulse:'Atacar, gritar o explotar',
     need:'Poner un límite claro',
@@ -365,9 +369,9 @@ const EMOTIONS = [
 ];
 
 const BODY_OPTIONS = [
-  {label:'⚡ Tensión, agitación, corazón acelerado', ids:['ansiedad','rabia','frustración']},
+  {label:'⚡ Tensión, agitación, corazón acelerado', ids:['ansiedad','miedo','rabia','frustración']},
   {label:'🪨 Pesadez, cansancio, querer esconderte', ids:['tristeza','culpa','vergüenza']},
-  {label:'🧊 Bloqueada, paralizada, no puedo pensar', ids:['agobio','entumecimiento']},
+  {label:'🧊 Bloqueada, paralizada, no puedo pensar', ids:['agobio','entumecimiento','miedo']},
   {label:'🕳️ Vacío, distancia, como si nada importara', ids:['soledad','entumecimiento','tristeza']}
 ];
 
