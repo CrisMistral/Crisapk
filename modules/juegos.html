@@ -29,12 +29,12 @@ h1{color:var(--td);font-size:1.5rem;font-weight:800;text-align:center;}
 .pick-badge{position:absolute;top:8px;right:8px;font-size:1rem;}
 
 /* Board */
-.topbar{display:flex;align-items:center;gap:10px;width:100%;margin-bottom:6px;}
+.topbar{display:flex;align-items:center;gap:10px;width:100%;margin-bottom:12px;}
 .back-btn{width:42px;height:42px;border:none;background:#fff;border-radius:13px;font-size:1.3rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;color:var(--td);flex-shrink:0;}
-.topbar h2{font-size:1.1rem;font-weight:800;color:var(--td);flex:1;}
-.moves{font-size:.8rem;font-weight:700;color:var(--fg2);}
+.topbar h2{font-size:1.1rem;font-weight:800;color:var(--td);}
 
-.hint-line{font-size:.8rem;color:var(--fg2);font-weight:600;text-align:center;margin:6px 0 16px;min-height:1.1em;}
+.pbar-out{width:100%;max-width:380px;height:9px;background:var(--mm);border-radius:6px;overflow:hidden;margin-bottom:14px;}
+.pbar-in{height:100%;background:linear-gradient(90deg,var(--teal),#4dd0e1);border-radius:6px;transition:width .3s;width:0;}
 
 .board-wrap{position:relative;background:#fff;border-radius:18px;padding:10px;box-shadow:0 6px 22px rgba(38,166,154,.14);margin-bottom:18px;}
 .board{display:grid;gap:2px;touch-action:none;}
@@ -65,32 +65,20 @@ h1{color:var(--td);font-size:1.5rem;font-weight:800;text-align:center;}
 .done-hero.show{display:flex;}
 .done-hero .big{font-size:3rem;}
 .done-hero h3{font-size:1.35rem;font-weight:800;color:var(--td);}
+.row-btns{display:flex;gap:10px;margin-top:14px;}
 .spark{position:absolute;font-size:1.2rem;pointer-events:none;animation:spark 1.1s ease-out forwards;}
 @keyframes spark{0%{transform:scale(0) rotate(0);opacity:0}30%{opacity:1}100%{transform:scale(1.4) rotate(40deg) translateY(-14px);opacity:0}}
 
 .btn{border:none;border-radius:14px;padding:12px 20px;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;}
 .btn-teal{background:var(--teal);color:#fff;}
 .btn-soft{background:var(--mm);color:var(--td);}
-.btn:disabled{opacity:.4;pointer-events:none;}
-
-/* Win overlay */
-.win-ov{position:fixed;inset:0;background:rgba(232,248,245,.94);backdrop-filter:blur(3px);display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;z-index:20;padding:20px;text-align:center;}
-.win-ov.show{display:flex;}
-.win-ov h2{font-size:1.6rem;font-weight:800;color:var(--td);}
-.win-ov p{font-size:.9rem;color:var(--fg2);font-weight:600;}
-.art{display:grid;margin:10px 0;border-radius:12px;padding:8px;background:#fff;box-shadow:0 6px 22px rgba(38,166,154,.16);}
-.art i{display:block;border-radius:3px;}
-.art i.rv{animation:reveal .4s ease both;}
-@keyframes reveal{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-.spark{position:absolute;font-size:1.3rem;pointer-events:none;animation:spark 1.2s ease-out forwards;}
-@keyframes spark{0%{transform:scale(0) rotate(0);opacity:0}30%{opacity:1}100%{transform:scale(1.5) rotate(45deg) translateY(-18px);opacity:0}}
 
 .calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
 </style>
 </head>
 <body>
 
-<!-- LEVEL PICKER -->
+<!-- PICKER -->
 <div id="v-pick" class="screen active">
   <h1>💎 Joyas</h1>
   <p class="sub">Coge cada gema de la bandeja y ponla en su casilla del color correcto.<br>El dibujo se ilumina solo.</p>
@@ -101,8 +89,7 @@ h1{color:var(--td);font-size:1.5rem;font-weight:800;text-align:center;}
 <div id="v-game" class="screen">
   <div class="topbar">
     <button class="back-btn" onclick="go('v-pick')">←</button>
-    <h2 id="g-title">Nivel</h2>
-    <span class="moves" id="g-moves">0 mov.</span>
+    <h2 id="game-title">Dibujo</h2>
   </div>
   <div class="pbar-out"><div class="pbar-in" id="pbar"></div></div>
   <div class="board-wrap">
@@ -157,7 +144,7 @@ const PICTURES=[
 ];
 
 /* ── Estado ── */
-let curLv=0, K=4, tubes=[], sel=null, moves=0, history=[], initial=null;
+let cur=null, selGem=null, cells=[], remaining={}, filledCount=0, targetCount=0, dragging=false;
 
 function go(v){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -171,7 +158,7 @@ function getDone(){try{return JSON.parse(localStorage.getItem('cris_joyas_done')
 function markDone(id){const d=getDone();if(!d.includes(id)){d.push(id);localStorage.setItem('cris_joyas_done',JSON.stringify(d));}}
 
 /* ── Audio/vibración ── */
-function beep(f=600,d=.12){if(!__allow('sound'))return;try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.15,a.currentTime);g.gain.exponentialRampToValueAtTime(.01,a.currentTime+d);o.start();o.stop(a.currentTime+d);}catch(e){}}
+function beep(f=600,d=.15){if(!__allow('sound'))return;try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.16,a.currentTime);g.gain.exponentialRampToValueAtTime(.01,a.currentTime+d);o.start();o.stop(a.currentTime+d);}catch(e){}}
 function vib(ms){if(!__allow('vib'))return;try{navigator.vibrate(ms);}catch(e){}}
 
 /* ── PICKER ── */
@@ -190,6 +177,7 @@ function renderPicker(){
     </button>`;
   }).join('');
 }
+function countGems(p){return p.grid.join('').replace(/\./g,'').length;}
 
 /* ── EMPEZAR ── */
 function startPic(id){
@@ -209,7 +197,7 @@ function startPic(id){
 }
 
 function buildBoard(){
-  const w=cur.grid[0].length,h=cur.grid.length;
+  const w=cur.grid[0].length;
   const board=document.getElementById('board');
   const cellPx=Math.floor(Math.min(360, window.innerWidth-56)/w);
   board.style.gridTemplateColumns=`repeat(${w},${cellPx}px)`;
@@ -270,7 +258,7 @@ function tryFill(d){
       if(nxt)selectGem(nxt);
     }
   }
-  return false;
+  if(filledCount>=targetCount)finishPic();
 }
 
 function updateProgress(){document.getElementById('pbar').style.width=(filledCount/targetCount*100)+'%';}
@@ -299,47 +287,6 @@ function sparkle(){
     wrap.appendChild(s);setTimeout(()=>s.remove(),1700);
   }
 }
-function undo(){
-  if(!history.length)return;
-  tubes=history.pop();sel=null;moves=Math.max(0,moves-1);updateMoves();render();
-  beep(500,.08);
-}
-
-/* ── GANAR ── */
-function winLevel(){
-  markDone(curLv);
-  document.querySelectorAll('.tube').forEach(t=>t.classList.add('win'));
-  beep(880,.16);setTimeout(()=>beep(1120,.22),160);vib([60,40,90]);
-  // revela un dibujo
-  const art=ART[curLv%ART.length];
-  const w=art.grid[0].length;
-  const cell=Math.min(22,Math.floor(240/w));
-  const el=document.getElementById('win-art');
-  el.style.gridTemplateColumns=`repeat(${w},${cell}px)`;
-  const flat=art.grid.join('').split('');
-  el.innerHTML=flat.map((ch,idx)=>`<i class="rv" style="width:${cell}px;height:${cell}px;background:${ch==='.'?'transparent':(GEMS[ch]||'#ccc')};animation-delay:${idx*0.012}s"></i>`).join('');
-  document.getElementById('win-art-name').textContent='Has revelado: '+art.name;
-  const nb=document.getElementById('win-next');
-  const next=curLv+1;
-  if(next<LEVELS.length){nb.textContent='Nivel '+(next+1)+' →';nb.style.display='';nb.onclick=()=>startLevel(next);}
-  else{nb.textContent='¡Todos hechos! 🏆';nb.style.display='';nb.onclick=()=>{closeWin();go('v-pick');};}
-  document.getElementById('win-ov').classList.add('show');
-  sparkle();
-}
-function closeWin(){document.getElementById('win-ov').classList.remove('show');}
-function sparkle(){
-  const ov=document.getElementById('win-ov');
-  const em=['✨','💎','⭐','💛','🌟'];
-  for(let i=0;i<16;i++){
-    const s=document.createElement('span');
-    s.className='spark';s.textContent=em[i%em.length];
-    s.style.left=(8+Math.random()*84)+'%';s.style.top=(12+Math.random()*70)+'%';
-    s.style.animationDelay=(Math.random()*.6)+'s';
-    ov.appendChild(s);setTimeout(()=>s.remove(),1900);
-  }
-}
-
-window.addEventListener('resize',()=>{if(document.getElementById('v-game').classList.contains('active'))render();});
 
 /* ── Boot ── */
 renderPicker();
