@@ -196,6 +196,18 @@ textarea.tool-field{min-height:74px;resize:vertical}
 .t-mini .g{display:flex;gap:5px;margin-left:auto}
 .t-mini .g button{border:none;border-radius:8px;padding:5px 9px;font-size:.72rem;font-weight:700;cursor:pointer}
 
+/* Trabajo: empezar + triaje por momento */
+.work-start{width:100%;border:none;border-radius:16px;padding:16px;font-family:inherit;font-size:1.05rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#26a69a,#4dd0e1);box-shadow:0 4px 14px rgba(38,166,154,.3);cursor:pointer;margin-bottom:18px}
+.work-start:active{transform:scale(.98)}
+.wgroup{margin-bottom:14px}
+.wg-label{font-size:.82rem;font-weight:800;color:var(--turq);margin:0 2px 8px}
+.wrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:2px solid var(--lavanda);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font-family:inherit;transition:transform .1s,background .1s}
+.wrow:active{transform:scale(.99);background:var(--lavanda-soft)}
+.wrow .we{font-size:1.5rem;flex-shrink:0}
+.wrow .wi{display:flex;flex-direction:column;gap:1px}
+.wrow .wi b{font-size:.9rem;color:var(--turq);font-weight:700}
+.wrow .wi i{font-size:.75rem;color:#778;font-style:normal;line-height:1.3}
+
 /* Anillo de tiempo: se vacía según pasa — para ver cuánto queda sin leer números */
 .tring{width:176px;height:176px;border-radius:50%;margin:4px auto 10px;display:flex;align-items:center;justify-content:center;background:conic-gradient(#26a69a 360deg,#cde9e4 0);flex-shrink:0;}
 .tring-in{width:144px;height:144px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;text-align:center;}
@@ -210,18 +222,32 @@ textarea.tool-field{min-height:74px;resize:vertical}
     <h1>Trabajo</h1>
   </div>
 
-  <!-- HERRAMIENTAS ANTI-BLOQUEO -->
+  <button class="work-start" onclick="openTool('foco')">▶ Empezar a trabajar</button>
+
   <div class="section">
-    <h2>🧠 Herramientas anti-bloqueo</h2>
-    <div style="font-size:0.75rem;opacity:.7;margin-bottom:8px;">Para cuando tu cerebro se atasca. Toca la que necesites.</div>
-    <div class="tools-grid">
-      <button class="tool-btn" onclick="openTool('paralisis')"><span class="te">🧩</span>Destructor de parálisis</button>
-      <button class="tool-btn" onclick="openTool('dopamina')"><span class="te">🍽️</span>Menú de dopamina</button>
-      <button class="tool-btn" onclick="openTool('doble')"><span class="te">👥</span>Doble de cuerpo</button>
-      <button class="tool-btn" onclick="openTool('contexto')"><span class="te">🔄</span>Cambio de contexto</button>
-      <button class="tool-btn" onclick="openTool('interes')"><span class="te">🎮</span>Convertir en misión</button>
-      <button class="tool-btn" onclick="openTool('tiempo')"><span class="te">⏳</span>Auditor del tiempo</button>
-      <button class="tool-btn" onclick="openTool('volcado')" style="grid-column:1/-1"><span class="te">🧠</span>Vaciar la mente (bucles abiertos)</button>
+    <div style="font-size:0.78rem;opacity:.75;margin-bottom:12px;text-align:center;">¿Te atascas? Dime qué te pasa y toma la herramienta que necesitas.</div>
+
+    <div class="wgroup">
+      <div class="wg-label">🏁 No puedo empezar</div>
+      <button class="wrow" onclick="openTool('paralisis')"><span class="we">🧩</span><span class="wi"><b>Destructor de parálisis</b><i>miras la tarea y no arrancas</i></span></button>
+      <button class="wrow" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b>Convertir en misión</b><i>gamifica una tarea aburrida con algo que te gusta</i></span></button>
+    </div>
+
+    <div class="wgroup">
+      <div class="wg-label">🎯 Quiero mantener el foco</div>
+      <button class="wrow" onclick="openTool('doble')"><span class="we">👥</span><span class="wi"><b>Doble de cuerpo</b><i>trabajo acompañado, con avisos cada 10 min</i></span></button>
+      <button class="wrow" onclick="openTool('dopamina')"><span class="we">🍽️</span><span class="wi"><b>Menú de dopamina</b><i>elige un plato y mantén el cerebro enganchado</i></span></button>
+    </div>
+
+    <div class="wgroup">
+      <div class="wg-label">🧠 Tengo la cabeza llena</div>
+      <button class="wrow" onclick="openTool('volcado')"><span class="we">🧠</span><span class="wi"><b>Vaciar la mente</b><i>suelta los bucles abiertos y clasifícalos</i></span></button>
+    </div>
+
+    <div class="wgroup" style="margin-bottom:0">
+      <div class="wg-label">🔄 Cambiar de tarea o planificar</div>
+      <button class="wrow" onclick="openTool('contexto')"><span class="we">🔄</span><span class="wi"><b>Cambio de contexto</b><i>3 min para pasar de una tarea a otra</i></span></button>
+      <button class="wrow" onclick="openTool('tiempo')" style="margin-bottom:0"><span class="we">⏳</span><span class="wi"><b>Auditor del tiempo</b><i>estima cuánto tardarás de verdad</i></span></button>
     </div>
   </div>
 </div>
@@ -266,6 +292,21 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
   const head=(emoji,title,desc)=>`<button class="tool-close" onclick="closeTool()">✕</button><h3>${emoji} ${title}</h3><div class="t-desc">${desc}</div>`;
 
   const TOOLS={
+    /* 0 · Empezar a trabajar (sesión de foco) */
+    foco:()=>head('▶️','Empezar a trabajar',
+      'Una sesión de foco. Elige cuánto y a por ello — sin bloques ni configuración.')+`
+      <div style="text-align:center">
+        <div id="fo-pick">
+          <div class="t-label" style="text-align:center">¿Cuánto rato?</div>
+          <div><span class="t-chip" data-m="15">15 min</span><span class="t-chip" data-m="25">25 min</span><span class="t-chip" data-m="45">45 min</span></div>
+        </div>
+        <div id="fo-run" style="display:none">
+          <div class="t-timer" id="fo-timer">25:00</div>
+          <div style="font-size:.78rem;color:#889;margin-bottom:8px">Estoy llevando el tiempo. Tú a lo tuyo.</div>
+          <button class="t-btn sec" onclick="openTool('foco')">Parar</button>
+        </div>
+      </div>`,
+
     /* 1 · Destructor de parálisis por tareas */
     paralisis:()=>head('🧩','Destructor de parálisis',
       'Cuando miras la tarea y no puedes empezar. La partimos en un paso ridículamente pequeño.')+`
@@ -349,6 +390,16 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
     ac:[['Dibujar o garabatear',10],['Puzzle de gemas',10],['Tocar/escuchar música',10],['Escribir libre',10]]};
 
   const INIT={
+    foco(){
+      sheet.querySelectorAll('#fo-pick .t-chip').forEach(ch=>ch.onclick=()=>{
+        const min=+ch.dataset.m;
+        document.getElementById('fo-pick').style.display='none';
+        document.getElementById('fo-run').style.display='block';
+        speak(min+' minutos de foco. Empieza ahora, yo llevo el tiempo.');vib(50);
+        run(min*60,'fo-timer',(t,tot)=>{ if(min>=25&&t===Math.floor(tot/2)){beep(700,.12);vib(50);speak('Vas por la mitad. Sigue, lo estás haciendo bien.');} },
+          ()=>{speak('¡Tiempo! Buen trabajo. Tómate un respiro.');});
+      });
+    },
     paralisis(){
       document.getElementById('pa-go').onclick=function(){
         const step=gv('pa-step')||'tu primer paso';
