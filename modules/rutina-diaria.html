@@ -5,7 +5,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Cris - Rutina Diaria</title>
 <style>
   :root{
@@ -23,7 +23,7 @@
   body{
     background:linear-gradient(135deg,var(--bg) 0%,var(--lavanda-soft) 100%);
     min-height:100vh;
-    padding:16px;
+    padding:16px 16px 100px;
     color:var(--text);
     -webkit-tap-highlight-color:transparent;
   }
@@ -177,11 +177,11 @@
 .tool-btn .te{font-size:1.6rem}
 .tool-ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:70}
 .tool-ov.show{display:flex}
-.tool-sheet{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;padding:20px 18px 34px;animation:sheetup .25s ease}
+.tool-sheet{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;padding:20px 18px 96px;animation:sheetup .25s ease}
 @keyframes sheetup{from{transform:translateY(40px);opacity:.4}to{transform:translateY(0);opacity:1}}
 .tool-sheet h3{color:var(--turq);font-size:1.2rem;margin-bottom:4px}
 .tool-sheet .t-desc{font-size:.82rem;color:#667;margin-bottom:14px;line-height:1.45}
-.tool-field{width:100%;border:2px solid var(--lavanda);border-radius:12px;padding:11px;font-family:inherit;font-size:.9rem;margin-bottom:10px;color:var(--text)}
+.tool-field{width:100%;border:2px solid var(--lavanda);border-radius:12px;padding:11px;font-family:inherit;font-size:16px;margin-bottom:10px;color:var(--text)}
 .tool-field:focus{outline:none;border-color:var(--turq)}
 textarea.tool-field{min-height:74px;resize:vertical}
 .tool-close{float:right;border:none;background:none;font-size:1.4rem;cursor:pointer;color:#aaa;line-height:1}
@@ -220,7 +220,7 @@ textarea.tool-field{min-height:74px;resize:vertical}
 
 <div class="card">
   <div class="header">
-    <div class="quokka">💼</div>
+    <div class="quokka"><img src="../quico/quico_head_happy.png" alt="Quico" style="width:52px;height:52px;object-fit:contain;display:block;vertical-align:middle"></div>
     <h1>Trabajo</h1>
   </div>
 
@@ -275,7 +275,8 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
 
   function allow(k){try{const c=JSON.parse(localStorage.getItem('cris_cfg')||'{}');return c[k]!==false&&c.calm!==true;}catch(e){return true;}}
   function speak(t){if(!allow('voice'))return;try{if(!window.speechSynthesis)return;speechSynthesis.cancel();if(speechSynthesis.paused)speechSynthesis.resume();_u=new SpeechSynthesisUtterance(t);_u.lang='es-ES';_u.rate=.92;const v=speechSynthesis.getVoices().find(v=>v.lang.startsWith('es'));if(v)_u.voice=v;speechSynthesis.speak(_u);}catch(e){}}
-  function beep(f=660,d=.15){if(!allow('sound'))return;try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.2,c.currentTime);g.gain.exponentialRampToValueAtTime(.01,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+  let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
+  function beep(f=660,d=.15){if(!allow('sound'))return;try{const c=__getCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.2,c.currentTime);g.gain.exponentialRampToValueAtTime(.01,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
   function vib(m){if(!allow('vib'))return;try{navigator.vibrate(m);}catch(e){}}
   function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
   function stopTimer(){if(tTimer){clearInterval(tTimer);tTimer=null;}}
@@ -410,7 +411,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
         document.getElementById('fo-run').style.display='block';
         speak(min+' minutos de foco. Empieza ahora, yo llevo el tiempo.');vib(50);
         run(min*60,'fo-timer',(t,tot)=>{ if(min>=25&&t===Math.floor(tot/2)){beep(700,.12);vib(50);speak('Vas por la mitad. Sigue, lo estás haciendo bien.');} },
-          ()=>{speak('¡Tiempo! Buen trabajo. Tómate un respiro.');});
+          ()=>{try{var _n=new Date();localStorage.setItem('cris_trabajo_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}speak('¡Tiempo! Buen trabajo. Tómate un respiro.');});
       });
     },
     paralisis(){
@@ -514,7 +515,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
     const list=lsGet('cris_volcado',[]);
     if(!list.length){cont.innerHTML='<div style="font-size:.82rem;color:#889;text-align:center;padding:14px">Vacía aquí todo lo que te ronde. Luego lo clasificas.</div>';return;}
     cont.innerHTML=list.map((it,i)=>{
-      if(it.cat==='ahora')return `<div class="t-mini" style="flex-wrap:wrap"><span>🔴 <strong>${esc(it.t)}</strong></span><div class="g"><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">→ Luego</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div><input class="tool-field" style="margin:8px 0 0;font-size:.82rem" placeholder="Siguiente paso en 1 frase..." value="${esc(it.step)}" oninput="setVolcadoStep(${i},this.value)"></div>`;
+      if(it.cat==='ahora')return `<div class="t-mini" style="flex-wrap:wrap"><span>🔴 <strong>${esc(it.t)}</strong></span><div class="g"><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">→ Luego</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div><input class="tool-field" style="margin:8px 0 0" placeholder="Siguiente paso en 1 frase..." value="${esc(it.step)}" oninput="setVolcadoStep(${i},this.value)"></div>`;
       if(it.cat==='luego')return `<div class="t-mini"><span>🟡 ${esc(it.t)}</span><div class="g"><button style="background:#d7f5ec;color:var(--turq)" onclick="setVolcadoCat(${i},'ahora')">↑ Ahora</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div></div>`;
       return `<div class="t-mini"><span>${esc(it.t)}</span><div class="g"><button style="background:#d7f5ec;color:var(--turq)" onclick="setVolcadoCat(${i},'ahora')">Ahora</button><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">Luego</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div></div>`;
     }).join('');

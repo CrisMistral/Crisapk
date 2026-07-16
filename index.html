@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#26a69a">
 <title>Cris</title>
 <link rel="manifest" href="manifest.json">
@@ -20,41 +20,46 @@
   --teal-belly:#5dcfc2;
   --teal-outline:#0f4d47;
   --text:#1a6b64;
-  --text-soft:#3d8880;
+  --text-soft:#2d6b64;
   --white-card:rgba(255,255,255,0.72);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;}
+html,body{height:100%;overflow-x:clip;}
 body{
   font-family:'Outfit',sans-serif;
   background:var(--mint-bg);
   min-height:100vh;
   color:var(--text);
-  overflow-x:hidden;
+  overflow-x:clip;
 }
 
-/* ── DASHBOARD ── */
+/* ── DASHBOARD (pantalla 1: solo HOY) ── */
 #dashboard{
   max-width:440px;
   margin:0 auto;
-  padding:24px 18px 48px;
+  padding:14px 18px 24px;
+  min-height:100vh;
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
 }
 
 /* Header greeting */
 .hero{
   text-align:center;
-  margin-bottom:4px;
+  margin-bottom:2px;
+  padding-top:44px; /* deja hueco al botón de menú */
 }
 .greeting-row{
-  font-size:1.5rem;
+  font-size:1.4rem;
   font-weight:800;
   color:var(--teal-dark);
   margin-bottom:2px;
 }
 .hero-sub{
-  font-size:.88rem;
+  font-size:.85rem;
   color:var(--text-soft);
-  margin-bottom:20px;
+  margin-bottom:6px;
 }
 
 /* Quokka + bubble */
@@ -62,27 +67,19 @@ body{
   display:flex;
   flex-direction:column;
   align-items:center;
-  margin-bottom:24px;
   position:relative;
-}
-.quokka-wrap{
-  animation:float 3.2s ease-in-out infinite;
-}
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-9px);}
 }
 .bubble{
   background:var(--white-card);
   border:2px solid var(--mint-mid);
   border-radius:18px;
-  padding:10px 16px;
-  font-size:.88rem;
+  padding:9px 16px;
+  font-size:.85rem;
   font-weight:600;
   color:var(--teal-dark);
   max-width:260px;
   text-align:center;
-  margin-bottom:10px;
+  margin-bottom:8px;
   position:relative;
   box-shadow:0 2px 12px rgba(38,166,154,.12);
 }
@@ -97,79 +94,81 @@ body{
 }
 
 /* ── TODAY PANEL ── */
+.tp-wrap{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;}
 #today-panel{
-  background:var(--white-card);
+  background:#fdfefd;
   border:2px solid var(--mint-mid);
   border-radius:20px;
   padding:14px;
-  margin-bottom:18px;
   box-shadow:0 3px 10px rgba(38,166,154,.10);
+  flex:1;
+  display:flex;
+  flex-direction:column;
 }
 .tp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 .tp-title{font-size:.95rem;font-weight:800;color:var(--teal-dark);text-transform:capitalize;}
 .tp-eco{border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:999px;padding:6px 12px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;}
 .tp-eco.on{background:#fef3c7;border-color:#f59e0b;color:#92400e;}
 .tp-eco-msg{background:#fef9ec;border:1.5px solid #fde9b8;border-radius:12px;padding:9px 12px;font-size:.78rem;color:#92400e;font-weight:600;margin-bottom:10px;line-height:1.45;}
-.tp-row{display:flex;align-items:center;gap:11px;width:100%;border:none;background:var(--mint-bg);border-radius:14px;padding:11px 12px;margin-bottom:7px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;transition:transform .1s;}
-.tp-row:last-child{margin-bottom:0;}
+.tp-eco-suggest{background:#fff8e6;border:1.5px solid #f5d78a;border-radius:12px;padding:10px 12px;font-size:.78rem;color:#8a6410;font-weight:600;margin-bottom:10px;line-height:1.45;}
+.tp-eco-cta{display:block;margin-top:8px;border:none;background:#f59e0b;color:#fff;border-radius:999px;padding:8px 14px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;}
+.tp-eco-cta:active{transform:scale(.96);}
+.tp-row{display:flex;align-items:center;gap:11px;width:100%;border:none;background:var(--mint-bg);border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;transition:transform .1s;}
 .tp-row:active{transform:scale(.98);}
 .tp-row.done{opacity:.6;}
 .tp-em{font-size:1.5rem;flex-shrink:0;}
 .tp-info{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0;}
-.tp-t{font-size:.86rem;font-weight:700;color:var(--teal-dark);}
+.tp-t{font-size:.88rem;font-weight:700;color:var(--teal-dark);}
 .tp-row.done .tp-t{text-decoration:line-through;}
-.tp-s{font-size:.72rem;color:var(--text-soft);font-weight:500;}
+.tp-s{font-size:.73rem;color:var(--text-soft);font-weight:500;}
 .tp-arrow{font-size:1.1rem;color:var(--teal);font-weight:800;flex-shrink:0;}
+.tp-hint{font-size:.68rem;color:var(--text-soft);text-align:center;margin-top:8px;opacity:.85;}
 
-/* Module grid */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:4px;
-}
-.module-card{
-  background:var(--white-card);
-  border-radius:20px;
-  padding:18px 10px 14px;
-  text-align:center;
-  cursor:pointer;
-  border:2px solid var(--mint-mid);
-  transition:transform .12s, background .12s, border-color .12s;
-  position:relative;
-  box-shadow:0 3px 10px rgba(38,166,154,.10);
-}
-.module-card:active{
-  transform:scale(0.95);
-  background:var(--mint-mid);
-  border-color:var(--teal);
-}
-.module-card .icon{
-  font-size:2rem;
-  display:block;
-  margin-bottom:8px;
-}
-.module-card .title{
-  font-size:.9rem;
-  font-weight:700;
-  color:var(--teal-dark);
-  line-height:1.2;
-}
-.module-card .sub{
-  font-size:.7rem;
-  color:var(--text-soft);
-  margin-top:3px;
-  font-weight:500;
-}
+/* ── Quokka asomado agarrando el panel ── */
+.quokka-peek{display:flex;justify-content:center;margin-bottom:-30px;position:relative;z-index:2;}
+.quokka-peek img{display:block;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18));}
 
-.footer-note{
-  text-align:center;
-  margin-top:28px;
-  font-size:.72rem;
-  color:var(--text-soft);
-  line-height:1.7;
-  opacity:.7;
+/* ── BOTÓN DE MENÚ (hamburguesa, arriba izquierda) ── */
+#menuBtn{
+  position:fixed;top:14px;left:16px;width:48px;height:48px;border-radius:14px;
+  background:var(--white-card);border:2px solid var(--mint-mid);color:var(--teal-dark);
+  font-size:1.35rem;z-index:150;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 12px rgba(38,166,154,.18);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
 }
+#menuBtn:active{transform:scale(.92);}
+
+/* ── CAJÓN LATERAL IZQUIERDO ──
+   Se envuelve en un host fijo a tamaño de ventana con overflow:hidden,
+   así la parte del cajón que queda fuera de pantalla no ensancha la página. */
+#drawerHost{position:fixed;inset:0;z-index:300;overflow:hidden;pointer-events:none;}
+#drawerBg{
+  position:absolute;inset:0;background:rgba(15,77,71,.38);
+  opacity:0;pointer-events:none;transition:opacity .28s;
+}
+#drawerBg.open{opacity:1;pointer-events:auto;}
+#drawer{
+  position:absolute;top:0;left:0;bottom:0;width:84%;max-width:330px;
+  background:var(--mint-bg);pointer-events:auto;
+  transform:translateX(-102%);transition:transform .28s ease;
+  box-shadow:6px 0 30px rgba(15,77,71,.22);
+  overflow-y:auto;padding:18px 16px 40px;
+}
+#drawer.open{transform:translateX(0);}
+.dw-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.dw-title{font-size:1.15rem;font-weight:800;color:var(--teal-dark);}
+.dw-close{width:40px;height:40px;border-radius:12px;border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.dw-close:active{transform:scale(.92);}
+.dw-label{font-size:.72rem;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:.04em;margin:16px 2px 8px;}
+
+/* Filas de módulo dentro del cajón */
+.dm-row{display:flex;align-items:center;gap:12px;width:100%;border:2px solid var(--mint-mid);background:var(--white-card);border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;transition:transform .1s,background .1s;}
+.dm-row:active{transform:scale(.97);background:var(--mint-mid);}
+.dm-em{font-size:1.6rem;flex-shrink:0;}
+.dm-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.dm-t{font-size:.92rem;font-weight:700;color:var(--teal-dark);}
+.dm-s{font-size:.72rem;color:var(--text-soft);font-weight:500;line-height:1.25;}
 
 /* ── MODULE VIEWER ── */
 #viewer{
@@ -217,6 +216,10 @@ body{
   display:flex;align-items:center;gap:7px;
 }
 #sosBtn:active{transform:scale(.93);}
+/* Con un módulo abierto, el SOS se encoge a un círculo (solo 🫀) para no
+   dispararse por un toque accidental mientras se hace scroll. */
+#sosBtn.mini{padding:0;width:52px;height:52px;border-radius:50%;justify-content:center;font-size:1.4rem;gap:0;}
+#sosBtn.mini .sos-label{display:none;}
 
 /* ── Recordatorios ── */
 #notifBtn{
@@ -227,10 +230,10 @@ body{
 #notifBtn.on{background:var(--teal);border-color:var(--teal);color:#fff;}
 #notifTimes{background:var(--white-card);border:2px solid var(--mint-mid);border-radius:16px;padding:12px 14px;margin-bottom:10px;}
 .nt-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:.86rem;font-weight:600;color:var(--teal-dark);}
-.nt-row input{border:2px solid var(--mint-mid);border-radius:10px;padding:6px 10px;font-family:'Outfit',sans-serif;font-size:.9rem;color:var(--teal-dark);background:#fff;}
+.nt-row input{border:2px solid var(--mint-mid);border-radius:10px;padding:6px 10px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark);background:#fff;}
 
 /* ── Ajustes rápidos ── */
-.cfg-zone{margin-top:22px;}
+.cfg-zone{margin-top:6px;}
 #calmBtn{
   width:100%;border:2px solid #f3d9a4;background:#fdf6e3;color:#8a6410;
   border-radius:16px;padding:14px;font-family:'Outfit',sans-serif;
@@ -246,23 +249,22 @@ body{
 .cfg-chips button.off{opacity:.4;text-decoration:line-through;}
 .cfg-note{font-size:.72rem;color:var(--text-soft);text-align:center;margin-top:8px;opacity:.8;}
 
-/* ── Quokka asomado agarrando el panel ── */
-.quokka-peek{display:flex;justify-content:center;margin-bottom:-30px;position:relative;z-index:2;}
-.quokka-peek img{display:block;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18));}
-.tp-wrap{position:relative;z-index:1;}
-
 .calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
 </style>
 </head>
 <body>
 
+<!-- Botón de menú -->
+<button id="menuBtn" aria-label="Abrir menú" onclick="openDrawer()">☰</button>
+
+<!-- Pantalla 1: solo HOY -->
 <div id="dashboard">
   <div class="hero">
     <div class="greeting-row" id="greeting">¡Hola, Cris!</div>
     <div class="hero-sub">¿en qué te ayudo hoy?</div>
   </div>
 
-  <div class="quokka-zone" style="margin-bottom:0;">
+  <div class="quokka-zone">
     <div class="bubble" id="bubble-msg">¡Aquí estoy! Elige un módulo 🌿</div>
   </div>
 
@@ -272,11 +274,23 @@ body{
   </div>
 
   <div class="tp-wrap">
-    <div id="today-panel" style="background:#fdfefd;"></div>
+    <div id="today-panel"></div>
+  </div>
+</div>
+
+<!-- Cajón lateral: módulos + ajustes -->
+<div id="drawerHost">
+<div id="drawerBg" onclick="closeDrawer()"></div>
+<aside id="drawer">
+  <div class="dw-head">
+    <span class="dw-title">🌿 Menú de Cris</span>
+    <button class="dw-close" aria-label="Cerrar menú" onclick="closeDrawer()">✕</button>
   </div>
 
-  <div class="grid" id="moduleGrid"></div>
+  <div class="dw-label">Módulos</div>
+  <div id="moduleList"></div>
 
+  <div class="dw-label">Ajustes</div>
   <div class="cfg-zone">
     <button id="notifBtn" onclick="toggleNotif()">🔕 Activar recordatorios</button>
     <div id="notifTimes" style="display:none;">
@@ -293,10 +307,10 @@ body{
     <div class="cfg-note">Los ajustes se aplican a toda la app</div>
   </div>
 
-  <div class="footer-note">
-    Cris · tu compañera de cada día 💚<br>
-    Toca 🏠 para volver aquí desde cualquier módulo
+  <div class="cfg-note" style="margin-top:22px;line-height:1.7;">
+    Cris · tu compañera de cada día 💚
   </div>
+</aside>
 </div>
 
 <!-- Visor de módulos -->
@@ -304,7 +318,7 @@ body{
   <iframe id="moduleFrame" title="Módulo de Cris"></iframe>
 </div>
 <button id="homeBtn" title="Volver al inicio">🏠</button>
-<button id="sosBtn" title="Botiquín de emergencia" onclick="openModule('modules/rescate-emocional.html')">🫀 SOS</button>
+<button id="sosBtn" title="Botiquín de emergencia" onclick="openModule('modules/rescate-emocional.html')">🫀<span class="sos-label"> SOS</span></button>
 
 <script>
 const modules = [
@@ -339,6 +353,16 @@ function setGreeting(){
     BUBBLES[Math.floor(Math.random()*BUBBLES.length)];
 }
 setGreeting();
+
+/* ── CAJÓN LATERAL ── */
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerBg').classList.add('open');
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerBg').classList.remove('open');
+}
 
 /* ── AJUSTES GLOBALES (voz/sonido/vibración/reducir estímulos) ── */
 function getCfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
@@ -375,7 +399,7 @@ function toggleNotif(){
       const n2=getNotifCfg();
       n2.on=true;n2.m=n2.m||'09:30';n2.n=n2.n||'21:30';
       setNotifCfg(n2);
-      fireNotif('🦘 ¡Recordatorios activados!','Te avisaré con cariño, sin agobios 💚');
+      fireNotif('🦘 ¡Recordatorios activados!','Te avisaré al abrir la app o si la tienes instalada 💚');
     }else{
       document.getElementById('bubble-msg').textContent='Sin permiso no puedo avisarte 🥺 — actívalo en ajustes del navegador';
     }
@@ -406,24 +430,28 @@ function fireNotif(title,body){
     }
   }catch(e){try{new Notification(title,{body});}catch(_){}}
 }
+function minsOf(hhmm){const p=(hhmm||'').split(':');return (+p[0])*60+(+p[1]);}
 function checkNotif(){
   const n=getNotifCfg();
   if(!n.on||!('Notification' in window)||Notification.permission!=='granted')return;
   const now=new Date();
-  const hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-  const today=now.toISOString().split('T')[0];
-  if(n.m&&hm===n.m&&n.lastM!==today){
+  const nowMin=now.getHours()*60+now.getMinutes();
+  const today=todayLocal();
+  // "¿ya pasó la hora objetivo y aún no he avisado hoy?" — así, al abrir la app,
+  // salta el aviso pendiente aunque no estuviera abierta a la hora exacta.
+  if(n.m&&n.lastM!==today&&nowMin>=minsOf(n.m)){
     n.lastM=today;setNotifCfg(n);
     const day=now.getDay();
     const zona=ZONES[day]?ZONES[day][1]:'finde tranquilo';
     fireNotif('🦘 ¡Buenos días, Cris!','Hoy toca: '+PILATES[day][1]+' y '+zona+'. Un pasito y ya está 💚');
   }
-  if(n.n&&hm===n.n&&n.lastN!==today){
+  if(n.n&&n.lastN!==today&&nowMin>=minsOf(n.n)){
     n.lastN=today;setNotifCfg(n);
     fireNotif('🌙 Hora de cerrar el día','Tu rutina nocturna te espera: 25 min y a dormir de lujo 💜');
   }
 }
 setInterval(checkNotif,30000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden)checkNotif(); });
 
 /* ── PANEL HOY (lee el progreso real de cada módulo en localStorage) ── */
 const PILATES={1:['🌀','Core Profundo','18 min'],2:['🍑','Cadera y Glúteos','17 min'],3:['🌿','Espalda y Postura','18 min'],4:['🦵','Piernas y Equilibrio','17 min'],5:['⭐','Cuerpo Completo','20 min'],6:['🌸','Estiramientos Profundos','20 min'],0:['☀️','Movilidad Suave','15 min']};
@@ -431,12 +459,26 @@ const ZONES={1:['🍳','Cocina','cocina'],2:['🛁','Baño','bano'],3:['🛋️'
 
 function weekNum(){const d=new Date(),y=d.getFullYear(),s=new Date(y,0,1);return Math.ceil(((d-s)/864e5+s.getDay()+1)/7);}
 function lsJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return{};}}
-function todayStr(){return new Date().toISOString().split('T')[0];}
-function isEco(){return localStorage.getItem('cris_eco_day')===todayStr();}
+// Fecha LOCAL (no UTC): toISOString() daría el día anterior en España antes de las 02:00
+function todayLocal(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function todayStr(){return todayLocal();}
+function markDone(k){return localStorage.getItem(k)==='1';}
+function isEco(){return localStorage.getItem('cris_eco_day')===todayLocal();}
+
+// Historial de días eco (para ofrecerlo proactivamente si hay racha)
+function getEcoHist(){try{return JSON.parse(localStorage.getItem('cris_eco_hist')||'{}');}catch(e){return{};}}
+function dayKey(offset){const d=new Date();d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+// Si ayer y anteayer fueron eco y hoy aún no lo has declarado, se propone solo:
+// no hay que gastar energía cada mañana en decir "hoy tampoco puedo".
+function ecoSuggested(){const h=getEcoHist();return !isEco()&&!!h[dayKey(-1)]&&!!h[dayKey(-2)];}
 
 function toggleEco(){
   if(isEco())localStorage.removeItem('cris_eco_day');
-  else localStorage.setItem('cris_eco_day',todayStr());
+  else{
+    localStorage.setItem('cris_eco_day',todayLocal());
+    const h=getEcoHist();h[todayLocal()]=1;
+    try{localStorage.setItem('cris_eco_hist',JSON.stringify(h));}catch(e){}
+  }
   renderToday();
 }
 
@@ -453,34 +495,40 @@ function renderToday(){
     rows.push({e:'🧹',t:'Recoge 3 cosas',s:'Express corto, sin presión',f:'modules/limpieza.html#express'});
     rows.push({e:'🍽️',t:'Receta salvavidas',s:'10 min de despensa y comes',f:'modules/comida.html#basicos'});
   }else{
-    // El día completo en orden (todo menos Botiquín y Juego)
+    // El día completo en orden (todo menos Botiquín y Juego).
+    // Cada fila lleva `key`: la marca diaria en localStorage (la escribe el módulo
+    // al completar, o una pulsación larga en el panel). `done` = intrínseco || marca manual.
+    const tl=todayLocal();
 
     // 1 · Trabajo (herramientas anti-bloqueo)
-    rows.push({e:'💼',t:'Trabajo',s:'Herramientas para arrancar y enfocarte',f:'modules/rutina-diaria.html'});
+    const kTrab='cris_trabajo_v1_'+tl;
+    rows.push({e:'💼',t:'Trabajo',s:'Arranca y enfócate · 25 min',f:'modules/rutina-diaria.html',key:kTrab,done:markDone(kTrab)});
 
     // 2 · Ejercicio del día
     const p=PILATES[day];
-    rows.push({e:p[0],t:'Pilates: '+p[1],s:p[2]+' · manos libres',f:'modules/ejercicios-hiit.html'});
+    const kHiit='cris_hiit_v1_'+tl;
+    rows.push({e:p[0],t:'Pilates: '+p[1],s:p[2]+' · manos libres',f:'modules/ejercicios-hiit.html',key:kHiit,done:markDone(kHiit)});
 
     // 3 · Comida
     const menuDone=Object.values(lsJSON('cris_menu_w'+w+'_'+y)).filter(Boolean).length;
     const left=Math.max(0,14-menuDone);
-    rows.push({e:'🍽️',t:h<17?'¿Qué comes hoy?':'¿Qué cenas hoy?',s:left>0?'Te quedan '+left+' recetas del menú':'Menú de la semana completado 🎉',f:'modules/comida.html'});
+    const kCom='cris_comida_v1_'+tl;
+    const comDone=left===0||markDone(kCom);
+    rows.push({e:'🍽️',t:h<17?'¿Qué comes hoy?':'¿Qué cenas hoy?',s:left>0?'Te quedan '+left+' recetas del menú':'Menú de la semana completado 🎉',f:'modules/comida.html',key:kCom,done:comDone});
 
     // 4 · Limpieza
+    const kLim='cris_limpieza_v1_'+tl;
     if(ZONES[day]){
       const z=ZONES[day];
-      const done=!!lsJSON('lim-w'+w+'-'+y)[z[2]];
-      rows.push({e:z[0],t:'Limpieza: '+z[1],s:done?'¡Ya está hecha!':'~18 min · 6 pasos',f:'modules/limpieza.html',done});
+      const done=!!lsJSON('lim-w'+w+'-'+y)[z[2]]||markDone(kLim);
+      rows.push({e:z[0],t:'Limpieza: '+z[1],s:done?'¡Ya está hecha!':'~18 min · 6 pasos',f:'modules/limpieza.html',key:kLim,done});
     }else{
-      rows.push({e:'⚡',t:'Finde: limpieza libre',s:'¿Un express de 15 min?',f:'modules/limpieza.html#express'});
+      rows.push({e:'⚡',t:'Finde: limpieza libre',s:'¿Un express de 15 min?',f:'modules/limpieza.html#express',key:kLim,done:markDone(kLim)});
     }
 
-    // 5 · Intereses
-    rows.push({e:'🎨',t:'Aprende algo hoy',s:'Un interés · 10-15 min',f:'modules/intereses.html'});
-
-    // 6 · Cierre del día
-    rows.push({e:'🌙',t:'Rutina nocturna',s:h>=20?'25 min · cierre del día':'Para esta noche · 25 min',f:'modules/rutina-nocturna.html'});
+    // 5 · Cierre del día
+    const kNoche='cris_noche_v1_'+tl;
+    rows.push({e:'🌙',t:'Rutina nocturna',s:h>=20?'25 min · cierre del día':'Para esta noche · 25 min',f:'modules/rutina-nocturna.html',key:kNoche,done:markDone(kNoche)});
   }
 
   // Quico cambia de humor según el día: calmado en eco, orgulloso si todo hecho, feliz si no
@@ -496,36 +544,72 @@ function renderToday(){
       <button class="tp-eco ${eco?'on':''}" onclick="toggleEco()">${eco?'💪 Volver a normal':'🪫 Modo eco'}</button>
     </div>
     ${eco?'<div class="tp-eco-msg">Día de poca batería — lo mínimo cuenta. Hacer poco también es cuidarte 💚</div>':''}
+    ${(!eco&&ecoSuggested())?'<div class="tp-eco-suggest">🪫 Llevas un par de días de poca batería. ¿Hoy también en modo eco?<button class="tp-eco-cta" onclick="toggleEco()">Sí, modo eco</button></div>':''}
     ${rows.map(r=>`
-      <button class="tp-row${r.done?' done':''}" onclick="openModule('${r.f}')">
+      <button class="tp-row${r.done?' done':''}" data-file="${r.f}" data-key="${r.key||''}">
         <span class="tp-em">${r.e}</span>
         <span class="tp-info"><span class="tp-t">${r.t}</span><span class="tp-s">${r.s}</span></span>
         <span class="tp-arrow">${r.done?'✓':'›'}</span>
-      </button>`).join('')}`;
+      </button>`).join('')}
+    ${eco?'':'<div class="tp-hint">Toca para abrir · mantén pulsado para marcar hecho ✓</div>'}`;
+  bindTodayRows();
+}
+
+/* Vibración corta respetando ajustes (vib + modo calma) */
+function hapticOK(){const c=getCfg();return c.vib!==false&&c.calm!==true&&'vibrate'in navigator;}
+
+/* Pulsación corta = abrir módulo · Pulsación larga (~500ms) = marcar/desmarcar hecho.
+   Así una tarea hecha FUERA de la app también se puede reflejar en el panel. */
+function bindTodayRows(){
+  document.querySelectorAll('#today-panel .tp-row').forEach(row=>{
+    let timer=null,longFired=false;
+    const file=row.getAttribute('data-file');
+    const key=row.getAttribute('data-key');
+    const start=()=>{
+      longFired=false;
+      if(!key)return;
+      timer=setTimeout(()=>{
+        longFired=true;
+        const on=localStorage.getItem(key)==='1';
+        if(on)localStorage.removeItem(key); else localStorage.setItem(key,'1');
+        if(hapticOK())navigator.vibrate(on?30:[40,40,40]);
+        renderToday();
+      },500);
+    };
+    const cancel=()=>{ if(timer){clearTimeout(timer);timer=null;} };
+    row.addEventListener('pointerdown',start);
+    row.addEventListener('pointerup',()=>{ cancel(); if(!longFired&&file)openModule(file); });
+    row.addEventListener('pointerleave',cancel);
+    row.addEventListener('pointercancel',cancel);
+    row.addEventListener('contextmenu',e=>e.preventDefault());
+  });
 }
 renderToday();
 renderCfg();
 renderNotif();
 
-// Generar tarjetas
-const grid = document.getElementById('moduleGrid');
+// Generar lista de módulos en el cajón
+const moduleList = document.getElementById('moduleList');
 modules.forEach(m => {
-  const card = document.createElement('div');
-  card.className = 'module-card';
-  card.innerHTML = `<span class="icon">${m.icon}</span><div class="title">${m.title}</div><div class="sub">${m.sub}</div>`;
-  card.addEventListener('click', () => openModule(m.file));
-  grid.appendChild(card);
+  const row = document.createElement('button');
+  row.className = 'dm-row';
+  row.innerHTML = `<span class="dm-em">${m.icon}</span><span class="dm-info"><span class="dm-t">${m.title}</span><span class="dm-s">${m.sub}</span></span>`;
+  row.addEventListener('click', () => { closeDrawer(); openModule(m.file); });
+  moduleList.appendChild(row);
 });
 
 function openModule(file){
+  closeDrawer();
   document.getElementById('moduleFrame').src = file;
   document.getElementById('viewer').classList.add('show');
   document.getElementById('homeBtn').classList.add('show');
+  document.getElementById('sosBtn').classList.add('mini');
 }
 
 document.getElementById('homeBtn').addEventListener('click', () => {
   document.getElementById('viewer').classList.remove('show');
   document.getElementById('homeBtn').classList.remove('show');
+  document.getElementById('sosBtn').classList.remove('mini');
   document.getElementById('moduleFrame').src = '';
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
 });

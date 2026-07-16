@@ -7,10 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--teal:#26a69a;--td:#1a6b64;--mint:#d6f0eb;--mm:#b8e4dd;--ms:#e8f8f5;--fg:#1a2e2b;--fg2:#4a7069;}
+:root{--teal:#26a69a;--td:#1a6b64;--mint:#d6f0eb;--mm:#b8e4dd;--ms:#e8f8f5;--fg:#1a2e2b;--fg2:#2d6b64;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color:var(--fg);}
-.screen{display:none;flex-direction:column;min-height:100vh;padding:16px 16px 40px;max-width:460px;margin:0 auto;}
+.screen{display:none;flex-direction:column;min-height:100vh;padding:16px 16px 100px;max-width:460px;margin:0 auto;}
 .screen.active{display:flex;}
 
 .hdr{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-top:4px;}
@@ -82,7 +82,7 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 .btn-f:disabled{opacity:.4;pointer-events:none;}
 
 /* Note */
-.note-area{width:100%;border:2px solid var(--mm);border-radius:14px;padding:12px;font-family:'Outfit',sans-serif;font-size:0.88rem;color:var(--fg);background:white;resize:vertical;min-height:64px;margin-bottom:12px;}
+.note-area{width:100%;border:2px solid var(--mm);border-radius:14px;padding:12px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--fg);background:white;resize:vertical;min-height:64px;margin-bottom:12px;}
 .note-area:focus{outline:none;border-color:var(--teal);}
 
 /* Done */
@@ -104,6 +104,7 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 <!-- ▌HOME ▐ -->
 <div id="v-home" class="screen active">
   <div style="padding:6px 0 2px;">
+    <img src="../quico/quico_head_happy.png" alt="Quico" style="width:80px;height:80px;object-fit:contain;display:block;margin:0 auto 4px;filter:drop-shadow(0 3px 8px rgba(93,64,55,.18))">
     <div style="font-size:1.9rem;font-weight:800;color:var(--td);line-height:1.1;">🎨 Intereses</div>
     <div style="font-size:0.9rem;color:var(--fg2);margin-top:3px;font-weight:600;">10-15 min al día · un interés cada vez</div>
   </div>
@@ -261,9 +262,11 @@ function speak(t){
     window.speechSynthesis.speak(_utt);
   }catch(e){}
 }
+let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
 function beep(f,d){
   try{if(!__allow('sound'))return;
-    const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();
+    const c=__getCtx();if(!c)return;
+    const o=c.createOscillator(),g=c.createGain();
     o.connect(g);g.connect(c.destination);o.frequency.value=f||660;
     g.gain.setValueAtTime(.2,c.currentTime);
     g.gain.exponentialRampToValueAtTime(.001,c.currentTime+(d||.2));

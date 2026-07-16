@@ -23,7 +23,7 @@ body {
   background: radial-gradient(ellipse at top, var(--bg3) 0%, var(--bg2) 50%, var(--bg1) 100%);
   color: var(--text);
   min-height: 100vh;
-  padding: 20px;
+  padding: 20px 20px 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -324,7 +324,7 @@ body {
   <!-- Pantalla principal -->
   <div id="home">
     <div class="header">
-      <div class="logo">🌙</div>
+      <div class="logo" style="background:none;width:56px;height:56px"><img src="../quico/quico_head_calm.png" alt="Quico" style="width:56px;height:56px;object-fit:contain;display:block"></div>
       <div>
         <h1 class="title">Cris — Rutina Nocturna</h1>
         <p class="subtitle">Ritual diario para un sueño reparador</p>
@@ -727,6 +727,7 @@ function nextStep() {
 }
 
 function finishRoutine() {
+  try{var _n=new Date();localStorage.setItem('cris_noche_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}
   stopTimer();
   document.getElementById('timer').textContent = '00:00';
   document.getElementById('progressFill').style.width = '100%';

@@ -7,10 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--teal:#26a69a;--teal-dark:#1a6b64;--teal-light:#4dd0e1;--mint:#d6f0eb;--mint-mid:#b8e4dd;--mint-soft:#e8f8f5;--text:#1a6b64;--text-soft:#3d8880}
+:root{--teal:#26a69a;--teal-dark:#1a6b64;--teal-light:#4dd0e1;--mint:#d6f0eb;--mint-mid:#b8e4dd;--mint-soft:#e8f8f5;--text:#1a6b64;--text-soft:#2d6b64}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;color:var(--text)}
-.screen{display:none;min-height:100vh;padding:16px 16px 48px}
+.screen{display:none;min-height:100vh;padding:16px 16px 100px}
 .screen.active{display:block}
 .max-w{max-width:440px;margin:0 auto;padding-top:12px}
 .topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
@@ -96,7 +96,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 
 <div id="v-home" class="screen active">
 <div class="max-w">
-  <div class="home-header"><h1>🧘 Pilates en Casa</h1><p>15–20 min · sin material · cuerpo completo</p></div>
+  <div class="home-header"><img src="../quico/quico_head_happy.png" alt="Quico" style="width:84px;height:84px;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 3px 8px rgba(93,64,55,.18))"><h1>🧘 Pilates en Casa</h1><p>15–20 min · sin material · cuerpo completo</p></div>
   <div class="bubble">¿Lista para mover el cuerpo? 💚</div>
   <div class="today-card" id="today-card" onclick="openTodayDay()"></div>
   <div class="week-title">Esta semana</div>
@@ -601,7 +601,8 @@ let S={exIdx:0,side:1,phase:'ready',timer:0,interval:null};
 function todayDayIdx(){const m={1:0,2:1,3:2,4:3,5:4,6:5,0:6};return m[TODAY];}
 
 /* ─── AUDIO ─── */
-function beep(f=600,d=.2){if(!__allow('sound'))return;try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
+function beep(f=600,d=.2){if(!__allow('sound'))return;try{const c=__getCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
 function vibrate(ms=60){if(!__allow('vib'))return;try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
 let _utt=null;
 function speak(t){try{if(!__allow('voice'))return;if(!window.speechSynthesis)return;window.speechSynthesis.cancel();if(window.speechSynthesis.paused)window.speechSynthesis.resume();_utt=new SpeechSynthesisUtterance(t);_utt.lang='es-ES';_utt.rate=.88;const v=window.speechSynthesis.getVoices();const ev=v.find(v=>v.lang.startsWith('es'));if(ev)_utt.voice=ev;window.speechSynthesis.speak(_utt);}catch(e){}}
@@ -734,6 +735,7 @@ function advanceEx(){
 function renderSession(){
   const d=DAYS[curDayIdx],total=d.exercises.length,el=document.getElementById('s-content');
   if(S.phase==='done'){
+    try{var _n=new Date();localStorage.setItem('cris_hiit_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}
     document.getElementById('s-fill').style.width='100%';
     document.getElementById('s-count').textContent='';
     document.getElementById('s-dots').innerHTML='';

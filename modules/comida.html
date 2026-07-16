@@ -7,10 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--teal:#26a69a;--teal-dark:#1a6b64;--teal-light:#4dd0e1;--mint:#d6f0eb;--mint-mid:#b8e4dd;--mint-soft:#e8f8f5;--text:#1a6b64;--text-soft:#3d8880}
+:root{--teal:#26a69a;--teal-dark:#1a6b64;--teal-light:#4dd0e1;--mint:#d6f0eb;--mint-mid:#b8e4dd;--mint-soft:#e8f8f5;--text:#1a6b64;--text-soft:#2d6b64}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;color:var(--text)}
-.screen{display:none;min-height:100vh;padding:16px 16px 48px}
+.screen{display:none;min-height:100vh;padding:16px 16px 100px}
 .screen.active{display:block}
 .max-w{max-width:440px;margin:0 auto;padding-top:12px}
 .topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
@@ -144,6 +144,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div id="v-home" class="screen active">
 <div class="max-w">
   <div class="home-header">
+    <img src="../quico/quico_head_happy.png" alt="Quico" style="width:84px;height:84px;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 3px 8px rgba(93,64,55,.18))">
     <h1>🍳 Comer Rico</h1>
     <p>De temporada · sin tomate · plato Harvard</p>
   </div>
@@ -1037,7 +1038,8 @@ function ingrLine(r){
 let curMonth=new Date().getMonth(),curMeal='comidas',curRecipe=null,cookStep=0,cookPlaying=false,cookTimer=0,cookInt=null,testStep=0,testAns=[];
 
 /* ── AUDIO ── */
-function beep(f=600,d=.2){if(!__allow('sound'))return;try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
+function beep(f=600,d=.2){if(!__allow('sound'))return;try{const c=__getCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
 function vibrate(ms=60){if(!__allow('vib'))return;try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
 let _utt=null;
 function speak(t){
