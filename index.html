@@ -308,7 +308,7 @@ body{
 
 <script>
 const modules = [
-  { icon:'🍅', title:'Rutina Diaria',    sub:'Empieza ya: 25 min',  file:'modules/rutina-diaria.html' },
+  { icon:'💼', title:'Trabajo',          sub:'Herramientas anti-bloqueo',  file:'modules/rutina-diaria.html' },
   { icon:'🧘', title:'Ejercicios',       sub:'Pilates guiado, manos libres', file:'modules/ejercicios-hiit.html' },
   { icon:'🍲', title:'Comer Rico',       sub:'Menú semanal y compra',  file:'modules/comida.html' },
   { icon:'🧹', title:'Limpieza',         sub:'Una zona al día · 15 min',    file:'modules/limpieza.html' },
@@ -455,8 +455,8 @@ function renderToday(){
   }else{
     // El día completo en orden (todo menos Botiquín y Juego)
 
-    // 1 · Trabajo por bloques
-    rows.push({e:'🍅',t:'Trabajo por bloques',s:'Pomodoro · empieza con 25 min',f:'modules/rutina-diaria.html'});
+    // 1 · Trabajo (herramientas anti-bloqueo)
+    rows.push({e:'💼',t:'Trabajo',s:'Herramientas para arrancar y enfocarte',f:'modules/rutina-diaria.html'});
 
     // 2 · Ejercicio del día
     const p=PILATES[day];
