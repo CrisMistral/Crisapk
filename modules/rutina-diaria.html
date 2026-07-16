@@ -197,8 +197,10 @@ textarea.tool-field{min-height:74px;resize:vertical}
 .t-mini .g button{border:none;border-radius:8px;padding:5px 9px;font-size:.72rem;font-weight:700;cursor:pointer}
 
 /* Trabajo: empezar + triaje por momento */
-.work-start{width:100%;border:none;border-radius:16px;padding:16px;font-family:inherit;font-size:1.05rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#26a69a,#4dd0e1);box-shadow:0 4px 14px rgba(38,166,154,.3);cursor:pointer;margin-bottom:18px}
+.work-start{width:100%;border:none;border-radius:16px;padding:16px;font-family:inherit;font-size:1.05rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#26a69a,#4dd0e1);box-shadow:0 4px 14px rgba(38,166,154,.3);cursor:pointer;margin-bottom:10px}
 .work-start:active{transform:scale(.98)}
+.work-triage{width:100%;border:2px solid var(--turq);border-radius:16px;padding:14px;font-family:inherit;font-size:.98rem;font-weight:700;color:var(--turq);background:#fff;cursor:pointer;margin-bottom:18px}
+.work-triage:active{transform:scale(.98);background:var(--lavanda-soft)}
 .wgroup{margin-bottom:14px}
 .wg-label{font-size:.82rem;font-weight:800;color:var(--turq);margin:0 2px 8px}
 .wrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:2px solid var(--lavanda);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font-family:inherit;transition:transform .1s,background .1s}
@@ -223,9 +225,10 @@ textarea.tool-field{min-height:74px;resize:vertical}
   </div>
 
   <button class="work-start" onclick="openTool('foco')">▶ Empezar a trabajar</button>
+  <button class="work-triage" onclick="openTool('triaje')">🤔 No sé qué me pasa</button>
 
   <div class="section">
-    <div style="font-size:0.78rem;opacity:.75;margin-bottom:12px;text-align:center;">¿Te atascas? Dime qué te pasa y toma la herramienta que necesitas.</div>
+    <div style="font-size:0.78rem;opacity:.75;margin-bottom:12px;text-align:center;">…o si ya sabes qué necesitas, elígelo directo:</div>
 
     <div class="wgroup">
       <div class="wg-label">🏁 No puedo empezar</div>
@@ -292,6 +295,16 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
   const head=(emoji,title,desc)=>`<button class="tool-close" onclick="closeTool()">✕</button><h3>${emoji} ${title}</h3><div class="t-desc">${desc}</div>`;
 
   const TOOLS={
+    /* Triaje · No sé qué me pasa → pregunta y te lleva a la técnica */
+    triaje:()=>head('🤔','No sé qué me pasa',
+      'Te hago un par de preguntas y te llevo a lo que necesitas. Sin agobios.')+`
+      <div class="t-label">¿Qué notas ahora mismo?</div>
+      <button class="wrow" onclick="triagePick('A')"><span class="we">🧊</span><span class="wi"><b>Bloqueada</b><i>no consigo arrancar</i></span></button>
+      <button class="wrow" onclick="triagePick('B')"><span class="we">🌪️</span><span class="wi"><b>Saturada</b><i>mil cosas en la cabeza</i></span></button>
+      <button class="wrow" onclick="triagePick('C')"><span class="we">🥱</span><span class="wi"><b>Sin chispa</b><i>me aburre o no me engancho</i></span></button>
+      <button class="wrow" onclick="triagePick('D')"><span class="we">🔀</span><span class="wi"><b>En transición</b><i>vengo de otra cosa o no sé por dónde</i></span></button>
+      <button class="wrow" onclick="triagePick('E')" style="margin-bottom:0"><span class="we">🙂</span><span class="wi"><b>Estoy bien</b><i>solo quiero ponerme</i></span></button>`,
+
     /* 0 · Empezar a trabajar (sesión de foco) */
     foco:()=>head('▶️','Empezar a trabajar',
       'Una sesión de foco. Elige cuánto y a por ello — sin bloques ni configuración.')+`
@@ -451,6 +464,28 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
     },
     tiempo(){ window.recalcTiempo(); },
     volcado(){ renderVolcado(); }
+  };
+
+  window.triagePick=function(code){
+    const back=`<button class="t-btn sec" style="margin-top:12px" onclick="openTool('triaje')">← Volver a las preguntas</button>`;
+    if(code==='A'){
+      sheet.innerHTML=head('🧊','No consigo empezar','¿Qué te frena más?')+`
+        <button class="wrow" onclick="openTool('paralisis')"><span class="we">🐘</span><span class="wi"><b>Es enorme y no sé por dónde</b><i>la partimos en un paso de 1 minuto</i></span></button>
+        <button class="wrow" onclick="openTool('interes')" style="margin-bottom:0"><span class="we">😑</span><span class="wi"><b>Es aburrida y no me apetece</b><i>la convertimos en misión</i></span></button>`+back;
+    }else if(code==='B'){
+      openTool('volcado');
+    }else if(code==='C'){
+      sheet.innerHTML=head('🥱','Sin chispa','¿Qué te apetece más?')+`
+        <button class="wrow" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b>Convertirlo en un juego</b><i>con algo que te gusta</i></span></button>
+        <button class="wrow" onclick="openTool('dopamina')"><span class="we">🍽️</span><span class="wi"><b>Elegir algo con chispa</b><i>del menú de dopamina</i></span></button>
+        <button class="wrow" onclick="openTool('doble')" style="margin-bottom:0"><span class="we">👥</span><span class="wi"><b>Que alguien trabaje a tu lado</b><i>doble de cuerpo</i></span></button>`+back;
+    }else if(code==='D'){
+      sheet.innerHTML=head('🔀','En transición','¿Qué necesitas?')+`
+        <button class="wrow" onclick="openTool('contexto')"><span class="we">🔄</span><span class="wi"><b>Limpiar la cabeza para cambiar</b><i>3 minutos de transición</i></span></button>
+        <button class="wrow" onclick="openTool('tiempo')" style="margin-bottom:0"><span class="we">⏳</span><span class="wi"><b>Saber cuánto me va a llevar</b><i>auditor del tiempo</i></span></button>`+back;
+    }else if(code==='E'){
+      openTool('foco');
+    }
   };
 
   window.startMision=function(){
