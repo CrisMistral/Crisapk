@@ -453,9 +453,21 @@ function renderToday(){
     rows.push({e:'🧹',t:'Recoge 3 cosas',s:'Express corto, sin presión',f:'modules/limpieza.html#express'});
     rows.push({e:'🍽️',t:'Receta salvavidas',s:'10 min de despensa y comes',f:'modules/comida.html#basicos'});
   }else{
+    // El día completo en orden (todo menos Botiquín y Juego)
+
+    // 1 · Trabajo por bloques
+    rows.push({e:'🍅',t:'Trabajo por bloques',s:'Pomodoro · empieza con 25 min',f:'modules/rutina-diaria.html'});
+
+    // 2 · Ejercicio del día
     const p=PILATES[day];
     rows.push({e:p[0],t:'Pilates: '+p[1],s:p[2]+' · manos libres',f:'modules/ejercicios-hiit.html'});
 
+    // 3 · Comida
+    const menuDone=Object.values(lsJSON('cris_menu_w'+w+'_'+y)).filter(Boolean).length;
+    const left=Math.max(0,14-menuDone);
+    rows.push({e:'🍽️',t:h<17?'¿Qué comes hoy?':'¿Qué cenas hoy?',s:left>0?'Te quedan '+left+' recetas del menú':'Menú de la semana completado 🎉',f:'modules/comida.html'});
+
+    // 4 · Limpieza
     if(ZONES[day]){
       const z=ZONES[day];
       const done=!!lsJSON('lim-w'+w+'-'+y)[z[2]];
@@ -464,11 +476,11 @@ function renderToday(){
       rows.push({e:'⚡',t:'Finde: limpieza libre',s:'¿Un express de 15 min?',f:'modules/limpieza.html#express'});
     }
 
-    const menuDone=Object.values(lsJSON('cris_menu_w'+w+'_'+y)).filter(Boolean).length;
-    const left=Math.max(0,14-menuDone);
-    rows.push({e:'🍽️',t:h<17?'¿Qué comes hoy?':'¿Qué cenas hoy?',s:left>0?'Te quedan '+left+' recetas del menú':'Menú de la semana completado 🎉',f:'modules/comida.html'});
+    // 5 · Intereses
+    rows.push({e:'🎨',t:'Aprende algo hoy',s:'Un interés · 10-15 min',f:'modules/intereses.html'});
 
-    if(h>=20)rows.push({e:'🌙',t:'Rutina nocturna',s:'25 min · cierre del día',f:'modules/rutina-nocturna.html'});
+    // 6 · Cierre del día
+    rows.push({e:'🌙',t:'Rutina nocturna',s:h>=20?'25 min · cierre del día':'Para esta noche · 25 min',f:'modules/rutina-nocturna.html'});
   }
 
   // Quico cambia de humor según el día: calmado en eco, orgulloso si todo hecho, feliz si no
