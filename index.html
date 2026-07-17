@@ -144,12 +144,13 @@ body{
 
 /* ── BOTÓN DE MENÚ (hamburguesa, arriba izquierda) ── */
 #menuBtn{
-  position:fixed;top:14px;left:16px;width:48px;height:48px;border-radius:14px;
+  position:fixed;top:14px;left:16px;height:48px;border-radius:14px;padding:0 14px;
   background:var(--white-card);border:2px solid var(--mint-mid);color:var(--teal-dark);
-  font-size:1.35rem;z-index:150;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
+  font-family:'Outfit',sans-serif;font-size:1.25rem;z-index:150;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;
   box-shadow:0 3px 12px rgba(38,166,154,.18);
 }
+#menuBtn .mb-label{font-size:.9rem;font-weight:700;}
 #menuBtn:active{transform:scale(.92);}
 
 /* ── CAJÓN LATERAL IZQUIERDO ──
@@ -270,7 +271,7 @@ body.mod-open #menuBtn{display:none;}
 <body>
 
 <!-- Botón de menú -->
-<button id="menuBtn" aria-label="Abrir menú" onclick="openDrawer()">☰</button>
+<button id="menuBtn" aria-label="Abrir menú" onclick="openDrawer()">☰<span class="mb-label">Menú</span></button>
 
 <!-- Pantalla 1: solo HOY -->
 <div id="dashboard">
