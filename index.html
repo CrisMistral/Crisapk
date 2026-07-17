@@ -123,6 +123,9 @@ body{
 .tp-row.done .tp-t{text-decoration:line-through;}
 .tp-s{font-size:.73rem;color:var(--text-soft);font-weight:500;}
 .tp-arrow{font-size:1.1rem;color:var(--teal);font-weight:800;flex-shrink:0;}
+/* Círculo de tachar: visible y de un toque (el long-press sigue funcionando) */
+.tp-check{width:32px;height:32px;border-radius:50%;border:2px solid var(--mint-deep);background:#fff;color:transparent;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;flex-shrink:0;transition:background .12s,border-color .12s;}
+.tp-check.on{background:var(--teal);border-color:var(--teal);color:#fff;}
 .tp-hint{font-size:.68rem;color:var(--text-soft);text-align:center;margin-top:8px;opacity:.85;}
 /* AHORA / LUEGO: qué toca ya y qué viene después */
 .tp-row.is-now{background:#fff;border:2px solid var(--teal);padding:10px;}
@@ -533,10 +536,13 @@ function renderToday(){
   const rows=[];
 
   if(eco){
-    rows.push({e:'🫁',t:'Respira 2 minutos',s:'Con eso ya cuenta',f:'modules/rescate-emocional.html'});
-    rows.push({e:'🧘',t:'Movilidad suave',s:'Solo lo que te apetezca, sin más',f:'modules/ejercicios-hiit.html#suave'});
-    rows.push({e:'🧹',t:'Recoge 3 cosas',s:'Express corto, sin presión',f:'modules/limpieza.html#express'});
-    rows.push({e:'🍽️',t:'Receta salvavidas',s:'10 min de despensa y comes',f:'modules/comida.html#basicos'});
+    // También en eco se puede tachar: el refuerzo importa más los días de poca batería
+    const tl=todayLocal();
+    const ek=n=>'cris_eco'+n+'_v1_'+tl;
+    rows.push({e:'🫁',t:'Respira 2 minutos',s:'Con eso ya cuenta',f:'modules/rescate-emocional.html',key:ek(1),done:markDone(ek(1))});
+    rows.push({e:'🧘',t:'Movilidad suave',s:'Solo lo que te apetezca, sin más',f:'modules/ejercicios-hiit.html#suave',key:ek(2),done:markDone(ek(2))});
+    rows.push({e:'🧹',t:'Recoge 3 cosas',s:'Express corto, sin presión',f:'modules/limpieza.html#express',key:ek(3),done:markDone(ek(3))});
+    rows.push({e:'🍽️',t:'Receta salvavidas',s:'10 min de despensa y comes',f:'modules/comida.html#basicos',key:ek(4),done:markDone(ek(4))});
   }else{
     // El día completo en orden (todo menos Botiquín y Juego).
     // Cada fila lleva `key`: la marca diaria en localStorage (la escribe el módulo
@@ -581,9 +587,10 @@ function renderToday(){
     rows.forEach((r,i)=>{r.badge=i===nowIdx?'now':i===nextIdx?'next':'';});
   }
 
-  // Quico cambia de humor según el día: calmado en eco, orgulloso si todo hecho, feliz si no
-  const allDone=!eco&&rows.length>0&&rows.every(r=>r.done);
-  const mood=eco?'calm':allDone?'proud':'happy';
+  // Quico cambia de humor: orgulloso si TODO está tachado (también en eco —
+  // completar el mínimo un día de poca batería merece celebración), calmado en eco, feliz si no
+  const allDone=rows.length>0&&rows.every(r=>r.done);
+  const mood=allDone?'proud':eco?'calm':'happy';
   const qp=document.getElementById('quico-peek');
   const src='quico/quico_head_'+mood+'.png';
   if(qp&&!qp.src.endsWith(src))qp.src=src;
@@ -601,13 +608,22 @@ function renderToday(){
       <button class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-file="${r.f}" data-key="${r.key||''}">
         <span class="tp-em">${r.e}</span>
         <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">AHORA</span>':r.badge==='next'?'<span class="tp-badge next">LUEGO</span>':''}</span><span class="tp-s">${r.s}</span></span>
-        <span class="tp-arrow">${r.done?'✓':'›'}</span>
+        ${r.key?`<span class="tp-check${r.done?' on':''}" role="checkbox" aria-checked="${!!r.done}" aria-label="Marcar ${r.t} como ${r.done?'pendiente':'hecha'}">✓</span>`:`<span class="tp-arrow">›</span>`}
       </button>`).join('')}
-    ${eco?'':'<div class="tp-hint">Toca para abrir · mantén pulsado para marcar hecho ✓</div>'}`;
+    <div class="tp-hint">Toca el círculo ✓ al terminar · toca la tarea para abrirla</div>`;
 }
 
 /* Vibración corta respetando ajustes (vib + modo calma) */
 function hapticOK(){const c=getCfg();return c.vib!==false&&c.calm!==true&&'vibrate'in navigator;}
+
+/* Tachar/destachar una fila del panel (círculo ✓ o pulsación larga) */
+function toggleMark(key){
+  if(!key)return;
+  const on=markDone(key);
+  if(on)localStorage.removeItem(key); else localStorage.setItem(key,'1');
+  if(hapticOK())navigator.vibrate(on?30:[40,40,40]);
+  renderToday();
+}
 
 /* Pulsación corta = abrir módulo · Pulsación larga (~500ms) = marcar/desmarcar hecho.
    Delegado en el panel (se vincula UNA vez): el re-render del long-press destruye
@@ -626,10 +642,7 @@ function hapticOK(){const c=getCfg();return c.vib!==false&&c.calm!==true&&'vibra
     if(!key)return;
     timer=setTimeout(()=>{
       timer=null;suppressClick=true;
-      const on=markDone(key);
-      if(on)localStorage.removeItem(key); else localStorage.setItem(key,'1');
-      if(hapticOK())navigator.vibrate(on?30:[40,40,40]);
-      renderToday();
+      toggleMark(key);
     },500);
   });
   panel.addEventListener('pointerup',cancel);
@@ -638,7 +651,9 @@ function hapticOK(){const c=getCfg();return c.vib!==false&&c.calm!==true&&'vibra
   panel.addEventListener('click',e=>{
     if(suppressClick){suppressClick=false;return;}
     const row=e.target.closest('.tp-row');
-    if(row&&row.getAttribute('data-file'))openModule(row.getAttribute('data-file'));
+    if(!row)return;
+    if(e.target.closest('.tp-check')){toggleMark(row.getAttribute('data-key'));return;}
+    if(row.getAttribute('data-file'))openModule(row.getAttribute('data-file'));
   });
   panel.addEventListener('contextmenu',e=>{ if(e.target.closest('.tp-row'))e.preventDefault(); });
 })();
@@ -648,7 +663,7 @@ function hapticOK(){const c=getCfg();return c.vib!==false&&c.calm!==true&&'vibra
 (function pruneOldMarks(){
   try{
     const min=dayKey(-14);
-    const re=/^cris_(trabajo|hiit|comida|limpieza|noche|energia)_v1_(\d{4}-\d{2}-\d{2})$/;
+    const re=/^cris_(trabajo|hiit|comida|limpieza|noche|energia|eco[1-4])_v1_(\d{4}-\d{2}-\d{2})$/;
     for(let i=localStorage.length-1;i>=0;i--){
       const k=localStorage.key(i);
       const m=k&&k.match(re);
