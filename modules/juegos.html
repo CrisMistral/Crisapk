@@ -2,15 +2,15 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Juego · Cris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--teal:#26a69a;--td:#1a6b64;--mint:#d6f0eb;--mm:#b8e4dd;--ms:#e8f8f5;--fg:#1a2e2b;--fg2:#4a7069;}
+:root{--teal:#26a69a;--td:#1a6b64;--mint:#d6f0eb;--mm:#b8e4dd;--ms:#e8f8f5;--fg:#1a2e2b;--fg2:#2d6b64;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Outfit',sans-serif;-webkit-tap-highlight-color:transparent;}
 html,body{min-height:100%;background:var(--ms);}
-body{display:flex;flex-direction:column;align-items:center;min-height:100vh;color:var(--fg);padding:16px 12px 40px;}
+body{display:flex;flex-direction:column;align-items:center;min-height:100vh;color:var(--fg);padding:16px 12px 100px;}
 
 .screen{display:none;width:100%;max-width:460px;flex-direction:column;align-items:center;}
 .screen.active{display:flex;}
@@ -80,6 +80,7 @@ h1{color:var(--td);font-size:1.5rem;font-weight:800;text-align:center;}
 
 <!-- PICKER -->
 <div id="v-pick" class="screen active">
+  <img src="../quico/quico_head_proud.png" alt="Quico" style="width:80px;height:80px;object-fit:contain;display:block;margin:2px auto 4px;filter:drop-shadow(0 3px 8px rgba(93,64,55,.18))">
   <h1>💎 Joyas</h1>
   <p class="sub">Coge cada gema de la bandeja y ponla en su casilla del color correcto.<br>El dibujo se ilumina solo.</p>
   <div class="pick-grid" id="pick-grid"></div>
@@ -158,7 +159,8 @@ function getDone(){try{return JSON.parse(localStorage.getItem('cris_joyas_done')
 function markDone(id){const d=getDone();if(!d.includes(id)){d.push(id);localStorage.setItem('cris_joyas_done',JSON.stringify(d));}}
 
 /* ── Audio/vibración ── */
-function beep(f=600,d=.15){if(!__allow('sound'))return;try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.16,a.currentTime);g.gain.exponentialRampToValueAtTime(.01,a.currentTime+d);o.start();o.stop(a.currentTime+d);}catch(e){}}
+let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
+function beep(f=600,d=.15){if(!__allow('sound'))return;try{const a=__getCtx();if(!a)return;const o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.16,a.currentTime);g.gain.exponentialRampToValueAtTime(.01,a.currentTime+d);o.start();o.stop(a.currentTime+d);}catch(e){}}
 function vib(ms){if(!__allow('vib'))return;try{navigator.vibrate(ms);}catch(e){}}
 
 /* ── PICKER ── */
