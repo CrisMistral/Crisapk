@@ -124,6 +124,16 @@ body{
 .tp-s{font-size:.73rem;color:var(--text-soft);font-weight:500;}
 .tp-arrow{font-size:1.1rem;color:var(--teal);font-weight:800;flex-shrink:0;}
 .tp-hint{font-size:.68rem;color:var(--text-soft);text-align:center;margin-top:8px;opacity:.85;}
+/* AHORA / LUEGO: qué toca ya y qué viene después */
+.tp-row.is-now{background:#fff;border:2px solid var(--teal);padding:10px;}
+.tp-badge{display:inline-block;font-size:.58rem;font-weight:800;letter-spacing:.05em;border-radius:999px;padding:2px 7px;margin-left:7px;vertical-align:1px;}
+.tp-badge.now{background:var(--teal);color:#fff;}
+.tp-badge.next{background:var(--mint-mid);color:var(--teal-dark);}
+/* Check-in de energía matinal */
+.tp-energy{background:var(--mint-bg);border:1.5px solid var(--mint-mid);border-radius:12px;padding:10px 12px;font-size:.8rem;color:var(--teal-dark);font-weight:700;margin-bottom:10px;}
+.tp-energy-btns{display:flex;gap:8px;margin-top:8px;}
+.tp-energy-btns button{flex:1;border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:999px;padding:8px 4px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;}
+.tp-energy-btns button:active{transform:scale(.96);}
 
 /* ── Quokka asomado agarrando el panel ── */
 .quokka-peek{display:flex;justify-content:center;margin-bottom:-30px;position:relative;z-index:2;}
@@ -454,6 +464,14 @@ function checkNotif(){
     n.lastN=today;setNotifCfg(n);
     fireNotif('🌙 Hora de cerrar el día','Tu rutina nocturna te espera: 25 min y a dormir de lujo 💜');
   }
+  // Pre-aviso suave (transición, no alarma): solo dentro de los 10 min previos
+  if(n.n&&n.lastPreN!==today&&n.lastN!==today){
+    const tgt=minsOf(n.n);
+    if(nowMin>=tgt-10&&nowMin<tgt){
+      n.lastPreN=today;setNotifCfg(n);
+      fireNotif('🌙 En 10 minutos, rutina nocturna','Ve cerrando lo que tengas entre manos, sin prisa 💜');
+    }
+  }
 }
 setInterval(checkNotif,30000);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden)checkNotif(); });
@@ -482,6 +500,15 @@ function setEcoHist(h){
 // Si ayer y anteayer fueron eco y hoy aún no lo has declarado, se propone solo:
 // no hay que gastar energía cada mañana en decir "hoy tampoco puedo".
 function ecoSuggested(){const h=getEcoHist();return !isEco()&&!!h[dayKey(-1)]&&!!h[dayKey(-2)];}
+
+/* Check-in de energía (idea de Tiimo): una pregunta de un toque al día.
+   «Poca» activa el modo eco directamente — y alimenta la racha con datos reales. */
+function energyAsked(){return !!localStorage.getItem('cris_energia_v1_'+todayLocal());}
+function setEnergy(v){
+  try{localStorage.setItem('cris_energia_v1_'+todayLocal(),v);}catch(e){}
+  if(v==='baja'&&!isEco()){toggleEco();return;}
+  renderToday();
+}
 
 function toggleEco(){
   const h=getEcoHist();
@@ -546,6 +573,12 @@ function renderToday(){
     // 5 · Cierre del día
     const kNoche='cris_noche_v1_'+tl;
     rows.push({e:'🌙',t:'Rutina nocturna',s:h>=20?'25 min · cierre del día':'Para esta noche · 25 min',f:'modules/rutina-nocturna.html',key:kNoche,done:markDone(kNoche)});
+
+    // AHORA / LUEGO: orientación sin horarios rígidos — la primera pendiente
+    // es "ahora" y la siguiente "luego"; a partir de las 20h manda la noche.
+    let nowIdx=h>=20&&!rows[rows.length-1].done?rows.length-1:rows.findIndex(r=>!r.done);
+    const nextIdx=rows.findIndex((r,i)=>i!==nowIdx&&i>nowIdx&&!r.done);
+    rows.forEach((r,i)=>{r.badge=i===nowIdx?'now':i===nextIdx?'next':'';});
   }
 
   // Quico cambia de humor según el día: calmado en eco, orgulloso si todo hecho, feliz si no
@@ -563,10 +596,11 @@ function renderToday(){
     </div>
     ${eco?'<div class="tp-eco-msg">Día de poca batería — lo mínimo cuenta. Hacer poco también es cuidarte 💚</div>':''}
     ${(!eco&&ecoSuggested())?'<div class="tp-eco-suggest">🪫 Llevas un par de días de poca batería. ¿Hoy también en modo eco?<button class="tp-eco-cta" onclick="toggleEco()">Sí, modo eco</button></div>':''}
+    ${(!eco&&!ecoSuggested()&&!energyAsked())?'<div class="tp-energy">🔋 ¿Cómo vienes de energía hoy?<div class="tp-energy-btns"><button onclick="setEnergy(\'alta\')">💪 Bien</button><button onclick="setEnergy(\'baja\')">🪫 Poca</button></div></div>':''}
     ${rows.map(r=>`
-      <button class="tp-row${r.done?' done':''}" data-file="${r.f}" data-key="${r.key||''}">
+      <button class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-file="${r.f}" data-key="${r.key||''}">
         <span class="tp-em">${r.e}</span>
-        <span class="tp-info"><span class="tp-t">${r.t}</span><span class="tp-s">${r.s}</span></span>
+        <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">AHORA</span>':r.badge==='next'?'<span class="tp-badge next">LUEGO</span>':''}</span><span class="tp-s">${r.s}</span></span>
         <span class="tp-arrow">${r.done?'✓':'›'}</span>
       </button>`).join('')}
     ${eco?'':'<div class="tp-hint">Toca para abrir · mantén pulsado para marcar hecho ✓</div>'}`;
@@ -614,7 +648,7 @@ function hapticOK(){const c=getCfg();return c.vib!==false&&c.calm!==true&&'vibra
 (function pruneOldMarks(){
   try{
     const min=dayKey(-14);
-    const re=/^cris_(trabajo|hiit|comida|limpieza|noche)_v1_(\d{4}-\d{2}-\d{2})$/;
+    const re=/^cris_(trabajo|hiit|comida|limpieza|noche|energia)_v1_(\d{4}-\d{2}-\d{2})$/;
     for(let i=localStorage.length-1;i>=0;i--){
       const k=localStorage.key(i);
       const m=k&&k.match(re);
