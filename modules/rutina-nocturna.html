@@ -751,6 +751,12 @@ function finishRoutine() {
     setTimeout(() => { document.getElementById('dim').style.opacity = '0'; }, 4000);
   }, 1500);
 }
+/* Botón atrás del móvil: desde rutina o info se vuelve a la portada del módulo */
+window.addEventListener('message',function(e){
+  if(!e||e.data!=='cris:back')return;
+  var home=document.getElementById('home');
+  if(home&&home.classList.contains('hidden')){showHome();try{parent.postMessage('cris:back-ok','*');}catch(_){}}
+});
 </script>
 
 </body>

@@ -684,6 +684,12 @@ function medAdv(){
 }
 function medNext(){stopTimer();S.medPlaying=false;medAdv();}
 function medPrev(){if(S.medStep<=0)return;stopTimer();S.medPlaying=false;S.medTimer=0;S.medDone=false;S.medStep--;renderMedStep();}
+/* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
+window.addEventListener('message',function(e){
+  if(!e||e.data!=='cris:back')return;
+  var el=document.querySelector('.screen.active .back');
+  if(el){el.click();try{parent.postMessage('cris:back-ok','*');}catch(_){}}
+});
 </script>
 </body>
 </html>

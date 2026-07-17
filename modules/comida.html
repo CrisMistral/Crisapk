@@ -152,7 +152,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
   <div class="nav-cards">
     <button class="nav-card c-test" onclick="startPick()">
       <span class="nic">🍽️</span>
-      <div class="info"><span>¿QUÉ COMO HOY?</span><span class="sub" id="home-pick-sub">Elige entre lo que te queda</span></div>
+      <div class="info"><span>¿QUÉ COMO HOY?</span><span class="sub" id="home-pick-sub">2 preguntas y te lo digo</span></div>
     </button>
     <button class="nav-card c-season" onclick="go('week')">
       <span class="nic">📅</span>
@@ -1074,7 +1074,7 @@ function initHome(){
   const rem=remainingMenu();
   const n=rem.comidas.length+rem.cenas.length;
   document.getElementById('home-week-sub').textContent=n===14?'14 recetas · 1 sola compra':'Te quedan '+n+' de 14 esta semana';
-  document.getElementById('home-pick-sub').textContent=n?'Elige entre las '+n+' que te quedan':'Salvavidas de 10 min listos';
+  document.getElementById('home-pick-sub').textContent=n?'2 preguntas · quedan '+n+' recetas':'Salvavidas de 10 min listos';
 }
 function goCurrentMonth(){go('month');renderMonthView();}
 
@@ -1240,11 +1240,11 @@ function cookAdv(){
 }
 function cookNext(){if(cookInt){clearInterval(cookInt);cookInt=null;}cookPlaying=false;cookTimer=0;cookAdv();}
 
-/* ── ¿QUÉ COMO HOY? (elige entre lo que queda del menú semanal) ── */
-let pickMeal='comidas',pickIdx=0;
+/* ── ¿QUÉ COMO HOY? (preguntas fáciles → receta recomendada) ── */
+let pickMeal='comidas',pickIdx=0,pickStep='q1',pickAns={};
 function startPick(){
   pickMeal=new Date().getHours()<17?'comidas':'cenas';
-  pickIdx=0;
+  pickIdx=0;pickStep='q1';pickAns={};
   go('test');renderPick();
 }
 function suggCard(r,from){
@@ -1253,18 +1253,46 @@ function suggCard(r,from){
     <p style="margin-top:10px;background:rgba(255,255,255,.16);border-radius:10px;padding:8px 12px;font-size:.8rem">🧺 ${ingrLine(r)}</p></div>
     <button class="btn btn-primary" style="margin-bottom:8px" onclick="openRecipe('${r.id}','${from||'test'}')">Ver receta →</button>`;
 }
+function pickAnswer(k,v){pickAns[k]=v;pickIdx=0;pickStep=k==='t'?'q2':'result';beep(600,.1);vibrate(30);renderPick();}
+function isVeg(r){return r.tags&&r.tags.indexOf('Vegetariano')>=0;}
+function pickMins(r){const m=parseInt(r.time);return isNaN(m)?99:m;}
+/* Filtra lo que queda del menú según las respuestas; si no hay nada exacto, relaja */
+function pickFilter(){
+  const rem=remainingMenu()[pickMeal];
+  const max=pickAns.t==='poca'?12:pickAns.t==='normal'?20:999;
+  const tOK=r=>pickMins(r)<=max;
+  const pOK=r=>pickAns.p==='igual'?true:pickAns.p==='veg'?isVeg(r):!isVeg(r);
+  let list=rem.filter(r=>tOK(r)&&pOK(r)),note='';
+  if(!list.length&&rem.length){list=rem.filter(pOK);if(list.length)note='No queda nada tan rápido — esto es lo más cercano:';}
+  if(!list.length&&rem.length){list=rem.filter(tOK);if(list.length)note='De ese tipo no queda esta semana — pero mira:';}
+  if(!list.length&&rem.length){list=rem;note='Esto es lo que queda esta semana:';}
+  if(!list.length){list=EXPRESS[pickMeal];note='¡Semana completada! 🎉 Un salvavidas de despensa:';}
+  return {list,note};
+}
+const pickQ=(title,opts)=>`<div class="card" style="margin-bottom:10px"><p style="font-weight:700;margin-bottom:12px">${title}</p>
+  ${opts.map(o=>`<button class="btn btn-primary" style="width:100%;margin-bottom:8px;text-align:left" onclick="pickAnswer('${o[0]}','${o[1]}')">${o[2]}</button>`).join('')}</div>`;
 function renderPick(){
   const el=document.getElementById('test-content');
-  const rem=remainingMenu()[pickMeal];
   const chip=(m,l)=>`<button class="tab ${pickMeal===m?'active':''}" onclick="pickMeal='${m}';pickIdx=0;renderPick()">${l}</button>`;
   let body;
-  if(!rem.length){
-    body=`<div class="card" style="margin-bottom:12px"><p>¡Has tachado todas las ${pickMeal==='comidas'?'comidas':'cenas'} de la semana! 🎉<br>Pero los salvavidas de despensa nunca fallan:</p></div>`
-      +EXPRESS[pickMeal].map(r=>suggCard(r)).join('');
+  if(pickStep==='q1'){
+    body=`<div class="card" style="margin-bottom:10px;text-align:center"><p><strong>Solo 2 preguntas fáciles</strong><br>y te digo qué ${pickMeal==='comidas'?'comer':'cenar'} hoy 😊</p></div>`
+      +pickQ('1️⃣ ¿Cuánta energía tienes para cocinar?',[
+        ['t','poca','😴 Poca — algo muy rápido'],
+        ['t','normal','😊 Normal — hasta 20 minutos'],
+        ['t','mucha','⚡ Con ganas de cocinar']]);
+  }else if(pickStep==='q2'){
+    body=pickQ('2️⃣ ¿Te apetece proteína animal?',[
+      ['p','animal','🐟 Sí — pescado, pollo o huevo'],
+      ['p','veg','🌱 Mejor vegetariano'],
+      ['p','igual','🤷 Me da igual, sorpréndeme']]);
   }else{
-    const r=rem[pickIdx%rem.length];
-    body=suggCard(r)
-      +(rem.length>1?`<button class="btn btn-secondary" style="margin-bottom:8px" onclick="pickIdx++;renderPick()">🔄 Otra opción (${rem.length} disponibles)</button>`:'')
+    const f=pickFilter();
+    const r=f.list[pickIdx%f.list.length];
+    body=(f.note?`<div class="card" style="margin-bottom:10px"><p>${f.note}</p></div>`:'')
+      +suggCard(r)
+      +(f.list.length>1?`<button class="btn btn-secondary" style="margin-bottom:8px" onclick="pickIdx++;renderPick()">🔄 Otra opción (${f.list.length} disponibles)</button>`:'')
+      +`<button class="btn btn-secondary" style="margin-bottom:8px" onclick="pickStep='q1';pickAns={};renderPick()">↺ Cambiar mis respuestas</button>`
       +`<button class="btn btn-secondary" onclick="go('basicos')">⚡ Mejor algo de 10 minutos</button>`;
   }
   el.innerHTML=`<div class="tabs">${chip('comidas','☀️ Comida')}${chip('cenas','🌙 Cena')}</div>`+body;
@@ -1435,6 +1463,12 @@ function shareList(){
 initHome();
 renderMonthsGrid();
 if(location.hash==='#basicos')go('basicos'); // modo eco: directo a recetas salvavidas
+/* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
+window.addEventListener('message',function(e){
+  if(!e||e.data!=='cris:back')return;
+  var el=document.querySelector('.screen.active .back-btn');
+  if(el){el.click();try{parent.postMessage('cris:back-ok','*');}catch(_){}}
+});
 </script>
 </body>
 </html>

@@ -374,10 +374,17 @@ setGreeting();
 function openDrawer(){
   document.getElementById('drawer').classList.add('open');
   document.getElementById('drawerBg').classList.add('open');
+  history.pushState({v:'drawer'},'');
 }
-function closeDrawer(){
+function closeDrawerUI(){
   document.getElementById('drawer').classList.remove('open');
   document.getElementById('drawerBg').classList.remove('open');
+}
+function closeDrawer(){
+  // Si el cajón puso su entrada en el historial, retrocede (popstate cierra);
+  // así el botón atrás del móvil y la ✕ hacen exactamente lo mismo.
+  if(history.state&&history.state.v==='drawer')history.back();
+  else closeDrawerUI();
 }
 
 /* ── AJUSTES GLOBALES (voz/sonido/vibración/reducir estímulos) ── */
@@ -682,24 +689,56 @@ modules.forEach(m => {
   const row = document.createElement('button');
   row.className = 'dm-row';
   row.innerHTML = `<span class="dm-em">${m.icon}</span><span class="dm-info"><span class="dm-t">${m.title}</span><span class="dm-s">${m.sub}</span></span>`;
-  row.addEventListener('click', () => { closeDrawer(); openModule(m.file); });
+  row.addEventListener('click', () => openModule(m.file));
   moduleList.appendChild(row);
 });
 
 function openModule(file){
-  closeDrawer();
+  // Si venimos del cajón, su entrada del historial se convierte en la del módulo
+  if(history.state&&history.state.v==='drawer'){closeDrawerUI();history.replaceState({v:'mod'},'');}
+  else{closeDrawerUI();history.pushState({v:'mod'},'');}
   document.getElementById('moduleFrame').src = file;
   document.getElementById('viewer').classList.add('show');
   document.getElementById('homeBtn').classList.add('show');
   document.body.classList.add('mod-open');
 }
 
-document.getElementById('homeBtn').addEventListener('click', () => {
+function closeViewer(){
   document.getElementById('viewer').classList.remove('show');
   document.getElementById('homeBtn').classList.remove('show');
   document.body.classList.remove('mod-open');
   document.getElementById('moduleFrame').src = '';
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
+}
+
+let forceHome=false;
+document.getElementById('homeBtn').addEventListener('click', () => {
+  // 🏠 siempre va al inicio, sin preguntar al módulo si puede retroceder
+  if(history.state&&history.state.v==='mod'){forceHome=true;history.back();}
+  else closeViewer();
+});
+
+/* ── BOTÓN ATRÁS DEL MÓVIL ──
+   Atrás cierra el cajón; dentro de un módulo primero le pregunta al módulo si
+   puede retroceder una pantalla él mismo (postMessage); si no, vuelve al inicio. */
+history.replaceState({v:'home'},'');
+let modBackHandled=false,modBackTimer=null;
+window.addEventListener('message',e=>{
+  if(e.data==='cris:back-ok'){
+    modBackHandled=true;clearTimeout(modBackTimer);
+    history.pushState({v:'mod'},'');
+  }
+});
+window.addEventListener('popstate',()=>{
+  const v=(history.state&&history.state.v)||'home';
+  if(v!=='drawer'&&document.getElementById('drawer').classList.contains('open')){closeDrawerUI();return;}
+  if(v==='home'&&document.body.classList.contains('mod-open')){
+    if(forceHome){forceHome=false;closeViewer();return;}
+    modBackHandled=false;
+    try{document.getElementById('moduleFrame').contentWindow.postMessage('cris:back','*');}catch(e){}
+    clearTimeout(modBackTimer);
+    modBackTimer=setTimeout(()=>{if(!modBackHandled)closeViewer();},250);
+  }
 });
 
 // PWA service worker
