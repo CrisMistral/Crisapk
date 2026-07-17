@@ -419,6 +419,8 @@ function exitAct(){
 
 function actDone(){
   if(cur.interval){clearInterval(cur.interval);cur.interval=null;}
+  // Marca diaria para que el panel «Hoy» tache la fila de Intereses al volver
+  try{var _n=new Date();localStorage.setItem('cris_intereses_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}
   markDone(cur.intId,cur.dayIdx);
   vibrate([70,40,70]);
   speak('¡Muy bien! Actividad completada.');

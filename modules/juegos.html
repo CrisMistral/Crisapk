@@ -156,7 +156,9 @@ function go(v){
 
 /* ── Persistencia ── */
 function getDone(){try{return JSON.parse(localStorage.getItem('cris_joyas_done')||'[]');}catch(e){return[];}}
-function markDone(id){const d=getDone();if(!d.includes(id)){d.push(id);localStorage.setItem('cris_joyas_done',JSON.stringify(d));}}
+function markDone(id){const d=getDone();if(!d.includes(id)){d.push(id);localStorage.setItem('cris_joyas_done',JSON.stringify(d));}
+  // Marca diaria para que el panel «Hoy» tache la fila de Juego al volver
+  try{var _n=new Date();localStorage.setItem('cris_juego_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}}
 
 /* ── Audio/vibración ── */
 let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
