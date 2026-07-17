@@ -292,6 +292,12 @@ function sparkle(){
 
 /* ── Boot ── */
 renderPicker();
+/* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
+window.addEventListener('message',function(e){
+  if(!e||e.data!=='cris:back')return;
+  var el=document.querySelector('.screen.active .back-btn');
+  if(el){el.click();try{parent.postMessage('cris:back-ok','*');}catch(_){}}
+});
 </script>
 </body>
 </html>
