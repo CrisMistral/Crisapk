@@ -448,7 +448,10 @@ initHome();
 window.addEventListener('message',function(e){
   if(!e||e.data!=='cris:back')return;
   var el=document.querySelector('.screen.active .hdr-back');
-  if(el){el.click();try{parent.postMessage('cris:back-ok','*');}catch(_){}}
+  if(el){el.click();try{parent.postMessage('cris:back-ok','*');}catch(_){}return;}
+  // Pantallas sin flecha (p.ej. la de actividad completada): a la portada del módulo
+  var act=document.querySelector('.screen.active');
+  if(act&&act.id!=='v-home'&&typeof go==='function'){go('v-home');try{parent.postMessage('cris:back-ok','*');}catch(_){}}
 });
 </script>
 </body>
