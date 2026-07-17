@@ -163,6 +163,9 @@ body{
 /* ── Quokka asomado agarrando el panel ── */
 .quokka-peek{display:flex;justify-content:center;margin-bottom:-30px;position:relative;z-index:1;}
 .quokka-peek img{display:block;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18));}
+/* Manitas de Quico agarrando el borde del panel (delante del panel) */
+.quico-paws{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:150px;z-index:3;pointer-events:none;}
+.quico-paws svg{display:block;width:100%;filter:drop-shadow(0 2px 3px rgba(93,64,55,.16));}
 
 /* ── BOTÓN DE MENÚ (hamburguesa, arriba izquierda) ── */
 #menuBtn{
@@ -312,6 +315,18 @@ body.mod-open #menuBtn{display:none;}
   </div>
 
   <div class="tp-wrap">
+    <div class="quico-paws" aria-hidden="true">
+      <svg viewBox="0 0 170 34" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#8a6d5d">
+          <ellipse cx="40" cy="12" rx="5.5" ry="7"/><ellipse cx="52" cy="9" rx="5.5" ry="7.5"/><ellipse cx="64" cy="10" rx="5.5" ry="7.5"/><ellipse cx="76" cy="13" rx="5.5" ry="7"/>
+          <rect x="35" y="12" width="47" height="20" rx="11"/>
+          <ellipse cx="94" cy="12" rx="5.5" ry="7"/><ellipse cx="106" cy="9" rx="5.5" ry="7.5"/><ellipse cx="118" cy="10" rx="5.5" ry="7.5"/><ellipse cx="130" cy="13" rx="5.5" ry="7"/>
+          <rect x="88" y="12" width="47" height="20" rx="11"/>
+        </g>
+        <ellipse cx="58" cy="25" rx="16" ry="7" fill="#e2d1c2"/>
+        <ellipse cx="112" cy="25" rx="16" ry="7" fill="#e2d1c2"/>
+      </svg>
+    </div>
     <div id="today-panel"></div>
   </div>
 </div>

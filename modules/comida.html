@@ -137,6 +137,12 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .tring{width:176px;height:176px;border-radius:50%;margin:4px auto 10px;display:flex;align-items:center;justify-content:center;background:conic-gradient(#26a69a 360deg,#cde9e4 0);flex-shrink:0;}
 .tring-in{width:144px;height:144px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;text-align:center;}
 .tring .step-timer{font-size:2.2rem;margin-bottom:0}
+
+/* Quico con manitas (mascota) */
+.quico-mascot{position:relative;width:-moz-fit-content;width:fit-content;margin:0 auto 6px;filter:drop-shadow(0 3px 8px rgba(93,64,55,.18));}
+.quico-mascot .qm-head{display:block;margin:0;filter:none;}
+.qm-paws{position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);width:64%;line-height:0;}
+.qm-paws svg{display:block;width:100%;}
 </style>
 </head>
 <body>
@@ -144,7 +150,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div id="v-home" class="screen active">
 <div class="max-w">
   <div class="home-header">
-    <img src="../quico/quico_head_happy.png" alt="Quico" style="width:84px;height:84px;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 3px 8px rgba(93,64,55,.18))">
+    <div class="quico-mascot"><img class="qm-head" src="../quico/quico_head_happy.png" alt="Quico" style="width:84px;height:84px;object-fit:contain;display:block"><span class="qm-paws" aria-hidden="true"><svg viewBox="0 0 170 34" xmlns="http://www.w3.org/2000/svg"><g fill="#8a6d5d"><ellipse cx="40" cy="12" rx="5.5" ry="7"/><ellipse cx="52" cy="9" rx="5.5" ry="7.5"/><ellipse cx="64" cy="10" rx="5.5" ry="7.5"/><ellipse cx="76" cy="13" rx="5.5" ry="7"/><rect x="35" y="12" width="47" height="20" rx="11"/><ellipse cx="94" cy="12" rx="5.5" ry="7"/><ellipse cx="106" cy="9" rx="5.5" ry="7.5"/><ellipse cx="118" cy="10" rx="5.5" ry="7.5"/><ellipse cx="130" cy="13" rx="5.5" ry="7"/><rect x="88" y="12" width="47" height="20" rx="11"/></g><ellipse cx="58" cy="25" rx="16" ry="7" fill="#e2d1c2"/><ellipse cx="112" cy="25" rx="16" ry="7" fill="#e2d1c2"/></svg></span></div>
     <h1>🍳 Comer Rico</h1>
     <p>De temporada · sin tomate · plato Harvard</p>
   </div>
