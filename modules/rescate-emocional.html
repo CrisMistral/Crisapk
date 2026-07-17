@@ -439,6 +439,8 @@ let timerInterval = null;
 let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
 function beep(f=600,d=0.2){if(!__allow('sound'))return;try{const c=__getCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
 function vibrate(ms=80){if(!__allow('vib'))return;try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
+// Marca diaria para que el panel «Hoy» tache «Momento de calma» al volver
+function markCalmaDone(){try{var _n=new Date();localStorage.setItem('cris_calma_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}}
 let _utt=null;
 function speak(t){
   try{if(!__allow('voice'))return;
@@ -538,7 +540,7 @@ function tecAdv(){
   if(S.tecStep<tec.steps.length-1){
     beep(600,0.15);vibrate(60);S.tecStep++;S.tecPlaying=true;S.tecTimer=tec.steps[S.tecStep].time;
     renderTec(); speak(tec.steps[S.tecStep].instruction); timerInterval=setInterval(tecTick,1000);
-  } else {beep(800,0.2);setTimeout(()=>beep(1000,0.3),250);vibrate([80,50,80]);S.tecDone=true;S.tecPlaying=false;renderTec();}
+  } else {beep(800,0.2);setTimeout(()=>beep(1000,0.3),250);vibrate([80,50,80]);S.tecDone=true;S.tecPlaying=false;markCalmaDone();renderTec();}
 }
 function tecNext(){stopTimer();S.tecPlaying=false;tecAdv();}
 function tecPrev(){if(S.tecStep<=0)return;stopTimer();S.tecStep--;S.tecPlaying=false;S.tecTimer=0;S.tecDone=false;renderTec();}
@@ -680,7 +682,7 @@ function medAdv(){
     beep(500,0.2);vibrate(40);S.medStep++;S.medPlaying=true;
     S.medTimer=Math.round(med.steps[S.medStep].time*SPEED[S.medSpeed]);
     renderMedStep();speak(med.steps[S.medStep].instruction);timerInterval=setInterval(medTick,1000);
-  } else {beep(700,0.3);setTimeout(()=>beep(900,0.4),300);vibrate([60,40,60]);S.medDone=true;S.medPlaying=false;renderMedStep();}
+  } else {beep(700,0.3);setTimeout(()=>beep(900,0.4),300);vibrate([60,40,60]);S.medDone=true;S.medPlaying=false;markCalmaDone();renderMedStep();}
 }
 function medNext(){stopTimer();S.medPlaying=false;medAdv();}
 function medPrev(){if(S.medStep<=0)return;stopTimer();S.medPlaying=false;S.medTimer=0;S.medDone=false;S.medStep--;renderMedStep();}
