@@ -280,10 +280,14 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
   function vib(m){if(!allow('vib'))return;try{navigator.vibrate(m);}catch(e){}}
   function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
   function stopTimer(){if(tTimer){clearInterval(tTimer);tTimer=null;}}
+  function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
   function run(secs,tickEl,onCheck,onEnd){
     stopTimer();let t=secs;const el=document.getElementById(tickEl);
+    // Anillo visual opcional por convención: «fo-timer» busca «fo-ring».
+    const ringId=tickEl.replace('timer','ring');
     if(el)el.textContent=fmt(t);
-    tTimer=setInterval(()=>{t--;if(el)el.textContent=fmt(t);if(onCheck)onCheck(t,secs);if(t<=0){stopTimer();beep(880,.2);vib([60,40,80]);onEnd&&onEnd();}},1000);
+    __ring(ringId,1);
+    tTimer=setInterval(()=>{t--;if(el)el.textContent=fmt(t);__ring(ringId,secs?t/secs:0);if(onCheck)onCheck(t,secs);if(t<=0){stopTimer();beep(880,.2);vib([60,40,80]);onEnd&&onEnd();}},1000);
   }
   const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const gv=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
@@ -315,7 +319,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
           <div><span class="t-chip" data-m="15">15 min</span><span class="t-chip" data-m="25">25 min</span><span class="t-chip" data-m="45">45 min</span></div>
         </div>
         <div id="fo-run" style="display:none">
-          <div class="t-timer" id="fo-timer">25:00</div>
+          <div class="tring" id="fo-ring"><div class="tring-in"><div class="t-timer" id="fo-timer" style="margin:0;font-size:2.2rem">25:00</div></div></div>
           <div style="font-size:.78rem;color:#889;margin-bottom:8px">Estoy llevando el tiempo. Tú a lo tuyo.</div>
           <button class="t-btn sec" onclick="openTool('foco')">Parar</button>
         </div>
