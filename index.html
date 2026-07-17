@@ -111,7 +111,9 @@ body{
 .tp-eco.on{background:#fef3c7;border-color:#f59e0b;color:#92400e;}
 .tp-eco-msg{background:#fef9ec;border:1.5px solid #fde9b8;border-radius:12px;padding:9px 12px;font-size:.78rem;color:#92400e;font-weight:600;margin-bottom:10px;line-height:1.45;}
 .tp-eco-suggest{background:#fff8e6;border:1.5px solid #f5d78a;border-radius:12px;padding:10px 12px;font-size:.78rem;color:#8a6410;font-weight:600;margin-bottom:10px;line-height:1.45;}
-.tp-eco-cta{display:block;margin-top:8px;border:none;background:#f59e0b;color:#fff;border-radius:999px;padding:8px 14px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;}
+.tp-eco-btns{display:flex;gap:8px;margin-top:8px;}
+.tp-eco-cta{flex:1;border:none;background:#f59e0b;color:#fff;border-radius:999px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;}
+.tp-eco-cta.alt{background:#fff;color:#8a6410;border:2px solid #f5d78a;}
 .tp-eco-cta:active{transform:scale(.96);}
 .tp-row{display:flex;align-items:center;gap:11px;width:100%;border:none;background:var(--mint-bg);border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;transition:transform .1s;
   user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
@@ -516,12 +518,14 @@ function ecoSuggested(){const h=getEcoHist();return !isEco()&&!!h[dayKey(-1)]&&!
    «Poca» activa el modo eco directamente — y alimenta la racha con datos reales. */
 function energyAsked(){return !!localStorage.getItem('cris_energia_v1_'+todayLocal());}
 function setEnergy(v){
+  tapCooldownUntil=Date.now()+350; // el panel se re-renderiza: sin toques fantasma
   try{localStorage.setItem('cris_energia_v1_'+todayLocal(),v);}catch(e){}
   if(v==='baja'&&!isEco()){toggleEco();return;}
   renderToday();
 }
 
 function toggleEco(){
+  tapCooldownUntil=Date.now()+350; // el panel cambia entero: sin toques fantasma
   const h=getEcoHist();
   if(isEco()){
     // Al deshacer, el día también sale del historial: un toque accidental
@@ -589,9 +593,13 @@ function renderToday(){
     rows.push({e:'🌙',t:'Rutina nocturna',s:h>=20?'25 min · cierre del día':'Para esta noche · 25 min',f:'modules/rutina-nocturna.html',key:kNoche,done:markDone(kNoche)});
 
     // AHORA / LUEGO: orientación sin horarios rígidos — la primera pendiente
-    // es "ahora" y la siguiente "luego"; a partir de las 20h manda la noche.
-    let nowIdx=h>=20&&!rows[rows.length-1].done?rows.length-1:rows.findIndex(r=>!r.done);
-    const nextIdx=rows.findIndex((r,i)=>i!==nowIdx&&i>nowIdx&&!r.done);
+    // es "ahora" y la siguiente pendiente "luego". A partir de las 20h manda
+    // la noche; con la nocturna hecha, el día se considera cerrado (sin AHORA:
+    // a las 23h no se le sugiere a nadie empezar a trabajar).
+    let nowIdx;
+    if(h>=20)nowIdx=rows[rows.length-1].done?-1:rows.length-1;
+    else nowIdx=rows.findIndex(r=>!r.done);
+    const nextIdx=nowIdx<0?-1:rows.findIndex((r,i)=>i!==nowIdx&&!r.done);
     rows.forEach((r,i)=>{r.badge=i===nowIdx?'now':i===nextIdx?'next':'';});
   }
 
@@ -610,13 +618,13 @@ function renderToday(){
       <button class="tp-eco ${eco?'on':''}" onclick="toggleEco()">${eco?'💪 Volver a normal':'🪫 Modo eco'}</button>
     </div>
     ${eco?'<div class="tp-eco-msg">Día de poca batería — lo mínimo cuenta. Hacer poco también es cuidarte 💚</div>':''}
-    ${(!eco&&ecoSuggested())?'<div class="tp-eco-suggest">🪫 Llevas un par de días de poca batería. ¿Hoy también en modo eco?<button class="tp-eco-cta" onclick="toggleEco()">Sí, modo eco</button></div>':''}
+    ${(!eco&&ecoSuggested()&&!energyAsked())?'<div class="tp-eco-suggest">🪫 Llevas un par de días de poca batería. ¿Hoy también en modo eco?<div class="tp-eco-btns"><button class="tp-eco-cta" onclick="toggleEco()">Sí, modo eco</button><button class="tp-eco-cta alt" onclick="setEnergy(\'alta\')">💪 Hoy estoy bien</button></div></div>':''}
     ${(!eco&&!ecoSuggested()&&!energyAsked())?'<div class="tp-energy">🔋 ¿Cómo vienes de energía hoy?<div class="tp-energy-btns"><button onclick="setEnergy(\'alta\')">💪 Bien</button><button onclick="setEnergy(\'baja\')">🪫 Poca</button></div></div>':''}
     ${rows.map(r=>`
       <button class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-file="${r.f}" data-key="${r.key||''}">
         <span class="tp-em">${r.e}</span>
         <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">AHORA</span>':r.badge==='next'?'<span class="tp-badge next">LUEGO</span>':''}</span><span class="tp-s">${r.s}</span></span>
-        ${r.key?`<span class="tp-check${r.done?' on':''}" role="checkbox" aria-checked="${!!r.done}" aria-label="Marcar ${r.t} como ${r.done?'pendiente':'hecha'}">✓</span>`:`<span class="tp-arrow">›</span>`}
+        ${r.key?`<span class="tp-check${r.done?' on':''}" tabindex="0" role="checkbox" aria-checked="${!!r.done}" aria-label="Marcar ${r.t} como ${r.done?'pendiente':'hecha'}">✓</span>`:`<span class="tp-arrow">›</span>`}
       </button>`).join('')}
     <div class="tp-hint">Toca el círculo ✓ al terminar · toca la tarea para abrirla</div>`;
 }
@@ -624,9 +632,13 @@ function renderToday(){
 /* Vibración corta respetando ajustes (vib + modo calma) */
 function hapticOK(){const c=getCfg();return c.vib!==false&&c.calm!==true&&'vibrate'in navigator;}
 
-/* Tachar/destachar una fila del panel (círculo ✓ o pulsación larga) */
+/* Tachar/destachar una fila del panel (círculo ✓ o pulsación larga).
+   tapCooldownUntil evita que un doble-toque nervioso deshaga la marca o abra
+   un módulo cuando el panel se re-renderiza bajo el dedo. */
+let tapCooldownUntil=0;
 function toggleMark(key){
   if(!key)return;
+  tapCooldownUntil=Date.now()+350;
   const on=markDone(key);
   if(on)localStorage.removeItem(key); else localStorage.setItem(key,'1');
   if(hapticOK())navigator.vibrate(on?30:[40,40,40]);
@@ -640,28 +652,44 @@ function toggleMark(key){
    se suprime el click que llega al soltar. */
 (function initTodayPanel(){
   const panel=document.getElementById('today-panel');
-  let timer=null,suppressClick=false;
+  let timer=null;
   const cancel=()=>{ if(timer){clearTimeout(timer);timer=null;} };
   panel.addEventListener('pointerdown',e=>{
     const row=e.target.closest('.tp-row');
-    suppressClick=false;
     if(!row)return;
     const key=row.getAttribute('data-key');
     if(!key)return;
     timer=setTimeout(()=>{
-      timer=null;suppressClick=true;
+      timer=null;
+      tapCooldownUntil=Date.now()+700; // el click que llega al soltar se ignora
       toggleMark(key);
     },500);
   });
   panel.addEventListener('pointerup',cancel);
   panel.addEventListener('pointerleave',cancel);
   panel.addEventListener('pointercancel',cancel);
+  // Marca intrínseca (p.ej. zona de limpieza completada en su módulo): el círculo
+  // no puede deshacerla desde aquí — mejor ni feedback que feedback mentiroso.
+  const intrinsicDone=(row,key)=>row.classList.contains('done')&&!markDone(key);
   panel.addEventListener('click',e=>{
-    if(suppressClick){suppressClick=false;return;}
+    if(Date.now()<tapCooldownUntil)return;
     const row=e.target.closest('.tp-row');
     if(!row)return;
-    if(e.target.closest('.tp-check')){toggleMark(row.getAttribute('data-key'));return;}
+    if(e.target.closest('.tp-check')){
+      const key=row.getAttribute('data-key');
+      if(!intrinsicDone(row,key))toggleMark(key);
+      return;
+    }
     if(row.getAttribute('data-file'))openModule(row.getAttribute('data-file'));
+  });
+  // Teclado: Enter/Espacio con el foco en el círculo tacha en vez de abrir
+  panel.addEventListener('keydown',e=>{
+    if((e.key==='Enter'||e.key===' ')&&e.target.closest&&e.target.closest('.tp-check')){
+      e.preventDefault();e.stopPropagation();
+      const row=e.target.closest('.tp-row');
+      const key=row&&row.getAttribute('data-key');
+      if(row&&!intrinsicDone(row,key))toggleMark(key);
+    }
   });
   panel.addEventListener('contextmenu',e=>{ if(e.target.closest('.tp-row'))e.preventDefault(); });
 })();
@@ -703,30 +731,34 @@ function openModule(file){
   document.body.classList.add('mod-open');
 }
 
+let forceHome=false,modBackTimer=null;
 function closeViewer(){
   document.getElementById('viewer').classList.remove('show');
   document.getElementById('homeBtn').classList.remove('show');
   document.body.classList.remove('mod-open');
   document.getElementById('moduleFrame').src = '';
+  forceHome=false;clearTimeout(modBackTimer);modBackTimer=null;
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
 }
 
-let forceHome=false;
 document.getElementById('homeBtn').addEventListener('click', () => {
-  // 🏠 siempre va al inicio, sin preguntar al módulo si puede retroceder
+  // 🏠 siempre va al inicio, sin preguntar al módulo si puede retroceder.
+  // Si ya hay un back en vuelo (doble toque), se ignora: un solo pop.
+  if(forceHome)return;
   if(history.state&&history.state.v==='mod'){forceHome=true;history.back();}
   else closeViewer();
 });
 
 /* ── BOTÓN ATRÁS DEL MÓVIL ──
    Atrás cierra el cajón; dentro de un módulo primero le pregunta al módulo si
-   puede retroceder una pantalla él mismo (postMessage); si no, vuelve al inicio. */
+   puede retroceder una pantalla él mismo (postMessage); si no, vuelve al inicio.
+   La entrada-guardia {v:'mod'} se restaura SÍNCRONAMENTE al recibir el pop, así
+   un segundo «atrás» rápido nunca se sale de la app. */
 history.replaceState({v:'home'},'');
-let modBackHandled=false,modBackTimer=null;
 window.addEventListener('message',e=>{
-  if(e.data==='cris:back-ok'){
-    modBackHandled=true;clearTimeout(modBackTimer);
-    history.pushState({v:'mod'},'');
+  if(e.data==='cris:back-ok'&&document.body.classList.contains('mod-open')){
+    // El módulo retrocedió él mismo: cancela el cierre por timeout
+    clearTimeout(modBackTimer);modBackTimer=null;
   }
 });
 window.addEventListener('popstate',()=>{
@@ -734,10 +766,13 @@ window.addEventListener('popstate',()=>{
   if(v!=='drawer'&&document.getElementById('drawer').classList.contains('open')){closeDrawerUI();return;}
   if(v==='home'&&document.body.classList.contains('mod-open')){
     if(forceHome){forceHome=false;closeViewer();return;}
-    modBackHandled=false;
+    history.pushState({v:'mod'},'');
     try{document.getElementById('moduleFrame').contentWindow.postMessage('cris:back','*');}catch(e){}
     clearTimeout(modBackTimer);
-    modBackTimer=setTimeout(()=>{if(!modBackHandled)closeViewer();},250);
+    modBackTimer=setTimeout(()=>{
+      // El módulo no pudo retroceder: se consume la guardia y se vuelve al inicio
+      modBackTimer=null;forceHome=true;history.back();
+    },250);
   }
 });
 

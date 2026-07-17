@@ -795,6 +795,14 @@ if(location.hash==='#suave')openDay(6); // modo eco: directo a Movilidad Suave
 /* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
 window.addEventListener('message',function(e){
   if(!e||e.data!=='cris:back')return;
+  // Sesión en marcha: el primer atrás PAUSA (un gesto accidental no puede
+  // matar el entrenamiento); el segundo, ya en pausa, sí sale al listado.
+  var ses=document.querySelector('#v-session.active');
+  if(ses&&['prep','active','switch','rest'].includes(S.phase)){
+    togglePlay();
+    try{parent.postMessage('cris:back-ok','*');}catch(_){}
+    return;
+  }
   var el=document.querySelector('.screen.active .back-btn');
   if(el){el.click();try{parent.postMessage('cris:back-ok','*');}catch(_){}}
 });
