@@ -370,7 +370,7 @@ body.mod-open #menuBtn{display:none;}
     <span class="ds-title">✏️ Tu día</span>
     <button class="ds-done" onclick="closeDayEdit()">Listo</button>
   </div>
-  <div class="ds-sub">Toca para añadir o quitar del panel «Hoy». Sin presión: pon solo lo que quieras.</div>
+  <div class="ds-sub" id="ds-sub">Toca para añadir o quitar del panel «Hoy». Sin presión: pon solo lo que quieras.</div>
   <div id="daySheetList"></div>
 </aside>
 
@@ -435,6 +435,10 @@ function closeDrawer(){
 /* ── EDITAR MI DÍA (qué módulos aparecen en el panel Hoy) ── */
 function openDayEdit(){
   renderDayEdit();
+  const sub=document.getElementById('ds-sub');
+  if(sub)sub.textContent=isEco()
+    ?'Esto configura tu día normal — hoy estás en modo eco, así que lo verás al volver a normal 💚'
+    :'Toca para añadir o quitar del panel «Hoy». Sin presión: pon solo lo que quieras.';
   document.getElementById('daySheet').classList.add('open');
   document.getElementById('daySheetBg').classList.add('open');
   document.body.style.overflow='hidden'; // sin scroll-bleed del panel de detrás
@@ -719,8 +723,8 @@ function renderToday(){
         <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">AHORA</span>':r.badge==='next'?'<span class="tp-badge next">LUEGO</span>':''}</span><span class="tp-s">${r.s}</span></span>
         ${r.key?`<span class="tp-check${r.done?' on':''}" tabindex="0" role="checkbox" aria-checked="${!!r.done}" aria-label="Marcar ${r.t} como ${r.done?'pendiente':'hecha'}">✓</span>`:`<span class="tp-arrow">›</span>`}
       </button>`).join(''):'<div class="tp-empty">Tu día está vacío 🌿<br>Añade lo que quieras hacer hoy.</div>'}
-    ${eco?'':'<button class="tp-edit" onclick="openDayEdit()">✏️ Editar mi día</button>'}
-    ${eco||!rows.length?'':'<div class="tp-hint">Toca el círculo ✓ al terminar · toca la tarea para abrirla</div>'}`;
+    <button class="tp-edit" onclick="openDayEdit()">✏️ Editar mi día</button>
+    ${rows.length?'<div class="tp-hint">Toca el círculo ✓ al terminar · toca la tarea para abrirla</div>':''}`;
 }
 
 /* Vibración corta respetando ajustes (vib + modo calma) */
