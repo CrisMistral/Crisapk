@@ -867,14 +867,7 @@ document.getElementById('homeBtn').addEventListener('click', () => {
    inicio — nunca fuera de la app en mitad de un flujo. */
 history.replaceState({v:'home'},'');
 window.addEventListener('popstate',()=>{
-  const v=(history.state&&history.state.v)||'root';
-  if(v==='root'){
-    // Fondo del historial: cierra lo que quede abierto y repone el inicio
-    closeDrawerUI();closeDayEditUI();
-    if(document.body.classList.contains('mod-open'))closeViewer();
-    history.pushState({v:'home'},'');
-    return;
-  }
+  const v=(history.state&&history.state.v)||'home';
   if(v!=='drawer'&&document.getElementById('drawer').classList.contains('open')){closeDrawerUI();return;}
   if(v!=='daysheet'&&document.getElementById('daySheet').classList.contains('open')){closeDayEditUI();return;}
   if(document.body.classList.contains('mod-open')&&v!=='mod'){
