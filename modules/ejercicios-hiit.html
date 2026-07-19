@@ -683,9 +683,9 @@ function startPrep(){
   vibrate(50);
   renderSession();
   // La explicación se dicta ENTERA antes de arrancar la cuenta atrás:
-  // así la voz nunca se corta a mitad por el «¡Vamos!» siguiente.
+  // cómo colocarse y hacerlo (desc), la clave (voice) y cuánto dura.
   const durTxt=ex.sides===2?ex.duration+' segundos por cada lado':ex.duration+' segundos';
-  speakThen((S.exIdx===0?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.voice+' Serán '+durTxt+'.',()=>{
+  speakThen((S.exIdx===0?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.desc+' '+ex.voice+' Serán '+durTxt+'.',()=>{
     if(S.phase!=='prep'||S.interval)return; // pausado, saltado o parado mientras hablaba
     S.interval=setInterval(sessionTick,1000);
   });
