@@ -847,6 +847,7 @@ function closeViewer(){
   document.getElementById('homeBtn').classList.remove('show');
   document.body.classList.remove('mod-open');
   setFrame(null); // fuera el módulo y sus temporizadores, sin tocar el historial
+  clearTimeout(legacyBackTimer);legacyBackTimer=null;
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
 }
 
@@ -866,18 +867,39 @@ document.getElementById('homeBtn').addEventListener('click', () => {
    se repone la guardia; si no puede, se cierra el visor y quedas en el
    inicio — nunca fuera de la app en mitad de un flujo. */
 history.replaceState({v:'home'},'');
+let legacyBackTimer=null;
+window.addEventListener('message',e=>{
+  // Módulo con protocolo antiguo (en caché): confirmó que retrocedió él
+  if(e.data==='cris:back-ok'&&document.body.classList.contains('mod-open')){
+    clearTimeout(legacyBackTimer);legacyBackTimer=null;
+  }
+});
 window.addEventListener('popstate',()=>{
   const v=(history.state&&history.state.v)||'home';
   if(v!=='drawer'&&document.getElementById('drawer').classList.contains('open')){closeDrawerUI();return;}
   if(v!=='daysheet'&&document.getElementById('daySheet').classList.contains('open')){closeDayEditUI();return;}
   if(document.body.classList.contains('mod-open')&&v!=='mod'){
-    let stepped=false;
+    let w=null,hasSync=false;
     try{
-      const w=document.getElementById('moduleFrame').contentWindow;
-      stepped=!!(w&&w.__crisBack&&w.__crisBack());
+      w=document.getElementById('moduleFrame').contentWindow;
+      hasSync=!!(w&&typeof w.__crisBack==='function');
     }catch(e){}
-    if(stepped)history.pushState({v:'mod'},'');
-    else closeViewer();
+    if(hasSync){
+      let stepped=false;
+      try{stepped=!!w.__crisBack();}catch(e){}
+      if(stepped)history.pushState({v:'mod'},'');
+      else closeViewer();
+    }else{
+      // Módulo antiguo aún en caché: protocolo por mensajes con gracia de 300ms
+      history.pushState({v:'mod'},'');
+      try{w&&w.postMessage('cris:back','*');}catch(e){}
+      clearTimeout(legacyBackTimer);
+      legacyBackTimer=setTimeout(()=>{
+        legacyBackTimer=null;
+        closeViewer();
+        history.replaceState({v:'home'},'');
+      },300);
+    }
   }
 });
 
