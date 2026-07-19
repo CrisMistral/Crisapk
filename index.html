@@ -819,11 +819,24 @@ modules.forEach(m => {
   moduleList.appendChild(row);
 });
 
+/* El iframe se RECREA en cada apertura/cierre en vez de cambiarle el src:
+   cambiar el src de un iframe ya cargado crea entradas en el historial
+   conjunto del navegador, y el botón atrás del móvil las navegaba dejando
+   el visor en blanco (el iframe volvía a about:blank sin avisar a la app).
+   La primera carga de un iframe recién creado no añade entrada. */
+function setFrame(file){
+  const old=document.getElementById('moduleFrame');
+  const fr=document.createElement('iframe');
+  fr.id='moduleFrame';fr.title='Módulo de Cris';
+  if(file)fr.src=file;
+  old.replaceWith(fr);
+}
+
 function openModule(file){
   // Si venimos del cajón, su entrada del historial se convierte en la del módulo
   if(history.state&&history.state.v==='drawer'){closeDrawerUI();history.replaceState({v:'mod'},'');}
   else{closeDrawerUI();history.pushState({v:'mod'},'');}
-  document.getElementById('moduleFrame').src = file;
+  setFrame(file);
   document.getElementById('viewer').classList.add('show');
   document.getElementById('homeBtn').classList.add('show');
   document.body.classList.add('mod-open');
@@ -834,7 +847,7 @@ function closeViewer(){
   document.getElementById('viewer').classList.remove('show');
   document.getElementById('homeBtn').classList.remove('show');
   document.body.classList.remove('mod-open');
-  document.getElementById('moduleFrame').src = '';
+  setFrame(null); // fuera el módulo y sus temporizadores, sin tocar el historial
   forceHome=false;clearTimeout(modBackTimer);modBackTimer=null;
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
 }
