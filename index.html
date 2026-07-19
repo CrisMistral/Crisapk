@@ -842,13 +842,11 @@ function openModule(file){
   document.body.classList.add('mod-open');
 }
 
-let modBackTimer=null;
 function closeViewer(){
   document.getElementById('viewer').classList.remove('show');
   document.getElementById('homeBtn').classList.remove('show');
   document.body.classList.remove('mod-open');
   setFrame(null); // fuera el módulo y sus temporizadores, sin tocar el historial
-  clearTimeout(modBackTimer);modBackTimer=null;
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
 }
 
@@ -860,41 +858,26 @@ document.getElementById('homeBtn').addEventListener('click', () => {
 });
 
 /* ── BOTÓN ATRÁS DEL MÓVIL ──
-   Atrás cierra el cajón; dentro de un módulo primero le pregunta al módulo si
-   puede retroceder una pantalla él mismo (postMessage); si no, vuelve al inicio.
-   Debajo de todo hay una entrada CENTINELA {v:'root'}: si un atrás de más
-   llega al fondo, se re-empuja el inicio — el botón atrás NUNCA cierra la app.
-   Salir de verdad es del sistema (gesto de inicio / cambiar de app). */
-history.replaceState({v:'root'},'');
-history.pushState({v:'home'},'');
-window.addEventListener('message',e=>{
-  if(e.data==='cris:back-ok'&&document.body.classList.contains('mod-open')){
-    // El módulo retrocedió él mismo: cancela el cierre por timeout
-    clearTimeout(modBackTimer);modBackTimer=null;
-  }
-});
+   Chrome en Android SALTA las entradas de historial creadas sin gesto del
+   usuario (intervención anti-secuestro del atrás), así que aquí solo cuentan
+   las entradas apiladas durante un toque real (abrir cajón/hoja/módulo).
+   Al recibir el pop dentro de un módulo, se le pide retroceder con una
+   llamada SÍNCRONA misma-origen (window.__crisBack del iframe): si retrocede,
+   se repone la guardia; si no puede, se cierra el visor y quedas en el
+   inicio — nunca fuera de la app en mitad de un flujo. */
+history.replaceState({v:'home'},'');
 window.addEventListener('popstate',()=>{
-  const v=(history.state&&history.state.v)||'root';
-  if(v==='root'){
-    // Fondo del historial: cierra lo que quede abierto y repone el inicio
-    closeDrawerUI();closeDayEditUI();
-    if(document.body.classList.contains('mod-open'))closeViewer();
-    history.pushState({v:'home'},'');
-    return;
-  }
+  const v=(history.state&&history.state.v)||'home';
   if(v!=='drawer'&&document.getElementById('drawer').classList.contains('open')){closeDrawerUI();return;}
   if(v!=='daysheet'&&document.getElementById('daySheet').classList.contains('open')){closeDayEditUI();return;}
-  if(v==='home'&&document.body.classList.contains('mod-open')){
-    history.pushState({v:'mod'},'');
-    try{document.getElementById('moduleFrame').contentWindow.postMessage('cris:back','*');}catch(e){}
-    clearTimeout(modBackTimer);
-    modBackTimer=setTimeout(()=>{
-      // El módulo no pudo retroceder: al inicio, convirtiendo la guardia en
-      // 'home' con replaceState (sin history.back() → sin carrera de pops)
-      modBackTimer=null;
-      closeViewer();
-      history.replaceState({v:'home'},'');
-    },250);
+  if(document.body.classList.contains('mod-open')&&v!=='mod'){
+    let stepped=false;
+    try{
+      const w=document.getElementById('moduleFrame').contentWindow;
+      stepped=!!(w&&w.__crisBack&&w.__crisBack());
+    }catch(e){}
+    if(stepped)history.pushState({v:'mod'},'');
+    else closeViewer();
   }
 });
 
