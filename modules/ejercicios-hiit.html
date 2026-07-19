@@ -684,7 +684,8 @@ function startPrep(){
   renderSession();
   // La explicación se dicta ENTERA antes de arrancar la cuenta atrás:
   // así la voz nunca se corta a mitad por el «¡Vamos!» siguiente.
-  speakThen((S.exIdx===0?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.voice,()=>{
+  const durTxt=ex.sides===2?ex.duration+' segundos por cada lado':ex.duration+' segundos';
+  speakThen((S.exIdx===0?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.voice+' Serán '+durTxt+'.',()=>{
     if(S.phase!=='prep'||S.interval)return; // pausado, saltado o parado mientras hablaba
     S.interval=setInterval(sessionTick,1000);
   });
@@ -695,17 +696,22 @@ function sessionTick(){
   const el=document.getElementById('s-timer');
   if(el)el.textContent=S.timer;
   __ring('s-ring',S.total?S.timer/S.total:0);
+  // Durante el ejercicio, la voz canta cuánto queda: a mitad y a los últimos 10s
+  if(S.phase==='active'){
+    if(S.timer===Math.floor(S.total/2)&&S.total>=40)speak('Mitad. Quedan '+S.timer+' segundos.');
+    else if(S.timer===10&&S.total>=25)speak('Últimos diez segundos.');
+  }
   if(S.timer<=3&&S.timer>0&&(S.phase==='active'||S.phase==='prep'||S.phase==='rest'))beep(500,.08);
   if(S.timer>0)return;
   stopTimer();
   const d=DAYS[curDayIdx],ex=d.exercises[S.exIdx];
   if(S.phase==='prep'){
     S.phase='active';S.timer=ex.duration;S.total=ex.duration;
-    beep(800,.15);vibrate(60);speak('¡Vamos!');
+    beep(800,.15);vibrate(60);speak('¡Vamos! '+ex.duration+' segundos.');
     S.interval=setInterval(sessionTick,1000);
   }else if(S.phase==='active'&&ex.sides===2&&S.side===1){
     S.side=2;S.phase='switch';S.timer=5;S.total=5;
-    speak('Cambia de lado.');vibrate(60);
+    speak('Cambia de lado. Otros '+ex.duration+' segundos.');vibrate(60);
     S.interval=setInterval(sessionTick,1000);
   }else if(S.phase==='switch'){
     S.phase='active';S.timer=ex.duration;S.total=ex.duration;
@@ -714,7 +720,7 @@ function sessionTick(){
   }else if(S.phase==='active'&&ex.rest>0&&S.exIdx<d.exercises.length-1){
     S.phase='rest';S.timer=ex.rest;S.total=ex.rest;
     beep(600,.15);vibrate(60);
-    speak('Muy bien. Descansa un momento.');
+    speak('Muy bien. Descansa '+ex.rest+' segundos.');
     S.interval=setInterval(sessionTick,1000);
   }else{
     advanceEx();return;
