@@ -1483,11 +1483,12 @@ initHome();
 renderMonthsGrid();
 if(location.hash==='#basicos')go('basicos'); // modo eco: directo a recetas salvavidas
 /* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
-window.addEventListener('message',function(e){
-  if(!e||e.data!=='cris:back')return;
+/* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió */
+window.__crisBack=function(){
   var el=document.querySelector('.screen.active .back-btn');
-  if(el){el.click();try{parent.postMessage('cris:back-ok','*');}catch(_){}}
-});
+  if(el){el.click();return true;}
+  return false;
+};
 </script>
 </body>
 </html>

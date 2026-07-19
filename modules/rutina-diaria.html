@@ -532,11 +532,12 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
   }
 })();
 /* Botón atrás del móvil: si hay una herramienta abierta, se cierra */
-window.addEventListener('message',function(e){
-  if(!e||e.data!=='cris:back')return;
+/* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió */
+window.__crisBack=function(){
   var ov=document.querySelector('.tool-ov.show, .overlay.show');
-  if(ov&&window.closeTool){closeTool();try{parent.postMessage('cris:back-ok','*');}catch(_){}}
-});
+  if(ov&&window.closeTool){closeTool();return true;}
+  return false;
+};
 </script>
 </body>
 </html>
