@@ -461,7 +461,29 @@ function speak(t){
     window.speechSynthesis.speak(_utt);
   }catch(e){}
 }
-function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}}
+
+/* Habla y llama a cb SOLO al terminar el dictado (o al instante si la voz está
+   apagada). Red de seguridad temporal por si el navegador no emite 'end'. */
+let _speakSeq=0;
+function speakThen(t,cb){
+  const seq=++_speakSeq;let done=false;
+  const fin=()=>{if(done||seq!==_speakSeq)return;done=true;cb();};
+  try{
+    if(!__allow('voice')||!window.speechSynthesis){fin();return;}
+    window.speechSynthesis.cancel();
+    if(window.speechSynthesis.paused)window.speechSynthesis.resume();
+    _utt=new SpeechSynthesisUtterance(t);
+    _utt.lang='es-ES';_utt.rate=0.9;
+    const voices=window.speechSynthesis.getVoices();
+    const esVoice=voices.find(v=>v.lang.startsWith('es'));
+    if(esVoice)_utt.voice=esVoice;
+    _utt.onend=fin;_utt.onerror=fin;
+    window.speechSynthesis.speak(_utt);
+    setTimeout(fin,Math.max(4000,t.length*110));
+  }catch(e){fin();}
+}
+// stopTimer también invalida dictados pendientes (pausa, navegación, ← anterior)
+function stopTimer(){_speakSeq++;if(timerInterval){clearInterval(timerInterval);timerInterval=null;}try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}}
 
 function go(view){
   stopTimer();
@@ -535,9 +557,15 @@ function renderTec(){
 function tecToggle(){
   if(!S.tecPlaying){
     S.tecPlaying=true; S.tecTimer=S.tecCurrent.steps[S.tecStep].time;
-    speak(S.tecCurrent.steps[S.tecStep].instruction);
-    timerInterval=setInterval(tecTick,1000);
-  } else {S.tecPlaying=false; stopTimer();}
+    renderTec();
+    // La instrucción se dicta ENTERA antes de arrancar la cuenta del paso
+    speakThen(S.tecCurrent.steps[S.tecStep].instruction,()=>{
+      if(!S.tecPlaying||timerInterval)return;
+      timerInterval=setInterval(tecTick,1000);
+    });
+    return;
+  }
+  S.tecPlaying=false; stopTimer();
   renderTec();
 }
 function tecTick(){S.tecTimer--;const el=document.getElementById('tec-timer');if(el)el.textContent=S.tecTimer;const _tt=S.tecCurrent.steps[S.tecStep].time;__ring('tec-ring',_tt?S.tecTimer/_tt:0);if(S.tecTimer<=0)tecAdv();}
@@ -545,7 +573,11 @@ function tecAdv(){
   stopTimer(); const tec=S.tecCurrent;
   if(S.tecStep<tec.steps.length-1){
     beep(600,0.15);vibrate(60);S.tecStep++;S.tecPlaying=true;S.tecTimer=tec.steps[S.tecStep].time;
-    renderTec(); speak(tec.steps[S.tecStep].instruction); timerInterval=setInterval(tecTick,1000);
+    renderTec();
+    speakThen(tec.steps[S.tecStep].instruction,()=>{
+      if(!S.tecPlaying||timerInterval)return;
+      timerInterval=setInterval(tecTick,1000);
+    });
   } else {beep(800,0.2);setTimeout(()=>beep(1000,0.3),250);vibrate([80,50,80]);S.tecDone=true;S.tecPlaying=false;markCalmaDone();renderTec();}
 }
 function tecNext(){stopTimer();S.tecPlaying=false;tecAdv();}
@@ -676,9 +708,16 @@ function renderMedStep(){
 function medToggle(){
   if(!S.medPlaying){
     S.medPlaying=true;const step=S.medCurrent.steps[S.medStep];
-    S.medTimer=Math.round(step.time*SPEED[S.medSpeed]);speak(step.instruction);
-    timerInterval=setInterval(medTick,1000);
-  } else {S.medPlaying=false;stopTimer();}
+    S.medTimer=Math.round(step.time*SPEED[S.medSpeed]);
+    renderMedStep();
+    // La instrucción se dicta ENTERA antes de arrancar la cuenta del paso
+    speakThen(step.instruction,()=>{
+      if(!S.medPlaying||timerInterval)return;
+      timerInterval=setInterval(medTick,1000);
+    });
+    return;
+  }
+  S.medPlaying=false;stopTimer();
   renderMedStep();
 }
 function medTick(){S.medTimer--;const el=document.getElementById('med-timer');if(el)el.textContent=S.medTimer;const _mt=Math.round(S.medCurrent.steps[S.medStep].time*SPEED[S.medSpeed]);__ring('med-ring',_mt?S.medTimer/_mt:0);if(S.medTimer<=0)medAdv();}
@@ -687,7 +726,11 @@ function medAdv(){
   if(S.medStep<med.steps.length-1){
     beep(500,0.2);vibrate(40);S.medStep++;S.medPlaying=true;
     S.medTimer=Math.round(med.steps[S.medStep].time*SPEED[S.medSpeed]);
-    renderMedStep();speak(med.steps[S.medStep].instruction);timerInterval=setInterval(medTick,1000);
+    renderMedStep();
+    speakThen(med.steps[S.medStep].instruction,()=>{
+      if(!S.medPlaying||timerInterval)return;
+      timerInterval=setInterval(medTick,1000);
+    });
   } else {beep(700,0.3);setTimeout(()=>beep(900,0.4),300);vibrate([60,40,60]);S.medDone=true;S.medPlaying=false;markCalmaDone();renderMedStep();}
 }
 function medNext(){stopTimer();S.medPlaying=false;medAdv();}
