@@ -613,6 +613,25 @@ function vibrate(ms=60){if(!__allow('vib'))return;try{if(navigator.vibrate)navig
 let _utt=null;
 function speak(t){try{if(!__allow('voice'))return;if(!window.speechSynthesis)return;window.speechSynthesis.cancel();if(window.speechSynthesis.paused)window.speechSynthesis.resume();_utt=new SpeechSynthesisUtterance(t);_utt.lang='es-ES';_utt.rate=.88;const v=window.speechSynthesis.getVoices();const ev=v.find(v=>v.lang.startsWith('es'));if(ev)_utt.voice=ev;window.speechSynthesis.speak(_utt);}catch(e){}}
 
+/* Habla y llama a cb SOLO cuando ha terminado de dictar (o al instante si la
+   voz está apagada). Con red de seguridad por si el navegador no emite 'end'. */
+let _speakSeq=0;
+function speakThen(t,cb){
+  const seq=++_speakSeq;let done=false;
+  const fin=()=>{if(done||seq!==_speakSeq)return;done=true;cb();};
+  try{
+    if(!__allow('voice')||!window.speechSynthesis){fin();return;}
+    window.speechSynthesis.cancel();
+    if(window.speechSynthesis.paused)window.speechSynthesis.resume();
+    _utt=new SpeechSynthesisUtterance(t);
+    _utt.lang='es-ES';_utt.rate=.88;
+    const v=window.speechSynthesis.getVoices();const ev=v.find(v=>v.lang.startsWith('es'));if(ev)_utt.voice=ev;
+    _utt.onend=fin;_utt.onerror=fin;
+    window.speechSynthesis.speak(_utt);
+    setTimeout(fin,Math.max(4000,t.length*110));
+  }catch(e){fin();}
+}
+
 /* ─── NAV ─── */
 function go(v){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('v-'+v).classList.add('active');window.scrollTo(0,0);}
 
@@ -653,7 +672,7 @@ function startSession(){
   go('session');renderSession();
 }
 function confirmStop(){stopSession();go('day');}
-function stopSession(){stopTimer();releaseAwake();try{speechSynthesis.cancel();}catch(e){}}
+function stopSession(){stopTimer();releaseAwake();_speakSeq++;try{speechSynthesis.cancel();}catch(e){}}
 function stopTimer(){if(S.interval){clearInterval(S.interval);S.interval=null;}}
 
 function beginAll(){keepAwake();startPrep();}
@@ -661,10 +680,14 @@ function beginAll(){keepAwake();startPrep();}
 function startPrep(){
   const ex=DAYS[curDayIdx].exercises[S.exIdx];
   S.phase='prep';S.timer=8;S.total=8;S.side=1;
-  speak((S.exIdx===0?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.voice);
   vibrate(50);
-  S.interval=setInterval(sessionTick,1000);
   renderSession();
+  // La explicación se dicta ENTERA antes de arrancar la cuenta atrás:
+  // así la voz nunca se corta a mitad por el «¡Vamos!» siguiente.
+  speakThen((S.exIdx===0?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.voice,()=>{
+    if(S.phase!=='prep'||S.interval)return; // pausado, saltado o parado mientras hablaba
+    S.interval=setInterval(sessionTick,1000);
+  });
 }
 
 function sessionTick(){
