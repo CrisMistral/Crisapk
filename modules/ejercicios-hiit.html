@@ -677,18 +677,46 @@ function stopTimer(){if(S.interval){clearInterval(S.interval);S.interval=null;}}
 
 function beginAll(){keepAwake();startPrep();}
 
+function voiceOn(){return __allow('voice')&&!!window.speechSynthesis;}
+// Explicación completa: cómo colocarse y hacerlo (desc), la clave (voice) y cuánto dura
+function exText(ex,first){
+  const durTxt=ex.sides===2?ex.duration+' segundos por cada lado':ex.duration+' segundos';
+  return (first?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.desc+' '+ex.voice+' Serán '+durTxt+'.';
+}
+
 function startPrep(){
   const ex=DAYS[curDayIdx].exercises[S.exIdx];
-  S.phase='prep';S.timer=8;S.total=8;S.side=1;
+  S.phase='prep';S.side=1;
   vibrate(50);
+  if(!voiceOn()){
+    // Sin voz: 8s clásicos para leer la ficha en pantalla
+    S.timer=8;S.total=8;
+    renderSession();
+    S.interval=setInterval(sessionTick,1000);
+    return;
+  }
+  // Con voz: la explicación ES el tiempo de preparación — te colocas mientras
+  // habla, y al terminar solo hay un 3-2-1 antes del ¡Vamos!
+  S.timer=3;S.total=3;
   renderSession();
-  // La explicación se dicta ENTERA antes de arrancar la cuenta atrás:
-  // cómo colocarse y hacerlo (desc), la clave (voice) y cuánto dura.
-  const durTxt=ex.sides===2?ex.duration+' segundos por cada lado':ex.duration+' segundos';
-  speakThen((S.exIdx===0?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.desc+' '+ex.voice+' Serán '+durTxt+'.',()=>{
+  speakThen(exText(ex,S.exIdx===0),()=>{
     if(S.phase!=='prep'||S.interval)return; // pausado, saltado o parado mientras hablaba
     S.interval=setInterval(sessionTick,1000);
   });
+}
+
+// Tras un descanso con la explicación ya dictada: directo al ejercicio
+function advanceExDirect(){
+  stopTimer();
+  const d=DAYS[curDayIdx];
+  S.exIdx++;S.side=1;S.pausedPhase=null;
+  if(S.exIdx>=d.exercises.length){S.phase='done';releaseAwake();renderSession();return;}
+  if(!voiceOn()){startPrep();return;}
+  const ex=d.exercises[S.exIdx];
+  S.phase='active';S.timer=ex.duration;S.total=ex.duration;
+  beep(800,.15);vibrate(60);speak('¡Vamos! '+ex.duration+' segundos.');
+  S.interval=setInterval(sessionTick,1000);
+  renderSession();
 }
 
 function sessionTick(){
@@ -720,8 +748,21 @@ function sessionTick(){
   }else if(S.phase==='active'&&ex.rest>0&&S.exIdx<d.exercises.length-1){
     S.phase='rest';S.timer=ex.rest;S.total=ex.rest;
     beep(600,.15);vibrate(60);
-    speak('Muy bien. Descansa '+ex.rest+' segundos.');
+    // La explicación del SIGUIENTE se dicta DURANTE el descanso: sin tiempo extra
+    if(voiceOn()){
+      S.nextReady=false;
+      const nx=d.exercises[S.exIdx+1];
+      speakThen('Muy bien. Descansa '+ex.rest+' segundos. '+exText(nx,false),()=>{
+        S.nextReady=true;
+        if(S.phase==='restwait')advanceExDirect(); // el descanso acabó antes que la voz
+      });
+    }else{S.nextReady=true;}
     S.interval=setInterval(sessionTick,1000);
+  }else if(S.phase==='rest'){
+    // Descanso agotado: si la voz aún explica, espera a que termine
+    if(voiceOn()&&!S.nextReady){S.phase='restwait';renderSession();return;}
+    if(voiceOn()){advanceExDirect();}else{advanceEx();}
+    return;
   }else{
     advanceEx();return;
   }
@@ -730,10 +771,14 @@ function sessionTick(){
 
 function togglePlay(){
   if(S.phase==='paused'){
+    if(S.pausedPhase==='restwait'){
+      // La explicación quedó cancelada al pausar: seguimos directos al ejercicio
+      S.pausedPhase=null;advanceExDirect();return;
+    }
     S.phase=S.pausedPhase||'active';S.pausedPhase=null;
     S.interval=setInterval(sessionTick,1000);
     keepAwake();speak('Seguimos.');
-  }else if(['prep','active','switch','rest'].includes(S.phase)){
+  }else if(['prep','active','switch','rest','restwait'].includes(S.phase)){
     S.pausedPhase=S.phase;stopTimer();S.phase='paused';
     try{speechSynthesis.cancel();}catch(e){}
   }
@@ -754,6 +799,9 @@ function skipPhase(){
     S.side=2;S.phase='switch';S.timer=5;S.total=5;
     S.interval=setInterval(sessionTick,1000);
     renderSession();
+  }else if((ph==='rest'||ph==='restwait')&&voiceOn()){
+    // Saltar el descanso: directo al siguiente sin repetir la explicación
+    advanceExDirect();
   }else{
     advanceEx();
   }
@@ -796,7 +844,7 @@ function renderSession(){
     return;
   }
 
-  const isRest=S.phase==='rest';
+  const isRest=S.phase==='rest'||S.phase==='restwait';
   const nextEx=S.exIdx<total-1?d.exercises[S.exIdx+1]:null;
   const showEx=(isRest&&nextEx)?nextEx:ex;
   const playing=S.phase!=='paused';
@@ -806,6 +854,7 @@ function renderSession(){
   else if(S.phase==='active'){phaseLabel='Copia a la figura ▶';timerLbl='segundos restantes';}
   else if(S.phase==='paused'){phaseLabel='En pausa';timerLbl='segundos';animTag='Pausa';}
   else if(S.phase==='switch'){phaseLabel='¡Cambia de lado!';timerCls=' sw-c';timerLbl='seg';}
+  else if(S.phase==='restwait'){phaseLabel='Escucha — ya casi';timerCls=' rest-c';timerLbl='escuchando…';animTag=nextEx?'Siguiente: '+nextEx.name:'';}
   else if(isRest){phaseLabel='Descansa';timerCls=' rest-c';timerLbl='seg de descanso';animTag=nextEx?'Siguiente: '+nextEx.name:'';}
   const showDesc=S.phase==='prep'||S.phase==='paused';
   el.innerHTML=`
@@ -832,7 +881,7 @@ if(location.hash==='#suave')openDay(6); // modo eco: directo a Movilidad Suave
    Sesión en marcha: el primer atrás PAUSA; el segundo, ya en pausa, sale al listado. */
 window.__crisBack=function(){
   var ses=document.querySelector('#v-session.active');
-  if(ses&&['prep','active','switch','rest'].includes(S.phase)){togglePlay();return true;}
+  if(ses&&['prep','active','switch','rest','restwait'].includes(S.phase)){togglePlay();return true;}
   var el=document.querySelector('.screen.active .back-btn');
   if(el){el.click();return true;}
   return false;
