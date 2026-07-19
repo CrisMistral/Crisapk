@@ -1489,6 +1489,12 @@ window.__crisBack=function(){
   if(el){el.click();return true;}
   return false;
 };
+/* Puente para versiones mezcladas: si el index viejo aún manda postMessage */
+window.addEventListener('message',function(e){
+  if(e&&e.data==='cris:back'&&window.__crisBack&&window.__crisBack()){
+    try{parent.postMessage('cris:back-ok','*');}catch(_){}
+  }
+});
 </script>
 </body>
 </html>
