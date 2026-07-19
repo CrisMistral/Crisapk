@@ -842,30 +842,31 @@ function openModule(file){
   document.body.classList.add('mod-open');
 }
 
-let forceHome=false,modBackTimer=null;
+let modBackTimer=null;
 function closeViewer(){
   document.getElementById('viewer').classList.remove('show');
   document.getElementById('homeBtn').classList.remove('show');
   document.body.classList.remove('mod-open');
   setFrame(null); // fuera el módulo y sus temporizadores, sin tocar el historial
-  forceHome=false;clearTimeout(modBackTimer);modBackTimer=null;
+  clearTimeout(modBackTimer);modBackTimer=null;
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
 }
 
 document.getElementById('homeBtn').addEventListener('click', () => {
-  // 🏠 siempre va al inicio, sin preguntar al módulo si puede retroceder.
-  // Si ya hay un back en vuelo (doble toque), se ignora: un solo pop.
-  if(forceHome)return;
-  if(history.state&&history.state.v==='mod'){forceHome=true;history.back();}
-  else closeViewer();
+  // 🏠 va al inicio ya, sin pops asíncronos: la entrada del módulo se
+  // convierte en 'home' con replaceState (síncrono, sin carreras).
+  closeViewer();
+  if(history.state&&history.state.v==='mod')history.replaceState({v:'home'},'');
 });
 
 /* ── BOTÓN ATRÁS DEL MÓVIL ──
    Atrás cierra el cajón; dentro de un módulo primero le pregunta al módulo si
    puede retroceder una pantalla él mismo (postMessage); si no, vuelve al inicio.
-   La entrada-guardia {v:'mod'} se restaura SÍNCRONAMENTE al recibir el pop, así
-   un segundo «atrás» rápido nunca se sale de la app. */
-history.replaceState({v:'home'},'');
+   Debajo de todo hay una entrada CENTINELA {v:'root'}: si un atrás de más
+   llega al fondo, se re-empuja el inicio — el botón atrás NUNCA cierra la app.
+   Salir de verdad es del sistema (gesto de inicio / cambiar de app). */
+history.replaceState({v:'root'},'');
+history.pushState({v:'home'},'');
 window.addEventListener('message',e=>{
   if(e.data==='cris:back-ok'&&document.body.classList.contains('mod-open')){
     // El módulo retrocedió él mismo: cancela el cierre por timeout
@@ -873,17 +874,26 @@ window.addEventListener('message',e=>{
   }
 });
 window.addEventListener('popstate',()=>{
-  const v=(history.state&&history.state.v)||'home';
+  const v=(history.state&&history.state.v)||'root';
+  if(v==='root'){
+    // Fondo del historial: cierra lo que quede abierto y repone el inicio
+    closeDrawerUI();closeDayEditUI();
+    if(document.body.classList.contains('mod-open'))closeViewer();
+    history.pushState({v:'home'},'');
+    return;
+  }
   if(v!=='drawer'&&document.getElementById('drawer').classList.contains('open')){closeDrawerUI();return;}
   if(v!=='daysheet'&&document.getElementById('daySheet').classList.contains('open')){closeDayEditUI();return;}
   if(v==='home'&&document.body.classList.contains('mod-open')){
-    if(forceHome){forceHome=false;closeViewer();return;}
     history.pushState({v:'mod'},'');
     try{document.getElementById('moduleFrame').contentWindow.postMessage('cris:back','*');}catch(e){}
     clearTimeout(modBackTimer);
     modBackTimer=setTimeout(()=>{
-      // El módulo no pudo retroceder: se consume la guardia y se vuelve al inicio
-      modBackTimer=null;forceHome=true;history.back();
+      // El módulo no pudo retroceder: al inicio, convirtiendo la guardia en
+      // 'home' con replaceState (sin history.back() → sin carrera de pops)
+      modBackTimer=null;
+      closeViewer();
+      history.replaceState({v:'home'},'');
     },250);
   }
 });
