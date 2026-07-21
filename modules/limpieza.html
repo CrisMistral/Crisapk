@@ -367,6 +367,7 @@ function beep(freq,dur){
     o.start();o.stop(ctx.currentTime+(dur||.3)+.05);
   }catch(e){}
 }
+function vibrate(p){try{if(!__allow('vib'))return;if(navigator.vibrate)navigator.vibrate(p||60);}catch(e){}}
 function flash(msg){
   const el=document.getElementById('flash-el');
   el.textContent=msg;el.style.opacity='1';
@@ -611,7 +612,8 @@ function tick(){
   if(S.timeLeft===10)speak('Diez segundos.');
   if(S.timeLeft<=0){
     clearInterval(S.interval);S.interval=null;
-    beep(660,.15);setTimeout(()=>beep(880,.2),200);
+    beep(760,.22);setTimeout(()=>beep(980,.22),260);setTimeout(()=>beep(1240,.42),520);
+    vibrate([160,90,160,90,320]);
     flash('¡Tarea completada! ✓');
     document.getElementById('task-big').className='task-big tb-finish';
     S.tasksDone++;S.idx++;
