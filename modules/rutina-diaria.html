@@ -287,13 +287,21 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
   function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
   function stopTimer(){if(tTimer){clearInterval(tTimer);tTimer=null;}}
   function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
+  // Alarma inconfundible al terminar un temporizador: 3 tonos + vibración larga.
+  function alarm(){
+    beep(760,.22);
+    setTimeout(()=>beep(980,.22),260);
+    setTimeout(()=>beep(1240,.42),520);
+    vib([160,90,160,90,320]);
+  }
   function run(secs,tickEl,onCheck,onEnd){
     stopTimer();let t=secs;const el=document.getElementById(tickEl);
     // Anillo visual opcional por convención: «fo-timer» busca «fo-ring».
     const ringId=tickEl.replace('timer','ring');
     if(el)el.textContent=fmt(t);
     __ring(ringId,1);
-    tTimer=setInterval(()=>{t--;if(el)el.textContent=fmt(t);__ring(ringId,secs?t/secs:0);if(onCheck)onCheck(t,secs);if(t<=0){stopTimer();beep(880,.2);vib([60,40,80]);onEnd&&onEnd();}},1000);
+    // Aviso 5s antes de acabar: dos pitidos cortos para no pillar por sorpresa.
+    tTimer=setInterval(()=>{t--;if(el)el.textContent=fmt(t);__ring(ringId,secs?t/secs:0);if(t===5)beep(700,.1);if(onCheck)onCheck(t,secs);if(t<=0){stopTimer();alarm();onEnd&&onEnd();}},1000);
   }
   const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const gv=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
@@ -421,7 +429,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
         document.getElementById('fo-run').style.display='block';
         speak(min+' minutos de foco. Empieza ahora, yo llevo el tiempo.');vib(50);
         run(min*60,'fo-timer',(t,tot)=>{ if(min>=25&&t===Math.floor(tot/2)){beep(700,.12);vib(50);speak('Vas por la mitad. Sigue, lo estás haciendo bien.');} },
-          ()=>{try{var _n=new Date();localStorage.setItem('cris_trabajo_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}speak('¡Tiempo! Buen trabajo. Tómate un respiro.');});
+          ()=>{try{var _n=new Date();localStorage.setItem('cris_trabajo_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}speak('¡Se acabó el tiempo! Buen trabajo. Tómate un respiro.');});
       });
     },
     paralisis(){
@@ -430,7 +438,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
         document.getElementById('pa-timer').style.display='block';
         this.textContent='⏳ Solo este paso...';
         speak('Solo este paso: '+step+'. Un minuto. Empieza ahora.');vib(50);
-        run(60,'pa-timer',null,()=>{beep(1000,.25);speak('¡Ya está! Has empezado. Eso era lo difícil.');document.getElementById('pa-go').textContent='✓ ¡Empezaste! Otra vez';});
+        run(60,'pa-timer',null,()=>{speak('¡Se acabó el minuto! Ya has empezado, eso era lo difícil.');document.getElementById('pa-go').textContent='✓ ¡Empezaste! Otra vez';});
       };
     },
     dopamina(){
@@ -441,7 +449,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
         document.getElementById('dm-run').style.display='block';
         document.getElementById('dm-name').textContent='▶ '+name;
         speak(name+'. '+min+' minutos. Vamos.');vib(50);
-        run(min*60,'dm-timer',null,()=>{speak('¡Tiempo! Bien hecho.');});
+        run(min*60,'dm-timer',null,()=>{speak('¡Se acabó el tiempo! Bien hecho.');});
         document.getElementById('dm-run').scrollIntoView({behavior:'smooth'});
       });
     },
@@ -503,7 +511,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
     const m=lsGet('cris_mision',{task:'tu tarea'});
     const el=document.getElementById('mi-timer');if(el)el.style.display='block';
     speak('Misión activada: '+m.task+'. Veinte minutos. Al terminar, tu recompensa.');vib(50);
-    run(1200,'mi-timer',null,()=>{speak('¡Misión cumplida! Disfruta tu recompensa, te la has ganado.');beep(1000,.25);});
+    run(1200,'mi-timer',null,()=>{speak('¡Tiempo! Misión cumplida. Disfruta tu recompensa, te la has ganado.');});
   };
   window.recalcTiempo=function(){
     const est=+gv('ti-est')||0,a=+gv('ti-a')||0,b=+gv('ti-b')||0,c=+gv('ti-c')||0;

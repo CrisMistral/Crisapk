@@ -1230,22 +1230,40 @@ function cookToggle(){
   }
   renderCook();
 }
+// Alarma inconfundible al terminar un paso con temporizador (sueles estar lejos del móvil)
+function cookAlarm(){
+  beep(760,.22);
+  setTimeout(()=>beep(980,.22),260);
+  setTimeout(()=>beep(1240,.42),520);
+  vibrate([160,90,160,90,320]);
+}
 function cookTick(){
   cookTimer--;
   const el=document.getElementById('ct');
   if(el)el.textContent=String(Math.floor(cookTimer/60)).padStart(2,'0')+':'+String(cookTimer%60).padStart(2,'0');
   const _s=curRecipe.steps[cookStep];
   __ring('ct-ring',(_s&&_s.time)?cookTimer/(_s.time*60):0);
-  if(cookTimer<=0)cookAdv();
+  if(cookTimer===10)speak('Últimos diez segundos.');
+  if(cookTimer<=0)cookAdv(true);
 }
-function cookAdv(){
+function cookAdv(auto){
   if(cookInt){clearInterval(cookInt);cookInt=null;}
   cookStep++;cookPlaying=false;cookTimer=0;
-  if(cookStep<curRecipe.steps.length){beep(600,.15);vibrate(60);}
-  else{beep(800,.2);setTimeout(()=>beep(1000,.3),250);vibrate([80,50,80]);}
+  if(cookStep<curRecipe.steps.length){
+    const nx=curRecipe.steps[cookStep];
+    if(auto){
+      // El temporizador acabó solo: alarma fuerte y dicta el siguiente paso
+      cookAlarm();
+      speak('¡Tiempo! Siguiente paso: '+(nx.voice||nx.text));
+    }else{beep(600,.15);vibrate(60);}
+  }else{
+    // Último paso terminado: la receta está lista
+    cookAlarm();
+    speak('¡Receta lista! Que aproveche.');
+  }
   renderCook();
 }
-function cookNext(){if(cookInt){clearInterval(cookInt);cookInt=null;}cookPlaying=false;cookTimer=0;cookAdv();}
+function cookNext(){if(cookInt){clearInterval(cookInt);cookInt=null;}cookPlaying=false;cookTimer=0;cookAdv(false);}
 
 /* ── ¿QUÉ COMO HOY? (preguntas fáciles → receta recomendada) ── */
 let pickMeal='comidas',pickIdx=0,pickStep='q1',pickAns={};

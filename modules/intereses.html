@@ -409,9 +409,12 @@ function actStart(){
     if(dig)dig.textContent=fmt(cur.timer);
     __ring('t-ring',cur.total?cur.timer/cur.total:0);
     if(cur.timer===60)speak('Queda un minuto.');
+    if(cur.timer===10)speak('Últimos diez segundos.');
     if(cur.timer<=0){
       clearInterval(cur.interval);cur.interval=null;
-      beep(660,.15);setTimeout(()=>beep(880,.25),200);
+      // Alarma inconfundible de fin de tiempo
+      beep(760,.22);setTimeout(()=>beep(980,.22),260);setTimeout(()=>beep(1240,.42),520);
+      vibrate([160,90,160,90,320]);
       actDone();
     }
   },1000);
