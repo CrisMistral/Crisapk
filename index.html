@@ -290,19 +290,26 @@ body.mod-open #menuBtn{display:none;}
 .cfg-chips button.off{opacity:.4;text-decoration:line-through;}
 .cfg-note{font-size:.72rem;color:var(--text-soft);text-align:center;margin-top:8px;opacity:.8;}
 
+/* Selector de idioma */
+.lang-row{display:flex;flex-direction:column;gap:8px;margin-bottom:6px;}
+.lang-row button{border:2px solid var(--mint-mid);background:var(--white-card);color:var(--teal-dark);border-radius:14px;padding:12px 14px;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;text-align:left;transition:transform .1s,border-color .1s,background .1s;}
+.lang-row button:active{transform:scale(.98);}
+.lang-row button.on{border-color:var(--teal);background:#fff;}
+.lang-row button.on::after{content:'✓';float:right;color:var(--teal);}
+
 .calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
 </style>
 </head>
 <body>
 
 <!-- Botón de menú -->
-<button id="menuBtn" aria-label="Abrir menú" onclick="openDrawer()">☰<span class="mb-label">Menú</span></button>
+<button id="menuBtn" aria-label="Abrir menú" data-i18n-aria="menu_open" onclick="openDrawer()">☰<span class="mb-label" data-i18n="menu">Menú</span></button>
 
 <!-- Pantalla 1: solo HOY -->
 <div id="dashboard">
   <div class="hero">
     <div class="greeting-row" id="greeting">¡Hola, Cris!</div>
-    <div class="hero-sub">¿en qué te ayudo hoy?</div>
+    <div class="hero-sub" data-i18n="hero_sub">¿en qué te ayudo hoy?</div>
   </div>
 
   <div class="quokka-zone">
@@ -333,31 +340,38 @@ body.mod-open #menuBtn{display:none;}
 <div id="drawerBg" onclick="closeDrawer()"></div>
 <aside id="drawer">
   <div class="dw-head">
-    <span class="dw-title">🌿 Menú de Cris</span>
-    <button class="dw-close" aria-label="Cerrar menú" onclick="closeDrawer()">✕</button>
+    <span class="dw-title" data-i18n="menu_title">🌿 Menú de Cris</span>
+    <button class="dw-close" aria-label="Cerrar menú" data-i18n-aria="menu_close" onclick="closeDrawer()">✕</button>
   </div>
 
-  <div class="dw-label">Módulos</div>
+  <div class="dw-label" data-i18n="lang_label">Idioma</div>
+  <div class="lang-row" id="langRow">
+    <button data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
+    <button data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
+    <button data-lang="fr" onclick="setLang('fr')">🇫🇷 Français</button>
+  </div>
+
+  <div class="dw-label" data-i18n="modules_label">Módulos</div>
   <div id="moduleList"></div>
 
-  <div class="dw-label">Ajustes</div>
+  <div class="dw-label" data-i18n="settings_label">Ajustes</div>
   <div class="cfg-zone">
     <button id="notifBtn" onclick="toggleNotif()">🔕 Activar recordatorios</button>
     <div id="notifTimes" style="display:none;">
-      <div class="nt-row"><span>☀️ Empezar el día</span><input type="time" id="nt-m" value="09:30" onchange="saveNotifTimes()"></div>
-      <div class="nt-row"><span>🌙 Rutina nocturna</span><input type="time" id="nt-n" value="21:30" onchange="saveNotifTimes()"></div>
-      <div class="cfg-note">Suenan con la app abierta o instalada en la pantalla de inicio</div>
+      <div class="nt-row"><span data-i18n="notif_morning">☀️ Empezar el día</span><input type="time" id="nt-m" value="09:30" onchange="saveNotifTimes()"></div>
+      <div class="nt-row"><span data-i18n="notif_night">🌙 Rutina nocturna</span><input type="time" id="nt-n" value="21:30" onchange="saveNotifTimes()"></div>
+      <div class="cfg-note" data-i18n="notif_hint">Suenan con la app abierta o instalada en la pantalla de inicio</div>
     </div>
     <button id="calmBtn" onclick="toggleCalm()">🕯️ Reducir estímulos</button>
     <div class="cfg-chips">
-      <button id="c-voice" onclick="toggleCfg('voice')">🗣️ Voz</button>
-      <button id="c-sound" onclick="toggleCfg('sound')">🔔 Sonido</button>
-      <button id="c-vib" onclick="toggleCfg('vib')">📳 Vibración</button>
+      <button id="c-voice" onclick="toggleCfg('voice')" data-i18n="cfg_voice">🗣️ Voz</button>
+      <button id="c-sound" onclick="toggleCfg('sound')" data-i18n="cfg_sound">🔔 Sonido</button>
+      <button id="c-vib" onclick="toggleCfg('vib')" data-i18n="cfg_vib">📳 Vibración</button>
     </div>
-    <div class="cfg-note">Los ajustes se aplican a toda la app</div>
+    <div class="cfg-note" data-i18n="cfg_note">Los ajustes se aplican a toda la app</div>
   </div>
 
-  <div class="cfg-note" style="margin-top:22px;line-height:1.7;">
+  <div class="cfg-note" data-i18n="drawer_footer" style="margin-top:22px;line-height:1.7;">
     Cris · tu compañera de cada día 💚
   </div>
 </aside>
@@ -367,8 +381,8 @@ body.mod-open #menuBtn{display:none;}
 <div id="daySheetBg" onclick="closeDayEdit()"></div>
 <aside id="daySheet" role="dialog" aria-modal="true" aria-label="Editar mi día">
   <div class="ds-head">
-    <span class="ds-title">✏️ Tu día</span>
-    <button class="ds-done" onclick="closeDayEdit()">Listo</button>
+    <span class="ds-title" data-i18n="day_title">✏️ Tu día</span>
+    <button class="ds-done" data-i18n="done" onclick="closeDayEdit()">Listo</button>
   </div>
   <div class="ds-sub" id="ds-sub">Toca para añadir o quitar del panel «Hoy». Sin presión: pon solo lo que quieras.</div>
   <div id="daySheetList"></div>
@@ -378,41 +392,243 @@ body.mod-open #menuBtn{display:none;}
 <div id="viewer">
   <iframe id="moduleFrame" title="Módulo de Cris"></iframe>
 </div>
-<button id="homeBtn" title="Volver al inicio">🏠</button>
-<button id="sosBtn" title="Botiquín de emergencia" onclick="openModule('modules/rescate-emocional.html')">🫀<span class="sos-label"> SOS</span></button>
+<button id="homeBtn" title="Volver al inicio" data-i18n-title="home_title">🏠</button>
+<button id="sosBtn" title="Botiquín de emergencia" data-i18n-title="sos_title" onclick="openModule('modules/rescate-emocional.html')">🫀<span class="sos-label" data-i18n="sos"> SOS</span></button>
 
 <script>
-const modules = [
-  { icon:'💼', title:'Trabajo',          sub:'Herramientas anti-bloqueo',  file:'modules/rutina-diaria.html' },
-  { icon:'🧘', title:'Ejercicios',       sub:'Pilates guiado, manos libres', file:'modules/ejercicios-hiit.html' },
-  { icon:'🍲', title:'Comer Rico',       sub:'Menú semanal y compra',  file:'modules/comida.html' },
-  { icon:'🧹', title:'Limpieza',         sub:'Una zona al día · 15 min',    file:'modules/limpieza.html' },
-  { icon:'🎨', title:'Intereses',        sub:'Aprender cada día',  file:'modules/intereses.html' },
-  { icon:'🫀', title:'Botiquín Emocional',sub:'Rescate y calma',   file:'modules/rescate-emocional.html' },
-  { icon:'🌙', title:'Rutina Nocturna',  sub:'Cierre del día',     file:'modules/rutina-nocturna.html' },
-  { icon:'💎', title:'Juego',            sub:'Ordena joyas y revela dibujos', file:'modules/juegos.html' }
-];
+/* ══════════ IDIOMAS (es por defecto · en · fr) ══════════ */
+const I18N={
+ es:{
+  menu:'Menú', menu_open:'Abrir menú', menu_close:'Cerrar menú', menu_title:'🌿 Menú de Cris',
+  hero_sub:'¿en qué te ayudo hoy?',
+  lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes',
+  notif_morning:'☀️ Empezar el día', notif_night:'🌙 Rutina nocturna',
+  notif_hint:'Suenan con la app abierta o instalada en la pantalla de inicio',
+  cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
+  cfg_note:'Los ajustes se aplican a toda la app',
+  drawer_footer:'Cris · tu compañera de cada día 💚',
+  day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia',
+  greet_morning:'¡Buenos días!', greet_afternoon:'¡Buenas tardes!', greet_evening:'¡Buenas noches!',
+  bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
+  mod_trabajo_t:'Trabajo', mod_trabajo_s:'Herramientas anti-bloqueo',
+  mod_ejercicios_t:'Ejercicios', mod_ejercicios_s:'Pilates guiado, manos libres',
+  mod_comida_t:'Comer Rico', mod_comida_s:'Menú semanal y compra',
+  mod_limpieza_t:'Limpieza', mod_limpieza_s:'Una zona al día · 15 min',
+  mod_intereses_t:'Intereses', mod_intereses_s:'Aprender cada día',
+  mod_botiquin_t:'Botiquín Emocional', mod_botiquin_s:'Rescate y calma',
+  mod_noche_t:'Rutina Nocturna', mod_noche_s:'Cierre del día',
+  mod_juego_t:'Juego', mod_juego_s:'Ordena joyas y revela dibujos',
+  notif_on_title:'🦘 ¡Recordatorios activados!', notif_on_body:'Te avisaré al abrir la app o si la tienes instalada 💚',
+  notif_denied:'Sin permiso no puedo avisarte 🥺 — actívalo en ajustes del navegador',
+  notif_unsupported:'Este navegador no soporta notificaciones 😔',
+  notif_m_title:'🦘 ¡Buenos días, Cris!', notif_m_body:'Hoy toca: {p} y {z}. Un pasito y ya está 💚',
+  notif_n_title:'🌙 Hora de cerrar el día', notif_n_body:'Tu rutina nocturna te espera: 25 min y a dormir de lujo 💜',
+  notif_pre_title:'🌙 En 10 minutos, rutina nocturna', notif_pre_body:'Ve cerrando lo que tengas entre manos, sin prisa 💜',
+  notif_finde:'finde tranquilo',
+  notifbtn_on:'🔔 Recordatorios activados — toca para apagar', notifbtn_off:'🔕 Activar recordatorios',
+  calm_on:'🕯️ Modo calma activo — toca para salir', calm_off:'🕯️ Reducir estímulos',
+  day_trabajo:'Trabajo', day_pilates:'Ejercicio (Pilates)', day_comida:'Comida', day_limpieza:'Limpieza',
+  day_intereses:'Aprende algo', day_noche:'Rutina nocturna', day_calma:'Momento de calma', day_juego:'Un rato de juego',
+  ds_in_day:'✓ En tu día', ds_add:'+ Añadir',
+  ds_sub_normal:'Toca para añadir o quitar del panel «Hoy». Sin presión: pon solo lo que quieras.',
+  ds_sub_eco:'Esto configura tu día normal — hoy estás en modo eco, así que lo verás al volver a normal 💚',
+  today_eco:'🪫 Hoy, en modo eco', today_prefix:'✨ Hoy, ',
+  eco_on_btn:'💪 Volver a normal', eco_off_btn:'🪫 Modo eco',
+  eco_msg:'Día de poca batería — lo mínimo cuenta. Hacer poco también es cuidarte 💚',
+  eco_suggest_q:'🪫 Llevas un par de días de poca batería. ¿Hoy también en modo eco?',
+  eco_suggest_yes:'Sí, modo eco', eco_suggest_fine:'💪 Hoy estoy bien',
+  energy_q:'🔋 ¿Cómo vienes de energía hoy?', energy_good:'💪 Bien', energy_low:'🪫 Poca',
+  badge_now:'AHORA', badge_next:'LUEGO',
+  empty:'Tu día está vacío 🌿<br>Añade lo que quieras hacer hoy.',
+  edit_btn:'✏️ Editar mi día', hint:'Toca el círculo ✓ al terminar · toca la tarea para abrirla',
+  mark_done:'hecha', mark_pending:'pendiente', mark_as:'Marcar {t} como {s}',
+  r_respira_t:'Respira 2 minutos', r_respira_s:'Con eso ya cuenta',
+  r_movilidad_t:'Movilidad suave', r_movilidad_s:'Solo lo que te apetezca, sin más',
+  r_recoge_t:'Recoge 3 cosas', r_recoge_s:'Express corto, sin presión',
+  r_receta_t:'Receta salvavidas', r_receta_s:'10 min de despensa y comes',
+  r_trabajo_t:'Trabajo', r_trabajo_s:'Arranca y enfócate · 25 min',
+  r_pilates_pre:'Pilates: ', r_pilates_s:'{d} · manos libres',
+  r_comida_lunch:'¿Qué comes hoy?', r_comida_dinner:'¿Qué cenas hoy?',
+  r_comida_left:'Te quedan {n} recetas del menú', r_comida_done:'Menú de la semana completado 🎉',
+  r_limpieza_pre:'Limpieza: ', r_limpieza_done:'¡Ya está hecha!', r_limpieza_pending:'~18 min · 6 pasos',
+  r_finde_t:'Finde: limpieza libre', r_finde_s:'¿Un express de 15 min?',
+  r_intereses_t:'Aprende algo hoy', r_intereses_s:'Un interés · 10-15 min',
+  r_noche_t:'Rutina nocturna', r_noche_s_night:'25 min · cierre del día', r_noche_s_eve:'Para esta noche · 25 min',
+  r_calma_t:'Momento de calma', r_calma_s:'Respira o medita un poco',
+  r_juego_t:'Un rato de juego', r_juego_s:'Ordena joyas y revela dibujos',
+  dias:['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
+  pil:['Movilidad Suave','Core Profundo','Cadera y Glúteos','Espalda y Postura','Piernas y Equilibrio','Cuerpo Completo','Estiramientos Profundos'],
+  zone:{cocina:'Cocina',bano:'Baño',salon:'Salón',dormitorio:'Dormitorio',comunes:'Zonas Comunes'}
+ },
+ en:{
+  menu:'Menu', menu_open:'Open menu', menu_close:'Close menu', menu_title:'🌿 Cris menu',
+  hero_sub:'how can I help you today?',
+  lang_label:'Language', modules_label:'Modules', settings_label:'Settings',
+  notif_morning:'☀️ Start the day', notif_night:'🌙 Night routine',
+  notif_hint:'They sound with the app open or installed on your home screen',
+  cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
+  cfg_note:'Settings apply across the whole app',
+  drawer_footer:'Cris · your everyday companion 💚',
+  day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit',
+  greet_morning:'Good morning!', greet_afternoon:'Good afternoon!', greet_evening:'Good evening!',
+  bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
+  mod_trabajo_t:'Work', mod_trabajo_s:'Anti-block tools',
+  mod_ejercicios_t:'Exercise', mod_ejercicios_s:'Guided Pilates, hands-free',
+  mod_comida_t:'Eat Well', mod_comida_s:'Weekly menu & shopping',
+  mod_limpieza_t:'Cleaning', mod_limpieza_s:'One area a day · 15 min',
+  mod_intereses_t:'Interests', mod_intereses_s:'Learn every day',
+  mod_botiquin_t:'Emotional Kit', mod_botiquin_s:'Rescue and calm',
+  mod_noche_t:'Night Routine', mod_noche_s:'Closing the day',
+  mod_juego_t:'Game', mod_juego_s:'Sort gems and reveal pictures',
+  notif_on_title:'🦘 Reminders on!', notif_on_body:'I’ll nudge you when the app is open or installed 💚',
+  notif_denied:'Without permission I can’t remind you 🥺 — enable it in browser settings',
+  notif_unsupported:'This browser doesn’t support notifications 😔',
+  notif_m_title:'🦘 Good morning, Cris!', notif_m_body:'Today: {p} and {z}. One little step and you’re off 💚',
+  notif_n_title:'🌙 Time to wind down', notif_n_body:'Your night routine awaits: 25 min and off to lovely sleep 💜',
+  notif_pre_title:'🌙 Night routine in 10 minutes', notif_pre_body:'Start wrapping up what you’re doing, no rush 💜',
+  notif_finde:'a calm weekend',
+  notifbtn_on:'🔔 Reminders on — tap to turn off', notifbtn_off:'🔕 Turn on reminders',
+  calm_on:'🕯️ Calm mode on — tap to exit', calm_off:'🕯️ Reduce stimulation',
+  day_trabajo:'Work', day_pilates:'Exercise (Pilates)', day_comida:'Food', day_limpieza:'Cleaning',
+  day_intereses:'Learn something', day_noche:'Night routine', day_calma:'A calm moment', day_juego:'A bit of play',
+  ds_in_day:'✓ In your day', ds_add:'+ Add',
+  ds_sub_normal:'Tap to add or remove from the “Today” panel. No pressure: keep only what you want.',
+  ds_sub_eco:'This sets your normal day — you’re in eco mode today, so you’ll see it when you go back to normal 💚',
+  today_eco:'🪫 Today, eco mode', today_prefix:'✨ Today, ',
+  eco_on_btn:'💪 Back to normal', eco_off_btn:'🪫 Eco mode',
+  eco_msg:'Low-battery day — the minimum counts. Doing little is also self-care 💚',
+  eco_suggest_q:'🪫 You’ve had a couple of low-battery days. Eco mode again today?',
+  eco_suggest_yes:'Yes, eco mode', eco_suggest_fine:'💪 I’m okay today',
+  energy_q:'🔋 How’s your energy today?', energy_good:'💪 Good', energy_low:'🪫 Low',
+  badge_now:'NOW', badge_next:'NEXT',
+  empty:'Your day is empty 🌿<br>Add whatever you want to do today.',
+  edit_btn:'✏️ Edit my day', hint:'Tap the ✓ circle when done · tap the task to open it',
+  mark_done:'done', mark_pending:'pending', mark_as:'Mark {t} as {s}',
+  r_respira_t:'Breathe for 2 minutes', r_respira_s:'That already counts',
+  r_movilidad_t:'Gentle mobility', r_movilidad_s:'Only what you feel like, nothing more',
+  r_recoge_t:'Tidy 3 things', r_recoge_s:'Short and easy, no pressure',
+  r_receta_t:'Lifesaver recipe', r_receta_s:'10 min from the pantry and you eat',
+  r_trabajo_t:'Work', r_trabajo_s:'Get going and focus · 25 min',
+  r_pilates_pre:'Pilates: ', r_pilates_s:'{d} · hands-free',
+  r_comida_lunch:'What’s for lunch?', r_comida_dinner:'What’s for dinner?',
+  r_comida_left:'{n} menu recipes left', r_comida_done:'Week’s menu completed 🎉',
+  r_limpieza_pre:'Cleaning: ', r_limpieza_done:'Already done!', r_limpieza_pending:'~18 min · 6 steps',
+  r_finde_t:'Weekend: free cleaning', r_finde_s:'A quick 15-min round?',
+  r_intereses_t:'Learn something today', r_intereses_s:'One interest · 10-15 min',
+  r_noche_t:'Night routine', r_noche_s_night:'25 min · closing the day', r_noche_s_eve:'For tonight · 25 min',
+  r_calma_t:'A calm moment', r_calma_s:'Breathe or meditate a little',
+  r_juego_t:'A bit of play', r_juego_s:'Sort gems and reveal pictures',
+  dias:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+  pil:['Gentle Mobility','Deep Core','Hips & Glutes','Back & Posture','Legs & Balance','Full Body','Deep Stretches'],
+  zone:{cocina:'Kitchen',bano:'Bathroom',salon:'Living room',dormitorio:'Bedroom',comunes:'Common areas'}
+ },
+ fr:{
+  menu:'Menu', menu_open:'Ouvrir le menu', menu_close:'Fermer le menu', menu_title:'🌿 Menu de Cris',
+  hero_sub:'comment puis-je t’aider aujourd’hui ?',
+  lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages',
+  notif_morning:'☀️ Commencer la journée', notif_night:'🌙 Routine du soir',
+  notif_hint:'Elles sonnent avec l’appli ouverte ou installée sur l’écran d’accueil',
+  cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
+  cfg_note:'Les réglages s’appliquent à toute l’appli',
+  drawer_footer:'Cris · ta compagne de chaque jour 💚',
+  day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence',
+  greet_morning:'Bonjour !', greet_afternoon:'Bon après-midi !', greet_evening:'Bonsoir !',
+  bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
+  mod_trabajo_t:'Travail', mod_trabajo_s:'Outils anti-blocage',
+  mod_ejercicios_t:'Exercices', mod_ejercicios_s:'Pilates guidé, mains libres',
+  mod_comida_t:'Bien Manger', mod_comida_s:'Menu de la semaine et courses',
+  mod_limpieza_t:'Ménage', mod_limpieza_s:'Une zone par jour · 15 min',
+  mod_intereses_t:'Centres d’intérêt', mod_intereses_s:'Apprendre chaque jour',
+  mod_botiquin_t:'Trousse Émotionnelle', mod_botiquin_s:'Secours et calme',
+  mod_noche_t:'Routine du Soir', mod_noche_s:'Clore la journée',
+  mod_juego_t:'Jeu', mod_juego_s:'Range les gemmes et révèle des dessins',
+  notif_on_title:'🦘 Rappels activés !', notif_on_body:'Je te préviendrai à l’ouverture de l’appli ou si elle est installée 💚',
+  notif_denied:'Sans autorisation je ne peux pas te prévenir 🥺 — active-la dans les réglages du navigateur',
+  notif_unsupported:'Ce navigateur ne gère pas les notifications 😔',
+  notif_m_title:'🦘 Bonjour, Cris !', notif_m_body:'Aujourd’hui : {p} et {z}. Un petit pas et c’est parti 💚',
+  notif_n_title:'🌙 Il est temps de clore la journée', notif_n_body:'Ta routine du soir t’attend : 25 min et au dodo 💜',
+  notif_pre_title:'🌙 Routine du soir dans 10 minutes', notif_pre_body:'Commence à finir ce que tu fais, sans hâte 💜',
+  notif_finde:'un week-end tranquille',
+  notifbtn_on:'🔔 Rappels activés — touche pour couper', notifbtn_off:'🔕 Activer les rappels',
+  calm_on:'🕯️ Mode calme actif — touche pour sortir', calm_off:'🕯️ Réduire les stimuli',
+  day_trabajo:'Travail', day_pilates:'Exercice (Pilates)', day_comida:'Repas', day_limpieza:'Ménage',
+  day_intereses:'Apprendre', day_noche:'Routine du soir', day_calma:'Un moment de calme', day_juego:'Un peu de jeu',
+  ds_in_day:'✓ Dans ta journée', ds_add:'+ Ajouter',
+  ds_sub_normal:'Touche pour ajouter ou retirer du panneau « Aujourd’hui ». Sans pression : garde ce que tu veux.',
+  ds_sub_eco:'Ceci configure ta journée normale — tu es en mode éco aujourd’hui, tu le verras en revenant à la normale 💚',
+  today_eco:'🪫 Aujourd’hui, mode éco', today_prefix:'✨ ',
+  eco_on_btn:'💪 Revenir à la normale', eco_off_btn:'🪫 Mode éco',
+  eco_msg:'Journée petite batterie — le minimum compte. Faire peu, c’est aussi prendre soin de toi 💚',
+  eco_suggest_q:'🪫 Ça fait deux jours de petite batterie. Encore le mode éco aujourd’hui ?',
+  eco_suggest_yes:'Oui, mode éco', eco_suggest_fine:'💪 Ça va aujourd’hui',
+  energy_q:'🔋 Comment est ton énergie aujourd’hui ?', energy_good:'💪 Bien', energy_low:'🪫 Faible',
+  badge_now:'MAINTENANT', badge_next:'ENSUITE',
+  empty:'Ta journée est vide 🌿<br>Ajoute ce que tu veux faire aujourd’hui.',
+  edit_btn:'✏️ Modifier ma journée', hint:'Touche le cercle ✓ à la fin · touche la tâche pour l’ouvrir',
+  mark_done:'faite', mark_pending:'à faire', mark_as:'Marquer {t} comme {s}',
+  r_respira_t:'Respire 2 minutes', r_respira_s:'Ça compte déjà',
+  r_movilidad_t:'Mobilité douce', r_movilidad_s:'Seulement ce dont tu as envie, rien de plus',
+  r_recoge_t:'Range 3 choses', r_recoge_s:'Court et facile, sans pression',
+  r_receta_t:'Recette de secours', r_receta_s:'10 min de placard et tu manges',
+  r_trabajo_t:'Travail', r_trabajo_s:'Démarre et concentre-toi · 25 min',
+  r_pilates_pre:'Pilates : ', r_pilates_s:'{d} · mains libres',
+  r_comida_lunch:'Qu’est-ce qu’on mange ?', r_comida_dinner:'Qu’est-ce qu’on dîne ?',
+  r_comida_left:'Il te reste {n} recettes du menu', r_comida_done:'Menu de la semaine terminé 🎉',
+  r_limpieza_pre:'Ménage : ', r_limpieza_done:'Déjà fait !', r_limpieza_pending:'~18 min · 6 étapes',
+  r_finde_t:'Week-end : ménage libre', r_finde_s:'Un express de 15 min ?',
+  r_intereses_t:'Apprends quelque chose aujourd’hui', r_intereses_s:'Un intérêt · 10-15 min',
+  r_noche_t:'Routine du soir', r_noche_s_night:'25 min · clore la journée', r_noche_s_eve:'Pour ce soir · 25 min',
+  r_calma_t:'Un moment de calme', r_calma_s:'Respire ou médite un peu',
+  r_juego_t:'Un peu de jeu', r_juego_s:'Range les gemmes et révèle des dessins',
+  dias:['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],
+  pil:['Mobilité douce','Gainage profond','Hanches et fessiers','Dos et posture','Jambes et équilibre','Corps complet','Étirements profonds'],
+  zone:{cocina:'Cuisine',bano:'Salle de bain',salon:'Salon',dormitorio:'Chambre',comunes:'Espaces communs'}
+ }
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return I18N[l]?l:'es';}
+function L(){return I18N[crisLang()];}
+function t(key,vars){let s=L()[key];if(s===undefined)s=I18N.es[key];if(s===undefined)return key;if(vars)Object.keys(vars).forEach(k=>{s=s.split('{'+k+'}').join(vars[k]);});return s;}
+const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
+function applyStaticI18n(){
+  document.documentElement.lang=crisLang();
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>{el.setAttribute('aria-label',t(el.getAttribute('data-i18n-aria')));});
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{el.setAttribute('title',t(el.getAttribute('data-i18n-title')));});
+  document.querySelectorAll('#langRow button').forEach(b=>b.classList.toggle('on',b.dataset.lang===crisLang()));
+}
+function setLang(l){
+  if(!I18N[l])return;
+  localStorage.setItem('cris_lang',l);
+  applyStaticI18n();
+  buildModuleList();
+  setGreeting();
+  renderToday();renderCfg();renderNotif();
+  if(document.getElementById('daySheet').classList.contains('open')){
+    renderDayEdit();
+    document.getElementById('ds-sub').textContent=isEco()?t('ds_sub_eco'):t('ds_sub_normal');
+  }
+}
 
-const BUBBLES = [
-  '¡Aquí estoy! Elige un módulo 🌿',
-  '¿Cómo estás hoy? 🫶',
-  '¡Tú puedes con esto! 💚',
-  'Un paso a la vez, sin prisa 🐾',
-  '¡Estoy contigo! Elige algo 🌱',
-  'Respira. Vamos juntos 🌬️'
+const modules = [
+  { id:'trabajo',    icon:'💼', file:'modules/rutina-diaria.html' },
+  { id:'ejercicios', icon:'🧘', file:'modules/ejercicios-hiit.html' },
+  { id:'comida',     icon:'🍲', file:'modules/comida.html' },
+  { id:'limpieza',   icon:'🧹', file:'modules/limpieza.html' },
+  { id:'intereses',  icon:'🎨', file:'modules/intereses.html' },
+  { id:'botiquin',   icon:'🫀', file:'modules/rescate-emocional.html' },
+  { id:'noche',      icon:'🌙', file:'modules/rutina-nocturna.html' },
+  { id:'juego',      icon:'💎', file:'modules/juegos.html' }
 ];
 
 // Saludo según hora
 function setGreeting(){
   const h = new Date().getHours();
-  let txt;
-  if(h < 12) txt = '¡Buenos días!';
-  else if(h < 19) txt = '¡Buenas tardes!';
-  else txt = '¡Buenas noches!';
+  const txt = h<12?t('greet_morning'):h<19?t('greet_afternoon'):t('greet_evening');
   document.getElementById('greeting').textContent = txt;
-  document.getElementById('bubble-msg').textContent =
-    BUBBLES[Math.floor(Math.random()*BUBBLES.length)];
+  const b=t('bubbles');
+  document.getElementById('bubble-msg').textContent = b[Math.floor(Math.random()*b.length)];
 }
+applyStaticI18n();
 setGreeting();
 
 /* ── CAJÓN LATERAL ── */
@@ -436,9 +652,7 @@ function closeDrawer(){
 function openDayEdit(){
   renderDayEdit();
   const sub=document.getElementById('ds-sub');
-  if(sub)sub.textContent=isEco()
-    ?'Esto configura tu día normal — hoy estás en modo eco, así que lo verás al volver a normal 💚'
-    :'Toca para añadir o quitar del panel «Hoy». Sin presión: pon solo lo que quieras.';
+  if(sub)sub.textContent=isEco()?t('ds_sub_eco'):t('ds_sub_normal');
   document.getElementById('daySheet').classList.add('open');
   document.getElementById('daySheetBg').classList.add('open');
   document.body.style.overflow='hidden'; // sin scroll-bleed del panel de detrás
@@ -464,8 +678,8 @@ function renderDayEdit(){
     const on=modOn(m.id);
     return `<button class="ds-row${on?' on':''}" data-id="${m.id}" role="switch" aria-checked="${on}" onclick="toggleDayMod('${m.id}')">
       <span class="ds-em">${m.e}</span>
-      <span class="ds-name">${m.t}</span>
-      <span class="ds-toggle">${on?'✓ En tu día':'+ Añadir'}</span>
+      <span class="ds-name">${t('day_'+m.id)}</span>
+      <span class="ds-toggle">${on?t('ds_in_day'):t('ds_add')}</span>
     </button>`;
   }).join('');
 }
@@ -486,7 +700,7 @@ function renderCfg(){
   document.getElementById('c-vib').classList.toggle('off',c.vib===false||c.calm===true);
   const cb=document.getElementById('calmBtn');
   cb.classList.toggle('on',c.calm===true);
-  cb.textContent=c.calm?'🕯️ Modo calma activo — toca para salir':'🕯️ Reducir estímulos';
+  cb.textContent=c.calm?t('calm_on'):t('calm_off');
 }
 if(getCfg().calm)document.documentElement.classList.add('calm');
 
@@ -497,7 +711,7 @@ function toggleNotif(){
   const n=getNotifCfg();
   if(n.on){n.on=false;setNotifCfg(n);renderNotif();return;}
   if(!('Notification' in window)){
-    document.getElementById('bubble-msg').textContent='Este navegador no soporta notificaciones 😔';
+    document.getElementById('bubble-msg').textContent=t('notif_unsupported');
     return;
   }
   Notification.requestPermission().then(p=>{
@@ -508,9 +722,9 @@ function toggleNotif(){
       // de golpe los avisos de la mañana/noche que ya pasaron.
       n2.lastM=todayLocal();n2.lastN=todayLocal();
       setNotifCfg(n2);
-      fireNotif('🦘 ¡Recordatorios activados!','Te avisaré al abrir la app o si la tienes instalada 💚');
+      fireNotif(t('notif_on_title'),t('notif_on_body'));
     }else{
-      document.getElementById('bubble-msg').textContent='Sin permiso no puedo avisarte 🥺 — actívalo en ajustes del navegador';
+      document.getElementById('bubble-msg').textContent=t('notif_denied');
     }
     renderNotif();
   });
@@ -525,7 +739,7 @@ function renderNotif(){
   const n=getNotifCfg();
   const b=document.getElementById('notifBtn');
   b.classList.toggle('on',!!n.on);
-  b.textContent=n.on?'🔔 Recordatorios activados — toca para apagar':'🔕 Activar recordatorios';
+  b.textContent=n.on?t('notifbtn_on'):t('notifbtn_off');
   document.getElementById('notifTimes').style.display=n.on?'block':'none';
   if(n.m)document.getElementById('nt-m').value=n.m;
   if(n.n)document.getElementById('nt-n').value=n.n;
@@ -551,19 +765,19 @@ function checkNotif(){
   if(n.m&&n.lastM!==today&&nowMin>=minsOf(n.m)){
     n.lastM=today;setNotifCfg(n);
     const day=now.getDay();
-    const zona=ZONES[day]?ZONES[day][1]:'finde tranquilo';
-    fireNotif('🦘 ¡Buenos días, Cris!','Hoy toca: '+PILATES[day][1]+' y '+zona+'. Un pasito y ya está 💚');
+    const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');
+    fireNotif(t('notif_m_title'),t('notif_m_body',{p:t('pil')[day],z:zona}));
   }
   if(n.n&&n.lastN!==today&&nowMin>=minsOf(n.n)){
     n.lastN=today;setNotifCfg(n);
-    fireNotif('🌙 Hora de cerrar el día','Tu rutina nocturna te espera: 25 min y a dormir de lujo 💜');
+    fireNotif(t('notif_n_title'),t('notif_n_body'));
   }
   // Pre-aviso suave (transición, no alarma): solo dentro de los 10 min previos
   if(n.n&&n.lastPreN!==today&&n.lastN!==today){
     const tgt=minsOf(n.n);
     if(nowMin>=tgt-10&&nowMin<tgt){
       n.lastPreN=today;setNotifCfg(n);
-      fireNotif('🌙 En 10 minutos, rutina nocturna','Ve cerrando lo que tengas entre manos, sin prisa 💜');
+      fireNotif(t('notif_pre_title'),t('notif_pre_body'));
     }
   }
 }
@@ -577,15 +791,16 @@ const ZONES={1:['🍳','Cocina','cocina'],2:['🛁','Baño','bano'],3:['🛋️'
 /* Catálogo de módulos que pueden aparecer en el día. `def`: si está de serie.
    Cris puede añadir o quitar los que quiera desde «Editar mi día». El orden
    aquí es el orden en que se muestran en el panel. */
+// El nombre visible se saca de t('day_<id>') en cada render (según idioma)
 const DAY_CATALOG=[
-  {id:'trabajo',  e:'💼', t:'Trabajo',            def:true},
-  {id:'pilates',  e:'🧘', t:'Ejercicio (Pilates)', def:true},
-  {id:'comida',   e:'🍽️', t:'Comida',             def:true},
-  {id:'limpieza', e:'🧹', t:'Limpieza',           def:true},
-  {id:'intereses',e:'🎨', t:'Aprende algo',       def:false},
-  {id:'noche',    e:'🌙', t:'Rutina nocturna',    def:true},
-  {id:'calma',    e:'🫀', t:'Momento de calma',   def:false},
-  {id:'juego',    e:'💎', t:'Un rato de juego',   def:false}
+  {id:'trabajo',  e:'💼', def:true},
+  {id:'pilates',  e:'🧘', def:true},
+  {id:'comida',   e:'🍽️', def:true},
+  {id:'limpieza', e:'🧹', def:true},
+  {id:'intereses',e:'🎨', def:false},
+  {id:'noche',    e:'🌙', def:true},
+  {id:'calma',    e:'🫀', def:false},
+  {id:'juego',    e:'💎', def:false}
 ];
 function getDayMods(){return lsJSON('cris_hoy_mods_v1');}
 function modOn(id){const c=getDayMods(),d=DAY_CATALOG.find(m=>m.id===id);return c[id]!==undefined?!!c[id]:!!(d&&d.def);}
@@ -595,7 +810,7 @@ function toggleDayMod(id){
   renderToday();
   // Actualiza SOLO la fila tocada en la hoja (no recrea la lista → no se pierde el foco)
   const on=modOn(id),row=document.querySelector('#daySheetList .ds-row[data-id="'+id+'"]');
-  if(row){row.classList.toggle('on',on);row.setAttribute('aria-checked',on);const tg=row.querySelector('.ds-toggle');if(tg)tg.textContent=on?'✓ En tu día':'+ Añadir';}
+  if(row){row.classList.toggle('on',on);row.setAttribute('aria-checked',on);const tg=row.querySelector('.ds-toggle');if(tg)tg.textContent=on?t('ds_in_day'):t('ds_add');}
 }
 
 function weekNum(){const d=new Date(),y=d.getFullYear(),s=new Date(y,0,1);return Math.ceil(((d-s)/864e5+s.getDay()+1)/7);}
@@ -656,35 +871,35 @@ function renderToday(){
     // También en eco se puede tachar: el refuerzo importa más los días de poca batería
     const tl=todayLocal();
     const ek=n=>'cris_eco'+n+'_v1_'+tl;
-    rows.push({e:'🫁',t:'Respira 2 minutos',s:'Con eso ya cuenta',f:'modules/rescate-emocional.html',key:ek(1),done:markDone(ek(1))});
-    rows.push({e:'🧘',t:'Movilidad suave',s:'Solo lo que te apetezca, sin más',f:'modules/ejercicios-hiit.html#suave',key:ek(2),done:markDone(ek(2))});
-    rows.push({e:'🧹',t:'Recoge 3 cosas',s:'Express corto, sin presión',f:'modules/limpieza.html#express',key:ek(3),done:markDone(ek(3))});
-    rows.push({e:'🍽️',t:'Receta salvavidas',s:'10 min de despensa y comes',f:'modules/comida.html#basicos',key:ek(4),done:markDone(ek(4))});
+    rows.push({e:'🫁',t:t('r_respira_t'),s:t('r_respira_s'),f:'modules/rescate-emocional.html',key:ek(1),done:markDone(ek(1))});
+    rows.push({e:'🧘',t:t('r_movilidad_t'),s:t('r_movilidad_s'),f:'modules/ejercicios-hiit.html#suave',key:ek(2),done:markDone(ek(2))});
+    rows.push({e:'🧹',t:t('r_recoge_t'),s:t('r_recoge_s'),f:'modules/limpieza.html#express',key:ek(3),done:markDone(ek(3))});
+    rows.push({e:'🍽️',t:t('r_receta_t'),s:t('r_receta_s'),f:'modules/comida.html#basicos',key:ek(4),done:markDone(ek(4))});
   }else{
     // El día se arma según lo que Cris tenga activado en «Editar mi día».
     // Cada fila lleva `key`: la marca diaria en localStorage (la escribe el módulo
     // al completar, o el círculo ✓ del panel). `done` = intrínseco || marca manual.
     const tl=todayLocal();
     const build={
-      trabajo:()=>{const k='cris_trabajo_v1_'+tl;return {e:'💼',t:'Trabajo',s:'Arranca y enfócate · 25 min',f:'modules/rutina-diaria.html',key:k,done:markDone(k)};},
-      pilates:()=>{const p=PILATES[day],k='cris_hiit_v1_'+tl;return {e:p[0],t:'Pilates: '+p[1],s:p[2]+' · manos libres',f:'modules/ejercicios-hiit.html',key:k,done:markDone(k)};},
+      trabajo:()=>{const k='cris_trabajo_v1_'+tl;return {e:'💼',t:t('r_trabajo_t'),s:t('r_trabajo_s'),f:'modules/rutina-diaria.html',key:k,done:markDone(k)};},
+      pilates:()=>{const p=PILATES[day],k='cris_hiit_v1_'+tl;return {e:p[0],t:t('r_pilates_pre')+t('pil')[day],s:t('r_pilates_s',{d:p[2]}),f:'modules/ejercicios-hiit.html',key:k,done:markDone(k)};},
       comida:()=>{
         const menuDone=Object.values(lsJSON('cris_menu_w'+w+'_'+y)).filter(Boolean).length;
         const left=Math.max(0,14-menuDone),k='cris_comida_v1_'+tl;
-        return {e:'🍽️',t:h<17?'¿Qué comes hoy?':'¿Qué cenas hoy?',s:left>0?'Te quedan '+left+' recetas del menú':'Menú de la semana completado 🎉',f:'modules/comida.html',key:k,done:markDone(k)};
+        return {e:'🍽️',t:h<17?t('r_comida_lunch'):t('r_comida_dinner'),s:left>0?t('r_comida_left',{n:left}):t('r_comida_done'),f:'modules/comida.html',key:k,done:markDone(k)};
       },
       limpieza:()=>{
         const k='cris_limpieza_v1_'+tl;
         if(ZONES[day]){
           const z=ZONES[day],done=!!lsJSON('lim-w'+w+'-'+y)[z[2]]||markDone(k);
-          return {e:z[0],t:'Limpieza: '+z[1],s:done?'¡Ya está hecha!':'~18 min · 6 pasos',f:'modules/limpieza.html',key:k,done};
+          return {e:z[0],t:t('r_limpieza_pre')+t('zone')[z[2]],s:done?t('r_limpieza_done'):t('r_limpieza_pending'),f:'modules/limpieza.html',key:k,done};
         }
-        return {e:'⚡',t:'Finde: limpieza libre',s:'¿Un express de 15 min?',f:'modules/limpieza.html#express',key:k,done:markDone(k)};
+        return {e:'⚡',t:t('r_finde_t'),s:t('r_finde_s'),f:'modules/limpieza.html#express',key:k,done:markDone(k)};
       },
-      intereses:()=>{const k='cris_intereses_v1_'+tl;return {e:'🎨',t:'Aprende algo hoy',s:'Un interés · 10-15 min',f:'modules/intereses.html',key:k,done:markDone(k)};},
-      noche:()=>{const k='cris_noche_v1_'+tl;return {e:'🌙',t:'Rutina nocturna',s:h>=20?'25 min · cierre del día':'Para esta noche · 25 min',f:'modules/rutina-nocturna.html',key:k,done:markDone(k)};},
-      calma:()=>{const k='cris_calma_v1_'+tl;return {e:'🫀',t:'Momento de calma',s:'Respira o medita un poco',f:'modules/rescate-emocional.html',key:k,done:markDone(k)};},
-      juego:()=>{const k='cris_juego_v1_'+tl;return {e:'💎',t:'Un rato de juego',s:'Ordena joyas y revela dibujos',f:'modules/juegos.html',key:k,done:markDone(k)};}
+      intereses:()=>{const k='cris_intereses_v1_'+tl;return {e:'🎨',t:t('r_intereses_t'),s:t('r_intereses_s'),f:'modules/intereses.html',key:k,done:markDone(k)};},
+      noche:()=>{const k='cris_noche_v1_'+tl;return {e:'🌙',t:t('r_noche_t'),s:h>=20?t('r_noche_s_night'):t('r_noche_s_eve'),f:'modules/rutina-nocturna.html',key:k,done:markDone(k)};},
+      calma:()=>{const k='cris_calma_v1_'+tl;return {e:'🫀',t:t('r_calma_t'),s:t('r_calma_s'),f:'modules/rescate-emocional.html',key:k,done:markDone(k)};},
+      juego:()=>{const k='cris_juego_v1_'+tl;return {e:'💎',t:t('r_juego_t'),s:t('r_juego_s'),f:'modules/juegos.html',key:k,done:markDone(k)};}
     };
     DAY_CATALOG.forEach(m=>{ if(modOn(m.id)&&build[m.id])rows.push(build[m.id]()); });
 
@@ -708,23 +923,23 @@ function renderToday(){
   const src='quico/quico_head_'+mood+'.png';
   if(qp&&!qp.src.endsWith(src))qp.src=src;
 
-  const dias=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const dias=t('dias');
   el.innerHTML=`
     <div class="tp-head">
-      <span class="tp-title">${eco?'🪫 Hoy, en modo eco':'✨ Hoy, '+dias[day]}</span>
-      <button class="tp-eco ${eco?'on':''}" onclick="toggleEco()">${eco?'💪 Volver a normal':'🪫 Modo eco'}</button>
+      <span class="tp-title">${eco?t('today_eco'):t('today_prefix')+dias[day]}</span>
+      <button class="tp-eco ${eco?'on':''}" onclick="toggleEco()">${eco?t('eco_on_btn'):t('eco_off_btn')}</button>
     </div>
-    ${eco?'<div class="tp-eco-msg">Día de poca batería — lo mínimo cuenta. Hacer poco también es cuidarte 💚</div>':''}
-    ${(!eco&&ecoSuggested()&&!energyAsked())?'<div class="tp-eco-suggest">🪫 Llevas un par de días de poca batería. ¿Hoy también en modo eco?<div class="tp-eco-btns"><button class="tp-eco-cta" onclick="toggleEco()">Sí, modo eco</button><button class="tp-eco-cta alt" onclick="setEnergy(\'alta\')">💪 Hoy estoy bien</button></div></div>':''}
-    ${(!eco&&!ecoSuggested()&&!energyAsked())?'<div class="tp-energy">🔋 ¿Cómo vienes de energía hoy?<div class="tp-energy-btns"><button onclick="setEnergy(\'alta\')">💪 Bien</button><button onclick="setEnergy(\'baja\')">🪫 Poca</button></div></div>':''}
+    ${eco?'<div class="tp-eco-msg">'+t('eco_msg')+'</div>':''}
+    ${(!eco&&ecoSuggested()&&!energyAsked())?'<div class="tp-eco-suggest">'+t('eco_suggest_q')+'<div class="tp-eco-btns"><button class="tp-eco-cta" onclick="toggleEco()">'+t('eco_suggest_yes')+'</button><button class="tp-eco-cta alt" onclick="setEnergy(\'alta\')">'+t('eco_suggest_fine')+'</button></div></div>':''}
+    ${(!eco&&!ecoSuggested()&&!energyAsked())?'<div class="tp-energy">'+t('energy_q')+'<div class="tp-energy-btns"><button onclick="setEnergy(\'alta\')">'+t('energy_good')+'</button><button onclick="setEnergy(\'baja\')">'+t('energy_low')+'</button></div></div>':''}
     ${rows.length?rows.map(r=>`
       <button class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-file="${r.f}" data-key="${r.key||''}">
         <span class="tp-em">${r.e}</span>
-        <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">AHORA</span>':r.badge==='next'?'<span class="tp-badge next">LUEGO</span>':''}</span><span class="tp-s">${r.s}</span></span>
-        ${r.key?`<span class="tp-check${r.done?' on':''}" tabindex="0" role="checkbox" aria-checked="${!!r.done}" aria-label="Marcar ${r.t} como ${r.done?'pendiente':'hecha'}">✓</span>`:`<span class="tp-arrow">›</span>`}
-      </button>`).join(''):'<div class="tp-empty">Tu día está vacío 🌿<br>Añade lo que quieras hacer hoy.</div>'}
-    <button class="tp-edit" onclick="openDayEdit()">✏️ Editar mi día</button>
-    ${rows.length?'<div class="tp-hint">Toca el círculo ✓ al terminar · toca la tarea para abrirla</div>':''}`;
+        <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">'+t('badge_now')+'</span>':r.badge==='next'?'<span class="tp-badge next">'+t('badge_next')+'</span>':''}</span><span class="tp-s">${r.s}</span></span>
+        ${r.key?`<span class="tp-check${r.done?' on':''}" tabindex="0" role="checkbox" aria-checked="${!!r.done}" aria-label="${t('mark_as',{t:r.t,s:r.done?t('mark_pending'):t('mark_done')})}">✓</span>`:`<span class="tp-arrow">›</span>`}
+      </button>`).join(''):'<div class="tp-empty">'+t('empty')+'</div>'}
+    <button class="tp-edit" onclick="openDayEdit()">${t('edit_btn')}</button>
+    ${rows.length?'<div class="tp-hint">'+t('hint')+'</div>':''}`;
 }
 
 /* Vibración corta respetando ajustes (vib + modo calma) */
@@ -809,15 +1024,19 @@ renderToday();
 renderCfg();
 renderNotif();
 
-// Generar lista de módulos en el cajón
-const moduleList = document.getElementById('moduleList');
-modules.forEach(m => {
-  const row = document.createElement('button');
-  row.className = 'dm-row';
-  row.innerHTML = `<span class="dm-em">${m.icon}</span><span class="dm-info"><span class="dm-t">${m.title}</span><span class="dm-s">${m.sub}</span></span>`;
-  row.addEventListener('click', () => openModule(m.file));
-  moduleList.appendChild(row);
-});
+// Generar lista de módulos en el cajón (se reconstruye al cambiar de idioma)
+function buildModuleList(){
+  const moduleList = document.getElementById('moduleList');
+  moduleList.innerHTML='';
+  modules.forEach(m => {
+    const row = document.createElement('button');
+    row.className = 'dm-row';
+    row.innerHTML = `<span class="dm-em">${m.icon}</span><span class="dm-info"><span class="dm-t">${t('mod_'+m.id+'_t')}</span><span class="dm-s">${t('mod_'+m.id+'_s')}</span></span>`;
+    row.addEventListener('click', () => openModule(m.file));
+    moduleList.appendChild(row);
+  });
+}
+buildModuleList();
 
 /* El iframe se RECREA en cada apertura/cierre en vez de cambiarle el src:
    cambiar el src de un iframe ya cargado crea entradas en el historial
