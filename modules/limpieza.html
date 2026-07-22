@@ -145,15 +145,15 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 <div id="v-home" class="screen active">
   <div style="padding:6px 0 2px;">
     <img src="../quico/quico_happy.png" alt="Quico" style="width:120px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))">
-    <div style="font-size:1.9rem;font-weight:800;color:var(--td);line-height:1.1;">🧹 Limpieza</div>
-    <div style="font-size:0.9rem;color:var(--fg2);margin-top:3px;font-weight:600;">15-20 min al día · sin agobios</div>
+    <div style="font-size:1.9rem;font-weight:800;color:var(--td);line-height:1.1;" data-i18n="home_title">🧹 Limpieza</div>
+    <div style="font-size:0.9rem;color:var(--fg2);margin-top:3px;font-weight:600;" data-i18n="home_sub">15-20 min al día · sin agobios</div>
   </div>
 
   <div class="motiv" id="home-motiv" style="margin-top:14px;"></div>
 
   <button class="today-hint" id="home-today" onclick="startTodayZone()">
     <div>
-      <div class="th-tag">Hoy toca</div>
+      <div class="th-tag" data-i18n="today_tag">Hoy toca</div>
       <div class="th-name" id="td-name">Cocina</div>
       <div class="th-sub" id="td-sub">6 tareas · ~18 min</div>
     </div>
@@ -162,29 +162,29 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 
   <div class="week-strip" id="home-week"></div>
 
-  <div class="sec-label">Elige tu modo</div>
+  <div class="sec-label" data-i18n="mode_label">Elige tu modo</div>
 
   <button class="express-btn" onclick="startExpress()">
     <span style="font-size:2rem;">⚡</span>
     <div style="flex:1;text-align:left;">
-      <div style="font-size:1.1rem;font-weight:800;">Express — Recoge ahora</div>
-      <div style="font-size:0.84rem;opacity:.88;margin-top:2px;">5 tareas rápidas · toda la casa</div>
+      <div style="font-size:1.1rem;font-weight:800;" data-i18n="exp_t">Express — Recoge ahora</div>
+      <div style="font-size:0.84rem;opacity:.88;margin-top:2px;" data-i18n="exp_s">5 tareas rápidas · toda la casa</div>
     </div>
-    <span class="mc-pill" style="margin:0;white-space:nowrap;">~15 min</span>
+    <span class="mc-pill" style="margin:0;white-space:nowrap;" data-i18n="exp_pill">~15 min</span>
   </button>
 
   <button class="mode-card" style="background:linear-gradient(135deg,#26a69a,#1a6b64);" onclick="go('v-week')">
     <span class="mc-em">📅</span>
-    <span class="mc-title">Plan de 5 días</span>
-    <span class="mc-sub">Una zona de la casa cada día.<br>El viernes el hogar está limpio.</span>
-    <span class="mc-pill">15-20 min/día</span>
+    <span class="mc-title" data-i18n="plan_t">Plan de 5 días</span>
+    <span class="mc-sub" data-i18n="plan_s">Una zona de la casa cada día.<br>El viernes el hogar está limpio.</span>
+    <span class="mc-pill" data-i18n="plan_pill">15-20 min/día</span>
   </button>
 
   <button class="mode-card" style="background:linear-gradient(135deg,#7c3aed,#a855f7);" onclick="startGeneral()">
     <span class="mc-em">🏠</span>
-    <span class="mc-title">Limpieza Completa</span>
-    <span class="mc-sub">Todas las zonas de una vez.<br>Para cuando tienes energía extra.</span>
-    <span class="mc-pill">~90 min</span>
+    <span class="mc-title" data-i18n="full_t">Limpieza Completa</span>
+    <span class="mc-sub" data-i18n="full_s">Todas las zonas de una vez.<br>Para cuando tienes energía extra.</span>
+    <span class="mc-pill" data-i18n="full_pill">~90 min</span>
   </button>
 </div>
 
@@ -192,7 +192,7 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 <div id="v-week" class="screen">
   <div class="hdr">
     <button class="hdr-back" onclick="go('v-home')">←</button>
-    <span class="hdr-title">Plan semanal</span>
+    <span class="hdr-title" data-i18n="week_title">Plan semanal</span>
   </div>
   <div class="motiv" id="week-motiv"></div>
   <div id="week-zones"></div>
@@ -202,7 +202,7 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 <div id="v-session" class="screen">
   <div class="hdr">
     <button class="hdr-back" onclick="exitSession()">←</button>
-    <span class="hdr-title" id="sess-hdr">Limpieza</span>
+    <span class="hdr-title" id="sess-hdr" data-i18n="clean">Limpieza</span>
   </div>
   <div class="zone-banner" id="sess-banner" style="display:none;"></div>
   <div class="sess-prog" id="sess-prog">Tarea 1 de 6</div>
@@ -216,16 +216,16 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
   <div class="timer-wrap">
     <div class="tring" id="t-ring"><div class="tring-in">
       <div class="timer-dig" id="timer-dig">00:00</div>
-      <div class="timer-lbl" id="timer-lbl">Pulsa Iniciar para empezar</div>
+      <div class="timer-lbl" id="timer-lbl" data-i18n="press_start">Pulsa Iniciar para empezar</div>
     </div></div>
   </div>
 
   <div class="pbar-outer"><div class="pbar-inner" id="pbar" style="width:0%"></div></div>
 
   <div class="ctrl-row">
-    <button class="cbtn cb-start" id="btn-start" onclick="sessStart()">▶ Iniciar</button>
-    <button class="cbtn cb-pause" id="btn-pause" onclick="sessPause()" disabled>⏸ Pausa</button>
-    <button class="cbtn cb-skip" id="btn-skip" onclick="sessSkip()">Saltar ⏭</button>
+    <button class="cbtn cb-start" id="btn-start" onclick="sessStart()" data-i18n="start_btn">▶ Iniciar</button>
+    <button class="cbtn cb-pause" id="btn-pause" onclick="sessPause()" disabled data-i18n="pause_btn">⏸ Pausa</button>
+    <button class="cbtn cb-skip" id="btn-skip" onclick="sessSkip()" data-i18n="skip_btn">Saltar ⏭</button>
   </div>
 
   <div class="queue" id="task-queue"></div>
@@ -239,12 +239,12 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
     <div class="done-s" id="done-sub"></div>
   </div>
   <div class="done-stats">
-    <div class="ds"><div class="ds-v" id="done-tasks">—</div><div class="ds-l">tareas</div></div>
-    <div class="ds"><div class="ds-v" id="done-time">—</div><div class="ds-l">minutos</div></div>
+    <div class="ds"><div class="ds-v" id="done-tasks">—</div><div class="ds-l" data-i18n="tasks">tareas</div></div>
+    <div class="ds"><div class="ds-v" id="done-time">—</div><div class="ds-l" data-i18n="minutes">minutos</div></div>
   </div>
   <div class="motiv" id="done-motiv"></div>
-  <button class="btn-f btn-teal" onclick="go('v-week')">📅 Ver el plan semanal</button>
-  <button class="btn-f btn-white" onclick="go('v-home')">🏠 Volver al inicio</button>
+  <button class="btn-f btn-teal" onclick="go('v-week')" data-i18n="see_week">📅 Ver el plan semanal</button>
+  <button class="btn-f btn-white" onclick="go('v-home')" data-i18n="back_home">🏠 Volver al inicio</button>
 </div>
 
 <div class="flash" id="flash-el"></div>
@@ -254,6 +254,103 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 if(__cfg().calm)document.documentElement.classList.add('calm');
+
+/* ── IDIOMAS (es · en · fr) ── */
+const UI={
+ es:{home_title:'🧹 Limpieza',home_sub:'15-20 min al día · sin agobios',today_tag:'Hoy toca',mode_label:'Elige tu modo',
+   exp_t:'Express — Recoge ahora',exp_s:'5 tareas rápidas · toda la casa',exp_pill:'~15 min',
+   plan_t:'Plan de 5 días',plan_s:'Una zona de la casa cada día.<br>El viernes el hogar está limpio.',plan_pill:'15-20 min/día',
+   full_t:'Limpieza Completa',full_s:'Todas las zonas de una vez.<br>Para cuando tienes energía extra.',full_pill:'~90 min',
+   week_title:'Plan semanal',clean:'Limpieza',start_btn:'▶ Iniciar',pause_btn:'⏸ Pausa',skip_btn:'Saltar ⏭',
+   press_start:'Pulsa Iniciar para empezar',mins_left:'minutos restantes',tasks:'tareas',minutes:'minutos',
+   see_week:'📅 Ver el plan semanal',back_home:'🏠 Volver al inicio',
+   task_of:'Tarea {i} de {n}',tasks_time:'{n} tareas · ~{m} min',already_clean:'¡Ya la tienes limpia esta semana!',
+   week0:'🏁 Empieza por donde quieras — cada zona cuenta',weekN:'🌟 {d} de 5 zonas listas esta semana. ¡Vas genial!',
+   exp_hdr:'Express ⚡',exp_banner:'⚡ Recogida rápida · 5 tareas · ~12 min',full_hdr:'Limpieza Completa',
+   task_done:'¡Tarea completada! ✓',
+   done_zone:'¡{z} lista!',done_zone_fb:'Zona',done_exp_t:'¡Express completado!',done_exp_s:'La casa está recogida. Eso es todo lo que necesitabas.',
+   done_all:'¡Y ya está toda la casa! 🎉',done_zones_n:'{d} de 5 zonas completadas esta semana.',
+   done_left:'Quedan {n} zona{s} para que la casa esté perfecta.',gen_done_t:'¡Casa limpia!',gen_done_s:'Has limpiado toda la casa de una vez. Eres increíble.',done_maintain:'🏆 Esta semana ya solo toca mantener. ¡Lo has conseguido!',
+   v_start:'Empezamos con {z}. Primera tarea: {t}.',v_exp:'Recogida express. Empezamos: {t}.',v_full:'¡Empezamos la limpieza completa! Primera tarea: {t}.',
+   v_cont:'Continuando.',v_next:'Siguiente: {t}',v_min:'Queda un minuto.',v_ten:'Diez segundos.',v_finish:'¡Has terminado! Fantástico trabajo.',v_next2:'¡Muy bien! Siguiente: {t}',
+   motivs:['✨ 15 minutos de hoy = casa reluciente el viernes','🧠 Tu cerebro descansa cuando el espacio está despejado','💪 Una zona al día. Sin más. Sin agobios.','🎯 No tienes que hacerlo todo. Solo lo de hoy.','🌟 Cada tarea terminada es una pequeña victoria.','⏱️ El temporizador trabaja por ti — solo tienes que empezar.','🫂 Estás cuidando de tu hogar y de ti. Eso importa.']},
+ en:{home_title:'🧹 Cleaning',home_sub:'15-20 min a day · no stress',today_tag:'Today’s zone',mode_label:'Choose your mode',
+   exp_t:'Express — Tidy now',exp_s:'5 quick tasks · whole house',exp_pill:'~15 min',
+   plan_t:'5-day plan',plan_s:'One area of the house each day.<br>By Friday the home is clean.',plan_pill:'15-20 min/day',
+   full_t:'Full Clean',full_s:'All areas at once.<br>For when you have extra energy.',full_pill:'~90 min',
+   week_title:'Weekly plan',clean:'Cleaning',start_btn:'▶ Start',pause_btn:'⏸ Pause',skip_btn:'Skip ⏭',
+   press_start:'Press Start to begin',mins_left:'minutes left',tasks:'tasks',minutes:'minutes',
+   see_week:'📅 See the weekly plan',back_home:'🏠 Back to start',
+   task_of:'Task {i} of {n}',tasks_time:'{n} tasks · ~{m} min',already_clean:'Already clean this week!',
+   week0:'🏁 Start wherever you like — every zone counts',weekN:'🌟 {d} of 5 zones done this week. Doing great!',
+   exp_hdr:'Express ⚡',exp_banner:'⚡ Quick tidy · 5 tasks · ~12 min',full_hdr:'Full Clean',
+   task_done:'Task done! ✓',
+   done_zone:'{z} done!',done_zone_fb:'Zone',done_exp_t:'Express done!',done_exp_s:'The house is tidy. That’s all you needed.',
+   done_all:'And the whole house is done! 🎉',done_zones_n:'{d} of 5 zones completed this week.',
+   done_left:'{n} zone{s} left for a perfect home.',gen_done_t:'House clean!',gen_done_s:'You cleaned the whole house at once. You’re amazing.',done_maintain:'🏆 This week it’s just upkeep now. You did it!',
+   v_start:'Let’s start with {z}. First task: {t}.',v_exp:'Express tidy. Let’s start: {t}.',v_full:'Let’s start the full clean! First task: {t}.',
+   v_cont:'Continuing.',v_next:'Next: {t}',v_min:'One minute left.',v_ten:'Ten seconds.',v_finish:'You’re done! Fantastic work.',v_next2:'Well done! Next: {t}',
+   motivs:['✨ 15 minutes today = sparkling home on Friday','🧠 Your brain rests when the space is clear','💪 One zone a day. Nothing more. No stress.','🎯 You don’t have to do it all. Just today’s.','🌟 Every finished task is a small win.','⏱️ The timer works for you — you just have to start.','🫂 You’re caring for your home and yourself. That matters.']},
+ fr:{home_title:'🧹 Ménage',home_sub:'15-20 min par jour · sans stress',today_tag:'Zone du jour',mode_label:'Choisis ton mode',
+   exp_t:'Express — Ranger maintenant',exp_s:'5 tâches rapides · toute la maison',exp_pill:'~15 min',
+   plan_t:'Plan de 5 jours',plan_s:'Une zone de la maison chaque jour.<br>Vendredi, la maison est propre.',plan_pill:'15-20 min/jour',
+   full_t:'Ménage Complet',full_s:'Toutes les zones d’un coup.<br>Pour quand tu as de l’énergie en plus.',full_pill:'~90 min',
+   week_title:'Plan de la semaine',clean:'Ménage',start_btn:'▶ Démarrer',pause_btn:'⏸ Pause',skip_btn:'Passer ⏭',
+   press_start:'Appuie sur Démarrer pour commencer',mins_left:'minutes restantes',tasks:'tâches',minutes:'minutes',
+   see_week:'📅 Voir le plan de la semaine',back_home:'🏠 Retour à l’accueil',
+   task_of:'Tâche {i} sur {n}',tasks_time:'{n} tâches · ~{m} min',already_clean:'Déjà propre cette semaine !',
+   week0:'🏁 Commence où tu veux — chaque zone compte',weekN:'🌟 {d} zones sur 5 faites cette semaine. Bravo !',
+   exp_hdr:'Express ⚡',exp_banner:'⚡ Rangement rapide · 5 tâches · ~12 min',full_hdr:'Ménage Complet',
+   task_done:'Tâche terminée ! ✓',
+   done_zone:'{z} terminée !',done_zone_fb:'Zone',done_exp_t:'Express terminé !',done_exp_s:'La maison est rangée. C’est tout ce qu’il te fallait.',
+   done_all:'Et toute la maison est faite ! 🎉',done_zones_n:'{d} zones sur 5 terminées cette semaine.',
+   done_left:'Il reste {n} zone{s} pour une maison parfaite.',gen_done_t:'Maison propre !',gen_done_s:'Tu as nettoyé toute la maison d’un coup. Tu es incroyable.',done_maintain:'🏆 Cette semaine, il ne reste qu’à entretenir. Tu as réussi !',
+   v_start:'On commence par {z}. Première tâche : {t}.',v_exp:'Rangement express. On commence : {t}.',v_full:'On commence le ménage complet ! Première tâche : {t}.',
+   v_cont:'On continue.',v_next:'Ensuite : {t}',v_min:'Il reste une minute.',v_ten:'Dix secondes.',v_finish:'Tu as fini ! Superbe travail.',v_next2:'Bravo ! Ensuite : {t}',
+   motivs:['✨ 15 minutes aujourd’hui = maison étincelante vendredi','🧠 Ton cerveau se repose quand l’espace est dégagé','💪 Une zone par jour. Rien de plus. Sans stress.','🎯 Tu n’as pas à tout faire. Juste celle d’aujourd’hui.','🌟 Chaque tâche finie est une petite victoire.','⏱️ Le minuteur travaille pour toi — il suffit de commencer.','🫂 Tu prends soin de ta maison et de toi. Ça compte.']}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
+/* Traducción de zonas y tareas (el emoji y la duración vienen del dato ES) */
+const ZONES_L={
+ en:{cocina:{name:'Kitchen',tasks:['Tidy and clear the kitchen','Clean worktops and splashbacks','Hob or stovetop','Sink and tap','Outside of appliances','Sweep and mop']},
+     bano:{name:'Bathroom',tasks:['Tidy the vanity','Basin and tap','Mirror and surfaces','Toilet inside and out','Shower or bathtub','Sweep and wash the floor']},
+     salon:{name:'Living room',tasks:['Tidy and put things away','Dust the furniture','Clean screens and tech','Fluff cushions and blankets','Sweep or vacuum the floor','Mop or sweep']},
+     dormitorio:{name:'Bedroom',tasks:['Pick up clothes and things off the floor','Dust the furniture','One wardrobe shelf','Clean the nightstands','Change pillowcases','Vacuum or wash the floor']},
+     comunes:{name:'Common areas',tasks:['Tidy the entrance and hallway','Clean the front door','Dust the hallway','Balcony or terrace','Bins around the house','Wash hallway and entrance floor']}},
+ fr:{cocina:{name:'Cuisine',tasks:['Ranger et dégager la cuisine','Nettoyer plans de travail et crédences','Plaque ou feux','Évier et robinet','Extérieur des appareils','Balayer et passer la serpillière']},
+     bano:{name:'Salle de bain',tasks:['Ranger le meuble','Lavabo et robinet','Miroir et surfaces','Toilettes dedans et dehors','Douche ou baignoire','Balayer et laver le sol']},
+     salon:{name:'Salon',tasks:['Ranger et remettre chaque chose à sa place','Dépoussiérer les meubles','Nettoyer écrans et appareils','Secouer coussins et plaids','Balayer ou aspirer le sol','Laver ou passer la serpillière']},
+     dormitorio:{name:'Chambre',tasks:['Ramasser vêtements et objets au sol','Dépoussiérer les meubles','Une étagère de l’armoire','Nettoyer les tables de nuit','Changer les taies d’oreiller','Aspirer ou laver le sol']},
+     comunes:{name:'Espaces communs',tasks:['Ranger l’entrée et le couloir','Nettoyer la porte d’entrée','Dépoussiérer le couloir','Balcon ou terrasse','Poubelles de la maison','Laver le sol du couloir et de l’entrée']}}
+};
+const TIPS_L={
+ en:{cocina:['Put each thing in its place before cleaning','Degreaser spray, wipe left to right','With the hob cold, use the scraper for stubborn marks','A little glass cleaner on the tap makes it shine','Fridge, microwave, coffee maker — outside surface only','Start from the back and move toward the door'],
+     bano:['Throw out anything expired or empty','Let the cleaner sit 2 minutes before rinsing','Newspaper with glass cleaner — zero streaks','Start outside, finish with the inside','Anti-limescale spray on the tap while you clean the base','The bathroom is small — this goes super fast'],
+     salon:['A basket for whatever has no clear home','Start high: shelves, TV, frames','Dry microfibre cloth — never water directly','Shake them out on the balcony or by the window','Under the sofa too — that dust lurks','Hot water with a splash of floor cleaner'],
+     dormitorio:['Clean clothes in the wardrobe, dirty in the basket','Wardrobe, dresser, nightstand — top to bottom','Just one shelf: fold, rearrange, toss what you don’t use','Take everything off, clean the surface, put it back','Once a week makes all the difference','Grab the chance to pull out what’s under the bed'],
+     comunes:['Shoes on the rack, bags and umbrellas hung','The handle and edges gather invisible grime','Pictures, mirrors and hallway surfaces','Sweep first, then water the plants if it’s time','Empty and put a fresh bag in each one','The first thing you see when you come in — make it shine']},
+ fr:{cocina:['Remets chaque chose à sa place avant de nettoyer','Spray dégraissant, passe le chiffon de gauche à droite','Plaque froide, utilise le racloir pour les taches tenaces','Un peu de nettoyant vitres sur le robinet le fait briller','Frigo, micro-ondes, cafetière — juste la surface extérieure','Commence du fond et avance vers la porte'],
+     bano:['Jette ce qui est périmé ou vide','Laisse agir le nettoyant 2 minutes avant de rincer','Papier journal avec nettoyant vitres — zéro trace','Commence par l’extérieur, finis par l’intérieur','Spray anticalcaire sur le robinet pendant que tu nettoies le fond','La salle de bain est petite — ça va très vite'],
+     salon:['Un panier pour ce qui n’a pas de place fixe','Commence en haut : étagères, TV, cadres','Chiffon microfibre sec — jamais d’eau directe','Secoue-les au balcon ou près de la fenêtre','Sous le canapé aussi — la poussière s’y cache','Eau chaude avec un peu de nettoyant sol'],
+     dormitorio:['Vêtements propres dans l’armoire, sales au panier','Armoire, commode, table de nuit — de haut en bas','Une seule étagère : plie, replace, jette ce que tu n’utilises pas','Enlève tout, nettoie la surface, remets','Une fois par semaine fait toute la différence','Profites-en pour sortir ce qu’il y a sous le lit'],
+     comunes:['Chaussures au range-chaussures, sacs et parapluies suspendus','La poignée et les bords accumulent une crasse invisible','Cadres, miroirs et surfaces du couloir','Balaie d’abord, puis arrose les plantes si besoin','Vide et mets un sac neuf dans chacune','La première chose que tu vois en entrant — qu’elle brille']}
+};
+// Devuelve una copia de la zona con nombre/tareas/consejos en el idioma actual
+function zL(zone){
+  const lang=crisLang();
+  if(lang==='es'||!ZONES_L[lang])return zone;
+  const zt=ZONES_L[lang][zone.id],tp=TIPS_L[lang][zone.id];
+  return {...zone,name:(zt&&zt.name)||zone.name,
+    tasks:zone.tasks.map((task,i)=>({...task,n:(zt&&zt.tasks[i])||task.n,tip:(tp&&tp[i])||task.tip}))};
+}
+const DAYS_L={es:{s:['','Lun','Mar','Mié','Jue','Vie','Sáb'],f:['','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']},en:{s:['','Mon','Tue','Wed','Thu','Fri','Sat'],f:['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']},fr:{s:['','Lun','Mar','Mer','Jeu','Ven','Sam'],f:['','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi']}};
+function dS(day){return (DAYS_L[crisLang()]||DAYS_L.es).s[day]||'';}
+function dF(day){return (DAYS_L[crisLang()]||DAYS_L.es).f[day]||'';}
+const EXPRESS_L={en:{n:['Tidy up the kitchen','Tidy the bathroom','Tidy the living room','Tidy the bedroom','Tidy the entrance and hallway'],tip:['Everything in its place, worktop clear','Things away, toss what’s useless','Cushions in place, side tables clear','Clothes to wardrobe or basket, nothing on the floor','Shoes on the rack, coats hung']},fr:{n:['Range la cuisine','Range la salle de bain','Range le salon','Range la chambre','Range l’entrée et le couloir'],tip:['Chaque chose à sa place, plan dégagé','Objets rangés, jette l’inutile','Coussins en place, tables basses dégagées','Vêtements à l’armoire ou au panier, rien au sol','Chaussures au range-chaussures, manteaux suspendus']}};
+function expL(list){const lang=crisLang();if(lang==='es'||!EXPRESS_L[lang])return list;const L=EXPRESS_L[lang];return list.map((task,i)=>({...task,n:L.n[i]||task.n,tip:L.tip[i]||task.tip}));}
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
 
@@ -348,8 +445,8 @@ function speak(t){
     window.speechSynthesis.cancel();
     if(window.speechSynthesis.paused)window.speechSynthesis.resume();
     _utt=new SpeechSynthesisUtterance(t);
-    _utt.lang='es-ES';_utt.rate=.88;
-    const v=window.speechSynthesis.getVoices().find(v=>v.lang.startsWith('es'));
+    const _lg=crisLang();_utt.lang=VOICE_LANG[_lg];_utt.rate=.88;
+    const v=window.speechSynthesis.getVoices().find(v=>v.lang.startsWith(_lg));
     if(v)_utt.voice=v;
     window.speechSynthesis.speak(_utt);
   }catch(e){}
@@ -386,7 +483,7 @@ function go(id){
 // ── Home ───────────────────────────────────────────────
 function initHome(){
   document.getElementById('home-motiv').textContent=
-    MOTIVS[new Date().getDay()%MOTIVS.length];
+    t('motivs')[new Date().getDay()%t('motivs').length];
 
   const tz=todayZone();
   const prog=getProgress();
@@ -394,9 +491,9 @@ function initHome(){
   const total=tz.tasks.reduce((a,t)=>a+t.d,0);
 
   document.getElementById('td-name').textContent=
-    already?`${tz.name} ✓`:tz.name;
+    already?`${zL(tz).name} ✓`:zL(tz).name;
   document.getElementById('td-sub').textContent=
-    already?'¡Ya la tienes limpia esta semana!':`${tz.tasks.length} tareas · ~${total} min`;
+    already?t('already_clean'):t('tasks_time',{n:tz.tasks.length,m:total});
   document.getElementById('td-em').textContent=tz.emoji;
 
   renderWeekStrip('home-week');
@@ -412,7 +509,7 @@ function renderWeekStrip(cid){
     const isToday=z.day===today;
     const d=document.createElement('div');
     d.className='wd'+(done?' done':'')+(isToday?' today':'');
-    d.innerHTML=`<span class="wd-l">${z.dayName.slice(0,3)}</span><span class="wd-e">${done?'✓':z.emoji}</span>`;
+    d.innerHTML=`<span class="wd-l">${dS(z.day)}</span><span class="wd-e">${done?'✓':z.emoji}</span>`;
     el.appendChild(d);
   });
 }
@@ -449,8 +546,8 @@ function initWeek(){
     btn.innerHTML=`
       <span class="zr-em">${z.emoji}</span>
       <div class="zr-info">
-        <div class="zr-name">${z.name}${todayTag}</div>
-        <div class="zr-day">${z.dayName} · ~${total} min</div>
+        <div class="zr-name">${zL(z).name}${todayTag}</div>
+        <div class="zr-day">${dF(z.day)} · ~${total} min</div>
         <div class="zr-dots">${dots}</div>
       </div>
       ${badge}`;
@@ -462,15 +559,15 @@ function initWeek(){
 // ── Start zone ─────────────────────────────────────────
 function startZone(zoneId){
   const zone=ZONES.find(z=>z.id===zoneId);if(!zone)return;
-  S={tasks:[...zone.tasks],idx:0,timeLeft:0,totalSecs:0,interval:null,
+  S={tasks:[...zL(zone).tasks],idx:0,timeLeft:0,totalSecs:0,interval:null,
      paused:false,mode:'zone',zoneId,sessionStart:Date.now(),tasksDone:0};
-  document.getElementById('sess-hdr').textContent=zone.name;
+  document.getElementById('sess-hdr').textContent=zL(zone).name;
   const banner=document.getElementById('sess-banner');
-  banner.textContent=`${zone.emoji} ${zone.name} · ${zone.dayName}`;
+  banner.textContent=`${zone.emoji} ${zL(zone).name} · ${dF(zone.day)}`;
   banner.style.display='block';
   renderSession();
   go('v-session');
-  setTimeout(()=>speak(`Empezamos con ${zone.name}. Primera tarea: ${zone.tasks[0].n}.`),400);
+  setTimeout(()=>speak(t('v_start',{z:zL(zone).name,t:zL(zone).tasks[0].n})),400);
 }
 
 // ── Start express ──────────────────────────────────────
@@ -484,7 +581,7 @@ function startExpress(){
     {n:'Recoge la entrada y el pasillo',e:'🚪',d:2,tip:'Zapatos al zapatero, abrigos colgados'},
   ];
   // Shuffle for variety
-  const shuffled=[...EXPRESS_TASKS].sort(()=>Math.random()-.5);
+  const shuffled=expL([...EXPRESS_TASKS]).sort(()=>Math.random()-.5);
   S={tasks:shuffled,idx:0,timeLeft:0,totalSecs:0,interval:null,
      paused:false,mode:'express',zoneId:'express',sessionStart:Date.now(),tasksDone:0};
   document.getElementById('sess-hdr').textContent='Express ⚡';
@@ -493,20 +590,20 @@ function startExpress(){
   banner.style.display='block';
   renderSession();
   go('v-session');
-  setTimeout(()=>speak(`Recogida express. Empezamos: ${shuffled[0].n}.`),400);
+  setTimeout(()=>speak(t('v_exp',{t:shuffled[0].n})),400);
 }
 
 // ── Start general ──────────────────────────────────────
 function startGeneral(){
   const all=[];
-  ZONES.forEach(z=>z.tasks.forEach(t=>all.push({...t,_zone:z.name,_ze:z.emoji})));
+  ZONES.forEach(z=>{const zl=zL(z);zl.tasks.forEach(tk=>all.push({...tk,_zone:zl.name,_ze:z.emoji}));});
   S={tasks:all,idx:0,timeLeft:0,totalSecs:0,interval:null,
      paused:false,mode:'general',zoneId:'all',sessionStart:Date.now(),tasksDone:0};
   document.getElementById('sess-hdr').textContent='Limpieza Completa';
   document.getElementById('sess-banner').style.display='none';
   renderSession();
   go('v-session');
-  setTimeout(()=>speak(`¡Empezamos la limpieza completa! Primera tarea: ${all[0].n}.`),400);
+  setTimeout(()=>speak(t('v_full',{t:all[0].n})),400);
 }
 
 // ── Session render ─────────────────────────────────────
@@ -526,7 +623,7 @@ function renderSession(){
     }
   }
 
-  document.getElementById('sess-prog').textContent=`Tarea ${S.idx+1} de ${S.tasks.length}`;
+  document.getElementById('sess-prog').textContent=t('task_of',{i:S.idx+1,n:S.tasks.length});
 
   // Task card
   const card=document.getElementById('task-big');
@@ -580,7 +677,7 @@ function sessStart(){
   document.getElementById('task-big').className='task-big tb-active';
   document.getElementById('btn-start').disabled=true;
   document.getElementById('btn-pause').disabled=false;
-  document.getElementById('timer-lbl').textContent='minutos restantes';
+  document.getElementById('timer-lbl').textContent=t('mins_left');
   speak(S.tasks[S.idx].n);
 }
 
@@ -588,7 +685,7 @@ function sessPause(){
   if(S.paused){
     S.interval=setInterval(tick,1000);S.paused=false;
     document.getElementById('btn-pause').textContent='⏸ Pausa';
-    speak('Continuando.');
+    speak(t('v_cont'));
   }else{
     clearInterval(S.interval);S.paused=true;
     document.getElementById('btn-pause').textContent='▶ Reanudar';
@@ -600,7 +697,7 @@ function sessSkip(){
   S.tasksDone++;S.idx++;
   if(S.idx<S.tasks.length){
     renderSession();
-    setTimeout(()=>speak(`Siguiente: ${S.tasks[S.idx].n}`),300);
+    setTimeout(()=>speak(t('v_next',{t:S.tasks[S.idx].n})),300);
   }else{finishSession();}
 }
 
@@ -608,20 +705,20 @@ function tick(){
   S.timeLeft--;
   document.getElementById('timer-dig').textContent=fmt(S.timeLeft);
   __ring('t-ring',S.totalSecs?S.timeLeft/S.totalSecs:0);
-  if(S.timeLeft===60)speak('Queda un minuto.');
-  if(S.timeLeft===10)speak('Diez segundos.');
+  if(S.timeLeft===60)speak(t('v_min'));
+  if(S.timeLeft===10)speak(t('v_ten'));
   if(S.timeLeft<=0){
     clearInterval(S.interval);S.interval=null;
     beep(760,.22);setTimeout(()=>beep(980,.22),260);setTimeout(()=>beep(1240,.42),520);
     vibrate([160,90,160,90,320]);
-    flash('¡Tarea completada! ✓');
+    flash(t('task_done'));
     document.getElementById('task-big').className='task-big tb-finish';
     S.tasksDone++;S.idx++;
     if(S.idx>=S.tasks.length){
-      speak('¡Has terminado! Fantástico trabajo.');
+      speak(t('v_finish'));
       setTimeout(finishSession,2200);
     }else{
-      speak(`¡Muy bien! Siguiente: ${S.tasks[S.idx].n}`);
+      speak(t('v_next2',{t:S.tasks[S.idx].n}));
       setTimeout(()=>{renderSession();sessStart();},2500);
     }
   }
@@ -645,16 +742,16 @@ function finishSession(){
 
   let em,title,sub;
   if(S.mode==='express'){
-    em='⚡';title='¡Express completado!';
-    sub='La casa está recogida. Eso es todo lo que necesitabas.';
+    em='⚡';title=t('done_exp_t');
+    sub=t('done_exp_s');
   }else if(S.mode==='general'){
-    em='🏠';title='¡Casa limpia!';
-    sub='Has limpiado toda la casa de una vez. Eres increíble.';
+    em='🏠';title=t('gen_done_t');
+    sub=t('gen_done_s');
   }else{
     const zone=ZONES.find(z=>z.id===S.zoneId);
     em=zone?zone.emoji:'✨';
-    title=`¡${zone?zone.name:'Zona'} lista!`;
-    sub=doneCount>=5?'¡Y ya está toda la casa! 🎉':`${doneCount} de 5 zonas completadas esta semana.`;
+    title=zone?t('done_zone',{z:zL(zone).name}):t('done_zone',{z:t('done_zone_fb')});
+    sub=doneCount>=5?t('done_all'):t('done_zones_n',{d:doneCount});
   }
 
   document.getElementById('done-em').textContent=em;
@@ -663,13 +760,13 @@ function finishSession(){
   document.getElementById('done-tasks').textContent=S.tasksDone;
   document.getElementById('done-time').textContent=elapsed;
   document.getElementById('done-motiv').textContent=
-    doneCount>=5?'🏆 Esta semana ya solo toca mantener. ¡Lo has conseguido!':
-    `Quedan ${5-doneCount} zona${5-doneCount===1?'':'s'} para que la casa esté perfecta.`;
+    doneCount>=5?t('done_maintain'):t('done_left',{n:5-doneCount,s:(5-doneCount===1?(crisLang()==='es'?'':crisLang()==='fr'?'':''):(crisLang()==='es'?'s':crisLang()==='fr'?'s':'s'))});
 
   go('v-done');
 }
 
 // ── Boot ───────────────────────────────────────────────
+applyStaticI18n();
 initHome();
 if(location.hash==='#express')startExpress(); // modo eco: directo a recogida rápida
 /* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
