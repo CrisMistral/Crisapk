@@ -111,8 +111,8 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 <div id="v-home" class="screen active">
   <div style="padding:6px 0 2px;">
     <img src="../quico/quico_happy.png" alt="Quico" style="width:120px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))">
-    <div style="font-size:1.9rem;font-weight:800;color:var(--td);line-height:1.1;">🎨 Intereses</div>
-    <div style="font-size:0.9rem;color:var(--fg2);margin-top:3px;font-weight:600;">10-15 min al día · un interés cada vez</div>
+    <div style="font-size:1.9rem;font-weight:800;color:var(--td);line-height:1.1;" data-i18n="home_title">🎨 Intereses</div>
+    <div style="font-size:0.9rem;color:var(--fg2);margin-top:3px;font-weight:600;" data-i18n="home_sub">10-15 min al día · un interés cada vez</div>
   </div>
 
   <div class="motiv" id="home-motiv" style="margin-top:14px;"></div>
@@ -121,7 +121,7 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 
   <div class="streak-box" id="streak-box" style="display:none;"></div>
 
-  <div class="sec-label">Todos tus intereses</div>
+  <div class="sec-label" data-i18n="all_label">Todos tus intereses</div>
   <div class="int-grid" id="int-grid"></div>
 </div>
 
@@ -129,7 +129,7 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 <div id="v-int" class="screen">
   <div class="hdr">
     <button class="hdr-back" onclick="go('v-home')">←</button>
-    <span class="hdr-title" id="int-title">Interés</span>
+    <span class="hdr-title" id="int-title" data-i18n="int_hdr">Interés</span>
   </div>
   <div class="motiv" id="int-motiv"></div>
   <div id="int-days"></div>
@@ -139,7 +139,7 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 <div id="v-act" class="screen">
   <div class="hdr">
     <button class="hdr-back" onclick="exitAct()">←</button>
-    <span class="hdr-title" id="act-hdr">Actividad</span>
+    <span class="hdr-title" id="act-hdr" data-i18n="act_hdr">Actividad</span>
   </div>
   <div id="act-body"></div>
 </div>
@@ -148,11 +148,11 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 <div id="v-done" class="screen">
   <div class="done-hero">
     <span class="done-em" id="done-em">🎉</span>
-    <div class="done-t">¡Actividad completada!</div>
+    <div class="done-t" data-i18n="done_t">¡Actividad completada!</div>
     <div class="done-s" id="done-sub"></div>
   </div>
   <div class="motiv" id="done-motiv"></div>
-  <button class="btn-f btn-teal" onclick="go('v-home')">🏠 Volver al inicio</button>
+  <button class="btn-f btn-teal" onclick="go('v-home')" data-i18n="back_home">🏠 Volver al inicio</button>
   <button class="btn-f btn-white" id="done-next-btn" style="display:none;"></button>
 </div>
 
@@ -161,6 +161,146 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 if(__cfg().calm)document.documentElement.classList.add('calm');
+
+/* ── IDIOMAS (es · en · fr) ── */
+const UI={
+ es:{home_title:'🎨 Intereses',home_sub:'10-15 min al día · un interés cada vez',all_label:'Todos tus intereses',
+   int_hdr:'Interés',act_hdr:'Actividad',done_t:'¡Actividad completada!',back_home:'🏠 Volver al inicio',
+   today_tag:'Hoy toca',all_done_tag:'¡Todo completado!',repeat_fav:'Repite tu favorito',just_enjoy:'O simplemente disfruta 💚',
+   day_of:'Día {i} de 5 · ~{m} min',day_of2:'Día {i} de 5',streak:'{n} {d} practicando',day1:'día',dayN:'días',
+   streak_sub:'La racha nunca se rompe — solo se pausa 💚',
+   deep_btn:'🔬 ¿Quieres profundizar? (opcional)',no_pressure:'sin presión',start_btn:'▶ Empezar {m} min',done_btn:'✓ Ya lo he hecho',
+   note_ph:'📝 Nota rápida (opcional)— se guarda sola',
+   int_all:'🏆 ¡Los 5 días completados! Puedes repetir cualquiera.',int_zero:'Cinco días pequeños de ~{m} min. Empieza por el primero.',int_some:'Llevas {n} de 5. ¡Sigue así!',
+   done_sub:'{name} · Día {i} de 5',next_btn:'{e} Siguiente: {t}',
+   v_min:'Queda un minuto.',v_ten:'Últimos diez segundos.',v_done:'¡Muy bien! Actividad completada.',
+   motivs:['🌱 10 minutos al día construyen una habilidad en un año.','🎯 Solo una actividad. Solo hoy. Eso es todo.','🧠 Aprender algo nuevo es dopamina de la buena.','✨ No hace falta hacerlo bien — hace falta hacerlo.','💚 Tu curiosidad es un músculo: hoy toca entrenarlo.','🐾 Pasito a pasito se llega lejos.','🔥 Ya estás aquí. Eso es la mitad del trabajo.']},
+ en:{home_title:'🎨 Interests',home_sub:'10-15 min a day · one interest at a time',all_label:'All your interests',
+   int_hdr:'Interest',act_hdr:'Activity',done_t:'Activity completed!',back_home:'🏠 Back to start',
+   today_tag:'Today’s pick',all_done_tag:'All completed!',repeat_fav:'Repeat your favourite',just_enjoy:'Or just enjoy 💚',
+   day_of:'Day {i} of 5 · ~{m} min',day_of2:'Day {i} of 5',streak:'{n} {d} practising',day1:'day',dayN:'days',
+   streak_sub:'The streak never breaks — it only pauses 💚',
+   deep_btn:'🔬 Want to go deeper? (optional)',no_pressure:'no pressure',start_btn:'▶ Start {m} min',done_btn:'✓ I’ve done it',
+   note_ph:'📝 Quick note (optional) — saves itself',
+   int_all:'🏆 All 5 days done! You can repeat any of them.',int_zero:'Five small days of ~{m} min. Start with the first.',int_some:'You’re {n} of 5. Keep it up!',
+   done_sub:'{name} · Day {i} of 5',next_btn:'{e} Next: {t}',
+   v_min:'One minute left.',v_ten:'Last ten seconds.',v_done:'Well done! Activity completed.',
+   motivs:['🌱 10 minutes a day build a skill in a year.','🎯 Just one activity. Just today. That’s all.','🧠 Learning something new is good dopamine.','✨ It doesn’t have to be perfect — it just has to happen.','💚 Your curiosity is a muscle: today you train it.','🐾 Step by step you go far.','🔥 You’re already here. That’s half the work.']},
+ fr:{home_title:'🎨 Centres d’intérêt',home_sub:'10-15 min par jour · un intérêt à la fois',all_label:'Tous tes centres d’intérêt',
+   int_hdr:'Intérêt',act_hdr:'Activité',done_t:'Activité terminée !',back_home:'🏠 Retour à l’accueil',
+   today_tag:'Aujourd’hui',all_done_tag:'Tout terminé !',repeat_fav:'Refais ton préféré',just_enjoy:'Ou profite simplement 💚',
+   day_of:'Jour {i} sur 5 · ~{m} min',day_of2:'Jour {i} sur 5',streak:'{n} {d} de pratique',day1:'jour',dayN:'jours',
+   streak_sub:'La série ne se casse jamais — elle se met juste en pause 💚',
+   deep_btn:'🔬 Envie d’aller plus loin ? (facultatif)',no_pressure:'sans pression',start_btn:'▶ Commencer {m} min',done_btn:'✓ Je l’ai fait',
+   note_ph:'📝 Note rapide (facultatif) — se sauvegarde seule',
+   int_all:'🏆 Les 5 jours terminés ! Tu peux refaire n’importe lequel.',int_zero:'Cinq petits jours de ~{m} min. Commence par le premier.',int_some:'Tu en es à {n} sur 5. Continue !',
+   done_sub:'{name} · Jour {i} sur 5',next_btn:'{e} Ensuite : {t}',
+   v_min:'Il reste une minute.',v_ten:'Dernières dix secondes.',v_done:'Bravo ! Activité terminée.',
+   motivs:['🌱 10 minutes par jour construisent une compétence en un an.','🎯 Une seule activité. Juste aujourd’hui. C’est tout.','🧠 Apprendre du nouveau, c’est de la bonne dopamine.','✨ Pas besoin que ce soit parfait — juste que ce soit fait.','💚 Ta curiosité est un muscle : aujourd’hui tu l’entraînes.','🐾 Pas à pas, on va loin.','🔥 Tu es déjà là. C’est la moitié du travail.']}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
+
+/* Traducción del contenido de las aficiones (nombre + días). El emoji, mins y
+   color vienen del dato ES; aquí solo el texto. */
+const INT_L={
+ en:{
+  musica:{name:'Music',days:[
+   {t:'Violin posture and hold',c:'Practise the correct posture. Rest the violin on your left shoulder, hold the neck with your left hand and keep your back straight.',g:'Practise posture for 10 min'},
+   {t:'Basic bow technique',c:'Open-bow exercises on open strings. Long, smooth strokes, with the bow perpendicular to the strings.',g:'30 clean bow strokes'},
+   {t:'First notes — G string',c:'Learn the notes G, A and B on the G string. Practise each note separately, then combine them into simple sequences.',g:'Play G-A-B 10 times'},
+   {t:'First notes — D string',c:'Continue with the notes D, E and F# on the D string. Alternate between the G and D strings.',g:'Sequences across 2 strings'},
+   {t:'Basic rhythm — Quarter notes',c:'Introduce quarter notes. Play simple notes following a metronome at 60 BPM.',g:'5 min with a metronome'}]},
+  escritura:{name:'Writing',days:[
+   {t:'Morning reflection',c:'Write about how you feel as the day begins. What do you hope to achieve today? What thoughts cross your mind?',g:'Write at least 100 words'},
+   {t:'Describe an object',c:'Choose a nearby object and describe it in detail. Not just its look: what feelings it stirs, what memories it awakens.',g:'A 150-word description'},
+   {t:'Imaginary dialogue',c:'Create a conversation between two people who just met in an unusual place. What do they talk about? How did they meet?',g:'A dialogue of 10 exchanges'},
+   {t:'Letter to your future self',c:'Write a letter to yourself a year from now. What would you say? What advice would you give? What do you hope to have achieved?',g:'A 200-word letter'},
+   {t:'Six-word story',c:'Hemingway’s challenge: tell a complete story in exactly 6 words. Then expand it into a full paragraph.',g:'6-word story + expansion'}]},
+  dibujo:{name:'Drawing',days:[
+   {t:'Continuous line',c:'Draw your non-dominant hand using a single continuous line, without lifting the pencil. Focus on observing every detail.',g:'A complete hand drawing'},
+   {t:'Geometric shapes',c:'Create a composition using only circles, squares and triangles. Play with sizes and overlaps.',g:'A composition of 15 shapes'},
+   {t:'Basic shading',c:'Draw a sphere, a cube and a cylinder. Practise shading techniques to create volume and depth.',g:'3 objects with shadows'},
+   {t:'Natural texture',c:'Find something with an interesting texture (bark, stone, fabric) and recreate it on paper with different strokes.',g:'A detailed texture study'},
+   {t:'Quick sketch',c:'Do 5 two-minute sketches of objects around you. Capture the essence, not the details.',g:'5 two-minute sketches'}]},
+  nudos:{name:'Knots',days:[
+   {t:'Overhand knot — The base',c:'The overhand knot is the base of them all. Make a loop and pass the end through it. It stops a rope from slipping or serves as a base for complex knots.',g:'10 perfect overhand knots'},
+   {t:'Figure-eight — Safety',c:'Form an eight with the rope and pass the end back along the same path. It doesn’t slip and unties easily even under tension.',g:'Figure-eight both ways'},
+   {t:'Reef knot — Joining ropes',c:'To join two ropes of the same thickness. Remember: “right over left, left over right”. Essential in rescue and sailing.',g:'Join 2 ropes without looking'},
+   {t:'Clove hitch — Quick hold',c:'Ideal for tying a rope to a post. Two turns around the object, crossing the rope over itself. Can be done one-handed.',g:'Clove hitch one-handed'},
+   {t:'Bowline — The king',c:'Makes a fixed loop that won’t slip. “The rabbit comes out of the hole, around the tree and back in the hole.” The most versatile knot: climbing, rescue, sailing.',g:'Bowline in under 10 sec'}]},
+  electricidad:{name:'Electricity',days:[
+   {t:'What is electricity?',c:'It’s the movement of electrons through a conductor. Electrons go from the negative to the positive pole. Like water in a pipe, it needs a closed circuit to flow.',g:'Understand electron flow'},
+   {t:'Voltage, current and resistance',c:'VOLTAGE (V) = electrical pressure. CURRENT (A) = amount of electrons flowing. RESISTANCE (Ω) = opposition to the flow. Ohm’s law: V = I × R.',g:'Solve 3 Ohm’s-law examples'},
+   {t:'Series vs parallel',c:'SERIES: components one after another — same current, voltage divides. PARALLEL: separate branches — same voltage, current divides. Homes use parallel.',g:'Draw both circuits'},
+   {t:'Power and consumption',c:'POWER (W) = V × I. A 60W bulb at 120V draws 0.5A. Your bill is measured in kWh (kilowatt-hours).',g:'Work out 5 appliances’ use'},
+   {t:'Electrical safety',c:'NEVER work with electricity without cutting the power. Breakers protect against overloads, RCDs against electrocution. Always use a multimeter.',g:'Identify your home’s safeguards'}]},
+  neuro:{name:'Neuroscience',days:[
+   {t:'What is neuroscience?',c:'It studies how your brain works. Every thought, emotion and movement comes from 86 billion neurons communicating. Your brain uses 20% of your daily energy!',g:'Observe a basic brain function',
+    d:'Neurons have dendrites (receiving antennas), soma (cell body), axon (transmitting cable) and synapses (connectors). They communicate with electrical signals travelling at 120 m/s.'},
+   {t:'The power of sleep',c:'While you sleep, your brain “cleans” itself of toxins and consolidates the day’s memories, moving them from the hippocampus to the cortex.',g:'Improve your sleep hygiene',
+    d:'Synaptic plasticity: when two neurons fire together repeatedly, their connection strengthens (LTP). “Neurons that fire together, wire together” — that’s how you learn new skills.'},
+   {t:'Exercise = brain medicine',c:'Aerobic exercise releases BDNF, a protein that acts like “fertiliser” for neurons. 20 minutes a day can improve your memory within weeks.',g:'Connect it to your Pilates routine',
+    d:'Key neurotransmitters: dopamine (motivation), serotonin (wellbeing), GABA (calm), acetylcholine (attention), noradrenaline (alertness). Each fits specific receptors like a key in a lock.'},
+   {t:'Music and the whole brain',c:'Playing music activates motor, auditory, visual and memory areas at once. It’s the only activity that works the whole brain, creating permanent connections.',g:'Connect it to your violin practice',
+    d:'Brain waves: Delta (deep sleep), Theta (creativity), Alpha (relaxation), Beta (focus), Gamma (high cognition). Each frequency accompanies a different mental function.'},
+   {t:'Neurotech today',c:'Non-invasive brain–computer interfaces already allow at-home treatments for sleep and focus. Neurofeedback trains your brain in real time.',g:'Explore neurofeedback apps',
+    d:'In 2024 the complete brain of the Drosophila fly was mapped — a milestone toward the “human connectome”: the full map of every neural connection.'}]}
+ },
+ fr:{
+  musica:{name:'Musique',days:[
+   {t:'Posture et tenue du violon',c:'Travaille la posture correcte. Pose le violon sur ton épaule gauche, tiens le manche de la main gauche et garde le dos droit.',g:'Travailler la posture 10 min'},
+   {t:'Technique de base de l’archet',c:'Exercices d’archet sur cordes à vide. Mouvements longs et souples, l’archet perpendiculaire aux cordes.',g:'30 coups d’archet nets'},
+   {t:'Premières notes — Corde Sol',c:'Apprends les notes Sol, La et Si sur la corde Sol. Travaille chaque note séparément, puis combine-les en séquences simples.',g:'Jouer Sol-La-Si 10 fois'},
+   {t:'Premières notes — Corde Ré',c:'Continue avec les notes Ré, Mi et Fa# sur la corde Ré. Alterne entre les cordes Sol et Ré.',g:'Séquences entre 2 cordes'},
+   {t:'Rythme de base — Noires',c:'Introduis les noires. Joue des notes simples en suivant un métronome à 60 BPM.',g:'5 min au métronome'}]},
+  escritura:{name:'Écriture',days:[
+   {t:'Réflexion du matin',c:'Écris comment tu te sens au début de la journée. Qu’espères-tu accomplir aujourd’hui ? Quelles pensées te traversent ?',g:'Écrire au moins 100 mots'},
+   {t:'Décrire un objet',c:'Choisis un objet proche et décris-le en détail. Pas seulement son apparence : les sensations qu’il provoque, les souvenirs qu’il réveille.',g:'Une description de 150 mots'},
+   {t:'Dialogue imaginaire',c:'Crée une conversation entre deux personnes qui viennent de se rencontrer dans un lieu inhabituel. De quoi parlent-elles ? Comment se sont-elles connues ?',g:'Un dialogue de 10 répliques'},
+   {t:'Lettre à ton futur toi',c:'Écris une lettre à toi-même dans un an. Que lui dirais-tu ? Quels conseils lui donnerais-tu ? Qu’espères-tu avoir accompli ?',g:'Une lettre de 200 mots'},
+   {t:'Histoire en 6 mots',c:'Le défi de Hemingway : raconte une histoire complète en exactement 6 mots. Puis développe-la en un paragraphe.',g:'Histoire de 6 mots + développement'}]},
+  dibujo:{name:'Dessin',days:[
+   {t:'Ligne continue',c:'Dessine ta main non dominante avec une seule ligne continue, sans lever le crayon. Concentre-toi sur chaque détail.',g:'Un dessin de main complet'},
+   {t:'Formes géométriques',c:'Crée une composition avec seulement des cercles, carrés et triangles. Joue avec les tailles et les superpositions.',g:'Une composition de 15 formes'},
+   {t:'Ombrage de base',c:'Dessine une sphère, un cube et un cylindre. Travaille l’ombrage pour créer du volume et de la profondeur.',g:'3 objets avec ombres'},
+   {t:'Texture naturelle',c:'Trouve quelque chose à la texture intéressante (écorce, pierre, tissu) et recrée-la sur papier avec différents traits.',g:'Une étude de texture détaillée'},
+   {t:'Croquis rapide',c:'Fais 5 croquis de 2 minutes d’objets autour de toi. Capte l’essence, pas les détails.',g:'5 croquis de 2 minutes'}]},
+  nudos:{name:'Nœuds',days:[
+   {t:'Nœud simple — La base',c:'Le nœud simple est la base de tous. Fais une boucle et passe le bout dedans. Il empêche une corde de glisser ou sert de base aux nœuds complexes.',g:'10 nœuds simples parfaits'},
+   {t:'Nœud en huit — Sécurité',c:'Forme un huit avec la corde et repasse le bout par le même chemin. Il ne glisse pas et se défait facilement même sous tension.',g:'Nœud en huit dans les deux sens'},
+   {t:'Nœud plat — Unir des cordes',c:'Pour unir deux cordes de même épaisseur. Souviens-toi : « droite sur gauche, gauche sur droite ». Essentiel en secours et en navigation.',g:'Unir 2 cordes sans regarder'},
+   {t:'Nœud de cabestan — Prise rapide',c:'Idéal pour attacher une corde à un poteau. Deux tours autour de l’objet, en croisant la corde sur elle-même. Faisable d’une seule main.',g:'Cabestan d’une seule main'},
+   {t:'Nœud de chaise — Le roi',c:'Crée une boucle fixe qui ne glisse pas. « Le lapin sort du trou, contourne l’arbre et rentre dans le trou. » Le nœud le plus polyvalent : escalade, secours, navigation.',g:'Nœud de chaise en moins de 10 s'}]},
+  electricidad:{name:'Électricité',days:[
+   {t:'Qu’est-ce que l’électricité ?',c:'C’est le déplacement des électrons dans un conducteur. Les électrons vont du pôle négatif au positif. Comme l’eau dans un tuyau, il faut un circuit fermé pour circuler.',g:'Comprendre le flux d’électrons'},
+   {t:'Tension, courant et résistance',c:'TENSION (V) = pression électrique. COURANT (A) = quantité d’électrons qui circulent. RÉSISTANCE (Ω) = opposition au flux. Loi d’Ohm : V = I × R.',g:'Résoudre 3 exemples avec la loi d’Ohm'},
+   {t:'Série vs parallèle',c:'SÉRIE : composants l’un après l’autre — même courant, la tension se divise. PARALLÈLE : branches séparées — même tension, le courant se divise. Les maisons utilisent le parallèle.',g:'Dessiner les deux circuits'},
+   {t:'Puissance et consommation',c:'PUISSANCE (W) = V × I. Une ampoule de 60W en 120V consomme 0,5A. Ta facture se mesure en kWh (kilowattheures).',g:'Calculer la conso de 5 appareils'},
+   {t:'Sécurité électrique',c:'Ne travaille JAMAIS sur l’électricité sans couper l’alimentation. Les disjoncteurs protègent des surcharges, les différentiels de l’électrocution. Utilise toujours un multimètre.',g:'Repérer les protections de chez toi'}]},
+  neuro:{name:'Neurosciences',days:[
+   {t:'Qu’est-ce que les neurosciences ?',c:'Elles étudient comment fonctionne ton cerveau. Chaque pensée, émotion et mouvement vient de 86 milliards de neurones qui communiquent. Ton cerveau consomme 20% de ton énergie quotidienne !',g:'Observer une fonction cérébrale de base',
+    d:'Les neurones ont des dendrites (antennes réceptrices), un soma (corps cellulaire), un axone (câble transmetteur) et des synapses (connecteurs). Ils communiquent par des signaux électriques à 120 m/s.'},
+   {t:'Le pouvoir du sommeil',c:'Pendant que tu dors, ton cerveau se « nettoie » de ses toxines et consolide les souvenirs de la journée, de l’hippocampe vers le cortex.',g:'Améliorer ton hygiène de sommeil',
+    d:'Plasticité synaptique : quand deux neurones s’activent ensemble de façon répétée, leur connexion se renforce (LTP). « Les neurones qui s’activent ensemble se connectent ensemble » — c’est ainsi qu’on apprend.'},
+   {t:'Exercice = médecine du cerveau',c:'L’exercice aérobie libère le BDNF, une protéine qui agit comme un « engrais » pour les neurones. 20 minutes par jour peuvent améliorer ta mémoire en quelques semaines.',g:'Le relier à ta routine de Pilates',
+    d:'Neurotransmetteurs clés : dopamine (motivation), sérotonine (bien-être), GABA (calme), acétylcholine (attention), noradrénaline (vigilance). Chacun s’emboîte dans des récepteurs précis, comme une clé.'},
+   {t:'La musique et tout le cerveau',c:'Jouer de la musique active à la fois les aires motrices, auditives, visuelles et de mémoire. C’est la seule activité qui fait travailler tout le cerveau, créant des connexions permanentes.',g:'Le relier à ta pratique du violon',
+    d:'Ondes cérébrales : Delta (sommeil profond), Thêta (créativité), Alpha (relaxation), Bêta (concentration), Gamma (haute cognition). Chaque fréquence accompagne une fonction mentale différente.'},
+   {t:'Neurotechnologie actuelle',c:'Les interfaces cerveau-ordinateur non invasives permettent déjà des traitements à domicile pour le sommeil et la concentration. Le neurofeedback entraîne ton cerveau en temps réel.',g:'Explorer des applis de neurofeedback',
+    d:'En 2024, le cerveau complet de la mouche Drosophile a été cartographié — un jalon vers le « connectome humain » : la carte complète de toutes les connexions neuronales.'}]}
+ }
+};
+// Devuelve la afición con nombre/días en el idioma actual (emoji, mins, color del dato ES)
+function iL(it){
+  const lang=crisLang();
+  if(lang==='es'||!INT_L[lang]||!INT_L[lang][it.id])return it;
+  const L=INT_L[lang][it.id];
+  return {...it,name:L.name||it.name,
+    days:it.days.map((day,i)=>{const d=L.days[i]||{};return {...day,title:d.t||day.title,content:d.c||day.content,goal:d.g||day.goal,deep:day.deep?(d.d||day.deep):undefined};})};
+}
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
 
@@ -262,8 +402,8 @@ function speak(t){
     window.speechSynthesis.cancel();
     if(window.speechSynthesis.paused)window.speechSynthesis.resume();
     _utt=new SpeechSynthesisUtterance(t);
-    _utt.lang='es-ES';_utt.rate=.9;
-    const v=window.speechSynthesis.getVoices().find(v=>v.lang.startsWith('es'));
+    const _lg=crisLang();_utt.lang=VOICE_LANG[_lg];_utt.rate=.9;
+    const v=window.speechSynthesis.getVoices().find(v=>v.lang.startsWith(crisLang()));
     if(v)_utt.voice=v;
     window.speechSynthesis.speak(_utt);
   }catch(e){}
@@ -302,21 +442,21 @@ function todayInterest(){
   return INTERESTS[doy%INTERESTS.length];
 }
 function initHome(){
-  document.getElementById('home-motiv').textContent=MOTIVS[new Date().getDay()%MOTIVS.length];
+  document.getElementById('home-motiv').textContent=t('motivs')[new Date().getDay()%t('motivs').length];
 
   const it=todayInterest();
   const pend=nextPending(it);
   const btn=document.getElementById('home-today');
   btn.style.background=it.color;
   btn.innerHTML=pend>=0
-    ?`<div><div class="th-tag">Hoy toca</div><div class="th-name">${it.name}: ${it.days[pend].title}</div><div class="th-sub">Día ${pend+1} de 5 · ~${it.mins} min</div></div><span class="th-em">${it.emoji}</span>`
-    :`<div><div class="th-tag">¡Todo completado!</div><div class="th-name">Repite tu favorito</div><div class="th-sub">O simplemente disfruta 💚</div></div><span class="th-em">🏆</span>`;
+    ?`<div><div class="th-tag">${t('today_tag')}</div><div class="th-name">${iL(it).name}: ${iL(it).days[pend].title}</div><div class="th-sub">${t('day_of',{i:pend+1,m:it.mins})}</div></div><span class="th-em">${it.emoji}</span>`
+    :`<div><div class="th-tag">${t('all_done_tag')}</div><div class="th-name">${t('repeat_fav')}</div><div class="th-sub">${t('just_enjoy')}</div></div><span class="th-em">🏆</span>`;
 
   const d=getData();
   const sb=document.getElementById('streak-box');
   if(d.streak&&d.streak>0){
     sb.style.display='flex';
-    sb.innerHTML=`<span class="streak-fire">🔥</span><span class="streak-txt"><strong>${d.streak} ${d.streak===1?'día':'días'} practicando</strong><br>La racha nunca se rompe — solo se pausa 💚</span>`;
+    sb.innerHTML=`<span class="streak-fire">🔥</span><span class="streak-txt"><strong>${t('streak',{n:d.streak,d:d.streak===1?t('day1'):t('dayN')})}</strong><br>${t('streak_sub')}</span>`;
   }else sb.style.display='none';
 
   document.getElementById('int-grid').innerHTML=INTERESTS.map(it=>{
@@ -324,7 +464,7 @@ function initHome(){
     const dots=it.days.map((_,i)=>`<span class="ic-dot${done[i]?' done':''}"></span>`).join('');
     return `<button class="int-card" onclick="openInt('${it.id}')">
       <span class="ic-em">${it.emoji}</span>
-      <span class="ic-name">${it.name}</span>
+      <span class="ic-name">${iL(it).name}</span>
       <span class="ic-dots">${dots}</span>
     </button>`;
   }).join('');
@@ -341,12 +481,12 @@ function openInt(id){
   const it=findInt(id);
   const done=getDone(id);
   const nDone=done.filter(Boolean).length;
-  document.getElementById('int-title').textContent=it.emoji+' '+it.name;
+  document.getElementById('int-title').textContent=it.emoji+' '+iL(it).name;
   document.getElementById('int-motiv').textContent=
-    nDone===5?'🏆 ¡Los 5 días completados! Puedes repetir cualquiera.':
-    nDone===0?`Cinco días pequeños de ~${it.mins} min. Empieza por el primero.`:
-    `Llevas ${nDone} de 5. ¡Sigue así!`;
-  document.getElementById('int-days').innerHTML=it.days.map((day,i)=>`
+    nDone===5?t('int_all'):
+    nDone===0?t('int_zero',{m:it.mins}):
+    t('int_some',{n:nDone});
+  document.getElementById('int-days').innerHTML=iL(it).days.map((day,i)=>`
     <button class="day-row${done[i]?' done':''}" onclick="openAct('${id}',${i})">
       <span class="dr-num">${done[i]?'✓':i+1}</span>
       <span class="dr-info">
@@ -360,29 +500,29 @@ function openInt(id){
 
 /* ── ACTIVITY ── */
 function openAct(intId,dayIdx){
-  const it=findInt(intId);
+  const it=iL(findInt(intId));
   const day=it.days[dayIdx];
   cur={intId,dayIdx,timer:it.mins*60,total:it.mins*60,interval:null,running:false};
   document.getElementById('act-hdr').textContent=it.name;
   document.getElementById('act-body').innerHTML=`
     <div class="act-hero" style="background:${it.color}">
       <span class="ah-em">${it.emoji}</span>
-      <div class="ah-day">Día ${dayIdx+1} de 5</div>
+      <div class="ah-day">${t('day_of2',{i:dayIdx+1})}</div>
       <div class="ah-title">${day.title}</div>
     </div>
     <div class="act-card">${day.content}</div>
     <div class="goal-pill"><span>🎯</span><span>${day.goal}</span></div>
-    ${day.deep?`<button class="deep-btn" onclick="document.getElementById('deep-box').classList.toggle('open')">🔬 ¿Quieres profundizar? (opcional)</button>
+    ${day.deep?`<button class="deep-btn" onclick="document.getElementById('deep-box').classList.toggle('open')">${t('deep_btn')}</button>
     <div class="deep-box" id="deep-box">${day.deep}</div>`:''}
     <div class="timer-zone">
       <div class="tring" id="t-ring"><div class="tring-in">
         <div class="timer-dig" id="t-dig">${fmt(cur.timer)}</div>
-        <div class="timer-lbl" id="t-lbl">sin presión</div>
+        <div class="timer-lbl" id="t-lbl">${t('no_pressure')}</div>
       </div></div>
     </div>
-    <button class="btn-f btn-teal" id="t-start" onclick="actStart()">▶ Empezar ${it.mins} min</button>
-    <button class="btn-f btn-soft" onclick="actDone()">✓ Ya lo he hecho</button>
-    <textarea class="note-area" id="act-note" placeholder="📝 Nota rápida (opcional)— se guarda sola">${getNote(intId)}</textarea>
+    <button class="btn-f btn-teal" id="t-start" onclick="actStart()">${t('start_btn',{m:it.mins})}</button>
+    <button class="btn-f btn-soft" onclick="actDone()">${t('done_btn')}</button>
+    <textarea class="note-area" id="act-note" placeholder="${t('note_ph')}">${getNote(intId)}</textarea>
   `;
   document.getElementById('act-note').addEventListener('input',e=>setNote(intId,e.target.value));
   __ring('t-ring',1);
@@ -408,8 +548,8 @@ function actStart(){
     const dig=document.getElementById('t-dig');
     if(dig)dig.textContent=fmt(cur.timer);
     __ring('t-ring',cur.total?cur.timer/cur.total:0);
-    if(cur.timer===60)speak('Queda un minuto.');
-    if(cur.timer===10)speak('Últimos diez segundos.');
+    if(cur.timer===60)speak(t('v_min'));
+    if(cur.timer===10)speak(t('v_ten'));
     if(cur.timer<=0){
       clearInterval(cur.interval);cur.interval=null;
       // Alarma inconfundible de fin de tiempo
@@ -432,12 +572,12 @@ function actDone(){
   try{var _n=new Date();localStorage.setItem('cris_intereses_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}
   markDone(cur.intId,cur.dayIdx);
   vibrate([70,40,70]);
-  speak('¡Muy bien! Actividad completada.');
+  speak(t('v_done'));
 
   const it=findInt(cur.intId);
   const d=getData();
   document.getElementById('done-em').textContent=it.emoji;
-  document.getElementById('done-sub').textContent=`${it.name} · Día ${cur.dayIdx+1} de 5`;
+  document.getElementById('done-sub').textContent=t('done_sub',{name:iL(it).name,i:cur.dayIdx+1});
   document.getElementById('done-motiv').textContent=
     d.streak>1?`🔥 ${d.streak} días practicando. Tu cerebro está creando conexiones nuevas ahora mismo.`
     :'✨ Cada práctica cuenta. Tu cerebro está creando conexiones nuevas ahora mismo.';
@@ -446,7 +586,7 @@ function actDone(){
   const nb=document.getElementById('done-next-btn');
   if(pend>=0){
     nb.style.display='block';
-    nb.textContent=`${it.emoji} Siguiente: ${it.days[pend].title}`;
+    nb.textContent=t('next_btn',{e:it.emoji,t:iL(it).days[pend].title});
     nb.onclick=()=>openAct(it.id,pend);
   }else nb.style.display='none';
 
@@ -454,6 +594,7 @@ function actDone(){
 }
 
 /* ── Boot ── */
+applyStaticI18n();
 initHome();
 /* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
 /* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió */
