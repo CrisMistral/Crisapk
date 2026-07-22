@@ -87,8 +87,8 @@ h1{color:var(--td);font-size:1.5rem;font-weight:800;text-align:center;}
 <!-- PICKER -->
 <div id="v-pick" class="screen active">
   <img src="../quico/quico_happy.png" alt="Quico" style="width:118px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))">
-  <h1>💎 Joyas</h1>
-  <p class="sub">Coge cada gema de la bandeja y ponla en su casilla del color correcto.<br>El dibujo se ilumina solo.</p>
+  <h1 data-i18n="title">💎 Joyas</h1>
+  <p class="sub" data-i18n="sub">Coge cada gema de la bandeja y ponla en su casilla del color correcto.<br>El dibujo se ilumina solo.</p>
   <div class="pick-grid" id="pick-grid"></div>
 </div>
 
@@ -103,15 +103,15 @@ h1{color:var(--td);font-size:1.5rem;font-weight:800;text-align:center;}
     <div class="board" id="board"></div>
     <div class="done-hero" id="done-hero">
       <span class="big">✨</span>
-      <h3>¡Precioso!</h3>
-      <div style="font-size:.85rem;color:var(--fg2);font-weight:600;">Dibujo completado 💚</div>
+      <h3 data-i18n="done_t">¡Precioso!</h3>
+      <div style="font-size:.85rem;color:var(--fg2);font-weight:600;" data-i18n="done_s">Dibujo completado 💚</div>
       <div class="row-btns">
-        <button class="btn btn-soft" onclick="go('v-pick')">← Galería</button>
+        <button class="btn btn-soft" onclick="go('v-pick')" data-i18n="gallery">← Galería</button>
         <button class="btn btn-teal" id="next-btn">Siguiente →</button>
       </div>
     </div>
   </div>
-  <div class="tray-label">Bandeja de gemas</div>
+  <div class="tray-label" data-i18n="tray">Bandeja de gemas</div>
   <div class="tray" id="tray"></div>
 </div>
 
@@ -120,6 +120,21 @@ h1{color:var(--td);font-size:1.5rem;font-weight:800;text-align:center;}
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 if(__cfg().calm)document.documentElement.classList.add('calm');
+
+/* ── IDIOMAS ── */
+const I18N={
+  es:{title:'💎 Joyas',sub:'Coge cada gema de la bandeja y ponla en su casilla del color correcto.<br>El dibujo se ilumina solo.',done_t:'¡Precioso!',done_s:'Dibujo completado 💚',gallery:'← Galería',tray:'Bandeja de gemas',gems:'gemas',
+      names:{corazon:'Corazón',estrella:'Estrella',flor:'Flor',mariposa:'Mariposa',arcoiris:'Arcoíris',sandia:'Sandía',manzana:'Manzana',diamante:'Diamante'}},
+  en:{title:'💎 Gems',sub:'Take each gem from the tray and place it on the matching colour cell.<br>The picture lights up on its own.',done_t:'Beautiful!',done_s:'Picture completed 💚',gallery:'← Gallery',tray:'Gem tray',gems:'gems',
+      names:{corazon:'Heart',estrella:'Star',flor:'Flower',mariposa:'Butterfly',arcoiris:'Rainbow',sandia:'Watermelon',manzana:'Apple',diamante:'Diamond'}},
+  fr:{title:'💎 Gemmes',sub:'Prends chaque gemme du plateau et pose-la sur la case de la bonne couleur.<br>Le dessin s’illumine tout seul.',done_t:'Magnifique !',done_s:'Dessin terminé 💚',gallery:'← Galerie',tray:'Plateau de gemmes',gems:'gemmes',
+      names:{corazon:'Cœur',estrella:'Étoile',flor:'Fleur',mariposa:'Papillon',arcoiris:'Arc-en-ciel',sandia:'Pastèque',manzana:'Pomme',diamante:'Diamant'}}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return I18N[l]?l:'es';}
+function t(k){const s=I18N[crisLang()][k];return s!==undefined?s:(I18N.es[k]!==undefined?I18N.es[k]:k);}
+function picName(id){const n=I18N[crisLang()].names;return (n&&n[id])||I18N.es.names[id]||id;}
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
+applyStaticI18n();
 
 /* ── Gemas ── */
 const GEMS={
@@ -182,8 +197,8 @@ function renderPicker(){
     return `<button class="pick-card" onclick="startPic('${p.id}')">
       ${done.includes(p.id)?'<span class="pick-badge">✅</span>':''}
       ${thumb}
-      <div class="pick-name">${p.emoji} ${p.name}</div>
-      <div class="pick-tag">${countGems(p)} gemas</div>
+      <div class="pick-name">${p.emoji} ${picName(p.id)}</div>
+      <div class="pick-tag">${countGems(p)} ${t("gems")}</div>
     </button>`;
   }).join('');
 }
@@ -196,7 +211,7 @@ function startPic(id){
   const flat=cur.grid.join('').split('');
   targetCount=flat.filter(c=>c!=='.').length;
   flat.forEach(c=>{if(c!=='.')remaining[c]=(remaining[c]||0)+1;});
-  document.getElementById('game-title').textContent=cur.emoji+' '+cur.name;
+  document.getElementById('game-title').textContent=cur.emoji+' '+picName(cur.id);
   document.getElementById('done-hero').classList.remove('show');
   buildBoard();
   buildTray();
@@ -281,7 +296,7 @@ function finishPic(){
   const idx=PICTURES.findIndex(p=>p.id===cur.id);
   const next=PICTURES[(idx+1)%PICTURES.length];
   const nb=document.getElementById('next-btn');
-  nb.textContent=next.emoji+' '+next.name+' →';
+  nb.textContent=next.emoji+' '+picName(next.id)+' →';
   nb.onclick=()=>startPic(next.id);
   setTimeout(()=>document.getElementById('done-hero').classList.add('show'),650);
 }
