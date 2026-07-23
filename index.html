@@ -178,6 +178,18 @@ body{
 #menuBtn .mb-label{font-size:.9rem;font-weight:700;}
 #menuBtn:active{transform:scale(.92);}
 
+/* ── BOTÓN DE IDIOMA (justo debajo del menú) ── */
+#langBtn{
+  position:fixed;top:70px;left:16px;height:40px;border-radius:14px;padding:0 12px;
+  background:var(--white-card);border:2px solid var(--mint-mid);color:var(--teal-dark);
+  font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;z-index:150;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  box-shadow:0 3px 12px rgba(38,166,154,.18);
+}
+#langBtn .lb-flag{font-size:1.1rem;line-height:1;}
+#langBtn:active{transform:scale(.92);}
+body.mod-open #langBtn{display:none;}
+
 /* ── CAJÓN LATERAL IZQUIERDO ──
    Se envuelve en un host fijo a tamaño de ventana con overflow:hidden,
    así la parte del cajón que queda fuera de pantalla no ensancha la página. */
@@ -304,6 +316,8 @@ body.mod-open #menuBtn{display:none;}
 
 <!-- Botón de menú -->
 <button id="menuBtn" aria-label="Abrir menú" data-i18n-aria="menu_open" onclick="openDrawer()">☰<span class="mb-label" data-i18n="menu">Menú</span></button>
+<!-- Botón de idioma (cambia ES → EN → FR con cada toque) -->
+<button id="langBtn" aria-label="Cambiar idioma" data-i18n-aria="lang_change" onclick="cycleLang()"><span class="lb-flag">🇪🇸</span><span class="lb-code">ES</span></button>
 
 <!-- Pantalla 1: solo HOY -->
 <div id="dashboard">
@@ -399,7 +413,7 @@ body.mod-open #menuBtn{display:none;}
 /* ══════════ IDIOMAS (es por defecto · en · fr) ══════════ */
 const I18N={
  es:{
-  menu:'Menú', menu_open:'Abrir menú', menu_close:'Cerrar menú', menu_title:'🌿 Menú de Cris',
+  menu:'Menú', menu_open:'Abrir menú', menu_close:'Cerrar menú', menu_title:'🌿 Menú de Cris', lang_change:'Cambiar idioma',
   hero_sub:'¿en qué te ayudo hoy?',
   lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes',
   notif_morning:'☀️ Empezar el día', notif_night:'🌙 Rutina nocturna',
@@ -461,7 +475,7 @@ const I18N={
   zone:{cocina:'Cocina',bano:'Baño',salon:'Salón',dormitorio:'Dormitorio',comunes:'Zonas Comunes'}
  },
  en:{
-  menu:'Menu', menu_open:'Open menu', menu_close:'Close menu', menu_title:'🌿 Cris menu',
+  menu:'Menu', menu_open:'Open menu', menu_close:'Close menu', menu_title:'🌿 Cris menu', lang_change:'Change language',
   hero_sub:'how can I help you today?',
   lang_label:'Language', modules_label:'Modules', settings_label:'Settings',
   notif_morning:'☀️ Start the day', notif_night:'🌙 Night routine',
@@ -523,7 +537,7 @@ const I18N={
   zone:{cocina:'Kitchen',bano:'Bathroom',salon:'Living room',dormitorio:'Bedroom',comunes:'Common areas'}
  },
  fr:{
-  menu:'Menu', menu_open:'Ouvrir le menu', menu_close:'Fermer le menu', menu_title:'🌿 Menu de Cris',
+  menu:'Menu', menu_open:'Ouvrir le menu', menu_close:'Fermer le menu', menu_title:'🌿 Menu de Cris', lang_change:'Changer de langue',
   hero_sub:'comment puis-je t’aider aujourd’hui ?',
   lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages',
   notif_morning:'☀️ Commencer la journée', notif_night:'🌙 Routine du soir',
@@ -595,6 +609,19 @@ function applyStaticI18n(){
   document.querySelectorAll('[data-i18n-aria]').forEach(el=>{el.setAttribute('aria-label',t(el.getAttribute('data-i18n-aria')));});
   document.querySelectorAll('[data-i18n-title]').forEach(el=>{el.setAttribute('title',t(el.getAttribute('data-i18n-title')));});
   document.querySelectorAll('#langRow button').forEach(b=>b.classList.toggle('on',b.dataset.lang===crisLang()));
+  updateLangBtn();
+}
+const LANG_ORDER=['es','en','fr'];
+const LANG_BADGE={es:{flag:'🇪🇸',code:'ES'},en:{flag:'🇬🇧',code:'EN'},fr:{flag:'🇫🇷',code:'FR'}};
+function updateLangBtn(){
+  const b=document.getElementById('langBtn');if(!b)return;
+  const cur=LANG_BADGE[crisLang()]||LANG_BADGE.es;
+  b.querySelector('.lb-flag').textContent=cur.flag;
+  b.querySelector('.lb-code').textContent=cur.code;
+}
+function cycleLang(){
+  const i=LANG_ORDER.indexOf(crisLang());
+  setLang(LANG_ORDER[(i+1)%LANG_ORDER.length]);
 }
 function setLang(l){
   if(!I18N[l])return;
