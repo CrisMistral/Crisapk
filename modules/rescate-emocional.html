@@ -117,27 +117,27 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div id="v-home" class="screen active">
 <div class="mw">
   <div class="home-hdr">
-    <h1>Botiquín Emocional 🧰</h1>
-    <p>¿Qué necesitas ahora mismo?</p>
+    <h1 data-i18n="home_h">Botiquín Emocional 🧰</h1>
+    <p data-i18n="home_p">¿Qué necesitas ahora mismo?</p>
   </div>
   <div class="home-q">
     <img src="../quico/quico_happy.png" alt="Quico" style="width:128px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))">
   </div>
   <button class="acard c-sos" onclick="go('techniques')">
     <span class="aicon">🚨</span>
-    <div class="ainfo"><span class="atitle">NECESITO AYUDA YA</span><span class="asub">Técnicas para salir del bucle ahora mismo</span></div>
+    <div class="ainfo"><span class="atitle" data-i18n="c_sos_t">NECESITO AYUDA YA</span><span class="asub" data-i18n="c_sos_s">Técnicas para salir del bucle ahora mismo</span></div>
   </button>
   <button class="acard c-know" onclick="go('emotions')">
     <span class="aicon">💭</span>
-    <div class="ainfo"><span class="atitle">SÉ QUÉ SIENTO</span><span class="asub">Entiende tu emoción y qué puedes hacer</span></div>
+    <div class="ainfo"><span class="atitle" data-i18n="c_know_t">SÉ QUÉ SIENTO</span><span class="asub" data-i18n="c_know_s">Entiende tu emoción y qué puedes hacer</span></div>
   </button>
   <button class="acard c-find" onclick="go('find-emotion')">
     <span class="aicon">❓</span>
-    <div class="ainfo"><span class="atitle">NO SÉ QUÉ SIENTO</span><span class="asub">Ayúdame a identificar lo que me pasa</span></div>
+    <div class="ainfo"><span class="atitle" data-i18n="c_find_t">NO SÉ QUÉ SIENTO</span><span class="asub" data-i18n="c_find_s">Ayúdame a identificar lo que me pasa</span></div>
   </button>
   <button class="acard c-calm" onclick="go('meditations')">
     <span class="aicon">🧘</span>
-    <div class="ainfo"><span class="atitle">MEDITAR</span><span class="asub">Meditaciones guiadas para calmarme</span></div>
+    <div class="ainfo"><span class="atitle" data-i18n="c_calm_t">MEDITAR</span><span class="asub" data-i18n="c_calm_s">Meditaciones guiadas para calmarme</span></div>
   </button>
 </div>
 </div>
@@ -146,7 +146,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div class="mw">
   <div class="topbar">
     <button class="back" onclick="go('home')">←</button>
-    <h1>Técnicas de Rescate</h1>
+    <h1 data-i18n="tech_h">Técnicas de Rescate</h1>
   </div>
   <div id="tech-list"></div>
 </div>
@@ -156,7 +156,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div class="mw">
   <div class="topbar">
     <button class="back" id="tec-back">←</button>
-    <h1 id="tec-title">Técnica</h1>
+    <h1 id="tec-title" data-i18n="tec_h_fb">Técnica</h1>
   </div>
   <div id="tec-content"></div>
 </div>
@@ -166,9 +166,9 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div class="mw">
   <div class="topbar">
     <button class="back" onclick="go('home')">←</button>
-    <h1>¿Qué sientes?</h1>
+    <h1 data-i18n="emo_h">¿Qué sientes?</h1>
   </div>
-  <p style="font-size:.83rem;color:var(--teal);margin-bottom:14px">Toca lo que más se acerca a lo que sientes ahora mismo</p>
+  <p style="font-size:.83rem;color:var(--teal);margin-bottom:14px" data-i18n="emo_hint">Toca lo que más se acerca a lo que sientes ahora mismo</p>
   <div class="egrid" id="emo-grid"></div>
 </div>
 </div>
@@ -177,7 +177,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div class="mw">
   <div class="topbar">
     <button class="back" id="emo-back">←</button>
-    <h1>Tu emoción</h1>
+    <h1 data-i18n="emo_detail_h">Tu emoción</h1>
   </div>
   <div id="emo-detail"></div>
 </div>
@@ -187,7 +187,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div class="mw">
   <div class="topbar">
     <button class="back" onclick="go('home')">←</button>
-    <h1>Vamos a descubrirlo</h1>
+    <h1 data-i18n="find_h">Vamos a descubrirlo</h1>
   </div>
   <div id="find-content"></div>
 </div>
@@ -197,7 +197,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div class="mw">
   <div class="topbar">
     <button class="back" onclick="go('home')">←</button>
-    <h1>Meditaciones</h1>
+    <h1 data-i18n="med_h">Meditaciones</h1>
   </div>
   <div class="mlist" id="med-list"></div>
 </div>
@@ -210,9 +210,9 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
     <h1 id="med-title"></h1>
   </div>
   <div class="sprow">
-    <button class="spbtn" id="sp-lento" onclick="setSpeed('lento')">Lento</button>
-    <button class="spbtn active" id="sp-normal" onclick="setSpeed('normal')">Normal</button>
-    <button class="spbtn" id="sp-rapido" onclick="setSpeed('rapido')">Rápido</button>
+    <button class="spbtn" id="sp-lento" onclick="setSpeed('lento')" data-i18n="sp_lento">Lento</button>
+    <button class="spbtn active" id="sp-normal" onclick="setSpeed('normal')" data-i18n="sp_normal">Normal</button>
+    <button class="spbtn" id="sp-rapido" onclick="setSpeed('rapido')" data-i18n="sp_rapido">Rápido</button>
   </div>
   <div id="med-content"></div>
 </div>
@@ -223,6 +223,135 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 if(__cfg().calm)document.documentElement.classList.add('calm');
+
+/* ── IDIOMAS (es · en · fr) ── */
+const UI={
+ es:{home_h:'Botiquín Emocional 🧰',home_p:'¿Qué necesitas ahora mismo?',
+   c_sos_t:'NECESITO AYUDA YA',c_sos_s:'Técnicas para salir del bucle ahora mismo',
+   c_know_t:'SÉ QUÉ SIENTO',c_know_s:'Entiende tu emoción y qué puedes hacer',
+   c_find_t:'NO SÉ QUÉ SIENTO',c_find_s:'Ayúdame a identificar lo que me pasa',
+   c_calm_t:'MEDITAR',c_calm_s:'Meditaciones guiadas para calmarme',
+   tech_h:'Técnicas de Rescate',tec_h_fb:'Técnica',emo_h:'¿Qué sientes?',emo_hint:'Toca lo que más se acerca a lo que sientes ahora mismo',
+   emo_detail_h:'Tu emoción',find_h:'Vamos a descubrirlo',med_h:'Meditaciones',
+   sp_lento:'Lento',sp_normal:'Normal',sp_rapido:'Rápido',
+   tec_done_t:'¡Lo conseguiste!',tec_done_q:'¿Cómo te sientes ahora?',home_btn:'🏠 Inicio',other_tec:'Otra técnica',
+   step_of:'Paso {i} de {n}',start_btn:'▶ Iniciar',pause_btn:'⏸ Pausar',next_btn:'Siguiente →',prev_aria:'Paso anterior',
+   emo_impulse:'Tu impulso va a ser...',emo_need:'Lo que realmente necesitas',emo_help:'Qué puede ayudarte ahora',
+   emo_start:'Empezar:',emo_other:'← Elegir otra emoción',
+   find_q:'¿Qué notas en tu cuerpo ahora mismo?',find_hint:'Elige lo que más se acerca, no tiene que ser exacto',
+   find_maybe:'Puede que estés sintiendo...',find_retry:'← Intentarlo de nuevo',
+   med_steps:'pasos · avanza sola con voz',med_done_t:'Meditación completada',med_list:'← Lista',med_repeat:'Repetir',
+   breath_hint:'🌬️ Respira con el círculo · {b}',breath_hold:'Inhala {i} · mantén {h} · exhala {o}',breath_simple:'Inhala {i} · exhala {o}',
+   min_word:'min'},
+ en:{home_h:'Emotional Kit 🧰',home_p:'What do you need right now?',
+   c_sos_t:'I NEED HELP NOW',c_sos_s:'Techniques to break the loop right now',
+   c_know_t:'I KNOW WHAT I FEEL',c_know_s:'Understand your emotion and what you can do',
+   c_find_t:'I DON’T KNOW WHAT I FEEL',c_find_s:'Help me name what’s going on',
+   c_calm_t:'MEDITATE',c_calm_s:'Guided meditations to calm down',
+   tech_h:'Rescue Techniques',tec_h_fb:'Technique',emo_h:'What do you feel?',emo_hint:'Tap what’s closest to how you feel right now',
+   emo_detail_h:'Your emotion',find_h:'Let’s find out',med_h:'Meditations',
+   sp_lento:'Slow',sp_normal:'Normal',sp_rapido:'Fast',
+   tec_done_t:'You did it!',tec_done_q:'How do you feel now?',home_btn:'🏠 Home',other_tec:'Another technique',
+   step_of:'Step {i} of {n}',start_btn:'▶ Start',pause_btn:'⏸ Pause',next_btn:'Next →',prev_aria:'Previous step',
+   emo_impulse:'Your impulse will be to...',emo_need:'What you really need',emo_help:'What can help you now',
+   emo_start:'Start:',emo_other:'← Choose another emotion',
+   find_q:'What do you notice in your body right now?',find_hint:'Pick what’s closest, it doesn’t have to be exact',
+   find_maybe:'You might be feeling...',find_retry:'← Try again',
+   med_steps:'steps · advances on its own with voice',med_done_t:'Meditation complete',med_list:'← List',med_repeat:'Repeat',
+   breath_hint:'🌬️ Breathe with the circle · {b}',breath_hold:'Inhale {i} · hold {h} · exhale {o}',breath_simple:'Inhale {i} · exhale {o}',
+   min_word:'min'},
+ fr:{home_h:'Trousse Émotionnelle 🧰',home_p:'De quoi as-tu besoin maintenant ?',
+   c_sos_t:'J’AI BESOIN D’AIDE MAINTENANT',c_sos_s:'Des techniques pour sortir de la boucle tout de suite',
+   c_know_t:'JE SAIS CE QUE JE RESSENS',c_know_s:'Comprends ton émotion et ce que tu peux faire',
+   c_find_t:'JE NE SAIS PAS CE QUE JE RESSENS',c_find_s:'Aide-moi à nommer ce qui se passe',
+   c_calm_t:'MÉDITER',c_calm_s:'Méditations guidées pour me calmer',
+   tech_h:'Techniques de Secours',tec_h_fb:'Technique',emo_h:'Que ressens-tu ?',emo_hint:'Touche ce qui se rapproche le plus de ce que tu ressens là',
+   emo_detail_h:'Ton émotion',find_h:'On va le découvrir',med_h:'Méditations',
+   sp_lento:'Lent',sp_normal:'Normal',sp_rapido:'Rapide',
+   tec_done_t:'Tu as réussi !',tec_done_q:'Comment te sens-tu maintenant ?',home_btn:'🏠 Accueil',other_tec:'Une autre technique',
+   step_of:'Étape {i} sur {n}',start_btn:'▶ Démarrer',pause_btn:'⏸ Pause',next_btn:'Suivant →',prev_aria:'Étape précédente',
+   emo_impulse:'Ton impulsion sera de...',emo_need:'Ce dont tu as vraiment besoin',emo_help:'Ce qui peut t’aider maintenant',
+   emo_start:'Commencer :',emo_other:'← Choisir une autre émotion',
+   find_q:'Que remarques-tu dans ton corps là, maintenant ?',find_hint:'Choisis ce qui se rapproche le plus, ça n’a pas à être exact',
+   find_maybe:'Tu ressens peut-être...',find_retry:'← Réessayer',
+   med_steps:'étapes · avance toute seule avec la voix',med_done_t:'Méditation terminée',med_list:'← Liste',med_repeat:'Répéter',
+   breath_hint:'🌬️ Respire avec le cercle · {b}',breath_hold:'Inspire {i} · retiens {h} · expire {o}',breath_simple:'Inspire {i} · expire {o}',
+   min_word:'min'}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
+/* Traducción de contenido (el emoji, color, time, breath vienen del dato ES) */
+const RESCUES_L={
+ en:{3:{name:'Cold water (crisis)',when:'When the emotion is unbearable — full crisis',desc:'Changes your body chemistry in seconds',steps:[['COLD WATER','Splash cold water on your face or wrists for 30 seconds. It triggers the dive reflex'],['MOVE','Run in place or jump with all your energy'],['STOP','Stop. Breathe. Feel your body starting to calm'],['RELAX','Relax shoulders, jaw, hands. Muscle by muscle']]},
+     2:{name:'4-7-8 breathing',when:'When anxiety or panic kicks in',desc:'Calms the nervous system in minutes',steps:[['INHALE 4','Inhale slowly through your nose counting to 4'],['HOLD 7','Hold the air gently, count to 7'],['EXHALE 8','Exhale fully through your mouth over 8 counts. Let it all go'],['INHALE 4','Second round — inhale again through your nose'],['HOLD 7','Hold gently'],['EXHALE 8','Exhale everything. Notice yourself calming']]},
+     1:{name:'5-4-3-2-1',when:'When your mind won’t stop or you feel dissociated',desc:'Anchors your senses to the present',steps:[['5 SEE','Name 5 things you can see around you right now'],['4 TOUCH','Feel 4 different textures with your hands. What are they like?'],['3 HEAR','Identify 3 different sounds around you'],['2 SMELL','Find 2 scents in the space you’re in'],['1 TASTE','Notice the taste in your mouth right now']]},
+     4:{name:'Movement',when:'When you feel built-up tension, anger or frustration',desc:'Discharges cortisol through movement',steps:[['SHAKE','Shake your arms and legs for 30 seconds. Let it all drop'],['JUMP','10 jumping jacks. Count out loud as you do them'],['BREATHE','Hands on knees, leaning. Breathe deeply 3 times'],['NOTICE','How is your body now? Notice it without judging']]},
+     7:{name:'Cognitive defusion',when:'When a thought grips you and you can’t stop',desc:'Creates distance from the thought without fighting it',steps:[['IDENTIFY','What’s the thought that grips you most right now? Just one'],['NAME IT','Say out loud: “I’m having the thought that...” and complete it'],['THANK','Tell your mind: “Thanks for the heads-up. I don’t need to act now”'],['RETURN','Put your attention on something physical: the chair, your feet, the air coming in']]},
+     6:{name:'Self-compassion',when:'When you punish yourself, feel guilt or shame',desc:'Treat yourself as you’d treat someone you love',steps:[['ACKNOWLEDGE','Put a hand on your heart. This is pain, and it’s real. Don’t minimise it'],['HUMANITY','Remember: everyone suffers sometimes. You’re not alone'],['KINDNESS','Say softly: “May I be well. May I treat myself with care”'],['STAY','Feel the warmth of your hand on your chest. Breathe. Here is comfort']]},
+     5:{name:'Free writing',when:'When you need to get out what’s inside',desc:'Empty your mind with no filters',steps:[['PREPARE','Grab paper or notes. No filters — whatever comes out is fine'],['WRITE','Write everything you feel, non-stop, without erasing. Let it flow'],['READ','Read what you wrote once. Without judging'],['RELEASE','Close it or save it. It’s out of you now. That’s enough']]},
+     8:{name:'Connect',when:'When you feel alone or isolated',desc:'A small gesture breaks the isolation',steps:[['CHOOSE','Think of someone you feel safe with. Just one'],['REACH OUT','Send a voice note, a message, or call them right now'],['RECEIVE','If they can’t answer, that’s okay. You made the gesture — that counts'],['ACKNOWLEDGE','You broke the isolation. That’s courage']]}},
+ fr:{3:{name:'Eau froide (crise)',when:'Quand l’émotion est insupportable — crise totale',desc:'Change ta chimie corporelle en quelques secondes',steps:[['EAU FROIDE','Passe de l’eau froide sur ton visage ou tes poignets pendant 30 secondes. Ça déclenche le réflexe de plongée'],['BOUGE','Cours sur place ou saute avec toute ton énergie'],['STOP','Arrête. Respire. Sens ton corps commencer à se calmer'],['RELÂCHE','Relâche épaules, mâchoire, mains. Muscle par muscle']]},
+     2:{name:'Respiration 4-7-8',when:'Quand l’anxiété ou la panique montent',desc:'Calme le système nerveux en quelques minutes',steps:[['INSPIRE 4','Inspire lentement par le nez en comptant jusqu’à 4'],['RETIENS 7','Retiens l’air doucement, compte jusqu’à 7'],['EXPIRE 8','Expire complètement par la bouche en 8 temps. Lâche tout'],['INSPIRE 4','Deuxième cycle — inspire de nouveau par le nez'],['RETIENS 7','Retiens doucement'],['EXPIRE 8','Expire tout. Remarque que tu te calmes']]},
+     1:{name:'5-4-3-2-1',when:'Quand ton esprit tourne sans arrêt ou que tu te sens dissociée',desc:'Ancre tes sens dans le présent',steps:[['5 VOIS','Nomme 5 choses que tu vois autour de toi maintenant'],['4 TOUCHES','Sens 4 textures différentes avec tes mains. Comment sont-elles ?'],['3 ENTENDS','Identifie 3 sons différents autour de toi'],['2 SENS','Trouve 2 odeurs dans l’endroit où tu es'],['1 GOÛTES','Remarque le goût dans ta bouche maintenant']]},
+     4:{name:'Mouvement',when:'Quand tu sens de la tension, de la colère ou de la frustration accumulée',desc:'Décharge le cortisol par le mouvement',steps:[['SECOUE','Secoue bras et jambes pendant 30 secondes. Laisse tout tomber'],['SAUTE','10 jumping jacks. Compte à voix haute en les faisant'],['RESPIRE','Mains sur les genoux, penchée. Respire profondément 3 fois'],['OBSERVE','Comment est ton corps maintenant ? Remarque-le sans juger']]},
+     7:{name:'Défusion cognitive',when:'Quand une pensée t’accroche et tu ne peux pas t’arrêter',desc:'Crée de la distance avec la pensée sans lutter',steps:[['IDENTIFIE','Quelle est la pensée qui t’accroche le plus maintenant ? Une seule'],['NOMME-LA','Dis à voix haute : « J’ai la pensée que... » et complète'],['REMERCIE','Dis à ton esprit : « Merci pour l’alerte. Je n’ai pas besoin d’agir maintenant »'],['REVIENS','Porte ton attention sur quelque chose de physique : la chaise, tes pieds, l’air qui entre']]},
+     6:{name:'Auto-compassion',when:'Quand tu te punis, ressens de la culpabilité ou de la honte',desc:'Traite-toi comme tu traiterais quelqu’un que tu aimes',steps:[['RECONNAIS','Pose une main sur ton cœur. C’est de la douleur, et c’est réel. Ne la minimise pas'],['HUMANITÉ','Rappelle-toi : tout le monde souffre parfois. Tu n’es pas seule'],['BIENVEILLANCE','Dis doucement : « Que je sois bien. Que je me traite avec tendresse »'],['RESTE','Sens la chaleur de ta main sur ta poitrine. Respire. Voilà le réconfort']]},
+     5:{name:'Écriture libre',when:'Quand tu as besoin de sortir ce que tu as en toi',desc:'Vide ton esprit sans filtres',steps:[['PRÉPARE','Prends du papier ou des notes. Sans filtres — ce qui sort est bien'],['ÉCRIS','Écris tout ce que tu ressens sans t’arrêter, sans effacer. Laisse couler'],['LIS','Lis ce que tu as écrit une fois. Sans juger'],['LÂCHE','Ferme ou range. C’est sorti de toi. C’est suffisant']]},
+     8:{name:'Se connecter',when:'Quand tu te sens seule ou isolée',desc:'Un petit geste brise l’isolement',steps:[['CHOISIS','Pense à une personne avec qui tu te sens en sécurité. Une seule'],['CONTACTE','Envoie un audio, un message, ou appelle-la maintenant'],['REÇOIS','Si elle ne peut pas répondre, c’est bon. Tu as fait le geste — ça compte'],['RECONNAIS','Tu as brisé l’isolement. C’est du courage']]}}
+};
+const TEC_LABELS={
+ en:['🔥 For when you’re in full crisis','🫁 To calm anxiety or panic','👁️ To break the loop or ground yourself with fear','💪 To discharge anger or frustration','🧠 For the thought that grips you','🤍 For guilt or shame','✍️ To let go of what weighs on you','🫂 For when you feel alone'],
+ fr:['🔥 Pour quand tu es en pleine crise','🫁 Pour calmer l’anxiété ou la panique','👁️ Pour sortir de la boucle ou t’ancrer avec la peur','💪 Pour décharger colère ou frustration','🧠 Pour la pensée qui t’accroche','🤍 Pour la culpabilité ou la honte','✍️ Pour lâcher ce qui pèse','🫂 Pour quand tu te sens seule']
+};
+const EMOTIONS_L={
+ en:{ansiedad:{label:'Anxiety',impulse:'Avoid or escape what scares you',need:'To feel safe',helps:'Slow breathing',helpsDesc:'Calms the activated nervous system'},
+  miedo:{label:'Fear',impulse:'Flee, freeze or seek protection',need:'To feel safe and protected',helps:'Anchor to the here and now',helpsDesc:'Name what you see and touch: the danger isn’t in this moment'},
+  rabia:{label:'Anger',impulse:'Attack, shout or explode',need:'To set a clear boundary',helps:'Say it clearly',helpsDesc:'First discharge with movement, then express'},
+  tristeza:{label:'Sadness',impulse:'Shut down and see no one',need:'Comfort and company',helps:'Reach out to someone',helpsDesc:'A small message breaks the isolation'},
+  celos:{label:'Jealousy',impulse:'Cling, control or check',need:'To feel secure in the relationship',helps:'Ask directly for what you need',helpsDesc:'First write down what you feel'},
+  culpa:{label:'Guilt',impulse:'Ruminate and punish yourself',need:'To repair what happened',helps:'Apologise or do something concrete',helpsDesc:'Self-compassion helps you act without punishing yourself'},
+  'vergüenza':{label:'Shame',impulse:'Hide or disappear',need:'Compassion toward yourself',helps:'Hand on your heart',helpsDesc:'Self-compassion is the antidote to shame'},
+  agobio:{label:'Overwhelm',impulse:'Freeze up',need:'To reduce the load',helps:'Just one small step now',helpsDesc:'Sensory anchoring gets you out of the loop'},
+  soledad:{label:'Loneliness',impulse:'Isolate even more',need:'Real connection',helps:'Write to someone right now',helpsDesc:'Even a short message'},
+  'frustración':{label:'Frustration',impulse:'Give up or blow up',need:'Flexibility and a fresh approach',helps:'Move, then re-plan',helpsDesc:'Movement discharges and clears the mind'},
+  entumecimiento:{label:'Numbness',impulse:'Disconnect completely',need:'To feel safe again',helps:'Gentle movement',helpsDesc:'A moving body brings you back'}},
+ fr:{ansiedad:{label:'Anxiété',impulse:'Éviter ou fuir ce qui fait peur',need:'Te sentir en sécurité',helps:'Respiration lente',helpsDesc:'Calme le système nerveux activé'},
+  miedo:{label:'Peur',impulse:'Fuir, te figer ou chercher une protection',need:'Te sentir à l’abri et protégée',helps:'T’ancrer à l’ici et maintenant',helpsDesc:'Nomme ce que tu vois et touches : le danger n’est pas dans cet instant'},
+  rabia:{label:'Colère',impulse:'Attaquer, crier ou exploser',need:'Poser une limite claire',helps:'Le dire clairement',helpsDesc:'D’abord décharge avec le mouvement, puis exprime'},
+  tristeza:{label:'Tristesse',impulse:'Te renfermer et ne voir personne',need:'Réconfort et compagnie',helps:'Contacter quelqu’un',helpsDesc:'Un petit message brise l’isolement'},
+  celos:{label:'Jalousie',impulse:'T’accrocher, contrôler ou vérifier',need:'Te sentir en sécurité dans la relation',helps:'Demander directement ce dont tu as besoin',helpsDesc:'Écris d’abord ce que tu ressens'},
+  culpa:{label:'Culpabilité',impulse:'Ruminer et te punir',need:'Réparer ce qui s’est passé',helps:'T’excuser ou faire quelque chose de concret',helpsDesc:'L’auto-compassion t’aide à agir sans te punir'},
+  'vergüenza':{label:'Honte',impulse:'Te cacher ou disparaître',need:'De la compassion envers toi-même',helps:'Main sur le cœur',helpsDesc:'L’auto-compassion est l’antidote à la honte'},
+  agobio:{label:'Débordement',impulse:'Rester paralysée',need:'Réduire la charge',helps:'Un seul petit pas maintenant',helpsDesc:'L’ancrage sensoriel te sort de la boucle'},
+  soledad:{label:'Solitude',impulse:'T’isoler encore plus',need:'Une vraie connexion',helps:'Écrire à quelqu’un tout de suite',helpsDesc:'Même un message court'},
+  'frustración':{label:'Frustration',impulse:'Abandonner ou exploser',need:'De la souplesse et une nouvelle approche',helps:'Bouger puis replanifier',helpsDesc:'Le mouvement décharge et éclaircit l’esprit'},
+  entumecimiento:{label:'Engourdissement',impulse:'Te déconnecter complètement',need:'Te sentir de nouveau en sécurité',helps:'Mouvement doux',helpsDesc:'Le corps en mouvement te ramène'}}
+};
+const BODY_LABELS={
+ en:['⚡ Tension, agitation, racing heart','🪨 Heaviness, tiredness, wanting to hide','🧊 Blocked, paralysed, can’t think','🕳️ Emptiness, distance, as if nothing mattered'],
+ fr:['⚡ Tension, agitation, cœur qui s’emballe','🪨 Lourdeur, fatigue, envie de te cacher','🧊 Bloquée, paralysée, incapable de penser','🕳️ Vide, distance, comme si rien n’importait']
+};
+const MED_L={
+ en:{1:{name:'Mindful breathing',steps:[['Get comfortable','Sit or lie down. Close your eyes if you like'],['Breathe naturally','Just watch your breath without changing it. Nothing to do'],['Inhale...','Notice the air coming in. Feel your chest or belly rise'],['Exhale...','Notice the air going out. Relax a little more with each exhale'],['Thoughts','If a thought appears, greet it without grabbing it and return to the breath'],['Closing','Open your eyes gently. Take this calm with you']]},
+  2:{name:'Body scan',steps:[['Begin','Lie on your back. Close your eyes. No rush'],['Feet','Bring attention to your feet. Feel their weight and temperature'],['Legs','Move up your legs. Notice any tension or warmth'],['Belly','Feel your belly rise and fall with each breath'],['Chest and arms','Notice your heart. Relax your shoulders and arms'],['Face','Relax your jaw, forehead, eyes. All soft'],['Whole body','Feel your whole body. You are here, now'],['Come back','Wiggle your fingers. Open your eyes. Welcome back']]},
+  3:{name:'Kindness to yourself',steps:[['Sit','Comfortable, back loose. Eyes closed'],['For you','Hand on your heart. Say: “May I be well. May I be happy. May I be at peace”'],['Someone you love','Think of someone you love. Send them that same warmth'],['Someone difficult','Someone difficult. Just try: “May you be well.” You don’t have to feel it perfectly'],['Everyone','Expand to everyone: “May we all be well”'],['Closing','Come back to yourself. Open your eyes gently. Thank you']]},
+  4:{name:'Observe without grasping',steps:[['Posture','Sit upright but without tension. Close your eyes'],['Anchor','Bring attention to your feet on the floor'],['Observe','Notice sensations that arise. Don’t follow them, just observe'],['No judgement','Pleasant, unpleasant, neutral — just notice. Nothing to fix'],['Everything passes','Each sensation arises and passes on its own'],['Closing','Slowly come back. Open your eyes. Thank you for this time']]},
+  5:{name:'4-7-8 breathing',steps:[['Get ready','Sit comfortably with your back supported. This rhythm calms the nervous system in minutes'],['Learn the rhythm','Inhale through the nose for 4. Hold for 7. Release through the mouth for 8, like blowing out a candle'],['Cycle 1','Follow the circle: inhale 4... hold 7... exhale 8'],['Cycle 2','Again. Inhale 4... hold 7... release slowly 8'],['Cycle 3','You’re doing great. Inhale... hold... and let all the air go'],['Cycle 4','Last cycle. Notice your body feeling a bit heavier'],['Closing','Breathe normally. Notice the difference. You can repeat it whenever you want']]},
+  6:{name:'Your safe place',steps:[['Close your eyes','Get comfortable. We’re going to build a refuge in your mind'],['Imagine the place','A place where you feel completely safe. Real or made up: a beach, a forest, your bed, a cabin'],['See it','What do you see around you? The colours, the light, the shapes. Take your time'],['Hear it','What can you hear there? Waves, birds, soft rain, silence?'],['Feel it','What’s the temperature? What do you touch? Notice the safety in your body'],['Anchor','Put a hand on your chest. This place is yours. You can return whenever you need'],['Come back','Say goodbye for now. Open your eyes slowly. The refuge stays with you']]}},
+ fr:{1:{name:'Respiration consciente',steps:[['Mets-toi à l’aise','Assieds-toi ou allonge-toi. Ferme les yeux si tu veux'],['Respire naturellement','Observe juste ta respiration sans la changer. Rien à faire'],['Inspire...','Remarque l’air qui entre. Sens la poitrine ou le ventre monter'],['Expire...','Remarque l’air qui sort. Détends-toi un peu plus à chaque expiration'],['Pensées','Si une pensée apparaît, salue-la sans la saisir et reviens au souffle'],['Clôture','Ouvre les yeux doucement. Emporte ce calme avec toi']]},
+  2:{name:'Scan corporel',steps:[['Commence','Allonge-toi sur le dos. Ferme les yeux. Sans hâte'],['Pieds','Amène l’attention à tes pieds. Sens leur poids et leur température'],['Jambes','Remonte le long de tes jambes. Remarque toute tension ou chaleur'],['Ventre','Sens ton ventre monter et descendre à chaque respiration'],['Poitrine et bras','Remarque ton cœur. Détends tes épaules et tes bras'],['Visage','Détends la mâchoire, le front, les yeux. Tout en douceur'],['Tout le corps','Sens ton corps entier. Tu es ici, maintenant'],['Reviens','Bouge les doigts. Ouvre les yeux. Bienvenue']]},
+  3:{name:'Bienveillance envers toi',steps:[['Assieds-toi','À l’aise, dos relâché. Yeux fermés'],['Pour toi','Main sur le cœur. Dis : « Que je sois bien. Que je sois heureuse. Que je sois en paix »'],['Quelqu’un que tu aimes','Pense à quelqu’un que tu aimes. Envoie-lui cette même chaleur'],['Quelqu’un de difficile','Quelqu’un de difficile. Essaie juste : « Que tu sois bien. » Tu n’as pas à le ressentir parfaitement'],['Tout le monde','Élargis à tous : « Que nous soyons tous bien »'],['Clôture','Reviens à toi. Ouvre les yeux doucement. Merci']]},
+  4:{name:'Observer sans saisir',steps:[['Posture','Assieds-toi droite mais sans tension. Ferme les yeux'],['Ancre','Amène l’attention à tes pieds au sol'],['Observe','Remarque les sensations qui surgissent. Ne les suis pas, observe simplement'],['Sans jugement','Agréable, désagréable, neutre — remarque juste. Rien à réparer'],['Tout passe','Chaque sensation surgit et s’en va d’elle-même'],['Clôture','Reviens peu à peu. Ouvre les yeux. Merci pour ce temps']]},
+  5:{name:'Respiration 4-7-8',steps:[['Prépare-toi','Assieds-toi confortablement, le dos soutenu. Ce rythme calme le système nerveux en quelques minutes'],['Apprends le rythme','Inspire par le nez en comptant 4. Retiens en comptant 7. Relâche par la bouche en comptant 8, comme pour souffler une bougie'],['Cycle 1','Suis le cercle : inspire 4... retiens 7... expire 8'],['Cycle 2','Encore. Inspire 4... retiens 7... relâche doucement 8'],['Cycle 3','Tu t’en sors très bien. Inspire... retiens... et lâche tout l’air'],['Cycle 4','Dernier cycle. Remarque ton corps un peu plus lourd'],['Clôture','Respire normalement. Remarque la différence. Tu peux la répéter quand tu veux']]},
+  6:{name:'Ton endroit sûr',steps:[['Ferme les yeux','Mets-toi à l’aise. On va construire un refuge dans ton esprit'],['Imagine l’endroit','Un endroit où tu te sens complètement en sécurité. Réel ou inventé : une plage, une forêt, ton lit, une cabane'],['Regarde-le','Que vois-tu autour de toi ? Les couleurs, la lumière, les formes. Prends ton temps'],['Écoute-le','Qu’entends-tu là ? Des vagues, des oiseaux, une pluie douce, le silence ?'],['Ressens-le','Quelle température fait-il ? Que touches-tu ? Remarque la sécurité dans ton corps'],['Ancre','Pose une main sur ta poitrine. Cet endroit est à toi. Tu peux y revenir dès que tu en as besoin'],['Reviens','Dis au revoir pour l’instant. Ouvre les yeux doucement. Le refuge reste avec toi']]}}
+};
+function rescL(r){const lang=crisLang();if(lang==='es'||!RESCUES_L[lang]||!RESCUES_L[lang][r.id])return r;const tr=RESCUES_L[lang][r.id];return {...r,name:tr.name,when:tr.when,desc:tr.desc,steps:r.steps.map((s,i)=>({...s,text:tr.steps[i][0],instruction:tr.steps[i][1]}))};}
+function emoL(e){const lang=crisLang();if(lang==='es'||!EMOTIONS_L[lang]||!EMOTIONS_L[lang][e.id])return e;return {...e,...EMOTIONS_L[lang][e.id]};}
+function medL(m){const lang=crisLang();if(lang==='es'||!MED_L[lang]||!MED_L[lang][m.id])return m;const tr=MED_L[lang][m.id];return {...m,name:tr.name,steps:m.steps.map((s,i)=>({...s,text:tr.steps[i][0],instruction:tr.steps[i][1]}))};}
+function tecGroupLabel(i,esLabel){const lang=crisLang();return (lang!=='es'&&TEC_LABELS[lang])?TEC_LABELS[lang][i]:esLabel;}
+function bodyLabel(i,esLabel){const lang=crisLang();return (lang!=='es'&&BODY_LABELS[lang])?BODY_LABELS[lang][i]:esLabel;}
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
 
@@ -431,7 +560,7 @@ const MEDITATIONS = [
       {text:"Regresa",instruction:"Despídete por ahora. Abre los ojos despacio. El refugio queda contigo",time:20}
     ]}
 ];
-function medDur(m){const s=m.steps.reduce((a,x)=>a+x.time,0);return Math.max(1,Math.round(s/60))+' min';}
+function medDur(m){const s=m.steps.reduce((a,x)=>a+x.time,0);return Math.max(1,Math.round(s/60))+' '+t('min_word');}
 
 const SPEED = {lento:1.5, normal:1, rapido:0.7};
 const S = {
@@ -454,10 +583,10 @@ function speak(t){
     window.speechSynthesis.cancel();
     if(window.speechSynthesis.paused)window.speechSynthesis.resume();
     _utt=new SpeechSynthesisUtterance(t);
-    _utt.lang='es-ES';_utt.rate=0.9;
+    _utt.lang=VOICE_LANG[crisLang()];_utt.rate=0.9;
     const voices=window.speechSynthesis.getVoices();
-    const esVoice=voices.find(v=>v.lang.startsWith('es'));
-    if(esVoice)_utt.voice=esVoice;
+    const lv=voices.find(v=>v.lang.startsWith(crisLang()));
+    if(lv)_utt.voice=lv;
     window.speechSynthesis.speak(_utt);
   }catch(e){}
 }
@@ -473,10 +602,10 @@ function speakThen(t,cb){
     window.speechSynthesis.cancel();
     if(window.speechSynthesis.paused)window.speechSynthesis.resume();
     _utt=new SpeechSynthesisUtterance(t);
-    _utt.lang='es-ES';_utt.rate=0.9;
+    _utt.lang=VOICE_LANG[crisLang()];_utt.rate=0.9;
     const voices=window.speechSynthesis.getVoices();
-    const esVoice=voices.find(v=>v.lang.startsWith('es'));
-    if(esVoice)_utt.voice=esVoice;
+    const lv=voices.find(v=>v.lang.startsWith(crisLang()));
+    if(lv)_utt.voice=lv;
     _utt.onend=fin;_utt.onerror=fin;
     window.speechSynthesis.speak(_utt);
     setTimeout(fin,Math.max(4000,t.length*110));
@@ -497,20 +626,20 @@ function go(view){
 }
 
 function renderTecList(){
-  document.getElementById('tech-list').innerHTML = TEC_GROUPS.map(g=>`
-    <div class="slabel">${g.label}</div>
+  document.getElementById('tech-list').innerHTML = TEC_GROUPS.map((g,gi)=>`
+    <div class="slabel">${tecGroupLabel(gi,g.label)}</div>
     <div class="tlist">
-    ${g.ids.map(id=>{const t=RESCUES.find(r=>r.id===id);return`
-      <button class="titem" onclick="startTec(${t.id},'techniques')">
-        <div class="tico" style="background:${t.color}22">${t.icon}</div>
-        <div class="tinfo"><h3>${t.name}</h3><p>${t.desc}</p></div>
+    ${g.ids.map(id=>{const r=rescL(RESCUES.find(x=>x.id===id));return`
+      <button class="titem" onclick="startTec(${r.id},'techniques')">
+        <div class="tico" style="background:${r.color}22">${r.icon}</div>
+        <div class="tinfo"><h3>${r.name}</h3><p>${r.desc}</p></div>
       </button>`;}).join('')}
     </div>`).join('');
 }
 
 function startTec(id, source){
   beep(400); vibrate(50);
-  S.tecCurrent=RESCUES.find(r=>r.id===id);
+  S.tecCurrent=rescL(RESCUES.find(r=>r.id===id));
   S.tecStep=0; S.tecPlaying=false; S.tecTimer=0; S.tecDone=false; S.tecSource=source||'techniques';
   document.getElementById('tec-title').textContent=S.tecCurrent.name;
   document.getElementById('tec-back').onclick=()=>{stopTimer();go(S.tecSource);};
@@ -522,11 +651,11 @@ function renderTec(){
   const tec=S.tecCurrent; if(!tec)return;
   const el=document.getElementById('tec-content');
   if(S.tecDone){
-    el.innerHTML=`<div class="done"><div class="big">🎉</div><h2>¡Lo conseguiste!</h2><p>${tec.name}</p></div>
-      <p style="text-align:center;color:var(--teal);font-size:.88rem;margin-bottom:18px">¿Cómo te sientes ahora?</p>
+    el.innerHTML=`<div class="done"><div class="big">🎉</div><h2>${t('tec_done_t')}</h2><p>${tec.name}</p></div>
+      <p style="text-align:center;color:var(--teal);font-size:.88rem;margin-bottom:18px">${t('tec_done_q')}</p>
       <div class="brow">
-        <button class="btn bsec" onclick="go('home')">🏠 Inicio</button>
-        <button class="btn bpri" onclick="go('techniques')">Otra técnica</button>
+        <button class="btn bsec" onclick="go('home')">${t('home_btn')}</button>
+        <button class="btn bpri" onclick="go('techniques')">${t('other_tec')}</button>
       </div>`;
     return;
   }
@@ -540,16 +669,16 @@ function renderTec(){
       <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
       <div class="dots">${dots}</div>
       <div class="sbox">
-        <div class="snum">Paso ${S.tecStep+1} de ${tec.steps.length}</div>
+        <div class="snum">${t('step_of',{i:S.tecStep+1,n:tec.steps.length})}</div>
         <div class="sname">${step.text}</div>
         <div class="sinstr">${step.instruction}</div>
         <div class="tring" id="tec-ring"><div class="tring-in"><div class="stimer" id="tec-timer">${S.tecPlaying?S.tecTimer:step.time}</div></div></div>
       </div>
     </div>
     <div class="brow">
-      ${S.tecStep>0?`<button class="btn bsec bprev" onclick="tecPrev()" aria-label="Paso anterior">←</button>`:''}
-      <button class="btn bsec" onclick="tecToggle()">${S.tecPlaying?'⏸ Pausar':'▶ Iniciar'}</button>
-      <button class="btn bpri" onclick="tecNext()">Siguiente →</button>
+      ${S.tecStep>0?`<button class="btn bsec bprev" onclick="tecPrev()" aria-label="${t('prev_aria')}">←</button>`:''}
+      <button class="btn bsec" onclick="tecToggle()">${S.tecPlaying?t('pause_btn'):t('start_btn')}</button>
+      <button class="btn bpri" onclick="tecNext()">${t('next_btn')}</button>
     </div>`;
   __ring('tec-ring',(S.tecPlaying?S.tecTimer:step.time)/Math.max(1,step.time));
 }
@@ -584,31 +713,31 @@ function tecNext(){stopTimer();S.tecPlaying=false;tecAdv();}
 function tecPrev(){if(S.tecStep<=0)return;stopTimer();S.tecStep--;S.tecPlaying=false;S.tecTimer=0;S.tecDone=false;renderTec();}
 
 function renderEmoGrid(){
-  document.getElementById('emo-grid').innerHTML=EMOTIONS.map(e=>`
+  document.getElementById('emo-grid').innerHTML=EMOTIONS.map(e0=>{const e=emoL(e0);return`
     <button class="etile" style="background:${e.color}" onclick="showEmo('${e.id}','emotions')">
       <span class="be">${e.emoji}</span><span class="el">${e.label}</span>
-    </button>`).join('');
+    </button>`;}).join('');
 }
 
 function showEmo(id, source){
   beep(400,0.1); vibrate(30);
   S.emoSource=source||'emotions';
-  const e=EMOTIONS.find(x=>x.id===id);
-  const tec=RESCUES.find(r=>r.id===e.tecId);
+  const e=emoL(EMOTIONS.find(x=>x.id===id));
+  const tec=rescL(RESCUES.find(r=>r.id===e.tecId));
   document.getElementById('emo-back').onclick=()=>go(S.emoSource);
   document.getElementById('emo-detail').innerHTML=`
     <div class="ecard">
       <div class="ehead"><span class="ebig">${e.emoji}</span><div class="ename">${e.label}</div></div>
-      <div class="irow"><div class="ilbl">Tu impulso va a ser...</div><div class="ival">${e.impulse}</div></div>
-      <div class="irow"><div class="ilbl">Lo que realmente necesitas</div><div class="ival">${e.need}</div></div>
+      <div class="irow"><div class="ilbl">${t('emo_impulse')}</div><div class="ival">${e.impulse}</div></div>
+      <div class="irow"><div class="ilbl">${t('emo_need')}</div><div class="ival">${e.need}</div></div>
       <div class="irow hi">
-        <div class="ilbl">Qué puede ayudarte ahora</div>
+        <div class="ilbl">${t('emo_help')}</div>
         <div class="ival">${e.helps}</div>
         <div class="isub">${e.helpsDesc}</div>
       </div>
     </div>
-    <button class="btn bpri bful" onclick="startTec(${tec.id},'emotion-detail')">${tec.icon} Empezar: ${tec.name}</button>
-    <button class="btn bsec bful" style="margin-top:10px" onclick="go('${S.emoSource}')">← Elegir otra emoción</button>`;
+    <button class="btn bpri bful" onclick="startTec(${tec.id},'emotion-detail')">${tec.icon} ${t('emo_start')} ${tec.name}</button>
+    <button class="btn bsec bful" style="margin-top:10px" onclick="go('${S.emoSource}')">${t('emo_other')}</button>`;
   go('emotion-detail');
 }
 
@@ -617,31 +746,31 @@ function renderFind(){
   if(S.findStep===0){
     el.innerHTML=`
       <div class="qcard">
-        <h2>¿Qué notas en tu cuerpo ahora mismo?</h2>
+        <h2>${t('find_q')}</h2>
         <div class="qopts">
-          ${BODY_OPTIONS.map((o,i)=>`<button class="qbtn" onclick="findPick(${i})">${o.label}</button>`).join('')}
+          ${BODY_OPTIONS.map((o,i)=>`<button class="qbtn" onclick="findPick(${i})">${bodyLabel(i,o.label)}</button>`).join('')}
         </div>
       </div>
-      <p style="font-size:.78rem;color:var(--teal);text-align:center">Elige lo que más se acerca, no tiene que ser exacto</p>`;
+      <p style="font-size:.78rem;color:var(--teal);text-align:center">${t('find_hint')}</p>`;
   } else {
-    const emos=S.findMatches.map(id=>EMOTIONS.find(e=>e.id===id)).filter(Boolean);
+    const emos=S.findMatches.map(id=>EMOTIONS.find(e=>e.id===id)).filter(Boolean).map(emoL);
     el.innerHTML=`
-      <div class="qcard"><h2>Puede que estés sintiendo...</h2></div>
+      <div class="qcard"><h2>${t('find_maybe')}</h2></div>
       <div class="egrid">
         ${emos.map(e=>`<button class="etile" style="background:${e.color}" onclick="showEmo('${e.id}','find-emotion')">
           <span class="be">${e.emoji}</span><span class="el">${e.label}</span></button>`).join('')}
       </div>
-      <button class="btn bsec bful" style="margin-top:4px" onclick="S.findStep=0;renderFind()">← Intentarlo de nuevo</button>`;
+      <button class="btn bsec bful" style="margin-top:4px" onclick="S.findStep=0;renderFind()">${t('find_retry')}</button>`;
   }
 }
 function findPick(i){beep(400,0.1);vibrate(30);S.findMatches=BODY_OPTIONS[i].ids;S.findStep=1;renderFind();}
 
 function renderMedList(){
-  document.getElementById('med-list').innerHTML=MEDITATIONS.map(m=>`
+  document.getElementById('med-list').innerHTML=MEDITATIONS.map(m0=>{const m=medL(m0);return`
     <button class="mitem" onclick="startMed(${m.id})">
       <span class="mico">${m.icon}</span>
-      <div class="minfo"><h3>${m.name}</h3><p>${medDur(m)} · ${m.steps.length} pasos · avanza sola con voz</p></div>
-    </button>`).join('');
+      <div class="minfo"><h3>${m.name}</h3><p>${medDur(m)} · ${m.steps.length} ${t('med_steps')}</p></div>
+    </button>`;}).join('');
 }
 function setBreathAnim(b){
   // Genera la animación del círculo con el ritmo de esta meditación
@@ -653,11 +782,11 @@ function setBreathAnim(b){
   document.documentElement.style.setProperty('--bdur',total+'s');
 }
 function breathHint(b){
-  return b.hold?`Inhala ${b.in} · mantén ${b.hold} · exhala ${b.out}`:`Inhala ${b.in} · exhala ${b.out}`;
+  return b.hold?t('breath_hold',{i:b.in,h:b.hold,o:b.out}):t('breath_simple',{i:b.in,o:b.out});
 }
 function startMed(id){
   beep(400);vibrate(40);
-  S.medCurrent=MEDITATIONS.find(m=>m.id===id);
+  S.medCurrent=medL(MEDITATIONS.find(m=>m.id===id));
   S.medStep=0;S.medPlaying=false;S.medTimer=0;S.medDone=false;
   setBreathAnim(S.medCurrent.breath||{in:4,out:6});
   document.getElementById('med-title').textContent=S.medCurrent.name;
@@ -671,17 +800,17 @@ function renderMedStep(){
   const med=S.medCurrent; if(!med)return;
   const el=document.getElementById('med-content');
   if(S.medDone){
-    el.innerHTML=`<div class="done"><div class="big">🙏</div><h2>Meditación completada</h2><p>${med.name}</p></div>
+    el.innerHTML=`<div class="done"><div class="big">🙏</div><h2>${t('med_done_t')}</h2><p>${med.name}</p></div>
       <div class="brow">
-        <button class="btn bsec" onclick="go('meditations')">← Lista</button>
-        <button class="btn bpri" onclick="startMed(${med.id})">Repetir</button>
+        <button class="btn bsec" onclick="go('meditations')">${t('med_list')}</button>
+        <button class="btn bpri" onclick="startMed(${med.id})">${t('med_repeat')}</button>
       </div>`;
     return;
   }
   const step=med.steps[S.medStep];
   const pct=(S.medStep/med.steps.length)*100;
   const dots=med.steps.map((_,i)=>`<div class="dot ${i<S.medStep?'done':i===S.medStep?'active':''}" ></div>`).join('');
-  const t=S.medPlaying?S.medTimer:Math.round(step.time*SPEED[S.medSpeed]);
+  const tv=S.medPlaying?S.medTimer:Math.round(step.time*SPEED[S.medSpeed]);
   const b=med.breath||{in:4,out:6};
   el.innerHTML=`
     <div class="tcard">
@@ -689,21 +818,21 @@ function renderMedStep(){
       <div class="dots" style="margin-top:8px">${dots}</div>
       <div class="breath-wrap">
         <div class="breath-circle${S.medPlaying?'':' paused'}"></div>
-        <div class="breath-hint">🌬️ Respira con el círculo · ${breathHint(b)}</div>
+        <div class="breath-hint">${t('breath_hint',{b:breathHint(b)})}</div>
       </div>
       <div class="sbox">
-        <div class="snum">Paso ${S.medStep+1} de ${med.steps.length}</div>
+        <div class="snum">${t('step_of',{i:S.medStep+1,n:med.steps.length})}</div>
         <div class="sname">${step.text}</div>
         <div class="sinstr">${step.instruction}</div>
-        <div class="tring" id="med-ring"><div class="tring-in"><div class="stimer" id="med-timer">${t}</div></div></div>
+        <div class="tring" id="med-ring"><div class="tring-in"><div class="stimer" id="med-timer">${tv}</div></div></div>
       </div>
     </div>
     <div class="brow">
-      ${S.medStep>0?`<button class="btn bsec bprev" onclick="medPrev()" aria-label="Paso anterior">←</button>`:''}
-      <button class="btn bsec" onclick="medToggle()">${S.medPlaying?'⏸ Pausar':'▶ Iniciar'}</button>
-      <button class="btn bpri" onclick="medNext()">Siguiente →</button>
+      ${S.medStep>0?`<button class="btn bsec bprev" onclick="medPrev()" aria-label="${t('prev_aria')}">←</button>`:''}
+      <button class="btn bsec" onclick="medToggle()">${S.medPlaying?t('pause_btn'):t('start_btn')}</button>
+      <button class="btn bpri" onclick="medNext()">${t('next_btn')}</button>
     </div>`;
-  __ring('med-ring',t/Math.max(1,Math.round(step.time*SPEED[S.medSpeed])));
+  __ring('med-ring',tv/Math.max(1,Math.round(step.time*SPEED[S.medSpeed])));
 }
 function medToggle(){
   if(!S.medPlaying){
@@ -735,6 +864,8 @@ function medAdv(){
 }
 function medNext(){stopTimer();S.medPlaying=false;medAdv();}
 function medPrev(){if(S.medStep<=0)return;stopTimer();S.medPlaying=false;S.medTimer=0;S.medDone=false;S.medStep--;renderMedStep();}
+/* Aplica traducciones a los textos estáticos al cargar */
+applyStaticI18n();
 /* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
 /* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió */
 window.__crisBack=function(){
