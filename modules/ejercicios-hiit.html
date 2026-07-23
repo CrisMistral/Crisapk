@@ -102,10 +102,10 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 
 <div id="v-home" class="screen active">
 <div class="max-w">
-  <div class="home-header"><img src="../quico/quico_happy.png" alt="Quico" style="width:124px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))"><h1>🧘 Pilates en Casa</h1><p>15–20 min · sin material · cuerpo completo</p></div>
-  <div class="bubble">¿Lista para mover el cuerpo? 💚</div>
+  <div class="home-header"><img src="../quico/quico_happy.png" alt="Quico" style="width:124px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))"><h1 data-i18n="home_h">🧘 Pilates en Casa</h1><p data-i18n="home_sub">15–20 min · sin material · cuerpo completo</p></div>
+  <div class="bubble" data-i18n="bubble">¿Lista para mover el cuerpo? 💚</div>
   <div class="today-card" id="today-card" onclick="openTodayDay()"></div>
-  <div class="week-title">Esta semana</div>
+  <div class="week-title" data-i18n="week_title">Esta semana</div>
   <div class="week-grid" id="week-grid"></div>
 </div>
 </div>
@@ -116,7 +116,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
   <div class="day-header" id="day-header"></div>
   <div class="day-intro" id="day-intro"></div>
   <div id="ex-list"></div>
-  <button class="btn btn-primary" onclick="startSession()">▶ Empezar sesión automática</button>
+  <button class="btn btn-primary" onclick="startSession()" data-i18n="btn_start_auto">▶ Empezar sesión automática</button>
 </div>
 </div>
 
@@ -137,6 +137,42 @@ function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 if(__cfg().calm)document.documentElement.classList.add('calm');
 
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
+
+/* ─── IDIOMAS (es · en · fr) ─── */
+const UI={
+ es:{home_h:'🧘 Pilates en Casa',home_sub:'15–20 min · sin material · cuerpo completo',bubble:'¿Lista para mover el cuerpo? 💚',week_title:'Esta semana',btn_start_auto:'▶ Empezar sesión automática',
+  tc_today:'Hoy · {name}',tc_meta:'{dur} · Pilates en casa',dh_meta:'{dur} · {n} ejercicios',ex_eachside:' · cada lado',ex_rest:' · {r}s descanso',
+  count:'Ejercicio {i} de {n}',idle_phase:'Sesión automática',idle_desc:'Dale a empezar y déjate llevar: la voz te guía, los ejercicios cambian solos y tú solo copias a la figura. No hace falta tocar el móvil hasta el final. 💚',idle_btn:'▶ Empezar — todo automático',
+  done_h:'¡Sesión completada!',done_p:'{name} · {focus}<br>Bien hecho, Cris 💚',btn_home:'🏠 Inicio',btn_repeat:'Repetir sesión',
+  ph_prep:'Colócate como la figura',tl_prep:'seg para empezar',tag_prep:'Prepárate',ph_active:'Copia a la figura ▶',tl_active:'segundos restantes',ph_paused:'En pausa',tl_paused:'segundos',tag_paused:'Pausa',ph_switch:'¡Cambia de lado!',tl_switch:'seg',ph_restwait:'Escucha — ya casi',tl_restwait:'escuchando…',ph_rest:'Descansa',tl_rest:'seg de descanso',tag_next:'Siguiente: {name}',
+  side_r:' — Lado derecho',side_l:' — Lado izquierdo',next_prefix:'Luego: {name}',tag_first:'Así se hace el primero',pose1:'1 · posición',pose2:'2 · movimiento',btn_pause:'⏸ Pausa',btn_resume:'▶ Seguir',btn_skip:'Saltar →',
+  v_first:'Primer ejercicio: ',v_next:'Siguiente: ',v_will_be:' Serán {dur}.',v_sec_side:'{n} segundos por cada lado',v_sec:'{n} segundos',v_go:'¡Vamos! {n} segundos.',v_half:'Mitad. Quedan {n} segundos.',v_last10:'Últimos diez segundos.',v_switch:'Cambia de lado. Otros {n} segundos.',v_rest:'Muy bien. Descansa {n} segundos. ',v_resume:'Seguimos.',v_done:'¡Sesión completada! Bien hecho.',
+  wl:['L','M','X','J','V','S','D']},
+ en:{home_h:'🧘 Pilates at Home',home_sub:'15–20 min · no equipment · full body',bubble:'Ready to move your body? 💚',week_title:'This week',btn_start_auto:'▶ Start automatic session',
+  tc_today:'Today · {name}',tc_meta:'{dur} · Pilates at home',dh_meta:'{dur} · {n} exercises',ex_eachside:' · each side',ex_rest:' · {r}s rest',
+  count:'Exercise {i} of {n}',idle_phase:'Automatic session',idle_desc:'Press start and let yourself flow: the voice guides you, the exercises change on their own, and you just copy the figure. No need to touch your phone until the end. 💚',idle_btn:'▶ Start — fully automatic',
+  done_h:'Session complete!',done_p:'{name} · {focus}<br>Well done, Cris 💚',btn_home:'🏠 Home',btn_repeat:'Repeat session',
+  ph_prep:'Get into the figure’s position',tl_prep:'sec to start',tag_prep:'Get ready',ph_active:'Copy the figure ▶',tl_active:'seconds left',ph_paused:'Paused',tl_paused:'seconds',tag_paused:'Pause',ph_switch:'Switch sides!',tl_switch:'sec',ph_restwait:'Listen — almost there',tl_restwait:'listening…',ph_rest:'Rest',tl_rest:'sec of rest',tag_next:'Next: {name}',
+  side_r:' — Right side',side_l:' — Left side',next_prefix:'Next: {name}',tag_first:'Here’s the first one',pose1:'1 · position',pose2:'2 · movement',btn_pause:'⏸ Pause',btn_resume:'▶ Resume',btn_skip:'Skip →',
+  v_first:'First exercise: ',v_next:'Next: ',v_will_be:' It will be {dur}.',v_sec_side:'{n} seconds on each side',v_sec:'{n} seconds',v_go:'Let’s go! {n} seconds.',v_half:'Halfway. {n} seconds left.',v_last10:'Last ten seconds.',v_switch:'Switch sides. Another {n} seconds.',v_rest:'Well done. Rest for {n} seconds. ',v_resume:'Let’s continue.',v_done:'Session complete! Well done.',
+  wl:['M','T','W','T','F','S','S']},
+ fr:{home_h:'🧘 Pilates à la maison',home_sub:'15–20 min · sans matériel · corps complet',bubble:'Prête à bouger ton corps ? 💚',week_title:'Cette semaine',btn_start_auto:'▶ Démarrer la séance automatique',
+  tc_today:'Aujourd’hui · {name}',tc_meta:'{dur} · Pilates à la maison',dh_meta:'{dur} · {n} exercices',ex_eachside:' · chaque côté',ex_rest:' · {r}s de repos',
+  count:'Exercice {i} sur {n}',idle_phase:'Séance automatique',idle_desc:'Appuie sur démarrer et laisse-toi porter : la voix te guide, les exercices changent tout seuls et tu n’as qu’à copier la figure. Pas besoin de toucher le téléphone avant la fin. 💚',idle_btn:'▶ Démarrer — tout automatique',
+  done_h:'Séance terminée !',done_p:'{name} · {focus}<br>Bien joué, Cris 💚',btn_home:'🏠 Accueil',btn_repeat:'Refaire la séance',
+  ph_prep:'Place-toi comme la figure',tl_prep:'sec avant de commencer',tag_prep:'Prépare-toi',ph_active:'Copie la figure ▶',tl_active:'secondes restantes',ph_paused:'En pause',tl_paused:'secondes',tag_paused:'Pause',ph_switch:'Change de côté !',tl_switch:'sec',ph_restwait:'Écoute — presque fini',tl_restwait:'écoute…',ph_rest:'Repose-toi',tl_rest:'sec de repos',tag_next:'Suivant : {name}',
+  side_r:' — Côté droit',side_l:' — Côté gauche',next_prefix:'Ensuite : {name}',tag_first:'Voici le premier',pose1:'1 · position',pose2:'2 · mouvement',btn_pause:'⏸ Pause',btn_resume:'▶ Continuer',btn_skip:'Passer →',
+  v_first:'Premier exercice : ',v_next:'Suivant : ',v_will_be:' Ce sera {dur}.',v_sec_side:'{n} secondes de chaque côté',v_sec:'{n} secondes',v_go:'C’est parti ! {n} secondes.',v_half:'À la moitié. Il reste {n} secondes.',v_last10:'Dix dernières secondes.',v_switch:'Change de côté. Encore {n} secondes.',v_rest:'Très bien. Repose-toi {n} secondes. ',v_resume:'On continue.',v_done:'Séance terminée ! Bien joué.',
+  wl:['L','M','M','J','V','S','D']}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
+const DAYS_L={en:{"lun":{"name":"Monday","focus":"Deep Core","intro":"Today we work the center — the transverse abdominis. Find your breath before each movement: inhale to prepare, exhale to engage. No tension in the neck.","ex":[{"name":"Activation Breath","desc":"Lie on your back, knees bent, feet on the floor. Inhale, letting your belly rise. As you exhale, draw your navel toward your spine without holding your breath.","voice":"Breathe deeply. As you exhale, engage your deep abdominals.","tip":"Don't move your pelvis — just engage your abdominals. This is the foundation of all Pilates."},{"name":"Pelvic Tilt","desc":"On your back, knees bent. Alternate between letting your lower back drop and pressing it into the floor. Slow and controlled.","voice":"Move your pelvis gently. First let your lower back sink, then press it into the floor.","tip":"The movement is small. Learn where your pelvis sits in neutral — you'll use that position in everything."},{"name":"The Hundred","desc":"On your back. Lift your head and shoulders off the floor. Legs at 45° or in tabletop. Pump your arms up and down. Inhale for 5 pumps, exhale for 5 pumps.","voice":"Head up, arms parallel to the floor, pump with rhythm. Inhale five, exhale five.","tip":"Modification: keep your feet down if you feel tension in your neck. The breath is what matters most."},{"name":"Roll Up","desc":"On your back, arms overhead. Inhale. As you exhale, roll up one vertebra at a time until you're sitting. Reach toward your feet. Roll back down the same way. 8 repetitions.","voice":"Roll up one vertebra at a time. Draw your navel toward your spine the whole way up.","tip":"If you can't come all the way up, help yourself with your hands on your thighs."},{"name":"Single Leg Stretch","desc":"On your back. Lift your head and shoulders. Bring one knee to your chest while you extend the other leg. Alternate. Keep your navel drawn in the whole time.","voice":"Alternate knees to your chest. Navel drawn in, head steady.","tip":"Don't let your back arch as you extend the leg. If it does, raise the extended leg a little higher."},{"name":"Criss-Cross","desc":"On your back. Hands behind your head. Bring your right elbow toward your left knee as you extend the right leg. Alternate slowly. Don't pull on your neck.","voice":"Rotate toward the knee coming in. Elbow wide, no pulling on the neck.","tip":"The rotation comes from your torso, not your neck. Look at the ceiling as you rotate."},{"name":"Pilates Plank","desc":"From all fours, lower into a plank on your knees or full plank. Navel drawn in, hips aligned. Hold without letting your lower back collapse.","voice":"Keep a straight line. Navel toward your spine. Breathe softly.","tip":"On your knees is perfectly fine too — what matters is keeping your spine aligned."},{"name":"Gentle Cobra","desc":"Lie face down, hands under your shoulders. Inhale. As you exhale, lift your chest off the floor using the muscles of your back. Keep your elbows close to your body.","voice":"Lift your chest with the muscles of your back. Shoulders low, away from your ears.","tip":"Height doesn't matter — what matters is that the movement comes from your back, not your arms."}]},"mar":{"name":"Tuesday","focus":"Hips and Glutes","intro":"Today we activate the posterior chain: glutes, hamstrings, and hip stabilizers. Many of these are done on the floor — use a comfortable mat.","ex":[{"name":"Cat-Cow","desc":"On all fours. Inhale: let your belly drop and lift your chest (cow). Exhale: round your back like a cat. Flow with your breath.","voice":"Inhale and open your chest. Exhale and round your spine.","tip":"Move your whole spine, from your tailbone to your head. Don't lock up any vertebra."},{"name":"Pilates Bridge","desc":"On your back, knees bent. As you exhale, lift your hips one vertebra at a time from your tailbone. As you inhale, lower the same way. 10 repetitions.","voice":"Roll up one vertebra at a time from your tailbone. Lower just as slowly.","tip":"Don't rush it. Articulated control of the spine is the goal, not height."},{"name":"Single-Leg Bridge","desc":"From the bridge, extend one leg into the air. Keep your hips level and your core engaged. 8 slow repetitions. Switch sides.","voice":"Hips level. The extended leg parallel to the bent one.","tip":"If your hips drop to one side, go back to having both feet on the floor."},{"name":"Clamshell","desc":"On your side, hips and knees bent to 90°. Keep your feet together and lift your top knee like a clam opening.","voice":"Feet together, lift the knee without moving your hip. Feel your glute medius working.","tip":"If your hip rolls back as you lift the knee, reduce the range. The movement is small but effective."},{"name":"Side-Lying Leg Kick","desc":"On your side, body aligned. Lift your top leg to hip height. Take it forward and back in a controlled way. 10 reps each direction.","voice":"Leg at hip height. Forward and back, without moving your torso.","tip":"Keep your torso steady — if it moves when you move your leg, your core isn't engaged."},{"name":"Kickback","desc":"On all fours. Keep your back flat. Lift one bent knee toward the ceiling, squeezing your glute. Lower without touching the floor. 12 repetitions.","voice":"Squeeze your glute as you lift. Back flat, no rotating at the hip.","tip":"Don't arch your lower back as you lift the leg. The movement is small and controlled."},{"name":"Pilates Squat","desc":"Standing, feet hip-width apart. Exhale and lower slowly over 3 counts. Inhale as you rise. Knees aligned with your feet.","voice":"Lower slowly over three counts. Knees over your feet, weight in your heels.","tip":"In Pilates the squat is slow and mindful. No bouncing. Work the control."}]},"mie":{"name":"Wednesday","focus":"Back and Posture","intro":"Today we care for the back and posture. Many people carry built-up tension in the neck and upper back. These movements release it gently.","ex":[{"name":"Neck Mobility","desc":"Seated or standing. Tip your ear toward your shoulder, roll your chin to your chest, and rise up the other side. A slow half-circle forward. Never drop your head back.","voice":"Move your neck softly and slowly. Only the front half of the circle — never back.","tip":"Your neck doesn't need speed — it needs softness. If you feel tension, stop and breathe."},{"name":"Chest Opener","desc":"Seated, hands laced behind your head. Exhale and bring your elbows forward. Inhale and open your elbows back, opening your chest. 10 repetitions.","voice":"Elbows forward as you exhale. Elbows back and chest open as you inhale.","tip":"This opening counters the hours spent in front of your phone or computer."},{"name":"Swimming","desc":"Lie face down, arms extended overhead. Lift your right arm and left leg. Lower them and lift the left with the right. Alternate as if you were swimming.","voice":"Opposite arm and leg lift at the same time. As if you were swimming slowly.","tip":"Don't lift higher than your spine comfortably allows."},{"name":"Superman","desc":"Lie face down, arms extended. Lift both arms and both legs off the floor at once. Hold for 3 seconds. Lower. 10 repetitions.","voice":"Lift everything at once and hold. Forehead facing the floor, without raising your head.","tip":"Engage your glutes to protect your lower back."},{"name":"Thread the Needle","desc":"On all fours. Slide your right arm underneath your body toward the left, letting your shoulder and ear rest on the floor. Hold for 5 breaths.","voice":"Slide your arm underneath and rest your shoulder on the floor. Breathe deeply.","tip":"This pose opens the upper back where many of us store tension."},{"name":"Progressive Cobra","desc":"Lie face down. Start with a low Cobra (elbows on the floor). If it feels good, lift your hands and straighten your arms. Hold for 5 breaths. Lower.","voice":"Rise slowly. Start in low Cobra, progress if your body allows it.","tip":"You'll feel a gentle stretch across your abdomen — that's just right."},{"name":"Child's Pose with Side Reach","desc":"From Child's Pose, extend your arms in front. Then walk your hands to one side to stretch the side of your body. Hold and switch.","voice":"In Child's Pose, walk your hands to one side. Feel the stretch along your side.","tip":"Breathe deeply and let go of the tension with each exhale."}]},"jue":{"name":"Thursday","focus":"Legs and Balance","intro":"Today we work the legs with control and precision. In Pilates the legs move from the center — remember to engage your abdominals before each movement.","ex":[{"name":"Standing Hip Circles","desc":"Standing, hands on your hips. Draw big circles with your hips. 5 to one side, 5 to the other. Soft and flowing.","voice":"Draw big circles with your hips. Mobilize the whole joint.","tip":"Soften your knees and let the movement be wide."},{"name":"Pilates Squat with Pause","desc":"Lower over 3 counts, pause for 2 seconds at the bottom, rise over 3 counts. The time under tension does the work. 10 repetitions.","voice":"Lower for three counts, pause, rise for three counts. Full control.","tip":"The pause at the bottom is where you work hardest. Keep your core engaged."},{"name":"Controlled Lunge","desc":"Standing, take a long step forward. Lower your back knee toward the floor. Return. Your front knee doesn't pass your toes. 10 reps per side.","voice":"Back knee lowers slowly. Front knee over your foot, not past it.","tip":"Keep your torso upright — don't lean forward."},{"name":"Lying Leg Circles","desc":"On your back, one leg extended to the ceiling. Draw small circles with the leg from the hip joint. 8 circles in each direction.","voice":"Leg to the ceiling. Draw small circles. Your hip stays still.","tip":"Stability in the pelvis is the key here. If your hip moves, the circles are too big."},{"name":"Scissors","desc":"On your back, head lifted. Bring one leg to the ceiling while the other lowers away from the floor. Alternate in a controlled way. Navel drawn in.","voice":"Alternate legs in a controlled way. Navel toward your spine.","tip":"If straight legs are too hard, bend the knee of the leg lowering away from the floor."},{"name":"Prone Leg Curls","desc":"Lie face down, forehead on your crossed arms. Bend one knee and bring your heel toward your glute. Extend slowly. 12 repetitions per leg.","voice":"Heel to your glute, lower slowly. Feel your hamstring working.","tip":"Keep your hips pressed to the floor throughout the movement."},{"name":"Single-Leg Balance","desc":"Standing. Lift one foot off the floor. Hold your balance with your eyes open. If you can, close them. 30 seconds per foot.","voice":"Leg lifted. Fix your gaze on one point. Engage your center to steady yourself.","tip":"Balance improves with practice. If you steady yourself against the wall at first, perfect."}]},"vie":{"name":"Friday","focus":"Full Body","intro":"On Friday we integrate everything. Movements that connect the core, back, hips, and legs. Finish the week strong and mindful.","ex":[{"name":"Standing Roll Down","desc":"Standing. Inhale. As you exhale, drop your chin to your chest and roll down one vertebra at a time until your hands reach the floor, or as close as possible. Roll back up the same way.","voice":"Roll down one vertebra at a time. Head heavy, spine unfurling.","tip":"Your knees can be slightly bent."},{"name":"Roll Up on the Mat","desc":"On your back, arms to the ceiling. Roll up one vertebra at a time until you're sitting. Reach toward your feet. Roll back down with articulation. 8 slow repetitions.","voice":"Roll up and down one vertebra at a time. Your abdominals work the whole way up.","tip":"If you can't come all the way up, help yourself by bending your knees."},{"name":"Pilates Push Up","desc":"Start standing, roll down to a plank. Do 3 push-ups. Walk your hands back toward your feet and roll up. That full cycle is 5 repetitions.","voice":"Roll down, three push-ups, roll back up. One cycle at a time.","tip":"The push-ups are done with your body aligned. If it's too hard, do them on your knees."},{"name":"Plank with Rotation","desc":"In a plank (hands or elbows). Hold for 10 seconds. Rotate to a side plank on your right hand for 10 seconds. Return to center. Rotate to the other side. Repeat.","voice":"Center plank, rotate to a side plank, return. Hips up as you rotate.","tip":"Don't let your hips drop as you rotate."},{"name":"Side Plank","desc":"Rest on one elbow and the side of your foot. Lift your hips to form a straight line. Hold for 30 seconds. Switch sides.","voice":"Body straight as a board. Hips up, core engaged.","tip":"Modification: rest your bottom knee on the floor."},{"name":"Articulated Bridge","desc":"On your back, knees bent. Roll up one vertebra at a time to a full bridge. Hold for 3 seconds at the top. Roll down with articulation. 8 repetitions.","voice":"Roll up and down one vertebra at a time. Feel each vertebra peel off the floor.","tip":"The slower you go, the more work you do."},{"name":"Swan","desc":"Lie face down, hands under your shoulders. Exhale and lift your chest using the muscles of your back. Hold. Inhale as you lower. The movement comes from the mid-back.","voice":"Lift your chest with your back. Shoulders low. Feel your whole spine extend.","tip":"It's different from Cobra: in Swan the movement comes from the mid-back."},{"name":"Spine Stretch","desc":"Seated, legs extended. Exhale and reach forward from your abdomen, as if you were being folded in half. Inhale and return. 8 repetitions.","voice":"Exhale and round forward. Your navel draws back as you reach.","tip":"It's not a hamstring stretch — it's an articulation of the spine forward."}]},"sab":{"name":"Saturday","focus":"Deep Stretches","intro":"The body needs to stretch what it has worked. Today there's no rush — hold each pose and breathe into it. The stretch comes from relaxation, not force.","ex":[{"name":"Child's Pose","desc":"Knees apart, feet together. Sit back onto your heels and reach your arms forward. Forehead to the floor. Breathe deeply into your back.","voice":"Breathe into your back. Each exhale relaxes you a little more.","tip":"This pose is a refuge. You can come back here whenever you need to rest."},{"name":"Figure 4 — Hip","desc":"On your back. Cross your right ankle over your left knee. Draw your legs toward your chest until you feel the stretch in your glute. Hold.","voice":"Draw your legs toward you until you feel the stretch. Breathe into it.","tip":"If it's too intense, keep your foot on the floor without drawing your legs to your chest."},{"name":"Modified Pigeon","desc":"From all fours, bring your right knee toward your right hand. Extend your left leg back. Lower onto your forearms or your forehead to the floor.","voice":"Breathe deeply into your glute and hip. Let gravity do the work.","tip":"This stretch can be intense. If it's too much, go back to Figure 4."},{"name":"Butterfly","desc":"Seated, soles of your feet together. Hold your feet with your hands. Inhale tall. As you exhale, lean slowly forward from your hips.","voice":"Lean forward from your hips, not from your back.","tip":"Don't push your knees down with your elbows."},{"name":"Standing Hamstring Stretch","desc":"Standing, extend one leg forward resting on the heel. Lean toward it from your hips (not from your back). Keep your spine long.","voice":"Spine long, lean from your hips. Feel the back of your leg.","tip":"Your back should stay straight, not rounded. If it rounds, bend your knee slightly."},{"name":"Floor Chest Opener","desc":"On your back. Extend your arms out to the sides like a cross. Let your shoulders and chest open toward the floor. Breathe deeply and wide. Release the tension.","voice":"Arms out wide, shoulders to the floor. Breathe, expanding your chest.","tip":"If you have tension in your shoulders, place a folded towel under each shoulder."},{"name":"Lying Spinal Twist","desc":"On your back, knees bent. Drop your knees to the right side. Arms out in a cross. Turn your head the opposite way if you like. Hold and breathe.","voice":"Knees to one side, head to the other. Breathe deeply and release.","tip":"Don't force the twist — let the weight of your legs do the work."},{"name":"Savasana","desc":"On your back. Legs extended, arms slightly away from your body. Close your eyes. Breathe effortlessly. Scan your body and release all tension.","voice":"Close your eyes. Breathe without controlling it. Release your body completely.","tip":"This final rest consolidates all the work of the stretches. Don't skip it."}]},"dom":{"name":"Sunday","focus":"Gentle Mobility","intro":"Sunday is for mobility and presence. Soft movements that keep the body nimble and prepare the mind for the week ahead.","ex":[{"name":"Standing Spine Circles","desc":"Standing, hands on your hips. Draw wide circles with your upper torso. 5 to each side.","voice":"Wide, soft circles with your torso. Don't force any range.","tip":"This circular movement lubricates the whole spine. Do it very slowly."},{"name":"Shoulder Circles","desc":"Seated or standing. Lift your shoulders toward your ears, take them back, and lower them. 8 circles backward, 8 forward. Very wide and slow.","voice":"Wide shoulder circles backward. Feel the opening in your chest.","tip":"The backward circles undo the closed posture we build up during the week."},{"name":"Standing Chest Opener","desc":"Standing. Lace your hands behind your back. Inhale and open your chest toward the ceiling. Hold for 5 breaths. Relax. Repeat 5 times.","voice":"Chest to the ceiling, hands laced behind you. Breathe expansively.","tip":"You can rest your hands on your sacrum and arch gently if you can't lace them together."},{"name":"Hip Sway","desc":"Standing, feet a bit wider apart. Sway your hips gently from side to side. Let your arms hang and follow the movement.","voice":"Sway your hips gently. Let your body move freely.","tip":"This movement is almost a moving meditation."},{"name":"Knees to Chest","desc":"On your back. Hug both knees to your chest. Rock gently from side to side as if you were rocking yourself. Massage your lower back.","voice":"Hug your knees and rock gently. The floor massages your back.","tip":"You can make slow circles with your knees to explore different areas of your back."},{"name":"Gentle Lying Twist","desc":"On your back. Bring one knee to your chest, then cross it to the opposite side with your hand. Extend the arm on the same side. Breathe softly and hold.","voice":"One knee crossed to the opposite side. Breathe softly into the twist.","tip":"Your knee doesn't have to touch the floor. Wherever it reaches is fine."},{"name":"Mindful Breathing","desc":"Close your eyes. Inhale for 4 counts. Hold for 4. Exhale for 6 counts. Hold for 2. Repeat. Let each cycle relax you a little more.","voice":"Inhale for four counts. Hold. Exhale for six counts. Slowly, effortlessly.","tip":"This breathing activates the parasympathetic nervous system — the body's calm response."}]}},
+fr:{"lun":{"name":"Lundi","focus":"Centre profond","intro":"Aujourd'hui on travaille le centre — le transverse de l'abdomen. Cherche ta respiration avant chaque mouvement : inspire pour te préparer, expire pour activer. Aucune tension dans le cou.","ex":[{"name":"Respiration d'activation","desc":"Allongée sur le dos, genoux pliés, pieds au sol. Inspire en gonflant le ventre. En expirant, ramène le nombril vers la colonne sans bloquer ta respiration.","voice":"Respire profondément. En expirant, active l'abdomen profond.","tip":"Ne bouge pas le bassin — active seulement l'abdomen. C'est la base de tout le Pilates."},{"name":"Bascule du bassin","desc":"Sur le dos, genoux pliés. Alterne entre creuser le bas du dos et le coller au sol. Lent et contrôlé.","voice":"Bouge le bassin en douceur. D'abord tu creuses les lombaires, puis tu les colles au sol.","tip":"Le mouvement est petit. Apprends où se trouve ton bassin en position neutre — tu utiliseras cette position partout."},{"name":"Les Cent — The Hundred","desc":"Sur le dos. Décolle la tête et les épaules du sol. Jambes à 45° ou en position table. Bats les bras de haut en bas. Inspire sur 5 battements, expire sur 5 battements.","voice":"Tête levée, bras parallèles au sol, bats avec du rythme. Inspire sur cinq, expire sur cinq.","tip":"Modification : garde les pieds au sol si tu sens une tension dans le cou. Le plus important, c'est la respiration."},{"name":"Roll Up — Déroulé","desc":"Sur le dos, bras au-dessus de la tête. Inspire. En expirant, monte vertèbre par vertèbre jusqu'à t'asseoir. Étire-toi vers les pieds. Redescends de la même façon. 8 répétitions.","voice":"Monte vertèbre par vertèbre. Ramène le nombril vers la colonne pendant toute la montée.","tip":"Si tu n'arrives pas à monter complètement, aide-toi avec les mains sur les cuisses."},{"name":"Étirement d'une jambe","desc":"Sur le dos. Décolle la tête et les épaules. Ramène un genou vers la poitrine pendant que tu étends l'autre jambe. Alterne. Le nombril reste rentré en permanence.","voice":"Alterne les genoux vers la poitrine. Nombril rentré, tête stable.","tip":"Ne laisse pas ton dos se cambrer quand tu étends la jambe. Si ça arrive, remonte un peu plus la jambe étendue."},{"name":"Criss-Cross","desc":"Sur le dos. Mains derrière la tête. Amène le coude droit vers le genou gauche pendant que tu étends la jambe droite. Alterne lentement. Ne tire pas sur le cou.","voice":"Tourne vers le genou qui s'approche. Coude ouvert, sans tirer sur le cou.","tip":"La rotation vient du tronc, pas du cou. Regarde le plafond pendant que tu tournes."},{"name":"Planche Pilates","desc":"À quatre pattes, descends en planche sur les genoux ou complète. Nombril rentré, hanches alignées. Maintiens sans laisser s'effondrer le bas du dos.","voice":"Garde la ligne droite. Nombril vers la colonne. Respire doucement.","tip":"Sur les genoux, c'est très bien aussi — l'important est de garder l'alignement de la colonne."},{"name":"Cobra doux — Cobra","desc":"Sur le ventre, mains sous les épaules. Inspire. En expirant, soulève la poitrine du sol en utilisant les muscles du dos. Garde les coudes près du corps.","voice":"Soulève la poitrine avec les muscles du dos. Épaules basses, loin des oreilles.","tip":"La hauteur n'a pas d'importance — l'essentiel est que le mouvement vienne du dos, pas des bras."}]},"mar":{"name":"Mardi","focus":"Hanches et fessiers","intro":"Aujourd'hui on active la chaîne postérieure : fessiers, ischio-jambiers et stabilisateurs de la hanche. Beaucoup d'exercices se font au sol — utilise un tapis confortable.","ex":[{"name":"Chat-Vache","desc":"À quatre pattes. Inspire : creuse le ventre et ouvre la poitrine (vache). Expire : arrondis le dos comme un chat. Laisse le mouvement suivre la respiration.","voice":"Inspire et ouvre la poitrine. Expire et arrondis la colonne.","tip":"Mobilise toute la colonne, du coccyx jusqu'à la tête. Sans bloquer aucune vertèbre."},{"name":"Pont Pilates","desc":"Sur le dos, genoux pliés. En expirant, soulève les hanches vertèbre par vertèbre à partir du coccyx. En inspirant, redescends de la même façon. 10 répétitions.","voice":"Monte vertèbre par vertèbre depuis le coccyx. Redescends aussi lentement.","tip":"Ne prends pas de vitesse. Le but, c'est le contrôle articulé de la colonne, pas la hauteur."},{"name":"Pont sur une jambe","desc":"Depuis le pont, étends une jambe en l'air. Garde les hanches à niveau et le centre actif. 8 répétitions lentes. Change de côté.","voice":"Hanches à niveau. La jambe étendue reste parallèle à la jambe pliée.","tip":"Si les hanches penchent d'un côté, reviens avec les deux pieds au sol."},{"name":"Clamshell — Coquillage","desc":"Sur le côté, hanches et genoux pliés à 90°. Garde les pieds joints et soulève le genou du dessus comme un coquillage qui s'ouvre.","voice":"Pieds joints, soulève le genou sans bouger la hanche. Tu sens le moyen fessier travailler.","tip":"Si la hanche bascule vers l'arrière quand tu montes le genou, réduis l'amplitude. Le mouvement est petit mais efficace."},{"name":"Coup de pied latéral au sol","desc":"Sur le côté, corps aligné. Soulève la jambe du dessus à la hauteur de la hanche. Amène-la vers l'avant puis vers l'arrière de façon contrôlée. 10 répétitions dans chaque direction.","voice":"Jambe à hauteur de hanche. Avant et arrière, sans bouger le tronc.","tip":"Garde le tronc ferme — s'il bouge quand tu bouges la jambe, c'est que le centre n'est pas actif."},{"name":"Kickback — Coup de pied arrière","desc":"À quatre pattes. Garde le dos plat. Amène un genou plié vers le plafond en serrant le fessier. Redescends sans toucher le sol. 12 répétitions.","voice":"Serre le fessier en montant. Dos plat, sans que la hanche tourne.","tip":"Ne cambre pas le bas du dos quand tu montes la jambe. Le mouvement est petit et contrôlé."},{"name":"Squat Pilates","desc":"Debout, pieds à la largeur des hanches. Expire et descends lentement en 3 temps. Inspire en remontant. Genoux alignés avec les pieds.","voice":"Descends lentement en trois temps. Genoux au-dessus des pieds, poids dans les talons.","tip":"En Pilates, le squat est lent et conscient. Sans rebondir. Travaille le contrôle."}]},"mie":{"name":"Mercredi","focus":"Dos et posture","intro":"Aujourd'hui on prend soin du dos et de la posture. Beaucoup de gens accumulent de la tension dans la zone cervicale et dorsale. Ces exercices la libèrent en douceur.","ex":[{"name":"Mobilité du cou","desc":"Assise ou debout. Incline l'oreille vers l'épaule, amène le menton vers la poitrine, remonte de l'autre côté. Un demi-cercle lent vers l'avant. Ne renverse jamais la tête en arrière.","voice":"Bouge le cou tout en douceur et lentement. Seulement la moitié du cercle — jamais vers l'arrière.","tip":"Le cou n'a pas besoin de vitesse — il a besoin de douceur. Si tu sens une tension, arrête-toi et respire."},{"name":"Ouverture de la poitrine","desc":"Assise, mains entrelacées derrière la nuque. Expire et amène les coudes vers l'avant. Inspire et ouvre les coudes vers l'arrière en ouvrant la poitrine. 10 répétitions.","voice":"Coudes vers l'avant en expirant. Coudes vers l'arrière et poitrine ouverte en inspirant.","tip":"Cette ouverture compense les heures passées devant le téléphone ou l'ordinateur."},{"name":"Swimming — Nage","desc":"Sur le ventre, bras étendus vers l'avant. Soulève le bras droit et la jambe gauche. Redescends et soulève le bras gauche avec la jambe droite. Alterne comme si tu nageais.","voice":"Les bras et jambes opposés montent en même temps. Comme si tu nageais doucement.","tip":"Ne soulève pas plus que ce que ta colonne te permet confortablement."},{"name":"Superman — Extension","desc":"Sur le ventre, bras étendus. Soulève simultanément les deux bras et les deux jambes du sol. Maintiens 3 secondes. Redescends. 10 répétitions.","voice":"Soulève tout en même temps et maintiens. Front vers le sol, sans lever la tête.","tip":"Active les fessiers pour protéger le bas du dos."},{"name":"Thread the Needle — Le fil","desc":"À quatre pattes. Passe le bras droit sous le corps vers la gauche, en laissant l'épaule et l'oreille reposer au sol. Maintiens 5 respirations.","voice":"Fais glisser le bras en dessous et pose l'épaule au sol. Respire profondément.","tip":"Cette posture ouvre la zone dorsale, là où beaucoup d'entre nous gardons la tension."},{"name":"Cobra progressif","desc":"Sur le ventre. Commence par le Cobra bas (coudes au sol). Si tu te sens bien, remonte les mains et étends les bras. Maintiens 5 respirations. Redescends.","voice":"Monte lentement. Commence en Cobra bas, avance si tes sensations le permettent.","tip":"Tu sens un étirement doux dans l'abdomen — c'est exactement ça."},{"name":"Child's Pose avec extension latérale — Posture de l'enfant","desc":"Depuis la posture de l'enfant, étends les bras vers l'avant. Puis fais marcher tes mains vers un côté pour étirer le côté du corps. Maintiens et change de côté.","voice":"En posture de l'enfant, fais marcher les mains vers un côté. Tu sens l'étirement sur le flanc.","tip":"Respire profondément et relâche la tension à chaque expiration."}]},"jue":{"name":"Jeudi","focus":"Jambes et équilibre","intro":"Aujourd'hui on travaille les jambes avec contrôle et précision. En Pilates, les jambes se meuvent depuis le centre — pense à activer l'abdomen avant chaque mouvement.","ex":[{"name":"Cercles de hanche debout","desc":"Debout, mains sur les hanches. Dessine de grands cercles avec la hanche. 5 d'un côté, 5 de l'autre. Doux et fluide.","voice":"Dessine de grands cercles avec la hanche. Mobilise toute l'articulation.","tip":"Relâche les genoux et laisse le mouvement être ample."},{"name":"Squat Pilates avec pause","desc":"Descends en 3 temps, pause de 2 secondes en bas, remonte en 3 temps. C'est le temps sous tension qui fait le travail. 10 répétitions.","voice":"Descends en trois temps, pause, remonte en trois temps. Contrôle total.","tip":"La pause en bas, c'est là que tu travailles le plus. Garde le centre actif."},{"name":"Fente contrôlée","desc":"Debout, fais un grand pas vers l'avant. Descends le genou arrière vers le sol. Reviens. Le genou avant ne dépasse pas la pointe du pied. 10 répétitions par côté.","voice":"Le genou arrière descend lentement. Le genou avant au-dessus du pied, sans le dépasser.","tip":"Garde le tronc vertical — ne te penche pas vers l'avant."},{"name":"Cercles de jambe au sol","desc":"Sur le dos, une jambe étendue vers le plafond. Dessine de petits cercles avec la jambe depuis l'articulation de la hanche. 8 cercles dans chaque sens.","voice":"Jambe vers le plafond. Dessine de petits cercles. La hanche ne bouge pas.","tip":"La stabilité du bassin est la clé ici. Si la hanche bouge, c'est que les cercles sont trop grands."},{"name":"Ciseaux — Scissors","desc":"Sur le dos, tête levée. Amène une jambe vers le plafond pendant que l'autre s'éloigne du sol. Alterne de façon contrôlée. Nombril rentré.","voice":"Alterne les jambes de façon contrôlée. Nombril vers la colonne.","tip":"Si les jambes tendues sont trop difficiles, plie le genou de la jambe qui s'éloigne du sol."},{"name":"Coups de pied sur le ventre","desc":"Sur le ventre, front posé sur les bras croisés. Plie un genou et amène le talon vers le fessier. Étends lentement. 12 répétitions par jambe.","voice":"Talon vers le fessier, redescends lentement. Tu sens l'ischio-jambier travailler.","tip":"Garde les hanches collées au sol pendant tout le mouvement."},{"name":"Équilibre sur une jambe","desc":"Debout. Soulève un pied du sol. Maintiens l'équilibre les yeux ouverts. Si tu peux, ferme-les. 30 secondes par pied.","voice":"Jambe levée. Fixe un point immobile. Active le centre pour te stabiliser.","tip":"L'équilibre s'améliore avec la pratique. Si tu t'aides du mur au début, c'est parfait."}]},"vie":{"name":"Vendredi","focus":"Corps complet","intro":"Le vendredi, on intègre tout. Des mouvements qui relient le centre, le dos, les hanches et les jambes. Termine la semaine forte et consciente.","ex":[{"name":"Roll Down debout — Déroulé debout","desc":"Debout. Inspire. En expirant, laisse tomber le menton vers la poitrine et déroule-toi vers le bas vertèbre par vertèbre jusqu'à ce que les mains atteignent le sol, ou le plus près possible. Remonte de la même façon.","voice":"Déroule-toi vers le bas vertèbre par vertèbre. Tête lourde, colonne qui se déploie.","tip":"Les genoux peuvent être légèrement pliés."},{"name":"Roll Up sur le tapis — Déroulé","desc":"Sur le dos, bras vers le plafond. Monte vertèbre par vertèbre jusqu'à t'asseoir. Étire-toi vers les pieds. Redescends de façon articulée. 8 répétitions lentes.","voice":"Monte et descends vertèbre par vertèbre. L'abdomen travaille pendant toute la montée.","tip":"Si tu n'arrives pas à monter complètement, aide-toi en pliant les genoux."},{"name":"Push Up Pilates — Pompe","desc":"Commence debout, déroule-toi vers le bas jusqu'à la planche. Fais 3 pompes. Refais marcher tes mains vers les pieds et remonte en déroulant. Ce cycle complet fait 5 répétitions.","voice":"Déroule vers le bas, trois pompes, remonte. Un cycle à la fois.","tip":"Les pompes se font avec le corps aligné. Si c'est trop difficile, fais-les sur les genoux."},{"name":"Planche avec rotation","desc":"En planche (sur les mains ou les coudes). Maintiens 10 secondes. Tourne en planche latérale sur la main droite 10 secondes. Reviens au centre. Tourne de l'autre côté. Répète.","voice":"Planche centrale, tourne en planche latérale, reviens. Hanches hautes en tournant.","tip":"Ne laisse pas les hanches tomber pendant la rotation."},{"name":"Planche latérale","desc":"Appuie-toi sur un coude et le côté du pied. Soulève les hanches en formant une ligne droite. Maintiens 30 secondes. Change de côté.","voice":"Corps droit comme une planche. Hanches hautes, centre actif.","tip":"Modification : pose le genou du dessous au sol."},{"name":"Pont articulé","desc":"Sur le dos, genoux pliés. Monte vertèbre par vertèbre jusqu'à un pont complet. Maintiens 3 secondes en haut. Redescends de façon articulée. 8 répétitions.","voice":"Monte et descends vertèbre par vertèbre. Tu sens chaque vertèbre se décoller du sol.","tip":"Plus tu le fais lentement, plus tu travailles."},{"name":"Swan — Le cygne","desc":"Sur le ventre, mains sous les épaules. Expire et soulève la poitrine en utilisant les muscles du dos. Maintiens. Inspire en redescendant. Le mouvement vient du milieu du dos.","voice":"Soulève la poitrine avec le dos. Épaules basses. Tu sens toute la colonne s'étendre.","tip":"C'est différent du Cobra : dans le Swan, le mouvement vient du milieu du dos."},{"name":"Spine Stretch — Étirement de la colonne","desc":"Assise, jambes étendues. Expire et étire-toi vers l'avant depuis l'abdomen, comme si on te pliait en deux. Inspire et reviens. 8 répétitions.","voice":"Expire et arrondis-toi vers l'avant. Le nombril recule pendant que tu t'étires.","tip":"Ce n'est pas un étirement des ischio-jambiers — c'est une articulation de la colonne vers l'avant."}]},"sab":{"name":"Samedi","focus":"Étirements profonds","intro":"Le corps a besoin d'étirer ce qu'il a travaillé. Aujourd'hui, pas de précipitation — maintiens chaque posture et respire dedans. L'étirement vient de la détente, pas de la force.","ex":[{"name":"Child's Pose — Posture de l'enfant","desc":"Genoux écartés, pieds joints. Assieds-toi sur les talons et étends les bras vers l'avant. Front au sol. Respire profondément vers le dos.","voice":"Respire vers le dos. Chaque expiration te détend un peu plus.","tip":"Cette posture est un refuge. Tu peux y revenir chaque fois que tu as besoin de repos."},{"name":"Figure 4 — Hanche","desc":"Sur le dos. Croise la cheville droite sur le genou gauche. Ramène les jambes vers la poitrine jusqu'à sentir l'étirement dans le fessier. Maintiens.","voice":"Ramène les jambes vers toi jusqu'à sentir l'étirement. Respire à l'intérieur.","tip":"Si c'est trop intense, garde le pied posé au sol sans ramener les jambes vers la poitrine."},{"name":"Pigeon modifié","desc":"Depuis quatre pattes, amène le genou droit vers la main droite. Étends la jambe gauche vers l'arrière. Descends sur les avant-bras ou le front au sol.","voice":"Respire profondément vers le fessier et la hanche. Laisse la gravité faire le travail.","tip":"Cet étirement peut être intense. Si c'est trop, reviens à la Figure 4."},{"name":"Papillon","desc":"Assise, plantes des pieds jointes. Attrape tes pieds avec les mains. Inspire en grandissant. En expirant, penche-toi lentement vers l'avant depuis les hanches.","voice":"Penche-toi vers l'avant depuis les hanches, pas depuis le dos.","tip":"Ne pousse pas les genoux vers le bas avec les coudes."},{"name":"Ischio-jambiers debout","desc":"Debout, étends une jambe vers l'avant en appui sur le talon. Penche-toi vers elle depuis les hanches (pas depuis le dos). Garde la colonne longue.","voice":"Colonne longue, penche-toi depuis les hanches. Tu sens l'arrière de la jambe.","tip":"Le dos doit rester droit, pas arrondi. S'il s'arrondit, plie légèrement le genou."},{"name":"Ouverture de la poitrine au sol","desc":"Sur le dos. Étends les bras en croix. Laisse les épaules et la poitrine s'ouvrir vers le sol. Respire profondément et amplement. Relâche la tension.","voice":"Bras en croix, épaules au sol. Respire en élargissant la poitrine.","tip":"Si tu as de la tension dans les épaules, place une serviette pliée sous chaque épaule."},{"name":"Torsion vertébrale au sol","desc":"Sur le dos, genoux pliés. Amène les genoux vers le côté droit. Bras en croix. Tourne la tête vers le côté opposé si tu veux. Maintiens et respire.","voice":"Genoux d'un côté, tête de l'autre. Respire profondément et relâche.","tip":"Ne force pas la torsion — laisse le poids des jambes faire le travail."},{"name":"Savasana — Relaxation finale","desc":"Sur le dos. Jambes étendues, bras légèrement écartés du corps. Ferme les yeux. Respire sans effort. Scanne le corps et relâche toute tension.","voice":"Ferme les yeux. Respire sans contrôler. Relâche complètement le corps.","tip":"Ce repos final consolide tout le travail des étirements. Ne le saute pas."}]},"dom":{"name":"Dimanche","focus":"Mobilité douce","intro":"Le dimanche est dédié à la mobilité et à la présence. Des mouvements doux qui gardent le corps souple et préparent l'esprit à la semaine qui vient.","ex":[{"name":"Cercles de colonne debout","desc":"Debout, mains sur les hanches. Dessine de larges cercles avec le haut du tronc. 5 de chaque côté.","voice":"Cercles amples et doux avec le tronc. Sans forcer aucune amplitude.","tip":"Ce mouvement circulaire lubrifie toute la colonne. Fais-le très lentement."},{"name":"Cercles d'épaules","desc":"Assise ou debout. Monte les épaules vers les oreilles, amène-les vers l'arrière, redescends. 8 cercles vers l'arrière, 8 vers l'avant. Très ample et lent.","voice":"Cercles d'épaules amples vers l'arrière. Tu sens l'ouverture dans la poitrine.","tip":"Les cercles vers l'arrière défont la posture fermée qu'on accumule pendant la semaine."},{"name":"Ouverture de la poitrine debout","desc":"Debout. Entrelace les mains derrière le dos. Inspire et ouvre la poitrine vers le plafond. Maintiens 5 respirations. Relâche. Répète 5 fois.","voice":"Poitrine vers le plafond, mains entrelacées derrière. Respire en t'élargissant.","tip":"Tu peux poser les mains sur le sacrum et te cambrer doucement si tu n'arrives pas à entrelacer les mains."},{"name":"Balancement de hanche","desc":"Debout, pieds un peu plus écartés. Balance la hanche doucement d'un côté à l'autre. Laisse les bras pendre et suivre le mouvement.","voice":"Balance la hanche en douceur. Laisse le corps bouger librement.","tip":"Ce mouvement est presque une méditation en mouvement."},{"name":"Genoux à la poitrine","desc":"Sur le dos. Enlace les deux genoux vers la poitrine. Balance doucement d'un côté à l'autre comme si tu te berçais. Masse le bas du dos.","voice":"Enlace les genoux et balance doucement. Le sol masse ton dos.","tip":"Tu peux faire de lents cercles avec les genoux pour explorer différentes zones du dos."},{"name":"Torsion douce au sol","desc":"Sur le dos. Amène un genou vers la poitrine puis croise-le vers le côté opposé avec la main. Étends le bras du même côté. Respire doucement et maintiens.","voice":"Un genou croisé vers le côté opposé. Respire doucement dans la torsion.","tip":"Ce n'est pas grave si le genou ne touche pas le sol. Là où il arrive, c'est bien."},{"name":"Respiration consciente","desc":"Ferme les yeux. Inspire sur 4 temps. Retiens 4. Expire sur 6 temps. Retiens 2. Répète. Laisse chaque cycle te détendre un peu plus.","voice":"Inspire sur quatre temps. Retiens. Expire sur six temps. Lentement, sans effort.","tip":"Cette respiration active le système nerveux parasympathique — la réponse de calme du corps."}]}}};
+function dayL(d){const lang=crisLang();const tr=(lang!=='es'&&DAYS_L[lang])?DAYS_L[lang][d.id]:null;if(!tr)return d;return {...d,name:tr.name,focus:tr.focus,intro:tr.intro,exercises:d.exercises.map((ex,i)=>({...ex,name:tr.ex[i].name,desc:tr.ex[i].desc,voice:tr.ex[i].voice,tip:tr.ex[i].tip}))};}
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
+
 
 /* ─── SVG ANIMATIONS ─── */
 // Each entry = [poseA_elements, poseB_elements]
@@ -347,8 +383,8 @@ function getAnim(type, playing, tag){
     <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" class="pose-a">${MAT}${thicken(poses[0])}</svg>
     <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" class="pose-b">${MAT}${thicken(poses[1])}</svg>
     ${tag?`<span class="anim-tag">${tag}</span>`:''}
-    <span class="pose-lbl lbl-a">1 · posición</span>
-    <span class="pose-lbl lbl-b">2 · movimiento</span>
+    <span class="pose-lbl lbl-a">${t('pose1')}</span>
+    <span class="pose-lbl lbl-b">${t('pose2')}</span>
   </div>`;
 }
 
@@ -600,6 +636,7 @@ const DAYS=[
 ];
 
 /* ─── ESTADO ─── */
+const LDAYS=DAYS.map(dayL);
 const TODAY=new Date().getDay();
 let curDayIdx=0;
 let S={exIdx:0,side:1,phase:'ready',timer:0,interval:null};
@@ -611,7 +648,7 @@ let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.Au
 function beep(f=600,d=.2){if(!__allow('sound'))return;try{const c=__getCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
 function vibrate(ms=60){if(!__allow('vib'))return;try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
 let _utt=null;
-function speak(t){try{if(!__allow('voice'))return;if(!window.speechSynthesis)return;window.speechSynthesis.cancel();if(window.speechSynthesis.paused)window.speechSynthesis.resume();_utt=new SpeechSynthesisUtterance(t);_utt.lang='es-ES';_utt.rate=.88;const v=window.speechSynthesis.getVoices();const ev=v.find(v=>v.lang.startsWith('es'));if(ev)_utt.voice=ev;window.speechSynthesis.speak(_utt);}catch(e){}}
+function speak(t){try{if(!__allow('voice'))return;if(!window.speechSynthesis)return;window.speechSynthesis.cancel();if(window.speechSynthesis.paused)window.speechSynthesis.resume();_utt=new SpeechSynthesisUtterance(t);_utt.lang=VOICE_LANG[crisLang()];_utt.rate=.88;const v=window.speechSynthesis.getVoices();const ev=v.find(x=>x.lang.startsWith(crisLang()));if(ev)_utt.voice=ev;window.speechSynthesis.speak(_utt);}catch(e){}}
 
 /* Habla y llama a cb SOLO cuando ha terminado de dictar (o al instante si la
    voz está apagada). Con red de seguridad por si el navegador no emite 'end'. */
@@ -624,8 +661,8 @@ function speakThen(t,cb){
     window.speechSynthesis.cancel();
     if(window.speechSynthesis.paused)window.speechSynthesis.resume();
     _utt=new SpeechSynthesisUtterance(t);
-    _utt.lang='es-ES';_utt.rate=.88;
-    const v=window.speechSynthesis.getVoices();const ev=v.find(v=>v.lang.startsWith('es'));if(ev)_utt.voice=ev;
+    _utt.lang=VOICE_LANG[crisLang()];_utt.rate=.88;
+    const v=window.speechSynthesis.getVoices();const ev=v.find(x=>x.lang.startsWith(crisLang()));if(ev)_utt.voice=ev;
     _utt.onend=fin;_utt.onerror=fin;
     window.speechSynthesis.speak(_utt);
     setTimeout(fin,Math.max(4000,t.length*110));
@@ -637,24 +674,24 @@ function go(v){document.querySelectorAll('.screen').forEach(s=>s.classList.remov
 
 /* ─── HOME ─── */
 function initHome(){
-  const ti=todayDayIdx(),d=DAYS[ti];
+  const ti=todayDayIdx(),d=LDAYS[ti];
   const tc=document.getElementById('today-card');
   tc.style.background=d.color;
-  tc.innerHTML=`<div class="tc-label">Hoy · ${d.name}</div><div class="tc-day">${d.focus}</div><div class="tc-meta">${d.duration} · Pilates en casa</div><div class="tc-emoji">${d.emoji}</div>`;
-  const dayNames=['L','M','X','J','V','S','D'];
-  document.getElementById('week-grid').innerHTML=DAYS.map((d,i)=>`<div class="wday ${i===ti?'today-mark':''}" onclick="openDay(${i})"><span class="wd-emoji">${d.emoji}</span><span class="wd-name">${dayNames[i]}</span></div>`).join('');
+  tc.innerHTML=`<div class="tc-label">${t('tc_today',{name:d.name})}</div><div class="tc-day">${d.focus}</div><div class="tc-meta">${t('tc_meta',{dur:d.duration})}</div><div class="tc-emoji">${d.emoji}</div>`;
+  const dayNames=t('wl');
+  document.getElementById('week-grid').innerHTML=LDAYS.map((d,i)=>`<div class="wday ${i===ti?'today-mark':''}" onclick="openDay(${i})"><span class="wd-emoji">${d.emoji}</span><span class="wd-name">${dayNames[i]}</span></div>`).join('');
 }
 function openTodayDay(){openDay(todayDayIdx());}
 
 /* ─── DAY ─── */
 function openDay(i){
-  curDayIdx=i;const d=DAYS[i];
+  curDayIdx=i;const d=LDAYS[i];
   document.getElementById('day-title').textContent=d.name;
   const dh=document.getElementById('day-header');
   dh.style.background=d.color;
-  dh.innerHTML=`<div class="dh-focus">${d.focus}</div><div class="dh-meta">${d.duration} · ${d.exercises.length} ejercicios</div><div class="dh-emoji">${d.emoji}</div>`;
+  dh.innerHTML=`<div class="dh-focus">${d.focus}</div><div class="dh-meta">${t('dh_meta',{dur:d.duration,n:d.exercises.length})}</div><div class="dh-emoji">${d.emoji}</div>`;
   document.getElementById('day-intro').textContent=d.intro;
-  document.getElementById('ex-list').innerHTML=d.exercises.map((ex,i)=>`<div class="ex-item"><div class="ex-num">${i+1}</div><div class="ex-info"><div class="ex-name">${ex.name}</div><div class="ex-meta">${ex.duration}s${ex.sides?' · cada lado':''}${ex.rest?' · '+ex.rest+'s descanso':''}</div></div><span class="ex-emoji">${ex.emoji}</span></div>`).join('');
+  document.getElementById('ex-list').innerHTML=d.exercises.map((ex,i)=>`<div class="ex-item"><div class="ex-num">${i+1}</div><div class="ex-info"><div class="ex-name">${ex.name}</div><div class="ex-meta">${ex.duration}s${ex.sides?t('ex_eachside'):''}${ex.rest?t('ex_rest',{r:ex.rest}):''}</div></div><span class="ex-emoji">${ex.emoji}</span></div>`).join('');
   go('day');
 }
 
@@ -668,7 +705,7 @@ document.addEventListener('visibilitychange',()=>{
 
 function startSession(){
   S={exIdx:0,side:1,phase:'idle',timer:0,total:0,interval:null,pausedPhase:null};
-  document.getElementById('s-title').textContent=DAYS[curDayIdx].name+' · '+DAYS[curDayIdx].focus;
+  document.getElementById('s-title').textContent=LDAYS[curDayIdx].name+' · '+LDAYS[curDayIdx].focus;
   go('session');renderSession();
 }
 function confirmStop(){stopSession();go('day');}
@@ -680,12 +717,12 @@ function beginAll(){keepAwake();startPrep();}
 function voiceOn(){return __allow('voice')&&!!window.speechSynthesis;}
 // Explicación completa: cómo colocarse y hacerlo (desc), la clave (voice) y cuánto dura
 function exText(ex,first){
-  const durTxt=ex.sides===2?ex.duration+' segundos por cada lado':ex.duration+' segundos';
-  return (first?'Primer ejercicio: ':'Siguiente: ')+ex.name+'. '+ex.desc+' '+ex.voice+' Serán '+durTxt+'.';
+  const durTxt=ex.sides===2?t('v_sec_side',{n:ex.duration}):t('v_sec',{n:ex.duration});
+  return (first?t('v_first'):t('v_next'))+ex.name+'. '+ex.desc+' '+ex.voice+t('v_will_be',{dur:durTxt});
 }
 
 function startPrep(){
-  const ex=DAYS[curDayIdx].exercises[S.exIdx];
+  const ex=LDAYS[curDayIdx].exercises[S.exIdx];
   S.phase='prep';S.side=1;
   vibrate(50);
   if(!voiceOn()){
@@ -708,13 +745,13 @@ function startPrep(){
 // Tras un descanso con la explicación ya dictada: directo al ejercicio
 function advanceExDirect(){
   stopTimer();
-  const d=DAYS[curDayIdx];
+  const d=LDAYS[curDayIdx];
   S.exIdx++;S.side=1;S.pausedPhase=null;
   if(S.exIdx>=d.exercises.length){S.phase='done';releaseAwake();renderSession();return;}
   if(!voiceOn()){startPrep();return;}
   const ex=d.exercises[S.exIdx];
   S.phase='active';S.timer=ex.duration;S.total=ex.duration;
-  beep(800,.15);vibrate(60);speak('¡Vamos! '+ex.duration+' segundos.');
+  beep(800,.15);vibrate(60);speak(t('v_go',{n:ex.duration}));
   S.interval=setInterval(sessionTick,1000);
   renderSession();
 }
@@ -726,20 +763,20 @@ function sessionTick(){
   __ring('s-ring',S.total?S.timer/S.total:0);
   // Durante el ejercicio, la voz canta cuánto queda: a mitad y a los últimos 10s
   if(S.phase==='active'){
-    if(S.timer===Math.floor(S.total/2)&&S.total>=40)speak('Mitad. Quedan '+S.timer+' segundos.');
-    else if(S.timer===10&&S.total>=25)speak('Últimos diez segundos.');
+    if(S.timer===Math.floor(S.total/2)&&S.total>=40)speak(t('v_half',{n:S.timer}));
+    else if(S.timer===10&&S.total>=25)speak(t('v_last10'));
   }
   if(S.timer<=3&&S.timer>0&&(S.phase==='active'||S.phase==='prep'||S.phase==='rest'))beep(500,.08);
   if(S.timer>0)return;
   stopTimer();
-  const d=DAYS[curDayIdx],ex=d.exercises[S.exIdx];
+  const d=LDAYS[curDayIdx],ex=d.exercises[S.exIdx];
   if(S.phase==='prep'){
     S.phase='active';S.timer=ex.duration;S.total=ex.duration;
-    beep(800,.15);vibrate(60);speak('¡Vamos! '+ex.duration+' segundos.');
+    beep(800,.15);vibrate(60);speak(t('v_go',{n:ex.duration}));
     S.interval=setInterval(sessionTick,1000);
   }else if(S.phase==='active'&&ex.sides===2&&S.side===1){
     S.side=2;S.phase='switch';S.timer=5;S.total=5;
-    speak('Cambia de lado. Otros '+ex.duration+' segundos.');vibrate(60);
+    speak(t('v_switch',{n:ex.duration}));vibrate(60);
     S.interval=setInterval(sessionTick,1000);
   }else if(S.phase==='switch'){
     S.phase='active';S.timer=ex.duration;S.total=ex.duration;
@@ -752,7 +789,7 @@ function sessionTick(){
     if(voiceOn()){
       S.nextReady=false;
       const nx=d.exercises[S.exIdx+1];
-      speakThen('Muy bien. Descansa '+ex.rest+' segundos. '+exText(nx,false),()=>{
+      speakThen(t('v_rest',{n:ex.rest})+exText(nx,false),()=>{
         S.nextReady=true;
         if(S.phase==='restwait')advanceExDirect(); // el descanso acabó antes que la voz
       });
@@ -777,7 +814,7 @@ function togglePlay(){
     }
     S.phase=S.pausedPhase||'active';S.pausedPhase=null;
     S.interval=setInterval(sessionTick,1000);
-    keepAwake();speak('Seguimos.');
+    keepAwake();speak(t('v_resume'));
   }else if(['prep','active','switch','rest','restwait'].includes(S.phase)){
     S.pausedPhase=S.phase;stopTimer();S.phase='paused';
     try{speechSynthesis.cancel();}catch(e){}
@@ -788,7 +825,7 @@ function togglePlay(){
 function skipPhase(){
   stopTimer();
   try{speechSynthesis.cancel();}catch(e){}
-  const d=DAYS[curDayIdx],ex=d.exercises[S.exIdx];
+  const d=LDAYS[curDayIdx],ex=d.exercises[S.exIdx];
   const ph=S.phase==='paused'?(S.pausedPhase||'active'):S.phase;
   S.pausedPhase=null;
   if(ph==='prep'||ph==='switch'){
@@ -809,38 +846,38 @@ function skipPhase(){
 
 function advanceEx(){
   stopTimer();
-  const d=DAYS[curDayIdx];
+  const d=LDAYS[curDayIdx];
   S.exIdx++;S.side=1;S.pausedPhase=null;
   if(S.exIdx>=d.exercises.length){S.phase='done';releaseAwake();renderSession();}
   else startPrep();
 }
 
 function renderSession(){
-  const d=DAYS[curDayIdx],total=d.exercises.length,el=document.getElementById('s-content');
+  const d=LDAYS[curDayIdx],total=d.exercises.length,el=document.getElementById('s-content');
   if(S.phase==='done'){
     try{var _n=new Date();localStorage.setItem('cris_hiit_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}
     document.getElementById('s-fill').style.width='100%';
     document.getElementById('s-count').textContent='';
     document.getElementById('s-dots').innerHTML='';
-    el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>¡Sesión completada!</h2><p>${d.name} · ${d.focus}<br>Bien hecho, Cris 💚</p></div><button class="btn btn-secondary" style="margin-bottom:8px" onclick="go('home')">🏠 Inicio</button><button class="btn btn-primary" onclick="startSession()">Repetir sesión</button>`;
+    el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>${t('done_h')}</h2><p>${t('done_p',{name:d.name,focus:d.focus})}</p></div><button class="btn btn-secondary" style="margin-bottom:8px" onclick="go('home')">${t('btn_home')}</button><button class="btn btn-primary" onclick="startSession()">${t('btn_repeat')}</button>`;
     beep(800,.2);setTimeout(()=>beep(1000,.3),250);vibrate([80,50,80]);
-    speak('¡Sesión completada! Bien hecho.');
+    speak(t('v_done'));
     return;
   }
   const ex=d.exercises[S.exIdx];
   document.getElementById('s-fill').style.width=(S.exIdx/total*100)+'%';
-  document.getElementById('s-count').textContent=`Ejercicio ${S.exIdx+1} de ${total}`;
+  document.getElementById('s-count').textContent=t('count',{i:S.exIdx+1,n:total});
   document.getElementById('s-dots').innerHTML=d.exercises.map((_,i)=>`<div class="dot ${i<S.exIdx?'done':i===S.exIdx?'active':''}"></div>`).join('');
 
   if(S.phase==='idle'){
     el.innerHTML=`
-      ${getAnim(ex.anim||'breathe',true,'Así se hace el primero')}
+      ${getAnim(ex.anim||'breathe',true,t('tag_first'))}
       <div class="s-box">
-        <div class="s-phase">Sesión automática</div>
+        <div class="s-phase">${t('idle_phase')}</div>
         <div class="s-exname">${d.focus}</div>
-        <div class="s-desc">Dale a empezar y déjate llevar: la voz te guía, los ejercicios cambian solos y tú solo copias a la figura. No hace falta tocar el móvil hasta el final. 💚</div>
+        <div class="s-desc">${t('idle_desc')}</div>
       </div>
-      <button class="btn btn-primary" onclick="beginAll()">▶ Empezar — todo automático</button>`;
+      <button class="btn btn-primary" onclick="beginAll()">${t('idle_btn')}</button>`;
     return;
   }
 
@@ -848,32 +885,33 @@ function renderSession(){
   const nextEx=S.exIdx<total-1?d.exercises[S.exIdx+1]:null;
   const showEx=(isRest&&nextEx)?nextEx:ex;
   const playing=S.phase!=='paused';
-  const sideLabel=ex.sides===2&&!isRest?(S.side===1?' — Lado derecho':' — Lado izquierdo'):'';
+  const sideLabel=ex.sides===2&&!isRest?(S.side===1?t('side_r'):t('side_l')):'';
   let phaseLabel='',timerCls='',timerLbl='',animTag='';
-  if(S.phase==='prep'){phaseLabel='Colócate como la figura';timerLbl='seg para empezar';animTag='Prepárate';}
-  else if(S.phase==='active'){phaseLabel='Copia a la figura ▶';timerLbl='segundos restantes';}
-  else if(S.phase==='paused'){phaseLabel='En pausa';timerLbl='segundos';animTag='Pausa';}
-  else if(S.phase==='switch'){phaseLabel='¡Cambia de lado!';timerCls=' sw-c';timerLbl='seg';}
-  else if(S.phase==='restwait'){phaseLabel='Escucha — ya casi';timerCls=' rest-c';timerLbl='escuchando…';animTag=nextEx?'Siguiente: '+nextEx.name:'';}
-  else if(isRest){phaseLabel='Descansa';timerCls=' rest-c';timerLbl='seg de descanso';animTag=nextEx?'Siguiente: '+nextEx.name:'';}
+  if(S.phase==='prep'){phaseLabel=t('ph_prep');timerLbl=t('tl_prep');animTag=t('tag_prep');}
+  else if(S.phase==='active'){phaseLabel=t('ph_active');timerLbl=t('tl_active');}
+  else if(S.phase==='paused'){phaseLabel=t('ph_paused');timerLbl=t('tl_paused');animTag=t('tag_paused');}
+  else if(S.phase==='switch'){phaseLabel=t('ph_switch');timerCls=' sw-c';timerLbl=t('tl_switch');}
+  else if(S.phase==='restwait'){phaseLabel=t('ph_restwait');timerCls=' rest-c';timerLbl=t('tl_restwait');animTag=nextEx?t('tag_next',{name:nextEx.name}):'';}
+  else if(isRest){phaseLabel=t('ph_rest');timerCls=' rest-c';timerLbl=t('tl_rest');animTag=nextEx?t('tag_next',{name:nextEx.name}):'';}
   const showDesc=S.phase==='prep'||S.phase==='paused';
   el.innerHTML=`
     ${getAnim(showEx.anim||'breathe', playing, animTag)}
     <div class="s-box">
       <div class="s-phase">${phaseLabel}</div>
-      <div class="s-exname">${isRest&&nextEx?'Luego: '+nextEx.name:ex.name+sideLabel}</div>
+      <div class="s-exname">${isRest&&nextEx?t('next_prefix',{name:nextEx.name}):ex.name+sideLabel}</div>
       ${showDesc?`<div class="s-desc">${ex.desc}</div>`:'<div style="height:8px"></div>'}
       <div class="tring" id="s-ring"><div class="tring-in"><div class="s-timer${timerCls}" id="s-timer">${S.timer}</div>
       <div class="s-tlbl">${timerLbl}</div></div></div>
     </div>
     ${showDesc?`<div class="s-tip">💡 ${ex.tip}</div>`:''}
     <div class="btn-row">
-      <button class="btn btn-secondary" onclick="togglePlay()">${S.phase==='paused'?'▶ Seguir':'⏸ Pausa'}</button>
-      <button class="btn btn-primary" onclick="skipPhase()">Saltar →</button>
+      <button class="btn btn-secondary" onclick="togglePlay()">${S.phase==='paused'?t('btn_resume'):t('btn_pause')}</button>
+      <button class="btn btn-primary" onclick="skipPhase()">${t('btn_skip')}</button>
     </div>`;
   __ring('s-ring',S.total?S.timer/S.total:0);
 }
 
+applyStaticI18n();
 initHome();
 if(location.hash==='#suave')openDay(6); // modo eco: directo a Movilidad Suave
 /* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
