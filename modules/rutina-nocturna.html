@@ -332,23 +332,23 @@ body {
     <div class="header" style="flex-direction:column">
       <img src="../quico/quico_happy.png" alt="Quico" style="width:96px;height:auto;display:block;margin:0 auto 8px;filter:drop-shadow(0 3px 10px rgba(0,0,0,.45))">
       <div style="text-align:center">
-        <h1 class="title">Cris — Rutina Nocturna</h1>
-        <p class="subtitle">Ritual diario para un sueño reparador</p>
+        <h1 class="title" data-i18n="title">Cris — Rutina Nocturna</h1>
+        <p class="subtitle" data-i18n="subtitle">Ritual diario para un sueño reparador</p>
       </div>
     </div>
     
     <div class="card">
-      <h3 style="margin:0 0 8px 0">Plan de 25 minutos</h3>
+      <h3 style="margin:0 0 8px 0" data-i18n="plan_h">Plan de 25 minutos</h3>
       <p style="margin:0;color:var(--text-dim);font-size:0.9rem">
-        Orden → Higiene + Skincare → Estiramientos → Meditación Shiné → Desconexión
+        <span data-i18n="plan_seq">Orden → Higiene + Skincare → Estiramientos → Meditación Shiné → Desconexión</span>
       </p>
-      <button class="btn" onclick="startRoutine()">▶️ Comenzar rutina</button>
+      <button class="btn" onclick="startRoutine()" data-i18n="start_btn">▶️ Comenzar rutina</button>
       <div style="font-size:0.8rem;color:var(--text-soft);margin-top:8px;text-align:center">
-        💡 Horario ideal: 21:30-22:00
+        <span data-i18n="ideal_time">💡 Horario ideal: 21:30-22:00</span>
       </div>
     </div>
     
-    <button class="btn sec" onclick="showInfo()">ℹ️ Ver información</button>
+    <button class="btn sec" onclick="showInfo()" data-i18n="info_btn">ℹ️ Ver información</button>
   </div>
 
   <!-- Pantalla de rutina -->
@@ -371,33 +371,32 @@ body {
     <div id="stepContent"></div>
     
     <div class="controls">
-      <button class="btn sec" id="pauseBtn" onclick="pauseRoutine()">⏸️ Pausar</button>
-      <button class="btn" onclick="nextStep()">⏭️ Siguiente</button>
+      <button class="btn sec" id="pauseBtn" onclick="pauseRoutine()" data-i18n="pause">⏸️ Pausar</button>
+      <button class="btn" onclick="nextStep()" data-i18n="next">⏭️ Siguiente</button>
     </div>
   </div>
 
   <!-- Pantalla de información -->
   <div id="info" class="hidden">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <h2 style="margin:0;font-size:1.2rem">ℹ️ Información</h2>
-      <button class="btn sec" onclick="showHome()" style="padding:6px 12px;font-size:0.8rem">← Volver</button>
+      <h2 style="margin:0;font-size:1.2rem" data-i18n="info_h">ℹ️ Información</h2>
+      <button class="btn sec" onclick="showHome()" style="padding:6px 12px;font-size:0.8rem" data-i18n="info_back">← Volver</button>
     </div>
     
     <div class="card">
-      <h4 style="margin:0 0 12px 0">🌙 Beneficios de la rutina</h4>
+      <h4 style="margin:0 0 12px 0" data-i18n="info_ben_h">🌙 Beneficios de la rutina</h4>
       <p style="font-size:0.9rem;line-height:1.5;color:var(--text-dim);margin:0">
-        Esta rutina de 25 minutos prepara tu mente y cuerpo para un sueño reparador. 
-        Incluye meditación Shiné (budista) para calmar la mente antes de dormir.
+        <span data-i18n="info_ben_p">Esta rutina de 25 minutos prepara tu mente y cuerpo para un sueño reparador. Incluye meditación Shiné (budista) para calmar la mente antes de dormir.</span>
       </p>
     </div>
     
     <div class="card">
-      <h4 style="margin:0 0 12px 0">⏰ Horario recomendado</h4>
+      <h4 style="margin:0 0 12px 0" data-i18n="info_time_h">⏰ Horario recomendado</h4>
       <div style="font-size:0.9rem;color:var(--text-dim)">
-        <div style="margin-bottom:8px">🌅 <strong>21:30</strong> - Inicio de la rutina</div>
-        <div style="margin-bottom:8px">🧴 <strong>21:35</strong> - Higiene y skincare</div>
-        <div style="margin-bottom:8px">🧘‍♀️ <strong>21:45</strong> - Estiramientos y meditación Shiné</div>
-        <div>📱 <strong>21:55</strong> - Desconexión digital</div>
+        <div style="margin-bottom:8px">🌅 <span data-i18n="info_t1"><strong>21:30</strong> - Inicio de la rutina</span></div>
+        <div style="margin-bottom:8px">🧴 <span data-i18n="info_t2"><strong>21:35</strong> - Higiene y skincare</span></div>
+        <div style="margin-bottom:8px">🧘‍♀️ <span data-i18n="info_t3"><strong>21:45</strong> - Estiramientos y meditación Shiné</span></div>
+        <div>📱 <span data-i18n="info_t4"><strong>21:55</strong> - Desconexión digital</span></div>
       </div>
     </div>
   </div>
@@ -410,6 +409,121 @@ body {
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 if(__cfg().calm)document.documentElement.classList.add('calm');
+
+/* ── IDIOMAS (es · en · fr) ── */
+const UI={
+ es:{title:'Cris — Rutina Nocturna',subtitle:'Ritual diario para un sueño reparador',
+   plan_h:'Plan de 25 minutos',plan_seq:'Orden → Higiene + Skincare → Estiramientos → Meditación Shiné → Desconexión',
+   start_btn:'▶️ Comenzar rutina',ideal_time:'💡 Horario ideal: 21:30-22:00',info_btn:'ℹ️ Ver información',
+   pause:'⏸️ Pausar',resume:'▶️ Reanudar',next:'⏭️ Siguiente',step_word:'Paso',desc_word:'Descripción',
+   checklist_h:'✅ Lista de verificación:',stretch_h:'🧘‍♀️ Secuencia de estiramientos:',
+   stretch_tip:'<strong>💡 Consejos:</strong> Respira profundamente durante cada estiramiento. No fuerces, solo llega hasta donde te sientas cómodo. Si sientes dolor, para inmediatamente.',
+   phrase_h:'🌙 Frase de liberación',phrase_text:'"Con amor dejo atrás el día y me sumerjo en un sueño tranquilo, en la seguridad de que el mañana cuidará de sí mismo"',
+   disc_title:'🌙 Último paso: el móvil a dormir',disc_text:'Lleva el móvil a <strong>otra habitación</strong> y déjalo cargando allí.<br>Es un regalo que le haces a tu yo de mañana. 💚',
+   fomo_lead:'💭 Si a medianoche te tienta mirarlo, recuerda:',fomo_quote:'"Nada de lo que pase en el móvil entre las 22:00 y las 7:00 es más importante que tu descanso."',fomo_tail:'El mundo puede esperar 8 horas. Tú necesitas dormir 🫂',
+   med_phase:'🧘 Fase {i} de {n}: {p} · {d}',min_word:'min',sec_word:'seg',
+   finish_title:'🎉 ¡Rutina completada!',finish_desc:'Preparado para un sueño reparador',
+   finish_strong:'🌙 Ya está. Lo has hecho genial.',finish_em:'Guarda el móvil en otra habitación 📱→🚪<br>y déjate caer en la cama 😴',finish_sweet:'Dulces sueños, Cris 💜',
+   finish_home_btn:'🏠 Volver al inicio',v_finish:'Rutina completada. Guarda el móvil en otra habitación y a dormir. Dulces sueños.',
+   info_h:'ℹ️ Información',info_back:'← Volver',info_ben_h:'🌙 Beneficios de la rutina',
+   info_ben_p:'Esta rutina de 25 minutos prepara tu mente y cuerpo para un sueño reparador. Incluye meditación Shiné (budista) para calmar la mente antes de dormir.',
+   info_time_h:'⏰ Horario recomendado',
+   info_t1:'<strong>21:30</strong> - Inicio de la rutina',info_t2:'<strong>21:35</strong> - Higiene y skincare',info_t3:'<strong>21:45</strong> - Estiramientos y meditación Shiné',info_t4:'<strong>21:55</strong> - Desconexión digital'},
+ en:{title:'Cris — Night Routine',subtitle:'A daily ritual for restful sleep',
+   plan_h:'25-minute plan',plan_seq:'Tidy → Hygiene + Skincare → Stretches → Shiné meditation → Disconnection',
+   start_btn:'▶️ Start routine',ideal_time:'💡 Ideal time: 21:30-22:00',info_btn:'ℹ️ See info',
+   pause:'⏸️ Pause',resume:'▶️ Resume',next:'⏭️ Next',step_word:'Step',desc_word:'Description',
+   checklist_h:'✅ Checklist:',stretch_h:'🧘‍♀️ Stretching sequence:',
+   stretch_tip:'<strong>💡 Tips:</strong> Breathe deeply during each stretch. Don’t force it, only go as far as feels comfortable. If you feel pain, stop right away.',
+   phrase_h:'🌙 Letting-go phrase',phrase_text:'"With love I leave the day behind and sink into calm sleep, trusting that tomorrow will take care of itself."',
+   disc_title:'🌙 Last step: put the phone to bed',disc_text:'Take the phone to <strong>another room</strong> and leave it charging there.<br>It’s a gift to your tomorrow self. 💚',
+   fomo_lead:'💭 If at midnight you’re tempted to check it, remember:',fomo_quote:'"Nothing that happens on the phone between 10pm and 7am matters more than your rest."',fomo_tail:'The world can wait 8 hours. You need to sleep 🫂',
+   med_phase:'🧘 Phase {i} of {n}: {p} · {d}',min_word:'min',sec_word:'sec',
+   finish_title:'🎉 Routine complete!',finish_desc:'Ready for restful sleep',
+   finish_strong:'🌙 That’s it. You did great.',finish_em:'Leave the phone in another room 📱→🚪<br>and let yourself fall into bed 😴',finish_sweet:'Sweet dreams, Cris 💜',
+   finish_home_btn:'🏠 Back to start',v_finish:'Routine complete. Leave the phone in another room and off to sleep. Sweet dreams.',
+   info_h:'ℹ️ Info',info_back:'← Back',info_ben_h:'🌙 Benefits of the routine',
+   info_ben_p:'This 25-minute routine prepares your mind and body for restful sleep. It includes Shiné (Buddhist) meditation to calm the mind before bed.',
+   info_time_h:'⏰ Recommended schedule',
+   info_t1:'<strong>21:30</strong> - Routine start',info_t2:'<strong>21:35</strong> - Hygiene and skincare',info_t3:'<strong>21:45</strong> - Stretches and Shiné meditation',info_t4:'<strong>21:55</strong> - Digital disconnection'},
+ fr:{title:'Cris — Routine du Soir',subtitle:'Un rituel quotidien pour un sommeil réparateur',
+   plan_h:'Plan de 25 minutes',plan_seq:'Rangement → Hygiène + Soins → Étirements → Méditation Shiné → Déconnexion',
+   start_btn:'▶️ Commencer la routine',ideal_time:'💡 Horaire idéal : 21h30-22h00',info_btn:'ℹ️ Voir les infos',
+   pause:'⏸️ Pause',resume:'▶️ Reprendre',next:'⏭️ Suivant',step_word:'Étape',desc_word:'Description',
+   checklist_h:'✅ Liste de vérification :',stretch_h:'🧘‍♀️ Séquence d’étirements :',
+   stretch_tip:'<strong>💡 Conseils :</strong> Respire profondément pendant chaque étirement. Ne force pas, va seulement jusqu’où tu es à l’aise. Si tu ressens une douleur, arrête tout de suite.',
+   phrase_h:'🌙 Phrase de lâcher-prise',phrase_text:'« Avec amour je laisse la journée derrière moi et je plonge dans un sommeil paisible, sûre que demain prendra soin de lui-même. »',
+   disc_title:'🌙 Dernière étape : le téléphone au lit',disc_text:'Emporte le téléphone dans <strong>une autre pièce</strong> et laisse-le charger là-bas.<br>C’est un cadeau à ton toi de demain. 💚',
+   fomo_lead:'💭 Si à minuit tu es tentée de le regarder, rappelle-toi :',fomo_quote:'« Rien de ce qui se passe sur le téléphone entre 22h et 7h n’est plus important que ton repos. »',fomo_tail:'Le monde peut attendre 8 heures. Toi, tu as besoin de dormir 🫂',
+   med_phase:'🧘 Phase {i} sur {n} : {p} · {d}',min_word:'min',sec_word:'sec',
+   finish_title:'🎉 Routine terminée !',finish_desc:'Prête pour un sommeil réparateur',
+   finish_strong:'🌙 Voilà. Tu as super bien fait.',finish_em:'Laisse le téléphone dans une autre pièce 📱→🚪<br>et laisse-toi tomber dans le lit 😴',finish_sweet:'Doux rêves, Cris 💜',
+   finish_home_btn:'🏠 Retour à l’accueil',v_finish:'Routine terminée. Laisse le téléphone dans une autre pièce et au lit. Doux rêves.',
+   info_h:'ℹ️ Informations',info_back:'← Retour',info_ben_h:'🌙 Bienfaits de la routine',
+   info_ben_p:'Cette routine de 25 minutes prépare ton esprit et ton corps à un sommeil réparateur. Elle inclut la méditation Shiné (bouddhiste) pour apaiser l’esprit avant de dormir.',
+   info_time_h:'⏰ Horaire recommandé',
+   info_t1:'<strong>21h30</strong> - Début de la routine',info_t2:'<strong>21h35</strong> - Hygiène et soins',info_t3:'<strong>21h45</strong> - Étirements et méditation Shiné',info_t4:'<strong>21h55</strong> - Déconnexion numérique'}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
+/* Traducción de los 5 pasos (texto; las duraciones vienen del dato ES) */
+const STEPS_L={
+ en:[
+  {title:'🏠 Light tidy',desc:'Pick up visible items in your rest area'},
+  {title:'🧴 Hygiene & skincare',desc:'Dental care, face and getting ready for bed',checklist:['Brush teeth','Remove makeup / cleanse face','Apply moisturiser','Eye contour cream','Put on comfy pyjamas']},
+  {title:'🧘‍♀️ Gentle stretches',desc:'A stretching sequence to release the day’s tension',stretches:[
+    {name:'Neck & shoulders',desc:'Turn your head slowly to both sides. Raise your shoulders and let them drop.',time:'30-45 sec'},
+    {name:'Arms & wrists',desc:'Extend one arm, pull gently with the other hand. Rotate your wrists.',time:'30 sec each arm'},
+    {name:'Upper back',desc:'Interlace fingers, stretch arms upward. Lean gently to each side.',time:'30 sec each side'},
+    {name:'Spine',desc:'Seated, turn your torso slowly to the right and then to the left.',time:'30 sec each side'},
+    {name:'Hips & legs',desc:'Standing, bring one knee toward your chest. Switch legs.',time:'20 sec each leg'},
+    {name:'Ankles',desc:'Seated or standing, rotate your ankles in circles. Flex and point your feet.',time:'20 sec each foot'}]},
+  {title:'🕯️ Shiné meditation',desc:'Meditation for mental calm and mindful breathing',meditation:{
+    intro:'Shiné means “abiding in calm.” It’s a basic Buddhist mindfulness practice.',
+    steps:[
+     {phase:'Posture',instruction:'Sit comfortably with a straight but relaxed back. Hands on your thighs or in your lap. Eyes softly closed or gazing down.'},
+     {phase:'Natural breathing',instruction:'Watch your breath without changing it. Notice the air coming in and out. If your mind wanders, gently return to the breath.'},
+     {phase:'Countdown',instruction:'Count 21 breaths backwards. On each exhale: 21… 20… 19… If you lose count, start again from 21.'},
+     {phase:'Free breathing',instruction:'Stop counting. Just watch your breath naturally. Thoughts come and go like clouds. You are the sky.'},
+     {phase:'Brow massage',instruction:'With your index or middle finger, gently massage the space between your brows in clockwise circles for 30-60 seconds.'}],
+    closing:'Open your eyes slowly. You’ve cultivated shiné: the calm mind.'}},
+  {title:'📱 Digital disconnection',desc:'A letting-go phrase and putting devices away'}
+ ],
+ fr:[
+  {title:'🏠 Rangement léger',desc:'Ramasse les objets visibles de ton espace de repos'},
+  {title:'🧴 Hygiène et soins',desc:'Soins dentaires, visage et préparation au coucher',checklist:['Se brosser les dents','Démaquiller / nettoyer le visage','Appliquer une crème hydratante','Crème contour des yeux','Mettre un pyjama confortable']},
+  {title:'🧘‍♀️ Étirements doux',desc:'Une séquence d’étirements pour relâcher la tension de la journée',stretches:[
+    {name:'Cou et épaules',desc:'Tourne la tête lentement des deux côtés. Monte les épaules et relâche-les.',time:'30-45 sec'},
+    {name:'Bras et poignets',desc:'Étends un bras, tire doucement avec l’autre main. Fais tourner les poignets.',time:'30 sec par bras'},
+    {name:'Haut du dos',desc:'Entrelace les doigts, étire les bras vers le haut. Penche-toi doucement de chaque côté.',time:'30 sec par côté'},
+    {name:'Colonne vertébrale',desc:'Assise, tourne le torse lentement à droite puis à gauche.',time:'30 sec par côté'},
+    {name:'Hanches et jambes',desc:'Debout, ramène un genou vers la poitrine. Change de jambe.',time:'20 sec par jambe'},
+    {name:'Chevilles',desc:'Assise ou debout, fais tourner les chevilles en cercles. Fléchis et pointe les pieds.',time:'20 sec par pied'}]},
+  {title:'🕯️ Méditation Shiné',desc:'Méditation de calme mental et respiration consciente',meditation:{
+    intro:'Shiné signifie « demeurer dans le calme ». C’est une pratique bouddhiste de base de pleine conscience.',
+    steps:[
+     {phase:'Posture',instruction:'Assieds-toi confortablement, le dos droit mais détendu. Mains sur les cuisses ou sur les genoux. Yeux doucement fermés ou regard baissé.'},
+     {phase:'Respiration naturelle',instruction:'Observe ta respiration sans la changer. Remarque l’air qui entre et sort. Si ton esprit s’égare, reviens doucement à la respiration.'},
+     {phase:'Compte à rebours',instruction:'Compte 21 respirations à l’envers. À chaque expiration : 21… 20… 19… Si tu perds le compte, recommence à 21.'},
+     {phase:'Respiration libre',instruction:'Arrête de compter. Observe simplement ta respiration. Les pensées vont et viennent comme des nuages. Tu es le ciel.'},
+     {phase:'Massage de l’entre-sourcils',instruction:'Avec l’index ou le majeur, masse doucement l’entre-sourcils en cercles horaires pendant 30 à 60 secondes.'}],
+    closing:'Ouvre les yeux lentement. Tu as cultivé shiné : l’esprit calme.'}},
+  {title:'📱 Déconnexion numérique',desc:'Une phrase de lâcher-prise et ranger les appareils'}
+ ]
+};
+// Devuelve el paso i con el texto en el idioma actual (fusiona con el dato ES)
+function stepL(i){
+  const lang=crisLang();const es=steps[i];
+  if(lang==='es'||!STEPS_L[lang]||!STEPS_L[lang][i])return es;
+  const tr=STEPS_L[lang][i];
+  const out={...es,title:tr.title,desc:tr.desc};
+  if(es.checklist&&tr.checklist)out.checklist=tr.checklist;
+  if(es.stretches&&tr.stretches)out.stretches=es.stretches.map((s,j)=>({...s,...tr.stretches[j]}));
+  if(es.meditation&&tr.meditation)out.meditation={...es.meditation,intro:tr.meditation.intro,closing:tr.meditation.closing,steps:es.meditation.steps.map((s,j)=>({...s,...tr.meditation.steps[j]}))};
+  return out;
+}
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 
 const steps = [
   {
@@ -527,7 +641,7 @@ function showHome() {
   stopTimer();
   currentStep = 0;
   isRunning = false;
-  document.getElementById('pauseBtn').textContent = '⏸️ Pausar';
+  document.getElementById('pauseBtn').textContent = t('pause');
   showView('home');
 }
 
@@ -542,8 +656,8 @@ function speak(t) {
     window.speechSynthesis.cancel();
     if (window.speechSynthesis.paused) window.speechSynthesis.resume();
     _utt = new SpeechSynthesisUtterance(t);
-    _utt.lang = 'es-ES'; _utt.rate = .82; _utt.pitch = .95;
-    const v = window.speechSynthesis.getVoices().find(v => v.lang.startsWith('es'));
+    _utt.lang = VOICE_LANG[crisLang()]; _utt.rate = .82; _utt.pitch = .95;
+    const v = window.speechSynthesis.getVoices().find(v => v.lang.startsWith(crisLang()));
     if (v) _utt.voice = v;
     window.speechSynthesis.speak(_utt);
   } catch (e) {}
@@ -557,7 +671,7 @@ function startRoutine() {
 }
 
 function loadStep(stepIndex) {
-  const step = steps[stepIndex];
+  const step = stepL(stepIndex);
   timeRemaining = step.duration;
   speak(step.title.replace(/[^\wáéíóúñÁÉÍÓÚÑ\s]/g, '') + '. ' + step.desc);
 
@@ -574,7 +688,7 @@ function loadStep(stepIndex) {
   
   if (step.checklist) {
     const div = document.createElement('div');
-    div.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent)">✅ Lista de verificación:</div>';
+    div.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent)">'+t('checklist_h')+'</div>';
     step.checklist.forEach(item => {
       const checkItem = document.createElement('label');
       checkItem.className = 'check-item';
@@ -586,7 +700,7 @@ function loadStep(stepIndex) {
   
   if (step.stretches) {
     const div = document.createElement('div');
-    div.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent)">🧘‍♀️ Secuencia de estiramientos:</div>';
+    div.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent)">'+t('stretch_h')+'</div>';
     
     step.stretches.forEach((stretch, i) => {
       const stretchEl = document.createElement('div');
@@ -601,7 +715,7 @@ function loadStep(stepIndex) {
     
     const tip = document.createElement('div');
     tip.className = 'note';
-    tip.innerHTML = '<strong>💡 Consejos:</strong> Respira profundamente durante cada estiramiento. No fuerces, solo llega hasta donde te sientas cómodo. Si sientes dolor, para inmediatamente.';
+    tip.innerHTML = t('stretch_tip');
     div.appendChild(tip);
     
     content.appendChild(div);
@@ -633,8 +747,8 @@ function loadStep(stepIndex) {
     const phrase = document.createElement('div');
     phrase.className = 'phrase';
     phrase.innerHTML = `
-      <strong>🌙 Frase de liberación</strong>
-      <em>"Con amor dejo atrás el día y me sumerjo en un sueño tranquilo, en la seguridad de que el mañana cuidará de sí mismo"</em>
+      <strong>${t('phrase_h')}</strong>
+      <em>${t('phrase_text')}</em>
     `;
     content.appendChild(phrase);
   }
@@ -643,20 +757,17 @@ function loadStep(stepIndex) {
     const warning = document.createElement('div');
     warning.className = 'disconnection-warning';
     warning.innerHTML = `
-      <div class="disconnection-title">🌙 Último paso: el móvil a dormir</div>
-      <div class="disconnection-text">
-        Lleva el móvil a <strong>otra habitación</strong> y déjalo cargando allí.<br>
-        Es un regalo que le haces a tu yo de mañana. 💚
-      </div>
+      <div class="disconnection-title">${t('disc_title')}</div>
+      <div class="disconnection-text">${t('disc_text')}</div>
     `;
     content.appendChild(warning);
 
     const fomo = document.createElement('div');
     fomo.className = 'fomo-reminder';
     fomo.innerHTML = `
-      💭 Si a medianoche te tienta mirarlo, recuerda:<br>
-      <span class="fomo-quote">"Nada de lo que pase en el móvil entre las 22:00 y las 7:00 es más importante que tu descanso."</span><br><br>
-      El mundo puede esperar 8 horas. Tú necesitas dormir 🫂
+      ${t('fomo_lead')}<br>
+      <span class="fomo-quote">${t('fomo_quote')}</span><br><br>
+      ${t('fomo_tail')}
     `;
     content.appendChild(fomo);
   }
@@ -664,7 +775,7 @@ function loadStep(stepIndex) {
 
 let medPhaseIdx = -1;
 function updateMedPhase(elapsed) {
-  const step = steps[currentStep];
+  const step = stepL(currentStep);
   if (!step || !step.meditation) return;
   const med = step.meditation;
   let acc = 0, idx = med.steps.length - 1;
@@ -678,7 +789,7 @@ function updateMedPhase(elapsed) {
   const box = document.getElementById('medPhaseBox');
   if (box) box.innerHTML = `
     <div class="meditation-step" style="border-left-color:var(--accent)">
-      <div class="meditation-phase">🧘 Fase ${idx + 1} de ${med.steps.length}: ${ph.phase} · ${ph.secs >= 60 ? Math.round(ph.secs / 60) + ' min' : ph.secs + ' seg'}</div>
+      <div class="meditation-phase">${t('med_phase',{i:idx+1,n:med.steps.length,p:ph.phase,d:ph.secs>=60?Math.round(ph.secs/60)+' '+t('min_word'):ph.secs+' '+t('sec_word')})}</div>
       <div class="meditation-instruction" style="font-size:1rem;line-height:1.7">${ph.instruction}</div>
     </div>`;
   const dots = document.getElementById('medDots');
@@ -714,10 +825,10 @@ function pauseRoutine() {
   const btn = document.getElementById('pauseBtn');
   if (isRunning) {
     stopTimer();
-    btn.textContent = '▶️ Reanudar';
+    btn.textContent = t('resume');
   } else {
     startTimer();
-    btn.textContent = '⏸️ Pausar';
+    btn.textContent = t('pause');
   }
 }
 
@@ -737,21 +848,21 @@ function finishRoutine() {
   stopTimer();
   document.getElementById('timer').textContent = '00:00';
   document.getElementById('progressFill').style.width = '100%';
-  document.getElementById('stepTitle').textContent = '🎉 ¡Rutina completada!';
-  document.getElementById('stepDesc').textContent = 'Preparado para un sueño reparador';
+  document.getElementById('stepTitle').textContent = t('finish_title');
+  document.getElementById('stepDesc').textContent = t('finish_desc');
   document.getElementById('stepContent').innerHTML = '';
   
   document.getElementById('stepContent').innerHTML = `
     <div class="phrase" style="text-align:center">
-      <strong>🌙 Ya está. Lo has hecho genial.</strong><br><br>
-      <em>Guarda el móvil en otra habitación 📱→🚪<br>y déjate caer en la cama 😴</em><br><br>
-      Dulces sueños, Cris 💜
+      <strong>${t('finish_strong')}</strong><br><br>
+      <em>${t('finish_em')}</em><br><br>
+      ${t('finish_sweet')}
     </div>`;
 
   const controlsDiv = document.querySelector('.controls');
-  controlsDiv.innerHTML = '<button class="btn" onclick="showHome()">🏠 Volver al inicio</button>';
+  controlsDiv.innerHTML = '<button class="btn" onclick="showHome()">'+t('finish_home_btn')+'</button>';
 
-  speak('Rutina completada. Guarda el móvil en otra habitación y a dormir. Dulces sueños.');
+  speak(t('v_finish'));
   setTimeout(() => {
     document.getElementById('dim').style.opacity = '0.8';
     setTimeout(() => { document.getElementById('dim').style.opacity = '0'; }, 4000);
@@ -770,6 +881,7 @@ window.addEventListener('message',function(e){
     try{parent.postMessage('cris:back-ok','*');}catch(_){}
   }
 });
+applyStaticI18n();
 </script>
 
 </body>
