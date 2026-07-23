@@ -227,36 +227,36 @@ textarea.tool-field{min-height:74px;resize:vertical}
 <div class="card">
   <div class="header">
     <div class="quokka"><img src="../quico/quico_happy.png" alt="Quico" style="width:104px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))"></div>
-    <h1>Trabajo</h1>
+    <h1 data-i18n="h1">Trabajo</h1>
   </div>
 
-  <button class="work-start" onclick="openTool('foco')">▶ Empezar a trabajar</button>
-  <button class="work-triage" onclick="openTool('triaje')">🤔 No sé qué me pasa</button>
+  <button class="work-start" onclick="openTool('foco')" data-i18n="ws">▶ Empezar a trabajar</button>
+  <button class="work-triage" onclick="openTool('triaje')" data-i18n="wt">🤔 No sé qué me pasa</button>
 
   <div class="section">
-    <div style="font-size:0.78rem;opacity:.75;margin-bottom:12px;text-align:center;">…o si ya sabes qué necesitas, elígelo directo:</div>
+    <div style="font-size:0.78rem;opacity:.75;margin-bottom:12px;text-align:center;" data-i18n="sec_hint">…o si ya sabes qué necesitas, elígelo directo:</div>
 
     <div class="wgroup">
-      <div class="wg-label">🏁 No puedo empezar</div>
-      <button class="wrow" onclick="openTool('paralisis')"><span class="we">🧩</span><span class="wi"><b>Destructor de parálisis</b><i>miras la tarea y no arrancas</i></span></button>
-      <button class="wrow" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b>Convertir en misión</b><i>gamifica una tarea aburrida con algo que te gusta</i></span></button>
+      <div class="wg-label" data-i18n="g1">🏁 No puedo empezar</div>
+      <button class="wrow" onclick="openTool('paralisis')"><span class="we">🧩</span><span class="wi"><b data-i18n="w_par_t">Destructor de parálisis</b><i data-i18n="w_par_s">miras la tarea y no arrancas</i></span></button>
+      <button class="wrow" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b data-i18n="w_int_t">Convertir en misión</b><i data-i18n="w_int_s">gamifica una tarea aburrida con algo que te gusta</i></span></button>
     </div>
 
     <div class="wgroup">
-      <div class="wg-label">🎯 Quiero mantener el foco</div>
-      <button class="wrow" onclick="openTool('doble')"><span class="we">👥</span><span class="wi"><b>Doble de cuerpo</b><i>trabajo acompañado, con avisos cada 10 min</i></span></button>
-      <button class="wrow" onclick="openTool('dopamina')"><span class="we">🍽️</span><span class="wi"><b>Menú de dopamina</b><i>elige un plato y mantén el cerebro enganchado</i></span></button>
+      <div class="wg-label" data-i18n="g2">🎯 Quiero mantener el foco</div>
+      <button class="wrow" onclick="openTool('doble')"><span class="we">👥</span><span class="wi"><b data-i18n="w_dob_t">Doble de cuerpo</b><i data-i18n="w_dob_s">trabajo acompañado, con avisos cada 10 min</i></span></button>
+      <button class="wrow" onclick="openTool('dopamina')"><span class="we">🍽️</span><span class="wi"><b data-i18n="w_dop_t">Menú de dopamina</b><i data-i18n="w_dop_s">elige un plato y mantén el cerebro enganchado</i></span></button>
     </div>
 
     <div class="wgroup">
-      <div class="wg-label">🧠 Tengo la cabeza llena</div>
-      <button class="wrow" onclick="openTool('volcado')"><span class="we">🧠</span><span class="wi"><b>Vaciar la mente</b><i>suelta los bucles abiertos y clasifícalos</i></span></button>
+      <div class="wg-label" data-i18n="g3">🧠 Tengo la cabeza llena</div>
+      <button class="wrow" onclick="openTool('volcado')"><span class="we">🧠</span><span class="wi"><b data-i18n="w_vol_t">Vaciar la mente</b><i data-i18n="w_vol_s">suelta los bucles abiertos y clasifícalos</i></span></button>
     </div>
 
     <div class="wgroup" style="margin-bottom:0">
-      <div class="wg-label">🔄 Cambiar de tarea o planificar</div>
-      <button class="wrow" onclick="openTool('contexto')"><span class="we">🔄</span><span class="wi"><b>Cambio de contexto</b><i>3 min para pasar de una tarea a otra</i></span></button>
-      <button class="wrow" onclick="openTool('tiempo')" style="margin-bottom:0"><span class="we">⏳</span><span class="wi"><b>Auditor del tiempo</b><i>estima cuánto tardarás de verdad</i></span></button>
+      <div class="wg-label" data-i18n="g4">🔄 Cambiar de tarea o planificar</div>
+      <button class="wrow" onclick="openTool('contexto')"><span class="we">🔄</span><span class="wi"><b data-i18n="w_ctx_t">Cambio de contexto</b><i data-i18n="w_ctx_s">3 min para pasar de una tarea a otra</i></span></button>
+      <button class="wrow" onclick="openTool('tiempo')" style="margin-bottom:0"><span class="we">⏳</span><span class="wi"><b data-i18n="w_tim_t">Auditor del tiempo</b><i data-i18n="w_tim_s">estima cuánto tardarás de verdad</i></span></button>
     </div>
   </div>
 </div>
@@ -274,13 +274,126 @@ function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 if(__cfg().calm)document.documentElement.classList.add('calm');
 
+/* ── IDIOMAS (es · en · fr) ── */
+const UI={
+ es:{h1:'Trabajo',ws:'▶ Empezar a trabajar',wt:'🤔 No sé qué me pasa',
+   sec_hint:'…o si ya sabes qué necesitas, elígelo directo:',
+   g1:'🏁 No puedo empezar',g2:'🎯 Quiero mantener el foco',g3:'🧠 Tengo la cabeza llena',g4:'🔄 Cambiar de tarea o planificar',
+   w_par_t:'Destructor de parálisis',w_par_s:'miras la tarea y no arrancas',
+   w_int_t:'Convertir en misión',w_int_s:'gamifica una tarea aburrida con algo que te gusta',
+   w_dob_t:'Doble de cuerpo',w_dob_s:'trabajo acompañado, con avisos cada 10 min',
+   w_dop_t:'Menú de dopamina',w_dop_s:'elige un plato y mantén el cerebro enganchado',
+   w_vol_t:'Vaciar la mente',w_vol_s:'suelta los bucles abiertos y clasifícalos',
+   w_ctx_t:'Cambio de contexto',w_ctx_s:'3 min para pasar de una tarea a otra',
+   w_tim_t:'Auditor del tiempo',w_tim_s:'estima cuánto tardarás de verdad',
+   back_q:'← Volver a las preguntas',
+   tri_t:'No sé qué me pasa',tri_d:'Te hago un par de preguntas y te llevo a lo que necesitas. Sin agobios.',tri_q:'¿Qué notas ahora mismo?',
+   tri_A_t:'Bloqueada',tri_A_s:'no consigo arrancar',tri_B_t:'Saturada',tri_B_s:'mil cosas en la cabeza',
+   tri_C_t:'Sin chispa',tri_C_s:'me aburre o no me engancho',tri_D_t:'En transición',tri_D_s:'vengo de otra cosa o no sé por dónde',
+   tri_E_t:'Estoy bien',tri_E_s:'solo quiero ponerme',
+   trA_t:'No consigo empezar',trA_d:'¿Qué te frena más?',trA_1t:'Es enorme y no sé por dónde',trA_1s:'la partimos en un paso de 1 minuto',trA_2t:'Es aburrida y no me apetece',trA_2s:'la convertimos en misión',
+   trC_t:'Sin chispa',trC_d:'¿Qué te apetece más?',trC_1t:'Convertirlo en un juego',trC_1s:'con algo que te gusta',trC_2t:'Elegir algo con chispa',trC_2s:'del menú de dopamina',trC_3t:'Que alguien trabaje a tu lado',trC_3s:'doble de cuerpo',
+   trD_t:'En transición',trD_d:'¿Qué necesitas?',trD_1t:'Limpiar la cabeza para cambiar',trD_1s:'3 minutos de transición',trD_2t:'Saber cuánto me va a llevar',trD_2s:'auditor del tiempo',
+   foco_t:'Empezar a trabajar',foco_d:'Una sesión de foco. Elige cuánto y a por ello — sin bloques ni configuración.',foco_q:'¿Cuánto rato?',foco_run:'Estoy llevando el tiempo. Tú a lo tuyo.',foco_stop:'Parar',
+   par_t:'Destructor de parálisis',par_d:'Cuando miras la tarea y no puedes empezar. La partimos en un paso ridículamente pequeño.',par_l1:'¿Qué tarea te tiene atascada?',par_p1:'Ej: escribir el informe',par_l2:'El primer paso RIDÍCULO (menos de 1 minuto)',par_p2:'Ej: abrir el documento y escribir el título',par_l3:'¿Dónde pones las manos AHORA mismo?',par_p3:'Ej: en el teclado / en el boli',par_go:'▶ Hacer solo ese paso (1 min)',par_going:'⏳ Solo este paso...',par_done:'✓ ¡Empezaste! Otra vez',
+   dop_t:'Menú de dopamina',dop_d:'Elige un plato para mantener el cerebro enganchado. Tócalo y empieza.',dop_l1:'🥗 Aperitivos · 5 min (movimiento rápido)',dop_l2:'🍲 Platos principales · 20 min (trabajo profundo)',dop_l3:'🍮 Acompañamientos · 10 min (juego creativo)',
+   dob_t:'Doble de cuerpo',dob_d:'Trabajo acompañado. 30 minutos con un aviso cada 10 para mantener el enfoque anclado.',dob_l:'¿En qué vas a trabajar?',dob_p:'Escríbelo para no perderte',dob_go:'▶ Empezar sesión acompañada',dob_going:'⏳ En marcha — estoy contigo',dob_done:'✓ ¡Sesión completa!',
+   ctx_t:'Cambio de contexto',ctx_d:'Un limpiador de paladar mental de 3 minutos para pasar de una tarea a otra.',ctx_go:'▶ Empezar transición (3 min)',ctx_end:'✨ Listo. Ya puedes empezar la nueva tarea con la mente despejada.',
+   int_t:'Convertir en misión',int_d:'Gamifica una tarea aburrida conectándola con lo que te fascina ahora.',int_l1:'Tarea aburrida',int_p1:'Ej: ordenar los correos',int_l2:'Tu hiperfijación / interés de ahora',int_p2:'Ej: una serie, un juego, un tema',int_l3:'Recompensa al terminar',int_p3:'Ej: un capítulo, un café rico',int_go:'Crear misión',
+   mis_label:'🎯 MISIÓN:',mis_mid:'Mientras la haces, conéctala con',mis_unlock:'🏆 Al terminar desbloqueas:',mis_go:'▶ Empezar misión (20 min)',
+   tim_t:'Auditor del tiempo',tim_d:'Contra la ceguera del tiempo: suma las subtareas ocultas que siempre olvidamos.',tim_l1:'¿Qué proyecto?',tim_p1:'Ej: preparar la presentación',tim_l2:'Tu estimación optimista (min)',tim_l3:'Subtareas ocultas que solemos olvidar',tim_a:'🏁 Preparación y arranque',tim_b:'🔀 Interrupciones y cambios',tim_c:'✅ Revisión y cierre',tim_real:'Tiempo realista',
+   vol_t:'Vaciar la mente',vol_d:'Saca todos los bucles abiertos y clasifícalos. Deja de cargarlos en la cabeza.',vol_p:'Escribe algo que te ronda...',vol_empty:'Vacía aquí todo lo que te ronde. Luego lo clasificas.',vol_now:'Ahora',vol_later:'Luego',vol_up:'↑ Ahora',vol_to_later:'→ Luego',vol_step_p:'Siguiente paso en 1 frase...',
+   dop_ap:['Estiramientos','Bailar 1 canción','20 saltos','Caminar','Agua fría en la cara'],dop_pr:['Trabajo profundo en tu tarea','Estudiar','Escribir','Ordenar un espacio'],dop_ac:['Dibujar o garabatear','Puzzle de gemas','Tocar/escuchar música','Escribir libre'],
+   v_foco:'{m} minutos de foco. Empieza ahora, yo llevo el tiempo.',v_foco_half:'Vas por la mitad. Sigue, lo estás haciendo bien.',v_foco_end:'¡Se acabó el tiempo! Buen trabajo. Tómate un respiro.',
+   v_par:'Solo este paso: {s}. Un minuto. Empieza ahora.',v_par_end:'¡Se acabó el minuto! Ya has empezado, eso era lo difícil.',
+   v_dop:'{n}. {m} minutos. Vamos.',v_dop_end:'¡Se acabó el tiempo! Bien hecho.',
+   v_dob:'Empezamos con {t}. Yo trabajo a tu lado. Te aviso en diez minutos.',v_dob_mid:'¿Sigues en ello? ¿Cómo vas? Sigue, lo estás haciendo genial.',v_dob_end:'¡Treinta minutos completos! Lo lograste. Estoy orgulloso de ti.',
+   v_ctx_end:'Listo. Mente despejada. Ya puedes empezar.',
+   v_mis:'Misión activada: {t}. Veinte minutos. Al terminar, tu recompensa.',v_mis_end:'¡Tiempo! Misión cumplida. Disfruta tu recompensa, te la has ganado.',
+   ctx_s1:'Levántate y estírate. Suelta los hombros y respira hondo.',ctx_s2:'Bebe un poco de agua y mira algo lejano unos segundos.',ctx_s3:'Anota en una palabra qué acabas de terminar y qué empiezas ahora.'},
+ en:{h1:'Work',ws:'▶ Start working',wt:'🤔 I don’t know what’s wrong',
+   sec_hint:'…or if you already know what you need, pick it directly:',
+   g1:'🏁 I can’t get started',g2:'🎯 I want to keep focus',g3:'🧠 My head is full',g4:'🔄 Switch tasks or plan',
+   w_par_t:'Paralysis breaker',w_par_s:'you stare at the task and can’t begin',
+   w_int_t:'Turn it into a mission',w_int_s:'gamify a boring task with something you love',
+   w_dob_t:'Body double',w_dob_s:'work alongside company, with nudges every 10 min',
+   w_dop_t:'Dopamine menu',w_dop_s:'pick a dish and keep your brain hooked',
+   w_vol_t:'Empty your mind',w_vol_s:'let out the open loops and sort them',
+   w_ctx_t:'Context switch',w_ctx_s:'3 min to move from one task to another',
+   w_tim_t:'Time auditor',w_tim_s:'estimate how long it’ll really take',
+   back_q:'← Back to the questions',
+   tri_t:'I don’t know what’s wrong',tri_d:'I’ll ask you a couple of questions and take you to what you need. No stress.',tri_q:'What do you notice right now?',
+   tri_A_t:'Blocked',tri_A_s:'I can’t get going',tri_B_t:'Overwhelmed',tri_B_s:'a thousand things in my head',
+   tri_C_t:'No spark',tri_C_s:'it bores me or I can’t get hooked',tri_D_t:'In transition',tri_D_s:'coming from something else or not sure where to start',
+   tri_E_t:'I’m okay',tri_E_s:'I just want to get going',
+   trA_t:'I can’t get started',trA_d:'What holds you back most?',trA_1t:'It’s huge and I don’t know where to start',trA_1s:'we split it into a 1-minute step',trA_2t:'It’s boring and I don’t feel like it',trA_2s:'we turn it into a mission',
+   trC_t:'No spark',trC_d:'What appeals most?',trC_1t:'Turn it into a game',trC_1s:'with something you like',trC_2t:'Pick something with spark',trC_2s:'from the dopamine menu',trC_3t:'Have someone work beside you',trC_3s:'body double',
+   trD_t:'In transition',trD_d:'What do you need?',trD_1t:'Clear my head to switch',trD_1s:'3 minutes of transition',trD_2t:'Know how long it’ll take',trD_2s:'time auditor',
+   foco_t:'Start working',foco_d:'A focus session. Choose how long and go — no blocks, no setup.',foco_q:'How long?',foco_run:'I’m keeping the time. You do your thing.',foco_stop:'Stop',
+   par_t:'Paralysis breaker',par_d:'For when you stare at the task and can’t begin. We split it into a ridiculously small step.',par_l1:'Which task has you stuck?',par_p1:'e.g. write the report',par_l2:'The RIDICULOUS first step (under 1 minute)',par_p2:'e.g. open the document and write the title',par_l3:'Where do you put your hands RIGHT now?',par_p3:'e.g. on the keyboard / on the pen',par_go:'▶ Do just that step (1 min)',par_going:'⏳ Just this step...',par_done:'✓ You started! Again',
+   dop_t:'Dopamine menu',dop_d:'Pick a dish based on your energy. Each is a different way to get going.',dop_l1:'🥗 Starters · 5 min (quick movement)',dop_l2:'🍲 Mains · 20 min (deep work)',dop_l3:'🍮 Sides · 10 min (creative play)',
+   dob_t:'Body double',dob_d:'Working with company gets more done. I’m with you and I’ll nudge you every ten minutes.',dob_l:'What will you work on?',dob_p:'Write it so you don’t lose track',dob_go:'▶ Start a session together',dob_going:'⏳ In progress — I’m with you',dob_done:'✓ Session complete!',
+   ctx_t:'Context switch',ctx_d:'Three minutes to close one task and open your mind to the next.',ctx_go:'▶ Start transition (3 min)',ctx_end:'✨ Done. You can start the new task with a clear mind.',
+   int_t:'Turn it into a mission',int_d:'Gamify a boring task by hooking it to something you love.',int_l1:'Boring task',int_p1:'e.g. sort the emails',int_l2:'Your current hyperfocus / interest',int_p2:'e.g. a show, a game, a topic',int_l3:'Reward when done',int_p3:'e.g. an episode, a nice coffee',int_go:'Create mission',
+   mis_label:'🎯 MISSION:',mis_mid:'While you do it, connect it with',mis_unlock:'🏆 When you finish you unlock:',mis_go:'▶ Start mission (20 min)',
+   tim_t:'Time auditor',tim_d:'Against time blindness: add up the hidden subtasks we always forget.',tim_l1:'Which project?',tim_p1:'e.g. prepare the presentation',tim_l2:'Your optimistic estimate (min)',tim_l3:'Hidden subtasks we tend to forget',tim_a:'🏁 Prep and start-up',tim_b:'🔀 Interruptions and switches',tim_c:'✅ Review and wrap-up',tim_real:'Realistic time',
+   vol_t:'Empty your mind',vol_d:'Get all the open loops out and sort them. Stop carrying them in your head.',vol_p:'Write something on your mind...',vol_empty:'Dump everything on your mind here. You’ll sort it after.',vol_now:'Now',vol_later:'Later',vol_up:'↑ Now',vol_to_later:'→ Later',vol_step_p:'Next step in one sentence...',
+   dop_ap:['Stretches','Dance to 1 song','20 jumps','Take a walk','Cold water on your face'],dop_pr:['Deep work on your task','Study','Write','Tidy a space'],dop_ac:['Draw or doodle','Gem puzzle','Play/listen to music','Free writing'],
+   v_foco:'{m} minutes of focus. Start now, I’ll keep the time.',v_foco_half:'You’re halfway. Keep going, you’re doing great.',v_foco_end:'Time’s up! Good work. Take a breather.',
+   v_par:'Just this step: {s}. One minute. Start now.',v_par_end:'The minute’s up! You’ve already started — that was the hard part.',
+   v_dop:'{n}. {m} minutes. Let’s go.',v_dop_end:'Time’s up! Well done.',
+   v_dob:'Let’s start with {t}. I’m working right beside you. I’ll check in in ten minutes.',v_dob_mid:'Still at it? How’s it going? Keep going, you’re doing great.',v_dob_end:'A full thirty minutes! You did it. I’m proud of you.',
+   v_ctx_end:'Done. Clear mind. You can start now.',
+   v_mis:'Mission activated: {t}. Twenty minutes. When you finish, your reward.',v_mis_end:'Time! Mission accomplished. Enjoy your reward, you’ve earned it.',
+   ctx_s1:'Stand up and stretch. Drop your shoulders and breathe deeply.',ctx_s2:'Drink a little water and look at something far away for a few seconds.',ctx_s3:'Note in one word what you just finished and what you’re starting now.'},
+ fr:{h1:'Travail',ws:'▶ Commencer à travailler',wt:'🤔 Je ne sais pas ce qui m’arrive',
+   sec_hint:'…ou si tu sais déjà ce qu’il te faut, choisis directement :',
+   g1:'🏁 Je n’arrive pas à commencer',g2:'🎯 Je veux garder la concentration',g3:'🧠 J’ai la tête pleine',g4:'🔄 Changer de tâche ou planifier',
+   w_par_t:'Briseur de blocage',w_par_s:'tu fixes la tâche et tu ne démarres pas',
+   w_int_t:'En faire une mission',w_int_s:'gamifie une tâche ennuyeuse avec ce que tu aimes',
+   w_dob_t:'Double de corps',w_dob_s:'travailler accompagnée, avec des rappels toutes les 10 min',
+   w_dop_t:'Menu dopamine',w_dop_s:'choisis un plat et garde ton cerveau accroché',
+   w_vol_t:'Vider l’esprit',w_vol_s:'sors les boucles ouvertes et classe-les',
+   w_ctx_t:'Changement de contexte',w_ctx_s:'3 min pour passer d’une tâche à une autre',
+   w_tim_t:'Auditeur du temps',w_tim_s:'estime combien de temps ça prendra vraiment',
+   back_q:'← Revenir aux questions',
+   tri_t:'Je ne sais pas ce qui m’arrive',tri_d:'Je te pose deux ou trois questions et je t’emmène vers ce qu’il te faut. Sans stress.',tri_q:'Que ressens-tu là, maintenant ?',
+   tri_A_t:'Bloquée',tri_A_s:'je n’arrive pas à démarrer',tri_B_t:'Débordée',tri_B_s:'mille choses dans la tête',
+   tri_C_t:'Sans étincelle',tri_C_s:'ça m’ennuie ou je n’accroche pas',tri_D_t:'En transition',tri_D_s:'je viens d’autre chose ou je ne sais pas par où',
+   tri_E_t:'Ça va',tri_E_s:'je veux juste m’y mettre',
+   trA_t:'Je n’arrive pas à commencer',trA_d:'Qu’est-ce qui te freine le plus ?',trA_1t:'C’est énorme et je ne sais pas par où',trA_1s:'on la découpe en une étape d’1 minute',trA_2t:'C’est ennuyeux et je n’en ai pas envie',trA_2s:'on en fait une mission',
+   trC_t:'Sans étincelle',trC_d:'Qu’est-ce qui te tente le plus ?',trC_1t:'En faire un jeu',trC_1s:'avec ce que tu aimes',trC_2t:'Choisir quelque chose de pétillant',trC_2s:'dans le menu dopamine',trC_3t:'Que quelqu’un travaille à côté de toi',trC_3s:'double de corps',
+   trD_t:'En transition',trD_d:'De quoi as-tu besoin ?',trD_1t:'Me vider la tête pour changer',trD_1s:'3 minutes de transition',trD_2t:'Savoir combien de temps ça va prendre',trD_2s:'auditeur du temps',
+   foco_t:'Commencer à travailler',foco_d:'Une session de concentration. Choisis la durée et vas-y — sans blocs ni réglages.',foco_q:'Combien de temps ?',foco_run:'Je gère le temps. Toi, occupe-toi de ta tâche.',foco_stop:'Arrêter',
+   par_t:'Briseur de blocage',par_d:'Quand tu fixes la tâche sans pouvoir commencer. On la découpe en une étape minuscule.',par_l1:'Quelle tâche te bloque ?',par_p1:'Ex : écrire le rapport',par_l2:'La première étape RIDICULE (moins d’1 minute)',par_p2:'Ex : ouvrir le document et écrire le titre',par_l3:'Où poses-tu les mains MAINTENANT ?',par_p3:'Ex : sur le clavier / sur le stylo',par_go:'▶ Faire juste cette étape (1 min)',par_going:'⏳ Juste cette étape...',par_done:'✓ Tu as commencé ! Encore',
+   dop_t:'Menu dopamine',dop_d:'Choisis un plat selon ton énergie. Chacun est une façon différente de démarrer.',dop_l1:'🥗 Entrées · 5 min (mouvement rapide)',dop_l2:'🍲 Plats principaux · 20 min (travail profond)',dop_l3:'🍮 Accompagnements · 10 min (jeu créatif)',
+   dob_t:'Double de corps',dob_d:'Travailler accompagnée rend plus efficace. Je suis avec toi et je te préviens toutes les dix minutes.',dob_l:'Sur quoi vas-tu travailler ?',dob_p:'Écris-le pour ne pas te perdre',dob_go:'▶ Commencer une session accompagnée',dob_going:'⏳ En cours — je suis avec toi',dob_done:'✓ Session terminée !',
+   ctx_t:'Changement de contexte',ctx_d:'Trois minutes pour clore une tâche et ouvrir l’esprit à la suivante.',ctx_go:'▶ Commencer la transition (3 min)',ctx_end:'✨ Voilà. Tu peux commencer la nouvelle tâche l’esprit clair.',
+   int_t:'En faire une mission',int_d:'Gamifie une tâche ennuyeuse en la reliant à ce que tu adores.',int_l1:'Tâche ennuyeuse',int_p1:'Ex : trier les e-mails',int_l2:'Ton hyperfocus / intérêt du moment',int_p2:'Ex : une série, un jeu, un sujet',int_l3:'Récompense à la fin',int_p3:'Ex : un épisode, un bon café',int_go:'Créer la mission',
+   mis_label:'🎯 MISSION :',mis_mid:'Pendant que tu la fais, relie-la à',mis_unlock:'🏆 En finissant tu débloques :',mis_go:'▶ Commencer la mission (20 min)',
+   tim_t:'Auditeur du temps',tim_d:'Contre la cécité du temps : additionne les sous-tâches cachées qu’on oublie toujours.',tim_l1:'Quel projet ?',tim_p1:'Ex : préparer la présentation',tim_l2:'Ton estimation optimiste (min)',tim_l3:'Sous-tâches cachées qu’on oublie souvent',tim_a:'🏁 Préparation et démarrage',tim_b:'🔀 Interruptions et changements',tim_c:'✅ Révision et clôture',tim_real:'Temps réaliste',
+   vol_t:'Vider l’esprit',vol_d:'Sors toutes les boucles ouvertes et classe-les. Arrête de les porter dans ta tête.',vol_p:'Écris quelque chose qui te trotte...',vol_empty:'Vide ici tout ce qui te trotte. Tu classeras après.',vol_now:'Maintenant',vol_later:'Plus tard',vol_up:'↑ Maintenant',vol_to_later:'→ Plus tard',vol_step_p:'Prochaine étape en une phrase...',
+   dop_ap:['Étirements','Danser 1 chanson','20 sauts','Marcher','Eau froide sur le visage'],dop_pr:['Travail profond sur ta tâche','Étudier','Écrire','Ranger un espace'],dop_ac:['Dessiner ou gribouiller','Puzzle de gemmes','Jouer/écouter de la musique','Écriture libre'],
+   v_foco:'{m} minutes de concentration. Commence maintenant, je gère le temps.',v_foco_half:'Tu es à la moitié. Continue, tu t’en sors très bien.',v_foco_end:'Le temps est écoulé ! Beau travail. Prends une pause.',
+   v_par:'Juste cette étape : {s}. Une minute. Commence maintenant.',v_par_end:'La minute est écoulée ! Tu as déjà commencé, c’était le plus dur.',
+   v_dop:'{n}. {m} minutes. Allons-y.',v_dop_end:'Le temps est écoulé ! Bien joué.',
+   v_dob:'On commence par {t}. Je travaille à tes côtés. Je te fais signe dans dix minutes.',v_dob_mid:'Toujours dessus ? Comment ça va ? Continue, tu t’en sors super bien.',v_dob_end:'Trente minutes complètes ! Tu as réussi. Je suis fier de toi.',
+   v_ctx_end:'Voilà. Esprit clair. Tu peux commencer.',
+   v_mis:'Mission activée : {t}. Vingt minutes. À la fin, ta récompense.',v_mis_end:'C’est l’heure ! Mission accomplie. Profite de ta récompense, tu l’as méritée.',
+   ctx_s1:'Lève-toi et étire-toi. Relâche les épaules et respire profondément.',ctx_s2:'Bois un peu d’eau et regarde quelque chose au loin quelques secondes.',ctx_s3:'Note en un mot ce que tu viens de finir et ce que tu commences maintenant.'}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
+
 /* ═══ HERRAMIENTAS ANTI-BLOQUEO ═══ */
 (function(){
   const ov=document.getElementById('toolOv'), sheet=document.getElementById('toolSheet');
   let tTimer=null, _u=null;
 
   function allow(k){try{const c=JSON.parse(localStorage.getItem('cris_cfg')||'{}');return c[k]!==false&&c.calm!==true;}catch(e){return true;}}
-  function speak(t){if(!allow('voice'))return;try{if(!window.speechSynthesis)return;speechSynthesis.cancel();if(speechSynthesis.paused)speechSynthesis.resume();_u=new SpeechSynthesisUtterance(t);_u.lang='es-ES';_u.rate=.92;const v=speechSynthesis.getVoices().find(v=>v.lang.startsWith('es'));if(v)_u.voice=v;speechSynthesis.speak(_u);}catch(e){}}
+  function speak(t){if(!allow('voice'))return;try{if(!window.speechSynthesis)return;speechSynthesis.cancel();if(speechSynthesis.paused)speechSynthesis.resume();_u=new SpeechSynthesisUtterance(t);_u.lang=VOICE_LANG[crisLang()];_u.rate=.92;const v=speechSynthesis.getVoices().find(v=>v.lang.startsWith(crisLang()));if(v)_u.voice=v;speechSynthesis.speak(_u);}catch(e){}}
   let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
   function beep(f=660,d=.15){if(!allow('sound'))return;try{const c=__getCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.2,c.currentTime);g.gain.exponentialRampToValueAtTime(.01,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
   function vib(m){if(!allow('vib'))return;try{navigator.vibrate(m);}catch(e){}}
@@ -315,51 +428,47 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
 
   const TOOLS={
     /* Triaje · No sé qué me pasa → pregunta y te lleva a la técnica */
-    triaje:()=>head('🤔','No sé qué me pasa',
-      'Te hago un par de preguntas y te llevo a lo que necesitas. Sin agobios.')+`
-      <div class="t-label">¿Qué notas ahora mismo?</div>
-      <button class="wrow" onclick="triagePick('A')"><span class="we">🧊</span><span class="wi"><b>Bloqueada</b><i>no consigo arrancar</i></span></button>
-      <button class="wrow" onclick="triagePick('B')"><span class="we">🌪️</span><span class="wi"><b>Saturada</b><i>mil cosas en la cabeza</i></span></button>
-      <button class="wrow" onclick="triagePick('C')"><span class="we">🥱</span><span class="wi"><b>Sin chispa</b><i>me aburre o no me engancho</i></span></button>
-      <button class="wrow" onclick="triagePick('D')"><span class="we">🔀</span><span class="wi"><b>En transición</b><i>vengo de otra cosa o no sé por dónde</i></span></button>
-      <button class="wrow" onclick="triagePick('E')" style="margin-bottom:0"><span class="we">🙂</span><span class="wi"><b>Estoy bien</b><i>solo quiero ponerme</i></span></button>`,
+    triaje:()=>head('🤔',t('tri_t'),t('tri_d'))+`
+      <div class="t-label">${t('tri_q')}</div>
+      <button class="wrow" onclick="triagePick('A')"><span class="we">🧊</span><span class="wi"><b>${t('tri_A_t')}</b><i>${t('tri_A_s')}</i></span></button>
+      <button class="wrow" onclick="triagePick('B')"><span class="we">🌪️</span><span class="wi"><b>${t('tri_B_t')}</b><i>${t('tri_B_s')}</i></span></button>
+      <button class="wrow" onclick="triagePick('C')"><span class="we">🥱</span><span class="wi"><b>${t('tri_C_t')}</b><i>${t('tri_C_s')}</i></span></button>
+      <button class="wrow" onclick="triagePick('D')"><span class="we">🔀</span><span class="wi"><b>${t('tri_D_t')}</b><i>${t('tri_D_s')}</i></span></button>
+      <button class="wrow" onclick="triagePick('E')" style="margin-bottom:0"><span class="we">🙂</span><span class="wi"><b>${t('tri_E_t')}</b><i>${t('tri_E_s')}</i></span></button>`,
 
     /* 0 · Empezar a trabajar (sesión de foco) */
-    foco:()=>head('▶️','Empezar a trabajar',
-      'Una sesión de foco. Elige cuánto y a por ello — sin bloques ni configuración.')+`
+    foco:()=>head('▶️',t('foco_t'),t('foco_d'))+`
       <div style="text-align:center">
         <div id="fo-pick">
-          <div class="t-label" style="text-align:center">¿Cuánto rato?</div>
+          <div class="t-label" style="text-align:center">${t('foco_q')}</div>
           <div><span class="t-chip" data-m="15">15 min</span><span class="t-chip" data-m="25">25 min</span><span class="t-chip" data-m="45">45 min</span></div>
         </div>
         <div id="fo-run" style="display:none">
           <div class="tring" id="fo-ring"><div class="tring-in"><div class="t-timer" id="fo-timer" style="margin:0;font-size:2.2rem">25:00</div></div></div>
-          <div style="font-size:.78rem;color:#889;margin-bottom:8px">Estoy llevando el tiempo. Tú a lo tuyo.</div>
-          <button class="t-btn sec" onclick="openTool('foco')">Parar</button>
+          <div style="font-size:.78rem;color:#889;margin-bottom:8px">${t('foco_run')}</div>
+          <button class="t-btn sec" onclick="openTool('foco')">${t('foco_stop')}</button>
         </div>
       </div>`,
 
     /* 1 · Destructor de parálisis por tareas */
-    paralisis:()=>head('🧩','Destructor de parálisis',
-      'Cuando miras la tarea y no puedes empezar. La partimos en un paso ridículamente pequeño.')+`
-      <div class="t-label">¿Qué tarea te tiene atascada?</div>
-      <input class="tool-field" id="pa-task" placeholder="Ej: escribir el informe">
-      <div class="t-label">El primer paso RIDÍCULO (menos de 1 minuto)</div>
-      <input class="tool-field" id="pa-step" placeholder="Ej: abrir el documento y escribir el título">
-      <div class="t-label">¿Dónde pones las manos AHORA mismo?</div>
-      <input class="tool-field" id="pa-hands" placeholder="Ej: en el teclado / en el boli">
+    paralisis:()=>head('🧩',t('par_t'),t('par_d'))+`
+      <div class="t-label">${t('par_l1')}</div>
+      <input class="tool-field" id="pa-task" placeholder="${t('par_p1')}">
+      <div class="t-label">${t('par_l2')}</div>
+      <input class="tool-field" id="pa-step" placeholder="${t('par_p2')}">
+      <div class="t-label">${t('par_l3')}</div>
+      <input class="tool-field" id="pa-hands" placeholder="${t('par_p3')}">
       <div class="t-timer" id="pa-timer" style="display:none">01:00</div>
-      <button class="t-btn" id="pa-go">▶ Hacer solo ese paso (1 min)</button>
+      <button class="t-btn" id="pa-go">${t('par_go')}</button>
       <div style="font-size:.76rem;color:#889;margin-top:10px;text-align:center">No tienes que hacer la tarea. Solo ese paso. Solo un minuto.</div>`,
 
     /* 2 · Menú de dopamina */
-    dopamina:()=>head('🍽️','Menú de dopamina',
-      'Elige un plato para mantener el cerebro enganchado. Tócalo y empieza.')+`
-      <div class="t-label">🥗 Aperitivos · 5 min (movimiento rápido)</div>
+    dopamina:()=>head('🍽️',t('dop_t'),t('dop_d'))+`
+      <div class="t-label">${t('dop_l1')}</div>
       <div id="dm-ap"></div>
-      <div class="t-label">🍲 Platos principales · 20 min (trabajo profundo)</div>
+      <div class="t-label">${t('dop_l2')}</div>
       <div id="dm-pr"></div>
-      <div class="t-label">🍮 Acompañamientos · 10 min (juego creativo)</div>
+      <div class="t-label">${t('dop_l3')}</div>
       <div id="dm-ac"></div>
       <div id="dm-run" style="display:none;text-align:center;margin-top:10px">
         <div id="dm-name" style="font-weight:700;color:var(--turq)"></div>
@@ -368,54 +477,49 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
       </div>`,
 
     /* 3 · Doble de cuerpo */
-    doble:()=>head('👥','Doble de cuerpo',
-      'Trabajo acompañado. 30 minutos con un aviso cada 10 para mantener el enfoque anclado.')+`
-      <div class="t-label">¿En qué vas a trabajar?</div>
-      <input class="tool-field" id="db-task" placeholder="Escríbelo para no perderte">
+    doble:()=>head('👥',t('dob_t'),t('dob_d'))+`
+      <div class="t-label">${t('dob_l')}</div>
+      <input class="tool-field" id="db-task" placeholder="${t('dob_p')}">
       <div class="t-timer" id="db-timer">30:00</div>
-      <button class="t-btn" id="db-go">▶ Empezar sesión acompañada</button>
+      <button class="t-btn" id="db-go">${t('dob_go')}</button>
       <div style="font-size:.76rem;color:#889;margin-top:10px;text-align:center">Cada 10 min te preguntaré cómo vas. Estoy aquí contigo.</div>`,
 
     /* 4 · Cambio de contexto */
-    contexto:()=>head('🔄','Cambio de contexto',
-      'Un limpiador de paladar mental de 3 minutos para pasar de una tarea a otra.')+`
+    contexto:()=>head('🔄',t('ctx_t'),t('ctx_d'))+`
       <div class="t-timer" id="cx-timer">01:00</div>
       <div class="t-card" id="cx-step">Pulsa empezar y te guío en 3 pasitos.</div>
-      <button class="t-btn" id="cx-go">▶ Empezar transición (3 min)</button>`,
+      <button class="t-btn" id="cx-go">${t('ctx_go')}</button>`,
 
     /* 5 · Convertir en misión */
-    interes:()=>{const m=lsGet('cris_mision',null);return head('🎮','Convertir en misión',
-      'Gamifica una tarea aburrida conectándola con lo que te fascina ahora.')+`
-      <div class="t-label">Tarea aburrida</div>
-      <input class="tool-field" id="in-task" placeholder="Ej: ordenar los correos">
-      <div class="t-label">Tu hiperfijación / interés de ahora</div>
-      <input class="tool-field" id="in-int" placeholder="Ej: una serie, un juego, un tema">
-      <div class="t-label">Recompensa al terminar</div>
-      <input class="tool-field" id="in-rew" placeholder="Ej: un capítulo, un café rico">
-      <button class="t-btn" id="in-go">Crear misión</button>
+    interes:()=>{const m=lsGet('cris_mision',null);return head('🎮',t('int_t'),t('int_d'))+`
+      <div class="t-label">${t('int_l1')}</div>
+      <input class="tool-field" id="in-task" placeholder="${t('int_p1')}">
+      <div class="t-label">${t('int_l2')}</div>
+      <input class="tool-field" id="in-int" placeholder="${t('int_p2')}">
+      <div class="t-label">${t('int_l3')}</div>
+      <input class="tool-field" id="in-rew" placeholder="${t('int_p3')}">
+      <button class="t-btn" id="in-go">${t('int_go')}</button>
       <div id="in-card">${m?misionCard(m):''}</div>`;},
 
     /* 6 · Auditor del tiempo */
-    tiempo:()=>head('⏳','Auditor del tiempo',
-      'Contra la ceguera del tiempo: suma las subtareas ocultas que siempre olvidamos.')+`
-      <div class="t-label">¿Qué proyecto?</div>
-      <input class="tool-field" id="ti-proj" placeholder="Ej: preparar la presentación">
-      <div class="t-label">Tu estimación optimista (min)</div>
+    tiempo:()=>head('⏳',t('tim_t'),t('tim_d'))+`
+      <div class="t-label">${t('tim_l1')}</div>
+      <input class="tool-field" id="ti-proj" placeholder="${t('tim_p1')}">
+      <div class="t-label">${t('tim_l2')}</div>
       <input class="tool-field" id="ti-est" type="number" min="1" value="20" oninput="recalcTiempo()">
-      <div class="t-label">Subtareas ocultas que solemos olvidar</div>
-      <div class="t-mini">🏁 Preparación y arranque <input id="ti-a" type="number" min="0" value="10" style="width:60px;margin-left:auto;border:2px solid var(--lavanda);border-radius:8px;padding:4px" oninput="recalcTiempo()"> min</div>
-      <div class="t-mini">🔀 Interrupciones y cambios <input id="ti-b" type="number" min="0" value="15" style="width:60px;margin-left:auto;border:2px solid var(--lavanda);border-radius:8px;padding:4px" oninput="recalcTiempo()"> min</div>
-      <div class="t-mini">✅ Revisión y cierre <input id="ti-c" type="number" min="0" value="10" style="width:60px;margin-left:auto;border:2px solid var(--lavanda);border-radius:8px;padding:4px" oninput="recalcTiempo()"> min</div>
-      <div class="t-card" style="text-align:center"><div style="font-size:.8rem;color:#667">Tiempo realista</div><div style="font-size:1.8rem;font-weight:800;color:var(--turq)" id="ti-real">55 min</div></div>`,
+      <div class="t-label">${t('tim_l3')}</div>
+      <div class="t-mini">${t('tim_a')} <input id="ti-a" type="number" min="0" value="10" style="width:60px;margin-left:auto;border:2px solid var(--lavanda);border-radius:8px;padding:4px" oninput="recalcTiempo()"> min</div>
+      <div class="t-mini">${t('tim_b')} <input id="ti-b" type="number" min="0" value="15" style="width:60px;margin-left:auto;border:2px solid var(--lavanda);border-radius:8px;padding:4px" oninput="recalcTiempo()"> min</div>
+      <div class="t-mini">${t('tim_c')} <input id="ti-c" type="number" min="0" value="10" style="width:60px;margin-left:auto;border:2px solid var(--lavanda);border-radius:8px;padding:4px" oninput="recalcTiempo()"> min</div>
+      <div class="t-card" style="text-align:center"><div style="font-size:.8rem;color:#667">${t('tim_real')}</div><div style="font-size:1.8rem;font-weight:800;color:var(--turq)" id="ti-real">55 min</div></div>`,
 
     /* 7 · Vaciar la mente */
-    volcado:()=>head('🧠','Vaciar la mente',
-      'Saca todos los bucles abiertos y clasifícalos. Deja de cargarlos en la cabeza.')+`
-      <div class="new-task-row" style="margin-bottom:12px"><input class="tool-field" id="vo-in" placeholder="Escribe algo que te ronda..." style="margin-bottom:0" onkeydown="if(event.key==='Enter')addVolcado()"><button class="t-btn" style="width:auto;padding:11px 16px;margin:0" onclick="addVolcado()">+</button></div>
+    volcado:()=>head('🧠',t('vol_t'),t('vol_d'))+`
+      <div class="new-task-row" style="margin-bottom:12px"><input class="tool-field" id="vo-in" placeholder="${t('vol_p')}" style="margin-bottom:0" onkeydown="if(event.key==='Enter')addVolcado()"><button class="t-btn" style="width:auto;padding:11px 16px;margin:0" onclick="addVolcado()">+</button></div>
       <div id="vo-list"></div>`
   };
 
-  function misionCard(m){return `<div class="t-card"><div style="font-weight:800;color:var(--turq);margin-bottom:6px">🎯 MISIÓN: ${esc(m.task)}</div>Mientras la haces, conéctala con <strong>${esc(m.int)}</strong>.<br>🏆 Al terminar desbloqueas: <strong>${esc(m.rew)}</strong></div><button class="t-btn" onclick="startMision()">▶ Empezar misión (20 min)</button><div class="t-timer" id="mi-timer" style="display:none">20:00</div>`;}
+  function misionCard(m){return `<div class="t-card"><div style="font-weight:800;color:var(--turq);margin-bottom:6px">${t('mis_label')} ${esc(m.task)}</div>${t('mis_mid')} <strong>${esc(m.int)}</strong>.<br>${t('mis_unlock')} <strong>${esc(m.rew)}</strong></div><button class="t-btn" onclick="startMision()">${t('mis_go')}</button><div class="t-timer" id="mi-timer" style="display:none">20:00</div>`;}
 
   const DOPA={ap:[['Estiramientos',5],['Bailar 1 canción',5],['20 saltos',5],['Caminar',5],['Agua fría en la cara',5]],
     pr:[['Trabajo profundo en tu tarea',20],['Estudiar',20],['Escribir',20],['Ordenar un espacio',20]],
@@ -427,49 +531,47 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
         const min=+ch.dataset.m;
         document.getElementById('fo-pick').style.display='none';
         document.getElementById('fo-run').style.display='block';
-        speak(min+' minutos de foco. Empieza ahora, yo llevo el tiempo.');vib(50);
-        run(min*60,'fo-timer',(t,tot)=>{ if(min>=25&&t===Math.floor(tot/2)){beep(700,.12);vib(50);speak('Vas por la mitad. Sigue, lo estás haciendo bien.');} },
-          ()=>{try{var _n=new Date();localStorage.setItem('cris_trabajo_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}speak('¡Se acabó el tiempo! Buen trabajo. Tómate un respiro.');});
+        speak(t('v_foco',{m:min}));vib(50);
+        run(min*60,'fo-timer',(t,tot)=>{ if(min>=25&&t===Math.floor(tot/2)){beep(700,.12);vib(50);speak(t('v_foco_half'));} },
+          ()=>{try{var _n=new Date();localStorage.setItem('cris_trabajo_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}speak(t('v_foco_end'));});
       });
     },
     paralisis(){
       document.getElementById('pa-go').onclick=function(){
         const step=gv('pa-step')||'tu primer paso';
         document.getElementById('pa-timer').style.display='block';
-        this.textContent='⏳ Solo este paso...';
-        speak('Solo este paso: '+step+'. Un minuto. Empieza ahora.');vib(50);
-        run(60,'pa-timer',null,()=>{speak('¡Se acabó el minuto! Ya has empezado, eso era lo difícil.');document.getElementById('pa-go').textContent='✓ ¡Empezaste! Otra vez';});
+        this.textContent=t('par_going');
+        speak(t('v_par',{s:step}));vib(50);
+        run(60,'pa-timer',null,()=>{speak(t('v_par_end'));document.getElementById('pa-go').textContent=t('par_done');});
       };
     },
     dopamina(){
-      const mk=(arr,cont)=>document.getElementById(cont).innerHTML=arr.map((x,i)=>`<span class="t-chip" data-n="${esc(x[0])}" data-m="${x[1]}">${esc(x[0])}</span>`).join('');
-      mk(DOPA.ap,'dm-ap');mk(DOPA.pr,'dm-pr');mk(DOPA.ac,'dm-ac');
+      const mk=(names,durs,cont)=>document.getElementById(cont).innerHTML=names.map((nm,i)=>`<span class="t-chip" data-n="${esc(nm)}" data-m="${durs[i][1]}">${esc(nm)}</span>`).join('');
+      mk(t('dop_ap'),DOPA.ap,'dm-ap');mk(t('dop_pr'),DOPA.pr,'dm-pr');mk(t('dop_ac'),DOPA.ac,'dm-ac');
       sheet.querySelectorAll('.t-chip').forEach(ch=>ch.onclick=()=>{
         const name=ch.dataset.n,min=+ch.dataset.m;
         document.getElementById('dm-run').style.display='block';
         document.getElementById('dm-name').textContent='▶ '+name;
-        speak(name+'. '+min+' minutos. Vamos.');vib(50);
-        run(min*60,'dm-timer',null,()=>{speak('¡Se acabó el tiempo! Bien hecho.');});
+        speak(t('v_dop',{n:name,m:min}));vib(50);
+        run(min*60,'dm-timer',null,()=>{speak(t('v_dop_end'));});
         document.getElementById('dm-run').scrollIntoView({behavior:'smooth'});
       });
     },
     doble(){
       document.getElementById('db-go').onclick=function(){
         const task=gv('db-task')||'tu tarea';
-        this.textContent='⏳ En marcha — estoy contigo';
-        speak('Empezamos con '+task+'. Yo trabajo a tu lado. Te aviso en diez minutos.');vib(50);
-        run(1800,'db-timer',(t)=>{ if(t===1200||t===600){beep(700,.15);vib(60);speak('¿Sigues en ello? ¿Cómo vas? Sigue, lo estás haciendo genial.');} },
-          ()=>{speak('¡Treinta minutos completos! Lo lograste. Estoy orgulloso de ti.');this.textContent='✓ ¡Sesión completa!';});
+        this.textContent=t('dob_going');
+        speak(t('v_dob',{t:task}));vib(50);
+        run(1800,'db-timer',(t)=>{ if(t===1200||t===600){beep(700,.15);vib(60);speak(t('v_dob_mid'));} },
+          ()=>{speak(t('v_dob_end'));this.textContent=t('dob_done');});
       };
     },
     contexto(){
-      const steps=[['Levántate y estírate. Suelta los hombros y respira hondo.',60],
-        ['Bebe un poco de agua y mira algo lejano unos segundos.',60],
-        ['Anota en una palabra qué acabas de terminar y qué empiezas ahora.',60]];
+      const steps=[[t('ctx_s1'),60],[t('ctx_s2'),60],[t('ctx_s3'),60]];
       document.getElementById('cx-go').onclick=function(){
         this.style.display='none';let i=0;
         const doStep=()=>{document.getElementById('cx-step').textContent=(i+1)+'/3 · '+steps[i][0];speak(steps[i][0]);vib(40);
-          run(steps[i][1],'cx-timer',null,()=>{i++;if(i<steps.length)doStep();else{document.getElementById('cx-step').textContent='✨ Listo. Ya puedes empezar la nueva tarea con la mente despejada.';speak('Listo. Mente despejada. Ya puedes empezar.');}});};
+          run(steps[i][1],'cx-timer',null,()=>{i++;if(i<steps.length)doStep();else{document.getElementById('cx-step').textContent=t('ctx_end');speak(t('v_ctx_end'));}});};
         doStep();
       };
     },
@@ -510,8 +612,8 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
   window.startMision=function(){
     const m=lsGet('cris_mision',{task:'tu tarea'});
     const el=document.getElementById('mi-timer');if(el)el.style.display='block';
-    speak('Misión activada: '+m.task+'. Veinte minutos. Al terminar, tu recompensa.');vib(50);
-    run(1200,'mi-timer',null,()=>{speak('¡Tiempo! Misión cumplida. Disfruta tu recompensa, te la has ganado.');});
+    speak(t('v_mis',{t:m.task}));vib(50);
+    run(1200,'mi-timer',null,()=>{speak(t('v_mis_end'));});
   };
   window.recalcTiempo=function(){
     const est=+gv('ti-est')||0,a=+gv('ti-a')||0,b=+gv('ti-b')||0,c=+gv('ti-c')||0;
@@ -531,11 +633,11 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
   function renderVolcado(){
     const cont=document.getElementById('vo-list');if(!cont)return;
     const list=lsGet('cris_volcado',[]);
-    if(!list.length){cont.innerHTML='<div style="font-size:.82rem;color:#889;text-align:center;padding:14px">Vacía aquí todo lo que te ronde. Luego lo clasificas.</div>';return;}
+    if(!list.length){cont.innerHTML='<div style="font-size:.82rem;color:#889;text-align:center;padding:14px">'+t('vol_empty')+'</div>';return;}
     cont.innerHTML=list.map((it,i)=>{
-      if(it.cat==='ahora')return `<div class="t-mini" style="flex-wrap:wrap"><span>🔴 <strong>${esc(it.t)}</strong></span><div class="g"><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">→ Luego</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div><input class="tool-field" style="margin:8px 0 0" placeholder="Siguiente paso en 1 frase..." value="${esc(it.step)}" oninput="setVolcadoStep(${i},this.value)"></div>`;
-      if(it.cat==='luego')return `<div class="t-mini"><span>🟡 ${esc(it.t)}</span><div class="g"><button style="background:#d7f5ec;color:var(--turq)" onclick="setVolcadoCat(${i},'ahora')">↑ Ahora</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div></div>`;
-      return `<div class="t-mini"><span>${esc(it.t)}</span><div class="g"><button style="background:#d7f5ec;color:var(--turq)" onclick="setVolcadoCat(${i},'ahora')">Ahora</button><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">Luego</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div></div>`;
+      if(it.cat==='ahora')return `<div class="t-mini" style="flex-wrap:wrap"><span>🔴 <strong>${esc(it.t)}</strong></span><div class="g"><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">${t('vol_to_later')}</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div><input class="tool-field" style="margin:8px 0 0" placeholder="${t('vol_step_p')}" value="${esc(it.step)}" oninput="setVolcadoStep(${i},this.value)"></div>`;
+      if(it.cat==='luego')return `<div class="t-mini"><span>🟡 ${esc(it.t)}</span><div class="g"><button style="background:#d7f5ec;color:var(--turq)" onclick="setVolcadoCat(${i},'ahora')">${t('vol_up')}</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div></div>`;
+      return `<div class="t-mini"><span>${esc(it.t)}</span><div class="g"><button style="background:#d7f5ec;color:var(--turq)" onclick="setVolcadoCat(${i},'ahora')">${t('vol_now')}</button><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">${t('vol_later')}</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div></div>`;
     }).join('');
   }
 })();
@@ -552,6 +654,7 @@ window.addEventListener('message',function(e){
     try{parent.postMessage('cris:back-ok','*');}catch(_){}
   }
 });
+applyStaticI18n();
 </script>
 </body>
 </html>
