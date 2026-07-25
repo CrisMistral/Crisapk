@@ -64,7 +64,7 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 .act-card{background:white;border-radius:18px;padding:18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);font-size:0.92rem;line-height:1.6;color:var(--fg);}
 .goal-pill{background:#fef3c7;color:#92400e;border-radius:14px;padding:12px 16px;font-size:0.88rem;font-weight:700;margin-bottom:12px;display:flex;gap:8px;align-items:flex-start;}
 .deep-btn{width:100%;border:2px solid var(--mm);background:white;border-radius:14px;padding:12px;font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:700;color:var(--td);cursor:pointer;margin-bottom:12px;}
-.deep-box{background:var(--mint);border-radius:14px;padding:14px 16px;font-size:0.85rem;line-height:1.55;color:var(--td);margin-bottom:12px;display:none;}
+.deep-box{background:var(--mint);border-radius:14px;padding:14px 16px;font-size:0.85rem;line-height:1.55;color:var(--td);margin-bottom:12px;display:none;white-space:pre-wrap;}
 .deep-box.open{display:block;}
 
 /* Timer */
@@ -246,7 +246,15 @@ const INT_L={
    {t:'Music and the whole brain',c:'Playing music activates motor, auditory, visual and memory areas at once. It’s the only activity that works the whole brain, creating permanent connections.',g:'Connect it to your violin practice',
     d:'Brain waves: Delta (deep sleep), Theta (creativity), Alpha (relaxation), Beta (focus), Gamma (high cognition). Each frequency accompanies a different mental function.'},
    {t:'Neurotech today',c:'Non-invasive brain–computer interfaces already allow at-home treatments for sleep and focus. Neurofeedback trains your brain in real time.',g:'Explore neurofeedback apps',
-    d:'In 2024 the complete brain of the Drosophila fly was mapped — a milestone toward the “human connectome”: the full map of every neural connection.'}]}
+    d:'In 2024 the complete brain of the Drosophila fly was mapped — a milestone toward the “human connectome”: the full map of every neural connection.'}]},
+  flauta:{name:'Flute',days:[
+   {t:'Meet your drone flute',c:'Your flute has two pipes: one plays a continuous hum (the “drone”) and the other plays the melody with 6 holes. When you blow gently, both sound at once. Blow as if fogging a mirror: warm, calm air, no forcing.',g:'Get a steady, soft sound',
+    d:'Your flute is tuned to B flat in a minor pentatonic scale: the “no wrong notes” scale. So whatever you do, it sounds lovely over the drone. It’s the perfect flute to start on without fear of mistakes.'},
+   {t:'Posture and the base note',c:'Cover the 6 holes of the melody pipe with your finger pads (not the tips): 3 fingers on each hand. Press gently until no air leaks out. With all holes covered you get your base note: B flat.',g:'Play a clean B flat with no air leaks'},
+   {t:'The magic scale (pentatonic)',c:'Now you’ll climb the scale. From all holes covered, lift the fingers from the bottom (farthest from your mouth) one by one. Each finger you lift gives a higher note. Go up slowly and down slowly.',g:'Go up and down the scale 3 times',
+    d:'Chart (● covered · ○ open · mouth → far end):\nB♭   ●●●●●●\nD♭   ●●●●●○\nE♭   ●●●●○○\nF    ●●●○○○\nA♭   ●●○○○○\nB♭   ●○○○○○\nFive notes that repeat: B♭ · D♭ · E♭ · F · A♭.'},
+   {t:'Your first melody',c:'Let the drone hum and play single notes very slowly, no rush. Since there are no wrong notes, everything fits. Try: up 3 notes, down 2, and repeat. Breathe between phrases. Don’t chase a song — take a calm stroll.',g:'Improvise for 30 seconds with the drone'},
+   {t:'Play it with feeling',c:'Now play with the air: blow a little harder for bright notes, softer for sweet ones. Try an ornament: while holding a note, tap quickly with one finger (it sounds like a little bird). Play slow, stay calm.',g:'A calm 1-minute improvisation'}]}
  },
  fr:{
   musica:{name:'Musique',days:[
@@ -289,7 +297,15 @@ const INT_L={
    {t:'La musique et tout le cerveau',c:'Jouer de la musique active à la fois les aires motrices, auditives, visuelles et de mémoire. C’est la seule activité qui fait travailler tout le cerveau, créant des connexions permanentes.',g:'Le relier à ta pratique du violon',
     d:'Ondes cérébrales : Delta (sommeil profond), Thêta (créativité), Alpha (relaxation), Bêta (concentration), Gamma (haute cognition). Chaque fréquence accompagne une fonction mentale différente.'},
    {t:'Neurotechnologie actuelle',c:'Les interfaces cerveau-ordinateur non invasives permettent déjà des traitements à domicile pour le sommeil et la concentration. Le neurofeedback entraîne ton cerveau en temps réel.',g:'Explorer des applis de neurofeedback',
-    d:'En 2024, le cerveau complet de la mouche Drosophile a été cartographié — un jalon vers le « connectome humain » : la carte complète de toutes les connexions neuronales.'}]}
+    d:'En 2024, le cerveau complet de la mouche Drosophile a été cartographié — un jalon vers le « connectome humain » : la carte complète de toutes les connexions neuronales.'}]},
+  flauta:{name:'Flûte',days:[
+   {t:'Découvre ta flûte à bourdon',c:'Ta flûte a deux tuyaux : l’un fait un bourdonnement continu (le « bourdon ») et l’autre joue la mélodie avec 6 trous. Quand tu souffles doucement, les deux sonnent en même temps. Souffle comme pour embuer une vitre : de l’air tiède et calme, sans forcer.',g:'Obtiens un son stable et doux',
+    d:'Ta flûte est accordée en Si bémol, en gamme pentatonique mineure : la gamme « sans fausses notes ». Donc quoi que tu fasses, ça sonne joli sur le bourdon. C’est la flûte parfaite pour commencer sans peur de te tromper.'},
+   {t:'La posture et la note de base',c:'Bouche les 6 trous du tuyau de mélodie avec la pulpe des doigts (pas le bout) : 3 doigts par main. Appuie doucement jusqu’à ce qu’aucun air ne fuie. Tous les trous bouchés, tu obtiens ta note de base : Si bémol.',g:'Joue un Si bémol net, sans fuite d’air'},
+   {t:'La gamme magique (pentatonique)',c:'Maintenant tu vas monter la gamme. Tous les trous bouchés, lève les doigts du bas (les plus loin de la bouche) un par un. Chaque doigt levé donne une note plus aiguë. Monte lentement et descends lentement.',g:'Monte et descends la gamme 3 fois',
+    d:'Schéma (● bouché · ○ ouvert · bouche → extrémité) :\nSi♭   ●●●●●●\nRé♭   ●●●●●○\nMi♭   ●●●●○○\nFa    ●●●○○○\nLa♭   ●●○○○○\nSi♭   ●○○○○○\nCinq notes qui se répètent : Si♭ · Ré♭ · Mi♭ · Fa · La♭.'},
+   {t:'Ta première mélodie',c:'Laisse le bourdon vibrer et joue des notes seules très lentement, sans hâte. Comme il n’y a pas de fausses notes, tout s’accorde. Essaie : monte 3 notes, descends-en 2, et répète. Respire entre les phrases. Ne cherche pas une chanson — fais une promenade tranquille.',g:'Improvise 30 secondes avec le bourdon'},
+   {t:'Joue-la avec émotion',c:'Maintenant joue avec l’air : souffle un peu plus fort pour des notes vives, plus doux pour des notes tendres. Essaie un ornement : en tenant une note, tape vite avec un doigt (on dirait un petit oiseau). Joue lentement, reste calme.',g:'Une improvisation calme d’1 minute'}]}
  }
 };
 // Devuelve la afición con nombre/días en el idioma actual (emoji, mins, color del dato ES)
@@ -358,6 +374,16 @@ const INTERESTS=[
     deep:'Ondas cerebrales: Delta (sueño profundo), Theta (creatividad), Alpha (relajación), Beta (concentración), Gamma (alta cognición). Cada frecuencia acompaña una función mental distinta.'},
    {title:'Neurotecnología actual',content:'Las interfaces cerebro-ordenador no invasivas ya permiten tratamientos en casa para sueño y concentración. El neurofeedback entrena tu cerebro en tiempo real.',goal:'Explorar apps de neurofeedback',
     deep:'En 2024 se cartografió el cerebro completo de la mosca Drosophila — un hito hacia el «conectoma humano»: el mapa completo de todas las conexiones neuronales.'}
+  ]},
+ {id:'flauta',name:'Flauta',emoji:'🦄',mins:10,color:'linear-gradient(135deg,#a855f7,#ec4899)',
+  days:[
+   {title:'Conoce tu flauta de dron',content:'Tu flauta tiene dos tubos: uno hace un zumbido continuo (el «dron») y el otro toca la melodía con 6 agujeros. Al soplar suave, los dos suenan a la vez. Sopla como si empañaras un cristal: aire calentito y tranquilo, sin forzar.',goal:'Consigue un sonido estable y suave',
+    deep:'Tu flauta está afinada en Si bemol y en escala pentatónica menor: la escala «sin notas malas». Por eso, hagas lo que hagas, sonará bonito sobre el dron. Es la flauta perfecta para empezar sin miedo a equivocarte.'},
+   {title:'La postura y la nota base',content:'Tapa los 6 agujeros del tubo de melodía con la yema de los dedos (no con la punta): 3 dedos de cada mano. Aprieta suave hasta que no se escape aire. Con todos tapados suena tu nota base: Si bemol.',goal:'Toca un Si bemol limpio, sin fugas de aire'},
+   {title:'La escala mágica (pentatónica)',content:'Ahora vas a subir la escala. Desde todos los agujeros tapados, ve levantando los dedos de abajo (los más lejos de la boca) uno a uno. Cada dedo que levantas, una nota más aguda. Sube despacio y baja despacio.',goal:'Sube y baja la escala 3 veces',
+    deep:'Diagrama (● tapado · ○ abierto · de la boca → al final):\nSi♭   ●●●●●●\nRe♭   ●●●●●○\nMi♭   ●●●●○○\nFa    ●●●○○○\nLa♭   ●●○○○○\nSi♭   ●○○○○○\nSon 5 notas que se repiten: Si♭ · Re♭ · Mi♭ · Fa · La♭.'},
+   {title:'Tu primera melodía',content:'Deja que el dron zumbe y toca notas sueltas muy despacio, sin prisa. Como no hay notas malas, todo encaja. Prueba: sube 3 notas, baja 2, y repite. Respira entre frase y frase. No busques una canción — busca un paseo tranquilo.',goal:'Improvisa 30 segundos con el dron'},
+   {title:'Tócala con sentimiento',content:'Ahora juega con el aire: sopla un poco más fuerte para notas vivas, más suave para notas dulces. Prueba un adorno: mientras mantienes una nota, da un golpecito rápido con un dedo (suena como un pajarito). Toca lento, con calma.',goal:'Una improvisación tranquila de 1 minuto'}
   ]}
 ];
 
