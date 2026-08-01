@@ -33,6 +33,24 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .c-calm{background:rgba(255,255,255,.7);border:2px solid var(--mint-mid)!important}
 .c-calm .atitle{color:var(--teal-dark)}
 .c-calm .asub{color:var(--teal)}
+.c-anniv{background:linear-gradient(135deg,#0e7490,#0891b2)}
+/* Aniversario · plan de 7 días (acordeón) */
+.an-intro{background:rgba(255,255,255,.85);border:2px solid var(--mint-mid);border-radius:16px;padding:15px 16px;font-size:.85rem;line-height:1.55;color:var(--teal-dark);margin-bottom:14px}
+.an-day{background:rgba(255,255,255,.85);border:2px solid var(--mint-mid);border-radius:16px;margin-bottom:9px;overflow:hidden}
+.an-head{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:12px;font-family:'Outfit',sans-serif}
+.an-num{width:34px;height:34px;border-radius:50%;background:#0891b2;color:#fff;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.an-htxt{flex:1}
+.an-htxt h3{font-size:.9rem;font-weight:800;color:var(--teal-dark)}
+.an-htxt p{font-size:.74rem;color:var(--teal);margin-top:2px;line-height:1.3}
+.an-arrow{color:var(--teal);font-size:1.1rem;transition:transform .2s;flex-shrink:0}
+.an-day.open .an-arrow{transform:rotate(90deg)}
+.an-body{display:none;padding:0 16px 16px 62px}
+.an-day.open .an-body{display:block}
+.an-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);margin-bottom:3px}
+.an-body .an-why{font-size:.82rem;color:var(--text-soft);line-height:1.5;margin-bottom:10px}
+.an-body .an-today{font-size:.88rem;color:var(--fg,#1a2e2b);line-height:1.5}
+.an-safe{background:var(--mint);border-radius:16px;padding:15px 16px;font-size:.83rem;line-height:1.55;color:var(--teal-dark);margin-top:14px}
+.an-close{font-size:.85rem;line-height:1.55;color:var(--teal-dark);text-align:center;padding:12px 8px 2px;font-style:italic}
 .slabel{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin:16px 0 8px}
 .tlist{display:flex;flex-direction:column;gap:8px}
 .titem{background:rgba(255,255,255,.82);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;width:100%;text-align:left;border:2px solid var(--mint-mid);transition:transform .1s}
@@ -139,6 +157,10 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
     <span class="aicon">🧘</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_calm_t">MEDITAR</span><span class="asub" data-i18n="c_calm_s">Meditaciones guiadas para calmarme</span></div>
   </button>
+  <button class="acard c-anniv" onclick="go('anniversary')">
+    <span class="aicon">🕯️</span>
+    <div class="ainfo"><span class="atitle" data-i18n="c_anniv_t">ÉPOCA DIFÍCIL</span><span class="asub" data-i18n="c_anniv_s">Plan de 7 días para un aniversario duro</span></div>
+  </button>
 </div>
 </div>
 
@@ -218,6 +240,16 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
+<div id="v-anniversary" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1 id="anniv-title"></h1>
+  </div>
+  <div id="anniv-content"></div>
+</div>
+</div>
+
 <script>
 /* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
@@ -230,7 +262,7 @@ const UI={
    c_sos_t:'NECESITO AYUDA YA',c_sos_s:'Técnicas para salir del bucle ahora mismo',
    c_know_t:'SÉ QUÉ SIENTO',c_know_s:'Entiende tu emoción y qué puedes hacer',
    c_find_t:'NO SÉ QUÉ SIENTO',c_find_s:'Ayúdame a identificar lo que me pasa',
-   c_calm_t:'MEDITAR',c_calm_s:'Meditaciones guiadas para calmarme',
+   c_calm_t:'MEDITAR',c_calm_s:'Meditaciones guiadas para calmarme',c_anniv_t:'ÉPOCA DIFÍCIL',c_anniv_s:'Plan de 7 días para un aniversario duro',
    tech_h:'Técnicas de Rescate',tec_h_fb:'Técnica',emo_h:'¿Qué sientes?',emo_hint:'Toca lo que más se acerca a lo que sientes ahora mismo',
    emo_detail_h:'Tu emoción',find_h:'Vamos a descubrirlo',med_h:'Meditaciones',
    sp_lento:'Lento',sp_normal:'Normal',sp_rapido:'Rápido',
@@ -247,7 +279,7 @@ const UI={
    c_sos_t:'I NEED HELP NOW',c_sos_s:'Techniques to break the loop right now',
    c_know_t:'I KNOW WHAT I FEEL',c_know_s:'Understand your emotion and what you can do',
    c_find_t:'I DON’T KNOW WHAT I FEEL',c_find_s:'Help me name what’s going on',
-   c_calm_t:'MEDITATE',c_calm_s:'Guided meditations to calm down',
+   c_calm_t:'MEDITATE',c_calm_s:'Guided meditations to calm down',c_anniv_t:'A HARD TIME',c_anniv_s:'7-day plan for a difficult anniversary',
    tech_h:'Rescue Techniques',tec_h_fb:'Technique',emo_h:'What do you feel?',emo_hint:'Tap what’s closest to how you feel right now',
    emo_detail_h:'Your emotion',find_h:'Let’s find out',med_h:'Meditations',
    sp_lento:'Slow',sp_normal:'Normal',sp_rapido:'Fast',
@@ -264,7 +296,7 @@ const UI={
    c_sos_t:'J’AI BESOIN D’AIDE MAINTENANT',c_sos_s:'Des techniques pour sortir de la boucle tout de suite',
    c_know_t:'JE SAIS CE QUE JE RESSENS',c_know_s:'Comprends ton émotion et ce que tu peux faire',
    c_find_t:'JE NE SAIS PAS CE QUE JE RESSENS',c_find_s:'Aide-moi à nommer ce qui se passe',
-   c_calm_t:'MÉDITER',c_calm_s:'Méditations guidées pour me calmer',
+   c_calm_t:'MÉDITER',c_calm_s:'Méditations guidées pour me calmer',c_anniv_t:'PÉRIODE DIFFICILE',c_anniv_s:'Plan de 7 jours pour un anniversaire difficile',
    tech_h:'Techniques de Secours',tec_h_fb:'Technique',emo_h:'Que ressens-tu ?',emo_hint:'Touche ce qui se rapproche le plus de ce que tu ressens là',
    emo_detail_h:'Ton émotion',find_h:'On va le découvrir',med_h:'Méditations',
    sp_lento:'Lent',sp_normal:'Normal',sp_rapido:'Rapide',
@@ -352,6 +384,73 @@ function medL(m){const lang=crisLang();if(lang==='es'||!MED_L[lang]||!MED_L[lang
 function tecGroupLabel(i,esLabel){const lang=crisLang();return (lang!=='es'&&TEC_LABELS[lang])?TEC_LABELS[lang][i]:esLabel;}
 function bodyLabel(i,esLabel){const lang=crisLang();return (lang!=='es'&&BODY_LABELS[lang])?BODY_LABELS[lang][i]:esLabel;}
 function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
+
+/* ── ÉPOCA DIFÍCIL · plan de 7 días para regular el sistema nervioso ── */
+const ANNIV={
+ es:{title:'🕯️ Época difícil',
+  intro:'Hay emociones que vuelven cada año, en la misma época, sin saber por qué. No estás rota: es tu sistema nervioso recordando una huella que la mente ya olvidó. Este plan de 7 días no analiza el pasado — ayuda a que tu cuerpo deje de reaccionar en automático y recuperes claridad sobre qué sientes, cuándo y por qué.<br><br>Ve a tu ritmo: un día, un paso. Si algún día pesa demasiado, para y vuelve mañana. 💚',
+  why:'Para qué',today:'Hoy',
+  days:[
+   {t:'Detectar la señal',w:'Antes de calmar algo, hay que verlo.',a:'Cada vez que notes un cambio brusco (tensión, cansancio, irritabilidad), apúntalo con la hora y qué estaba pasando. Sin analizar — solo registrar.'},
+   {t:'Bajar el pulso',w:'Decirle al cuerpo que ya no hay peligro.',a:'Respiración 4-7-8 (inhala 4, retén 7, exhala 8), tres veces a lo largo del día. La tienes guiada en «Meditar».'},
+   {t:'Nombrar sin juzgar',w:'Poner nombre baja la intensidad de la alarma del cerebro.',a:'Coge tus notas del día 1 y, por cada momento, escribe una palabra que nombre la emoción real: miedo, pérdida, vergüenza, cansancio…'},
+   {t:'Rastrear el patrón',w:'Encontrar de dónde viene.',a:'Mira si esas emociones se repiten en fechas, lugares o personas. No busques la explicación perfecta — busca la coincidencia. Ahí suele estar el origen.'},
+   {t:'Soltar el cuerpo',w:'Lo que se guarda en el cuerpo se suelta con movimiento, no solo con palabras.',a:'15 minutos de movimiento suave: estirar, caminar sin móvil, o sacudir brazos y piernas. Si quieres, usa el módulo de Pilates.'},
+   {t:'Reescribir la reacción',w:'Entre lo que pasa y cómo reaccionas hay un hueco: ahí está tu libertad.',a:'Cuando notes la señal del día 1, para 10 segundos y pregúntate: ¿esto es de ahora… o es de antes? Esa pausa es donde empieza el control.'},
+   {t:'Integrar y decidir',w:'Recuperar el control, no borrar la emoción.',a:'Relee lo que anotaste esta semana y elige UNA sola cosa que harás distinto la próxima vez que aparezca esa sensación.'}
+  ],
+  close:'El cuerpo recuerda incluso cuando la mente olvida — pero también aprende a soltar. Esto no borra tu historia: te devuelve el control sobre cómo reaccionas a ella.',
+  safe:'Si en algún momento pesa demasiado, no estás sola. Habla con alguien de confianza o con un profesional. Esto es un apoyo, no sustituye a la terapia. 💚'},
+ en:{title:'🕯️ A hard time',
+  intro:'Some emotions come back every year, at the same time, without you knowing why. You’re not broken: it’s your nervous system remembering an imprint your mind has forgotten. This 7-day plan doesn’t analyse the past — it helps your body stop reacting on autopilot and gives you clarity about what you feel, when, and why.<br><br>Go at your own pace: one day, one step. If a day feels like too much, stop and come back tomorrow. 💚',
+  why:'Why',today:'Today',
+  days:[
+   {t:'Spot the signal',w:'Before you can calm something, you have to see it.',a:'Every time you notice a sudden shift (tension, tiredness, irritability), jot it down with the time and what was happening. No analysing — just logging.'},
+   {t:'Lower the pulse',w:'Tell your body there’s no danger anymore.',a:'4-7-8 breathing (inhale 4, hold 7, exhale 8), three times through the day. You have it guided under “Meditate”.'},
+   {t:'Name without judging',w:'Naming lowers the intensity of the brain’s alarm.',a:'Take your notes from day 1 and, for each moment, write one word for the real emotion: fear, loss, shame, tiredness…'},
+   {t:'Track the pattern',w:'Find where it comes from.',a:'See whether those emotions repeat around certain dates, places or people. Don’t look for a perfect explanation — look for the coincidence. That’s usually where the origin is.'},
+   {t:'Release the body',w:'What’s stored in the body is released through movement, not just words.',a:'15 minutes of gentle movement: stretching, walking without your phone, or shaking out your arms and legs. If you like, use the Pilates module.'},
+   {t:'Rewrite the reaction',w:'Between what happens and how you react there’s a gap: that’s your freedom.',a:'When you notice the day-1 signal, pause for 10 seconds and ask: is this from now… or from before? That pause is where control begins.'},
+   {t:'Integrate and decide',w:'Regain control — not erase the emotion.',a:'Reread what you noted this week and choose ONE thing you’ll do differently next time that feeling appears.'}
+  ],
+  close:'The body remembers even when the mind forgets — but it can also learn to let go. This doesn’t erase your story: it gives you back control over how you react to it.',
+  safe:'If it ever feels like too much, you’re not alone. Talk to someone you trust or a professional. This is support, not a replacement for therapy. 💚'},
+ fr:{title:'🕯️ Période difficile',
+  intro:'Certaines émotions reviennent chaque année, à la même période, sans que tu saches pourquoi. Tu n’es pas cassée : c’est ton système nerveux qui se souvient d’une empreinte que ton esprit a oubliée. Ce plan de 7 jours n’analyse pas le passé — il aide ton corps à cesser de réagir en pilote automatique et te rend de la clarté sur ce que tu ressens, quand et pourquoi.<br><br>Va à ton rythme : un jour, un pas. Si un jour c’est trop lourd, arrête-toi et reviens demain. 💚',
+  why:'Pourquoi',today:'Aujourd’hui',
+  days:[
+   {t:'Repérer le signal',w:'Avant de calmer quelque chose, il faut le voir.',a:'Chaque fois que tu remarques un changement brusque (tension, fatigue, irritabilité), note-le avec l’heure et ce qui se passait. Sans analyser — juste enregistrer.'},
+   {t:'Baisser le pouls',w:'Dire à ton corps qu’il n’y a plus de danger.',a:'Respiration 4-7-8 (inspire 4, retiens 7, expire 8), trois fois dans la journée. Tu l’as guidée dans « Méditer ».'},
+   {t:'Nommer sans juger',w:'Nommer réduit l’intensité de l’alarme du cerveau.',a:'Reprends tes notes du jour 1 et, pour chaque moment, écris un mot qui nomme l’émotion réelle : peur, perte, honte, fatigue…'},
+   {t:'Suivre le schéma',w:'Trouver d’où ça vient.',a:'Regarde si ces émotions reviennent à certaines dates, certains lieux ou personnes. Ne cherche pas l’explication parfaite — cherche la coïncidence. L’origine est souvent là.'},
+   {t:'Relâcher le corps',w:'Ce qui est stocké dans le corps se libère par le mouvement, pas seulement par les mots.',a:'15 minutes de mouvement doux : t’étirer, marcher sans téléphone, ou secouer bras et jambes. Si tu veux, utilise le module de Pilates.'},
+   {t:'Réécrire la réaction',w:'Entre ce qui arrive et ta façon de réagir, il y a un espace : c’est ta liberté.',a:'Quand tu remarques le signal du jour 1, fais une pause de 10 secondes et demande-toi : est-ce de maintenant… ou d’avant ? Cette pause, c’est là que commence le contrôle.'},
+   {t:'Intégrer et décider',w:'Reprendre le contrôle, pas effacer l’émotion.',a:'Relis ce que tu as noté cette semaine et choisis UNE seule chose que tu feras autrement la prochaine fois que cette sensation apparaît.'}
+  ],
+  close:'Le corps se souvient même quand l’esprit oublie — mais il peut aussi apprendre à lâcher. Ceci n’efface pas ton histoire : ça te rend le contrôle sur la façon dont tu y réagis.',
+  safe:'Si à un moment c’est trop lourd, tu n’es pas seule. Parle à quelqu’un de confiance ou à un professionnel. Ceci est un soutien, pas un remplacement de la thérapie. 💚'}
+};
+function annivL(){return ANNIV[crisLang()]||ANNIV.es;}
+function renderAnniversary(){
+  const A=annivL();
+  document.getElementById('anniv-title').textContent=A.title;
+  document.getElementById('anniv-content').innerHTML=
+    `<div class="an-intro">${A.intro}</div>`+
+    A.days.map((d,i)=>`
+      <div class="an-day" id="an-day-${i}">
+        <button class="an-head" onclick="toggleAnniv(${i})">
+          <span class="an-num">${i+1}</span>
+          <span class="an-htxt"><h3>${d.t}</h3><p>${d.w}</p></span>
+          <span class="an-arrow">›</span>
+        </button>
+        <div class="an-body">
+          <div class="an-lbl">${A.today}</div><div class="an-today">${d.a}</div>
+        </div>
+      </div>`).join('')+
+    `<div class="an-close">${A.close}</div>`+
+    `<div class="an-safe">${A.safe}</div>`;
+}
+function toggleAnniv(i){const el=document.getElementById('an-day-'+i);if(el)el.classList.toggle('open');}
 
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
 
@@ -625,6 +724,7 @@ function go(view){
   if(view==='emotions') renderEmoGrid();
   if(view==='find-emotion'){S.findStep=0;S.findMatches=[];renderFind();}
   if(view==='meditations') renderMedList();
+  if(view==='anniversary') renderAnniversary();
 }
 
 function renderTecList(){
