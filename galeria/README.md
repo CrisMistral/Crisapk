@@ -34,8 +34,9 @@ ritual diario es el motor de descubrimiento y de venta a la vez. Sin suscripció
 | `explorar.html` | **La biblioteca.** Catálogo completo con buscador y filtros. Acepta `?artista=`, `?medio=`, `?estilo=`, `?tema=`. |
 | `archivo.html` | **El archivo diario.** Las últimas 30 portadas, por fecha. |
 | `obra.html` | **Detalle de obra.** Imagen ampliable, narrativa completa, ficha, biografía del artista, relacionadas, favorito/compartir y **Comprar** (Stripe). |
-| `subir.html` | **Formulario curatorial.** Cinco pantallas tipo Typeform, autoguardado, validación amable, precio neto en tiempo real. |
-| `galeria.js` | Módulo compartido: datos, formato, tarjetas, **obra del día**, favoritos y compartir. |
+| `subir.html` | **Formulario curatorial**, precedido por la **puerta de invitación**. Cinco pantallas tipo Typeform, autoguardado, validación amable, precio neto en tiempo real. |
+| `curaduria.html` | **Panel de curaduría** (privado, con contraseña): aprobar/rechazar obras, generar y revocar códigos de invitación y editar las reglas de auto-moderación. |
+| `galeria.js` | Módulo compartido: datos (semilla + aprobadas), formato, tarjetas, **obra del día**, favoritos y compartir. |
 | `taxonomias.js` | Fuente única de las tres listas cerradas (15 medios, 12 estilos, 15 temas) y la comisión del 22 %. |
 | `obras.json` | 8 obras de ejemplo con narrativa, artistas y taxonomía. |
 | `estilo.css` | Sistema visual (crema, serif Playfair + sans Inter, móvil primero). |
@@ -43,7 +44,9 @@ ritual diario es el motor de descubrimiento y de venta a la vez. Sin suscripció
 | `manifest.webmanifest` | Manifest PWA de la galería. |
 
 Funciones de servidor (en `../netlify/functions/`):
-`create-checkout` y `webhook` (pago, ya existían), `submit-obra` (recibe obras nuevas),
+`create-checkout` y `webhook` (pago, ya existían), `submit-obra` (recibe la obra, valida
+el código y aplica la auto-moderación), `obras-publicas` (sirve las aprobadas),
+`invite-validate` (valida códigos), `curaduria` (panel protegido),
 `push-key` + `push-subscribe` + `push-daily` (recordatorio diario).
 
 ---
@@ -68,8 +71,40 @@ netlify dev
 **Flujos:**
 - *Coleccionista:* obra del día → *Comprar* → Stripe → `success.html`. O *Explorar* para
   el catálogo, o *Archivo* para días pasados.
-- *Artista:* *Subir una obra* → cinco pantallas → *Publicar*.
+- *Artista:* *Subir una obra* → introduce su **código de invitación** → cinco pantallas →
+  *Publicar* → su obra entra en la cola de moderación (o se publica sola, según las reglas).
+- *Curaduría:* `curaduria.html` → contraseña → aprueba/rechaza, gestiona códigos y reglas.
 - *Ritual:* activa el recordatorio en la barra superior de la home.
+
+---
+
+## Quién puede subir: invitación + moderación
+
+«Que no lo suba cualquiera» se resuelve con **dos filtros encadenados**:
+
+**1. Puerta de invitación.** Nadie llega al formulario sin un código válido. Tú los generas
+uno a uno desde el panel de curaduría (con una etiqueta: para quién es), y puedes revocarlos.
+El código se valida al entrar *y otra vez en el servidor al enviar* (`submit-obra`), así que
+no se puede saltar manipulando el cliente. Los códigos viven en **Netlify Blobs**.
+
+**2. Moderación con auto-reglas por temática.** Cada obra enviada se evalúa contra las reglas
+que fijes en el panel:
+
+- **Modo general:** *reviso yo cada obra* (por defecto — máximo control) o *publico automático*.
+- **Regla por tema** (las 15 temáticas): *aprobar automático* · *siempre revisar* · *rechazar*.
+
+El motor decide así, en orden: si algún tema está en **rechazar** → la obra se rechaza sola;
+si alguno está en **revisar** → va a tu cola; si el modo es *automático* (o todos los temas
+presentes están en *aprobar automático*) → se publica sola; si no → a tu cola. Por defecto
+(modo *reviso yo*, sin reglas) **todo queda pendiente de tu visto bueno**.
+
+Las obras aprobadas se guardan en Netlify Blobs (`gd-publicadas`) y la galería las mezcla con
+`obras.json`. Las pendientes esperan en `gd-pendientes`; las rechazadas quedan en
+`gd-rechazadas` para tu registro.
+
+> **Panel de curaduría** (`curaduria.html`): protegido por `CURATOR_TOKEN`. La contraseña se
+> guarda solo en tu sesión del navegador y viaja en la cabecera `x-cur-token`; el servidor la
+> compara en tiempo constante. No hay enlace público al panel (va con `noindex`).
 
 ---
 
@@ -134,9 +169,14 @@ Guarda las claves en Netlify como `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` y, opc
 }
 ```
 
-Las obras enviadas desde `subir.html` llegan por correo a la curaduría (función
-`submit-obra`), que decide cuáles pasan a `obras.json`. Las imágenes a resolución completa
-las conserva el artista hasta que su obra se acepta.
+Las obras enviadas desde `subir.html` pasan por la moderación (`submit-obra`): quedan en la
+cola o se publican solas según tus reglas, y la curaduría te avisa por correo. Las aprobadas
+se sirven desde Netlify Blobs y se mezclan con `obras.json`. El catálogo semilla (`obras.json`)
+se sigue editando como archivo de texto y subiendo a GitHub.
+
+> **Nota:** hoy las imágenes viajan como dataURL comprimidos (~1200 px) dentro del propio
+> objeto de la obra. Sirve para arrancar; el siguiente paso natural es subirlas a un almacén
+> (Cloudinary o Netlify Blobs binario) y guardar solo la URL.
 
 ---
 
@@ -164,6 +204,7 @@ Ver `../.env.example`. Resumen:
 | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | Pago y confirmación. |
 | `RESEND_API_KEY`, `ORDER_EMAIL` | Correos (pedidos). |
 | `SUBMIT_EMAIL` *(opcional)* | Correo para **obras nuevas**; si falta, usa `ORDER_EMAIL`. |
+| `CURATOR_TOKEN` | **Contraseña del panel de curaduría.** Sin ella, el panel y la moderación no operan. |
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` *(opc.)* | Recordatorio push diario. |
 
 Sin estas variables, la galería, el archivo, el formulario y los favoritos siguen
@@ -172,11 +213,20 @@ delicados, sin bloquear nada).
 
 ---
 
-## Nota sobre el stack
+## Nota sobre el stack y lo que falta
 
-El brief original pedía React + Express + PostgreSQL + Prisma. Este repositorio ya es un
-sitio estático en Netlify con funciones (Stripe) y datos por `obras.json`. La Galería
-Diaria se construyó en ese mismo lenguaje para desplegarse tal cual, heredar el pago y
-respetar la estética. Lo que exigiría base de datos —cuentas persistentes de artista,
-estadísticas reales, favoritos entre dispositivos— es la Fase 2; el modelo de datos ya
-está pensado para ese salto. (El push, en cambio, ya persiste de verdad con Netlify Blobs.)
+El brief pedía React + Express + PostgreSQL + Prisma. Este repositorio ya es un sitio
+estático en Netlify con funciones; en vez de un monorepo aparte, la persistencia real se
+resuelve con **Netlify Blobs** (invitaciones, cola de moderación, obras publicadas, push).
+Eso ya es un backend de verdad, sin base de datos que administrar.
+
+Lo que **todavía falta** para un marketplace autoservicio completo (opción B):
+
+- **Cuentas de artista con login.** Hoy la puerta es por código de invitación, pero el
+  artista no tiene sesión propia ni puede **editar su obra** después de enviarla. El
+  siguiente paso es un login real (p. ej. Netlify Identity) y un panel de artista.
+- **Almacén de imágenes.** Ver la nota del modelo de datos: pasar de dataURL a URLs.
+- **Reparto automático del 78 %.** Requiere Stripe Connect; hoy el reparto es manual.
+
+El filtro de entrada («que no lo suba cualquiera») y la moderación —lo que pediste— ya
+están operativos y persistidos.

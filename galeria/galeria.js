@@ -62,17 +62,19 @@
   }
 
   // ── Datos ──
+  // Mezcla tres fuentes: el catálogo semilla (obras.json), las obras aprobadas por
+  // la moderación (/api/obras-publicas, en Netlify Blobs) y, como respaldo de demo
+  // sin servidor, las guardadas en este navegador. Todo se deduplica por id.
   function cargarObras(){
-    return fetch('obras.json', {cache:'no-store'})
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        var locales=[]; try{ locales = JSON.parse(localStorage.getItem('gd_obras_locales')||'[]'); }catch(e){}
-        var todas = locales.concat(data);
-        // deduplicar por id
-        var vistos={}, out=[];
-        todas.forEach(function(o){ if(!vistos[o.id]){ vistos[o.id]=1; out.push(o); } });
-        return out;
-      });
+    var semilla = fetch('obras.json', {cache:'no-store'}).then(function(r){ return r.json(); }).catch(function(){ return []; });
+    var aprobadas = fetch('/api/obras-publicas', {cache:'no-store'}).then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; });
+    return Promise.all([aprobadas, semilla]).then(function(res){
+      var locales=[]; try{ locales = JSON.parse(localStorage.getItem('gd_obras_locales')||'[]'); }catch(e){}
+      var todas = res[0].concat(res[1]).concat(locales);
+      var vistos={}, out=[];
+      todas.forEach(function(o){ if(o && o.id && !vistos[o.id]){ vistos[o.id]=1; out.push(o); } });
+      return out;
+    });
   }
   // catálogo público, ordenado por fecha desc
   function publicas(todas){

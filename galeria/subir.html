@@ -12,6 +12,21 @@
 <link rel="stylesheet" href="estilo.css">
 <style>
 body{background:var(--crema)}
+/* ── puerta de invitación ── */
+.gate{max-width:520px;margin:0 auto;padding:clamp(3rem,12vw,6rem) var(--paso) 4rem;text-align:center}
+.gate .eyebrow{margin-bottom:1rem}
+.gate h1{font-size:clamp(2rem,6vw,3rem);margin-bottom:.7rem}
+.gate .lead{color:var(--tinta-2);font-size:1.02rem;line-height:1.7;max-width:40ch;margin:0 auto 2rem}
+.gate .caja{display:flex;flex-direction:column;gap:.7rem;max-width:340px;margin:0 auto}
+.gate input{font-family:var(--sans);font-size:1.05rem;text-align:center;letter-spacing:.12em;text-transform:uppercase;padding:.9rem 1rem;border:1px solid var(--linea);border-radius:var(--r);background:#fff;color:var(--tinta)}
+.gate input:focus{outline:none;border-color:var(--tinta)}
+.gate .btn{width:100%;justify-content:center}
+.gate .msg{font-size:.85rem;min-height:1.2em;margin-top:.2rem}
+.gate .msg.err{color:#a3402f}
+.gate .msg.ok{color:var(--ok)}
+.gate .nota{font-size:.85rem;color:var(--tinta-3);margin-top:2rem;line-height:1.6}
+.gate .nota a{color:var(--tinta);border-bottom:1px solid var(--linea)}
+#form[hidden],#nav[hidden]{display:none}
 /* ── barra de progreso (sin números) ── */
 .progreso{position:fixed;top:0;left:0;right:0;height:3px;background:var(--crema-2);z-index:60}
 .progreso .barra{height:100%;width:0;background:var(--tinta);transition:width .45s cubic-bezier(.4,0,.2,1)}
@@ -141,7 +156,20 @@ select.sel-uno{-webkit-appearance:none;appearance:none;background:#fff url("data
   <a class="salir" href="index.html" id="salir">Guardar y salir</a>
 </div>
 
-<form class="form-wrap" id="form" autocomplete="off" novalidate>
+<!-- ══════════ PUERTA DE INVITACIÓN ══════════ -->
+<section class="gate" id="gate">
+  <p class="eyebrow">Galería Diaria · para artistas</p>
+  <h1>Subir una obra</h1>
+  <p class="lead">Galería Diaria es por invitación. Escribe el código que te hemos dado y podrás presentar tu obra.</p>
+  <div class="caja">
+    <input type="text" id="gate-code" placeholder="GD-XXXX-XXXX" autocomplete="off" spellcheck="false" maxlength="20" aria-label="Código de invitación">
+    <button type="button" class="btn btn-dark" id="gate-btn">Entrar</button>
+    <p class="msg" id="gate-msg"></p>
+  </div>
+  <p class="nota">¿No tienes código? <a href="index.html">Vuelve a la galería</a>. Abrimos plazas cada poco y elegimos a mano a quién invitamos.</p>
+</section>
+
+<form class="form-wrap" id="form" autocomplete="off" novalidate hidden>
 
   <!-- intro tiempo estimado, dentro del paso 1 -->
   <!-- ══════════ PANTALLA 1 · LA OBRA ══════════ -->
@@ -395,13 +423,12 @@ select.sel-uno{-webkit-appearance:none;appearance:none;background:#fff url("data
 <section class="confirmacion" id="confirmacion">
   <div class="marca-ok">✓</div>
   <h2>Recibida.</h2>
-  <p><span class="obra-nom" id="conf-titulo">Tu obra</span> ya está en la galería.</p>
-  <p>Aparecerá en las búsquedas en unos minutos. Cada día seleccionamos una obra para la portada: si sale la tuya, te avisamos por correo.</p>
+  <p id="conf-cuerpo"><span class="obra-nom">Tu obra</span> está en revisión.</p>
+  <p class="aviso" id="conf-extra"></p>
   <div class="acciones">
     <a class="btn btn-dark" id="conf-ver" href="index.html">Ver mi obra</a>
     <a class="btn btn-line" href="subir.html" onclick="localStorage.removeItem('gd_form_draft')">Subir otra</a>
   </div>
-  <p class="aviso" id="conf-aviso"></p>
 </section>
 
 <!-- ══════════ NAVEGACIÓN ══════════ -->
@@ -766,56 +793,89 @@ select.sel-uno{-webkit-appearance:none;appearance:none;background:#fff url("data
   function num(v){ v=parseFloat(v); return isNaN(v)?null:v; }
 
   function enviar(){
-    var btn=$('btn-continuar'); btn.disabled=true; btn.textContent='Publicando…';
+    var btn=$('btn-continuar'); btn.disabled=true; btn.textContent='Enviando…';
     var obra = construirObra();
-    // 1) guardar localmente para que aparezca en la galería de esta demo
-    try{
-      var locales=JSON.parse(localStorage.getItem('gd_obras_locales')||'[]');
-      locales.unshift(obra);
-      localStorage.setItem('gd_obras_locales', JSON.stringify(locales));
-    }catch(e){}
-    // 2) intentar avisar a la curaduría por correo (función Netlify)
-    var payload = resumenParaCorreo(obra);
-    fetch('/api/submit-obra', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })
-      .then(function(r){ return r.ok; })
-      .catch(function(){ return false; })
-      .then(function(ok){ mostrarConfirmacion(obra, ok); });
+    // Enviar la obra completa + el código de invitación. El servidor valida el
+    // código, aplica la auto-moderación y decide: aprobada / pendiente / rechazada.
+    fetch('/api/submit-obra', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ invite: obtenerInvite(), obra: obra })
+    })
+      .then(function(r){ return r.json().then(function(j){ return { status:r.status, j:j }; }); })
+      .then(function(res){
+        if(res.status===403){ // código dejó de ser válido
+          reactivarPuerta('Tu código ya no es válido. Pide uno nuevo a la galería.');
+          btn.disabled=false; btn.textContent='Publicar obra'; return;
+        }
+        mostrarConfirmacion(obra, res.j.estado || 'pendiente', res.j.motivo);
+      })
+      .catch(function(){
+        // Sin backend (p. ej. dev estático): guardamos en el navegador como demostración
+        try{ var l=JSON.parse(localStorage.getItem('gd_obras_locales')||'[]'); l.unshift(obra); localStorage.setItem('gd_obras_locales', JSON.stringify(l)); }catch(e){}
+        mostrarConfirmacion(obra, 'local');
+      });
   }
 
-  // Resumen ligero (sin todas las imágenes en base64) para el correo
-  function resumenParaCorreo(o){
-    return {
-      titulo:o.titulo, anio:o.anio, artista:o.artista.nombre,
-      instagram:o.artista.instagram, web:o.artista.web,
-      medio:o.medio.map(TAX.nombreMedio), estilo:o.estilo.map(TAX.nombreEstilo), tema:o.tema.map(TAX.nombreTema),
-      materiales:o.materiales,
-      dimensiones:o.dimensiones? [o.dimensiones.alto,o.dimensiones.ancho,o.dimensiones.prof].filter(function(x){return x!=null;}).join(' × ')+' cm' : (o.duracion+' min'),
-      peso:o.peso, tipoObra:o.tipoObra, edicion:o.edicion,
-      precio:o.precio, artistaRecibe:TAX.artistaRecibe(o.precio),
-      disponibilidad:o.disponibilidad, envio:o.envio, embalaje:o.embalaje, certificado:o.certificado,
-      bio:o.artista.bio, formacion:o.artista.formacion, afinidades:o.artista.afinidades,
-      narrativa:o.narrativa,
-      numImagenes:o.imagenes.length,
-      imagenPrincipal:o.imagenes[0]||null
-    };
-  }
-
-  function mostrarConfirmacion(obra, correoOk){
+  var CONF = {
+    aprobada: { h:'Publicada.', cuerpo:' ya está en la galería.', extra:'Cada día elegimos una obra para la portada: si sale la tuya, te avisamos por correo.', ver:true, verTxt:'Ver mi obra' },
+    pendiente:{ h:'Recibida.', cuerpo:' está en revisión.', extra:'La curaduría la mirará pronto. Te avisamos por correo en cuanto se publique.', ver:false },
+    rechazada:{ h:'Gracias por enviarla.', cuerpo:' no encaja en la galería ahora mismo.', extra:'No es un juicio sobre tu trabajo: la línea curatorial cambia. Puedes presentar otra obra cuando quieras.', ver:false },
+    local:    { h:'Guardada.', cuerpo:' se ha guardado en este dispositivo.', extra:'En el entorno publicado pasaría por la puerta de invitación y la revisión de la curaduría.', ver:true, verTxt:'Ver mi obra' }
+  };
+  function mostrarConfirmacion(obra, estado, motivo){
     localStorage.removeItem(CLAVE);
+    var c = CONF[estado] || CONF.pendiente;
     $('form').style.display='none'; $('nav').style.display='none'; $('barra').style.width='100%';
-    $('conf-titulo').textContent = '«'+obra.titulo+'»';
-    $('conf-ver').href = 'obra.html?id='+encodeURIComponent(obra.id);
-    $('conf-aviso').textContent = correoOk
-      ? 'Hemos avisado a la curaduría de la galería.'
-      : 'Tu obra se ha guardado. En el entorno publicado, además, avisamos a la curaduría por correo.';
+    document.querySelector('#confirmacion h2').textContent = c.h;
+    document.getElementById('conf-cuerpo').innerHTML = '<span class="obra-nom">«'+obra.titulo.replace(/</g,'&lt;')+'»</span>'+c.cuerpo;
+    document.getElementById('conf-extra').textContent = (motivo? motivo+' ' : '') + c.extra;
+    var ver=$('conf-ver');
+    if(c.ver){ ver.style.display=''; ver.href='obra.html?id='+encodeURIComponent(obra.id); ver.textContent=c.verTxt; }
+    else { ver.style.display='none'; }
     $('confirmacion').classList.add('activo');
     window.scrollTo({top:0,behavior:'smooth'});
   }
 
+  // ── Puerta de invitación ──
+  var INVITE_KEY='gd_invite';
+  function obtenerInvite(){ try{ return localStorage.getItem(INVITE_KEY)||''; }catch(e){ return ''; } }
+  function revelarFormulario(){
+    $('gate').style.display='none';
+    $('form').hidden=false; $('nav').hidden=false;
+    conectarSubida(); hidratar(); irA(1);
+  }
+  function reactivarPuerta(msg){
+    try{ localStorage.removeItem(INVITE_KEY); }catch(e){}
+    $('confirmacion').classList.remove('activo');
+    $('form').hidden=true; $('nav').hidden=true; $('form').style.display=''; $('nav').style.display='';
+    $('gate').style.display=''; var m=$('gate-msg'); m.className='msg err'; m.textContent=msg||'';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function conectarPuerta(){
+    var inp=$('gate-code'), btn=$('gate-btn'), msg=$('gate-msg');
+    function intentar(){
+      var code=inp.value.trim().toUpperCase();
+      if(!code){ msg.className='msg err'; msg.textContent='Escribe tu código.'; return; }
+      btn.disabled=true; btn.textContent='Comprobando…'; msg.className='msg'; msg.textContent='';
+      fetch('/api/invite-validate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code})})
+        .then(function(r){ return r.json(); })
+        .then(function(j){
+          if(j.valid){ guardar(code); msg.className='msg ok'; msg.textContent='¡Bienvenida! Abriendo el formulario…'; setTimeout(revelarFormulario,500); }
+          else if(j.sinAlmacen){ guardar(code); msg.className='msg ok'; msg.textContent='Modo local (sin servidor). Abriendo…'; setTimeout(revelarFormulario,500); }
+          else { btn.disabled=false; btn.textContent='Entrar'; msg.className='msg err'; msg.textContent='Ese código no es válido o ha caducado.'; }
+        })
+        .catch(function(){ // sin backend: permitimos en modo local
+          guardar(code); msg.className='msg ok'; msg.textContent='Modo local (sin servidor). Abriendo…'; setTimeout(revelarFormulario,500);
+        });
+    }
+    function guardar(code){ try{ localStorage.setItem(INVITE_KEY,code); }catch(e){} }
+    btn.addEventListener('click',intentar);
+    inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); intentar(); } });
+  }
+
   // ── Arranque ──
-  conectarSubida();
-  hidratar();
-  irA(1);
+  if(obtenerInvite()){ revelarFormulario(); }   // ya validado antes: al formulario directo
+  else { conectarPuerta(); }                     // si no, la puerta primero
 })();
 </script>
 </body>
