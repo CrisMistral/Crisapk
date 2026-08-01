@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF8F5">
+<meta name="robots" content="noindex">
+<title>Subir una obra — Galería Diaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<style>
+body{background:var(--crema)}
+/* ── barra de progreso (sin números) ── */
+.progreso{position:fixed;top:0;left:0;right:0;height:3px;background:var(--crema-2);z-index:60}
+.progreso .barra{height:100%;width:0;background:var(--tinta);transition:width .45s cubic-bezier(.4,0,.2,1)}
+
+/* ── cabecera mínima ── */
+.mini-head{max-width:720px;margin:0 auto;padding:1.4rem var(--paso) 0;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.mini-head .brand{font-size:1.05rem}
+.mini-head .salir{font-size:.8rem;color:var(--tinta-3)}
+.mini-head .salir:hover{color:var(--tinta)}
+
+/* ── lienzo del formulario ── */
+.form-wrap{max-width:720px;margin:0 auto;padding:clamp(1.6rem,5vw,3.4rem) var(--paso) 9rem}
+.paso{display:none;animation:aparece .5s ease}
+.paso.activo{display:block}
+@keyframes aparece{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.paso-cabeza{margin-bottom:2.4rem}
+.paso-cabeza .eyebrow{margin-bottom:.7rem}
+.paso-cabeza h2{font-size:clamp(1.9rem,5vw,2.7rem);margin-bottom:.5rem}
+.paso-cabeza .sub{color:var(--tinta-2);max-width:52ch;font-size:1rem}
+
+.campo{margin-bottom:2.2rem}
+.campo > label,.campo .etq{display:block;font-size:.95rem;font-weight:500;color:var(--tinta);margin-bottom:.15rem}
+.campo .opcional{color:var(--tinta-3);font-weight:400;font-style:italic}
+.campo .micro{font-size:.86rem;color:var(--tinta-2);margin-bottom:.7rem;max-width:56ch;line-height:1.55}
+.campo .pregunta{font-family:var(--serif);font-size:1.3rem;font-weight:500;color:var(--tinta);margin-bottom:.2rem;line-height:1.3}
+
+input[type=text],input[type=number],input[type=url],textarea,select.sel-uno{
+  width:100%;font-family:var(--sans);font-size:1rem;color:var(--tinta);
+  background:#fff;border:1px solid var(--linea);border-radius:var(--r);padding:.8rem .95rem;transition:border-color .18s ease}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--tinta)}
+textarea{resize:vertical;min-height:130px;line-height:1.7}
+select.sel-uno{-webkit-appearance:none;appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235b564f' fill='none' stroke-width='1.3'/%3E%3C/svg%3E") no-repeat right 1rem center;cursor:pointer}
+
+.contador{font-size:.78rem;color:var(--tinta-3);text-align:right;margin-top:.4rem;transition:color .2s ease}
+.contador.corto{color:var(--tinta-3)}
+.contador.rango{color:var(--tinta-2)}
+.contador.pasado{color:var(--acento)}
+
+/* filas */
+.fila{display:flex;gap:.8rem;flex-wrap:wrap}
+.fila .col{flex:1;min-width:120px}
+.fila .col label{font-size:.82rem;color:var(--tinta-2);margin-bottom:.3rem;display:block}
+
+/* multiselección tipo pastilla */
+.opciones{display:flex;flex-wrap:wrap;gap:.55rem}
+.op{font-family:var(--sans);font-size:.9rem;color:var(--tinta);background:#fff;border:1px solid var(--linea);border-radius:100px;padding:.55rem 1rem;cursor:pointer;transition:all .16s ease;line-height:1.2}
+.op:hover{border-color:var(--tinta-2)}
+.op.sel{background:var(--tinta);color:var(--crema);border-color:var(--tinta)}
+.op .nota{font-size:.74rem;color:var(--tinta-3);font-style:italic;margin-left:.35rem}
+.op.sel .nota{color:rgba(250,248,245,.7)}
+.op.bloq{opacity:.4;cursor:not-allowed}
+.limite-nota{font-size:.8rem;color:var(--tinta-3);margin-top:.7rem}
+
+/* radios elegantes */
+.radios{display:flex;flex-direction:column;gap:.6rem}
+.radio{display:flex;align-items:flex-start;gap:.7rem;padding:.85rem 1rem;border:1px solid var(--linea);border-radius:var(--r);background:#fff;cursor:pointer;transition:border-color .16s ease}
+.radio:hover{border-color:var(--tinta-2)}
+.radio.sel{border-color:var(--tinta)}
+.radio .dot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--tinta-3);margin-top:.2rem;flex-shrink:0;position:relative}
+.radio.sel .dot{border-color:var(--tinta)}
+.radio.sel .dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--tinta)}
+.radio .txt{font-size:.95rem}
+.radio .txt small{display:block;color:var(--tinta-2);font-size:.82rem}
+
+/* checkboxes */
+.check{display:flex;align-items:flex-start;gap:.7rem;padding:.55rem 0;cursor:pointer}
+.check .box{width:18px;height:18px;border:1.5px solid var(--tinta-3);border-radius:3px;flex-shrink:0;margin-top:.15rem;position:relative;transition:all .16s ease}
+.check.sel .box{background:var(--tinta);border-color:var(--tinta)}
+.check.sel .box::after{content:'';position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid var(--crema);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.check .txt{font-size:.9rem;color:var(--tinta)}
+.check .txt small{color:var(--tinta-3)}
+
+/* subida de imágenes */
+.dropzone{border:1.5px dashed var(--linea);border-radius:var(--r);padding:2rem 1rem;text-align:center;background:#fff;cursor:pointer;transition:border-color .16s ease;color:var(--tinta-2)}
+.dropzone:hover,.dropzone.drag{border-color:var(--tinta)}
+.dropzone strong{color:var(--tinta);font-weight:500}
+.previews{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1rem}
+.pv{position:relative;width:96px;height:120px;border-radius:var(--r);overflow:hidden;border:1px solid var(--linea);background:var(--crema-2)}
+.pv img{width:100%;height:100%;object-fit:cover}
+.pv.principal{outline:2px solid var(--tinta);outline-offset:-2px}
+.pv .marca{position:absolute;bottom:0;left:0;right:0;background:var(--tinta);color:var(--crema);font-size:.62rem;text-align:center;padding:.15rem;letter-spacing:.05em}
+.pv .quitar{position:absolute;top:2px;right:2px;background:rgba(26,26,26,.7);color:#fff;border:none;width:20px;height:20px;border-radius:50%;font-size:.8rem;cursor:pointer;line-height:1}
+.pv-hint{font-size:.78rem;color:var(--tinta-3);margin-top:.5rem}
+
+/* etiquetas (afinidades) */
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem}
+.tag-item{display:inline-flex;align-items:center;gap:.4rem;background:var(--tinta);color:var(--crema);border-radius:100px;padding:.35rem .8rem;font-size:.85rem}
+.tag-item button{background:none;border:none;color:rgba(250,248,245,.8);cursor:pointer;font-size:.9rem;line-height:1}
+
+/* recibirás */
+.recibiras{background:var(--crema-2);border-radius:var(--r);padding:.9rem 1.1rem;font-size:.92rem;color:var(--tinta-2);margin-top:.7rem}
+.recibiras b{color:var(--tinta);font-weight:600}
+
+/* subgrupo condicional */
+.subgrupo{margin-top:.9rem;padding-left:1rem;border-left:2px solid var(--linea)}
+
+/* navegación inferior */
+.nav-inferior{position:fixed;bottom:0;left:0;right:0;background:rgba(250,248,245,.92);backdrop-filter:blur(8px);border-top:1px solid var(--linea);z-index:55}
+.nav-inferior .inner{max-width:720px;margin:0 auto;padding:.9rem var(--paso);display:flex;align-items:center;gap:1rem}
+.nav-inferior .atras{background:none;border:none;color:var(--tinta-2);cursor:pointer;font-size:.9rem;padding:.6rem .2rem}
+.nav-inferior .atras:hover{color:var(--tinta)}
+.nav-inferior .atras[hidden]{visibility:hidden}
+.nav-inferior .falta{flex:1;font-size:.82rem;color:var(--tinta-3);line-height:1.4;text-align:right;padding-right:.4rem}
+.nav-inferior .btn{white-space:nowrap}
+
+/* confirmación */
+.confirmacion{max-width:560px;margin:0 auto;padding:clamp(3rem,10vw,6rem) var(--paso);text-align:center;display:none}
+.confirmacion.activo{display:block}
+.confirmacion .marca-ok{width:64px;height:64px;border-radius:50%;border:1.5px solid var(--tinta);display:flex;align-items:center;justify-content:center;margin:0 auto 1.6rem;font-size:1.5rem}
+.confirmacion h2{font-size:clamp(1.9rem,6vw,2.6rem);margin-bottom:1rem}
+.confirmacion h2 em{font-style:italic;font-weight:400}
+.confirmacion p{color:var(--tinta-2);font-size:1.02rem;line-height:1.75;max-width:44ch;margin:0 auto 1rem}
+.confirmacion .obra-nom{font-family:var(--serif);font-style:italic;color:var(--tinta)}
+.confirmacion .acciones{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
+.confirmacion .aviso{font-size:.8rem;color:var(--tinta-3);margin-top:1.6rem}
+
+.guardado{position:fixed;bottom:5.2rem;left:50%;transform:translateX(-50%);background:var(--tinta);color:var(--crema);font-size:.76rem;padding:.4rem .9rem;border-radius:100px;opacity:0;transition:opacity .3s ease;z-index:56;pointer-events:none}
+.guardado.ver{opacity:.9}
+</style>
+</head>
+<body>
+
+<div class="progreso"><div class="barra" id="barra"></div></div>
+
+<div class="mini-head">
+  <a class="brand serif" href="index.html">Galería <em>Diaria</em></a>
+  <a class="salir" href="index.html" id="salir">Guardar y salir</a>
+</div>
+
+<form class="form-wrap" id="form" autocomplete="off" novalidate>
+
+  <!-- intro tiempo estimado, dentro del paso 1 -->
+  <!-- ══════════ PANTALLA 1 · LA OBRA ══════════ -->
+  <section class="paso" data-paso="1">
+    <div class="paso-cabeza">
+      <p class="eyebrow">Paso 1 · ~8 minutos en total</p>
+      <h2>La obra</h2>
+      <p class="sub">Empecemos por lo que se puede medir.</p>
+    </div>
+
+    <div class="campo">
+      <span class="etq">Fotografías de la obra</span>
+      <p class="micro">Tres como mínimo. Una general, una de detalle y una que muestre la escala o el montaje. Toca una para elegir cuál será la principal.</p>
+      <div class="dropzone" id="dz">
+        <strong>Arrastra tus imágenes aquí</strong> o toca para elegir<br>
+        <span style="font-size:.8rem">JPG, PNG o WEBP · máx. 10 MB cada una</span>
+      </div>
+      <input type="file" id="file-obra" accept="image/jpeg,image/png,image/webp" multiple hidden>
+      <div class="previews" id="previews"></div>
+      <p class="pv-hint" id="pv-hint"></p>
+    </div>
+
+    <div class="campo">
+      <label for="titulo">Título</label>
+      <p class="micro">Si no tiene, escribe <em>Sin título</em> y añade entre paréntesis una referencia que la distinga.</p>
+      <input type="text" id="titulo" maxlength="120" placeholder="Título de la obra">
+    </div>
+
+    <div class="campo">
+      <label for="anio">Año de realización</label>
+      <select class="sel-uno" id="anio"><option value="">Elige un año</option></select>
+    </div>
+
+    <div class="campo">
+      <label for="materiales">Materiales y soporte</label>
+      <p class="micro">Sé concreto. <em>Óleo sobre lino crudo</em> dice más que <em>técnica mixta</em>.</p>
+      <input type="text" id="materiales" maxlength="200" placeholder="Óleo sobre lino crudo">
+      <div class="contador" id="c-materiales"></div>
+    </div>
+
+    <div class="campo" id="campo-dimensiones">
+      <span class="etq">Dimensiones</span>
+      <p class="micro">Sin marco ni peana, salvo que formen parte de la obra.</p>
+      <div class="fila">
+        <div class="col"><label>Alto (cm)</label><input type="number" id="alto" min="0" step="0.1"></div>
+        <div class="col"><label>Ancho (cm)</label><input type="number" id="ancho" min="0" step="0.1"></div>
+        <div class="col"><label>Profundidad (cm) <span class="opcional">opc.</span></label><input type="number" id="prof" min="0" step="0.1"></div>
+      </div>
+    </div>
+
+    <div class="campo" id="campo-duracion" style="display:none">
+      <label for="duracion">Duración (minutos)</label>
+      <p class="micro">Para vídeo, arte sonoro o performance.</p>
+      <input type="number" id="duracion" min="0" step="1">
+    </div>
+
+    <div class="campo">
+      <label for="peso">Peso aproximado (kg) <span class="opcional">opcional</span></label>
+      <p class="micro">Solo si supera los 5 kg. Nos sirve para calcular el envío.</p>
+      <input type="number" id="peso" min="0" step="0.1">
+    </div>
+  </section>
+
+  <!-- ══════════ PANTALLA 2 · LA MIRADA ══════════ -->
+  <section class="paso" data-paso="2">
+    <div class="paso-cabeza">
+      <p class="eyebrow">Paso 2</p>
+      <h2>La mirada</h2>
+      <p class="sub">Esto es lo que leerá quien se detenga delante de tu obra. Tómate el tiempo que necesites.</p>
+    </div>
+
+    <div class="campo">
+      <p class="pregunta">¿De qué trata esta obra?</p>
+      <p class="micro">Escríbelo como si se lo contaras a alguien que la está mirando a tu lado. No hace falta justificarla ni defenderla.</p>
+      <textarea id="deQueTrata" data-min="80" data-max="200" data-cuenta="palabras" placeholder="Escribe aquí…"></textarea>
+      <div class="contador" id="c-deQueTrata"></div>
+    </div>
+
+    <div class="campo">
+      <p class="pregunta">¿De dónde viene?</p>
+      <p class="micro">Un lugar, una imagen, una conversación, una obsesión que llevaba tiempo rondándote.</p>
+      <textarea id="deDondeViene" data-min="50" data-max="150" data-cuenta="palabras" placeholder="Escribe aquí…"></textarea>
+      <div class="contador" id="c-deDondeViene"></div>
+    </div>
+
+    <div class="campo">
+      <p class="pregunta">¿Cómo la hiciste, y qué se torció por el camino?</p>
+      <p class="micro">Los accidentes y las decisiones que cambiaste suelen ser lo más interesante del proceso.</p>
+      <textarea id="comoSeHizo" data-min="40" data-max="150" data-cuenta="palabras" placeholder="Escribe aquí…"></textarea>
+      <div class="contador" id="c-comoSeHizo"></div>
+    </div>
+
+    <div class="campo">
+      <label for="tiempoEjecucion">Tiempo de ejecución</label>
+      <select class="sel-uno" id="tiempoEjecucion"><option value="">Elige una opción</option></select>
+    </div>
+
+    <div class="campo">
+      <p class="pregunta">¿Por qué se llama así? <span class="opcional">opcional</span></p>
+      <p class="micro">Solo si el título esconde algo.</p>
+      <textarea id="porQueTitulo" data-max="60" data-cuenta="palabras" style="min-height:90px" placeholder="Opcional"></textarea>
+      <div class="contador" id="c-porQueTitulo"></div>
+    </div>
+  </section>
+
+  <!-- ══════════ PANTALLA 3 · CÓMO SE SITÚA ══════════ -->
+  <section class="paso" data-paso="3">
+    <div class="paso-cabeza">
+      <p class="eyebrow">Paso 3</p>
+      <h2>Cómo se sitúa</h2>
+      <p class="sub">Dos ejes obligatorios y uno opcional. Elegir es parte del trabajo: quédate con lo que de verdad es central.</p>
+    </div>
+
+    <div class="campo">
+      <span class="etq">Medio</span>
+      <p class="micro">Si la obra cruza dos medios, márcalos. No existe <em>técnica mixta</em>: existe cerámica cosida con textil.</p>
+      <div class="opciones" id="op-medio"></div>
+      <p class="limite-nota">Elige 1 o 2.</p>
+    </div>
+
+    <div class="campo">
+      <span class="etq">Estilo</span>
+      <p class="micro">No son movimientos históricos a los que pertenecer, sino registros en los que se trabaja.</p>
+      <div class="opciones" id="op-estilo"></div>
+      <p class="limite-nota">Elige 1 o 2.</p>
+    </div>
+
+    <div class="campo">
+      <span class="etq">Tema <span class="opcional">opcional</span></span>
+      <p class="micro">Si tu obra atraviesa alguno de estos territorios, márcalo. Si no, sáltalo sin más.</p>
+      <div class="opciones" id="op-tema"></div>
+      <p class="limite-nota">Hasta 3.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ PANTALLA 4 · QUIÉN ERES ══════════ -->
+  <section class="paso" data-paso="4">
+    <div class="paso-cabeza">
+      <p class="eyebrow">Paso 4</p>
+      <h2>Quién eres</h2>
+      <p class="sub">Se rellena una sola vez. Podrás editarlo cuando quieras desde tu perfil.</p>
+    </div>
+
+    <div class="campo">
+      <span class="etq">Una fotografía tuya o de tu taller <span class="opcional">opcional</span></span>
+      <div class="dropzone" id="dz-retrato"><strong>Toca para subir</strong> un retrato</div>
+      <input type="file" id="file-retrato" accept="image/jpeg,image/png,image/webp" hidden>
+      <div class="previews" id="preview-retrato"></div>
+    </div>
+
+    <div class="campo">
+      <p class="pregunta">¿Quién eres como artista?</p>
+      <p class="micro">En primera persona. Dónde trabajas, desde cuándo, qué te ocupa ahora. Sin currículum.</p>
+      <textarea id="bio" data-min="80" data-max="200" data-cuenta="palabras" placeholder="Escribe aquí…"></textarea>
+      <div class="contador" id="c-bio"></div>
+    </div>
+
+    <div class="campo">
+      <label for="formacion">Formación y trayectoria <span class="opcional">opcional</span></label>
+      <p class="micro">Estudios, residencias, exposiciones. Si no tienes, no pasa nada: aquí no se pide credencial.</p>
+      <textarea id="formacion" maxlength="300" style="min-height:80px" placeholder="Opcional"></textarea>
+      <div class="contador" id="c-formacion"></div>
+    </div>
+
+    <div class="campo">
+      <p class="pregunta">¿Con qué artistas dialoga tu trabajo? <span class="opcional">opcional</span></p>
+      <p class="micro">Vivos o muertos, célebres o desconocidos. Nos ayuda a encontrar a tus lectores.</p>
+      <div class="tags" id="tags-afinidades"></div>
+      <input type="text" id="afinidad-input" placeholder="Escribe un nombre y pulsa Intro" maxlength="60">
+      <p class="limite-nota">Hasta 5.</p>
+    </div>
+
+    <div class="campo">
+      <span class="etq">Enlaces <span class="opcional">opcional</span></span>
+      <div class="fila">
+        <div class="col"><label>Instagram (usuario)</label><input type="text" id="instagram" placeholder="tu.usuario"></div>
+        <div class="col"><label>Web (URL)</label><input type="url" id="web" placeholder="https://…"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ PANTALLA 5 · VENTA ══════════ -->
+  <section class="paso" data-paso="5">
+    <div class="paso-cabeza">
+      <p class="eyebrow">Paso 5</p>
+      <h2>Venta</h2>
+      <p class="sub">Lo último, y es rápido.</p>
+    </div>
+
+    <div class="campo">
+      <span class="etq">Tipo de obra</span>
+      <div class="radios" id="r-tipoObra">
+        <div class="radio" data-val="unica"><span class="dot"></span><span class="txt">Pieza única</span></div>
+        <div class="radio" data-val="edicion"><span class="dot"></span><span class="txt">Edición numerada</span></div>
+      </div>
+      <div class="subgrupo" id="sub-edicion" style="display:none">
+        <div class="fila">
+          <div class="col"><label>Número de ejemplares</label><input type="number" id="ejemplares" min="2" step="1" placeholder="15"></div>
+          <div class="col"><label>Ejemplar a la venta</label><input type="number" id="ejemplarVenta" min="1" step="1" placeholder="2"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="precio">Precio de venta</label>
+      <div class="fila" style="align-items:center;max-width:220px"><div class="col"><input type="number" id="precio" min="0" step="1" placeholder="€"></div></div>
+      <div class="recibiras" id="recibiras">Recibirás <b>—</b>. La plataforma retiene un 22 % en concepto de comisión.</div>
+    </div>
+
+    <div class="campo">
+      <span class="etq">Disponibilidad</span>
+      <div class="radios" id="r-disponibilidad">
+        <div class="radio" data-val="venta"><span class="dot"></span><span class="txt">A la venta</span></div>
+        <div class="radio" data-val="reservada"><span class="dot"></span><span class="txt">Reservada</span></div>
+        <div class="radio" data-val="no_disponible"><span class="dot"></span><span class="txt">No disponible<small>Se muestra en la galería, no se puede comprar.</small></span></div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <span class="etq">¿Hasta dónde envías?</span>
+      <div class="radios" id="r-envio">
+        <div class="radio" data-val="cualquier-pais"><span class="dot"></span><span class="txt">A cualquier país</span></div>
+        <div class="radio" data-val="solo-europa"><span class="dot"></span><span class="txt">Solo Europa</span></div>
+        <div class="radio" data-val="solo-espana"><span class="dot"></span><span class="txt">Solo España</span></div>
+        <div class="radio" data-val="solo-recogida"><span class="dot"></span><span class="txt">Solo recogida en persona</span></div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <span class="etq">¿Quién se encarga del embalaje y el envío?</span>
+      <div class="radios" id="r-embalaje">
+        <div class="radio" data-val="artista"><span class="dot"></span><span class="txt">Yo mismo/a</span></div>
+        <div class="radio" data-val="plataforma"><span class="dot"></span><span class="txt">Necesito que lo gestione la plataforma</span></div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <div class="check" id="chk-certificado"><span class="box"></span><span class="txt">Incluyo certificado de autenticidad firmado</span></div>
+    </div>
+
+    <div class="campo">
+      <span class="etq">Permisos</span>
+      <div class="check" id="chk-p1"><span class="box"></span><span class="txt">Autorizo la publicación de la obra y sus imágenes en la galería <small>(obligatorio)</small></span></div>
+      <div class="check" id="chk-p2"><span class="box"></span><span class="txt">He leído y acepto los términos y las condiciones de venta <small>(obligatorio)</small></span></div>
+      <div class="check" id="chk-p3"><span class="box"></span><span class="txt">Autorizo el uso de las imágenes en redes sociales y comunicaciones de la plataforma <small>(opcional)</small></span></div>
+    </div>
+  </section>
+</form>
+
+<!-- ══════════ CONFIRMACIÓN ══════════ -->
+<section class="confirmacion" id="confirmacion">
+  <div class="marca-ok">✓</div>
+  <h2>Recibida.</h2>
+  <p><span class="obra-nom" id="conf-titulo">Tu obra</span> ya está en la galería.</p>
+  <p>Aparecerá en las búsquedas en unos minutos. Cada día seleccionamos una obra para la portada: si sale la tuya, te avisamos por correo.</p>
+  <div class="acciones">
+    <a class="btn btn-dark" id="conf-ver" href="index.html">Ver mi obra</a>
+    <a class="btn btn-line" href="subir.html" onclick="localStorage.removeItem('gd_form_draft')">Subir otra</a>
+  </div>
+  <p class="aviso" id="conf-aviso"></p>
+</section>
+
+<!-- ══════════ NAVEGACIÓN ══════════ -->
+<div class="nav-inferior" id="nav">
+  <button type="button" class="atras" id="btn-atras" hidden>← Atrás</button>
+  <span class="falta" id="falta"></span>
+  <button type="button" class="btn btn-dark" id="btn-continuar">Continuar</button>
+</div>
+
+<div class="guardado" id="guardado">Borrador guardado</div>
+
+<script src="taxonomias.js"></script>
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  var CLAVE = 'gd_form_draft';
+  var TOTAL = 5;
+  var pasoActual = 1;
+
+  // ── Estado del formulario ──
+  var F = {
+    imagenes:[], retrato:null,
+    titulo:'', anio:'', materiales:'', alto:'', ancho:'', prof:'', duracion:'', peso:'',
+    deQueTrata:'', deDondeViene:'', comoSeHizo:'', tiempoEjecucion:'', porQueTitulo:'',
+    medio:[], estilo:[], tema:[],
+    bio:'', formacion:'', afinidades:[], instagram:'', web:'',
+    tipoObra:'', ejemplares:'', ejemplarVenta:'', precio:'',
+    disponibilidad:'', envio:'', embalaje:'', certificado:false, p1:false, p2:false, p3:false
+  };
+
+  var euro = function(n){ return new Intl.NumberFormat('es-ES').format(n) + ' €'; };
+  var palabras = function(s){ s=(s||'').trim(); return s? s.split(/\s+/).length : 0; };
+  var caracteres = function(s){ return (s||'').length; };
+
+  // ── Poblar años y desplegables ──
+  (function(){
+    var y = new Date().getFullYear(), out='<option value="">Elige un año</option>';
+    for(var a=y; a>=1950; a--) out += '<option value="'+a+'">'+a+'</option>';
+    $('anio').innerHTML = out;
+    var t = '<option value="">Elige una opción</option>';
+    TAX.TIEMPO.forEach(function(x){ t += '<option value="'+x+'">'+x+'</option>'; });
+    $('tiempoEjecucion').innerHTML = t;
+  })();
+
+  // ── Poblar pastillas de medio/estilo/tema ──
+  function pintarOpciones(cont, lista, clave, max){
+    cont.innerHTML = lista.map(function(x){
+      var nota = x.nota ? ' <span class="nota">'+x.nota+'</span>' : '';
+      return '<button type="button" class="op" data-slug="'+x.slug+'">'+x.nombre+nota+'</button>';
+    }).join('');
+    cont.addEventListener('click', function(e){
+      var b = e.target.closest('.op'); if(!b) return;
+      var slug = b.getAttribute('data-slug');
+      var arr = F[clave];
+      var i = arr.indexOf(slug);
+      if(i>-1){ arr.splice(i,1); }
+      else { if(arr.length>=max){ return; } arr.push(slug); }
+      sincronizarOpciones(cont, arr, max);
+      if(clave==='medio'){ aplicarReglasMedio(); }
+      cambio();
+    });
+  }
+  function sincronizarOpciones(cont, arr, max){
+    var lleno = arr.length>=max;
+    Array.prototype.forEach.call(cont.querySelectorAll('.op'), function(b){
+      var s=b.getAttribute('data-slug'); var sel=arr.indexOf(s)>-1;
+      b.classList.toggle('sel', sel);
+      b.classList.toggle('bloq', lleno && !sel);
+    });
+  }
+  pintarOpciones($('op-medio'), TAX.MEDIO, 'medio', 2);
+  pintarOpciones($('op-estilo'), TAX.ESTILO, 'estilo', 2);
+  pintarOpciones($('op-tema'), TAX.TEMA, 'tema', 3);
+
+  // ── Reglas de negocio según el medio elegido ──
+  function aplicarReglasMedio(){
+    var temporal = F.medio.some(function(m){ return TAX.MEDIOS_TEMPORALES.indexOf(m)>-1; });
+    $('campo-dimensiones').style.display = temporal ? 'none' : '';
+    $('campo-duracion').style.display = temporal ? '' : 'none';
+    // Preseleccionar edición si el medio lo requiere
+    var requiereEdicion = F.medio.some(function(m){ return TAX.MEDIOS_EDICION.indexOf(m)>-1; });
+    if(requiereEdicion && !F.tipoObra){ setRadio('r-tipoObra','tipoObra','edicion'); toggleEdicion(); }
+  }
+
+  // ── Radios ──
+  function conectarRadios(contId, clave, alCambiar){
+    var cont = $(contId);
+    cont.addEventListener('click', function(e){
+      var r = e.target.closest('.radio'); if(!r) return;
+      setRadio(contId, clave, r.getAttribute('data-val'));
+      if(alCambiar) alCambiar();
+      cambio();
+    });
+  }
+  function setRadio(contId, clave, val){
+    F[clave]=val;
+    Array.prototype.forEach.call($(contId).querySelectorAll('.radio'), function(r){
+      r.classList.toggle('sel', r.getAttribute('data-val')===val);
+    });
+  }
+  conectarRadios('r-tipoObra','tipoObra', toggleEdicion);
+  conectarRadios('r-disponibilidad','disponibilidad');
+  conectarRadios('r-envio','envio');
+  conectarRadios('r-embalaje','embalaje');
+  function toggleEdicion(){ $('sub-edicion').style.display = F.tipoObra==='edicion' ? '' : 'none'; }
+
+  // ── Checkboxes ──
+  function conectarCheck(id, clave){
+    var c = $(id);
+    c.addEventListener('click', function(){ F[clave]=!F[clave]; c.classList.toggle('sel',F[clave]); cambio(); });
+  }
+  conectarCheck('chk-certificado','certificado');
+  conectarCheck('chk-p1','p1'); conectarCheck('chk-p2','p2'); conectarCheck('chk-p3','p3');
+
+  // ── Inputs de texto ──
+  var textos = ['titulo','anio','materiales','alto','ancho','prof','duracion','peso',
+    'deQueTrata','deDondeViene','comoSeHizo','tiempoEjecucion','porQueTitulo',
+    'bio','formacion','instagram','web','ejemplares','ejemplarVenta','precio'];
+  textos.forEach(function(id){
+    var elm = $(id); if(!elm) return;
+    elm.addEventListener('input', function(){ F[id]=elm.value; contadores(); if(id==='precio') recibiras(); cambio(); });
+  });
+
+  // ── Contadores de palabras/caracteres ──
+  function contadores(){
+    document.querySelectorAll('[data-cuenta]').forEach(function(t){
+      var min=+t.getAttribute('data-min')||0, max=+t.getAttribute('data-max')||0;
+      var n = palabras(t.value);
+      var c = $('c-'+t.id); if(!c) return;
+      var txt = n+' '+(n===1?'palabra':'palabras');
+      c.className='contador';
+      if(min && n<min){ c.classList.add('corto'); txt += ' · faltan '+(min-n)+' para el mínimo'; }
+      else if(max && n>max){ c.classList.add('pasado'); txt += ' · te has pasado de '+max; }
+      else { c.classList.add('rango'); }
+      c.textContent = txt;
+    });
+    // materiales (caracteres)
+    var m=$('materiales'), cm=$('c-materiales'), lm=caracteres(m.value);
+    cm.className='contador '+(lm<30?'corto':'rango');
+    cm.textContent = lm? (lm+' caracteres'+(lm<30?' · mínimo 30':'')) : '';
+    // formación (caracteres)
+    var f=$('formacion'), cf=$('c-formacion'), lf=caracteres(f.value);
+    cf.className='contador rango'; cf.textContent = lf? (lf+' / 300') : '';
+  }
+
+  function recibiras(){
+    var p = parseFloat(F.precio);
+    $('recibiras').innerHTML = (p>0)
+      ? 'Recibirás <b>'+euro(TAX.artistaRecibe(p))+'</b>. La plataforma retiene un 22 % en concepto de comisión.'
+      : 'Recibirás <b>—</b>. La plataforma retiene un 22 % en concepto de comisión.';
+  }
+
+  // ── Afinidades (etiquetas) ──
+  (function(){
+    var input=$('afinidad-input');
+    function pintar(){
+      $('tags-afinidades').innerHTML = F.afinidades.map(function(a,i){
+        return '<span class="tag-item">'+a.replace(/</g,'&lt;')+'<button type="button" data-i="'+i+'" aria-label="quitar">×</button></span>';
+      }).join('');
+    }
+    input.addEventListener('keydown', function(e){
+      if(e.key==='Enter' || e.key===','){
+        e.preventDefault(); var v=input.value.trim().replace(/,$/,'');
+        if(v && F.afinidades.length<5 && F.afinidades.indexOf(v)===-1){ F.afinidades.push(v); input.value=''; pintar(); cambio(); }
+      } else if(e.key==='Backspace' && !input.value && F.afinidades.length){
+        F.afinidades.pop(); pintar(); cambio();
+      }
+    });
+    $('tags-afinidades').addEventListener('click', function(e){
+      var b=e.target.closest('button'); if(!b) return;
+      F.afinidades.splice(+b.getAttribute('data-i'),1); pintar(); cambio();
+    });
+    F._pintarAfinidades = pintar;
+  })();
+
+  // ── Subida de imágenes (redimensionadas en cliente) ──
+  function redimensionar(file, maxLado, cb){
+    var img=new Image(), url=URL.createObjectURL(file);
+    img.onload=function(){
+      var w=img.width,h=img.height, esc=Math.min(1,maxLado/Math.max(w,h));
+      var cv=document.createElement('canvas'); cv.width=Math.round(w*esc); cv.height=Math.round(h*esc);
+      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+      URL.revokeObjectURL(url);
+      cb(cv.toDataURL('image/jpeg',0.72));
+    };
+    img.onerror=function(){ URL.revokeObjectURL(url); cb(null); };
+    img.src=url;
+  }
+  function conectarSubida(){
+    var dz=$('dz'), input=$('file-obra');
+    dz.addEventListener('click', function(){ input.click(); });
+    dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('drag'); });
+    dz.addEventListener('dragleave', function(){ dz.classList.remove('drag'); });
+    dz.addEventListener('drop', function(e){ e.preventDefault(); dz.classList.remove('drag'); manejar(e.dataTransfer.files); });
+    input.addEventListener('change', function(){ manejar(input.files); input.value=''; });
+    function manejar(files){
+      var arr=Array.prototype.slice.call(files);
+      var hint=$('pv-hint');
+      arr.forEach(function(file){
+        if(F.imagenes.length>=5){ hint.textContent='Máximo 5 imágenes.'; return; }
+        if(file.size>10*1024*1024){ hint.textContent='«'+file.name+'» supera los 10 MB.'; return; }
+        redimensionar(file, 1200, function(dataURL){ if(dataURL){ F.imagenes.push(dataURL); pintarPreviews(); cambio(); } });
+      });
+    }
+    // retrato
+    var dzr=$('dz-retrato'), inr=$('file-retrato');
+    dzr.addEventListener('click', function(){ inr.click(); });
+    inr.addEventListener('change', function(){
+      var f=inr.files[0]; if(f){ redimensionar(f, 600, function(d){ F.retrato=d; pintarRetrato(); cambio(); }); } inr.value='';
+    });
+  }
+  function pintarPreviews(){
+    $('previews').innerHTML = F.imagenes.map(function(src,i){
+      return '<div class="pv'+(i===0?' principal':'')+'" data-i="'+i+'">'+
+        '<img src="'+src+'" alt="">'+(i===0?'<span class="marca">Principal</span>':'')+
+        '<button type="button" class="quitar" data-i="'+i+'" aria-label="quitar">×</button></div>';
+    }).join('');
+    var hint=$('pv-hint');
+    if(F.imagenes.length<3){ hint.textContent = 'Sube '+(3-F.imagenes.length)+' imagen'+((3-F.imagenes.length)>1?'es':'')+' más (mínimo 3).'; }
+    else { hint.textContent = 'Toca una imagen para convertirla en principal.'; }
+  }
+  function pintarRetrato(){
+    $('preview-retrato').innerHTML = F.retrato ? '<div class="pv"><img src="'+F.retrato+'" alt=""><button type="button" class="quitar" id="quitar-retrato">×</button></div>' : '';
+    var q=$('quitar-retrato'); if(q) q.addEventListener('click', function(){ F.retrato=null; pintarRetrato(); cambio(); });
+  }
+  $('previews').addEventListener('click', function(e){
+    var quitar=e.target.closest('.quitar');
+    if(quitar){ F.imagenes.splice(+quitar.getAttribute('data-i'),1); pintarPreviews(); cambio(); return; }
+    var pv=e.target.closest('.pv');
+    if(pv){ var i=+pv.getAttribute('data-i'); if(i>0){ var img=F.imagenes.splice(i,1)[0]; F.imagenes.unshift(img); pintarPreviews(); cambio(); } }
+  });
+
+  // ── Validación por pantalla (suave) ──
+  function validar(paso){
+    var faltan=[];
+    if(paso===1){
+      if(F.imagenes.length<3) faltan.push('al menos 3 fotografías');
+      if(!F.titulo.trim()) faltan.push('el título');
+      if(!F.anio) faltan.push('el año');
+      if(caracteres(F.materiales)<30) faltan.push('los materiales (mínimo 30 caracteres)');
+      var temporal = F.medio.some(function(m){ return TAX.MEDIOS_TEMPORALES.indexOf(m)>-1; });
+      if(temporal){ if(!F.duracion) faltan.push('la duración'); }
+      else { if(!F.alto || !F.ancho) faltan.push('alto y ancho'); }
+    } else if(paso===2){
+      if(palabras(F.deQueTrata)<80) faltan.push('de qué trata (mínimo 80 palabras)');
+      if(palabras(F.deDondeViene)<50) faltan.push('de dónde viene (mínimo 50 palabras)');
+      if(palabras(F.comoSeHizo)<40) faltan.push('cómo se hizo (mínimo 40 palabras)');
+      if(!F.tiempoEjecucion) faltan.push('el tiempo de ejecución');
+    } else if(paso===3){
+      if(F.medio.length<1) faltan.push('al menos un medio');
+      if(F.estilo.length<1) faltan.push('al menos un estilo');
+    } else if(paso===4){
+      if(palabras(F.bio)<80) faltan.push('tu biografía (mínimo 80 palabras)');
+    } else if(paso===5){
+      if(!F.tipoObra) faltan.push('el tipo de obra');
+      if(F.tipoObra==='edicion' && (!F.ejemplares || !F.ejemplarVenta)) faltan.push('los datos de la edición');
+      if(!(parseFloat(F.precio)>0)) faltan.push('el precio');
+      if(!F.disponibilidad) faltan.push('la disponibilidad');
+      if(!F.envio) faltan.push('el envío');
+      if(!F.embalaje) faltan.push('quién gestiona el envío');
+      if(!F.p1) faltan.push('autorizar la publicación');
+      if(!F.p2) faltan.push('aceptar los términos');
+    }
+    return faltan;
+  }
+
+  // ── Navegación ──
+  function irA(paso){
+    pasoActual = paso;
+    Array.prototype.forEach.call(document.querySelectorAll('.paso'), function(s){
+      s.classList.toggle('activo', +s.getAttribute('data-paso')===paso);
+    });
+    $('btn-atras').hidden = paso===1;
+    $('btn-continuar').textContent = paso===TOTAL ? 'Publicar obra' : 'Continuar';
+    $('barra').style.width = ((paso-1)/TOTAL*100)+'%';
+    window.scrollTo({top:0,behavior:'smooth'});
+    actualizarEstadoBoton();
+  }
+  function actualizarEstadoBoton(){
+    var faltan = validar(pasoActual);
+    var btn=$('btn-continuar');
+    btn.disabled = faltan.length>0;
+    $('falta').textContent = faltan.length ? ('Falta '+faltan.slice(0,2).join(' y ')) : '';
+  }
+
+  $('btn-continuar').addEventListener('click', function(){
+    if(validar(pasoActual).length>0) return;
+    if(pasoActual<TOTAL){ $('barra').style.width=(pasoActual/TOTAL*100)+'%'; irA(pasoActual+1); }
+    else { enviar(); }
+  });
+  $('btn-atras').addEventListener('click', function(){ if(pasoActual>1) irA(pasoActual-1); });
+
+  // Recalcular estado del botón en cada cambio
+  function cambio(){ actualizarEstadoBoton(); programarGuardado(); }
+
+  // ── Autosave cada 5 s ──
+  var guardarTimer=null, ultimoGuardado=0;
+  function programarGuardado(){
+    if(guardarTimer) return;
+    guardarTimer = setTimeout(function(){ guardarTimer=null; guardar(); }, 1200);
+  }
+  function guardar(){
+    try{
+      localStorage.setItem(CLAVE, JSON.stringify({F:F, paso:pasoActual, ts:Date.now()}));
+      var g=$('guardado'); g.classList.add('ver'); clearTimeout(ultimoGuardado);
+      ultimoGuardado=setTimeout(function(){ g.classList.remove('ver'); }, 1400);
+    }catch(e){ /* cuota superada: seguimos sin bloquear */ }
+  }
+  setInterval(guardar, 5000);
+  window.addEventListener('beforeunload', guardar);
+
+  // ── Hidratar desde borrador ──
+  function hidratar(){
+    var raw; try{ raw=JSON.parse(localStorage.getItem(CLAVE)); }catch(e){}
+    if(raw && raw.F){
+      Object.keys(F).forEach(function(k){ if(k in raw.F) F[k]=raw.F[k]; });
+    }
+    // volcar a los inputs
+    textos.forEach(function(id){ var e=$(id); if(e && F[id]!=null) e.value=F[id]; });
+    ['tipoObra','disponibilidad','envio','embalaje'].forEach(function(k){ if(F[k]) setRadio('r-'+k,k,F[k]); });
+    ['certificado','p1','p2','p3'].forEach(function(k){ var map={certificado:'chk-certificado',p1:'chk-p1',p2:'chk-p2',p3:'chk-p3'}; if(F[k]) $(map[k]).classList.add('sel'); });
+    sincronizarOpciones($('op-medio'),F.medio,2);
+    sincronizarOpciones($('op-estilo'),F.estilo,2);
+    sincronizarOpciones($('op-tema'),F.tema,3);
+    if(F.imagenes.length) pintarPreviews(); else pintarPreviews();
+    if(F.retrato) pintarRetrato();
+    if(F._pintarAfinidades) F._pintarAfinidades();
+    toggleEdicion(); aplicarReglasMedio(); contadores(); recibiras();
+    if(raw && raw.paso) { /* volvemos siempre al inicio para relectura, pero mantenemos datos */ }
+  }
+
+  // ── Construir el objeto obra y enviarlo ──
+  function construirObra(){
+    var slug = (F.titulo||'obra').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,60) || 'obra';
+    var id = 'local-'+Date.now();
+    var temporal = F.medio.some(function(m){ return TAX.MEDIOS_TEMPORALES.indexOf(m)>-1; });
+    return {
+      id:id, slug:slug, titulo:F.titulo.trim(), anio:+F.anio,
+      artista:{ slug:(F.instagram||'artista').toLowerCase().replace(/[^a-z0-9]+/g,'-')||'artista',
+        nombre:F.instagram? '@'+F.instagram : 'Artista', bio:F.bio.trim(),
+        formacion:F.formacion.trim()||null, afinidades:F.afinidades.slice(),
+        instagram:F.instagram||null, web:F.web||null, retrato:F.retrato||null },
+      medio:F.medio.slice(), estilo:F.estilo.slice(), tema:F.tema.slice(),
+      materiales:F.materiales.trim(),
+      dimensiones: temporal? null : { alto:num(F.alto), ancho:num(F.ancho), prof:num(F.prof) },
+      duracion: temporal? num(F.duracion) : null,
+      peso: num(F.peso),
+      narrativa:{ deQueTrata:F.deQueTrata.trim(), deDondeViene:F.deDondeViene.trim(),
+        comoSeHizo:F.comoSeHizo.trim(), tiempoEjecucion:F.tiempoEjecucion, porQueTitulo:F.porQueTitulo.trim()||null },
+      tipoObra:F.tipoObra, edicion: F.tipoObra==='edicion'? { ejemplares:+F.ejemplares, ejemplarVenta:+F.ejemplarVenta } : null,
+      precio:+F.precio,
+      disponibilidad:F.disponibilidad, envio:F.envio, embalaje:F.embalaje, certificado:!!F.certificado,
+      permisoRedes:!!F.p3,
+      imagenes:F.imagenes.slice(),
+      gradiente:'linear-gradient(150deg,#efe9e0,#d9cfc0 55%,#bcae98)',
+      estado:'activa', destacada:false,
+      createdAt:new Date().toISOString().slice(0,10), vistas:0, favoritos:0
+    };
+  }
+  function num(v){ v=parseFloat(v); return isNaN(v)?null:v; }
+
+  function enviar(){
+    var btn=$('btn-continuar'); btn.disabled=true; btn.textContent='Publicando…';
+    var obra = construirObra();
+    // 1) guardar localmente para que aparezca en la galería de esta demo
+    try{
+      var locales=JSON.parse(localStorage.getItem('gd_obras_locales')||'[]');
+      locales.unshift(obra);
+      localStorage.setItem('gd_obras_locales', JSON.stringify(locales));
+    }catch(e){}
+    // 2) intentar avisar a la curaduría por correo (función Netlify)
+    var payload = resumenParaCorreo(obra);
+    fetch('/api/submit-obra', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })
+      .then(function(r){ return r.ok; })
+      .catch(function(){ return false; })
+      .then(function(ok){ mostrarConfirmacion(obra, ok); });
+  }
+
+  // Resumen ligero (sin todas las imágenes en base64) para el correo
+  function resumenParaCorreo(o){
+    return {
+      titulo:o.titulo, anio:o.anio, artista:o.artista.nombre,
+      instagram:o.artista.instagram, web:o.artista.web,
+      medio:o.medio.map(TAX.nombreMedio), estilo:o.estilo.map(TAX.nombreEstilo), tema:o.tema.map(TAX.nombreTema),
+      materiales:o.materiales,
+      dimensiones:o.dimensiones? [o.dimensiones.alto,o.dimensiones.ancho,o.dimensiones.prof].filter(function(x){return x!=null;}).join(' × ')+' cm' : (o.duracion+' min'),
+      peso:o.peso, tipoObra:o.tipoObra, edicion:o.edicion,
+      precio:o.precio, artistaRecibe:TAX.artistaRecibe(o.precio),
+      disponibilidad:o.disponibilidad, envio:o.envio, embalaje:o.embalaje, certificado:o.certificado,
+      bio:o.artista.bio, formacion:o.artista.formacion, afinidades:o.artista.afinidades,
+      narrativa:o.narrativa,
+      numImagenes:o.imagenes.length,
+      imagenPrincipal:o.imagenes[0]||null
+    };
+  }
+
+  function mostrarConfirmacion(obra, correoOk){
+    localStorage.removeItem(CLAVE);
+    $('form').style.display='none'; $('nav').style.display='none'; $('barra').style.width='100%';
+    $('conf-titulo').textContent = '«'+obra.titulo+'»';
+    $('conf-ver').href = 'obra.html?id='+encodeURIComponent(obra.id);
+    $('conf-aviso').textContent = correoOk
+      ? 'Hemos avisado a la curaduría de la galería.'
+      : 'Tu obra se ha guardado. En el entorno publicado, además, avisamos a la curaduría por correo.';
+    $('confirmacion').classList.add('activo');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // ── Arranque ──
+  conectarSubida();
+  hidratar();
+  irA(1);
+})();
+</script>
+</body>
+</html>

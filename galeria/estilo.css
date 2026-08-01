@@ -1,0 +1,103 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   GALERÍA DIARIA · sistema visual compartido
+   Crema, tinta casi negra, acento gris cálido. Serif para títulos (Playfair),
+   sans para el cuerpo (Inter). Móvil primero. Espaciado generoso.
+   ───────────────────────────────────────────────────────────────────────── */
+:root{
+  --crema:#FAF8F5;
+  --crema-2:#F2EEE8;
+  --tinta:#1A1A1A;
+  --tinta-2:#5b564f;      /* gris cálido secundario */
+  --tinta-3:#8a8377;      /* gris cálido terciario  */
+  --linea:#e4ded4;
+  --acento:#8a7a66;       /* gris cálido de acento   */
+  --ok:#3f6f52;
+  --serif:'Playfair Display',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --r:4px;
+  --maxw:1180px;
+  --paso:clamp(1rem,4vw,2rem);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  background:var(--crema);
+  color:var(--tinta);
+  line-height:1.65;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+::selection{background:#e7dcc9}
+
+/* ── Tipografía ── */
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.serif{font-family:var(--serif)}
+.eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tinta-3);font-weight:500}
+
+/* ── Cabecera / navegación ── */
+.site-header{position:sticky;top:0;z-index:40;background:rgba(250,248,245,.86);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--linea)}
+.site-header .inner{max-width:var(--maxw);margin:0 auto;padding:.85rem var(--paso);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.brand{font-family:var(--serif);font-size:1.15rem;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.brand em{font-style:italic;font-weight:400;color:var(--tinta-3)}
+.nav{display:flex;align-items:center;gap:.4rem}
+.nav a{font-size:.82rem;color:var(--tinta-2);padding:.45rem .7rem;border-radius:var(--r)}
+.nav a:hover{color:var(--tinta)}
+.nav a.cta{background:var(--tinta);color:var(--crema)}
+.nav a.cta:hover{opacity:.85;color:var(--crema)}
+@media(max-width:600px){.nav a.hide-sm{display:none}}
+
+/* ── Botones ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;cursor:pointer;border:1px solid transparent;border-radius:var(--r);font-size:.9rem;font-weight:500;padding:.72rem 1.3rem;transition:opacity .18s ease,background .18s ease,border-color .18s ease;line-height:1}
+.btn-dark{background:var(--tinta);color:var(--crema)}
+.btn-dark:hover{opacity:.86}
+.btn-dark:disabled{opacity:.35;cursor:not-allowed}
+.btn-line{background:transparent;border-color:var(--tinta);color:var(--tinta)}
+.btn-line:hover{background:var(--tinta);color:var(--crema)}
+.btn-ghost{background:transparent;color:var(--tinta-2);padding:.6rem .3rem}
+.btn-ghost:hover{color:var(--tinta)}
+
+/* ── Layout ── */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--paso)}
+.section{padding:clamp(2.5rem,7vw,5rem) 0}
+.divider{height:1px;background:var(--linea);border:0;max-width:var(--maxw);margin:0 auto}
+
+/* ── Miniatura de obra (placeholder de gradiente + imagen) ── */
+.thumb{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;background:var(--crema-2);box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.thumb .ph{position:absolute;inset:0}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb .badge{position:absolute;top:.6rem;left:.6rem;background:var(--crema);color:var(--tinta);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;padding:.28rem .55rem;border-radius:2px}
+.thumb .estado{position:absolute;top:.6rem;right:.6rem;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.28rem .5rem;border-radius:2px;background:rgba(26,26,26,.78);color:var(--crema)}
+.thumb .estado.reservada{background:rgba(138,122,102,.9)}
+
+/* ── Rejilla de obras ── */
+.grid{display:grid;gap:clamp(1.4rem,3vw,2.4rem);grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.card-obra{display:block;cursor:pointer}
+.card-obra .meta{padding-top:.7rem}
+.card-obra .t{font-family:var(--serif);font-size:1.02rem;line-height:1.25;margin-bottom:.15rem}
+.card-obra .a{font-size:.82rem;color:var(--tinta-2)}
+.card-obra .foot{display:flex;justify-content:space-between;align-items:baseline;margin-top:.35rem;gap:.6rem}
+.card-obra .p{font-size:.86rem;font-weight:500;white-space:nowrap}
+.card-obra .tag{font-size:.72rem;color:var(--tinta-3)}
+.card-obra:hover .thumb img,.card-obra:hover .thumb .ph{transform:scale(1.02)}
+.thumb img,.thumb .ph{transition:transform .5s ease}
+
+/* ── Utilidades ── */
+.muted{color:var(--tinta-2)}
+.center{text-align:center}
+.stack{display:flex;flex-direction:column}
+.pill{display:inline-block;font-size:.72rem;color:var(--tinta-2);border:1px solid var(--linea);border-radius:100px;padding:.28rem .7rem;background:var(--crema)}
+
+/* ── Pie ── */
+.site-footer{border-top:1px solid var(--linea);margin-top:2rem}
+.site-footer .inner{max-width:var(--maxw);margin:0 auto;padding:2.4rem var(--paso);display:flex;flex-wrap:wrap;gap:1.2rem 2.5rem;justify-content:space-between;color:var(--tinta-2);font-size:.82rem}
+.site-footer a:hover{color:var(--tinta)}
+.site-footer .cols{display:flex;gap:2.5rem;flex-wrap:wrap}
+.site-footer .col{display:flex;flex-direction:column;gap:.35rem}
+
+/* accesible: foco visible */
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--acento);outline-offset:2px}

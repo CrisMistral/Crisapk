@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF8F5">
+<title>Galería Diaria — arte emergente, una obra cada día</title>
+<meta name="description" content="Una plataforma de arte emergente. Cada día, una obra en portada. Detrás de cada pieza, la voz de quien la hizo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<style>
+/* ── Obra del día ── */
+.hoy{max-width:var(--maxw);margin:0 auto;padding:clamp(1.6rem,5vw,3.2rem) var(--paso) clamp(1rem,3vw,2rem)}
+.hoy-grid{display:grid;grid-template-columns:1fr;gap:clamp(1.6rem,4vw,3rem);align-items:center}
+@media(min-width:860px){.hoy-grid{grid-template-columns:1.05fr 1fr}}
+.hoy .thumb{aspect-ratio:4/5;max-height:78vh}
+.hoy .info .eyebrow{margin-bottom:1rem}
+.hoy h1{font-size:clamp(2rem,5.5vw,3.2rem);margin-bottom:.5rem}
+.hoy h1 em{font-style:italic;font-weight:400}
+.hoy .artista-linea{font-size:1rem;color:var(--tinta-2);margin-bottom:1.4rem}
+.hoy .artista-linea a{border-bottom:1px solid var(--linea)}
+.hoy .relato{font-size:1.02rem;color:#2c2822;max-width:46ch;margin-bottom:1.5rem}
+.hoy .ficha-linea{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;font-size:.85rem;color:var(--tinta-2);margin-bottom:1.8rem}
+.hoy .ficha-linea b{color:var(--tinta);font-weight:500}
+.hoy .acciones{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center}
+.hoy .precio{font-size:1.15rem;font-weight:500;margin-right:.4rem}
+
+/* ── Buscador + filtros ── */
+.controles{position:sticky;top:56px;z-index:30;background:var(--crema);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.controles .inner{max-width:var(--maxw);margin:0 auto;padding:.8rem var(--paso);display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+.buscador{position:relative;flex:1;min-width:200px}
+.buscador input{width:100%;font-family:var(--sans);font-size:.9rem;padding:.62rem .9rem .62rem 2.2rem;border:1px solid var(--linea);border-radius:100px;background:#fff;color:var(--tinta)}
+.buscador input:focus{outline:none;border-color:var(--acento)}
+.buscador svg{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);opacity:.45}
+.selects{display:flex;gap:.5rem;flex-wrap:wrap}
+.selects select{font-family:var(--sans);font-size:.84rem;padding:.55rem 2rem .55rem .8rem;border:1px solid var(--linea);border-radius:100px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235b564f' fill='none' stroke-width='1.3'/%3E%3C/svg%3E") no-repeat right .8rem center;-webkit-appearance:none;appearance:none;color:var(--tinta);cursor:pointer}
+.selects select:focus{outline:none;border-color:var(--acento)}
+.selects select.on{border-color:var(--tinta);background-color:#fff}
+.limpiar{font-size:.8rem;color:var(--tinta-3);background:none;border:none;cursor:pointer;padding:.4rem .3rem}
+.limpiar:hover{color:var(--tinta)}
+.conteo{width:100%;font-size:.78rem;color:var(--tinta-3);padding-top:.1rem}
+
+/* ── Encabezado de sección ── */
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:clamp(1.4rem,3vw,2.2rem)}
+.sec-head h2{font-size:clamp(1.4rem,3.5vw,2rem)}
+.sec-head .sub{color:var(--tinta-2);font-size:.9rem;max-width:44ch;margin-top:.3rem}
+
+.vacio{text-align:center;padding:4rem 1rem;color:var(--tinta-2)}
+.vacio h3{font-size:1.3rem;margin-bottom:.4rem}
+.skeleton{opacity:.5}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Galería <em>Diaria</em></a>
+    <nav class="nav">
+      <a href="index.html#feed" class="hide-sm">Descubrir</a>
+      <a href="index.html#hoy" class="hide-sm">Obra del día</a>
+      <a class="cta" href="subir.html">Subir una obra</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── OBRA DEL DÍA ── -->
+<section class="hoy" id="hoy">
+  <div class="hoy-grid" id="hoy-grid">
+    <div class="thumb skeleton"><div class="ph"></div></div>
+    <div class="info"><p class="eyebrow">Obra del día</p><h1>Cargando…</h1></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── CONTROLES ── -->
+<div class="controles" id="feed">
+  <div class="inner">
+    <div class="buscador">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#1A1A1A" stroke-width="1.3"/><path d="M11 11l4 4" stroke="#1A1A1A" stroke-width="1.3"/></svg>
+      <input id="q" type="search" placeholder="Buscar por obra, artista o material…" autocomplete="off">
+    </div>
+    <div class="selects">
+      <select id="f-medio" aria-label="Filtrar por medio"></select>
+      <select id="f-estilo" aria-label="Filtrar por estilo"></select>
+      <select id="f-tema" aria-label="Filtrar por tema"></select>
+      <select id="f-precio" aria-label="Filtrar por precio">
+        <option value="">Cualquier precio</option>
+        <option value="0-400">Hasta 400 €</option>
+        <option value="400-800">400 – 800 €</option>
+        <option value="800-1500">800 – 1.500 €</option>
+        <option value="1500-999999">Más de 1.500 €</option>
+      </select>
+      <button class="limpiar" id="limpiar" hidden>Limpiar</button>
+    </div>
+    <div class="conteo" id="conteo"></div>
+  </div>
+</div>
+
+<!-- ── FEED ── -->
+<main class="wrap section">
+  <div class="sec-head">
+    <div>
+      <h2 id="feed-titulo">Descubrir</h2>
+      <p class="sub" id="feed-sub">Arte emergente. Cada obra llega con la voz de quien la hizo: de qué trata, de dónde viene, cómo se torció por el camino.</p>
+    </div>
+  </div>
+  <div class="grid" id="feed-grid"></div>
+  <div class="vacio" id="feed-vacio" hidden>
+    <h3>Nada por aquí todavía</h3>
+    <p>Prueba a quitar algún filtro o a buscar otra cosa.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="col">
+      <span class="brand">Galería <em>Diaria</em></span>
+      <span class="muted" style="font-size:.8rem;max-width:30ch">Una obra cada día. Arte emergente y la voz de quien lo hace.</span>
+    </div>
+    <div class="cols">
+      <div class="col">
+        <span class="eyebrow">Explorar</span>
+        <a href="index.html#feed">Descubrir</a>
+        <a href="index.html#hoy">Obra del día</a>
+      </div>
+      <div class="col">
+        <span class="eyebrow">Artistas</span>
+        <a href="subir.html">Subir una obra</a>
+        <a href="subir.html">Cómo funciona</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="taxonomias.js"></script>
+<script>
+(function(){
+  'use strict';
+  var OBRAS = [];
+  var estado = { q:'', medio:'', estilo:'', tema:'', precio:'' };
+
+  var euro = function(n){ return new Intl.NumberFormat('es-ES').format(n) + ' €'; };
+  var el = function(id){ return document.getElementById(id); };
+
+  // ── Placeholder visual: gradiente + inicial de la obra ──
+  function thumbHTML(o, opts){
+    opts = opts || {};
+    var badge = '';
+    if(o.tipoObra === 'edicion' && o.edicion){ badge = '<span class="badge">Edición '+o.edicion.ejemplarVenta+'/'+o.edicion.ejemplares+'</span>'; }
+    var estado = '';
+    if(o.disponibilidad === 'reservada'){ estado = '<span class="estado reservada">Reservada</span>'; }
+    else if(o.disponibilidad === 'no_disponible'){ estado = '<span class="estado">No disponible</span>'; }
+    else if(o.estado === 'vendida'){ estado = '<span class="estado">Vendida</span>'; }
+    var inner;
+    if(o.imagenes && o.imagenes.length){
+      inner = '<img loading="lazy" src="'+o.imagenes[0]+'" alt="'+escapeAttr(o.titulo)+'">';
+    } else {
+      inner = '<div class="ph" style="background:'+(o.gradiente||'var(--crema-2)')+'"></div>';
+    }
+    return '<div class="thumb">'+inner+badge+estado+'</div>';
+  }
+
+  function escapeAttr(s){ return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+  function escapeHTML(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // ── Obra del día: elección determinista por fecha ──
+  function obraDelDia(list){
+    var destacadas = list.filter(function(o){ return o.disponibilidad !== 'no_disponible'; });
+    if(!destacadas.length) destacadas = list;
+    var epochDay = Math.floor(Date.now()/86400000);
+    return destacadas[epochDay % destacadas.length];
+  }
+
+  function fichaMedios(o){
+    return (o.medio||[]).map(function(s){ return TAX.nombreMedio(s); }).join(' · ');
+  }
+
+  function renderHoy(o){
+    var g = el('hoy-grid');
+    if(!o){ g.innerHTML=''; return; }
+    var relato = o.narrativa && o.narrativa.deQueTrata ? o.narrativa.deQueTrata : '';
+    if(relato.length > 260) relato = relato.slice(0,257).replace(/\s+\S*$/,'') + '…';
+    var dim = dimensionesTexto(o);
+    g.innerHTML =
+      '<a class="thumb-link" href="obra.html?id='+encodeURIComponent(o.id)+'">'+thumbHTML(o)+'</a>'+
+      '<div class="info">'+
+        '<p class="eyebrow">Obra del día · '+fechaLarga()+'</p>'+
+        '<h1>'+escapeHTML(o.titulo)+'</h1>'+
+        '<p class="artista-linea">'+escapeHTML(o.artista.nombre)+' · '+fichaMedios(o)+', '+o.anio+'</p>'+
+        '<p class="relato">'+escapeHTML(relato)+'</p>'+
+        '<div class="ficha-linea">'+
+          '<span><b>'+escapeHTML(o.materiales)+'</b></span>'+
+          (dim?'<span>'+dim+'</span>':'')+
+        '</div>'+
+        '<div class="acciones">'+
+          '<span class="precio">'+euro(o.precio)+'</span>'+
+          botonCompra(o)+
+          '<a class="btn btn-line" href="obra.html?id='+encodeURIComponent(o.id)+'">Ver la obra</a>'+
+        '</div>'+
+      '</div>';
+  }
+
+  function botonCompra(o){
+    if(o.disponibilidad === 'venta' && o.estado !== 'vendida'){
+      return '<a class="btn btn-dark" href="obra.html?id='+encodeURIComponent(o.id)+'#comprar">Comprar</a>';
+    }
+    if(o.disponibilidad === 'reservada'){ return '<span class="pill">Reservada</span>'; }
+    return '<span class="pill">No disponible</span>';
+  }
+
+  function dimensionesTexto(o){
+    if(o.duracion){ return o.duracion + ' min'; }
+    var d = o.dimensiones; if(!d) return '';
+    var p = [d.alto, d.ancho].filter(function(x){return x!=null;});
+    if(!p.length) return '';
+    var t = p.join(' × ');
+    if(d.prof) t += ' × ' + d.prof;
+    return t + ' cm';
+  }
+
+  function fechaLarga(){
+    try { return new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long'}); }
+    catch(e){ return ''; }
+  }
+
+  // ── Poblar selects de filtro desde la taxonomía ──
+  function poblarSelects(){
+    llenar(el('f-medio'), 'Medio', TAX.MEDIO);
+    llenar(el('f-estilo'), 'Estilo', TAX.ESTILO);
+    llenar(el('f-tema'), 'Tema', TAX.TEMA);
+  }
+  function llenar(sel, etiqueta, lista){
+    var html = '<option value="">'+etiqueta+'</option>';
+    lista.forEach(function(x){ html += '<option value="'+x.slug+'">'+x.nombre+'</option>'; });
+    sel.innerHTML = html;
+  }
+
+  // ── Filtrado + búsqueda ──
+  function coincide(o){
+    if(estado.medio && (o.medio||[]).indexOf(estado.medio) === -1) return false;
+    if(estado.estilo && (o.estilo||[]).indexOf(estado.estilo) === -1) return false;
+    if(estado.tema && (o.tema||[]).indexOf(estado.tema) === -1) return false;
+    if(estado.precio){
+      var r = estado.precio.split('-'); var min=+r[0], max=+r[1];
+      if(o.precio < min || o.precio > max) return false;
+    }
+    if(estado.q){
+      var q = estado.q.toLowerCase();
+      var heno = [o.titulo, o.artista.nombre, o.materiales,
+        (o.medio||[]).map(TAX.nombreMedio).join(' '),
+        (o.estilo||[]).map(TAX.nombreEstilo).join(' '),
+        (o.tema||[]).map(TAX.nombreTema).join(' '),
+        o.narrativa && o.narrativa.deQueTrata
+      ].join(' ').toLowerCase();
+      if(heno.indexOf(q) === -1) return false;
+    }
+    return true;
+  }
+
+  function render(){
+    var filtradas = OBRAS.filter(coincide);
+    var grid = el('feed-grid'), vacio = el('feed-vacio');
+    grid.innerHTML = filtradas.map(cardHTML).join('');
+    vacio.hidden = filtradas.length > 0;
+    // conteo + estado de limpiar
+    var activos = estado.q||estado.medio||estado.estilo||estado.tema||estado.precio;
+    el('conteo').textContent = activos
+      ? (filtradas.length + (filtradas.length===1?' obra':' obras') + ' encontradas')
+      : (OBRAS.length + ' obras en la galería');
+    el('limpiar').hidden = !activos;
+    ['f-medio','f-estilo','f-tema','f-precio'].forEach(function(id){
+      el(id).classList.toggle('on', !!el(id).value);
+    });
+  }
+
+  function cardHTML(o){
+    var etiqueta = (o.medio||[]).map(TAX.nombreMedio).slice(0,1).join('');
+    return '<a class="card-obra" href="obra.html?id='+encodeURIComponent(o.id)+'">'+
+      thumbHTML(o)+
+      '<div class="meta">'+
+        '<div class="t">'+escapeHTML(o.titulo)+'</div>'+
+        '<div class="a">'+escapeHTML(o.artista.nombre)+', '+o.anio+'</div>'+
+        '<div class="foot"><span class="tag">'+etiqueta+'</span><span class="p">'+euro(o.precio)+'</span></div>'+
+      '</div>'+
+    '</a>';
+  }
+
+  // ── Eventos ──
+  function conectar(){
+    var t;
+    el('q').addEventListener('input', function(e){
+      clearTimeout(t); var v=e.target.value;
+      t = setTimeout(function(){ estado.q=v.trim(); render(); }, 120);
+    });
+    el('f-medio').addEventListener('change', function(e){ estado.medio=e.target.value; render(); });
+    el('f-estilo').addEventListener('change', function(e){ estado.estilo=e.target.value; render(); });
+    el('f-tema').addEventListener('change', function(e){ estado.tema=e.target.value; render(); });
+    el('f-precio').addEventListener('change', function(e){ estado.precio=e.target.value; render(); });
+    el('limpiar').addEventListener('click', function(){
+      estado={q:'',medio:'',estilo:'',tema:'',precio:''};
+      el('q').value=''; ['f-medio','f-estilo','f-tema','f-precio'].forEach(function(id){ el(id).value=''; });
+      render();
+    });
+  }
+
+  // ── Arranque ──
+  poblarSelects();
+  conectar();
+  fetch('obras.json', {cache:'no-store'})
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      OBRAS = data.filter(function(o){ return o.estado !== 'borrador'; });
+      // Añadir cualquier borrador local subido desde este navegador (demo sin backend)
+      try{
+        var locales = JSON.parse(localStorage.getItem('gd_obras_locales')||'[]');
+        OBRAS = locales.concat(OBRAS);
+      }catch(e){}
+      // Orden: más recientes primero
+      OBRAS.sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
+      renderHoy(obraDelDia(OBRAS));
+      render();
+    })
+    .catch(function(){
+      el('hoy-grid').innerHTML = '<div class="vacio"><h3>No se pudo cargar la galería</h3><p>Inténtalo de nuevo en un momento.</p></div>';
+    });
+})();
+</script>
+</body>
+</html>
