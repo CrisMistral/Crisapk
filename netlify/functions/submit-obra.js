@@ -1,4 +1,4 @@
-// ─── Recepción y moderación de obras (Galería Diaria) ───────────────────────
+// ─── Recepción y moderación de obras (Artdequé) ───────────────────────
 // El formulario (galeria/subir.html) envía aquí, junto a un código de invitación,
 // la obra completa. Aquí:
 //   1. Revalidamos el código de invitación (nadie sube sin él, ni saltándose el
@@ -50,7 +50,7 @@ async function avisarCuraduria(obra, estado) {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.SUBMIT_EMAIL || process.env.ORDER_EMAIL;
   if (!apiKey || !to) return false;
-  const from = process.env.FROM_EMAIL || 'Galería Diaria <onboarding@resend.dev>';
+  const from = process.env.FROM_EMAIL || 'Artdequé <onboarding@resend.dev>';
   const a = obra.artista || {};
   const dim = obra.dimensiones
     ? [obra.dimensiones.alto, obra.dimensiones.ancho, obra.dimensiones.prof].filter((x) => x != null).join(' × ') + ' cm'
@@ -58,7 +58,7 @@ async function avisarCuraduria(obra, estado) {
   const etiqueta = { aprobada: 'APROBADA automáticamente', pendiente: 'PENDIENTE de tu revisión', rechazada: 'RECHAZADA automáticamente' }[estado] || estado;
   const html = `
   <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1a1a1a;background:#FAF8F5;padding:28px">
-    <p style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#8a8377;margin:0 0 6px">Galería Diaria · ${etiqueta}</p>
+    <p style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#8a8377;margin:0 0 6px">Artdequé · ${etiqueta}</p>
     <h1 style="font-size:24px;margin:0 0 4px">${esc(obra.titulo || 'Sin título')}</h1>
     <p style="color:#5b564f;font-family:Arial,sans-serif;margin:0 0 16px">${esc(a.nombre || '')} · ${esc(obra.anio || '')}</p>
     ${obra.imagenes && obra.imagenes[0] ? `<img src="${obra.imagenes[0]}" style="max-width:280px;border-radius:6px;border:1px solid #eee">` : ''}

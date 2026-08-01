@@ -10,7 +10,7 @@ self.addEventListener('activate', function(e){ e.waitUntil(self.clients.claim())
 self.addEventListener('push', function(event){
   var datos = {};
   try { datos = event.data ? event.data.json() : {}; } catch(e) { datos = { body: event.data && event.data.text() }; }
-  var titulo = datos.title || 'Galería Diaria';
+  var titulo = datos.title || 'Artdequé';
   var opciones = {
     body: datos.body || 'La obra de hoy ya está aquí.',
     tag: datos.tag || 'gd-diaria',

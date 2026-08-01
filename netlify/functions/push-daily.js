@@ -43,7 +43,7 @@ async function handler() {
     console.log('push-daily: faltan las claves VAPID');
     return { statusCode: 200, body: 'sin VAPID' };
   }
-  webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:hola@galeriadiaria.example', pub, priv);
+  webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:hola@artdeque.example', pub, priv);
 
   // 1) catálogo
   let obras = [];

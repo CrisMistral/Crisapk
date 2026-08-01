@@ -1,6 +1,6 @@
 {
-  "name": "Galería Diaria",
-  "short_name": "Galería",
+  "name": "Artdequé",
+  "short_name": "Artdequé",
   "description": "Cada día, una obra de arte emergente y la historia de quien la hizo.",
   "start_url": "index.html",
   "scope": "./",

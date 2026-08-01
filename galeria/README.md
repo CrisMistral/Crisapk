@@ -1,4 +1,4 @@
-# Galería Diaria — MVP
+# Artdequé — MVP
 
 Plataforma de arte emergente construida sobre **el ritual de DailyArt**: cada día, una
 sola obra en portada, con la historia de quien la hizo. Te detienes en una, no en un

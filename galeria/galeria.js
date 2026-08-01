@@ -112,7 +112,7 @@
   // ── Compartir ──
   function compartir(o){
     var url = location.origin + location.pathname.replace(/[^/]*$/,'') + 'obra.html?id='+encodeURIComponent(o.id);
-    var datos = { title:'Galería Diaria — '+o.titulo, text:'«'+o.titulo+'», de '+o.artista.nombre+'. En Galería Diaria.', url:url };
+    var datos = { title:'Artdequé — '+o.titulo, text:'«'+o.titulo+'», de '+o.artista.nombre+'. En Artdequé.', url:url };
     if(navigator.share){ return navigator.share(datos).catch(function(){}); }
     if(navigator.clipboard){ return navigator.clipboard.writeText(url).then(function(){ return 'copiado'; }).catch(function(){ return 'error'; }); }
     return Promise.resolve('nosoportado');

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FAF8F5">
-<title>Galería Diaria — una obra cada día</title>
+<title>Artdequé — una obra cada día</title>
 <meta name="description" content="Cada día, una sola obra de arte emergente y la historia de quien la hizo. Detente un momento. Si te llama, es tuya.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
 
 <header class="site-header">
   <div class="inner">
-    <a class="brand" href="index.html">Galería <em>Diaria</em></a>
+    <a class="brand" href="index.html">Art<em>dequé</em></a>
     <nav class="nav">
       <a href="explorar.html" class="hide-sm">Explorar</a>
       <a href="archivo.html" class="hide-sm">Archivo</a>
@@ -55,7 +55,7 @@
 <footer class="site-footer">
   <div class="inner">
     <div class="col">
-      <span class="brand">Galería <em>Diaria</em></span>
+      <span class="brand">Art<em>dequé</em></span>
       <span class="muted" style="font-size:.8rem;max-width:32ch">Una obra cada día. Nos detenemos en una sola, con la voz de quien la hizo.</span>
     </div>
     <div class="cols">
@@ -85,7 +85,7 @@
   function pintar(o){
     obraActual=o;
     if(!o){ $('ritual').innerHTML='<div class="vacio" style="padding:5rem 1rem"><h3 class="serif">La galería está vacía todavía</h3><p><a class="btn btn-line" href="subir.html">Sé el primero en subir una obra</a></p></div>'; return; }
-    document.title = 'Hoy: '+o.titulo+' — Galería Diaria';
+    document.title = 'Hoy: '+o.titulo+' — Artdequé';
     $('obra-img').classList.remove('skeleton');
     $('obra-img').innerHTML = GD.imgInterior(o,false);
     $('obra-img').title='Ampliar';
@@ -184,7 +184,7 @@
             return false; // sin VAPID configurado: recordatorio local
           })
           .then(function(remoto){
-            reg.showNotification('Galería Diaria', { body: remoto ? 'Listo. Cada día te traeremos una obra nueva.' : 'Recordatorio activado en este dispositivo.', tag:'gd-bienvenida' });
+            reg.showNotification('Artdequé', { body: remoto ? 'Listo. Cada día te traeremos una obra nueva.' : 'Recordatorio activado en este dispositivo.', tag:'gd-bienvenida' });
             $('push-bar').hidden=true;
             toast(remoto?'Recordatorio diario activado':'Activado en este dispositivo');
           });
