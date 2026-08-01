@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF8F5">
+<title>Archivo — Galería Diaria</title>
+<meta name="description" content="Cada obra que hemos elegido para la portada, día a día. El pasado de la Galería Diaria.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Galería <em>Diaria</em></a>
+    <nav class="nav">
+      <a href="index.html" class="hide-sm">Obra del día</a>
+      <a href="explorar.html" class="hide-sm">Explorar</a>
+      <a class="cta" href="subir.html">Subir una obra</a>
+    </nav>
+  </div>
+</header>
+
+<div class="archivo-cab">
+  <p class="eyebrow">El archivo</p>
+  <h1>Cada día, una obra</h1>
+  <p class="sub">Todas las que han pasado por la portada. Cada mañana elegimos una; aquí se quedan.</p>
+</div>
+
+<main class="wrap section" style="padding-top:1.5rem">
+  <div class="archivo-grid" id="grid"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="col"><span class="brand">Galería <em>Diaria</em></span><span class="muted" style="font-size:.8rem;max-width:30ch">Una obra cada día. Arte emergente y la voz de quien lo hace.</span></div>
+    <div class="cols">
+      <div class="col"><span class="eyebrow">Explorar</span><a href="index.html">Obra del día</a><a href="explorar.html">Todas las obras</a></div>
+      <div class="col"><span class="eyebrow">Artistas</span><a href="subir.html">Subir una obra</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="taxonomias.js"></script>
+<script src="galeria.js"></script>
+<script>
+(function(){
+  'use strict';
+  var $=function(id){return document.getElementById(id);};
+  var DIAS=30; // últimos 30 días de portada
+
+  function pintar(todas){
+    var hoy=GD.epochDay();
+    var out=[];
+    var i;
+    for(i=0;i<DIAS;i++){
+      var dia=hoy-i;
+      var o=GD.obraDelDiaPara(dia,todas);
+      if(!o) continue;
+      var fecha=new Date(dia*86400000);
+      var etq=(i===0?'Hoy':(i===1?'Ayer':GD.fechaCorta(fecha)));
+      out.push(
+        '<a class="dia'+(i===0?' hoy':'')+'" href="obra.html?id='+encodeURIComponent(o.id)+'">'+
+          GD.thumbHTML(o)+
+          '<div class="f">'+etq+'</div>'+
+          '<div class="t">'+GD.esc(o.titulo)+'</div>'+
+        '</a>'
+      );
+    }
+    $('grid').innerHTML=out.join('') || '<p class="muted">Todavía no hay obras en el archivo.</p>';
+  }
+
+  GD.cargarObras().then(pintar).catch(function(){
+    $('grid').innerHTML='<p class="muted">No se pudo cargar el archivo.</p>';
+  });
+})();
+</script>
+</body>
+</html>

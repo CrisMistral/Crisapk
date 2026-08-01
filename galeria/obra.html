@@ -91,7 +91,9 @@
   <div class="inner">
     <a class="brand" href="index.html">Galería <em>Diaria</em></a>
     <nav class="nav">
-      <a href="index.html#feed" class="hide-sm">Descubrir</a>
+      <a href="index.html" class="hide-sm">Obra del día</a>
+      <a href="explorar.html" class="hide-sm">Explorar</a>
+      <a href="archivo.html" class="hide-sm">Archivo</a>
       <a class="cta" href="subir.html">Subir una obra</a>
     </nav>
   </div>
@@ -105,6 +107,7 @@
   <button class="cerrar" aria-label="Cerrar">✕</button>
   <div class="big" id="lightbox-big"></div>
 </div>
+<div class="toast" id="toast"></div>
 
 <footer class="site-footer">
   <div class="inner">
@@ -113,13 +116,14 @@
       <span class="muted" style="font-size:.8rem;max-width:30ch">Una obra cada día. Arte emergente y la voz de quien lo hace.</span>
     </div>
     <div class="cols">
-      <div class="col"><span class="eyebrow">Explorar</span><a href="index.html#feed">Descubrir</a><a href="index.html#hoy">Obra del día</a></div>
+      <div class="col"><span class="eyebrow">Explorar</span><a href="explorar.html">Todas las obras</a><a href="archivo.html">Archivo diario</a></div>
       <div class="col"><span class="eyebrow">Artistas</span><a href="subir.html">Subir una obra</a></div>
     </div>
   </div>
 </footer>
 
 <script src="taxonomias.js"></script>
+<script src="galeria.js"></script>
 <script>
 (function(){
   'use strict';
@@ -166,7 +170,7 @@
 
     // ── chips de tema ──
     var chips = (o.tema||[]).map(function(s){
-      return '<a href="index.html?tema='+s+'#feed">'+esc(TAX.nombreTema(s))+'</a>';
+      return '<a href="explorar.html?tema='+s+'">'+esc(TAX.nombreTema(s))+'</a>';
     }).join('');
 
     // ── narrativa ──
@@ -211,7 +215,7 @@
 
     var root = document.getElementById('root');
     root.innerHTML =
-      '<nav class="migas"><a href="index.html">Galería</a> · <a href="index.html#feed">Descubrir</a> · '+esc(o.titulo)+'</nav>'+
+      '<nav class="migas"><a href="index.html">Galería</a> · <a href="explorar.html">Explorar</a> · '+esc(o.titulo)+'</nav>'+
       '<div class="obra-grid">'+
         '<div class="visual">'+
           '<div class="principal" id="principal" title="Ampliar">'+phDe(o)+'</div>'+
@@ -219,10 +223,14 @@
         '<div class="panel">'+
           '<p class="eyebrow">'+(o.medio||[]).map(TAX.nombreMedio).join(' · ')+'</p>'+
           '<h1>'+esc(o.titulo)+'</h1>'+
-          '<p class="por-artista"><a href="index.html?artista='+escAttr(a.slug)+'#feed">'+esc(a.nombre)+'</a>, '+o.anio+'</p>'+
+          '<p class="por-artista"><a href="explorar.html?artista='+escAttr(a.slug)+'">'+esc(a.nombre)+'</a>, '+o.anio+'</p>'+
           '<div class="precio-caja"><span class="p">'+euro(o.precio)+'</span><span class="disp">'+dispTexto+'</span></div>'+
           '<div class="comprar-fila" id="comprar">'+botones+'</div>'+
           '<p class="pago-msg" id="pago-msg"></p>'+
+          '<div class="acciones" style="display:flex;gap:.6rem;margin:-.2rem 0 1.4rem">'+
+            '<button class="icono solo" id="fav" aria-label="Guardar en favoritos" title="Guardar">'+svgCorazon()+'</button>'+
+            '<button class="icono" id="share" aria-label="Compartir">'+svgShare()+'Compartir</button>'+
+          '</div>'+
           (chips?'<div class="chips">'+chips+'</div>':'')+
           fichaHTML+
         '</div>'+
@@ -243,6 +251,13 @@
 
     // zoom
     conectarZoom(o);
+    // favorito + compartir
+    var fav = document.getElementById('fav');
+    if(window.GD && fav){
+      if(GD.esFav(o.id)) fav.classList.add('fav');
+      fav.addEventListener('click', function(){ var ahora=GD.favToggle(o.id); fav.classList.toggle('fav',ahora); toast(ahora?'Guardada en favoritos':'Quitada de favoritos'); });
+      document.getElementById('share').addEventListener('click', function(){ GD.compartir(o).then(function(r){ if(r==='copiado') toast('Enlace copiado'); }); });
+    }
     // compra
     if(enVenta){
       var btn = document.getElementById('btn-comprar');
@@ -250,6 +265,11 @@
       if(location.hash === '#comprar'){ document.getElementById('comprar').scrollIntoView({behavior:'smooth',block:'center'}); }
     }
   }
+
+  var toastT;
+  function toast(msg){ var t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('ver'); clearTimeout(toastT); toastT=setTimeout(function(){ t.classList.remove('ver'); },2200); }
+  function svgCorazon(){ return '<svg viewBox="0 0 24 24"><path class="corazon" d="M12 20.5s-7.5-4.7-9.6-9C1 8.6 2.4 5.7 5.3 5.2c1.9-.3 3.6.7 4.7 2.2C11.1 5.9 12.8 4.9 14.7 5.2c2.9.5 4.3 3.4 2.9 6.3-2.1 4.3-9.6 9-9.6 9z"/></svg>'; }
+  function svgShare(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>'; }
 
   function cardMini(o){
     var inner = (o.imagenes&&o.imagenes.length)

@@ -101,3 +101,74 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;letter-spacin
 
 /* accesible: foco visible */
 a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--acento);outline-offset:2px}
+
+/* ══════════ Botón de icono (favorito, compartir) ══════════ */
+.icono{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;width:auto;height:44px;padding:0 1rem;border:1px solid var(--linea);background:var(--crema);border-radius:100px;cursor:pointer;color:var(--tinta-2);font-size:.85rem;transition:border-color .16s ease,color .16s ease}
+.icono:hover{border-color:var(--tinta);color:var(--tinta)}
+.icono svg{width:18px;height:18px;display:block}
+.icono.solo{width:44px;padding:0}
+.icono .corazon{fill:none;stroke:currentColor;stroke-width:1.5}
+.icono.fav{color:#a23b3b;border-color:#e6cccc}
+.icono.fav .corazon{fill:#a23b3b;stroke:#a23b3b}
+
+/* ══════════ Toast ══════════ */
+.toast{position:fixed;left:50%;bottom:1.6rem;transform:translateX(-50%) translateY(1rem);background:var(--tinta);color:var(--crema);font-size:.82rem;padding:.6rem 1.1rem;border-radius:100px;opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:90}
+.toast.ver{opacity:.95;transform:translateX(-50%) translateY(0)}
+
+/* ══════════ HOME RITUAL: obra del día a pantalla completa ══════════ */
+.ritual{min-height:calc(100vh - 57px);min-height:calc(100dvh - 57px);display:grid;grid-template-columns:1fr;max-width:var(--maxw);margin:0 auto;padding:0 var(--paso)}
+@media(min-width:900px){.ritual{grid-template-columns:1.05fr 1fr;gap:clamp(2rem,4vw,4rem);align-items:center;padding-top:1rem;padding-bottom:1rem}}
+.ritual .lienzo{position:relative;padding:clamp(1.4rem,4vw,2.2rem) 0}
+.ritual .obra-img{position:relative;width:100%;aspect-ratio:4/5;max-height:82vh;border-radius:var(--r);overflow:hidden;background:var(--crema-2);cursor:zoom-in;box-shadow:0 20px 50px -30px rgba(60,50,35,.5)}
+.ritual .obra-img .ph{position:absolute;inset:0}
+.ritual .obra-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ritual .relato{padding:clamp(.5rem,3vw,1rem) 0 clamp(2.4rem,6vw,2rem)}
+.ritual .fecha{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-3);margin-bottom:1.1rem;font-weight:500}
+.ritual .fecha::first-letter{text-transform:uppercase}
+.ritual h1{font-size:clamp(2.1rem,5.5vw,3.4rem);line-height:1.08;margin-bottom:.5rem}
+.ritual h1 em{font-style:italic;font-weight:400}
+.ritual .artista-linea{font-size:1.02rem;color:var(--tinta-2);margin-bottom:1.5rem}
+.ritual .artista-linea a{border-bottom:1px solid var(--linea)}
+.ritual .historia{font-size:1.08rem;color:#2c2822;line-height:1.75;max-width:48ch;margin-bottom:1.4rem}
+.ritual .ficha-linea{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.85rem;color:var(--tinta-2);margin-bottom:1.9rem}
+.ritual .ficha-linea b{color:var(--tinta);font-weight:500}
+.ritual .precio-fila{display:flex;flex-wrap:wrap;align-items:center;gap:.9rem;margin-bottom:1.1rem}
+.ritual .precio{font-family:var(--serif);font-size:1.5rem;font-weight:500}
+.ritual .acciones{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+.ritual .leer-mas{background:none;border:none;color:var(--tinta-2);text-decoration:underline;cursor:pointer;font-size:.9rem;padding:0}
+.ritual .leer-mas:hover{color:var(--tinta)}
+
+/* enlaces inferiores a explorar/archivo */
+.bajo-ritual{border-top:1px solid var(--linea)}
+.bajo-ritual .inner{max-width:var(--maxw);margin:0 auto;padding:1.6rem var(--paso);display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:space-between}
+.bajo-ritual a.mas{font-size:.95rem;color:var(--tinta);display:inline-flex;align-items:center;gap:.4rem}
+.bajo-ritual a.mas:hover{color:var(--acento)}
+
+/* ══════════ Barra de suscripción push ══════════ */
+.push-bar{background:var(--tinta);color:var(--crema)}
+.push-bar .inner{max-width:var(--maxw);margin:0 auto;padding:.8rem var(--paso);display:flex;flex-wrap:wrap;gap:.7rem 1rem;align-items:center;justify-content:center;text-align:center}
+.push-bar p{font-size:.88rem;color:rgba(250,248,245,.9)}
+.push-bar .btn-push{background:var(--crema);color:var(--tinta);border:none;border-radius:100px;padding:.5rem 1.1rem;font-size:.84rem;font-weight:500;cursor:pointer}
+.push-bar .btn-push:hover{opacity:.9}
+.push-bar .cerrar-push{background:none;border:none;color:rgba(250,248,245,.6);cursor:pointer;font-size:1rem;line-height:1;padding:.2rem .4rem}
+.push-bar[hidden]{display:none}
+
+/* ══════════ ARCHIVO de portadas ══════════ */
+.archivo-cab{max-width:var(--maxw);margin:0 auto;padding:clamp(2rem,6vw,3.4rem) var(--paso) 1rem}
+.archivo-cab h1{font-size:clamp(1.9rem,5vw,2.8rem);margin-bottom:.5rem}
+.archivo-cab .sub{color:var(--tinta-2);max-width:50ch}
+.archivo-grid{display:grid;gap:clamp(1.2rem,3vw,2rem);grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.dia{display:block;cursor:pointer}
+.dia .thumb{aspect-ratio:1/1}
+.dia .f{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-3);margin-top:.55rem}
+.dia .t{font-family:var(--serif);font-size:.95rem;line-height:1.2;margin-top:.1rem}
+.dia.hoy .f{color:var(--tinta);font-weight:600}
+.dia.hoy .thumb{outline:2px solid var(--tinta);outline-offset:2px}
+
+/* lightbox reutilizable */
+.lightbox{position:fixed;inset:0;background:rgba(20,18,15,.92);z-index:100;display:none;align-items:center;justify-content:center;cursor:zoom-out;padding:2rem}
+.lightbox.open{display:flex}
+.lightbox .big{max-width:92vw;max-height:92vh;border-radius:var(--r);overflow:hidden}
+.lightbox .big img{max-width:92vw;max-height:92vh;object-fit:contain}
+.lightbox .big .ph{width:min(80vw,600px);aspect-ratio:4/5}
+.lightbox .cerrar{position:absolute;top:1.2rem;right:1.4rem;color:#fff;font-size:1.6rem;background:none;border:none;cursor:pointer;opacity:.8}

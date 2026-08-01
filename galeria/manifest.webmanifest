@@ -1,0 +1,12 @@
+{
+  "name": "Galería Diaria",
+  "short_name": "Galería",
+  "description": "Cada día, una obra de arte emergente y la historia de quien la hizo.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAF8F5",
+  "theme_color": "#FAF8F5",
+  "lang": "es",
+  "icons": []
+}
