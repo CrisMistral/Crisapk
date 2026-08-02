@@ -1104,6 +1104,8 @@ function medNext(){stopTimer();S.medPlaying=false;medAdv();}
 function medPrev(){if(S.medStep<=0)return;stopTimer();S.medPlaying=false;S.medTimer=0;S.medDone=false;S.medStep--;renderMedStep();}
 /* Aplica traducciones a los textos estáticos al cargar */
 applyStaticI18n();
+/* Acceso directo: si el index abre este módulo con #transition, va a «Soltar el móvil» */
+if(location.hash==='#transition')go('transition');
 /* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
 /* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió */
 window.__crisBack=function(){
