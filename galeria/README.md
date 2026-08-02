@@ -51,6 +51,14 @@ el código y aplica la auto-moderación), `obras-publicas` (sirve las aprobadas)
 
 ---
 
+## Ponerlo en marcha (producción)
+
+¿Quieres verlo vivo? Sigue **[DESPLIEGUE.md](DESPLIEGUE.md)**: guía paso a paso para
+publicarlo en Netlify (incluye un «modo mínimo» para probar hoy con solo la contraseña
+de curaduría).
+
+---
+
 ## Cómo probarlo en local
 
 Sin compilación. Para lo estático:
