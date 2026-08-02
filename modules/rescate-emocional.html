@@ -51,6 +51,32 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .an-body .an-today{font-size:.88rem;color:var(--fg,#1a2e2b);line-height:1.5}
 .an-safe{background:var(--mint);border-radius:16px;padding:15px 16px;font-size:.83rem;line-height:1.55;color:var(--teal-dark);margin-top:14px}
 .an-close{font-size:.85rem;line-height:1.55;color:var(--teal-dark);text-align:center;padding:12px 8px 2px;font-style:italic}
+.an-status{margin-top:12px;background:#e0f2fe;border-radius:12px;padding:10px 12px;font-size:.82rem;font-weight:700;color:#0e7490}
+.an-cal{display:flex;gap:6px;margin-top:10px}
+.an-chip{flex:1;background:#fff;border:2px solid var(--mint-mid);border-radius:12px;padding:6px 2px;text-align:center;position:relative}
+.an-chip.done{background:#0891b2;border-color:#0891b2}
+.an-chip.done .an-wd,.an-chip.done .an-dn{color:#fff}
+.an-chip.cur{border-color:#0891b2;box-shadow:0 0 0 2px rgba(8,145,178,.25)}
+.an-wd{display:block;font-size:.58rem;font-weight:800;color:var(--teal);text-transform:uppercase}
+.an-dn{display:block;font-size:1rem;font-weight:800;color:var(--teal-dark)}
+.an-ck{position:absolute;top:1px;right:4px;font-size:.58rem;color:#fff}
+.an-start{width:100%;margin-top:12px;border:none;border-radius:12px;padding:12px;background:#0891b2;color:#fff;font-family:'Outfit',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer}
+.an-reset{width:100%;margin-top:10px;border:none;border-radius:10px;padding:8px;background:transparent;color:var(--teal);font-family:'Outfit',sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;text-decoration:underline}
+.an-date{font-size:.64rem;font-weight:800;color:#0891b2;background:#e0f2fe;border-radius:8px;padding:3px 7px;flex-shrink:0}
+.an-note{width:100%;border:2px solid var(--mint-mid);border-radius:12px;padding:10px;font-family:'Outfit',sans-serif;font-size:16px;color:#1a2e2b;background:#fff;resize:vertical;min-height:52px;margin:4px 0 10px}
+.an-note:focus{outline:none;border-color:#0891b2}
+.an-donebtn{width:100%;border:2px solid var(--mint-mid);border-radius:12px;padding:10px;background:#fff;color:var(--teal-dark);font-family:'Outfit',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer}
+.an-donebtn.on{background:#0891b2;border-color:#0891b2;color:#fff}
+/* Soltar el móvil · transición */
+.c-trans{background:linear-gradient(135deg,#059669,#10b981)}
+.tr-intro{background:rgba(255,255,255,.85);border:2px solid var(--mint-mid);border-radius:16px;padding:15px 16px;font-size:.85rem;line-height:1.55;color:var(--teal-dark);margin-bottom:14px}
+.tr-input{width:100%;border:2px solid var(--mint-mid);border-radius:14px;padding:13px;font-family:'Outfit',sans-serif;font-size:16px;color:#1a2e2b;background:#fff;margin-bottom:12px}
+.tr-input:focus{outline:none;border-color:#10b981}
+.tr-go{width:100%;border:none;border-radius:16px;padding:16px;background:linear-gradient(135deg,#059669,#10b981);color:#fff;font-family:'Outfit',sans-serif;font-weight:800;font-size:1.05rem;cursor:pointer}
+.tr-stepbox{background:rgba(255,255,255,.9);border-radius:20px;padding:22px 18px;text-align:center;margin-top:8px}
+.tr-phase{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#059669;margin-bottom:8px}
+.tr-name{font-size:1.3rem;font-weight:800;color:var(--teal-dark);margin-bottom:14px;line-height:1.25}
+.tr-count{font-size:3.4rem;font-weight:800;color:#059669;line-height:1}
 .slabel{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin:16px 0 8px}
 .tlist{display:flex;flex-direction:column;gap:8px}
 .titem{background:rgba(255,255,255,.82);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;width:100%;text-align:left;border:2px solid var(--mint-mid);transition:transform .1s}
@@ -161,6 +187,10 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
     <span class="aicon">🕯️</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_anniv_t">ÉPOCA DIFÍCIL</span><span class="asub" data-i18n="c_anniv_s">Plan de 7 días para un aniversario duro</span></div>
   </button>
+  <button class="acard c-trans" onclick="go('transition')">
+    <span class="aicon">📴</span>
+    <div class="ainfo"><span class="atitle" data-i18n="c_trans_t">SOLTAR EL MÓVIL</span><span class="asub" data-i18n="c_trans_s">Cambia de tarea con una mini-guía</span></div>
+  </button>
 </div>
 </div>
 
@@ -250,6 +280,16 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
+<div id="v-transition" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="stopTrans();go('home')">←</button>
+    <h1 id="trans-title"></h1>
+  </div>
+  <div id="trans-content"></div>
+</div>
+</div>
+
 <script>
 /* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
@@ -262,7 +302,7 @@ const UI={
    c_sos_t:'NECESITO AYUDA YA',c_sos_s:'Técnicas para salir del bucle ahora mismo',
    c_know_t:'SÉ QUÉ SIENTO',c_know_s:'Entiende tu emoción y qué puedes hacer',
    c_find_t:'NO SÉ QUÉ SIENTO',c_find_s:'Ayúdame a identificar lo que me pasa',
-   c_calm_t:'MEDITAR',c_calm_s:'Meditaciones guiadas para calmarme',c_anniv_t:'ÉPOCA DIFÍCIL',c_anniv_s:'Plan de 7 días para un aniversario duro',
+   c_calm_t:'MEDITAR',c_calm_s:'Meditaciones guiadas para calmarme',c_anniv_t:'ÉPOCA DIFÍCIL',c_anniv_s:'Plan de 7 días para un aniversario duro',c_trans_t:'SOLTAR EL MÓVIL',c_trans_s:'Cambia de tarea con una mini-guía',
    tech_h:'Técnicas de Rescate',tec_h_fb:'Técnica',emo_h:'¿Qué sientes?',emo_hint:'Toca lo que más se acerca a lo que sientes ahora mismo',
    emo_detail_h:'Tu emoción',find_h:'Vamos a descubrirlo',med_h:'Meditaciones',
    sp_lento:'Lento',sp_normal:'Normal',sp_rapido:'Rápido',
@@ -279,7 +319,7 @@ const UI={
    c_sos_t:'I NEED HELP NOW',c_sos_s:'Techniques to break the loop right now',
    c_know_t:'I KNOW WHAT I FEEL',c_know_s:'Understand your emotion and what you can do',
    c_find_t:'I DON’T KNOW WHAT I FEEL',c_find_s:'Help me name what’s going on',
-   c_calm_t:'MEDITATE',c_calm_s:'Guided meditations to calm down',c_anniv_t:'A HARD TIME',c_anniv_s:'7-day plan for a difficult anniversary',
+   c_calm_t:'MEDITATE',c_calm_s:'Guided meditations to calm down',c_anniv_t:'A HARD TIME',c_anniv_s:'7-day plan for a difficult anniversary',c_trans_t:'PUT THE PHONE DOWN',c_trans_s:'Switch tasks with a mini-guide',
    tech_h:'Rescue Techniques',tec_h_fb:'Technique',emo_h:'What do you feel?',emo_hint:'Tap what’s closest to how you feel right now',
    emo_detail_h:'Your emotion',find_h:'Let’s find out',med_h:'Meditations',
    sp_lento:'Slow',sp_normal:'Normal',sp_rapido:'Fast',
@@ -296,7 +336,7 @@ const UI={
    c_sos_t:'J’AI BESOIN D’AIDE MAINTENANT',c_sos_s:'Des techniques pour sortir de la boucle tout de suite',
    c_know_t:'JE SAIS CE QUE JE RESSENS',c_know_s:'Comprends ton émotion et ce que tu peux faire',
    c_find_t:'JE NE SAIS PAS CE QUE JE RESSENS',c_find_s:'Aide-moi à nommer ce qui se passe',
-   c_calm_t:'MÉDITER',c_calm_s:'Méditations guidées pour me calmer',c_anniv_t:'PÉRIODE DIFFICILE',c_anniv_s:'Plan de 7 jours pour un anniversaire difficile',
+   c_calm_t:'MÉDITER',c_calm_s:'Méditations guidées pour me calmer',c_anniv_t:'PÉRIODE DIFFICILE',c_anniv_s:'Plan de 7 jours pour un anniversaire difficile',c_trans_t:'LÂCHER LE TÉLÉPHONE',c_trans_s:'Change de tâche avec un mini-guide',
    tech_h:'Techniques de Secours',tec_h_fb:'Technique',emo_h:'Que ressens-tu ?',emo_hint:'Touche ce qui se rapproche le plus de ce que tu ressens là',
    emo_detail_h:'Ton émotion',find_h:'On va le découvrir',med_h:'Méditations',
    sp_lento:'Lent',sp_normal:'Normal',sp_rapido:'Rapide',
@@ -390,6 +430,7 @@ const ANNIV={
  es:{title:'🕯️ Época difícil',
   intro:'Hay emociones que vuelven cada año, en la misma época, sin saber por qué. No estás rota: es tu sistema nervioso recordando una huella que la mente ya olvidó. Este plan de 7 días no analiza el pasado — ayuda a que tu cuerpo deje de reaccionar en automático y recuperes claridad sobre qué sientes, cuándo y por qué.<br><br>Ve a tu ritmo: un día, un paso. Si algún día pesa demasiado, para y vuelve mañana. 💚',
   why:'Para qué',today:'Hoy',
+  start_btn:'▶ Empezar el plan',hoy:'Hoy toca',dw:'Día',mark:'Marcar hecho',doneL:'✓ Hecho',noteph:'Tus notas (se guardan solas)',reset:'↺ Reiniciar plan',complete:'🎉 Plan completado. Puedes reiniciarlo cuando quieras.',wl:['D','L','M','X','J','V','S'],
   days:[
    {t:'Detectar la señal',w:'Antes de calmar algo, hay que verlo.',a:'Cada vez que notes un cambio brusco (tensión, cansancio, irritabilidad), apúntalo con la hora y qué estaba pasando. Sin analizar — solo registrar.'},
    {t:'Bajar el pulso',w:'Decirle al cuerpo que ya no hay peligro.',a:'Respiración 4-7-8 (inhala 4, retén 7, exhala 8), tres veces a lo largo del día. La tienes guiada en «Meditar».'},
@@ -404,6 +445,7 @@ const ANNIV={
  en:{title:'🕯️ A hard time',
   intro:'Some emotions come back every year, at the same time, without you knowing why. You’re not broken: it’s your nervous system remembering an imprint your mind has forgotten. This 7-day plan doesn’t analyse the past — it helps your body stop reacting on autopilot and gives you clarity about what you feel, when, and why.<br><br>Go at your own pace: one day, one step. If a day feels like too much, stop and come back tomorrow. 💚',
   why:'Why',today:'Today',
+  start_btn:'▶ Start the plan',hoy:'Today',dw:'Day',mark:'Mark done',doneL:'✓ Done',noteph:'Your notes (saved automatically)',reset:'↺ Restart plan',complete:'🎉 Plan complete. You can restart it whenever you want.',wl:['S','M','T','W','T','F','S'],
   days:[
    {t:'Spot the signal',w:'Before you can calm something, you have to see it.',a:'Every time you notice a sudden shift (tension, tiredness, irritability), jot it down with the time and what was happening. No analysing — just logging.'},
    {t:'Lower the pulse',w:'Tell your body there’s no danger anymore.',a:'4-7-8 breathing (inhale 4, hold 7, exhale 8), three times through the day. You have it guided under “Meditate”.'},
@@ -418,6 +460,7 @@ const ANNIV={
  fr:{title:'🕯️ Période difficile',
   intro:'Certaines émotions reviennent chaque année, à la même période, sans que tu saches pourquoi. Tu n’es pas cassée : c’est ton système nerveux qui se souvient d’une empreinte que ton esprit a oubliée. Ce plan de 7 jours n’analyse pas le passé — il aide ton corps à cesser de réagir en pilote automatique et te rend de la clarté sur ce que tu ressens, quand et pourquoi.<br><br>Va à ton rythme : un jour, un pas. Si un jour c’est trop lourd, arrête-toi et reviens demain. 💚',
   why:'Pourquoi',today:'Aujourd’hui',
+  start_btn:'▶ Commencer le plan',hoy:'Aujourd’hui',dw:'Jour',mark:'Marquer fait',doneL:'✓ Fait',noteph:'Tes notes (sauvegardées seules)',reset:'↺ Recommencer le plan',complete:'🎉 Plan terminé. Tu peux le recommencer quand tu veux.',wl:['D','L','M','M','J','V','S'],
   days:[
    {t:'Repérer le signal',w:'Avant de calmer quelque chose, il faut le voir.',a:'Chaque fois que tu remarques un changement brusque (tension, fatigue, irritabilité), note-le avec l’heure et ce qui se passait. Sans analyser — juste enregistrer.'},
    {t:'Baisser le pouls',w:'Dire à ton corps qu’il n’y a plus de danger.',a:'Respiration 4-7-8 (inspire 4, retiens 7, expire 8), trois fois dans la journée. Tu l’as guidée dans « Méditer ».'},
@@ -431,26 +474,118 @@ const ANNIV={
   safe:'Si à un moment c’est trop lourd, tu n’es pas seule. Parle à quelqu’un de confiance ou à un professionnel. Ceci est un soutien, pas un remplacement de la thérapie. 💚'}
 };
 function annivL(){return ANNIV[crisLang()]||ANNIV.es;}
+/* Estado guardado del plan: fecha de inicio, días hechos y notas */
+function _ymd(dt){return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');}
+function _pd(s){const p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function annivData(){try{return JSON.parse(localStorage.getItem('cris_anniv_v1')||'{}');}catch(e){return{};}}
+function annivSave(d){try{localStorage.setItem('cris_anniv_v1',JSON.stringify(d));}catch(e){}}
+let annivOpen={};
+function annivStart(){const d=annivData();d.start=_ymd(new Date());annivSave(d);annivOpen={};beep(600,.12);vibrate(40);renderAnniversary();}
+function annivReset(){annivSave({});annivOpen={};renderAnniversary();}
+function annivToggleDone(i){const d=annivData();d.done=d.done||{};d.done[i]=!d.done[i];annivSave(d);if(d.done[i]){beep(700,.12);vibrate([60,40,60]);}renderAnniversary();}
+function annivNote(i,v){const d=annivData();d.notes=d.notes||{};d.notes[i]=v;annivSave(d);}
+function toggleAnniv(i){annivOpen[i]=!annivOpen[i];const el=document.getElementById('an-day-'+i);if(el)el.classList.toggle('open',!!annivOpen[i]);}
+function _esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
 function renderAnniversary(){
-  const A=annivL();
+  const A=annivL(), d=annivData();
   document.getElementById('anniv-title').textContent=A.title;
-  document.getElementById('anniv-content').innerHTML=
-    `<div class="an-intro">${A.intro}</div>`+
-    A.days.map((d,i)=>`
-      <div class="an-day" id="an-day-${i}">
-        <button class="an-head" onclick="toggleAnniv(${i})">
-          <span class="an-num">${i+1}</span>
-          <span class="an-htxt"><h3>${d.t}</h3><p>${d.w}</p></span>
-          <span class="an-arrow">›</span>
-        </button>
-        <div class="an-body">
-          <div class="an-lbl">${A.today}</div><div class="an-today">${d.a}</div>
-        </div>
-      </div>`).join('')+
-    `<div class="an-close">${A.close}</div>`+
-    `<div class="an-safe">${A.safe}</div>`;
+  const started=!!d.start;
+  const dates=started?A.days.map((_,i)=>{const x=_pd(d.start);x.setDate(x.getDate()+i);return x;}):null;
+  const cur=started?Math.max(0,Math.min(6,Math.round((new Date().setHours(0,0,0,0)-_pd(d.start))/864e5))):-1;
+  const done=d.done||{}, notes=d.notes||{}, nDone=A.days.reduce((a,_,i)=>a+(done[i]?1:0),0), allDone=nDone>=7;
+  let head=`<div class="an-intro">${A.intro}`;
+  if(started){
+    head+=`<div class="an-status">${allDone?A.complete:('🕯️ '+A.hoy+': '+A.dw+' '+(cur+1)+' · '+A.days[cur].t)}</div>`;
+    head+=`<div class="an-cal">`+A.days.map((_,i)=>{const x=dates[i];const cls=(done[i]?' done':'')+(i===cur&&!allDone?' cur':'');return `<div class="an-chip${cls}"><span class="an-wd">${A.wl[x.getDay()]}</span><span class="an-dn">${x.getDate()}</span><span class="an-ck">${done[i]?'✓':''}</span></div>`;}).join('')+`</div>`;
+    head+=`<button class="an-reset" onclick="annivReset()">${A.reset}</button>`;
+  }else{
+    head+=`<button class="an-start" onclick="annivStart()">${A.start_btn}</button>`;
+  }
+  head+=`</div>`;
+  const daysHtml=A.days.map((day,i)=>{
+    const dateLbl=started?(A.wl[dates[i].getDay()]+' '+dates[i].getDate()):'';
+    const isDone=!!done[i];
+    return `<div class="an-day${annivOpen[i]?' open':''}" id="an-day-${i}">
+      <button class="an-head" onclick="toggleAnniv(${i})">
+        <span class="an-num">${isDone?'✓':i+1}</span>
+        <span class="an-htxt"><h3>${day.t}</h3><p>${day.w}</p></span>
+        ${dateLbl?`<span class="an-date">${dateLbl}</span>`:''}
+        <span class="an-arrow">›</span>
+      </button>
+      <div class="an-body">
+        <div class="an-lbl">${A.today}</div><div class="an-today">${day.a}</div>
+        <textarea class="an-note" placeholder="${A.noteph}" oninput="annivNote(${i},this.value)">${_esc(notes[i])}</textarea>
+        <button class="an-donebtn${isDone?' on':''}" onclick="annivToggleDone(${i})">${isDone?A.doneL:A.mark}</button>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('anniv-content').innerHTML=head+daysHtml+`<div class="an-close">${A.close}</div><div class="an-safe">${A.safe}</div>`;
+  if(started&&!Object.keys(annivOpen).length&&!allDone){annivOpen[cur]=true;const el=document.getElementById('an-day-'+cur);if(el)el.classList.add('open');}
 }
-function toggleAnniv(i){const el=document.getElementById('an-day-'+i);if(el)el.classList.toggle('open');}
+
+/* ── SOLTAR EL MÓVIL · transición guiada para cambiar de tarea ── */
+const TRANS={
+ es:{title:'📴 Soltar el móvil',intro:'¿Enganchada al móvil y quieres ponerte a otra cosa? Escribe qué vas a hacer (o déjalo en blanco) y te acompaño unos segundos para soltarlo.',ph:'¿Qué vas a hacer ahora?',start:'▶ Suéltalo',again:'↺ Otra vez',home:'🏠 Inicio',done_h:'¡Ya lo tienes!',done_p:'Móvil abajo. A por ello 💚',
+  steps:[['Deja el móvil','Deja el móvil boca abajo, lejos de tu mano',5],['Respira','Respira hondo. Suelta los hombros y la mandíbula',5],['Ponte de pie','Ponte de pie y estírate un segundo',5],['Tu tarea','',5],['¡Ve!','',4]],
+  task_v:'Tu única tarea ahora es: {task}',task_none:'Elige una sola cosa y ve a por ella',go_v:'A la de tres. Tres. Dos. Uno. ¡Ve!'},
+ en:{title:'📴 Put the phone down',intro:'Stuck on your phone and want to switch to something else? Type what you’ll do (or leave it blank) and I’ll walk you through a few seconds to let it go.',ph:'What are you going to do now?',start:'▶ Let it go',again:'↺ Again',home:'🏠 Home',done_h:'You’ve got this!',done_p:'Phone down. Go for it 💚',
+  steps:[['Put the phone down','Put your phone face down, away from your hand',5],['Breathe','Breathe deeply. Drop your shoulders and jaw',5],['Stand up','Stand up and stretch for a second',5],['Your task','',5],['Go!','',4]],
+  task_v:'Your only task now is: {task}',task_none:'Pick one thing and go for it',go_v:'On the count of three. Three. Two. One. Go!'},
+ fr:{title:'📴 Lâcher le téléphone',intro:'Scotchée au téléphone et tu veux passer à autre chose ? Écris ce que tu vas faire (ou laisse vide) et je t’accompagne quelques secondes pour le lâcher.',ph:'Que vas-tu faire maintenant ?',start:'▶ Lâche-le',again:'↺ Encore',home:'🏠 Accueil',done_h:'Tu vas y arriver !',done_p:'Téléphone posé. Fonce 💚',
+  steps:[['Pose le téléphone','Pose ton téléphone face vers le bas, loin de ta main',5],['Respire','Respire profondément. Relâche les épaules et la mâchoire',5],['Lève-toi','Lève-toi et étire-toi une seconde',5],['Ta tâche','',5],['Go !','',4]],
+  task_v:'Ta seule tâche maintenant, c’est : {task}',task_none:'Choisis une seule chose et fonce',go_v:'À trois. Trois. Deux. Un. Vas-y !'}
+};
+function transL(){return TRANS[crisLang()]||TRANS.es;}
+let transTask='',transStep=0,transTimer=0,transInt=null;
+function renderTransition(){
+  const T=transL();
+  document.getElementById('trans-title').textContent=T.title;
+  document.getElementById('trans-content').innerHTML=
+    `<div class="tr-intro">${T.intro}</div>
+     <input class="tr-input" id="trans-task" placeholder="${T.ph}" value="${_esc(transTask)}">
+     <button class="tr-go" onclick="startTrans()">${T.start}</button>`;
+}
+function startTrans(){
+  const el=document.getElementById('trans-task');transTask=el?el.value:'';
+  transStep=0;runTransStep();
+}
+function stopTrans(){if(transInt){clearInterval(transInt);transInt=null;}try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}}
+function runTransStep(){
+  const T=transL();
+  if(transStep>=T.steps.length){transDone();return;}
+  const s=T.steps[transStep];
+  let voice=s[1];
+  if(transStep===3)voice=transTask.trim()?T.task_v.split('{task}').join(transTask.trim()):T.task_none;
+  if(transStep===4)voice=T.go_v;
+  transTimer=s[2];
+  const total=s[2];
+  document.getElementById('trans-content').innerHTML=
+    `<div class="tr-stepbox">
+       <div class="tr-phase">${transStep+1} / ${T.steps.length}</div>
+       <div class="tr-name">${s[0]}</div>
+       <div class="tring" id="tr-ring"><div class="tring-in"><div class="tr-count" id="tr-count">${transTimer}</div></div></div>
+     </div>`;
+  __ring('tr-ring',1);
+  beep(transStep===4?840:520,.14);vibrate(transStep===4?[80,50,80]:50);speak(voice);
+  transInt=setInterval(()=>{
+    transTimer--;
+    const c=document.getElementById('tr-count');if(c)c.textContent=Math.max(0,transTimer);
+    __ring('tr-ring',total?transTimer/total:0);
+    if(transStep===4&&transTimer<=3&&transTimer>0)beep(560,.08);
+    if(transTimer<=0){clearInterval(transInt);transInt=null;transStep++;runTransStep();}
+  },1000);
+}
+function transDone(){
+  const T=transL();
+  beep(900,.2);setTimeout(()=>beep(1150,.3),240);vibrate([90,50,90,50,160]);
+  document.getElementById('trans-content').innerHTML=
+    `<div class="tr-stepbox"><div style="font-size:3rem;margin-bottom:8px">🚀</div>
+       <div class="tr-name">${T.done_h}</div>
+       <div style="font-size:.9rem;color:var(--teal);margin-bottom:16px">${T.done_p}</div>
+     </div>
+     <button class="an-start" onclick="renderTransition()">${T.again}</button>
+     <button class="an-reset" onclick="go('home')">${T.home}</button>`;
+}
 
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
 
@@ -725,6 +860,7 @@ function go(view){
   if(view==='find-emotion'){S.findStep=0;S.findMatches=[];renderFind();}
   if(view==='meditations') renderMedList();
   if(view==='anniversary') renderAnniversary();
+  if(view==='transition'){stopTrans();transTask='';renderTransition();}
 }
 
 function renderTecList(){
