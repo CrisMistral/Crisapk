@@ -272,6 +272,16 @@ body.mod-open #langBtn{display:none;}
    el botón de volver de los módulos (el visor está por debajo, z-index 100). */
 body.mod-open #sosBtn{padding:0;width:52px;height:52px;border-radius:50%;justify-content:center;font-size:1.4rem;gap:0;}
 body.mod-open #sosBtn .sos-label{display:none;}
+#dropBtn{
+  position:fixed;bottom:20px;left:16px;z-index:200;
+  background:linear-gradient(135deg,#059669,#10b981);color:#fff;
+  border:none;border-radius:999px;padding:14px 18px;
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:.95rem;
+  box-shadow:0 4px 18px rgba(16,185,129,.42);cursor:pointer;
+  display:flex;align-items:center;gap:7px;
+}
+#dropBtn:active{transform:scale(.94);}
+body.mod-open #dropBtn{display:none;}
 body.mod-open #menuBtn{display:none;}
 
 /* ── Recordatorios ── */
@@ -408,6 +418,7 @@ body.mod-open #menuBtn{display:none;}
 </div>
 <button id="homeBtn" title="Volver al inicio" data-i18n-title="home_title">🏠</button>
 <button id="sosBtn" title="Botiquín de emergencia" data-i18n-title="sos_title" onclick="openModule('modules/rescate-emocional.html')">🫀<span class="sos-label" data-i18n="sos"> SOS</span></button>
+<button id="dropBtn" aria-label="Soltar el móvil" data-i18n-aria="drop_title" title="Soltar el móvil" data-i18n-title="drop_title" onclick="openModule('modules/rescate-emocional.html#transition')">📴<span class="drop-label" data-i18n="drop"> Soltar</span></button>
 
 <script>
 /* ══════════ IDIOMAS (es por defecto · en · fr) ══════════ */
@@ -421,7 +432,7 @@ const I18N={
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
   drawer_footer:'Cris · tu compañera de cada día 💚',
-  day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia',
+  day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia', drop:' Soltar', drop_title:'Soltar el móvil y cambiar de tarea',
   greet_morning:'¡Buenos días!', greet_afternoon:'¡Buenas tardes!', greet_evening:'¡Buenas noches!',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
   mod_trabajo_t:'Trabajo', mod_trabajo_s:'Herramientas anti-bloqueo',
@@ -483,7 +494,7 @@ const I18N={
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
   drawer_footer:'Cris · your everyday companion 💚',
-  day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit',
+  day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit', drop:' Drop it', drop_title:'Put the phone down and switch tasks',
   greet_morning:'Good morning!', greet_afternoon:'Good afternoon!', greet_evening:'Good evening!',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
   mod_trabajo_t:'Work', mod_trabajo_s:'Anti-block tools',
@@ -545,7 +556,7 @@ const I18N={
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
   drawer_footer:'Cris · ta compagne de chaque jour 💚',
-  day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence',
+  day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence', drop:' Lâcher', drop_title:'Lâcher le téléphone et changer de tâche',
   greet_morning:'Bonjour !', greet_afternoon:'Bon après-midi !', greet_evening:'Bonsoir !',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
   mod_trabajo_t:'Travail', mod_trabajo_s:'Outils anti-blocage',
