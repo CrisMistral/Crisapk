@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Comer Rico — Cris</title>
+<title>Comer Rico — Quico</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -251,6 +251,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 /* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
+function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n||'Cris';}catch(e){return 'Cris';}}
 if(__cfg().calm)document.documentElement.classList.add('calm');
 
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
@@ -274,7 +275,7 @@ const UI={
   week_banner_rem:'Te quedan <strong>{n} de 14</strong> recetas esta semana. Marca ✓ al comerla — así siempre sabes qué puedes cocinar con lo que queda en la nevera 💚',week_banner_done:'🎉 ¡Semana completada! El lunes el menú se reinicia solo.',from_pantry:' · de despensa',week_lunch7:'☀️ Comidas (7)',week_dinner7:'🌙 Cenas (7)',
   basics_intro:'Con estos básicos siempre en casa nunca te quedas sin comer. Recetas de ~10 minutos, cero pensar ⚡',basics_recipes:'Recetas salvavidas',basics_pantry:'Tu despensa salvavidas',all_pantry:'todo de despensa',
   shop_week_label:'📅 La compra de la semana — cubre las 14 recetas',in_n_recipes:'en {n} recetas del menú',shop_extras:'➕ Extras que añadiste tú',btn_remove:'✕ quitar',shop_basics_label:'🧺 Básicos salvavidas (revisa que no falten)',
-  share_title:'🛒 Compra de la semana — Cris\n',share_basics:'🧺 BÁSICOS SALVAVIDAS',share_in:'(en {n} recetas)',share_share_title:'Lista de compras Cris',copied:'📋 Lista copiada 💚'},
+  share_title:'🛒 Compra de la semana — {u}\n',share_basics:'🧺 BÁSICOS SALVAVIDAS',share_in:'(en {n} recetas)',share_share_title:'Lista de compras {u}',copied:'📋 Lista copiada 💚'},
  en:{home_h:'🍳 Eat Well',home_sub:'Seasonal · tomato-free · Harvard plate',
   nc_pick:'WHAT DO I EAT TODAY?',nc_pick_sub:'2 questions and I\u2019ll tell you',nc_week:'THIS WEEK\u2019S MENU',nc_week_sub:'14 recipes · one single shop',nc_shop:'SHOPPING LIST',nc_shop_sub:'One shop · the whole week',nc_basics:'LIFESAVER BASICS',nc_basics_sub:'10-min recipes from your pantry',nc_months:'ALL THE MONTHS',nc_months_sub:'Seasonal recipes all year round',
   months_h:'Choose the month',tab_lunch:'☀️ Lunches',tab_dinner:'🌙 Dinners',test_h:'What do I eat today?',week_h:'This week\u2019s menu',basics_h:'Lifesaver basics',shop_h:'Shopping List',
@@ -292,7 +293,7 @@ const UI={
   week_banner_rem:'You have <strong>{n} of 14</strong> recipes left this week. Tick ✓ when you eat it — so you always know what you can cook with what\u2019s left in the fridge 💚',week_banner_done:'🎉 Week complete! On Monday the menu resets on its own.',from_pantry:' · from the pantry',week_lunch7:'☀️ Lunches (7)',week_dinner7:'🌙 Dinners (7)',
   basics_intro:'With these basics always at home you never run out of food. ~10-minute recipes, zero thinking ⚡',basics_recipes:'Lifesaver recipes',basics_pantry:'Your lifesaver pantry',all_pantry:'all from the pantry',
   shop_week_label:'📅 This week\u2019s shop — covers all 14 recipes',in_n_recipes:'in {n} menu recipes',shop_extras:'➕ Extras you added',btn_remove:'✕ remove',shop_basics_label:'🧺 Lifesaver basics (check you\u2019re not out)',
-  share_title:'🛒 This week\u2019s shop — Cris\n',share_basics:'🧺 LIFESAVER BASICS',share_in:'(in {n} recipes)',share_share_title:'Cris shopping list',copied:'📋 List copied 💚'},
+  share_title:'🛒 This week\u2019s shop — {u}\n',share_basics:'🧺 LIFESAVER BASICS',share_in:'(in {n} recipes)',share_share_title:'{u} shopping list',copied:'📋 List copied 💚'},
  fr:{home_h:'🍳 Bien Manger',home_sub:'De saison · sans tomate · assiette Harvard',
   nc_pick:'JE MANGE QUOI AUJOURD\u2019HUI ?',nc_pick_sub:'2 questions et je te le dis',nc_week:'MENU DE LA SEMAINE',nc_week_sub:'14 recettes · une seule course',nc_shop:'LISTE DE COURSES',nc_shop_sub:'Une course · toute la semaine',nc_basics:'BASIQUES DE DÉPANNAGE',nc_basics_sub:'Recettes de 10 min avec le placard',nc_months:'TOUS LES MOIS',nc_months_sub:'Des recettes de saison toute l\u2019année',
   months_h:'Choisis le mois',tab_lunch:'☀️ Déjeuners',tab_dinner:'🌙 Dîners',test_h:'Je mange quoi aujourd\u2019hui ?',week_h:'Menu de la semaine',basics_h:'Basiques de dépannage',shop_h:'Liste de Courses',
@@ -310,7 +311,7 @@ const UI={
   week_banner_rem:'Il te reste <strong>{n} sur 14</strong> recettes cette semaine. Coche ✓ quand tu la manges — comme ça tu sais toujours quoi cuisiner avec ce qu\u2019il reste au frigo 💚',week_banner_done:'🎉 Semaine terminée ! Lundi le menu se réinitialise tout seul.',from_pantry:' · du placard',week_lunch7:'☀️ Déjeuners (7)',week_dinner7:'🌙 Dîners (7)',
   basics_intro:'Avec ces basiques toujours à la maison, tu ne te retrouves jamais sans repas. Recettes de ~10 minutes, zéro réflexion ⚡',basics_recipes:'Recettes de dépannage',basics_pantry:'Ton placard de dépannage',all_pantry:'tout du placard',
   shop_week_label:'📅 La course de la semaine — couvre les 14 recettes',in_n_recipes:'dans {n} recettes du menu',shop_extras:'➕ Extras que tu as ajoutés',btn_remove:'✕ retirer',shop_basics_label:'🧺 Basiques de dépannage (vérifie qu\u2019il n\u2019en manque pas)',
-  share_title:'🛒 Course de la semaine — Cris\n',share_basics:'🧺 BASIQUES DE DÉPANNAGE',share_in:'(dans {n} recettes)',share_share_title:'Liste de courses Cris',copied:'📋 Liste copiée 💚'}
+  share_title:'🛒 Course de la semaine — {u}\n',share_basics:'🧺 BASIQUES DE DÉPANNAGE',share_in:'(dans {n} recettes)',share_share_title:'Liste de courses {u}',copied:'📋 Liste copiée 💚'}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
 function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
@@ -1560,7 +1561,7 @@ function renderShop(){
 function toggleItem(id,val){beep(400,.08);const d=getChecked();d[id]=val;setChecked(d);document.getElementById('si-'+id).classList.toggle('ck',val);}
 function clearShop(){setChecked({});renderShop();}
 function shareList(){
-  const lines=[t('share_title')];
+  const lines=[t('share_title',{u:__uname()})];
   const cats=weeklyShop();
   CAT_ORDER.filter(c=>cats[c]).forEach(c=>{
     lines.push('\n'+catOrderL(c));
@@ -1569,7 +1570,7 @@ function shareList(){
   lines.push('\n'+t('share_basics'));
   SHOPPING.forEach(cat=>{cat.items.forEach(i=>lines.push('☐ '+shopItemL(i.id,'name',i.name)+' — '+shopItemL(i.id,'qty',i.qty)));});
   const text=lines.join('\n');
-  if(navigator.share)navigator.share({title:t('share_share_title'),text}).catch(()=>{});
+  if(navigator.share)navigator.share({title:t('share_share_title',{u:__uname()}),text}).catch(()=>{});
   else if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>alert(t('copied')));
 }
 

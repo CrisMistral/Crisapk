@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#26a69a">
-<title>Cris</title>
+<title>Quico</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -415,7 +415,7 @@ body.mod-open #menuBtn{display:none;}
 
 <!-- Visor de módulos -->
 <div id="viewer">
-  <iframe id="moduleFrame" title="Módulo de Cris"></iframe>
+  <iframe id="moduleFrame" title="Módulo de Quico"></iframe>
 </div>
 <button id="homeBtn" title="Volver al inicio" data-i18n-title="home_title">🏠</button>
 <button id="sosBtn" title="Botiquín de emergencia" data-i18n-title="sos_title" onclick="openModule('modules/rescate-emocional.html')">🫀<span class="sos-label" data-i18n="sos"> SOS</span></button>
@@ -425,14 +425,14 @@ body.mod-open #menuBtn{display:none;}
 /* ══════════ IDIOMAS (es por defecto · en · fr) ══════════ */
 const I18N={
  es:{
-  menu:'Menú', menu_open:'Abrir menú', menu_close:'Cerrar menú', menu_title:'🌿 Menú de {name}', lang_change:'Cambiar idioma',
+  menu:'Menú', menu_open:'Abrir menú', menu_close:'Cerrar menú', menu_title:'🌿 Menú de Quico', lang_change:'Cambiar idioma',
   hero_sub:'¿en qué te ayudo hoy?',
   lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes',
   notif_morning:'☀️ Empezar el día', notif_night:'🌙 Rutina nocturna',
   notif_hint:'Suenan con la app abierta o instalada en la pantalla de inicio',
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
-  drawer_footer:'{name} · tu compañera de cada día 💚',
+  drawer_footer:'Quico · tu compañero cada día 💚',
   day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia', drop:' Soltar', drop_title:'Soltar el móvil y cambiar de tarea',
   greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
@@ -487,14 +487,14 @@ const I18N={
   zone:{cocina:'Cocina',bano:'Baño',salon:'Salón',dormitorio:'Dormitorio',comunes:'Zonas Comunes'}
  },
  en:{
-  menu:'Menu', menu_open:'Open menu', menu_close:'Close menu', menu_title:'🌿 {name} menu', lang_change:'Change language',
+  menu:'Menu', menu_open:'Open menu', menu_close:'Close menu', menu_title:'🌿 Quico menu', lang_change:'Change language',
   hero_sub:'how can I help you today?',
   lang_label:'Language', modules_label:'Modules', settings_label:'Settings',
   notif_morning:'☀️ Start the day', notif_night:'🌙 Night routine',
   notif_hint:'They sound with the app open or installed on your home screen',
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
-  drawer_footer:'{name} · your everyday companion 💚',
+  drawer_footer:'Quico · your everyday companion 💚',
   day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit', drop:' Drop it', drop_title:'Put the phone down and switch tasks',
   greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
@@ -549,14 +549,14 @@ const I18N={
   zone:{cocina:'Kitchen',bano:'Bathroom',salon:'Living room',dormitorio:'Bedroom',comunes:'Common areas'}
  },
  fr:{
-  menu:'Menu', menu_open:'Ouvrir le menu', menu_close:'Fermer le menu', menu_title:'🌿 Menu de {name}', lang_change:'Changer de langue',
+  menu:'Menu', menu_open:'Ouvrir le menu', menu_close:'Fermer le menu', menu_title:'🌿 Menu de Quico', lang_change:'Changer de langue',
   hero_sub:'comment puis-je t’aider aujourd’hui ?',
   lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages',
   notif_morning:'☀️ Commencer la journée', notif_night:'🌙 Routine du soir',
   notif_hint:'Elles sonnent avec l’appli ouverte ou installée sur l’écran d’accueil',
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
-  drawer_footer:'{name} · ta compagne de chaque jour 💚',
+  drawer_footer:'Quico · ton compagnon de chaque jour 💚',
   day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence', drop:' Lâcher', drop_title:'Lâcher le téléphone et changer de tâche',
   greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
@@ -1092,7 +1092,7 @@ buildModuleList();
 function setFrame(file){
   const old=document.getElementById('moduleFrame');
   const fr=document.createElement('iframe');
-  fr.id='moduleFrame';fr.title='Módulo de Cris';
+  fr.id='moduleFrame';fr.title='Módulo de Quico';
   if(file)fr.src=file;
   old.replaceWith(fr);
 }

@@ -6,7 +6,7 @@
 
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Cris — Rutina Nocturna</title>
+<title>Quico — Rutina Nocturna</title>
 <style>
 :root{
   --bg1:#0f0f23;--bg2:#1a1a3a;--bg3:#2d1b69;
@@ -332,7 +332,7 @@ body {
     <div class="header" style="flex-direction:column">
       <img src="../quico/quico_happy.png" alt="Quico" style="width:96px;height:auto;display:block;margin:0 auto 8px;filter:drop-shadow(0 3px 10px rgba(0,0,0,.45))">
       <div style="text-align:center">
-        <h1 class="title" data-i18n="title">Cris — Rutina Nocturna</h1>
+        <h1 class="title" data-i18n="title">Quico — Rutina Nocturna</h1>
         <p class="subtitle" data-i18n="subtitle">Ritual diario para un sueño reparador</p>
       </div>
     </div>
@@ -408,11 +408,12 @@ body {
 /* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
+function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n||'Cris';}catch(e){return 'Cris';}}
 if(__cfg().calm)document.documentElement.classList.add('calm');
 
 /* ── IDIOMAS (es · en · fr) ── */
 const UI={
- es:{title:'Cris — Rutina Nocturna',subtitle:'Ritual diario para un sueño reparador',
+ es:{title:'Quico — Rutina Nocturna',subtitle:'Ritual diario para un sueño reparador',
    plan_h:'Plan de 25 minutos',plan_seq:'Orden → Higiene + Skincare → Estiramientos → Meditación Shiné → Desconexión',
    start_btn:'▶️ Comenzar rutina',ideal_time:'💡 Horario ideal: 21:30-22:00',info_btn:'ℹ️ Ver información',
    pause:'⏸️ Pausar',resume:'▶️ Reanudar',next:'⏭️ Siguiente',step_word:'Paso',desc_word:'Descripción',
@@ -423,13 +424,13 @@ const UI={
    fomo_lead:'💭 Si a medianoche te tienta mirarlo, recuerda:',fomo_quote:'"Nada de lo que pase en el móvil entre las 22:00 y las 7:00 es más importante que tu descanso."',fomo_tail:'El mundo puede esperar 8 horas. Tú necesitas dormir 🫂',
    med_phase:'🧘 Fase {i} de {n}: {p} · {d}',min_word:'min',sec_word:'seg',
    finish_title:'🎉 ¡Rutina completada!',finish_desc:'Preparado para un sueño reparador',
-   finish_strong:'🌙 Ya está. Lo has hecho genial.',finish_em:'Guarda el móvil en otra habitación 📱→🚪<br>y déjate caer en la cama 😴',finish_sweet:'Dulces sueños, Cris 💜',
+   finish_strong:'🌙 Ya está. Lo has hecho genial.',finish_em:'Guarda el móvil en otra habitación 📱→🚪<br>y déjate caer en la cama 😴',finish_sweet:'Dulces sueños, {u} 💜',
    finish_home_btn:'🏠 Volver al inicio',v_finish:'Rutina completada. Guarda el móvil en otra habitación y a dormir. Dulces sueños.',
    info_h:'ℹ️ Información',info_back:'← Volver',info_ben_h:'🌙 Beneficios de la rutina',
    info_ben_p:'Esta rutina de 25 minutos prepara tu mente y cuerpo para un sueño reparador. Incluye meditación Shiné (budista) para calmar la mente antes de dormir.',
    info_time_h:'⏰ Horario recomendado',
    info_t1:'<strong>21:30</strong> - Inicio de la rutina',info_t2:'<strong>21:35</strong> - Higiene y skincare',info_t3:'<strong>21:45</strong> - Estiramientos y meditación Shiné',info_t4:'<strong>21:55</strong> - Desconexión digital'},
- en:{title:'Cris — Night Routine',subtitle:'A daily ritual for restful sleep',
+ en:{title:'Quico — Night Routine',subtitle:'A daily ritual for restful sleep',
    plan_h:'25-minute plan',plan_seq:'Tidy → Hygiene + Skincare → Stretches → Shiné meditation → Disconnection',
    start_btn:'▶️ Start routine',ideal_time:'💡 Ideal time: 21:30-22:00',info_btn:'ℹ️ See info',
    pause:'⏸️ Pause',resume:'▶️ Resume',next:'⏭️ Next',step_word:'Step',desc_word:'Description',
@@ -440,13 +441,13 @@ const UI={
    fomo_lead:'💭 If at midnight you’re tempted to check it, remember:',fomo_quote:'"Nothing that happens on the phone between 10pm and 7am matters more than your rest."',fomo_tail:'The world can wait 8 hours. You need to sleep 🫂',
    med_phase:'🧘 Phase {i} of {n}: {p} · {d}',min_word:'min',sec_word:'sec',
    finish_title:'🎉 Routine complete!',finish_desc:'Ready for restful sleep',
-   finish_strong:'🌙 That’s it. You did great.',finish_em:'Leave the phone in another room 📱→🚪<br>and let yourself fall into bed 😴',finish_sweet:'Sweet dreams, Cris 💜',
+   finish_strong:'🌙 That’s it. You did great.',finish_em:'Leave the phone in another room 📱→🚪<br>and let yourself fall into bed 😴',finish_sweet:'Sweet dreams, {u} 💜',
    finish_home_btn:'🏠 Back to start',v_finish:'Routine complete. Leave the phone in another room and off to sleep. Sweet dreams.',
    info_h:'ℹ️ Info',info_back:'← Back',info_ben_h:'🌙 Benefits of the routine',
    info_ben_p:'This 25-minute routine prepares your mind and body for restful sleep. It includes Shiné (Buddhist) meditation to calm the mind before bed.',
    info_time_h:'⏰ Recommended schedule',
    info_t1:'<strong>21:30</strong> - Routine start',info_t2:'<strong>21:35</strong> - Hygiene and skincare',info_t3:'<strong>21:45</strong> - Stretches and Shiné meditation',info_t4:'<strong>21:55</strong> - Digital disconnection'},
- fr:{title:'Cris — Routine du Soir',subtitle:'Un rituel quotidien pour un sommeil réparateur',
+ fr:{title:'Quico — Routine du Soir',subtitle:'Un rituel quotidien pour un sommeil réparateur',
    plan_h:'Plan de 25 minutes',plan_seq:'Rangement → Hygiène + Soins → Étirements → Méditation Shiné → Déconnexion',
    start_btn:'▶️ Commencer la routine',ideal_time:'💡 Horaire idéal : 21h30-22h00',info_btn:'ℹ️ Voir les infos',
    pause:'⏸️ Pause',resume:'▶️ Reprendre',next:'⏭️ Suivant',step_word:'Étape',desc_word:'Description',
@@ -457,7 +458,7 @@ const UI={
    fomo_lead:'💭 Si à minuit tu es tentée de le regarder, rappelle-toi :',fomo_quote:'« Rien de ce qui se passe sur le téléphone entre 22h et 7h n’est plus important que ton repos. »',fomo_tail:'Le monde peut attendre 8 heures. Toi, tu as besoin de dormir 🫂',
    med_phase:'🧘 Phase {i} sur {n} : {p} · {d}',min_word:'min',sec_word:'sec',
    finish_title:'🎉 Routine terminée !',finish_desc:'Prête pour un sommeil réparateur',
-   finish_strong:'🌙 Voilà. Tu as super bien fait.',finish_em:'Laisse le téléphone dans une autre pièce 📱→🚪<br>et laisse-toi tomber dans le lit 😴',finish_sweet:'Doux rêves, Cris 💜',
+   finish_strong:'🌙 Voilà. Tu as super bien fait.',finish_em:'Laisse le téléphone dans une autre pièce 📱→🚪<br>et laisse-toi tomber dans le lit 😴',finish_sweet:'Doux rêves, {u} 💜',
    finish_home_btn:'🏠 Retour à l’accueil',v_finish:'Routine terminée. Laisse le téléphone dans une autre pièce et au lit. Doux rêves.',
    info_h:'ℹ️ Informations',info_back:'← Retour',info_ben_h:'🌙 Bienfaits de la routine',
    info_ben_p:'Cette routine de 25 minutes prépare ton esprit et ton corps à un sommeil réparateur. Elle inclut la méditation Shiné (bouddhiste) pour apaiser l’esprit avant de dormir.',
@@ -856,7 +857,7 @@ function finishRoutine() {
     <div class="phrase" style="text-align:center">
       <strong>${t('finish_strong')}</strong><br><br>
       <em>${t('finish_em')}</em><br><br>
-      ${t('finish_sweet')}
+      ${t('finish_sweet',{u:__uname()})}
     </div>`;
 
   const controlsDiv = document.querySelector('.controls');
