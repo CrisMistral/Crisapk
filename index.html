@@ -386,6 +386,7 @@ body.mod-open #menuBtn{display:none;}
       <div class="nt-row"><span data-i18n="notif_night">🌙 Rutina nocturna</span><input type="time" id="nt-n" value="21:30" onchange="saveNotifTimes()"></div>
       <div class="cfg-note" data-i18n="notif_hint">Suenan con la app abierta o instalada en la pantalla de inicio</div>
     </div>
+    <div class="nt-row" style="margin-bottom:12px"><span data-i18n="cfg_name">🙂 Tu nombre</span><input type="text" id="nameInput" maxlength="18" placeholder="Cris" oninput="saveName(this.value)" style="width:130px;border:2px solid var(--mint-mid);border-radius:10px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark);background:#fff"></div>
     <button id="calmBtn" onclick="toggleCalm()">🕯️ Reducir estímulos</button>
     <div class="cfg-chips">
       <button id="c-voice" onclick="toggleCfg('voice')" data-i18n="cfg_voice">🗣️ Voz</button>
@@ -424,16 +425,16 @@ body.mod-open #menuBtn{display:none;}
 /* ══════════ IDIOMAS (es por defecto · en · fr) ══════════ */
 const I18N={
  es:{
-  menu:'Menú', menu_open:'Abrir menú', menu_close:'Cerrar menú', menu_title:'🌿 Menú de Cris', lang_change:'Cambiar idioma',
+  menu:'Menú', menu_open:'Abrir menú', menu_close:'Cerrar menú', menu_title:'🌿 Menú de {name}', lang_change:'Cambiar idioma',
   hero_sub:'¿en qué te ayudo hoy?',
   lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes',
   notif_morning:'☀️ Empezar el día', notif_night:'🌙 Rutina nocturna',
   notif_hint:'Suenan con la app abierta o instalada en la pantalla de inicio',
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
-  drawer_footer:'Cris · tu compañera de cada día 💚',
+  drawer_footer:'{name} · tu compañera de cada día 💚',
   day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia', drop:' Soltar', drop_title:'Soltar el móvil y cambiar de tarea',
-  greet_morning:'¡Buenos días!', greet_afternoon:'¡Buenas tardes!', greet_evening:'¡Buenas noches!',
+  greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
   mod_trabajo_t:'Trabajo', mod_trabajo_s:'Herramientas anti-bloqueo',
   mod_ejercicios_t:'Ejercicios', mod_ejercicios_s:'Pilates guiado, manos libres',
@@ -446,7 +447,7 @@ const I18N={
   notif_on_title:'🦘 ¡Recordatorios activados!', notif_on_body:'Te avisaré al abrir la app o si la tienes instalada 💚',
   notif_denied:'Sin permiso no puedo avisarte 🥺 — actívalo en ajustes del navegador',
   notif_unsupported:'Este navegador no soporta notificaciones 😔',
-  notif_m_title:'🦘 ¡Buenos días, Cris!', notif_m_body:'Hoy toca: {p} y {z}. Un pasito y ya está 💚',
+  notif_m_title:'🦘 ¡Buenos días, {name}!', notif_m_body:'Hoy toca: {p} y {z}. Un pasito y ya está 💚',
   notif_n_title:'🌙 Hora de cerrar el día', notif_n_body:'Tu rutina nocturna te espera: 25 min y a dormir de lujo 💜',
   notif_pre_title:'🌙 En 10 minutos, rutina nocturna', notif_pre_body:'Ve cerrando lo que tengas entre manos, sin prisa 💜',
   notif_finde:'finde tranquilo',
@@ -486,16 +487,16 @@ const I18N={
   zone:{cocina:'Cocina',bano:'Baño',salon:'Salón',dormitorio:'Dormitorio',comunes:'Zonas Comunes'}
  },
  en:{
-  menu:'Menu', menu_open:'Open menu', menu_close:'Close menu', menu_title:'🌿 Cris menu', lang_change:'Change language',
+  menu:'Menu', menu_open:'Open menu', menu_close:'Close menu', menu_title:'🌿 {name} menu', lang_change:'Change language',
   hero_sub:'how can I help you today?',
   lang_label:'Language', modules_label:'Modules', settings_label:'Settings',
   notif_morning:'☀️ Start the day', notif_night:'🌙 Night routine',
   notif_hint:'They sound with the app open or installed on your home screen',
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
-  drawer_footer:'Cris · your everyday companion 💚',
+  drawer_footer:'{name} · your everyday companion 💚',
   day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit', drop:' Drop it', drop_title:'Put the phone down and switch tasks',
-  greet_morning:'Good morning!', greet_afternoon:'Good afternoon!', greet_evening:'Good evening!',
+  greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
   mod_trabajo_t:'Work', mod_trabajo_s:'Anti-block tools',
   mod_ejercicios_t:'Exercise', mod_ejercicios_s:'Guided Pilates, hands-free',
@@ -508,7 +509,7 @@ const I18N={
   notif_on_title:'🦘 Reminders on!', notif_on_body:'I’ll nudge you when the app is open or installed 💚',
   notif_denied:'Without permission I can’t remind you 🥺 — enable it in browser settings',
   notif_unsupported:'This browser doesn’t support notifications 😔',
-  notif_m_title:'🦘 Good morning, Cris!', notif_m_body:'Today: {p} and {z}. One little step and you’re off 💚',
+  notif_m_title:'🦘 Good morning, {name}!', notif_m_body:'Today: {p} and {z}. One little step and you’re off 💚',
   notif_n_title:'🌙 Time to wind down', notif_n_body:'Your night routine awaits: 25 min and off to lovely sleep 💜',
   notif_pre_title:'🌙 Night routine in 10 minutes', notif_pre_body:'Start wrapping up what you’re doing, no rush 💜',
   notif_finde:'a calm weekend',
@@ -548,16 +549,16 @@ const I18N={
   zone:{cocina:'Kitchen',bano:'Bathroom',salon:'Living room',dormitorio:'Bedroom',comunes:'Common areas'}
  },
  fr:{
-  menu:'Menu', menu_open:'Ouvrir le menu', menu_close:'Fermer le menu', menu_title:'🌿 Menu de Cris', lang_change:'Changer de langue',
+  menu:'Menu', menu_open:'Ouvrir le menu', menu_close:'Fermer le menu', menu_title:'🌿 Menu de {name}', lang_change:'Changer de langue',
   hero_sub:'comment puis-je t’aider aujourd’hui ?',
   lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages',
   notif_morning:'☀️ Commencer la journée', notif_night:'🌙 Routine du soir',
   notif_hint:'Elles sonnent avec l’appli ouverte ou installée sur l’écran d’accueil',
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
-  drawer_footer:'Cris · ta compagne de chaque jour 💚',
+  drawer_footer:'{name} · ta compagne de chaque jour 💚',
   day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence', drop:' Lâcher', drop_title:'Lâcher le téléphone et changer de tâche',
-  greet_morning:'Bonjour !', greet_afternoon:'Bon après-midi !', greet_evening:'Bonsoir !',
+  greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
   mod_trabajo_t:'Travail', mod_trabajo_s:'Outils anti-blocage',
   mod_ejercicios_t:'Exercices', mod_ejercicios_s:'Pilates guidé, mains libres',
@@ -570,7 +571,7 @@ const I18N={
   notif_on_title:'🦘 Rappels activés !', notif_on_body:'Je te préviendrai à l’ouverture de l’appli ou si elle est installée 💚',
   notif_denied:'Sans autorisation je ne peux pas te prévenir 🥺 — active-la dans les réglages du navigateur',
   notif_unsupported:'Ce navigateur ne gère pas les notifications 😔',
-  notif_m_title:'🦘 Bonjour, Cris !', notif_m_body:'Aujourd’hui : {p} et {z}. Un petit pas et c’est parti 💚',
+  notif_m_title:'🦘 Bonjour, {name} !', notif_m_body:'Aujourd’hui : {p} et {z}. Un petit pas et c’est parti 💚',
   notif_n_title:'🌙 Il est temps de clore la journée', notif_n_body:'Ta routine du soir t’attend : 25 min et au dodo 💜',
   notif_pre_title:'🌙 Routine du soir dans 10 minutes', notif_pre_body:'Commence à finir ce que tu fais, sans hâte 💜',
   notif_finde:'un week-end tranquille',
@@ -616,9 +617,10 @@ function t(key,vars){let s=L()[key];if(s===undefined)s=I18N.es[key];if(s===undef
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
 function applyStaticI18n(){
   document.documentElement.lang=crisLang();
-  document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});
-  document.querySelectorAll('[data-i18n-aria]').forEach(el=>{el.setAttribute('aria-label',t(el.getAttribute('data-i18n-aria')));});
-  document.querySelectorAll('[data-i18n-title]').forEach(el=>{el.setAttribute('title',t(el.getAttribute('data-i18n-title')));});
+  const nv={name:cfgName()};
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'),nv);});
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>{el.setAttribute('aria-label',t(el.getAttribute('data-i18n-aria'),nv));});
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{el.setAttribute('title',t(el.getAttribute('data-i18n-title'),nv));});
   document.querySelectorAll('#langRow button').forEach(b=>b.classList.toggle('on',b.dataset.lang===crisLang()));
   updateLangBtn();
 }
@@ -661,7 +663,8 @@ const modules = [
 // Saludo según hora
 function setGreeting(){
   const h = new Date().getHours();
-  const txt = h<12?t('greet_morning'):h<19?t('greet_afternoon'):t('greet_evening');
+  const nv={name:cfgName()};
+  const txt = h<12?t('greet_morning',nv):h<19?t('greet_afternoon',nv):t('greet_evening',nv);
   document.getElementById('greeting').textContent = txt;
   const b=t('bubbles');
   document.getElementById('bubble-msg').textContent = b[Math.floor(Math.random()*b.length)];
@@ -725,6 +728,10 @@ function renderDayEdit(){
 /* ── AJUSTES GLOBALES (voz/sonido/vibración/reducir estímulos) ── */
 function getCfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function setCfgStore(c){try{localStorage.setItem('cris_cfg',JSON.stringify(c));}catch(e){}}
+/* Nombre configurable: la app deja de estar «pegada» a una persona (por defecto Cris) */
+function cfgName(){const n=(getCfg().name||'').trim();return n||'Cris';}
+let _nameSaveT=null;
+function saveName(v){const c=getCfg();c.name=(v||'').slice(0,18);setCfgStore(c);clearTimeout(_nameSaveT);_nameSaveT=setTimeout(()=>{applyStaticI18n();setGreeting();renderNotif();},350);}
 function toggleCfg(k){const c=getCfg();c[k]=c[k]===false;setCfgStore(c);renderCfg();}
 function toggleCalm(){
   const c=getCfg();c.calm=c.calm!==true;setCfgStore(c);
@@ -733,6 +740,7 @@ function toggleCalm(){
 }
 function renderCfg(){
   const c=getCfg();
+  const ni=document.getElementById('nameInput');if(ni&&document.activeElement!==ni)ni.value=c.name||'';
   document.getElementById('c-voice').classList.toggle('off',c.voice===false||c.calm===true);
   document.getElementById('c-sound').classList.toggle('off',c.sound===false||c.calm===true);
   document.getElementById('c-vib').classList.toggle('off',c.vib===false||c.calm===true);
@@ -804,7 +812,7 @@ function checkNotif(){
     n.lastM=today;setNotifCfg(n);
     const day=now.getDay();
     const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');
-    fireNotif(t('notif_m_title'),t('notif_m_body',{p:t('pil')[day],z:zona}));
+    fireNotif(t('notif_m_title',{name:cfgName()}),t('notif_m_body',{p:t('pil')[day],z:zona}));
   }
   if(n.n&&n.lastN!==today&&nowMin>=minsOf(n.n)){
     n.lastN=today;setNotifCfg(n);
