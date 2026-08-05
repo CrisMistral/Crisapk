@@ -463,7 +463,7 @@ const I18N={
   mod_intereses_t:'Intereses', mod_intereses_s:'Aprender cada día',
   mod_botiquin_t:'Botiquín Emocional', mod_botiquin_s:'Rescate y calma',
   mod_noche_t:'Rutina Nocturna', mod_noche_s:'Cierre del día',
-  mod_juego_t:'Juego', mod_juego_s:'Ordena joyas y revela dibujos',
+  mod_juego_t:'Juego', mod_juego_s:'Misterios de lógica: ¿quién fue?',
   notif_on_title:'🦘 ¡Recordatorios activados!', notif_on_body:'Te avisaré al abrir la app o si la tienes instalada 💚',
   notif_denied:'Sin permiso no puedo avisarte 🥺 — actívalo en ajustes del navegador',
   notif_unsupported:'Este navegador no soporta notificaciones 😔',
@@ -501,7 +501,7 @@ const I18N={
   r_intereses_t:'Aprende algo hoy', r_intereses_s:'Un interés · 10-15 min',
   r_noche_t:'Rutina nocturna', r_noche_s_night:'25 min · cierre del día', r_noche_s_eve:'Para esta noche · 25 min',
   r_calma_t:'Momento de calma', r_calma_s:'Respira o medita un poco',
-  r_juego_t:'Un rato de juego', r_juego_s:'Ordena joyas y revela dibujos',
+  r_juego_t:'Un rato de juego', r_juego_s:'Un misterio de lógica',
   dias:['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
   pil:['Movilidad Suave','Core Profundo','Cadera y Glúteos','Espalda y Postura','Piernas y Equilibrio','Cuerpo Completo','Estiramientos Profundos'],
   zone:{cocina:'Cocina',bano:'Baño',salon:'Salón',dormitorio:'Dormitorio',comunes:'Zonas Comunes'}
@@ -525,7 +525,7 @@ const I18N={
   mod_intereses_t:'Interests', mod_intereses_s:'Learn every day',
   mod_botiquin_t:'Emotional Kit', mod_botiquin_s:'Rescue and calm',
   mod_noche_t:'Night Routine', mod_noche_s:'Closing the day',
-  mod_juego_t:'Game', mod_juego_s:'Sort gems and reveal pictures',
+  mod_juego_t:'Game', mod_juego_s:'Logic mysteries: whodunnit?',
   notif_on_title:'🦘 Reminders on!', notif_on_body:'I’ll nudge you when the app is open or installed 💚',
   notif_denied:'Without permission I can’t remind you 🥺 — enable it in browser settings',
   notif_unsupported:'This browser doesn’t support notifications 😔',
@@ -563,7 +563,7 @@ const I18N={
   r_intereses_t:'Learn something today', r_intereses_s:'One interest · 10-15 min',
   r_noche_t:'Night routine', r_noche_s_night:'25 min · closing the day', r_noche_s_eve:'For tonight · 25 min',
   r_calma_t:'A calm moment', r_calma_s:'Breathe or meditate a little',
-  r_juego_t:'A bit of play', r_juego_s:'Sort gems and reveal pictures',
+  r_juego_t:'A bit of play', r_juego_s:'A logic mystery',
   dias:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
   pil:['Gentle Mobility','Deep Core','Hips & Glutes','Back & Posture','Legs & Balance','Full Body','Deep Stretches'],
   zone:{cocina:'Kitchen',bano:'Bathroom',salon:'Living room',dormitorio:'Bedroom',comunes:'Common areas'}
@@ -587,7 +587,7 @@ const I18N={
   mod_intereses_t:'Centres d’intérêt', mod_intereses_s:'Apprendre chaque jour',
   mod_botiquin_t:'Trousse Émotionnelle', mod_botiquin_s:'Secours et calme',
   mod_noche_t:'Routine du Soir', mod_noche_s:'Clore la journée',
-  mod_juego_t:'Jeu', mod_juego_s:'Range les gemmes et révèle des dessins',
+  mod_juego_t:'Jeu', mod_juego_s:'Mystères de logique : qui a fait ça ?',
   notif_on_title:'🦘 Rappels activés !', notif_on_body:'Je te préviendrai à l’ouverture de l’appli ou si elle est installée 💚',
   notif_denied:'Sans autorisation je ne peux pas te prévenir 🥺 — active-la dans les réglages du navigateur',
   notif_unsupported:'Ce navigateur ne gère pas les notifications 😔',
@@ -625,7 +625,7 @@ const I18N={
   r_intereses_t:'Apprends quelque chose aujourd’hui', r_intereses_s:'Un intérêt · 10-15 min',
   r_noche_t:'Routine du soir', r_noche_s_night:'25 min · clore la journée', r_noche_s_eve:'Pour ce soir · 25 min',
   r_calma_t:'Un moment de calme', r_calma_s:'Respire ou médite un peu',
-  r_juego_t:'Un peu de jeu', r_juego_s:'Range les gemmes et révèle des dessins',
+  r_juego_t:'Un peu de jeu', r_juego_s:'Un mystère de logique',
   dias:['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],
   pil:['Mobilité douce','Gainage profond','Hanches et fessiers','Dos et posture','Jambes et équilibre','Corps complet','Étirements profonds'],
   zone:{cocina:'Cuisine',bano:'Salle de bain',salon:'Salon',dormitorio:'Chambre',comunes:'Espaces communs'}
@@ -677,7 +677,7 @@ const modules = [
   { id:'intereses',  icon:'🎨', file:'modules/intereses.html' },
   { id:'botiquin',   icon:'🫀', file:'modules/rescate-emocional.html' },
   { id:'noche',      icon:'🌙', file:'modules/rutina-nocturna.html' },
-  { id:'juego',      icon:'💎', file:'modules/juegos.html' }
+  { id:'juego',      icon:'🔍', file:'modules/juegos.html' }
 ];
 
 // Saludo según hora
@@ -866,7 +866,7 @@ const DAY_CATALOG=[
   {id:'intereses',e:'🎨', def:false},
   {id:'noche',    e:'🌙', def:true},
   {id:'calma',    e:'🫀', def:false},
-  {id:'juego',    e:'💎', def:false}
+  {id:'juego',    e:'🔍', def:false}
 ];
 function getDayMods(){return lsJSON('cris_hoy_mods_v1');}
 function modOn(id){const c=getDayMods(),d=DAY_CATALOG.find(m=>m.id===id);return c[id]!==undefined?!!c[id]:!!(d&&d.def);}
@@ -965,7 +965,7 @@ function renderToday(){
       intereses:()=>{const k='cris_intereses_v1_'+tl;return {e:'🎨',t:t('r_intereses_t'),s:t('r_intereses_s'),f:'modules/intereses.html',key:k,done:markDone(k)};},
       noche:()=>{const k='cris_noche_v1_'+tl;return {e:'🌙',t:t('r_noche_t'),s:h>=20?t('r_noche_s_night'):t('r_noche_s_eve'),f:'modules/rutina-nocturna.html',key:k,done:markDone(k)};},
       calma:()=>{const k='cris_calma_v1_'+tl;return {e:'🫀',t:t('r_calma_t'),s:t('r_calma_s'),f:'modules/rescate-emocional.html',key:k,done:markDone(k)};},
-      juego:()=>{const k='cris_juego_v1_'+tl;return {e:'💎',t:t('r_juego_t'),s:t('r_juego_s'),f:'modules/juegos.html',key:k,done:markDone(k)};}
+      juego:()=>{const k='cris_juego_v1_'+tl;return {e:'🔍',t:t('r_juego_t'),s:t('r_juego_s'),f:'modules/juegos.html',key:k,done:markDone(k)};}
     };
     DAY_CATALOG.forEach(m=>{ if(modOn(m.id)&&build[m.id])rows.push(build[m.id]()); });
 

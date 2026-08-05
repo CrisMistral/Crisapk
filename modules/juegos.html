@@ -3,92 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Juego · Quico</title>
+<title>¿Quién fue? · Quico</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--teal:#26a69a;--td:#1a6b64;--mint:#d6f0eb;--mm:#b8e4dd;--ms:#e8f8f5;--fg:#1a2e2b;--fg2:#2d6b64;}
+:root{--teal:#26a69a;--td:#1a6b64;--mint:#d6f0eb;--mm:#b8e4dd;--ms:#e8f8f5;--fg:#1a2e2b;--fg2:#2d6b64;--gold:#f5c518;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Outfit',sans-serif;-webkit-tap-highlight-color:transparent;}
 html,body{min-height:100%;background:var(--ms);}
 body{display:flex;flex-direction:column;align-items:center;min-height:100vh;color:var(--fg);padding:16px 12px 100px;}
-
 .screen{display:none;width:100%;max-width:460px;flex-direction:column;align-items:center;}
 .screen.active{display:flex;}
-
 h1{color:var(--td);font-size:1.5rem;font-weight:800;text-align:center;}
-.sub{color:var(--fg2);font-size:.85rem;text-align:center;margin-bottom:18px;font-weight:600;line-height:1.4;}
-
+.sub{color:var(--fg2);font-size:.85rem;text-align:center;margin-bottom:18px;font-weight:600;line-height:1.45;}
 /* Picker */
-.pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;}
-.pick-card{background:#fff;border:none;border-radius:20px;padding:14px 10px 12px;cursor:pointer;box-shadow:0 3px 12px rgba(38,166,154,.12);position:relative;font-family:'Outfit',sans-serif;}
-.pick-card:active{transform:scale(.97);}
-.pick-thumb{display:grid;margin:0 auto 8px;border-radius:8px;overflow:hidden;background:#f4fbf9;padding:6px;width:max-content;}
-.pick-thumb i{display:block;border-radius:2px;}
-.pick-name{font-size:.92rem;font-weight:700;color:var(--td);}
-.pick-tag{font-size:.72rem;color:var(--fg2);font-weight:600;margin-top:2px;}
-.pick-badge{position:absolute;top:8px;right:8px;font-size:1rem;}
-
-/* Board */
+.pick-grid{display:flex;flex-direction:column;gap:12px;width:100%;}
+.pick-card{background:#fff;border:none;border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 3px 12px rgba(38,166,154,.12);position:relative;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:14px;text-align:left;}
+.pick-card:active{transform:scale(.98);}
+.pick-em{font-size:2rem;flex-shrink:0;}
+.pick-info h3{font-size:1rem;font-weight:800;color:var(--td);}
+.pick-info p{font-size:.78rem;color:var(--fg2);font-weight:600;margin-top:2px;}
+.pick-badge{position:absolute;top:12px;right:14px;font-size:1.1rem;}
+.pick-num{width:34px;height:34px;border-radius:50%;background:var(--mint);color:var(--td);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.9rem;}
+/* Game */
 .topbar{display:flex;align-items:center;gap:10px;width:100%;margin-bottom:12px;}
 .back-btn{width:42px;height:42px;border:none;background:#fff;border-radius:13px;font-size:1.3rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;color:var(--td);flex-shrink:0;}
-.topbar h2{font-size:1.1rem;font-weight:800;color:var(--td);}
-
-.pbar-out{width:100%;max-width:380px;height:9px;background:var(--mm);border-radius:6px;overflow:hidden;margin-bottom:14px;}
-.pbar-in{height:100%;background:linear-gradient(90deg,var(--teal),#4dd0e1);border-radius:6px;transition:width .3s;width:0;}
-
-.board-wrap{position:relative;background:#fff;border-radius:18px;padding:10px;box-shadow:0 6px 22px rgba(38,166,154,.14);margin-bottom:18px;}
-.board{display:grid;gap:2px;touch-action:none;}
-.cell{position:relative;border-radius:4px;background:#eef6f4;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:transform .1s;}
-.cell.blank{background:transparent;cursor:default;}
-.cell .hint{font-size:.6rem;font-weight:800;pointer-events:none;}
-.cell.filled .hint{display:none;}
-.cell.filled::after{content:'';position:absolute;top:16%;left:20%;width:34%;height:28%;border-radius:50%;background:rgba(255,255,255,.6);pointer-events:none;}
-.cell.glow{box-shadow:0 0 0 2px var(--teal),0 0 7px rgba(38,166,154,.5);z-index:1;}
-.cell.pop{animation:pop .28s ease;}
-@keyframes pop{0%{transform:scale(.4)}60%{transform:scale(1.14)}100%{transform:scale(1)}}
-.cell.nope{animation:nope .3s ease;}
-@keyframes nope{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
-
-/* Tray (donde están las gemas) */
-.tray-label{font-size:.72rem;font-weight:700;color:var(--fg2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
-.tray{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;width:100%;}
-.gem{border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:'Outfit',sans-serif;padding:2px;}
-.gem-face{width:48px;height:48px;border-radius:12px;position:relative;box-shadow:0 3px 8px rgba(0,0,0,.18);transition:transform .1s;}
-.gem-face::after{content:'';position:absolute;top:15%;left:20%;width:36%;height:30%;border-radius:50%;background:rgba(255,255,255,.6);}
-.gem.sel .gem-face{transform:scale(1.14);box-shadow:0 0 0 3px var(--td),0 3px 10px rgba(0,0,0,.25);}
-.gem.done .gem-face{opacity:.25;}
-.gem-count{font-size:.8rem;font-weight:800;color:var(--td);}
-.gem.done .gem-count{color:var(--fg2);}
-
-/* Completion */
-.done-hero{position:absolute;inset:0;background:rgba(255,255,255,.72);backdrop-filter:blur(2px);border-radius:18px;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;z-index:5;}
-.done-hero.show{display:flex;}
-.done-hero .big{font-size:3rem;}
-.done-hero h3{font-size:1.35rem;font-weight:800;color:var(--td);}
-.row-btns{display:flex;gap:10px;margin-top:14px;}
-.spark{position:absolute;font-size:1.2rem;pointer-events:none;animation:spark 1.1s ease-out forwards;}
-@keyframes spark{0%{transform:scale(0) rotate(0);opacity:0}30%{opacity:1}100%{transform:scale(1.4) rotate(40deg) translateY(-14px);opacity:0}}
-
-.btn{border:none;border-radius:14px;padding:12px 20px;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;}
+.topbar h2{font-size:1.05rem;font-weight:800;color:var(--td);}
+.story{background:#fff;border-radius:16px;padding:14px 16px;font-size:.86rem;line-height:1.5;color:var(--fg);box-shadow:0 3px 12px rgba(38,166,154,.1);margin-bottom:14px;width:100%;}
+.seclabel{font-size:.72rem;font-weight:800;color:var(--fg2);text-transform:uppercase;letter-spacing:.06em;margin:2px 2px 8px;align-self:flex-start;}
+/* Sillas */
+.seats{display:flex;gap:8px;justify-content:center;width:100%;margin-bottom:16px;flex-wrap:wrap;}
+.seat{flex:1;min-width:60px;max-width:88px;aspect-ratio:1;background:#fff;border:2.5px dashed var(--mm);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:transform .1s,border-color .1s;}
+.seat:active{transform:scale(.96);}
+.seat.sel{border-color:var(--teal);border-style:solid;box-shadow:0 0 0 3px rgba(38,166,154,.18);}
+.seat.filled{border-style:solid;border-color:var(--mm);background:var(--ms);}
+.seat .seat-n{position:absolute;top:5px;left:8px;font-size:.66rem;font-weight:800;color:var(--fg2);}
+.seat .seat-em{font-size:2rem;}
+.seat.culprit{border-color:#e5484d;border-style:solid;box-shadow:0 0 0 3px rgba(229,72,77,.35);background:#fff2f2;}
+.seat.nope{animation:nope .3s ease;}
+@keyframes nope{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.seat.pop{animation:pop .28s ease;}
+@keyframes pop{0%{transform:scale(.5)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+/* Pistas */
+.clues{background:#fff;border-radius:16px;padding:6px 4px;width:100%;box-shadow:0 3px 12px rgba(38,166,154,.1);margin-bottom:16px;}
+.clue{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;font-size:.85rem;line-height:1.4;color:var(--fg);}
+.clue+.clue{border-top:1px solid var(--ms);}
+.clue .ci{color:var(--teal);font-weight:800;flex-shrink:0;}
+/* Sospechosos */
+.tray{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:100%;margin-bottom:16px;}
+.sus{border:2px solid var(--mm);background:#fff;border-radius:14px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:'Outfit',sans-serif;font-weight:700;color:var(--td);font-size:.9rem;transition:transform .1s;}
+.sus:active{transform:scale(.95);}
+.sus.sel{border-color:var(--teal);box-shadow:0 0 0 3px rgba(38,166,154,.18);}
+.sus.placed{opacity:.32;pointer-events:none;}
+.sus .se{font-size:1.3rem;}
+.btn{border:none;border-radius:14px;padding:14px 22px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;}
 .btn-teal{background:var(--teal);color:#fff;}
 .btn-soft{background:var(--mm);color:var(--td);}
-
+.btn:disabled{opacity:.45;pointer-events:none;}
+.msg{min-height:22px;font-size:.85rem;font-weight:700;color:var(--fg2);text-align:center;margin-bottom:10px;}
+/* Win */
+.done-hero{position:fixed;inset:0;background:rgba(15,77,71,.5);display:none;align-items:center;justify-content:center;z-index:20;padding:22px;}
+.done-hero.show{display:flex;}
+.dh-card{background:#fff;border-radius:24px;padding:26px 22px;text-align:center;max-width:320px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.35);animation:pop .3s ease;}
+.dh-em{font-size:3.4rem;}
+.dh-card h3{font-size:1.5rem;font-weight:800;color:var(--td);margin:6px 0 4px;}
+.dh-card p{font-size:1rem;color:var(--fg2);font-weight:700;line-height:1.4;margin-bottom:16px;}
+.row-btns{display:flex;gap:10px;}.row-btns .btn{flex:1;padding:12px;}
+.spark{position:fixed;font-size:1.3rem;pointer-events:none;animation:spark 1.2s ease-out forwards;z-index:21;}
+@keyframes spark{0%{transform:scale(0);opacity:0}30%{opacity:1}100%{transform:scale(1.5) translateY(-40px);opacity:0}}
 .calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
-
-/* Quico con manitas (mascota) */
-.quico-mascot{position:relative;width:-moz-fit-content;width:fit-content;margin:0 auto 6px;filter:drop-shadow(0 3px 8px rgba(93,64,55,.18));}
-.quico-mascot .qm-head{display:block;margin:0;filter:none;}
-.qm-paws{position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);width:64%;line-height:0;}
-.qm-paws svg{display:block;width:100%;}
 </style>
 </head>
 <body>
 
 <!-- PICKER -->
 <div id="v-pick" class="screen active">
-  <img src="../quico/quico_happy.png" alt="Quico" style="width:118px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))">
-  <h1 data-i18n="title">💎 Joyas</h1>
-  <p class="sub" data-i18n="sub">Coge cada gema de la bandeja y ponla en su casilla del color correcto.<br>El dibujo se ilumina solo.</p>
+  <img src="../quico/quico_happy.png" alt="Quico" style="width:112px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))">
+  <h1 data-i18n="title">🔍 ¿Quién fue?</h1>
+  <p class="sub" data-i18n="sub">Lee las pistas, coloca a los sospechosos y descubre al culpable.</p>
   <div class="pick-grid" id="pick-grid"></div>
 </div>
 
@@ -96,23 +87,28 @@ h1{color:var(--td);font-size:1.5rem;font-weight:800;text-align:center;}
 <div id="v-game" class="screen">
   <div class="topbar">
     <button class="back-btn" onclick="go('v-pick')">←</button>
-    <h2 id="game-title">Dibujo</h2>
+    <h2 id="game-title">Caso</h2>
   </div>
-  <div class="pbar-out"><div class="pbar-in" id="pbar"></div></div>
-  <div class="board-wrap">
-    <div class="board" id="board"></div>
-    <div class="done-hero" id="done-hero">
-      <span class="big">✨</span>
-      <h3 data-i18n="done_t">¡Precioso!</h3>
-      <div style="font-size:.85rem;color:var(--fg2);font-weight:600;" data-i18n="done_s">Dibujo completado 💚</div>
+  <div class="story" id="story"></div>
+  <div class="seclabel" data-i18n="seats_label">Sillas</div>
+  <div class="seats" id="seats"></div>
+  <div class="seclabel" data-i18n="clues_label">Pistas</div>
+  <div class="clues" id="clues"></div>
+  <div class="seclabel" data-i18n="tray_label">Sospechosos</div>
+  <div class="tray" id="tray"></div>
+  <div class="msg" id="msg"></div>
+  <button class="btn btn-teal" id="check-btn" onclick="checkCase()" data-i18n="check">Comprobar</button>
+  <div class="done-hero" id="done-hero">
+    <div class="dh-card">
+      <div class="dh-em" id="dh-em">🔍</div>
+      <h3 data-i18n="win_t">¡Resuelto!</h3>
+      <p id="dh-culprit"></p>
       <div class="row-btns">
-        <button class="btn btn-soft" onclick="go('v-pick')" data-i18n="gallery">← Galería</button>
-        <button class="btn btn-teal" id="next-btn">Siguiente →</button>
+        <button class="btn btn-soft" onclick="go('v-pick')" data-i18n="gallery">← Casos</button>
+        <button class="btn btn-teal" id="next-btn">→</button>
       </div>
     </div>
   </div>
-  <div class="tray-label" data-i18n="tray">Bandeja de gemas</div>
-  <div class="tray" id="tray"></div>
 </div>
 
 <script>
@@ -123,206 +119,201 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
 
 /* ── IDIOMAS ── */
 const I18N={
-  es:{title:'💎 Joyas',sub:'Coge cada gema de la bandeja y ponla en su casilla del color correcto.<br>El dibujo se ilumina solo.',done_t:'¡Precioso!',done_s:'Dibujo completado 💚',gallery:'← Galería',tray:'Bandeja de gemas',gems:'gemas',
-      names:{corazon:'Corazón',estrella:'Estrella',flor:'Flor',mariposa:'Mariposa',arcoiris:'Arcoíris',sandia:'Sandía',manzana:'Manzana',diamante:'Diamante'}},
-  en:{title:'💎 Gems',sub:'Take each gem from the tray and place it on the matching colour cell.<br>The picture lights up on its own.',done_t:'Beautiful!',done_s:'Picture completed 💚',gallery:'← Gallery',tray:'Gem tray',gems:'gems',
-      names:{corazon:'Heart',estrella:'Star',flor:'Flower',mariposa:'Butterfly',arcoiris:'Rainbow',sandia:'Watermelon',manzana:'Apple',diamante:'Diamond'}},
-  fr:{title:'💎 Gemmes',sub:'Prends chaque gemme du plateau et pose-la sur la case de la bonne couleur.<br>Le dessin s’illumine tout seul.',done_t:'Magnifique !',done_s:'Dessin terminé 💚',gallery:'← Galerie',tray:'Plateau de gemmes',gems:'gemmes',
-      names:{corazon:'Cœur',estrella:'Étoile',flor:'Fleur',mariposa:'Papillon',arcoiris:'Arc-en-ciel',sandia:'Pastèque',manzana:'Pomme',diamante:'Diamant'}}
+ es:{title:'🔍 ¿Quién fue?',sub:'Lee las pistas, coloca a los sospechosos en su silla y descubre al culpable. ¡Pura lógica!',
+   seats_label:'Sillas',clues_label:'Pistas',tray_label:'Sospechosos',check:'🔎 Comprobar',
+   fillall:'Coloca a todos primero 🙂',wrong:'Mmm… algo no cuadra. Relee las pistas 🔍',
+   win_t:'¡Resuelto!',win_s:'El culpable es…',gallery:'← Casos',seat_word:'Silla',solved:'Resuelto',caseword:'Caso',
+   names:{conejo:'Conejo',zorro:'Zorro',buho:'Búho',mapache:'Mapache',gato:'Gato'},
+   cases:{
+    c1:{title:'La tarta robada',story:'¡Alguien se comió la tarta de zanahoria! 🍰 Los tres amigos estaban sentados en fila. Coloca a cada uno con las pistas y pilla al culpable.',
+      clues:['El Zorro está justo a la derecha del Conejo.','El Conejo no se sienta en el medio.','El culpable es quien está en la silla 3.']},
+    c2:{title:'El tarro de miel',story:'Ha desaparecido el tarro de miel. 🍯 Cuatro sospechosos, cuatro sillas. ¿Quién se lo llevó?',
+      clues:['El Búho está en la silla 1.','El Mapache está justo a la izquierda del Conejo.','El Zorro está justo a la derecha del Conejo.','El culpable se sienta justo a la derecha del Búho.']},
+    c3:{title:'Los bigotes pintados',story:'Alguien pintó bigotes en el retrato del abuelo. 🖍️ Cuatro en fila. Usa la cabeza y descúbrelo.',
+      clues:['El Gato está en un extremo (silla 1 o 4).','El Búho está justo a la izquierda del Zorro.','El Conejo está a la derecha del Gato (en cualquier silla).','El Conejo no se sienta al lado del Búho.','El culpable se sienta en la silla 4.']}
+   }},
+ en:{title:'🔍 Whodunnit?',sub:'Read the clues, seat the suspects and find the culprit. Pure logic!',
+   seats_label:'Seats',clues_label:'Clues',tray_label:'Suspects',check:'🔎 Check',
+   fillall:'Seat everyone first 🙂',wrong:'Hmm… something’s off. Re-read the clues 🔍',
+   win_t:'Solved!',win_s:'The culprit is…',gallery:'← Cases',seat_word:'Seat',solved:'Solved',caseword:'Case',
+   names:{conejo:'Rabbit',zorro:'Fox',buho:'Owl',mapache:'Raccoon',gato:'Cat'},
+   cases:{
+    c1:{title:'The stolen cake',story:'Someone ate the carrot cake! 🍰 The three friends were sitting in a row. Seat each one with the clues and catch the culprit.',
+      clues:['The Fox sits just to the right of the Rabbit.','The Rabbit is not in the middle.','The culprit is the one in seat 3.']},
+    c2:{title:'The honey jar',story:'The honey jar has vanished. 🍯 Four suspects, four seats. Who took it?',
+      clues:['The Owl is in seat 1.','The Raccoon is just to the left of the Rabbit.','The Fox is just to the right of the Rabbit.','The culprit sits just to the right of the Owl.']},
+    c3:{title:'The painted moustache',story:'Someone drew a moustache on grandpa’s portrait. 🖍️ Four in a row. Use your head and find out who.',
+      clues:['The Cat is at one end (seat 1 or 4).','The Owl is just to the left of the Fox.','The Rabbit is somewhere to the right of the Cat.','The Rabbit doesn’t sit next to the Owl.','The culprit sits in seat 4.']}
+   }},
+ fr:{title:'🔍 Qui a fait ça ?',sub:'Lis les indices, place les suspects sur leur siège et trouve le coupable. Pure logique !',
+   seats_label:'Sièges',clues_label:'Indices',tray_label:'Suspects',check:'🔎 Vérifier',
+   fillall:'Place tout le monde d’abord 🙂',wrong:'Hmm… ça ne colle pas. Relis les indices 🔍',
+   win_t:'Résolu !',win_s:'Le coupable est…',gallery:'← Affaires',seat_word:'Siège',solved:'Résolu',caseword:'Affaire',
+   names:{conejo:'Lapin',zorro:'Renard',buho:'Hibou',mapache:'Raton',gato:'Chat'},
+   cases:{
+    c1:{title:'Le gâteau volé',story:'Quelqu’un a mangé le gâteau aux carottes ! 🍰 Les trois amis étaient assis en rang. Place chacun avec les indices et attrape le coupable.',
+      clues:['Le Renard est juste à droite du Lapin.','Le Lapin n’est pas au milieu.','Le coupable est celui qui est sur le siège 3.']},
+    c2:{title:'Le pot de miel',story:'Le pot de miel a disparu. 🍯 Quatre suspects, quatre sièges. Qui l’a pris ?',
+      clues:['Le Hibou est sur le siège 1.','Le Raton est juste à gauche du Lapin.','Le Renard est juste à droite du Lapin.','Le coupable est assis juste à droite du Hibou.']},
+    c3:{title:'La moustache dessinée',story:'Quelqu’un a dessiné une moustache sur le portrait du grand-père. 🖍️ Quatre en rang. Réfléchis et trouve qui.',
+      clues:['Le Chat est à une extrémité (siège 1 ou 4).','Le Hibou est juste à gauche du Renard.','Le Lapin est quelque part à droite du Chat.','Le Lapin ne s’assoit pas à côté du Hibou.','Le coupable est sur le siège 4.']}
+   }}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return I18N[l]?l:'es';}
 function t(k){const s=I18N[crisLang()][k];return s!==undefined?s:(I18N.es[k]!==undefined?I18N.es[k]:k);}
-function picName(id){const n=I18N[crisLang()].names;return (n&&n[id])||I18N.es.names[id]||id;}
+function nm(id){const n=I18N[crisLang()].names;return (n&&n[id])||I18N.es.names[id]||id;}
+function caseL(id){return (I18N[crisLang()].cases&&I18N[crisLang()].cases[id])||I18N.es.cases[id];}
 function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 applyStaticI18n();
 
-/* ── Gemas ── */
-const GEMS={
-  R:'#e5484d', O:'#f2820b', Y:'#f5c518', G:'#2fb457', B:'#3b82f6',
-  P:'#a855f7', K:'#ec4899', C:'#06b6d4', W:'#bfe3f5', N:'#8a5a2b', X:'#3a3a3a'
-};
-function gemBg(l){const c=GEMS[l];return `radial-gradient(circle at 34% 28%, ${shade(c,55)}, ${c} 62%, ${shade(c,-22)})`;}
-function shade(hex,p){let n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;const f=v=>Math.max(0,Math.min(255,Math.round(v+(p>0?(255-v)*p/100:v*p/100))));return `rgb(${f(r)},${f(g)},${f(b)})`;}
-function faint(l){const c=GEMS[l];return shade(c,72);}
-
-/* ── Dibujos (cada fila mismo ancho, '.' = fondo vacío) ── */
-const PICTURES=[
-  {id:'corazon',name:'Corazón',emoji:'❤️',grid:[
-    '.RR...RR.','RRRRRRRRR','RKRRRRRKR','RRRRRRRRR','.RRRRRRR.','..RRRRR..','...RRR...','....R....']},
-  {id:'estrella',name:'Estrella',emoji:'⭐',grid:[
-    '....Y....','....Y....','...YOY...','YYYYYYYYY','.YYYYYYY.','..YYYYY..','..YY.YY..','.YY...YY.']},
-  {id:'flor',name:'Flor',emoji:'🌸',grid:[
-    '...KKK...','..KKKKK..','.KKKYKKK.','..KKKKK..','...KGK...','....G....','..GGGGG..','....G....','....G....']},
-  {id:'mariposa',name:'Mariposa',emoji:'🦋',grid:[
-    '.P.....P.','PBP...PBP','PBBP.PBBP','.PBP.PBP.','...BKB...','.PBP.PBP.','PBBP.PBBP','PBP...PBP','.P.....P.']},
-  {id:'arcoiris',name:'Arcoíris',emoji:'🌈',grid:[
-    'RRRRRRRRR','OOOOOOOOO','YYYYYYYYY','GGGGGGGGG','BBBBBBBBB','PPPPPPPPP']},
-  {id:'sandia',name:'Sandía',emoji:'🍉',grid:[
-    '.GGGGGGG.','GWWWWWWWG','WRRRRRRRW','WRRXRRXRW','.RRRXRRR.','..RRRRR..','...RRR...','....R....']},
-  {id:'manzana',name:'Manzana',emoji:'🍎',grid:[
-    '....N....','...GGN...','..RRRRR..','.RRRRRRR.','RRRRWRRRR','RRRRRRRRR','.RRRRRRR.','..RRRRR..']},
-  {id:'diamante',name:'Diamante',emoji:'💎',grid:[
-    '..WWWWW..','.WCCCCCW.','WCCCCCCCW','.WCCCCCW.','..WCCCW..','...WCW...','...WCW...','....W....']}
+/* ── Datos estructurales (verificados: solución única) ── */
+const EM={conejo:'🐰',zorro:'🦊',buho:'🦉',mapache:'🦝',gato:'🐱'};
+const CASES=[
+ {id:'c1',emoji:'🍰',N:3,pool:['conejo','zorro','buho'],sol:['conejo','zorro','buho'],culprit:2},
+ {id:'c2',emoji:'🍯',N:4,pool:['buho','mapache','conejo','zorro'],sol:['buho','mapache','conejo','zorro'],culprit:1},
+ {id:'c3',emoji:'🖍️',N:4,pool:['gato','buho','zorro','conejo'],sol:['gato','buho','zorro','conejo'],culprit:3}
 ];
 
 /* ── Estado ── */
-let cur=null, selGem=null, cells=[], remaining={}, filledCount=0, targetCount=0, dragging=false;
+let cur=null, placement=[], selSus=null;
 
 function go(v){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(v).classList.add('active');
   window.scrollTo(0,0);
-  if(v==='v-pick')renderPicker();
+  if(v==='v-pick'){document.getElementById('done-hero').classList.remove('show');renderPicker();}
 }
 
 /* ── Persistencia ── */
-function getDone(){try{return JSON.parse(localStorage.getItem('cris_joyas_done')||'[]');}catch(e){return[];}}
-function markDone(id){const d=getDone();if(!d.includes(id)){d.push(id);localStorage.setItem('cris_joyas_done',JSON.stringify(d));}
-  // Marca diaria para que el panel «Hoy» tache la fila de Juego al volver
+function getDone(){try{return JSON.parse(localStorage.getItem('cris_detective_done')||'[]');}catch(e){return[];}}
+function markDone(id){const d=getDone();if(!d.includes(id)){d.push(id);localStorage.setItem('cris_detective_done',JSON.stringify(d));}
   try{var _n=new Date();localStorage.setItem('cris_juego_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}}
 
 /* ── Audio/vibración ── */
 let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
-function beep(f=600,d=.15){if(!__allow('sound'))return;try{const a=__getCtx();if(!a)return;const o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.16,a.currentTime);g.gain.exponentialRampToValueAtTime(.01,a.currentTime+d);o.start();o.stop(a.currentTime+d);}catch(e){}}
+function beep(f=600,d=.12){if(!__allow('sound'))return;try{const a=__getCtx();if(!a)return;const o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.16,a.currentTime);g.gain.exponentialRampToValueAtTime(.01,a.currentTime+d);o.start();o.stop(a.currentTime+d);}catch(e){}}
 function vib(ms){if(!__allow('vib'))return;try{navigator.vibrate(ms);}catch(e){}}
 
 /* ── PICKER ── */
 function renderPicker(){
   const done=getDone();
-  document.getElementById('pick-grid').innerHTML=PICTURES.map(p=>{
-    const w=p.grid[0].length;
-    const cell=Math.min(13,Math.floor(120/w));
-    const thumb=`<div class="pick-thumb" style="grid-template-columns:repeat(${w},${cell}px);gap:1px;">`+
-      p.grid.join('').split('').map(ch=>`<i style="width:${cell}px;height:${cell}px;background:${ch==='.'?'transparent':GEMS[ch]}"></i>`).join('')+`</div>`;
-    return `<button class="pick-card" onclick="startPic('${p.id}')">
-      ${done.includes(p.id)?'<span class="pick-badge">✅</span>':''}
-      ${thumb}
-      <div class="pick-name">${p.emoji} ${picName(p.id)}</div>
-      <div class="pick-tag">${countGems(p)} ${t("gems")}</div>
+  document.getElementById('pick-grid').innerHTML=CASES.map((c,i)=>{
+    const L=caseL(c.id);
+    return `<button class="pick-card" onclick="startCase('${c.id}')">
+      ${done.includes(c.id)?'<span class="pick-badge">✅</span>':''}
+      <span class="pick-num">${i+1}</span>
+      <span class="pick-em">${c.emoji}</span>
+      <span class="pick-info"><h3>${L.title}</h3><p>${c.pool.map(id=>EM[id]).join(' ')} · ${c.N} ${t('tray_label').toLowerCase()}</p></span>
     </button>`;
   }).join('');
 }
-function countGems(p){return p.grid.join('').replace(/\./g,'').length;}
 
 /* ── EMPEZAR ── */
-function startPic(id){
-  cur=PICTURES.find(p=>p.id===id);
-  selGem=null;filledCount=0;remaining={};
-  const flat=cur.grid.join('').split('');
-  targetCount=flat.filter(c=>c!=='.').length;
-  flat.forEach(c=>{if(c!=='.')remaining[c]=(remaining[c]||0)+1;});
-  document.getElementById('game-title').textContent=cur.emoji+' '+picName(cur.id);
+function startCase(id){
+  cur=CASES.find(c=>c.id===id);
+  placement=new Array(cur.N).fill(null);
+  selSus=null;
+  const L=caseL(cur.id);
+  document.getElementById('game-title').textContent=cur.emoji+' '+L.title;
+  document.getElementById('story').textContent=L.story;
   document.getElementById('done-hero').classList.remove('show');
-  buildBoard();
-  buildTray();
-  updateProgress();
-  const first=Object.keys(remaining)[0];
-  if(first)selectGem(first);
+  document.getElementById('msg').textContent='';
+  renderClues();renderSeats();renderTray();
   go('v-game');
 }
-
-function buildBoard(){
-  const w=cur.grid[0].length;
-  const board=document.getElementById('board');
-  const cellPx=Math.floor(Math.min(360, window.innerWidth-56)/w);
-  board.style.gridTemplateColumns=`repeat(${w},${cellPx}px)`;
-  board.innerHTML='';
-  cells=[];
-  cur.grid.forEach((row)=>{
-    row.split('').forEach((ch)=>{
-      const d=document.createElement('div');
-      d.style.width=d.style.height=cellPx+'px';
-      if(ch==='.'){d.className='cell blank';}
-      else{
-        d.className='cell';
-        d.dataset.t=ch;
-        d.innerHTML=`<span class="hint" style="color:${faint(ch)}">${ch}</span>`;
-        d.addEventListener('pointerdown',e=>{e.preventDefault();dragging=true;tryFill(d);});
-        d.addEventListener('pointerenter',()=>{if(dragging)tryFill(d);});
-      }
-      board.appendChild(d);cells.push(d);
-    });
-  });
+function renderClues(){
+  const L=caseL(cur.id);
+  document.getElementById('clues').innerHTML=L.clues.map((c,i)=>{
+    const last=i===L.clues.length-1;
+    return `<div class="clue"><span class="ci">${last?'🔍':(i+1)+'.'}</span><span>${c}</span></div>`;
+  }).join('');
 }
-window.addEventListener('pointerup',()=>dragging=false);
-
-function buildTray(){
-  document.getElementById('tray').innerHTML=Object.keys(remaining).map(letter=>`
-    <button class="gem" data-g="${letter}" onclick="selectGem('${letter}')">
-      <span class="gem-face" style="background:${gemBg(letter)}"></span>
-      <span class="gem-count" id="cnt-${letter}">${remaining[letter]}</span>
-    </button>`).join('');
+function renderSeats(){
+  document.getElementById('seats').innerHTML=cur.sol.map((_,i)=>{
+    const s=placement[i];
+    return `<button class="seat${s?' filled':''}" onclick="tapSeat(${i})">
+      <span class="seat-n">${t('seat_word')} ${i+1}</span>
+      <span class="seat-em">${s?EM[s]:''}</span>
+    </button>`;
+  }).join('');
 }
-
-function selectGem(letter){
-  if(remaining[letter]<=0)return;
-  selGem=letter;
-  document.querySelectorAll('.gem').forEach(g=>g.classList.toggle('sel',g.dataset.g===letter));
-  cells.forEach(d=>{
-    if(d.classList.contains('blank')||d.classList.contains('filled')){d.classList.remove('glow');return;}
-    d.classList.toggle('glow',d.dataset.t===letter);
-  });
-  beep(680,.08);
+function renderTray(){
+  document.getElementById('tray').innerHTML=cur.pool.map(id=>{
+    const placed=placement.includes(id);
+    return `<button class="sus${placed?' placed':''}${selSus===id?' sel':''}" onclick="selectSus('${id}')">
+      <span class="se">${EM[id]}</span>${nm(id)}
+    </button>`;
+  }).join('');
 }
-
-function tryFill(d){
-  if(!selGem||d.classList.contains('filled')||d.classList.contains('blank'))return;
-  if(d.dataset.t!==selGem){d.classList.add('nope');vib(20);setTimeout(()=>d.classList.remove('nope'),300);return;}
-  d.classList.add('filled','pop');d.classList.remove('glow');
-  d.style.background=gemBg(selGem);
-  setTimeout(()=>d.classList.remove('pop'),300);
-  filledCount++;remaining[selGem]--;
-  document.getElementById('cnt-'+selGem).textContent=remaining[selGem];
-  beep(720+filledCount*3,.06);vib(10);
-  updateProgress();
-  if(remaining[selGem]<=0){
-    const btn=document.querySelector('.gem[data-g="'+selGem+'"]');
-    if(btn)btn.classList.add('done');
-    if(filledCount<targetCount){
-      const nxt=Object.keys(remaining).find(k=>remaining[k]>0);
-      if(nxt)selectGem(nxt);
-    }
+function selectSus(id){
+  if(placement.includes(id))return;
+  selSus=(selSus===id)?null:id;
+  beep(680,.07);
+  document.querySelectorAll('.sus').forEach(b=>b.classList.remove('sel'));
+  if(selSus){const b=[...document.querySelectorAll('.sus')].find(x=>x.textContent.includes(nm(id)));}
+  renderTray();
+  document.querySelectorAll('.seat').forEach(s=>s.classList.toggle('sel',!!selSus&&!s.classList.contains('filled')));
+}
+function tapSeat(i){
+  document.getElementById('msg').textContent='';
+  if(placement[i]){ // vaciar
+    placement[i]=null;beep(400,.08);vib(10);renderSeats();renderTray();
+    document.querySelectorAll('.seat').forEach(s=>s.classList.toggle('sel',!!selSus&&!s.classList.contains('filled')));
+    return;
   }
-  if(filledCount>=targetCount)finishPic();
+  if(!selSus)return;
+  placement[i]=selSus;selSus=null;
+  const seat=document.getElementById('seats').children[i];
+  beep(720,.07);vib(12);
+  renderSeats();renderTray();
+  const ns=document.getElementById('seats').children[i];if(ns){ns.classList.add('pop');setTimeout(()=>ns.classList.remove('pop'),300);}
 }
-
-function updateProgress(){document.getElementById('pbar').style.width=(filledCount/targetCount*100)+'%';}
-
-function finishPic(){
+function checkCase(){
+  if(placement.some(p=>!p)){document.getElementById('msg').textContent=t('fillall');beep(400,.1);return;}
+  const ok=placement.every((p,i)=>p===cur.sol[i]);
+  if(!ok){
+    document.getElementById('msg').textContent=t('wrong');
+    beep(300,.14);vib([30,40,30]);
+    const seats=document.getElementById('seats');[...seats.children].forEach(s=>{s.classList.add('nope');setTimeout(()=>s.classList.remove('nope'),320);});
+    return;
+  }
+  winCase();
+}
+function winCase(){
   markDone(cur.id);
-  cells.forEach(d=>d.classList.remove('glow'));
-  beep(880,.16);setTimeout(()=>beep(1100,.22),160);vib([60,40,80]);
+  document.getElementById('msg').textContent='';
+  const seats=document.getElementById('seats');
+  const cs=seats.children[cur.culprit];if(cs)cs.classList.add('culprit');
+  const culpritId=cur.sol[cur.culprit];
+  beep(880,.16);setTimeout(()=>beep(1120,.22),160);vib([60,40,90]);
   sparkle();
-  const idx=PICTURES.findIndex(p=>p.id===cur.id);
-  const next=PICTURES[(idx+1)%PICTURES.length];
+  document.getElementById('dh-em').textContent=EM[culpritId];
+  document.getElementById('dh-culprit').textContent=t('win_s')+' '+nm(culpritId)+' '+EM[culpritId];
+  const idx=CASES.findIndex(c=>c.id===cur.id);
+  const next=CASES[(idx+1)%CASES.length];
   const nb=document.getElementById('next-btn');
-  nb.textContent=next.emoji+' '+picName(next.id)+' →';
-  nb.onclick=()=>startPic(next.id);
-  setTimeout(()=>document.getElementById('done-hero').classList.add('show'),650);
+  nb.textContent=next.emoji+' →';nb.onclick=()=>startCase(next.id);
+  setTimeout(()=>document.getElementById('done-hero').classList.add('show'),700);
 }
-
 function sparkle(){
-  const wrap=document.querySelector('.board-wrap');
-  const em=['✨','💛','⭐','💎','🌟'];
+  const em=['🔍','✨','🎉','⭐','💚'];
   for(let i=0;i<14;i++){
-    const s=document.createElement('span');
-    s.className='spark';s.textContent=em[i%em.length];
-    s.style.left=(10+Math.random()*80)+'%';s.style.top=(10+Math.random()*80)+'%';
+    const s=document.createElement('span');s.className='spark';s.textContent=em[i%em.length];
+    s.style.left=(12+Math.random()*76)+'%';s.style.top=(20+Math.random()*50)+'%';
     s.style.animationDelay=(Math.random()*.5)+'s';
-    wrap.appendChild(s);setTimeout(()=>s.remove(),1700);
+    document.body.appendChild(s);setTimeout(()=>s.remove(),1800);
   }
 }
 
 /* ── Boot ── */
 renderPicker();
-/* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
 /* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió */
 window.__crisBack=function(){
+  if(document.getElementById('done-hero').classList.contains('show')){document.getElementById('done-hero').classList.remove('show');return true;}
   var el=document.querySelector('.screen.active .back-btn');
   if(el){el.click();return true;}
   return false;
 };
-/* Puente para versiones mezcladas: si el index viejo aún manda postMessage */
 window.addEventListener('message',function(e){
   if(e&&e.data==='cris:back'&&window.__crisBack&&window.__crisBack()){
     try{parent.postMessage('cris:back-ok','*');}catch(_){}
