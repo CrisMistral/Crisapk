@@ -283,20 +283,23 @@ body.mod-open #sosBtn .sos-label{display:none;}
 #dropBtn:active{transform:scale(.94);}
 body.mod-open #dropBtn{display:none;}
 
-/* ── RECORRIDO DE BIENVENIDA (Quico) ── */
-#onboard{position:fixed;inset:0;z-index:600;background:rgba(15,77,71,.55);display:none;align-items:center;justify-content:center;padding:20px;}
-#onboard.show{display:flex;}
-.ob-card{background:#fff;border-radius:26px;max-width:340px;width:100%;padding:22px 22px 18px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.4);animation:obpop .28s ease;}
-@keyframes obpop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
-.ob-img{width:120px;height:auto;margin:0 auto 4px;display:block;filter:drop-shadow(0 4px 10px rgba(93,64,55,.2));}
-.ob-title{font-size:1.2rem;font-weight:800;color:var(--teal-dark);margin-bottom:8px;line-height:1.25;}
-.ob-text{font-size:.92rem;color:var(--text-soft);line-height:1.55;margin-bottom:16px;}
-.ob-dots{display:flex;justify-content:center;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
-.ob-dot{width:7px;height:7px;border-radius:50%;background:var(--mint-mid);}
-.ob-dot.on{background:var(--teal);transform:scale(1.35);}
-.ob-row{display:flex;gap:10px;}
-.ob-skip{flex:1;border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:14px;padding:12px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.92rem;cursor:pointer;}
-.ob-next{flex:2;border:none;background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:14px;padding:12px;font-family:'Outfit',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;}
+/* ── RECORRIDO DE BIENVENIDA (tour real con foco y flecha) ── */
+#onboard{position:fixed;inset:0;z-index:600;display:none;pointer-events:auto;}
+#onboard.show{display:block;}
+#onboard.center{background:rgba(15,77,71,.62);}
+#ob-spot{position:fixed;border-radius:16px;border:3px solid var(--teal);box-shadow:0 0 0 9999px rgba(15,77,71,.62),0 0 14px rgba(38,166,154,.5);pointer-events:none;transition:all .25s ease;display:none;}
+#ob-tip{position:fixed;max-width:300px;background:#fff;border-radius:18px;padding:16px 16px 14px;box-shadow:0 16px 44px rgba(0,0,0,.3);display:none;animation:obpop .2s ease;}
+@keyframes obpop{from{transform:scale(.94);opacity:.4}to{transform:scale(1);opacity:1}}
+.ob-tip-arrow{position:absolute;width:16px;height:16px;background:#fff;transform:rotate(45deg);}
+.ob-tip-arrow.up{top:-8px;}.ob-tip-arrow.down{bottom:-8px;}.ob-tip-arrow.hidden{display:none;}
+.ob-title{font-size:1.08rem;font-weight:800;color:var(--teal-dark);margin-bottom:6px;line-height:1.25;}
+.ob-text{font-size:.88rem;color:var(--text-soft);line-height:1.5;margin-bottom:12px;}
+.ob-dots{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap;}
+.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--mint-mid);}
+.ob-dot.on{background:var(--teal);transform:scale(1.4);}
+.ob-row{display:flex;gap:8px;}
+.ob-skip{flex:1;border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:12px;padding:10px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;}
+.ob-next{flex:1.6;border:none;background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:12px;padding:10px;font-family:'Outfit',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;}
 .ob-next:active,.ob-skip:active{transform:scale(.97);}
 #tourBtn{width:100%;margin-top:14px;border:2px solid var(--mint-mid);background:var(--white-card,#fff);color:var(--teal-dark);border-radius:14px;padding:11px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;}
 #tourBtn:active{transform:scale(.98);}
@@ -1104,61 +1107,93 @@ function buildModuleList(){
 }
 buildModuleList();
 
-/* ── RECORRIDO DE BIENVENIDA (Quico te enseña la app) ── */
+/* ── RECORRIDO DE BIENVENIDA (tour real: foco + flecha sobre cada elemento) ── */
 const ONBOARD={
- es:{skip:'Saltar',next:'Siguiente',start:'¡A jugar!',steps:[
-  {img:'quico/quico_happy.png',t:'¡Hola! Soy Quico 🦘',x:'Soy tu quokka de cada día. Ven, que te enseño la casa en un momentín. ¡Es fácil y sin agobios!'},
-  {img:'quico/quico_head_happy.png',t:'Esta es tu pantalla 🌿',x:'Aquí te saludo y te preparo el plan de HOY. Una cosa cada vez, a tu ritmo. Nada de listas eternas.'},
-  {img:'quico/quico_head_happy.png',t:'¿Cómo vienes hoy? 💪🔋',x:'Toca «Bien» o «Poca» según tu energía y ajusto el día a como estás de verdad. Sin culpa.'},
-  {img:'quico/quico_head_proud.png',t:'Tus miniaventuras 🎨',x:'Cada tarjeta es un mundo: Trabajo, Pilates, Comida, Limpieza, Intereses, Botiquín, Noche y Juegos. Tócala y te guío pasito a pasito… ¡con mi voz!'},
-  {img:'quico/quico_head_happy.png',t:'El menú ☰ (arriba izq.)',x:'Ahí tienes todos los módulos, el idioma 🇪🇸🇬🇧🇫🇷, TU nombre y el modo «reducir estímulos» para los días sensibles.'},
-  {img:'quico/quico_head_calm.png',t:'El corazón 🫀 (abajo der.)',x:'Es el Botiquín Emocional: técnicas rápidas, meditaciones y un plan para las épocas difíciles. Cuando el día pesa, tócalo.'},
-  {img:'quico/quico_head_happy.png',t:'Soltar el móvil 📴 (abajo izq.)',x:'¿Enganchada al móvil y no arrancas? Dale y te doy un empujoncito para dejarlo y ponerte a lo tuyo.'},
-  {img:'quico/quico_head_proud.png',t:'Tu día, a tu manera ✏️',x:'En «Editar mi día» eliges qué aparece en tu plan. Pones y quitas lo que quieras. Aquí mandas tú.'},
-  {img:'quico/quico_happy.png',t:'¡Y ya está! 💚',x:'Puedes volver a ver este paseo cuando quieras desde el Menú. Ahora… ¡a jugar!'}
+ es:{skip:'Saltar',next:'Siguiente →',start:'¡A jugar!',steps:[
+  {t:'¡Hola! Soy Quico 🦘',x:'Te enseño tu pantalla en un momentín, señalando cada cosa con una flecha. ¿Vamos?'},
+  {sel:'#today-panel',t:'Tu plan de HOY 🌿',x:'Aquí te preparo el día: una cosa cada vez, a tu ritmo. Nada de listas eternas.'},
+  {sel:'.tp-energy',t:'¿Cómo vienes hoy? 💪🔋',x:'Dime tu energía y ajusto el día a como estás de verdad. Sin culpa.'},
+  {sel:'.tp-row',t:'Cada tarea, un mundo 🎨',x:'Toca una tarjeta y te guío paso a paso… ¡con mi voz!'},
+  {sel:'.tp-edit',t:'Tu día, a tu manera ✏️',x:'Aquí eliges qué aparece en tu plan. Pones y quitas lo que quieras. Mandas tú.'},
+  {sel:'#menuBtn',t:'El menú ☰',x:'Todos los módulos, el idioma, TU nombre y «reducir estímulos» para los días sensibles.'},
+  {sel:'#langBtn',t:'Idioma 🇪🇸🇬🇧🇫🇷',x:'Un toque y cambio entre español, inglés y francés.'},
+  {sel:'#sosBtn',t:'El corazón 🫀',x:'El Botiquín Emocional: técnicas, meditaciones y ayuda cuando el día pesa.'},
+  {sel:'#dropBtn',t:'Soltar el móvil 📴',x:'¿Enganchada al móvil? Te doy un empujoncito para dejarlo y ponerte a lo tuyo.'},
+  {t:'¡Y ya está! 💚',x:'Puedes repetir este paseo cuando quieras desde el Menú. Ahora… ¡a jugar!'}
  ]},
- en:{skip:'Skip',next:'Next',start:'Let’s play!',steps:[
-  {img:'quico/quico_happy.png',t:'Hi! I’m Quico 🦘',x:'I’m your everyday quokka. Come on, I’ll show you around in a jiffy. It’s easy and stress-free!'},
-  {img:'quico/quico_head_happy.png',t:'This is your screen 🌿',x:'Here I say hi and set up TODAY’s plan. One thing at a time, at your pace. No endless lists.'},
-  {img:'quico/quico_head_happy.png',t:'How are you today? 💪🔋',x:'Tap «Good» or «Low» for your energy and I’ll shape the day to how you really are. No guilt.'},
-  {img:'quico/quico_head_proud.png',t:'Your mini-adventures 🎨',x:'Each card is a little world: Work, Pilates, Food, Cleaning, Interests, Kit, Night and Games. Tap one and I’ll guide you step by step… with my voice!'},
-  {img:'quico/quico_head_happy.png',t:'The menu ☰ (top left)',x:'That’s where all the modules live, plus the language 🇪🇸🇬🇧🇫🇷, YOUR name and the «reduce stimulation» mode for sensitive days.'},
-  {img:'quico/quico_head_calm.png',t:'The heart 🫀 (bottom right)',x:'It’s the Emotional Kit: quick techniques, meditations and a plan for hard times. When the day weighs on you, tap it.'},
-  {img:'quico/quico_head_happy.png',t:'Put the phone down 📴 (bottom left)',x:'Stuck scrolling and can’t get going? Tap it and I’ll give you a little nudge to drop it and start.'},
-  {img:'quico/quico_head_proud.png',t:'Your day, your way ✏️',x:'In «Edit my day» you choose what shows up in your plan. Add and remove whatever you like. You’re the boss.'},
-  {img:'quico/quico_happy.png',t:'That’s it! 💚',x:'You can watch this tour again anytime from the Menu. Now… let’s play!'}
+ en:{skip:'Skip',next:'Next →',start:'Let’s play!',steps:[
+  {t:'Hi! I’m Quico 🦘',x:'I’ll show you your screen in a jiffy, pointing at each thing with an arrow. Ready?'},
+  {sel:'#today-panel',t:'Your plan for TODAY 🌿',x:'Here I set up your day: one thing at a time, at your pace. No endless lists.'},
+  {sel:'.tp-energy',t:'How are you today? 💪🔋',x:'Tell me your energy and I’ll shape the day to how you really are. No guilt.'},
+  {sel:'.tp-row',t:'Each task, a world 🎨',x:'Tap a card and I’ll guide you step by step… with my voice!'},
+  {sel:'.tp-edit',t:'Your day, your way ✏️',x:'Here you choose what shows up in your plan. Add and remove whatever you like. You’re the boss.'},
+  {sel:'#menuBtn',t:'The menu ☰',x:'All the modules, the language, YOUR name and «reduce stimulation» for sensitive days.'},
+  {sel:'#langBtn',t:'Language 🇪🇸🇬🇧🇫🇷',x:'One tap and I switch between Spanish, English and French.'},
+  {sel:'#sosBtn',t:'The heart 🫀',x:'The Emotional Kit: techniques, meditations and help when the day weighs on you.'},
+  {sel:'#dropBtn',t:'Put the phone down 📴',x:'Stuck scrolling? I’ll give you a little nudge to drop it and get going.'},
+  {t:'That’s it! 💚',x:'You can replay this tour anytime from the Menu. Now… let’s play!'}
  ]},
- fr:{skip:'Passer',next:'Suivant',start:'On joue !',steps:[
-  {img:'quico/quico_happy.png',t:'Coucou ! Je suis Quico 🦘',x:'Je suis ton quokka de tous les jours. Viens, je te fais visiter en deux secondes. C’est facile et tout doux !'},
-  {img:'quico/quico_head_happy.png',t:'Voici ton écran 🌿',x:'Ici je te dis bonjour et je prépare le plan d’AUJOURD’HUI. Une chose à la fois, à ton rythme. Pas de listes interminables.'},
-  {img:'quico/quico_head_happy.png',t:'Comment tu te sens ? 💪🔋',x:'Touche « Ça va » ou « Peu » selon ton énergie et j’adapte la journée à ton état réel. Sans culpabilité.'},
-  {img:'quico/quico_head_proud.png',t:'Tes mini-aventures 🎨',x:'Chaque carte est un petit monde : Travail, Pilates, Cuisine, Ménage, Intérêts, Trousse, Soir et Jeux. Touche et je te guide pas à pas… avec ma voix !'},
-  {img:'quico/quico_head_happy.png',t:'Le menu ☰ (en haut à g.)',x:'Là tu trouves tous les modules, la langue 🇪🇸🇬🇧🇫🇷, TON prénom et le mode « réduire les stimulations » pour les jours sensibles.'},
-  {img:'quico/quico_head_calm.png',t:'Le cœur 🫀 (en bas à dr.)',x:'C’est la Trousse émotionnelle : des techniques rapides, des méditations et un plan pour les périodes difficiles. Quand la journée pèse, touche-le.'},
-  {img:'quico/quico_head_happy.png',t:'Lâcher le téléphone 📴 (en bas à g.)',x:'Scotchée à l’écran et tu n’y arrives pas ? Touche et je te donne un petit coup de pouce pour le poser et t’y mettre.'},
-  {img:'quico/quico_head_proud.png',t:'Ta journée, à ta façon ✏️',x:'Dans « Modifier ma journée » tu choisis ce qui apparaît dans ton plan. Tu ajoutes et enlèves ce que tu veux. C’est toi qui décides.'},
-  {img:'quico/quico_happy.png',t:'Et voilà ! 💚',x:'Tu peux revoir cette visite quand tu veux depuis le Menu. Maintenant… on joue !'}
+ fr:{skip:'Passer',next:'Suivant →',start:'On joue !',steps:[
+  {t:'Coucou ! Je suis Quico 🦘',x:'Je te montre ton écran en deux secondes, en pointant chaque chose avec une flèche. On y va ?'},
+  {sel:'#today-panel',t:'Ton plan d’AUJOURD’HUI 🌿',x:'Ici je prépare ta journée : une chose à la fois, à ton rythme. Pas de listes interminables.'},
+  {sel:'.tp-energy',t:'Comment tu te sens ? 💪🔋',x:'Dis-moi ton énergie et j’adapte la journée à ton état réel. Sans culpabilité.'},
+  {sel:'.tp-row',t:'Chaque tâche, un monde 🎨',x:'Touche une carte et je te guide pas à pas… avec ma voix !'},
+  {sel:'.tp-edit',t:'Ta journée, à ta façon ✏️',x:'Ici tu choisis ce qui apparaît dans ton plan. Tu ajoutes et enlèves ce que tu veux. C’est toi qui décides.'},
+  {sel:'#menuBtn',t:'Le menu ☰',x:'Tous les modules, la langue, TON prénom et « réduire les stimulations » pour les jours sensibles.'},
+  {sel:'#langBtn',t:'Langue 🇪🇸🇬🇧🇫🇷',x:'Un toucher et je passe entre l’espagnol, l’anglais et le français.'},
+  {sel:'#sosBtn',t:'Le cœur 🫀',x:'La Trousse émotionnelle : techniques, méditations et aide quand la journée pèse.'},
+  {sel:'#dropBtn',t:'Lâcher le téléphone 📴',x:'Scotchée à l’écran ? Je te donne un petit coup de pouce pour le poser et t’y mettre.'},
+  {t:'Et voilà ! 💚',x:'Tu peux revoir cette visite quand tu veux depuis le Menu. Maintenant… on joue !'}
  ]}
 };
 let obStep=0;
 function obL(){return ONBOARD[crisLang()]||ONBOARD.es;}
-function startOnboard(){obStep=0;renderOnboard();document.getElementById('onboard').classList.add('show');}
+function startOnboard(){obStep=0;document.getElementById('onboard').classList.add('show');renderOnboard();}
 function renderOnboard(){
-  const O=obL(),s=O.steps[obStep],last=obStep===O.steps.length-1;
-  document.getElementById('onboard').innerHTML=`<div class="ob-card">
-    <img class="ob-img" src="${s.img}" alt="Quico">
-    <div class="ob-title">${s.t}</div>
-    <div class="ob-text">${s.x}</div>
+  const O=obL(),s=O.steps[obStep];
+  const el=s.sel?document.querySelector(s.sel):null;
+  if(s.sel&&!el){ // objetivo no presente → salta ese paso
+    if(obStep<O.steps.length-1){obStep++;renderOnboard();return;}
+  }
+  if(el){try{el.scrollIntoView({block:'center',inline:'nearest'});}catch(e){el.scrollIntoView();}}
+  setTimeout(()=>paintOnboard(s,el),el?160:0);
+}
+function paintOnboard(s,el){
+  const O=obL(),last=obStep===O.steps.length-1;
+  const onb=document.getElementById('onboard'),spot=document.getElementById('ob-spot'),tip=document.getElementById('ob-tip');
+  tip.innerHTML=`<div class="ob-tip-arrow" id="ob-arrow"></div>
+    <div class="ob-title">${s.t}</div><div class="ob-text">${s.x}</div>
     <div class="ob-dots">${O.steps.map((_,i)=>`<span class="ob-dot${i===obStep?' on':''}"></span>`).join('')}</div>
-    <div class="ob-row">
-      ${last?'':`<button class="ob-skip" onclick="finishOnboard()">${O.skip}</button>`}
-      <button class="ob-next" onclick="nextOnboard()">${last?O.start:O.next}</button>
-    </div>
-  </div>`;
+    <div class="ob-row">${last?'':`<button class="ob-skip" onclick="finishOnboard()">${O.skip}</button>`}<button class="ob-next" onclick="nextOnboard()">${last?O.start:O.next}</button></div>`;
+  tip.style.display='block';
+  const vw=innerWidth,vh=innerHeight,tw=Math.min(300,vw-24);
+  tip.style.maxWidth=tw+'px';
+  if(el){
+    onb.classList.remove('center');
+    const r=el.getBoundingClientRect(),pad=8;
+    spot.style.display='block';
+    spot.style.left=(r.left-pad)+'px';spot.style.top=(r.top-pad)+'px';
+    spot.style.width=(r.width+pad*2)+'px';spot.style.height=(r.height+pad*2)+'px';
+    const th=tip.offsetHeight;
+    const below=r.top<vh*0.5;
+    let top=below?(r.bottom+pad+14):(r.top-pad-14-th);
+    let left=r.left+r.width/2-tw/2;
+    left=Math.max(12,Math.min(left,vw-tw-12));
+    top=Math.max(12,Math.min(top,vh-th-12));
+    tip.style.left=left+'px';tip.style.top=top+'px';
+    const arrow=document.getElementById('ob-arrow');
+    const ax=r.left+r.width/2-left;
+    arrow.style.left=Math.max(14,Math.min(ax,tw-28))+'px';
+    arrow.className='ob-tip-arrow '+(below?'up':'down');
+  }else{
+    spot.style.display='none';onb.classList.add('center');
+    tip.style.left=(vw/2-tw/2)+'px';tip.style.top=(vh/2-tip.offsetHeight/2)+'px';
+    document.getElementById('ob-arrow').className='ob-tip-arrow hidden';
+  }
 }
 function nextOnboard(){const O=obL();if(obStep>=O.steps.length-1){finishOnboard();return;}obStep++;renderOnboard();}
-function finishOnboard(){try{localStorage.setItem('cris_onboarded','1');}catch(e){}const el=document.getElementById('onboard');el.classList.remove('show');el.innerHTML='';}
-try{if(!localStorage.getItem('cris_onboarded'))setTimeout(startOnboard,500);}catch(e){}
+function finishOnboard(){try{localStorage.setItem('cris_onboarded','1');}catch(e){}const el=document.getElementById('onboard');el.classList.remove('show','center');document.getElementById('ob-spot').style.display='none';document.getElementById('ob-tip').style.display='none';}
+try{if(!localStorage.getItem('cris_onboarded'))setTimeout(startOnboard,600);}catch(e){}
 
 /* El iframe se RECREA en cada apertura/cierre en vez de cambiarle el src:
    cambiar el src de un iframe ya cargado crea entradas en el historial
@@ -1251,6 +1286,6 @@ if('serviceWorker' in navigator){
   });
 }
 </script>
-<div id="onboard"></div>
+<div id="onboard"><div id="ob-spot"></div><div id="ob-tip"></div></div>
 </body>
 </html>
