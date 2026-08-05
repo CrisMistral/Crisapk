@@ -1,7 +1,7 @@
 {
-  "name": "Cris - Tu compañera diaria",
-  "short_name": "Cris",
-  "description": "App de acompañamiento diario para TDAH: rutinas, ejercicio, comida, limpieza, intereses y rescate emocional.",
+  "name": "Quico — Tu compañero cada día",
+  "short_name": "Quico",
+  "description": "Quico, tu quokka de cada día: rutinas, ejercicio, comida, limpieza, intereses y botiquín emocional. Un compañero amable para el día a día, pensado para mentes TDAH. En español, inglés y francés.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

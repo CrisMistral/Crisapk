@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Pilates — Cris</title>
+<title>Pilates — Quico</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -134,6 +134,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 /* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
+function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n||'Cris';}catch(e){return 'Cris';}}
 if(__cfg().calm)document.documentElement.classList.add('calm');
 
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
@@ -143,7 +144,7 @@ const UI={
  es:{home_h:'🧘 Pilates en Casa',home_sub:'15–20 min · sin material · cuerpo completo',bubble:'¿Lista para mover el cuerpo? 💚',week_title:'Esta semana',btn_start_auto:'▶ Empezar sesión automática',
   tc_today:'Hoy · {name}',tc_meta:'{dur} · Pilates en casa',dh_meta:'{dur} · {n} ejercicios',ex_eachside:' · cada lado',ex_rest:' · {r}s descanso',
   count:'Ejercicio {i} de {n}',idle_phase:'Sesión automática',idle_desc:'Dale a empezar y déjate llevar: la voz te guía, los ejercicios cambian solos y tú solo copias a la figura. No hace falta tocar el móvil hasta el final. 💚',idle_btn:'▶ Empezar — todo automático',
-  done_h:'¡Sesión completada!',done_p:'{name} · {focus}<br>Bien hecho, Cris 💚',btn_home:'🏠 Inicio',btn_repeat:'Repetir sesión',
+  done_h:'¡Sesión completada!',done_p:'{name} · {focus}<br>Bien hecho, {u} 💚',btn_home:'🏠 Inicio',btn_repeat:'Repetir sesión',
   ph_prep:'Colócate como la figura',tl_prep:'seg para empezar',tag_prep:'Prepárate',ph_active:'Copia a la figura ▶',tl_active:'segundos restantes',ph_paused:'En pausa',tl_paused:'segundos',tag_paused:'Pausa',ph_switch:'¡Cambia de lado!',tl_switch:'seg',ph_restwait:'Escucha — ya casi',tl_restwait:'escuchando…',ph_rest:'Descansa',tl_rest:'seg de descanso',tag_next:'Siguiente: {name}',
   side_r:' — Lado derecho',side_l:' — Lado izquierdo',next_prefix:'Luego: {name}',tag_first:'Así se hace el primero',pose1:'1 · posición',pose2:'2 · movimiento',btn_pause:'⏸ Pausa',btn_resume:'▶ Seguir',btn_skip:'Saltar →',
   v_first:'Primer ejercicio: ',v_next:'Siguiente: ',v_will_be:' Serán {dur}.',v_sec_side:'{n} segundos por cada lado',v_sec:'{n} segundos',v_go:'¡Vamos! {n} segundos.',v_half:'Mitad. Quedan {n} segundos.',v_last10:'Últimos diez segundos.',v_switch:'Cambia de lado. Otros {n} segundos.',v_rest:'Muy bien. Descansa {n} segundos. ',v_resume:'Seguimos.',v_done:'¡Sesión completada! Bien hecho.',
@@ -151,7 +152,7 @@ const UI={
  en:{home_h:'🧘 Pilates at Home',home_sub:'15–20 min · no equipment · full body',bubble:'Ready to move your body? 💚',week_title:'This week',btn_start_auto:'▶ Start automatic session',
   tc_today:'Today · {name}',tc_meta:'{dur} · Pilates at home',dh_meta:'{dur} · {n} exercises',ex_eachside:' · each side',ex_rest:' · {r}s rest',
   count:'Exercise {i} of {n}',idle_phase:'Automatic session',idle_desc:'Press start and let yourself flow: the voice guides you, the exercises change on their own, and you just copy the figure. No need to touch your phone until the end. 💚',idle_btn:'▶ Start — fully automatic',
-  done_h:'Session complete!',done_p:'{name} · {focus}<br>Well done, Cris 💚',btn_home:'🏠 Home',btn_repeat:'Repeat session',
+  done_h:'Session complete!',done_p:'{name} · {focus}<br>Well done, {u} 💚',btn_home:'🏠 Home',btn_repeat:'Repeat session',
   ph_prep:'Get into the figure’s position',tl_prep:'sec to start',tag_prep:'Get ready',ph_active:'Copy the figure ▶',tl_active:'seconds left',ph_paused:'Paused',tl_paused:'seconds',tag_paused:'Pause',ph_switch:'Switch sides!',tl_switch:'sec',ph_restwait:'Listen — almost there',tl_restwait:'listening…',ph_rest:'Rest',tl_rest:'sec of rest',tag_next:'Next: {name}',
   side_r:' — Right side',side_l:' — Left side',next_prefix:'Next: {name}',tag_first:'Here’s the first one',pose1:'1 · position',pose2:'2 · movement',btn_pause:'⏸ Pause',btn_resume:'▶ Resume',btn_skip:'Skip →',
   v_first:'First exercise: ',v_next:'Next: ',v_will_be:' It will be {dur}.',v_sec_side:'{n} seconds on each side',v_sec:'{n} seconds',v_go:'Let’s go! {n} seconds.',v_half:'Halfway. {n} seconds left.',v_last10:'Last ten seconds.',v_switch:'Switch sides. Another {n} seconds.',v_rest:'Well done. Rest for {n} seconds. ',v_resume:'Let’s continue.',v_done:'Session complete! Well done.',
@@ -159,7 +160,7 @@ const UI={
  fr:{home_h:'🧘 Pilates à la maison',home_sub:'15–20 min · sans matériel · corps complet',bubble:'Prête à bouger ton corps ? 💚',week_title:'Cette semaine',btn_start_auto:'▶ Démarrer la séance automatique',
   tc_today:'Aujourd’hui · {name}',tc_meta:'{dur} · Pilates à la maison',dh_meta:'{dur} · {n} exercices',ex_eachside:' · chaque côté',ex_rest:' · {r}s de repos',
   count:'Exercice {i} sur {n}',idle_phase:'Séance automatique',idle_desc:'Appuie sur démarrer et laisse-toi porter : la voix te guide, les exercices changent tout seuls et tu n’as qu’à copier la figure. Pas besoin de toucher le téléphone avant la fin. 💚',idle_btn:'▶ Démarrer — tout automatique',
-  done_h:'Séance terminée !',done_p:'{name} · {focus}<br>Bien joué, Cris 💚',btn_home:'🏠 Accueil',btn_repeat:'Refaire la séance',
+  done_h:'Séance terminée !',done_p:'{name} · {focus}<br>Bien joué, {u} 💚',btn_home:'🏠 Accueil',btn_repeat:'Refaire la séance',
   ph_prep:'Place-toi comme la figure',tl_prep:'sec avant de commencer',tag_prep:'Prépare-toi',ph_active:'Copie la figure ▶',tl_active:'secondes restantes',ph_paused:'En pause',tl_paused:'secondes',tag_paused:'Pause',ph_switch:'Change de côté !',tl_switch:'sec',ph_restwait:'Écoute — presque fini',tl_restwait:'écoute…',ph_rest:'Repose-toi',tl_rest:'sec de repos',tag_next:'Suivant : {name}',
   side_r:' — Côté droit',side_l:' — Côté gauche',next_prefix:'Ensuite : {name}',tag_first:'Voici le premier',pose1:'1 · position',pose2:'2 · mouvement',btn_pause:'⏸ Pause',btn_resume:'▶ Continuer',btn_skip:'Passer →',
   v_first:'Premier exercice : ',v_next:'Suivant : ',v_will_be:' Ce sera {dur}.',v_sec_side:'{n} secondes de chaque côté',v_sec:'{n} secondes',v_go:'C’est parti ! {n} secondes.',v_half:'À la moitié. Il reste {n} secondes.',v_last10:'Dix dernières secondes.',v_switch:'Change de côté. Encore {n} secondes.',v_rest:'Très bien. Repose-toi {n} secondes. ',v_resume:'On continue.',v_done:'Séance terminée ! Bien joué.',
@@ -859,7 +860,7 @@ function renderSession(){
     document.getElementById('s-fill').style.width='100%';
     document.getElementById('s-count').textContent='';
     document.getElementById('s-dots').innerHTML='';
-    el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>${t('done_h')}</h2><p>${t('done_p',{name:d.name,focus:d.focus})}</p></div><button class="btn btn-secondary" style="margin-bottom:8px" onclick="go('home')">${t('btn_home')}</button><button class="btn btn-primary" onclick="startSession()">${t('btn_repeat')}</button>`;
+    el.innerHTML=`<div class="done-box"><div class="big">🎉</div><h2>${t('done_h')}</h2><p>${t('done_p',{name:d.name,focus:d.focus,u:__uname()})}</p></div><button class="btn btn-secondary" style="margin-bottom:8px" onclick="go('home')">${t('btn_home')}</button><button class="btn btn-primary" onclick="startSession()">${t('btn_repeat')}</button>`;
     beep(800,.2);setTimeout(()=>beep(1000,.3),250);vibrate([80,50,80]);
     speak(t('v_done'));
     return;
