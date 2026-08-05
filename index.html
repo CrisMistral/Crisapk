@@ -282,6 +282,24 @@ body.mod-open #sosBtn .sos-label{display:none;}
 }
 #dropBtn:active{transform:scale(.94);}
 body.mod-open #dropBtn{display:none;}
+
+/* ── RECORRIDO DE BIENVENIDA (Quico) ── */
+#onboard{position:fixed;inset:0;z-index:600;background:rgba(15,77,71,.55);display:none;align-items:center;justify-content:center;padding:20px;}
+#onboard.show{display:flex;}
+.ob-card{background:#fff;border-radius:26px;max-width:340px;width:100%;padding:22px 22px 18px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.4);animation:obpop .28s ease;}
+@keyframes obpop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.ob-img{width:120px;height:auto;margin:0 auto 4px;display:block;filter:drop-shadow(0 4px 10px rgba(93,64,55,.2));}
+.ob-title{font-size:1.2rem;font-weight:800;color:var(--teal-dark);margin-bottom:8px;line-height:1.25;}
+.ob-text{font-size:.92rem;color:var(--text-soft);line-height:1.55;margin-bottom:16px;}
+.ob-dots{display:flex;justify-content:center;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.ob-dot{width:7px;height:7px;border-radius:50%;background:var(--mint-mid);}
+.ob-dot.on{background:var(--teal);transform:scale(1.35);}
+.ob-row{display:flex;gap:10px;}
+.ob-skip{flex:1;border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:14px;padding:12px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.92rem;cursor:pointer;}
+.ob-next{flex:2;border:none;background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:14px;padding:12px;font-family:'Outfit',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;}
+.ob-next:active,.ob-skip:active{transform:scale(.97);}
+#tourBtn{width:100%;margin-top:14px;border:2px solid var(--mint-mid);background:var(--white-card,#fff);color:var(--teal-dark);border-radius:14px;padding:11px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;}
+#tourBtn:active{transform:scale(.98);}
 body.mod-open #menuBtn{display:none;}
 
 /* ── Recordatorios ── */
@@ -396,6 +414,8 @@ body.mod-open #menuBtn{display:none;}
     <div class="cfg-note" data-i18n="cfg_note">Los ajustes se aplican a toda la app</div>
   </div>
 
+  <button id="tourBtn" onclick="closeDrawer();setTimeout(startOnboard,320);"><span data-i18n="ob_replay">🦘 Ver el recorrido</span></button>
+
   <div class="cfg-note" data-i18n="drawer_footer" style="margin-top:22px;line-height:1.7;">
     Cris · tu compañera de cada día 💚
   </div>
@@ -427,7 +447,7 @@ const I18N={
  es:{
   menu:'Menú', menu_open:'Abrir menú', menu_close:'Cerrar menú', menu_title:'🌿 Menú de Quico', lang_change:'Cambiar idioma',
   hero_sub:'¿en qué te ayudo hoy?',
-  lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes',
+  lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes', ob_replay:'🦘 Ver el recorrido',
   notif_morning:'☀️ Empezar el día', notif_night:'🌙 Rutina nocturna',
   notif_hint:'Suenan con la app abierta o instalada en la pantalla de inicio',
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
@@ -489,7 +509,7 @@ const I18N={
  en:{
   menu:'Menu', menu_open:'Open menu', menu_close:'Close menu', menu_title:'🌿 Quico menu', lang_change:'Change language',
   hero_sub:'how can I help you today?',
-  lang_label:'Language', modules_label:'Modules', settings_label:'Settings',
+  lang_label:'Language', modules_label:'Modules', settings_label:'Settings', ob_replay:'🦘 Watch the tour',
   notif_morning:'☀️ Start the day', notif_night:'🌙 Night routine',
   notif_hint:'They sound with the app open or installed on your home screen',
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
@@ -551,7 +571,7 @@ const I18N={
  fr:{
   menu:'Menu', menu_open:'Ouvrir le menu', menu_close:'Fermer le menu', menu_title:'🌿 Menu de Quico', lang_change:'Changer de langue',
   hero_sub:'comment puis-je t’aider aujourd’hui ?',
-  lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages',
+  lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages', ob_replay:'🦘 Revoir la visite',
   notif_morning:'☀️ Commencer la journée', notif_night:'🌙 Routine du soir',
   notif_hint:'Elles sonnent avec l’appli ouverte ou installée sur l’écran d’accueil',
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
@@ -1084,6 +1104,62 @@ function buildModuleList(){
 }
 buildModuleList();
 
+/* ── RECORRIDO DE BIENVENIDA (Quico te enseña la app) ── */
+const ONBOARD={
+ es:{skip:'Saltar',next:'Siguiente',start:'¡A jugar!',steps:[
+  {img:'quico/quico_happy.png',t:'¡Hola! Soy Quico 🦘',x:'Soy tu quokka de cada día. Ven, que te enseño la casa en un momentín. ¡Es fácil y sin agobios!'},
+  {img:'quico/quico_head_happy.png',t:'Esta es tu pantalla 🌿',x:'Aquí te saludo y te preparo el plan de HOY. Una cosa cada vez, a tu ritmo. Nada de listas eternas.'},
+  {img:'quico/quico_head_happy.png',t:'¿Cómo vienes hoy? 💪🔋',x:'Toca «Bien» o «Poca» según tu energía y ajusto el día a como estás de verdad. Sin culpa.'},
+  {img:'quico/quico_head_proud.png',t:'Tus miniaventuras 🎨',x:'Cada tarjeta es un mundo: Trabajo, Pilates, Comida, Limpieza, Intereses, Botiquín, Noche y Juegos. Tócala y te guío pasito a pasito… ¡con mi voz!'},
+  {img:'quico/quico_head_happy.png',t:'El menú ☰ (arriba izq.)',x:'Ahí tienes todos los módulos, el idioma 🇪🇸🇬🇧🇫🇷, TU nombre y el modo «reducir estímulos» para los días sensibles.'},
+  {img:'quico/quico_head_calm.png',t:'El corazón 🫀 (abajo der.)',x:'Es el Botiquín Emocional: técnicas rápidas, meditaciones y un plan para las épocas difíciles. Cuando el día pesa, tócalo.'},
+  {img:'quico/quico_head_happy.png',t:'Soltar el móvil 📴 (abajo izq.)',x:'¿Enganchada al móvil y no arrancas? Dale y te doy un empujoncito para dejarlo y ponerte a lo tuyo.'},
+  {img:'quico/quico_head_proud.png',t:'Tu día, a tu manera ✏️',x:'En «Editar mi día» eliges qué aparece en tu plan. Pones y quitas lo que quieras. Aquí mandas tú.'},
+  {img:'quico/quico_happy.png',t:'¡Y ya está! 💚',x:'Puedes volver a ver este paseo cuando quieras desde el Menú. Ahora… ¡a jugar!'}
+ ]},
+ en:{skip:'Skip',next:'Next',start:'Let’s play!',steps:[
+  {img:'quico/quico_happy.png',t:'Hi! I’m Quico 🦘',x:'I’m your everyday quokka. Come on, I’ll show you around in a jiffy. It’s easy and stress-free!'},
+  {img:'quico/quico_head_happy.png',t:'This is your screen 🌿',x:'Here I say hi and set up TODAY’s plan. One thing at a time, at your pace. No endless lists.'},
+  {img:'quico/quico_head_happy.png',t:'How are you today? 💪🔋',x:'Tap «Good» or «Low» for your energy and I’ll shape the day to how you really are. No guilt.'},
+  {img:'quico/quico_head_proud.png',t:'Your mini-adventures 🎨',x:'Each card is a little world: Work, Pilates, Food, Cleaning, Interests, Kit, Night and Games. Tap one and I’ll guide you step by step… with my voice!'},
+  {img:'quico/quico_head_happy.png',t:'The menu ☰ (top left)',x:'That’s where all the modules live, plus the language 🇪🇸🇬🇧🇫🇷, YOUR name and the «reduce stimulation» mode for sensitive days.'},
+  {img:'quico/quico_head_calm.png',t:'The heart 🫀 (bottom right)',x:'It’s the Emotional Kit: quick techniques, meditations and a plan for hard times. When the day weighs on you, tap it.'},
+  {img:'quico/quico_head_happy.png',t:'Put the phone down 📴 (bottom left)',x:'Stuck scrolling and can’t get going? Tap it and I’ll give you a little nudge to drop it and start.'},
+  {img:'quico/quico_head_proud.png',t:'Your day, your way ✏️',x:'In «Edit my day» you choose what shows up in your plan. Add and remove whatever you like. You’re the boss.'},
+  {img:'quico/quico_happy.png',t:'That’s it! 💚',x:'You can watch this tour again anytime from the Menu. Now… let’s play!'}
+ ]},
+ fr:{skip:'Passer',next:'Suivant',start:'On joue !',steps:[
+  {img:'quico/quico_happy.png',t:'Coucou ! Je suis Quico 🦘',x:'Je suis ton quokka de tous les jours. Viens, je te fais visiter en deux secondes. C’est facile et tout doux !'},
+  {img:'quico/quico_head_happy.png',t:'Voici ton écran 🌿',x:'Ici je te dis bonjour et je prépare le plan d’AUJOURD’HUI. Une chose à la fois, à ton rythme. Pas de listes interminables.'},
+  {img:'quico/quico_head_happy.png',t:'Comment tu te sens ? 💪🔋',x:'Touche « Ça va » ou « Peu » selon ton énergie et j’adapte la journée à ton état réel. Sans culpabilité.'},
+  {img:'quico/quico_head_proud.png',t:'Tes mini-aventures 🎨',x:'Chaque carte est un petit monde : Travail, Pilates, Cuisine, Ménage, Intérêts, Trousse, Soir et Jeux. Touche et je te guide pas à pas… avec ma voix !'},
+  {img:'quico/quico_head_happy.png',t:'Le menu ☰ (en haut à g.)',x:'Là tu trouves tous les modules, la langue 🇪🇸🇬🇧🇫🇷, TON prénom et le mode « réduire les stimulations » pour les jours sensibles.'},
+  {img:'quico/quico_head_calm.png',t:'Le cœur 🫀 (en bas à dr.)',x:'C’est la Trousse émotionnelle : des techniques rapides, des méditations et un plan pour les périodes difficiles. Quand la journée pèse, touche-le.'},
+  {img:'quico/quico_head_happy.png',t:'Lâcher le téléphone 📴 (en bas à g.)',x:'Scotchée à l’écran et tu n’y arrives pas ? Touche et je te donne un petit coup de pouce pour le poser et t’y mettre.'},
+  {img:'quico/quico_head_proud.png',t:'Ta journée, à ta façon ✏️',x:'Dans « Modifier ma journée » tu choisis ce qui apparaît dans ton plan. Tu ajoutes et enlèves ce que tu veux. C’est toi qui décides.'},
+  {img:'quico/quico_happy.png',t:'Et voilà ! 💚',x:'Tu peux revoir cette visite quand tu veux depuis le Menu. Maintenant… on joue !'}
+ ]}
+};
+let obStep=0;
+function obL(){return ONBOARD[crisLang()]||ONBOARD.es;}
+function startOnboard(){obStep=0;renderOnboard();document.getElementById('onboard').classList.add('show');}
+function renderOnboard(){
+  const O=obL(),s=O.steps[obStep],last=obStep===O.steps.length-1;
+  document.getElementById('onboard').innerHTML=`<div class="ob-card">
+    <img class="ob-img" src="${s.img}" alt="Quico">
+    <div class="ob-title">${s.t}</div>
+    <div class="ob-text">${s.x}</div>
+    <div class="ob-dots">${O.steps.map((_,i)=>`<span class="ob-dot${i===obStep?' on':''}"></span>`).join('')}</div>
+    <div class="ob-row">
+      ${last?'':`<button class="ob-skip" onclick="finishOnboard()">${O.skip}</button>`}
+      <button class="ob-next" onclick="nextOnboard()">${last?O.start:O.next}</button>
+    </div>
+  </div>`;
+}
+function nextOnboard(){const O=obL();if(obStep>=O.steps.length-1){finishOnboard();return;}obStep++;renderOnboard();}
+function finishOnboard(){try{localStorage.setItem('cris_onboarded','1');}catch(e){}const el=document.getElementById('onboard');el.classList.remove('show');el.innerHTML='';}
+try{if(!localStorage.getItem('cris_onboarded'))setTimeout(startOnboard,500);}catch(e){}
+
 /* El iframe se RECREA en cada apertura/cierre en vez de cambiarle el src:
    cambiar el src de un iframe ya cargado crea entradas en el historial
    conjunto del navegador, y el botón atrás del móvil las navegaba dejando
@@ -1175,5 +1251,6 @@ if('serviceWorker' in navigator){
   });
 }
 </script>
+<div id="onboard"></div>
 </body>
 </html>
