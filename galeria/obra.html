@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF8F5">
+<title>Obra — Artdequé</title>
+<meta name="robots" content="index">
+<meta name="description" content="Una obra de arte emergente en Artdequé, con la historia de quien la hizo.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Artdequé">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Una obra en Artdequé">
+<meta property="og:description" content="Arte emergente y la voz de quien lo hace.">
+<meta property="og:image" content="/galeria/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/galeria/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="estilo.css">
+<style>
+.obra{max-width:var(--maxw);margin:0 auto;padding:clamp(1.4rem,4vw,2.6rem) var(--paso) 3rem}
+.migas{font-size:.8rem;color:var(--tinta-3);margin-bottom:1.4rem}
+.migas a:hover{color:var(--tinta)}
+.obra-grid{display:grid;grid-template-columns:1fr;gap:clamp(1.8rem,4vw,3.5rem)}
+@media(min-width:900px){.obra-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start}}
+
+/* imagen + zoom */
+.visual{position:sticky;top:74px}
+@media(max-width:899px){.visual{position:static}}
+.visual .principal{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;background:var(--crema-2);cursor:zoom-in}
+.visual .principal .ph{position:absolute;inset:0}
+.visual .principal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.miniaturas{display:flex;gap:.6rem;margin-top:.7rem;flex-wrap:wrap}
+.miniaturas .m{width:64px;height:80px;border-radius:2px;overflow:hidden;border:1px solid var(--linea);cursor:pointer;opacity:.6}
+.miniaturas .m.sel{opacity:1;border-color:var(--tinta)}
+
+/* panel de compra */
+.panel .eyebrow{margin-bottom:.7rem}
+.panel h1{font-size:clamp(1.8rem,4.5vw,2.7rem);margin-bottom:.35rem}
+.panel h1 em{font-style:italic;font-weight:400}
+.panel .por-artista{font-size:1rem;color:var(--tinta-2);margin-bottom:1.6rem}
+.panel .por-artista a{border-bottom:1px solid var(--linea)}
+.precio-caja{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:1.2rem 0;margin-bottom:1.4rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem}
+.precio-caja .p{font-size:1.7rem;font-family:var(--serif);font-weight:500}
+.precio-caja .disp{font-size:.82rem;color:var(--tinta-2)}
+.envio-nota{font-size:.82rem;color:var(--tinta-2);margin:-.6rem 0 1.6rem;display:flex;gap:.5rem;align-items:flex-start}
+.comprar-fila{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:.8rem}
+.comprar-fila .btn{flex:1;min-width:150px}
+.pago-msg{font-size:.82rem;min-height:1.2em;color:var(--tinta-2)}
+.pago-msg.err{color:#a3402f}
+
+/* chips de taxonomía */
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.4rem 0 0}
+.chips a,.chips span{font-size:.78rem;color:var(--tinta-2);border:1px solid var(--linea);border-radius:100px;padding:.3rem .8rem;background:var(--crema)}
+.chips a:hover{border-color:var(--tinta);color:var(--tinta)}
+
+/* narrativa */
+.narrativa{margin-top:3rem;max-width:64ch}
+.narrativa .bloque{margin-bottom:2.2rem}
+.narrativa h3{font-size:1.25rem;font-style:italic;font-weight:400;color:var(--tinta);margin-bottom:.6rem}
+.narrativa p{font-size:1.05rem;color:#2c2822;line-height:1.75}
+
+/* ficha técnica */
+.ficha{margin-top:1rem;border-top:1px solid var(--linea)}
+.ficha .fila{display:grid;grid-template-columns:38% 1fr;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--linea);font-size:.9rem}
+.ficha .fila dt{color:var(--tinta-2)}
+.ficha .fila dd{color:var(--tinta)}
+
+/* artista */
+.artista-caja{margin-top:3.2rem;padding-top:2.4rem;border-top:1px solid var(--linea);display:grid;grid-template-columns:1fr;gap:1.4rem}
+@media(min-width:640px){.artista-caja{grid-template-columns:auto 1fr;align-items:start}}
+.artista-caja .retrato{width:88px;height:88px;border-radius:50%;background:var(--crema-2);overflow:hidden;flex-shrink:0}
+.artista-caja .retrato .ph{width:100%;height:100%}
+.artista-caja h3{font-size:1.4rem;margin-bottom:.5rem}
+.artista-caja .bio{color:#2c2822;max-width:60ch;margin-bottom:.8rem}
+.artista-caja .form{font-size:.86rem;color:var(--tinta-2);margin-bottom:.6rem}
+.artista-caja .enlaces{display:flex;gap:1.2rem;font-size:.85rem;flex-wrap:wrap}
+.artista-caja .enlaces a{border-bottom:1px solid var(--linea)}
+
+/* relacionadas */
+.relacionadas{margin-top:3.5rem}
+.relacionadas .sec-head h2{font-size:1.5rem;font-family:var(--serif)}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(20,18,15,.92);z-index:100;display:none;align-items:center;justify-content:center;cursor:zoom-out;padding:2rem}
+.lightbox.open{display:flex}
+.lightbox .big{max-width:92vw;max-height:92vh;border-radius:var(--r);overflow:hidden}
+.lightbox .big img{max-width:92vw;max-height:92vh;object-fit:contain}
+.lightbox .big .ph{width:min(80vw,600px);aspect-ratio:4/5}
+.lightbox .cerrar{position:absolute;top:1.2rem;right:1.4rem;color:#fff;font-size:1.6rem;background:none;border:none;cursor:pointer;opacity:.8}
+
+.cargando{padding:5rem 1rem;text-align:center;color:var(--tinta-2)}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Art<em>dequé</em></a>
+    <nav class="nav">
+      <a href="index.html" class="hide-sm">Obra del día</a>
+      <a href="explorar.html" class="hide-sm">Explorar</a>
+      <a href="archivo.html" class="hide-sm">Archivo</a>
+      <a class="cta" href="subir.html">Subir una obra</a>
+    </nav>
+  </div>
+</header>
+
+<main id="root" class="obra">
+  <div class="cargando">Cargando la obra…</div>
+</main>
+
+<div class="lightbox" id="lightbox">
+  <button class="cerrar" aria-label="Cerrar">✕</button>
+  <div class="big" id="lightbox-big"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="col">
+      <span class="brand">Art<em>dequé</em></span>
+      <span class="muted" style="font-size:.8rem;max-width:30ch">Una obra cada día. Arte emergente y la voz de quien lo hace.</span>
+    </div>
+    <div class="cols">
+      <div class="col"><span class="eyebrow">Explorar</span><a href="explorar.html">Todas las obras</a><a href="archivo.html">Archivo diario</a></div>
+      <div class="col"><span class="eyebrow">Artistas</span><a href="subir.html">Subir una obra</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="taxonomias.js"></script>
+<script src="galeria.js"></script>
+<script>
+(function(){
+  'use strict';
+  var euro = function(n){ return new Intl.NumberFormat('es-ES').format(n) + ' €'; };
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function escAttr(s){ return String(s==null?'':s).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+  var qs = new URLSearchParams(location.search);
+  var id = qs.get('id');
+  var TODAS = [];
+
+  function phDe(o, cls){
+    if(o.imagenes && o.imagenes.length){ return '<img loading="lazy" src="'+escAttr(o.imagenes[0])+'" alt="'+escAttr(o.titulo)+'">'; }
+    return '<div class="ph" style="background:'+(o.gradiente||'var(--crema-2)')+'"></div>';
+  }
+  function dimTexto(o){
+    if(o.duracion){ return o.duracion+' min'; }
+    var d=o.dimensiones; if(!d) return '';
+    var p=[d.alto,d.ancho].filter(function(x){return x!=null;}); if(!p.length) return '';
+    var t=p.join(' × '); if(d.prof) t+=' × '+d.prof; return t+' cm';
+  }
+  function envioTexto(e){
+    return ({'cualquier-pais':'Envío a cualquier país','solo-europa':'Envío solo a Europa','solo-espana':'Envío solo a España','solo-recogida':'Solo recogida en persona'})[e] || 'Consultar envío';
+  }
+
+  function pintar(o){
+    document.title = o.titulo + ' — ' + o.artista.nombre + ' · Artdequé';
+    var enVenta = o.disponibilidad === 'venta' && o.estado !== 'vendida';
+
+    // ── ficha técnica ──
+    var filas = [];
+    filas.push(['Medio', (o.medio||[]).map(TAX.nombreMedio).join(' · ')]);
+    filas.push(['Estilo', (o.estilo||[]).map(TAX.nombreEstilo).join(' · ')]);
+    filas.push(['Materiales y soporte', o.materiales]);
+    var dim = dimTexto(o); if(dim) filas.push([o.duracion?'Duración':'Dimensiones', dim]);
+    if(o.peso) filas.push(['Peso', o.peso+' kg']);
+    filas.push(['Año', String(o.anio)]);
+    if(o.tipoObra==='edicion' && o.edicion){ filas.push(['Edición', 'Ejemplar '+o.edicion.ejemplarVenta+' de '+o.edicion.ejemplares]); }
+    else { filas.push(['Edición', 'Pieza única']); }
+    if(o.certificado) filas.push(['Certificado', 'Incluye certificado de autenticidad firmado']);
+    filas.push(['Envío', envioTexto(o.envio)]);
+    var fichaHTML = '<dl class="ficha">'+filas.filter(function(f){return f[1];}).map(function(f){
+      return '<div class="fila"><dt>'+esc(f[0])+'</dt><dd>'+esc(f[1])+'</dd></div>';
+    }).join('')+'</dl>';
+
+    // ── chips de tema ──
+    var chips = (o.tema||[]).map(function(s){
+      return '<a href="explorar.html?tema='+s+'">'+esc(TAX.nombreTema(s))+'</a>';
+    }).join('');
+
+    // ── narrativa ──
+    var n = o.narrativa || {};
+    var bloques = '';
+    if(n.deQueTrata) bloques += '<div class="bloque"><h3>¿De qué trata?</h3><p>'+esc(n.deQueTrata)+'</p></div>';
+    if(n.deDondeViene) bloques += '<div class="bloque"><h3>¿De dónde viene?</h3><p>'+esc(n.deDondeViene)+'</p></div>';
+    if(n.comoSeHizo) bloques += '<div class="bloque"><h3>Cómo se hizo</h3><p>'+esc(n.comoSeHizo)+'</p></div>';
+    if(n.porQueTitulo) bloques += '<div class="bloque"><h3>Sobre el título</h3><p>'+esc(n.porQueTitulo)+'</p></div>';
+
+    // ── panel de compra ──
+    var dispTexto = enVenta ? 'Disponible' : (o.disponibilidad==='reservada' ? 'Reservada' : 'No disponible');
+    var botones;
+    if(enVenta){
+      botones =
+        '<button class="btn btn-dark" id="btn-comprar">Comprar</button>'+
+        '<a class="btn btn-line" href="#artista">Contactar al artista</a>';
+    } else {
+      botones = '<a class="btn btn-line" href="#artista">Contactar al artista</a>';
+    }
+
+    // ── artista ──
+    var a = o.artista;
+    var enlaces = [];
+    if(a.instagram) enlaces.push('<a href="https://instagram.com/'+escAttr(a.instagram.replace(/^@/,''))+'" target="_blank" rel="noopener">Instagram</a>');
+    if(a.web) enlaces.push('<a href="'+escAttr(a.web)+'" target="_blank" rel="noopener">Web</a>');
+    var afinidades = (a.afinidades&&a.afinidades.length) ? '<div class="form">En diálogo con '+esc(a.afinidades.join(', '))+'.</div>' : '';
+
+    // ── relacionadas: mismo artista, si no hay, mismo medio ──
+    var rel = TODAS.filter(function(x){ return x.id!==o.id && x.estado!=='borrador' && x.artista.slug===a.slug; });
+    if(rel.length < 2){
+      var extra = TODAS.filter(function(x){ return x.id!==o.id && x.estado!=='borrador' && x.artista.slug!==a.slug && (x.medio||[]).some(function(m){ return (o.medio||[]).indexOf(m)>-1; }); });
+      rel = rel.concat(extra);
+    }
+    rel = rel.slice(0,4);
+    var relHTML = rel.length ? (
+      '<section class="relacionadas">'+
+        '<div class="sec-head"><h2>'+(rel[0] && rel[0].artista.slug===a.slug ? 'Más de '+esc(a.nombre) : 'También te puede interesar')+'</h2></div>'+
+        '<div class="grid">'+rel.map(cardMini).join('')+'</div>'+
+      '</section>'
+    ) : '';
+
+    var root = document.getElementById('root');
+    root.innerHTML =
+      '<nav class="migas"><a href="index.html">Artdequé</a> · <a href="explorar.html">Explorar</a> · '+esc(o.titulo)+'</nav>'+
+      '<div class="obra-grid">'+
+        '<div class="visual">'+
+          '<div class="principal" id="principal" title="Ampliar">'+phDe(o)+'</div>'+
+        '</div>'+
+        '<div class="panel">'+
+          '<p class="eyebrow">'+(o.medio||[]).map(TAX.nombreMedio).join(' · ')+'</p>'+
+          '<h1>'+esc(o.titulo)+'</h1>'+
+          '<p class="por-artista"><a href="explorar.html?artista='+escAttr(a.slug)+'">'+esc(a.nombre)+'</a>, '+o.anio+'</p>'+
+          '<div class="precio-caja"><span class="p">'+euro(o.precio)+'</span><span class="disp">'+dispTexto+'</span></div>'+
+          '<div class="comprar-fila" id="comprar">'+botones+'</div>'+
+          '<p class="pago-msg" id="pago-msg"></p>'+
+          '<div class="acciones" style="display:flex;gap:.6rem;margin:-.2rem 0 1.4rem">'+
+            '<button class="icono solo" id="fav" aria-label="Guardar en favoritos" title="Guardar">'+svgCorazon()+'</button>'+
+            '<button class="icono" id="share" aria-label="Compartir">'+svgShare()+'Compartir</button>'+
+          '</div>'+
+          (chips?'<div class="chips">'+chips+'</div>':'')+
+          fichaHTML+
+        '</div>'+
+      '</div>'+
+      '<section class="narrativa">'+bloques+'</section>'+
+      '<section class="artista-caja" id="artista">'+
+        '<div class="retrato">'+(a.retrato?'<img src="'+escAttr(a.retrato)+'" alt="'+escAttr(a.nombre)+'">':'<div class="ph" style="background:'+(o.gradiente||'var(--crema-2)')+'"></div>')+'</div>'+
+        '<div>'+
+          '<p class="eyebrow">El artista</p>'+
+          '<h3>'+esc(a.nombre)+'</h3>'+
+          '<p class="bio">'+esc(a.bio)+'</p>'+
+          (a.formacion?'<div class="form">'+esc(a.formacion)+'</div>':'')+
+          afinidades+
+          (enlaces.length?'<div class="enlaces">'+enlaces.join('')+'</div>':'')+
+        '</div>'+
+      '</section>'+
+      relHTML;
+
+    // zoom
+    conectarZoom(o);
+    // favorito + compartir
+    var fav = document.getElementById('fav');
+    if(window.GD && fav){
+      if(GD.esFav(o.id)) fav.classList.add('fav');
+      fav.addEventListener('click', function(){ var ahora=GD.favToggle(o.id); fav.classList.toggle('fav',ahora); toast(ahora?'Guardada en favoritos':'Quitada de favoritos'); });
+      document.getElementById('share').addEventListener('click', function(){ GD.compartir(o).then(function(r){ if(r==='copiado') toast('Enlace copiado'); }); });
+    }
+    // compra
+    if(enVenta){
+      var btn = document.getElementById('btn-comprar');
+      if(btn) btn.addEventListener('click', function(){ comprar(o, btn); });
+      if(location.hash === '#comprar'){ document.getElementById('comprar').scrollIntoView({behavior:'smooth',block:'center'}); }
+    }
+  }
+
+  var toastT;
+  function toast(msg){ var t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('ver'); clearTimeout(toastT); toastT=setTimeout(function(){ t.classList.remove('ver'); },2200); }
+  function svgCorazon(){ return '<svg viewBox="0 0 24 24"><path class="corazon" d="M12 20.5s-7.5-4.7-9.6-9C1 8.6 2.4 5.7 5.3 5.2c1.9-.3 3.6.7 4.7 2.2C11.1 5.9 12.8 4.9 14.7 5.2c2.9.5 4.3 3.4 2.9 6.3-2.1 4.3-9.6 9-9.6 9z"/></svg>'; }
+  function svgShare(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>'; }
+
+  function cardMini(o){
+    var inner = (o.imagenes&&o.imagenes.length)
+      ? '<img loading="lazy" src="'+escAttr(o.imagenes[0])+'" alt="'+escAttr(o.titulo)+'">'
+      : '<div class="ph" style="background:'+(o.gradiente||'var(--crema-2)')+'"></div>';
+    return '<a class="card-obra" href="obra.html?id='+encodeURIComponent(o.id)+'">'+
+      '<div class="thumb">'+inner+'</div>'+
+      '<div class="meta"><div class="t">'+esc(o.titulo)+'</div>'+
+      '<div class="foot"><span class="tag">'+esc((o.medio||[]).map(TAX.nombreMedio)[0]||'')+'</span><span class="p">'+euro(o.precio)+'</span></div></div></a>';
+  }
+
+  function conectarZoom(o){
+    var principal = document.getElementById('principal');
+    var lb = document.getElementById('lightbox');
+    var big = document.getElementById('lightbox-big');
+    function abrir(){ big.innerHTML = phDe(o); lb.classList.add('open'); document.body.style.overflow='hidden'; }
+    function cerrar(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+    if(principal) principal.addEventListener('click', abrir);
+    lb.addEventListener('click', function(e){ if(e.target===lb || e.target.classList.contains('cerrar')) cerrar(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') cerrar(); });
+  }
+
+  // ── Checkout: reutiliza la función Netlify existente /api/create-checkout ──
+  function comprar(o, btn){
+    var msg = document.getElementById('pago-msg');
+    btn.disabled = true; btn.textContent = 'Redirigiendo a pago seguro…'; msg.className='pago-msg'; msg.textContent='';
+    var variante = o.artista.nombre + ' · ' + (dimTexto(o) || (o.medio||[]).map(TAX.nombreMedio).join(', '));
+    fetch('/api/create-checkout', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ items:[{ name:o.titulo, price:o.precio, qty:1, variant:variante }] })
+    })
+    .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
+    .then(function(res){
+      if(res.ok && res.j.url){ location.href = res.j.url; }
+      else { throw new Error(res.j.error || 'No se pudo iniciar el pago'); }
+    })
+    .catch(function(err){
+      btn.disabled=false; btn.textContent='Comprar';
+      msg.className='pago-msg err';
+      msg.textContent = 'No se pudo iniciar el pago. '+(String(err.message).indexOf('Failed to fetch')>-1 ? 'El pago requiere el entorno publicado (Netlify + Stripe).' : err.message);
+    });
+  }
+
+  function noEncontrada(){
+    document.getElementById('root').innerHTML =
+      '<div class="cargando"><h2 class="serif" style="font-size:1.6rem;margin-bottom:.5rem">No encontramos esta obra</h2>'+
+      '<p>Quizá se ha vendido o el enlace no es correcto.</p>'+
+      '<p style="margin-top:1.4rem"><a class="btn btn-line" href="index.html">Volver a la galería</a></p></div>';
+  }
+
+  fetch('obras.json', {cache:'no-store'})
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var locales=[]; try{ locales = JSON.parse(localStorage.getItem('gd_obras_locales')||'[]'); }catch(e){}
+      TODAS = locales.concat(data);
+      var o = TODAS.filter(function(x){ return x.id===id || x.slug===id; })[0];
+      if(o) pintar(o); else noEncontrada();
+    })
+    .catch(noEncontrada);
+})();
+</script>
+</body>
+</html>

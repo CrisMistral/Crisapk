@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF8F5">
+<title>Explorar — Artdequé</title>
+<meta name="description" content="Explora el catálogo completo de arte emergente: filtra por medio, estilo, tema y precio, o busca por obra, artista o material.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Artdequé">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Explorar — Artdequé">
+<meta property="og:description" content="El catálogo completo de arte emergente. Filtra por medio, estilo, tema y precio.">
+<meta property="og:image" content="/galeria/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/galeria/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="estilo.css">
+<style>
+.controles{position:sticky;top:56px;z-index:30;background:var(--crema);border-bottom:1px solid var(--linea)}
+.controles .inner{max-width:var(--maxw);margin:0 auto;padding:.8rem var(--paso);display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+.buscador{position:relative;flex:1;min-width:200px}
+.buscador input{width:100%;font-family:var(--sans);font-size:.9rem;padding:.62rem .9rem .62rem 2.2rem;border:1px solid var(--linea);border-radius:100px;background:#fff;color:var(--tinta)}
+.buscador input:focus{outline:none;border-color:var(--acento)}
+.buscador svg{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);opacity:.45}
+.selects{display:flex;gap:.5rem;flex-wrap:wrap}
+.selects select{font-family:var(--sans);font-size:.84rem;padding:.55rem 2rem .55rem .8rem;border:1px solid var(--linea);border-radius:100px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235b564f' fill='none' stroke-width='1.3'/%3E%3C/svg%3E") no-repeat right .8rem center;-webkit-appearance:none;appearance:none;color:var(--tinta);cursor:pointer}
+.selects select:focus{outline:none;border-color:var(--acento)}
+.selects select.on{border-color:var(--tinta)}
+.limpiar{font-size:.8rem;color:var(--tinta-3);background:none;border:none;cursor:pointer;padding:.4rem .3rem}
+.limpiar:hover{color:var(--tinta)}
+.conteo{width:100%;font-size:.78rem;color:var(--tinta-3)}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:clamp(1.4rem,3vw,2.2rem)}
+.sec-head h1{font-size:clamp(1.6rem,4vw,2.3rem)}
+.sec-head .sub{color:var(--tinta-2);font-size:.9rem;max-width:46ch;margin-top:.3rem}
+.vacio{text-align:center;padding:4rem 1rem;color:var(--tinta-2)}
+.vacio h3{font-size:1.3rem;margin-bottom:.4rem}
+.filtro-artista{display:inline-flex;align-items:center;gap:.5rem;font-size:.82rem;background:var(--tinta);color:var(--crema);border-radius:100px;padding:.35rem .8rem;margin-left:.6rem}
+.filtro-artista button{background:none;border:none;color:rgba(250,248,245,.8);cursor:pointer}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Art<em>dequé</em></a>
+    <nav class="nav">
+      <a href="index.html" class="hide-sm">Obra del día</a>
+      <a href="archivo.html" class="hide-sm">Archivo</a>
+      <a class="cta" href="subir.html">Subir una obra</a>
+    </nav>
+  </div>
+</header>
+
+<div class="controles">
+  <div class="inner">
+    <div class="buscador">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#1A1A1A" stroke-width="1.3"/><path d="M11 11l4 4" stroke="#1A1A1A" stroke-width="1.3"/></svg>
+      <input id="q" type="search" placeholder="Buscar por obra, artista o material…" autocomplete="off">
+    </div>
+    <div class="selects">
+      <select id="f-medio" aria-label="Filtrar por medio"></select>
+      <select id="f-estilo" aria-label="Filtrar por estilo"></select>
+      <select id="f-tema" aria-label="Filtrar por tema"></select>
+      <select id="f-precio" aria-label="Filtrar por precio">
+        <option value="">Cualquier precio</option>
+        <option value="0-400">Hasta 400 €</option>
+        <option value="400-800">400 – 800 €</option>
+        <option value="800-1500">800 – 1.500 €</option>
+        <option value="1500-999999">Más de 1.500 €</option>
+      </select>
+      <button class="limpiar" id="limpiar" hidden>Limpiar</button>
+    </div>
+    <div class="conteo" id="conteo"></div>
+  </div>
+</div>
+
+<main class="wrap section">
+  <div class="sec-head">
+    <div>
+      <h1>Explorar</h1>
+      <p class="sub" id="sub">Todo el catálogo. Cada obra llega con la voz de quien la hizo.</p>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="vacio" id="vacio" hidden>
+    <h3>Nada por aquí todavía</h3>
+    <p>Prueba a quitar algún filtro o a buscar otra cosa.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="col"><span class="brand">Art<em>dequé</em></span><span class="muted" style="font-size:.8rem;max-width:30ch">Una obra cada día. Arte emergente y la voz de quien lo hace.</span></div>
+    <div class="cols">
+      <div class="col"><span class="eyebrow">Explorar</span><a href="index.html">Obra del día</a><a href="archivo.html">Archivo diario</a></div>
+      <div class="col"><span class="eyebrow">Artistas</span><a href="subir.html">Subir una obra</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="taxonomias.js"></script>
+<script src="galeria.js"></script>
+<script>
+(function(){
+  'use strict';
+  var $=function(id){return document.getElementById(id);};
+  var OBRAS=[];
+  var qs=new URLSearchParams(location.search);
+  var estado={ q:'', medio:qs.get('medio')||'', estilo:qs.get('estilo')||'', tema:qs.get('tema')||'', precio:'', artista:qs.get('artista')||'' };
+
+  function llenar(sel,etiqueta,lista){
+    var html='<option value="">'+etiqueta+'</option>';
+    lista.forEach(function(x){ html+='<option value="'+x.slug+'">'+x.nombre+'</option>'; });
+    sel.innerHTML=html;
+  }
+  llenar($('f-medio'),'Medio',TAX.MEDIO);
+  llenar($('f-estilo'),'Estilo',TAX.ESTILO);
+  llenar($('f-tema'),'Tema',TAX.TEMA);
+  $('f-medio').value=estado.medio; $('f-estilo').value=estado.estilo; $('f-tema').value=estado.tema;
+
+  function coincide(o){
+    if(estado.artista && o.artista.slug!==estado.artista) return false;
+    if(estado.medio && (o.medio||[]).indexOf(estado.medio)===-1) return false;
+    if(estado.estilo && (o.estilo||[]).indexOf(estado.estilo)===-1) return false;
+    if(estado.tema && (o.tema||[]).indexOf(estado.tema)===-1) return false;
+    if(estado.precio){ var r=estado.precio.split('-'); if(o.precio<+r[0]||o.precio>+r[1]) return false; }
+    if(estado.q){
+      var q=estado.q.toLowerCase();
+      var heno=[o.titulo,o.artista.nombre,o.materiales,
+        (o.medio||[]).map(TAX.nombreMedio).join(' '),
+        (o.estilo||[]).map(TAX.nombreEstilo).join(' '),
+        (o.tema||[]).map(TAX.nombreTema).join(' '),
+        o.narrativa&&o.narrativa.deQueTrata].join(' ').toLowerCase();
+      if(heno.indexOf(q)===-1) return false;
+    }
+    return true;
+  }
+
+  function render(){
+    var fil=OBRAS.filter(coincide);
+    $('grid').innerHTML=fil.map(GD.cardHTML).join('');
+    $('vacio').hidden=fil.length>0;
+    var activos=estado.q||estado.medio||estado.estilo||estado.tema||estado.precio||estado.artista;
+    $('conteo').textContent=activos?(fil.length+(fil.length===1?' obra':' obras')):(OBRAS.length+' obras en la galería');
+    $('limpiar').hidden=!activos;
+    ['f-medio','f-estilo','f-tema','f-precio'].forEach(function(id){ $(id).classList.toggle('on',!!$(id).value); });
+    // encabezado según artista
+    if(estado.artista && OBRAS.length){
+      var a=OBRAS.filter(function(o){return o.artista.slug===estado.artista;})[0];
+      $('sub').innerHTML='Obras de <strong>'+(a?GD.esc(a.artista.nombre):estado.artista)+'</strong> <span class="filtro-artista">'+ (a?GD.esc(a.artista.nombre):estado.artista) +' <button id="quita-artista" aria-label="quitar">✕</button></span>';
+      var qa=$('quita-artista'); if(qa) qa.addEventListener('click',function(){ estado.artista=''; render(); });
+    }
+  }
+
+  function conectar(){
+    var t;
+    $('q').addEventListener('input',function(e){ clearTimeout(t); var v=e.target.value; t=setTimeout(function(){ estado.q=v.trim(); render(); },120); });
+    $('f-medio').addEventListener('change',function(e){ estado.medio=e.target.value; render(); });
+    $('f-estilo').addEventListener('change',function(e){ estado.estilo=e.target.value; render(); });
+    $('f-tema').addEventListener('change',function(e){ estado.tema=e.target.value; render(); });
+    $('f-precio').addEventListener('change',function(e){ estado.precio=e.target.value; render(); });
+    $('limpiar').addEventListener('click',function(){
+      estado={q:'',medio:'',estilo:'',tema:'',precio:'',artista:''};
+      $('q').value=''; ['f-medio','f-estilo','f-tema','f-precio'].forEach(function(id){ $(id).value=''; });
+      $('sub').textContent='Todo el catálogo. Cada obra llega con la voz de quien la hizo.';
+      render();
+    });
+  }
+
+  conectar();
+  GD.cargarObras().then(function(todas){ OBRAS=GD.publicas(todas); render(); })
+    .catch(function(){ $('vacio').hidden=false; });
+})();
+</script>
+</body>
+</html>

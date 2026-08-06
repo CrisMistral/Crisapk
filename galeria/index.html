@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF8F5">
+<title>Artdequé — una obra cada día</title>
+<meta name="description" content="Cada día, una sola obra de arte emergente y la historia de quien la hizo. Detente un momento. Si te llama, es tuya.">
+<!-- Vista previa al compartir (redes, WhatsApp…) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Artdequé">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Artdequé — una obra cada día">
+<meta property="og:description" content="Arte emergente. Cada día, una sola obra y la voz de quien la hizo.">
+<meta property="og:image" content="/galeria/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Artdequé — una obra cada día">
+<meta name="twitter:description" content="Arte emergente. Cada día, una sola obra y la voz de quien la hizo.">
+<meta name="twitter:image" content="/galeria/og.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Artdequé">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Art<em>dequé</em></a>
+    <nav class="nav">
+      <a href="explorar.html" class="hide-sm">Explorar</a>
+      <a href="archivo.html" class="hide-sm">Archivo</a>
+      <a class="cta" href="subir.html">Subir una obra</a>
+    </nav>
+  </div>
+</header>
+
+<!-- barra de recordatorio (push) -->
+<div class="push-bar" id="push-bar" hidden>
+  <div class="inner">
+    <p>Una obra cada día, en tu pantalla. ¿Te avisamos?</p>
+    <button class="btn-push" id="btn-push">Activar recordatorio</button>
+    <button class="cerrar-push" id="cerrar-push" aria-label="Ahora no">✕</button>
+  </div>
+</div>
+
+<!-- OBRA DEL DÍA (ritual) -->
+<main class="ritual" id="ritual" aria-live="polite">
+  <div class="lienzo">
+    <div class="obra-img skeleton" id="obra-img"><div class="ph"></div></div>
+  </div>
+  <div class="relato" id="relato">
+    <p class="fecha" id="fecha">Cargando…</p>
+    <h1>La obra de hoy</h1>
+  </div>
+</main>
+
+<div class="bajo-ritual">
+  <div class="inner">
+    <a class="mas" href="explorar.html">Explorar todas las obras →</a>
+    <a class="mas" href="archivo.html">Ver las obras de días pasados →</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="col">
+      <span class="brand">Art<em>dequé</em></span>
+      <span class="muted" style="font-size:.8rem;max-width:32ch">Una obra cada día. Nos detenemos en una sola, con la voz de quien la hizo.</span>
+    </div>
+    <div class="cols">
+      <div class="col"><span class="eyebrow">Explorar</span><a href="explorar.html">Todas las obras</a><a href="archivo.html">Archivo diario</a></div>
+      <div class="col"><span class="eyebrow">Artistas</span><a href="subir.html">Subir una obra</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="cerrar" aria-label="Cerrar">✕</button>
+  <div class="big" id="lightbox-big"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="taxonomias.js"></script>
+<script src="galeria.js"></script>
+<script>
+(function(){
+  'use strict';
+  var $=function(id){return document.getElementById(id);};
+  var toastT;
+  function toast(msg){ var t=$('toast'); t.textContent=msg; t.classList.add('ver'); clearTimeout(toastT); toastT=setTimeout(function(){ t.classList.remove('ver'); },2200); }
+
+  var obraActual=null, expandido=false;
+
+  function pintar(o){
+    obraActual=o;
+    if(!o){ $('ritual').innerHTML='<div class="vacio" style="padding:5rem 1rem"><h3 class="serif">La galería está vacía todavía</h3><p><a class="btn btn-line" href="subir.html">Sé el primero en subir una obra</a></p></div>'; return; }
+    document.title = 'Hoy: '+o.titulo+' — Artdequé';
+    $('obra-img').classList.remove('skeleton');
+    $('obra-img').innerHTML = GD.imgInterior(o,false);
+    $('obra-img').title='Ampliar';
+
+    var enVenta = o.disponibilidad==='venta' && o.estado!=='vendida';
+    var dim = GD.dimTexto(o);
+    var acciones =
+      (enVenta
+        ? '<span class="precio">'+GD.euro(o.precio)+'</span><a class="btn btn-dark" href="obra.html?id='+encodeURIComponent(o.id)+'#comprar">Comprar</a>'
+        : '<span class="precio">'+GD.euro(o.precio)+'</span><span class="pill">'+(o.disponibilidad==='reservada'?'Reservada':'No disponible')+'</span>');
+
+    $('relato').innerHTML =
+      '<p class="fecha">'+GD.fechaLarga()+' · la obra de hoy</p>'+
+      '<h1>'+GD.esc(o.titulo)+'</h1>'+
+      '<p class="artista-linea"><a href="explorar.html?artista='+GD.escAttr(o.artista.slug)+'">'+GD.esc(o.artista.nombre)+'</a> · '+GD.medios(o).join(' · ')+', '+o.anio+'</p>'+
+      '<div id="historia-cont"></div>'+
+      '<div class="ficha-linea"><span><b>'+GD.esc(o.materiales)+'</b></span>'+(dim?'<span>'+dim+'</span>':'')+'</div>'+
+      '<div class="precio-fila">'+acciones+'</div>'+
+      '<div class="acciones">'+
+        '<a class="btn btn-line" href="obra.html?id='+encodeURIComponent(o.id)+'">Ver la obra entera</a>'+
+        '<button class="icono solo" id="fav" aria-label="Guardar en favoritos" title="Guardar">'+corazon()+'</button>'+
+        '<button class="icono" id="share" aria-label="Compartir">'+iconoShare()+'Compartir</button>'+
+      '</div>';
+
+    pintarHistoria(o);
+    conectarAcciones(o);
+    conectarZoom(o);
+  }
+
+  function pintarHistoria(o){
+    var texto = (o.narrativa && o.narrativa.deQueTrata) || '';
+    var cont = $('historia-cont');
+    var LIMITE=280;
+    if(texto.length<=LIMITE || expandido){
+      cont.innerHTML='<p class="historia">'+GD.esc(texto)+'</p>'+(texto.length>LIMITE?'<button class="leer-mas" id="menos">Leer menos</button>':'');
+      var m=$('menos'); if(m) m.addEventListener('click',function(){ expandido=false; pintarHistoria(o); });
+    } else {
+      var corte = texto.slice(0,LIMITE).replace(/\s+\S*$/,'');
+      cont.innerHTML='<p class="historia">'+GD.esc(corte)+'… </p><button class="leer-mas" id="mas">Seguir leyendo</button>';
+      $('mas').addEventListener('click',function(){ expandido=true; pintarHistoria(o); });
+    }
+  }
+
+  function corazon(){ return '<svg viewBox="0 0 24 24"><path class="corazon" d="M12 20.5s-7.5-4.7-9.6-9C1 8.6 2.4 5.7 5.3 5.2c1.9-.3 3.6.7 4.7 2.2C11.1 5.9 12.8 4.9 14.7 5.2c2.9.5 4.3 3.4 2.9 6.3-2.1 4.3-9.6 9-9.6 9z"/></svg>'; }
+  function iconoShare(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>'; }
+
+  function conectarAcciones(o){
+    var fav=$('fav');
+    if(GD.esFav(o.id)) fav.classList.add('fav');
+    fav.addEventListener('click',function(){
+      var ahora=GD.favToggle(o.id);
+      fav.classList.toggle('fav',ahora);
+      toast(ahora?'Guardada en favoritos':'Quitada de favoritos');
+    });
+    $('share').addEventListener('click',function(){
+      GD.compartir(o).then(function(r){ if(r==='copiado') toast('Enlace copiado'); });
+    });
+  }
+
+  function conectarZoom(o){
+    var img=$('obra-img'), lb=$('lightbox'), big=$('lightbox-big');
+    img.addEventListener('click',function(){ big.innerHTML=GD.imgInterior(o,false); lb.classList.add('open'); document.body.style.overflow='hidden'; });
+    lb.addEventListener('click',function(e){ if(e.target===lb||e.target.classList.contains('cerrar')){ lb.classList.remove('open'); document.body.style.overflow=''; } });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ lb.classList.remove('open'); document.body.style.overflow=''; } });
+  }
+
+  // ── Recordatorio push (PWA) ──
+  var PUSH_OCULTO='gd_push_oculto';
+  function iniciarPush(){
+    var soporta = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+    if(!soporta) return;
+    if(Notification.permission==='granted' || localStorage.getItem(PUSH_OCULTO)==='1') return;
+    $('push-bar').hidden=false;
+    $('cerrar-push').addEventListener('click',function(){ $('push-bar').hidden=true; try{localStorage.setItem(PUSH_OCULTO,'1');}catch(e){} });
+    $('btn-push').addEventListener('click',activarPush);
+  }
+  function urlBase64ToUint8Array(b64){
+    var pad='='.repeat((4-b64.length%4)%4); var base=(b64+pad).replace(/-/g,'+').replace(/_/g,'/');
+    var raw=atob(base), arr=new Uint8Array(raw.length);
+    for(var i=0;i<raw.length;i++) arr[i]=raw.charCodeAt(i);
+    return arr;
+  }
+  function activarPush(){
+    var btn=$('btn-push'); btn.disabled=true; btn.textContent='…';
+    Notification.requestPermission().then(function(permiso){
+      if(permiso!=='granted'){ toast('Sin permiso no podemos avisarte. Puedes activarlo desde los ajustes del navegador.'); btn.disabled=false; btn.textContent='Activar recordatorio'; return; }
+      navigator.serviceWorker.register('sw.js').then(function(reg){
+        return fetch('/api/push-key').then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; })
+          .then(function(cfg){
+            if(cfg.key){
+              return reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:urlBase64ToUint8Array(cfg.key) })
+                .then(function(sub){
+                  return fetch('/api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(sub)});
+                }).then(function(){ return true; });
+            }
+            return false; // sin VAPID configurado: recordatorio local
+          })
+          .then(function(remoto){
+            reg.showNotification('Artdequé', { body: remoto ? 'Listo. Cada día te traeremos una obra nueva.' : 'Recordatorio activado en este dispositivo.', tag:'gd-bienvenida' });
+            $('push-bar').hidden=true;
+            toast(remoto?'Recordatorio diario activado':'Activado en este dispositivo');
+          });
+      }).catch(function(){ toast('No se pudo activar el recordatorio aquí.'); btn.disabled=false; btn.textContent='Activar recordatorio'; });
+    });
+  }
+
+  // ── Arranque ──
+  GD.cargarObras().then(function(todas){
+    pintar(GD.obraDeHoy(todas));
+    iniciarPush();
+  }).catch(function(){
+    $('ritual').innerHTML='<div class="vacio" style="padding:5rem 1rem"><h3 class="serif">No se pudo cargar la obra de hoy</h3><p>Inténtalo de nuevo en un momento.</p></div>';
+  });
+})();
+</script>
+</body>
+</html>

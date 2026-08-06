@@ -29,5 +29,11 @@
   for = "/.netlify/functions/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Methods = "POST, OPTIONS"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type"
+
+# El service worker de la Galería no debe quedarse cacheado
+[[headers]]
+  for = "/galeria/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
