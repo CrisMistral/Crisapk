@@ -301,8 +301,9 @@ body.mod-open #dropBtn{display:none;}
 .ob-skip{flex:1;border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:12px;padding:10px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;}
 .ob-next{flex:1.6;border:none;background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:12px;padding:10px;font-family:'Outfit',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;}
 .ob-next:active,.ob-skip:active{transform:scale(.97);}
-#tourBtn{width:100%;margin-top:14px;border:2px solid var(--mint-mid);background:var(--white-card,#fff);color:var(--teal-dark);border-radius:14px;padding:11px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;}
-#tourBtn:active{transform:scale(.98);}
+#tourBtn,#dropMenuBtn{width:100%;margin-top:10px;border:2px solid var(--mint-mid);background:var(--white-card,#fff);color:var(--teal-dark);border-radius:14px;padding:11px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;}
+#dropMenuBtn{margin-top:16px;}
+#tourBtn:active,#dropMenuBtn:active{transform:scale(.98);}
 body.mod-open #menuBtn{display:none;}
 
 /* ── Recordatorios ── */
@@ -348,7 +349,6 @@ body.mod-open #menuBtn{display:none;}
 <!-- Botón de menú -->
 <button id="menuBtn" aria-label="Abrir menú" data-i18n-aria="menu_open" onclick="openDrawer()">☰<span class="mb-label" data-i18n="menu">Menú</span></button>
 <!-- Botón de idioma (cambia ES → EN → FR con cada toque) -->
-<button id="langBtn" aria-label="Cambiar idioma" data-i18n-aria="lang_change" onclick="cycleLang()"><span class="lb-flag">🇪🇸</span><span class="lb-code">ES</span></button>
 
 <!-- Pantalla 1: solo HOY -->
 <div id="dashboard">
@@ -417,6 +417,7 @@ body.mod-open #menuBtn{display:none;}
     <div class="cfg-note" data-i18n="cfg_note">Los ajustes se aplican a toda la app</div>
   </div>
 
+  <button id="dropMenuBtn" onclick="closeDrawer();openModule('modules/rescate-emocional.html#transition');"><span data-i18n="drop_menu">📴 Soltar el móvil</span></button>
   <button id="tourBtn" onclick="closeDrawer();setTimeout(startOnboard,320);"><span data-i18n="ob_replay">🦘 Ver el recorrido</span></button>
 
   <div class="cfg-note" data-i18n="drawer_footer" style="margin-top:22px;line-height:1.7;">
@@ -442,7 +443,6 @@ body.mod-open #menuBtn{display:none;}
 </div>
 <button id="homeBtn" title="Volver al inicio" data-i18n-title="home_title">🏠</button>
 <button id="sosBtn" title="Botiquín de emergencia" data-i18n-title="sos_title" onclick="openModule('modules/rescate-emocional.html')">🫀<span class="sos-label" data-i18n="sos"> SOS</span></button>
-<button id="dropBtn" aria-label="Soltar el móvil" data-i18n-aria="drop_title" title="Soltar el móvil" data-i18n-title="drop_title" onclick="openModule('modules/rescate-emocional.html#transition')">📴<span class="drop-label" data-i18n="drop"> Soltar</span></button>
 
 <script>
 /* ══════════ IDIOMAS (es por defecto · en · fr) ══════════ */
@@ -456,7 +456,7 @@ const I18N={
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
   drawer_footer:'Quico · tu compañero cada día 💚',
-  day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia', drop:' Soltar', drop_title:'Soltar el móvil y cambiar de tarea',
+  day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia', drop:' Soltar', drop_title:'Soltar el móvil y cambiar de tarea', drop_menu:'📴 Soltar el móvil',
   greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
   mod_trabajo_t:'Trabajo', mod_trabajo_s:'Herramientas anti-bloqueo',
@@ -518,7 +518,7 @@ const I18N={
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
   drawer_footer:'Quico · your everyday companion 💚',
-  day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit', drop:' Drop it', drop_title:'Put the phone down and switch tasks',
+  day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit', drop:' Drop it', drop_title:'Put the phone down and switch tasks', drop_menu:'📴 Put the phone down',
   greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
   mod_trabajo_t:'Work', mod_trabajo_s:'Anti-block tools',
@@ -580,7 +580,7 @@ const I18N={
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
   drawer_footer:'Quico · ton compagnon de chaque jour 💚',
-  day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence', drop:' Lâcher', drop_title:'Lâcher le téléphone et changer de tâche',
+  day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence', drop:' Lâcher', drop_title:'Lâcher le téléphone et changer de tâche', drop_menu:'📴 Lâcher le téléphone',
   greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
   mod_trabajo_t:'Travail', mod_trabajo_s:'Outils anti-blocage',
@@ -1115,10 +1115,8 @@ const ONBOARD={
   {sel:'.tp-energy',t:'¿Cómo vienes hoy? 💪🔋',x:'Dime tu energía y ajusto el día a como estás de verdad. Sin culpa.'},
   {sel:'.tp-row',t:'Cada tarea, un mundo 🎨',x:'Toca una tarjeta y te guío paso a paso… ¡con mi voz!'},
   {sel:'.tp-edit',t:'Tu día, a tu manera ✏️',x:'Aquí eliges qué aparece en tu plan. Pones y quitas lo que quieras. Mandas tú.'},
-  {sel:'#menuBtn',t:'El menú ☰',x:'Todos los módulos, el idioma, TU nombre y «reducir estímulos» para los días sensibles.'},
-  {sel:'#langBtn',t:'Idioma 🇪🇸🇬🇧🇫🇷',x:'Un toque y cambio entre español, inglés y francés.'},
+  {sel:'#menuBtn',t:'El menú ☰',x:'Aquí dentro está todo: los módulos, el idioma 🇪🇸🇬🇧🇫🇷, TU nombre, «Soltar el móvil» y «reducir estímulos» para los días sensibles.'},
   {sel:'#sosBtn',t:'El corazón 🫀',x:'El Botiquín Emocional: técnicas, meditaciones y ayuda cuando el día pesa.'},
-  {sel:'#dropBtn',t:'Soltar el móvil 📴',x:'¿Enganchada al móvil? Te doy un empujoncito para dejarlo y ponerte a lo tuyo.'},
   {t:'¡Y ya está! 💚',x:'Puedes repetir este paseo cuando quieras desde el Menú. Ahora… ¡a jugar!'}
  ]},
  en:{skip:'Skip',next:'Next →',start:'Let’s play!',steps:[
@@ -1127,10 +1125,8 @@ const ONBOARD={
   {sel:'.tp-energy',t:'How are you today? 💪🔋',x:'Tell me your energy and I’ll shape the day to how you really are. No guilt.'},
   {sel:'.tp-row',t:'Each task, a world 🎨',x:'Tap a card and I’ll guide you step by step… with my voice!'},
   {sel:'.tp-edit',t:'Your day, your way ✏️',x:'Here you choose what shows up in your plan. Add and remove whatever you like. You’re the boss.'},
-  {sel:'#menuBtn',t:'The menu ☰',x:'All the modules, the language, YOUR name and «reduce stimulation» for sensitive days.'},
-  {sel:'#langBtn',t:'Language 🇪🇸🇬🇧🇫🇷',x:'One tap and I switch between Spanish, English and French.'},
+  {sel:'#menuBtn',t:'The menu ☰',x:'Everything lives in here: the modules, the language 🇪🇸🇬🇧🇫🇷, YOUR name, «Put the phone down» and «reduce stimulation» for sensitive days.'},
   {sel:'#sosBtn',t:'The heart 🫀',x:'The Emotional Kit: techniques, meditations and help when the day weighs on you.'},
-  {sel:'#dropBtn',t:'Put the phone down 📴',x:'Stuck scrolling? I’ll give you a little nudge to drop it and get going.'},
   {t:'That’s it! 💚',x:'You can replay this tour anytime from the Menu. Now… let’s play!'}
  ]},
  fr:{skip:'Passer',next:'Suivant →',start:'On joue !',steps:[
@@ -1139,10 +1135,8 @@ const ONBOARD={
   {sel:'.tp-energy',t:'Comment tu te sens ? 💪🔋',x:'Dis-moi ton énergie et j’adapte la journée à ton état réel. Sans culpabilité.'},
   {sel:'.tp-row',t:'Chaque tâche, un monde 🎨',x:'Touche une carte et je te guide pas à pas… avec ma voix !'},
   {sel:'.tp-edit',t:'Ta journée, à ta façon ✏️',x:'Ici tu choisis ce qui apparaît dans ton plan. Tu ajoutes et enlèves ce que tu veux. C’est toi qui décides.'},
-  {sel:'#menuBtn',t:'Le menu ☰',x:'Tous les modules, la langue, TON prénom et « réduire les stimulations » pour les jours sensibles.'},
-  {sel:'#langBtn',t:'Langue 🇪🇸🇬🇧🇫🇷',x:'Un toucher et je passe entre l’espagnol, l’anglais et le français.'},
+  {sel:'#menuBtn',t:'Le menu ☰',x:'Tout est là-dedans : les modules, la langue 🇪🇸🇬🇧🇫🇷, TON prénom, « Lâcher le téléphone » et « réduire les stimulations » pour les jours sensibles.'},
   {sel:'#sosBtn',t:'Le cœur 🫀',x:'La Trousse émotionnelle : techniques, méditations et aide quand la journée pèse.'},
-  {sel:'#dropBtn',t:'Lâcher le téléphone 📴',x:'Scotchée à l’écran ? Je te donne un petit coup de pouce pour le poser et t’y mettre.'},
   {t:'Et voilà ! 💚',x:'Tu peux revoir cette visite quand tu veux depuis le Menu. Maintenant… on joue !'}
  ]}
 };
