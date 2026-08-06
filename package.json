@@ -4,6 +4,9 @@
   "private": true,
   "description": "Art shop for What Maria Paints",
   "dependencies": {
-    "stripe": "^16.0.0"
+    "@netlify/blobs": "^8.1.0",
+    "@netlify/functions": "^2.8.1",
+    "stripe": "^16.0.0",
+    "web-push": "^3.6.7"
   }
 }

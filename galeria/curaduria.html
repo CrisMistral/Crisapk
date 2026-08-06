@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FAF8F5">
+<meta name="robots" content="noindex,nofollow">
+<title>Curaduría — Artdequé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<style>
+.cur-wrap{max-width:960px;margin:0 auto;padding:clamp(1.6rem,5vw,3rem) var(--paso) 5rem}
+/* login */
+.login{max-width:360px;margin:clamp(3rem,12vw,7rem) auto;text-align:center}
+.login h1{font-size:2rem;margin-bottom:.5rem}
+.login p{color:var(--tinta-2);margin-bottom:1.6rem}
+.login input{width:100%;font-size:1rem;padding:.85rem 1rem;border:1px solid var(--linea);border-radius:var(--r);background:#fff;margin-bottom:.7rem}
+.login input:focus{outline:none;border-color:var(--tinta)}
+.login .msg{font-size:.85rem;color:#a3402f;min-height:1.2em;margin-top:.5rem}
+/* panel */
+.tabs{display:flex;gap:.4rem;border-bottom:1px solid var(--linea);margin-bottom:1.8rem;flex-wrap:wrap}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:.7rem .9rem;font-size:.92rem;color:var(--tinta-2);cursor:pointer;margin-bottom:-1px}
+.tab.on{color:var(--tinta);border-bottom-color:var(--tinta);font-weight:500}
+.tab .n{display:inline-block;min-width:18px;font-size:.72rem;background:var(--tinta);color:var(--crema);border-radius:100px;padding:0 .35rem;margin-left:.35rem}
+.vista{display:none}.vista.on{display:block}
+.contadores{display:flex;gap:1.4rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.contadores .c{font-size:.85rem;color:var(--tinta-2)}
+.contadores .c b{font-family:var(--serif);font-size:1.4rem;color:var(--tinta);display:block;font-weight:500}
+/* tarjeta pendiente */
+.pend{display:grid;grid-template-columns:120px 1fr;gap:1.2rem;background:#fff;border:1px solid var(--linea);border-radius:var(--r);padding:1rem;margin-bottom:1rem}
+@media(max-width:560px){.pend{grid-template-columns:1fr}}
+.pend .thumb{aspect-ratio:4/5;width:120px}
+@media(max-width:560px){.pend .thumb{width:100%;max-width:200px}}
+.pend h3{font-size:1.15rem;margin-bottom:.15rem}
+.pend .who{font-size:.85rem;color:var(--tinta-2);margin-bottom:.5rem}
+.pend .tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.6rem}
+.pend .tags span{font-size:.72rem;color:var(--tinta-2);border:1px solid var(--linea);border-radius:100px;padding:.2rem .6rem}
+.pend .rel{font-size:.9rem;color:#2c2822;line-height:1.6;margin-bottom:.5rem}
+.pend .precio{font-size:.9rem;font-weight:500;margin-bottom:.8rem}
+.pend .acc{display:flex;gap:.6rem;flex-wrap:wrap}
+.btn-ok{background:var(--ok);color:#fff;border:none}
+.btn-no{background:#fff;border:1px solid #e0c4c4;color:#a3402f}
+.btn-sm{font-size:.82rem;padding:.5rem .9rem;border-radius:var(--r);cursor:pointer}
+.vacio-p{color:var(--tinta-2);padding:2.5rem 0;text-align:center}
+/* invitaciones */
+.inv-crear{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.4rem;align-items:center}
+.inv-crear input{flex:1;min-width:180px;font-size:.92rem;padding:.6rem .8rem;border:1px solid var(--linea);border-radius:var(--r);background:#fff}
+.inv-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#fff;border:1px solid var(--linea);border-radius:var(--r);padding:.7rem 1rem;margin-bottom:.6rem;flex-wrap:wrap}
+.inv-row .code{font-family:ui-monospace,monospace;font-size:.95rem;letter-spacing:.05em}
+.inv-row .lab{font-size:.82rem;color:var(--tinta-2)}
+.inv-row.off{opacity:.55}
+.inv-row .estado{font-size:.72rem;padding:.2rem .55rem;border-radius:100px;border:1px solid var(--linea)}
+.inv-row .estado.activo{background:var(--ok);color:#fff;border-color:var(--ok)}
+.nuevo-code{background:var(--crema-2);border-radius:var(--r);padding:1rem;margin-bottom:1rem;text-align:center}
+.nuevo-code b{font-family:ui-monospace,monospace;font-size:1.3rem;letter-spacing:.08em}
+/* reglas */
+.regla-modo{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.8rem;max-width:520px}
+.regla-temas{display:grid;grid-template-columns:1fr;gap:.5rem;max-width:620px}
+.regla{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.55rem .2rem;border-bottom:1px solid var(--linea)}
+.regla .nom{font-size:.92rem}
+.regla select{font-size:.84rem;padding:.4rem 1.8rem .4rem .7rem;border:1px solid var(--linea);border-radius:100px;background:#fff;-webkit-appearance:none;appearance:none}
+.regla select.auto{border-color:#bcd3c2}.regla select.revisar{border-color:var(--linea)}.regla select.bloquear{border-color:#e0c4c4;color:#a3402f}
+.guardar-barra{position:sticky;bottom:0;background:rgba(250,248,245,.94);backdrop-filter:blur(6px);padding:1rem 0;margin-top:1rem;display:flex;gap:1rem;align-items:center}
+.leyenda{font-size:.82rem;color:var(--tinta-2);margin-bottom:1.2rem;line-height:1.6}
+.salir{background:none;border:none;color:var(--tinta-3);cursor:pointer;font-size:.85rem}
+.salir:hover{color:var(--tinta)}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Art<em>dequé</em></a>
+    <nav class="nav"><span class="muted" style="font-size:.85rem">Curaduría</span></nav>
+  </div>
+</header>
+
+<!-- LOGIN -->
+<section class="login" id="login">
+  <h1 class="serif">Curaduría</h1>
+  <p>Introduce la contraseña para revisar las obras, gestionar invitaciones y las reglas.</p>
+  <input type="password" id="pass" placeholder="Contraseña" autocomplete="current-password">
+  <button class="btn btn-dark" id="entrar" style="width:100%">Entrar</button>
+  <p class="msg" id="login-msg"></p>
+</section>
+
+<!-- PANEL -->
+<main class="cur-wrap" id="panel" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+    <div class="contadores" id="contadores"></div>
+    <button class="salir" id="salir">Cerrar sesión</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" data-v="pendientes">Pendientes <span class="n" id="n-pend">0</span></button>
+    <button class="tab" data-v="invitaciones">Invitaciones</button>
+    <button class="tab" data-v="reglas">Reglas de moderación</button>
+  </div>
+
+  <section class="vista on" id="v-pendientes">
+    <div id="lista-pend"></div>
+  </section>
+
+  <section class="vista" id="v-invitaciones">
+    <p class="leyenda">Genera un código por artista. Solo quien tenga un código activo puede entrar al formulario.</p>
+    <div class="inv-crear">
+      <input type="text" id="inv-label" placeholder="Para quién es (p. ej. «Elena Vidal»)" maxlength="80">
+      <button class="btn btn-dark btn-sm" id="inv-crear">Generar código</button>
+    </div>
+    <div id="nuevo-code"></div>
+    <div id="lista-inv"></div>
+  </section>
+
+  <section class="vista" id="v-reglas">
+    <p class="leyenda">Por defecto, <b>todo pasa por tu revisión</b>. Puedes automatizar por temática: aprobar sola, seguir revisando, o rechazar directamente las obras que toquen ciertos temas.</p>
+    <div class="regla-modo">
+      <label class="etq" style="font-weight:500">Modo general</label>
+      <div class="radios" id="modo"></div>
+    </div>
+    <label class="etq" style="font-weight:500;display:block;margin-bottom:.6rem">Reglas por temática</label>
+    <div class="regla-temas" id="reglas-temas"></div>
+    <div class="guardar-barra">
+      <button class="btn btn-dark" id="guardar-reglas">Guardar reglas</button>
+      <span class="muted" id="reglas-msg" style="font-size:.85rem"></span>
+    </div>
+  </section>
+</main>
+
+<script src="taxonomias.js"></script>
+<script src="galeria.js"></script>
+<script>
+(function(){
+  'use strict';
+  var $=function(id){return document.getElementById(id);};
+  var TOKEN = sessionStorage.getItem('gd_cur_token')||'';
+  var CONFIG = { modo:'revisar', temas:{} };
+
+  function api(accion, extra){
+    return fetch('/api/curaduria',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-cur-token':TOKEN},
+      body:JSON.stringify(Object.assign({accion:accion},extra||{}))
+    }).then(function(r){ return r.json().then(function(j){ return {status:r.status,j:j}; }); });
+  }
+
+  // ── Login ──
+  function entrar(){
+    TOKEN=$('pass').value;
+    if(!TOKEN){ $('login-msg').textContent='Escribe la contraseña.'; return; }
+    $('entrar').disabled=true; $('entrar').textContent='Comprobando…'; $('login-msg').textContent='';
+    api('ping').then(function(res){
+      if(res.status===200 && res.j.ok){ sessionStorage.setItem('gd_cur_token',TOKEN); abrirPanel(); }
+      else if(res.status===503){ $('login-msg').textContent='El servidor no tiene configurada la contraseña (CURATOR_TOKEN).'; reset(); }
+      else { $('login-msg').textContent='Contraseña incorrecta.'; reset(); }
+    }).catch(function(){ $('login-msg').textContent='No se pudo conectar (¿hay backend?).'; reset(); });
+    function reset(){ $('entrar').disabled=false; $('entrar').textContent='Entrar'; }
+  }
+  $('entrar').addEventListener('click',entrar);
+  $('pass').addEventListener('keydown',function(e){ if(e.key==='Enter') entrar(); });
+  $('salir').addEventListener('click',function(){ sessionStorage.removeItem('gd_cur_token'); location.reload(); });
+
+  function abrirPanel(){ $('login').style.display='none'; $('panel').style.display='block'; cargar(); pintarReglas(); }
+
+  // ── Pestañas ──
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(t){
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+      document.querySelectorAll('.vista').forEach(function(x){x.classList.remove('on');});
+      t.classList.add('on'); $('v-'+t.getAttribute('data-v')).classList.add('on');
+    });
+  });
+
+  // ── Cargar datos ──
+  function cargar(){
+    api('listar').then(function(res){
+      if(res.status!==200){ if(res.status===401){ sessionStorage.removeItem('gd_cur_token'); location.reload(); } return; }
+      var d=res.j;
+      CONFIG = d.config || CONFIG;
+      $('contadores').innerHTML =
+        '<div class="c"><b>'+d.contadores.pendientes+'</b>pendientes</div>'+
+        '<div class="c"><b>'+d.contadores.publicadas+'</b>publicadas</div>'+
+        '<div class="c"><b>'+d.contadores.rechazadas+'</b>rechazadas</div>';
+      $('n-pend').textContent=d.contadores.pendientes;
+      pintarPendientes(d.pendientes||[]);
+      pintarInvites(d.invites||[]);
+      pintarReglas();
+    });
+  }
+
+  function pintarPendientes(lista){
+    if(!lista.length){ $('lista-pend').innerHTML='<div class="vacio-p">No hay obras esperando. Todo al día.</div>'; return; }
+    $('lista-pend').innerHTML = lista.map(function(p){
+      var o=p.obra;
+      var tags=(o.medio||[]).map(TAX.nombreMedio).concat((o.tema||[]).map(TAX.nombreTema)).map(function(x){return '<span>'+GD.esc(x)+'</span>';}).join('');
+      return '<div class="pend" data-id="'+GD.escAttr(o.id)+'">'+
+        GD.thumbHTML(o)+
+        '<div>'+
+          '<h3>'+GD.esc(o.titulo)+'</h3>'+
+          '<div class="who">'+GD.esc(o.artista&&o.artista.nombre||'')+' · '+o.anio+(o.invitePor?' · invitación: '+GD.esc(o.invitePor):'')+'</div>'+
+          '<div class="tags">'+tags+'</div>'+
+          '<div class="rel">'+GD.esc((o.narrativa&&o.narrativa.deQueTrata||'').slice(0,240))+'…</div>'+
+          '<div class="precio">'+GD.euro(o.precio)+' · recibe '+GD.euro(TAX.artistaRecibe(o.precio))+'</div>'+
+          '<div class="acc">'+
+            '<a class="btn-sm btn-line" href="#" data-ver="'+GD.escAttr(o.id)+'">Ver ficha</a>'+
+            '<button class="btn-sm btn-ok" data-ok="'+GD.escAttr(o.id)+'">Aprobar y publicar</button>'+
+            '<button class="btn-sm btn-no" data-no="'+GD.escAttr(o.id)+'">Rechazar</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  $('lista-pend').addEventListener('click',function(e){
+    var ok=e.target.closest('[data-ok]'), no=e.target.closest('[data-no]'), ver=e.target.closest('[data-ver]');
+    if(ok){ e.target.disabled=true; e.target.textContent='Publicando…'; api('aprobar',{id:ok.getAttribute('data-ok')}).then(cargar); }
+    else if(no){ var motivo=prompt('Motivo (opcional, se guarda para tu registro):','')||''; api('rechazar',{id:no.getAttribute('data-no'),motivo:motivo}).then(cargar); }
+    else if(ver){ e.preventDefault(); alert('La ficha completa se verá en la galería una vez publicada. Aquí tienes el resumen para decidir.'); }
+  });
+
+  // ── Invitaciones ──
+  function pintarInvites(lista){
+    $('lista-inv').innerHTML = lista.length ? lista.map(function(i){
+      return '<div class="inv-row'+(i.activo?'':' off')+'">'+
+        '<div><span class="code">'+GD.esc(i.code)+'</span>'+(i.label?' <span class="lab">· '+GD.esc(i.label)+'</span>':'')+'</div>'+
+        '<div style="display:flex;gap:.6rem;align-items:center">'+
+          '<span class="estado'+(i.activo?' activo':'')+'">'+(i.activo?'activo':'revocado')+'</span>'+
+          (i.activo
+            ? '<button class="btn-sm btn-line" data-rev="'+GD.escAttr(i.code)+'">Revocar</button>'
+            : '<button class="btn-sm btn-line" data-act="'+GD.escAttr(i.code)+'">Reactivar</button>')+
+        '</div>'+
+      '</div>';
+    }).join('') : '<div class="vacio-p">Aún no has generado códigos.</div>';
+  }
+  $('inv-crear').addEventListener('click',function(){
+    var label=$('inv-label').value.trim();
+    api('invite-crear',{label:label}).then(function(res){
+      if(res.j.code){ $('nuevo-code').innerHTML='<div class="nuevo-code">Nuevo código: <b>'+GD.esc(res.j.code)+'</b><br><span class="muted" style="font-size:.8rem">Cópialo y dáselo al artista. Solo tú puedes verlo aquí.</span></div>'; $('inv-label').value=''; cargar(); }
+    });
+  });
+  $('lista-inv').addEventListener('click',function(e){
+    var rev=e.target.closest('[data-rev]'), act=e.target.closest('[data-act]');
+    if(rev){ api('invite-revocar',{code:rev.getAttribute('data-rev')}).then(cargar); }
+    else if(act){ api('invite-activar',{code:act.getAttribute('data-act')}).then(cargar); }
+  });
+
+  // ── Reglas de moderación ──
+  function pintarReglas(){
+    $('modo').innerHTML =
+      radio('modo-op','revisar','Reviso yo cada obra','Nada se publica sin tu visto bueno (salvo lo que marques como automático abajo).',CONFIG.modo==='revisar')+
+      radio('modo-op','auto','Publico automático','Todo se publica solo, salvo los temas que marques como «revisar» o «rechazar».',CONFIG.modo==='auto');
+    Array.prototype.forEach.call($('modo').querySelectorAll('.radio'),function(r){
+      r.addEventListener('click',function(){ CONFIG.modo=r.getAttribute('data-val'); pintarReglas(); });
+    });
+    $('reglas-temas').innerHTML = TAX.TEMA.map(function(t){
+      var val=(CONFIG.temas&&CONFIG.temas[t.slug])||'';
+      return '<div class="regla"><span class="nom">'+GD.esc(t.nombre)+'</span>'+
+        '<select data-tema="'+t.slug+'" class="'+(val||'')+'">'+
+          '<option value="">Según el modo general</option>'+
+          '<option value="auto"'+(val==='auto'?' selected':'')+'>Aprobar automático</option>'+
+          '<option value="revisar"'+(val==='revisar'?' selected':'')+'>Siempre revisar</option>'+
+          '<option value="bloquear"'+(val==='bloquear'?' selected':'')+'>Rechazar</option>'+
+        '</select></div>';
+    }).join('');
+    Array.prototype.forEach.call($('reglas-temas').querySelectorAll('select'),function(s){
+      s.addEventListener('change',function(){
+        var slug=s.getAttribute('data-tema');
+        if(s.value){ CONFIG.temas[slug]=s.value; } else { delete CONFIG.temas[slug]; }
+        s.className=s.value||'';
+      });
+    });
+  }
+  function radio(name,val,titulo,sub,sel){
+    return '<div class="radio'+(sel?' sel':'')+'" data-val="'+val+'"><span class="dot"></span><span class="txt">'+titulo+'<small>'+sub+'</small></span></div>';
+  }
+  $('guardar-reglas').addEventListener('click',function(){
+    $('reglas-msg').textContent='Guardando…';
+    api('guardar-config',{config:CONFIG}).then(function(res){
+      $('reglas-msg').textContent = res.j.ok ? 'Reglas guardadas.' : 'No se pudo guardar.';
+      setTimeout(function(){ $('reglas-msg').textContent=''; },2500);
+    });
+  });
+
+  // ── Arranque ──
+  if(TOKEN){ abrirPanel(); }
+})();
+</script>
+</body>
+</html>
