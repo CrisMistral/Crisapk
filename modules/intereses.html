@@ -35,6 +35,24 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 .int-card:active{transform:scale(.97);}
 .ic-em{font-size:2.1rem;display:block;margin-bottom:6px;}
 .ic-name{font-size:0.92rem;font-weight:700;color:var(--td);}
+/* Tarjeta «Crear el tuyo» + formulario de nuevo interés */
+.int-new{background:var(--ms);border:2px dashed var(--mm)!important;box-shadow:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:104px;}
+.nf-field{margin-bottom:12px;}
+.nf-label{display:block;font-size:.74rem;font-weight:800;color:var(--fg2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
+.nf-in{width:100%;border:2px solid var(--mm);border-radius:12px;padding:11px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--fg);background:#fff;}
+.nf-in:focus,.nf-ta:focus{outline:none;border-color:var(--teal);}
+.nf-emoji{text-align:center;font-size:1.4rem;}
+.nf-row2{display:flex;gap:10px;}
+.nf-mins{display:flex;gap:8px;}
+.nf-min{flex:1;border:2px solid var(--mm);background:#fff;color:var(--td);border-radius:12px;padding:11px 0;font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;}
+.nf-min.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.nf-day{background:#fff;border:1.5px solid var(--mm);border-radius:14px;padding:12px;margin-bottom:10px;}
+.nf-day-h{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;font-weight:800;color:var(--td);margin-bottom:8px;}
+.nf-rm{border:none;background:var(--mint);color:var(--fg2);border-radius:8px;width:26px;height:26px;font-size:.9rem;cursor:pointer;font-weight:800;}
+.nf-day .nf-in,.nf-day .nf-ta{margin-bottom:8px;}
+.nf-day .nf-ta:last-child,.nf-day .nf-in:last-child{margin-bottom:0;}
+.nf-ta{width:100%;border:2px solid var(--mm);border-radius:12px;padding:11px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--fg);background:#fff;resize:vertical;min-height:60px;}
+#nf-msg{min-height:20px;color:#c0392b;font-size:.82rem;font-weight:700;text-align:center;margin:2px 0 6px;}
 .ic-dots{display:flex;gap:4px;justify-content:center;margin-top:8px;}
 .ic-dot{width:8px;height:8px;border-radius:50%;background:var(--mm);}
 .ic-dot.done{background:var(--teal);}
@@ -156,6 +174,15 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
   <button class="btn-f btn-white" id="done-next-btn" style="display:none;"></button>
 </div>
 
+<!-- ▌NEW (crear interés) ▐ -->
+<div id="v-new" class="screen">
+  <div class="hdr">
+    <button class="hdr-back" onclick="go('v-home')">←</button>
+    <span class="hdr-title" data-i18n="new_hdr">Nuevo interés</span>
+  </div>
+  <div id="new-body"></div>
+</div>
+
 <script>
 /* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
@@ -167,34 +194,37 @@ const UI={
  es:{home_title:'🎨 Intereses',home_sub:'10-15 min al día · un interés cada vez',all_label:'Todos tus intereses',
    int_hdr:'Interés',act_hdr:'Actividad',done_t:'¡Actividad completada!',back_home:'🏠 Volver al inicio',
    today_tag:'Hoy toca',all_done_tag:'¡Todo completado!',repeat_fav:'Repite tu favorito',just_enjoy:'O simplemente disfruta 💚',
-   day_of:'Día {i} de 5 · ~{m} min',day_of2:'Día {i} de 5',streak:'{n} {d} practicando',day1:'día',dayN:'días',
+   day_of:'Día {i} de {n} · ~{m} min',day_of2:'Día {i} de {n}',streak:'{n} {d} practicando',day1:'día',dayN:'días',
    streak_sub:'La racha nunca se rompe — solo se pausa 💚',
    deep_btn:'🔬 ¿Quieres profundizar? (opcional)',no_pressure:'sin presión',start_btn:'▶ Empezar {m} min',done_btn:'✓ Ya lo he hecho',
    note_ph:'📝 Nota rápida (opcional)— se guarda sola',
-   int_all:'🏆 ¡Los 5 días completados! Puedes repetir cualquiera.',int_zero:'Cinco días pequeños de ~{m} min. Empieza por el primero.',int_some:'Llevas {n} de 5. ¡Sigue así!',
-   done_sub:'{name} · Día {i} de 5',next_btn:'{e} Siguiente: {t}',
+   new_card:'Crear el tuyo',new_hdr:'Nuevo interés',new_name:'Nombre',new_name_ph:'p. ej. Astronomía',new_emoji:'Emoji',new_mins:'Minutos por día',new_dayn:'Día {i}',new_dtitle_ph:'Título del día (p. ej. Las constelaciones)',new_do_ph:'¿Qué hacer? Una o dos frases',new_goal_ph:'Meta pequeña (opcional)',new_add:'➕ Añadir otro día',new_save:'✓ Guardar interés',new_need:'Ponle nombre y al menos un día con título 🙂',del_int:'🗑️ Eliminar este interés',del_confirm:'¿Eliminar este interés y su progreso?',
+   int_all:'🏆 ¡Los {n} días completados! Puedes repetir cualquiera.',int_zero:'{n} días pequeños de ~{m} min. Empieza por el primero.',int_some:'Llevas {d} de {n}. ¡Sigue así!',
+   done_sub:'{name} · Día {i} de {n}',next_btn:'{e} Siguiente: {t}',
    v_min:'Queda un minuto.',v_ten:'Últimos diez segundos.',v_done:'¡Muy bien! Actividad completada.',
    motivs:['🌱 10 minutos al día construyen una habilidad en un año.','🎯 Solo una actividad. Solo hoy. Eso es todo.','🧠 Aprender algo nuevo es dopamina de la buena.','✨ No hace falta hacerlo bien — hace falta hacerlo.','💚 Tu curiosidad es un músculo: hoy toca entrenarlo.','🐾 Pasito a pasito se llega lejos.','🔥 Ya estás aquí. Eso es la mitad del trabajo.']},
  en:{home_title:'🎨 Interests',home_sub:'10-15 min a day · one interest at a time',all_label:'All your interests',
    int_hdr:'Interest',act_hdr:'Activity',done_t:'Activity completed!',back_home:'🏠 Back to start',
    today_tag:'Today’s pick',all_done_tag:'All completed!',repeat_fav:'Repeat your favourite',just_enjoy:'Or just enjoy 💚',
-   day_of:'Day {i} of 5 · ~{m} min',day_of2:'Day {i} of 5',streak:'{n} {d} practising',day1:'day',dayN:'days',
+   day_of:'Day {i} of {n} · ~{m} min',day_of2:'Day {i} of {n}',streak:'{n} {d} practising',day1:'day',dayN:'days',
    streak_sub:'The streak never breaks — it only pauses 💚',
    deep_btn:'🔬 Want to go deeper? (optional)',no_pressure:'no pressure',start_btn:'▶ Start {m} min',done_btn:'✓ I’ve done it',
    note_ph:'📝 Quick note (optional) — saves itself',
-   int_all:'🏆 All 5 days done! You can repeat any of them.',int_zero:'Five small days of ~{m} min. Start with the first.',int_some:'You’re {n} of 5. Keep it up!',
-   done_sub:'{name} · Day {i} of 5',next_btn:'{e} Next: {t}',
+   new_card:'Create your own',new_hdr:'New interest',new_name:'Name',new_name_ph:'e.g. Astronomy',new_emoji:'Emoji',new_mins:'Minutes per day',new_dayn:'Day {i}',new_dtitle_ph:'Day title (e.g. The constellations)',new_do_ph:'What to do? One or two sentences',new_goal_ph:'Small goal (optional)',new_add:'➕ Add another day',new_save:'✓ Save interest',new_need:'Give it a name and at least one day with a title 🙂',del_int:'🗑️ Delete this interest',del_confirm:'Delete this interest and its progress?',
+   int_all:'🏆 All {n} days done! You can repeat any of them.',int_zero:'{n} small days of ~{m} min. Start with the first.',int_some:'You’re {d} of {n}. Keep it up!',
+   done_sub:'{name} · Day {i} of {n}',next_btn:'{e} Next: {t}',
    v_min:'One minute left.',v_ten:'Last ten seconds.',v_done:'Well done! Activity completed.',
    motivs:['🌱 10 minutes a day build a skill in a year.','🎯 Just one activity. Just today. That’s all.','🧠 Learning something new is good dopamine.','✨ It doesn’t have to be perfect — it just has to happen.','💚 Your curiosity is a muscle: today you train it.','🐾 Step by step you go far.','🔥 You’re already here. That’s half the work.']},
  fr:{home_title:'🎨 Centres d’intérêt',home_sub:'10-15 min par jour · un intérêt à la fois',all_label:'Tous tes centres d’intérêt',
    int_hdr:'Intérêt',act_hdr:'Activité',done_t:'Activité terminée !',back_home:'🏠 Retour à l’accueil',
    today_tag:'Aujourd’hui',all_done_tag:'Tout terminé !',repeat_fav:'Refais ton préféré',just_enjoy:'Ou profite simplement 💚',
-   day_of:'Jour {i} sur 5 · ~{m} min',day_of2:'Jour {i} sur 5',streak:'{n} {d} de pratique',day1:'jour',dayN:'jours',
+   day_of:'Jour {i} sur {n} · ~{m} min',day_of2:'Jour {i} sur {n}',streak:'{n} {d} de pratique',day1:'jour',dayN:'jours',
    streak_sub:'La série ne se casse jamais — elle se met juste en pause 💚',
    deep_btn:'🔬 Envie d’aller plus loin ? (facultatif)',no_pressure:'sans pression',start_btn:'▶ Commencer {m} min',done_btn:'✓ Je l’ai fait',
    note_ph:'📝 Note rapide (facultatif) — se sauvegarde seule',
-   int_all:'🏆 Les 5 jours terminés ! Tu peux refaire n’importe lequel.',int_zero:'Cinq petits jours de ~{m} min. Commence par le premier.',int_some:'Tu en es à {n} sur 5. Continue !',
-   done_sub:'{name} · Jour {i} sur 5',next_btn:'{e} Ensuite : {t}',
+   new_card:'Créer le tien',new_hdr:'Nouvel intérêt',new_name:'Nom',new_name_ph:'p. ex. Astronomie',new_emoji:'Emoji',new_mins:'Minutes par jour',new_dayn:'Jour {i}',new_dtitle_ph:'Titre du jour (p. ex. Les constellations)',new_do_ph:'Quoi faire ? Une ou deux phrases',new_goal_ph:'Petit objectif (facultatif)',new_add:'➕ Ajouter un jour',new_save:'✓ Enregistrer',new_need:'Donne-lui un nom et au moins un jour avec un titre 🙂',del_int:'🗑️ Supprimer cet intérêt',del_confirm:'Supprimer cet intérêt et sa progression ?',
+   int_all:'🏆 Les {n} jours terminés ! Tu peux refaire n’importe lequel.',int_zero:'{n} petits jours de ~{m} min. Commence par le premier.',int_some:'Tu en es à {d} sur {n}. Continue !',
+   done_sub:'{name} · Jour {i} sur {n}',next_btn:'{e} Ensuite : {t}',
    v_min:'Il reste une minute.',v_ten:'Dernières dix secondes.',v_done:'Bravo ! Activité terminée.',
    motivs:['🌱 10 minutes par jour construisent une compétence en un an.','🎯 Une seule activité. Juste aujourd’hui. C’est tout.','🧠 Apprendre du nouveau, c’est de la bonne dopamine.','✨ Pas besoin que ce soit parfait — juste que ce soit fait.','💚 Ta curiosité est un muscle : aujourd’hui tu l’entraînes.','🐾 Pas à pas, on va loin.','🔥 Tu es déjà là. C’est la moitié du travail.']}
 };
@@ -456,7 +486,13 @@ function beep(f,d){
 }
 function vibrate(p){if(!__allow('vib'))return;try{navigator.vibrate&&navigator.vibrate(p||50);}catch(e){}}
 function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
-function findInt(id){return INTERESTS.find(i=>i.id===id);}
+/* Intereses personalizados (creados por la persona, se guardan en el móvil, tal cual se escriben) */
+function getCustom(){try{return JSON.parse(localStorage.getItem('cris_int_custom')||'[]');}catch(e){return[];}}
+function saveCustom(a){try{localStorage.setItem('cris_int_custom',JSON.stringify(a));}catch(e){}}
+function allInterests(){return INTERESTS.concat(getCustom());}
+function isCustom(id){return String(id||'').indexOf('c_')===0;}
+const CUSTOM_COLORS=['linear-gradient(135deg,#0891b2,#06b6d4)','linear-gradient(135deg,#7c3aed,#a855f7)','linear-gradient(135deg,#d97706,#f59e0b)','linear-gradient(135deg,#059669,#10b981)','linear-gradient(135deg,#db2777,#ec4899)'];
+function findInt(id){return allInterests().find(i=>i.id===id);}
 function nextPending(it){const done=getDone(it.id);for(let i=0;i<it.days.length;i++)if(!done[i])return i;return -1;}
 
 function go(id){
@@ -469,12 +505,13 @@ function go(id){
 /* ── HOME ── */
 function todayInterest(){
   // Rota el interés sugerido por día del año; salta los ya completos
+  const all=allInterests();
   const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/864e5);
-  for(let k=0;k<INTERESTS.length;k++){
-    const it=INTERESTS[(doy+k)%INTERESTS.length];
+  for(let k=0;k<all.length;k++){
+    const it=all[(doy+k)%all.length];
     if(nextPending(it)>=0)return it;
   }
-  return INTERESTS[doy%INTERESTS.length];
+  return all[doy%all.length];
 }
 function initHome(){
   document.getElementById('home-motiv').textContent=t('motivs')[new Date().getDay()%t('motivs').length];
@@ -484,7 +521,7 @@ function initHome(){
   const btn=document.getElementById('home-today');
   btn.style.background=it.color;
   btn.innerHTML=pend>=0
-    ?`<div><div class="th-tag">${t('today_tag')}</div><div class="th-name">${iL(it).name}: ${iL(it).days[pend].title}</div><div class="th-sub">${t('day_of',{i:pend+1,m:it.mins})}</div></div><span class="th-em">${it.emoji}</span>`
+    ?`<div><div class="th-tag">${t('today_tag')}</div><div class="th-name">${iL(it).name}: ${iL(it).days[pend].title}</div><div class="th-sub">${t('day_of',{i:pend+1,m:it.mins,n:it.days.length})}</div></div><span class="th-em">${it.emoji}</span>`
     :`<div><div class="th-tag">${t('all_done_tag')}</div><div class="th-name">${t('repeat_fav')}</div><div class="th-sub">${t('just_enjoy')}</div></div><span class="th-em">🏆</span>`;
 
   const d=getData();
@@ -494,7 +531,7 @@ function initHome(){
     sb.innerHTML=`<span class="streak-fire">🔥</span><span class="streak-txt"><strong>${t('streak',{n:d.streak,d:d.streak===1?t('day1'):t('dayN')})}</strong><br>${t('streak_sub')}</span>`;
   }else sb.style.display='none';
 
-  document.getElementById('int-grid').innerHTML=INTERESTS.map(it=>{
+  document.getElementById('int-grid').innerHTML=allInterests().map(it=>{
     const done=getDone(it.id);
     const dots=it.days.map((_,i)=>`<span class="ic-dot${done[i]?' done':''}"></span>`).join('');
     return `<button class="int-card" onclick="openInt('${it.id}')">
@@ -502,7 +539,11 @@ function initHome(){
       <span class="ic-name">${iL(it).name}</span>
       <span class="ic-dots">${dots}</span>
     </button>`;
-  }).join('');
+  }).join('')+
+    `<button class="int-card int-new" onclick="openNew()">
+      <span class="ic-em">➕</span>
+      <span class="ic-name">${t('new_card')}</span>
+    </button>`;
 }
 function openToday(){
   const it=todayInterest();
@@ -518,9 +559,9 @@ function openInt(id){
   const nDone=done.filter(Boolean).length;
   document.getElementById('int-title').textContent=it.emoji+' '+iL(it).name;
   document.getElementById('int-motiv').textContent=
-    nDone===5?t('int_all'):
-    nDone===0?t('int_zero',{m:it.mins}):
-    t('int_some',{n:nDone});
+    nDone===it.days.length?t('int_all',{n:it.days.length}):
+    nDone===0?t('int_zero',{m:it.mins,n:it.days.length}):
+    t('int_some',{d:nDone,n:it.days.length});
   document.getElementById('int-days').innerHTML=iL(it).days.map((day,i)=>`
     <button class="day-row${done[i]?' done':''}" onclick="openAct('${id}',${i})">
       <span class="dr-num">${done[i]?'✓':i+1}</span>
@@ -529,8 +570,66 @@ function openInt(id){
         <span class="dr-goal">🎯 ${day.goal}</span>
       </span>
       <span class="dr-arrow">›</span>
-    </button>`).join('');
+    </button>`).join('')+
+    (isCustom(id)?`<button class="btn-f btn-white" style="margin-top:12px;color:#c0392b;border-color:#f3c0bb" onclick="deleteInterest('${id}')">${t('del_int')}</button>`:'');
   go('v-int');
+}
+
+/* ── CREAR INTERÉS (personalizado) ── */
+let newMins=10;
+function openNew(){newMins=10;go('v-new');renderNewForm();}
+function renderNewForm(){
+  document.getElementById('new-body').innerHTML=`
+    <div class="nf-field"><label class="nf-label">${t('new_name')}</label>
+      <input class="nf-in" id="nf-name" maxlength="30" placeholder="${t('new_name_ph')}"></div>
+    <div class="nf-row2">
+      <div class="nf-field" style="flex:0 0 84px"><label class="nf-label">${t('new_emoji')}</label>
+        <input class="nf-in nf-emoji" id="nf-emoji" maxlength="2" value="🎯"></div>
+      <div class="nf-field" style="flex:1"><label class="nf-label">${t('new_mins')}</label>
+        <div class="nf-mins" id="nf-mins">${[5,10,15].map(m=>`<button type="button" class="nf-min${m===newMins?' on':''}" onclick="setNewMins(${m})">${m}</button>`).join('')}</div></div>
+    </div>
+    <div id="nf-days"></div>
+    <button class="btn-f btn-white" onclick="addDayBlock()">${t('new_add')}</button>
+    <div id="nf-msg"></div>
+    <button class="btn-f btn-teal" onclick="saveNewInterest()">${t('new_save')}</button>`;
+  document.getElementById('nf-days').innerHTML='';
+  addDayBlock();
+}
+function setNewMins(m){newMins=m;document.querySelectorAll('.nf-min').forEach(b=>b.classList.toggle('on',+b.textContent===m));}
+function addDayBlock(){
+  const wrap=document.getElementById('nf-days');
+  const idx=wrap.children.length+1;
+  const div=document.createElement('div');
+  div.className='nf-day';
+  div.innerHTML=`<div class="nf-day-h"><span>${t('new_dayn',{i:idx})}</span>${idx>1?'<button type="button" class="nf-rm" onclick="this.closest(\'.nf-day\').remove();renumberDays()">✕</button>':''}</div>
+    <input class="nf-in nf-dtitle" maxlength="60" placeholder="${t('new_dtitle_ph')}">
+    <textarea class="nf-ta nf-do" maxlength="400" placeholder="${t('new_do_ph')}"></textarea>
+    <input class="nf-in nf-goal" maxlength="80" placeholder="${t('new_goal_ph')}">`;
+  wrap.appendChild(div);
+}
+function renumberDays(){document.querySelectorAll('#nf-days .nf-day').forEach((d,i)=>{const s=d.querySelector('.nf-day-h span');if(s)s.textContent=t('new_dayn',{i:i+1});});}
+function saveNewInterest(){
+  const name=(document.getElementById('nf-name').value||'').trim();
+  const emoji=(document.getElementById('nf-emoji').value||'').trim()||'🎯';
+  const days=[...document.querySelectorAll('#nf-days .nf-day')].map(d=>({
+    title:(d.querySelector('.nf-dtitle').value||'').trim(),
+    content:(d.querySelector('.nf-do').value||'').trim(),
+    goal:(d.querySelector('.nf-goal').value||'').trim()
+  })).filter(day=>day.title);
+  if(!name||!days.length){document.getElementById('nf-msg').textContent=t('new_need');return;}
+  days.forEach(day=>{if(!day.content)day.content=day.title;if(!day.goal)day.goal=day.title;});
+  const cust=getCustom();
+  const it={id:'c_'+Date.now(),name,emoji,mins:newMins,color:CUSTOM_COLORS[cust.length%CUSTOM_COLORS.length],days};
+  cust.push(it);saveCustom(cust);
+  beep(880,.14);vibrate(40);
+  openInt(it.id);
+}
+function deleteInterest(id){
+  if(!isCustom(id))return;
+  if(!confirm(t('del_confirm')))return;
+  saveCustom(getCustom().filter(c=>c.id!==id));
+  try{const d=getData();if(d.done)delete d.done[id];if(d.notes)delete d.notes[id];setData(d);}catch(e){}
+  go('v-home');
 }
 
 /* ── ACTIVITY ── */
@@ -542,7 +641,7 @@ function openAct(intId,dayIdx){
   document.getElementById('act-body').innerHTML=`
     <div class="act-hero" style="background:${it.color}">
       <span class="ah-em">${it.emoji}</span>
-      <div class="ah-day">${t('day_of2',{i:dayIdx+1})}</div>
+      <div class="ah-day">${t('day_of2',{i:dayIdx+1,n:it.days.length})}</div>
       <div class="ah-title">${day.title}</div>
     </div>
     <div class="act-card">${day.content}</div>
@@ -612,7 +711,7 @@ function actDone(){
   const it=findInt(cur.intId);
   const d=getData();
   document.getElementById('done-em').textContent=it.emoji;
-  document.getElementById('done-sub').textContent=t('done_sub',{name:iL(it).name,i:cur.dayIdx+1});
+  document.getElementById('done-sub').textContent=t('done_sub',{name:iL(it).name,i:cur.dayIdx+1,n:it.days.length});
   document.getElementById('done-motiv').textContent=
     d.streak>1?`🔥 ${d.streak} días practicando. Tu cerebro está creando conexiones nuevas ahora mismo.`
     :'✨ Cada práctica cuenta. Tu cerebro está creando conexiones nuevas ahora mismo.';
