@@ -169,6 +169,16 @@ body{
 .ao-name{flex:1;font-size:.98rem;font-weight:700;color:var(--teal-dark);}
 .ao-tick{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;background:var(--mint-mid);color:var(--teal-dark);}
 .ao-chip.on .ao-tick{background:var(--teal);color:#fff;}
+.ao-area{margin-bottom:9px;}
+.ao-subs{display:flex;flex-direction:column;gap:5px;margin:6px 0 0 14px;padding-left:12px;border-left:2px solid var(--mint-mid);}
+.ao-area.off .ao-subs{opacity:.9;}
+.ao-sub-chip{display:flex;align-items:center;gap:9px;width:100%;border:1.5px solid var(--mint-mid);background:var(--mint-bg);border-radius:12px;padding:8px 11px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;transition:transform .1s,border-color .12s,background .12s;}
+.ao-sub-chip:active{transform:scale(.98);}
+.ao-sub-chip.on{border-color:var(--mint-deep);background:#fff;}
+.ao-sem{font-size:1.1rem;flex-shrink:0;}
+.ao-sname{flex:1;font-size:.84rem;font-weight:600;color:var(--teal-dark);}
+.ao-stick{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.72rem;background:transparent;color:var(--teal);border:1.5px solid var(--mint-mid);}
+.ao-sub-chip.on .ao-stick{background:var(--mint-deep);color:#fff;border-color:var(--mint-deep);}
 .ao-save{width:100%;border:none;background:var(--teal);color:#fff;font-family:'Outfit',sans-serif;font-size:1.02rem;font-weight:800;border-radius:16px;padding:15px;cursor:pointer;box-shadow:0 6px 16px rgba(38,166,154,.35);}
 .ao-save:active{transform:scale(.98);}
 #areasBtn{width:100%;border:2px solid var(--mint-mid);background:var(--white-card);color:var(--teal-dark);font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;border-radius:14px;padding:11px;cursor:pointer;margin-top:2px;text-align:left;}
@@ -726,43 +736,117 @@ function areasChosen(){return getAreas()!==null;}
 function areaOn(id){const a=getAreas();return a?a.indexOf(id)>=0:true;} // sin elegir → todo visible
 function saveAreas(list){try{localStorage.setItem('cris_areas_v1',JSON.stringify(list));}catch(e){}}
 
+/* Submenús de cada área (los apartados internos de cada módulo). El test deja
+   elegir cuáles se ven DENTRO de cada apartado. Se guardan los OCULTOS en
+   cris_hidden_v1 = {area:[subId,...]}; cada módulo los lee y esconde esas
+   tarjetas (con un «Mostrar todo» para recuperarlas). Las áreas sin lista aquí
+   (ejercicios, intereses, noche, juego) no tienen submenús que elegir. */
+const SUBS={
+  trabajo:[
+    {id:'foco',     e:'▶️',t:{es:'Empezar a trabajar',en:'Start working',fr:'Se mettre au travail'}},
+    {id:'triaje',   e:'🤔',t:{es:'No sé qué me pasa',en:'I don’t know what’s wrong',fr:'Je ne sais pas ce qui va pas'}},
+    {id:'paralisis',e:'🧩',t:{es:'Destructor de parálisis',en:'Paralysis buster',fr:'Anti-paralysie'}},
+    {id:'interes',  e:'🎮',t:{es:'Convertir en misión',en:'Turn it into a quest',fr:'En faire une mission'}},
+    {id:'doble',    e:'👥',t:{es:'Doble de cuerpo',en:'Body double',fr:'Doublure corporelle'}},
+    {id:'dopamina', e:'🍽️',t:{es:'Menú de dopamina',en:'Dopamine menu',fr:'Menu dopamine'}},
+    {id:'volcado',  e:'🧠',t:{es:'Vaciar la mente',en:'Brain dump',fr:'Vider la tête'}},
+    {id:'contexto', e:'🔄',t:{es:'Cambio de contexto',en:'Context switch',fr:'Changement de contexte'}},
+    {id:'tiempo',   e:'⏳',t:{es:'Auditor del tiempo',en:'Time auditor',fr:'Auditeur du temps'}}
+  ],
+  comida:[
+    {id:'c-test',   e:'🍽️',t:{es:'¿Qué como hoy?',en:'What do I eat today?',fr:'Je mange quoi ?'}},
+    {id:'c-season', e:'📅',t:{es:'Menú de la semana',en:'Weekly menu',fr:'Menu de la semaine'}},
+    {id:'c-shop',   e:'🛒',t:{es:'Lista de la compra',en:'Shopping list',fr:'Liste de courses'}},
+    {id:'c-express',e:'⚡',t:{es:'Básicos salvavidas',en:'Lifesaver basics',fr:'Basiques dépannage'}},
+    {id:'c-months', e:'🗓️',t:{es:'Todos los meses',en:'All the months',fr:'Tous les mois'}}
+  ],
+  limpieza:[
+    {id:'express',e:'⚡',t:{es:'Recoge ahora (exprés)',en:'Tidy now (express)',fr:'Ranger vite (express)'}},
+    {id:'plan5',  e:'📅',t:{es:'Plan de 5 días',en:'5-day plan',fr:'Plan sur 5 jours'}},
+    {id:'general',e:'🏠',t:{es:'Limpieza completa',en:'Full clean',fr:'Ménage complet'}}
+  ],
+  botiquin:[
+    {id:'c-sos',  e:'🚨',t:{es:'Necesito ayuda ya',en:'I need help now',fr:'J’ai besoin d’aide'}},
+    {id:'c-know', e:'💭',t:{es:'Sé qué siento',en:'I know what I feel',fr:'Je sais ce que je ressens'}},
+    {id:'c-find', e:'❓',t:{es:'No sé qué siento',en:'I don’t know what I feel',fr:'Je ne sais pas ce que je ressens'}},
+    {id:'c-calm', e:'🧘',t:{es:'Meditar',en:'Meditate',fr:'Méditer'}},
+    {id:'c-anniv',e:'🕯️',t:{es:'Época difícil',en:'Hard season',fr:'Période difficile'}},
+    {id:'c-trans',e:'📴',t:{es:'Soltar el móvil',en:'Put the phone down',fr:'Lâcher le téléphone'}}
+  ]
+};
+function subL(s){return (s.t&&(s.t[crisLang()]||s.t.es))||'';}
+function getHidden(){try{const v=JSON.parse(localStorage.getItem('cris_hidden_v1'));return (v&&typeof v==='object')?v:{};}catch(e){return{};}}
+
 const AREAS_I18N={
- es:{hdr:'¿En qué quieres que te acompañe?',sub:'Elige solo lo que necesites hoy. Están todos en el menú; aquí decides cuáles aparecen. Puedes cambiarlo cuando quieras.',save:'Guardar y empezar',menu:'🧭 ¿En qué te acompaño?'},
- en:{hdr:'What would you like company with?',sub:'Pick only what you need right now. They’re all in the menu; here you choose which ones show. Change it whenever you like.',save:'Save and start',menu:'🧭 What do I help with?'},
- fr:{hdr:'Sur quoi veux-tu de la compagnie ?',sub:'Choisis seulement ce dont tu as besoin. Tout reste dans le menu ; ici tu choisis ce qui apparaît. Modifiable quand tu veux.',save:'Enregistrer et commencer',menu:'🧭 Sur quoi je t’aide ?'}
+ es:{hdr:'¿En qué quieres que te acompañe?',sub:'Esto es todo lo que Quico puede hacer. Marca lo que quieres en tu pantalla principal; debajo de cada cosa están sus partes (deja solo las que quieras ver dentro). Todo sigue siempre en el menú ☰.',save:'Guardar y empezar',menu:'🧭 ¿En qué te acompaño?'},
+ en:{hdr:'What would you like company with?',sub:'This is everything Quico can do. Tick what you want on your main screen; under each one are its parts (keep only the ones you want to see inside). It all stays in the menu ☰.',save:'Save and start',menu:'🧭 What do I help with?'},
+ fr:{hdr:'Sur quoi veux-tu de la compagnie ?',sub:'Voici tout ce que Quico peut faire. Coche ce que tu veux sur ton écran principal ; sous chaque chose, ses parties (garde seulement celles que tu veux voir dedans). Tout reste dans le menu ☰.',save:'Enregistrer et commencer',menu:'🧭 Sur quoi je t’aide ?'}
 };
 function aL(k){return (AREAS_I18N[crisLang()]||AREAS_I18N.es)[k];}
 
-let _areasSel={};
+let _areasSel={}, _subsSel={};
 function openAreas(){
-  const cur=getAreas();
-  _areasSel={};
-  // Primer uso (null): nada marcado, se elige desde cero. Reapertura: refleja lo elegido.
+  const cur=getAreas(), hid=getHidden();
+  _areasSel={}; _subsSel={};
+  // Áreas: primer uso (null) → nada marcado (pantalla principal limpia). Reapertura → refleja lo elegido.
   AREAS.forEach(a=>{ _areasSel[a.id]= cur ? cur.indexOf(a.id)>=0 : false; });
+  // Submenús: marcados por defecto; solo los que estén en cris_hidden_v1 empiezan desmarcados.
+  Object.keys(SUBS).forEach(area=>{
+    _subsSel[area]={};
+    const off=hid[area]||[];
+    SUBS[area].forEach(s=>{ _subsSel[area][s.id]= off.indexOf(s.id)<0; });
+  });
   document.getElementById('ao-hdr').textContent=aL('hdr');
   document.getElementById('ao-sub').textContent=aL('sub');
   document.getElementById('ao-save').textContent=aL('save');
   renderAreasGrid();
   document.getElementById('areasOv').classList.add('show');
+  const c=document.querySelector('.ao-card');if(c)c.scrollTop=0;
 }
 function renderAreasGrid(){
   const g=document.getElementById('ao-grid');if(!g)return;
   g.innerHTML=AREAS.map(a=>{
-    const on=!!_areasSel[a.id];
-    return `<button class="ao-chip${on?' on':''}" data-id="${a.id}" role="switch" aria-checked="${on}" onclick="toggleArea('${a.id}')">
-      <span class="ao-em">${a.e}</span>
-      <span class="ao-name">${t('mod_'+a.id+'_t')}</span>
-      <span class="ao-tick">${on?'✓':'+'}</span></button>`;
+    const on=!!_areasSel[a.id], subs=SUBS[a.id];
+    let h=`<div class="ao-area${on?'':' off'}" data-area="${a.id}">
+      <button class="ao-chip${on?' on':''}" data-id="${a.id}" role="switch" aria-checked="${on}" onclick="toggleArea('${a.id}')">
+        <span class="ao-em">${a.e}</span>
+        <span class="ao-name">${t('mod_'+a.id+'_t')}</span>
+        <span class="ao-tick">${on?'✓':'+'}</span></button>`;
+    if(subs&&subs.length){
+      h+=`<div class="ao-subs">`+subs.map(s=>{
+        const son=_subsSel[a.id][s.id]!==false;
+        return `<button class="ao-sub-chip${son?' on':''}" data-a="${a.id}" data-s="${s.id}" role="switch" aria-checked="${son}" onclick="toggleSub('${a.id}','${s.id}')">
+          <span class="ao-sem">${s.e}</span><span class="ao-sname">${subL(s)}</span>
+          <span class="ao-stick">${son?'✓':''}</span></button>`;
+      }).join('')+`</div>`;
+    }
+    return h+`</div>`;
   }).join('');
 }
 function toggleArea(id){
   _areasSel[id]=!_areasSel[id];
+  const on=_areasSel[id];
+  const wrap=document.querySelector('#ao-grid .ao-area[data-area="'+id+'"]');
+  if(wrap)wrap.classList.toggle('off',!on);
   const r=document.querySelector('#ao-grid .ao-chip[data-id="'+id+'"]');
-  if(r){const on=_areasSel[id];r.classList.toggle('on',on);r.setAttribute('aria-checked',on);const tk=r.querySelector('.ao-tick');if(tk)tk.textContent=on?'✓':'+';}
+  if(r){r.classList.toggle('on',on);r.setAttribute('aria-checked',on);const tk=r.querySelector('.ao-tick');if(tk)tk.textContent=on?'✓':'+';}
+}
+function toggleSub(area,sid){
+  _subsSel[area][sid]=!(_subsSel[area][sid]!==false);
+  const on=_subsSel[area][sid]!==false;
+  const r=document.querySelector('#ao-grid .ao-sub-chip[data-a="'+area+'"][data-s="'+sid+'"]');
+  if(r){r.classList.toggle('on',on);r.setAttribute('aria-checked',on);const tk=r.querySelector('.ao-stick');if(tk)tk.textContent=on?'✓':'';}
 }
 function saveAreasFromChooser(){
   const list=AREAS.filter(a=>_areasSel[a.id]).map(a=>a.id);
   saveAreas(list);
+  // Submenús ocultos (los desmarcados) por área
+  const hidden={};
+  Object.keys(SUBS).forEach(area=>{
+    const off=SUBS[area].filter(s=>_subsSel[area][s.id]===false).map(s=>s.id);
+    if(off.length)hidden[area]=off;
+  });
+  try{localStorage.setItem('cris_hidden_v1',JSON.stringify(hidden));}catch(e){}
   try{localStorage.removeItem('cris_hoy_mods_v1');}catch(e){} // el día vuelve a seguir las áreas elegidas
   try{localStorage.setItem('cris_onboarded','1');}catch(e){} // no relanzar el recorrido tras el test
   document.getElementById('areasOv').classList.remove('show');
@@ -1189,7 +1273,8 @@ function buildModuleList(){
   const moduleList = document.getElementById('moduleList');
   moduleList.innerHTML='';
   modules.forEach(m => {
-    if(!areaOn(m.id))return; // solo las áreas elegidas en el test inicial
+    // El menú SIEMPRE muestra todo (para revisar cuando quiera). Lo que se filtra
+    // por el test inicial es la pantalla principal (el plan de «Hoy»), no el menú.
     const row = document.createElement('button');
     row.className = 'dm-row';
     row.innerHTML = `<span class="dm-em">${m.icon}</span><span class="dm-info"><span class="dm-t">${t('mod_'+m.id+'_t')}</span><span class="dm-s">${t('mod_'+m.id+'_s')}</span></span>`;

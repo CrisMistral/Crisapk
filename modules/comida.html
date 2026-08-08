@@ -156,26 +156,27 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
   </div>
   <div class="bubble" id="home-bubble">¿Qué cocinamos hoy? 🌿</div>
   <div class="nav-cards">
-    <button class="nav-card c-test" onclick="startPick()">
+    <button class="nav-card c-test" data-sub="c-test" onclick="startPick()">
       <span class="nic">🍽️</span>
       <div class="info"><span data-i18n="nc_pick">¿QUÉ COMO HOY?</span><span class="sub" id="home-pick-sub">2 preguntas y te lo digo</span></div>
     </button>
-    <button class="nav-card c-season" onclick="go('week')">
+    <button class="nav-card c-season" data-sub="c-season" onclick="go('week')">
       <span class="nic">📅</span>
       <div class="info"><span data-i18n="nc_week">MENÚ DE LA SEMANA</span><span class="sub" id="home-week-sub">14 recetas · 1 sola compra</span></div>
     </button>
-    <button class="nav-card c-shop" onclick="go('shopping')">
+    <button class="nav-card c-shop" data-sub="c-shop" onclick="go('shopping')">
       <span class="nic">🛒</span>
       <div class="info"><span data-i18n="nc_shop">LISTA DE LA COMPRA</span><span class="sub" data-i18n="nc_shop_sub">Una compra · toda la semana</span></div>
     </button>
-    <button class="nav-card c-express" onclick="go('basicos')">
+    <button class="nav-card c-express" data-sub="c-express" onclick="go('basicos')">
       <span class="nic">⚡</span>
       <div class="info"><span data-i18n="nc_basics">BÁSICOS SALVAVIDAS</span><span class="sub" data-i18n="nc_basics_sub">Recetas de 10 min con despensa</span></div>
     </button>
-    <button class="nav-card c-months" onclick="go('months')">
+    <button class="nav-card c-months" data-sub="c-months" onclick="go('months')">
       <span class="nic">🗓️</span>
       <div class="info"><span data-i18n="nc_months">TODOS LOS MESES</span><span class="sub" data-i18n="nc_months_sub">Recetas de temporada todo el año</span></div>
     </button>
+    <button id="subShowAll" class="sub-showall" onclick="__subToggleAll()" style="display:none"></button>
   </div>
 </div>
 </div>
@@ -1592,6 +1593,33 @@ window.addEventListener('message',function(e){
     try{parent.postMessage('cris:back-ok','*');}catch(_){}
   }
 });
+</script>
+<script>
+/* Submenús: esconde las tarjetas que quedaron fuera en el test inicial (index),
+   con un botón «Mostrar todo» para recuperarlas. Preferencia: cris_hidden_v1. */
+(function(){
+  const AREA='comida';
+  const LBL={es:'Mostrar todo',en:'Show all',fr:'Tout afficher'},
+        LBL2={es:'Ocultar extras',en:'Hide extras',fr:'Masquer les extras'};
+  function lang(){try{const l=localStorage.getItem('cris_lang');return({es:1,en:1,fr:1})[l]?l:'es';}catch(e){return'es';}}
+  function hidden(){try{const o=JSON.parse(localStorage.getItem('cris_hidden_v1')||'{}');return o[AREA]||[];}catch(e){return[];}}
+  let showAll=false;
+  function apply(){
+    const hid=hidden();
+    document.querySelectorAll('[data-sub]').forEach(el=>{
+      el.style.display=(!showAll&&hid.indexOf(el.getAttribute('data-sub'))>=0)?'none':'';
+    });
+    const b=document.getElementById('subShowAll');
+    if(b){ if(hid.length){b.style.display='';b.textContent=(showAll?LBL2:LBL)[lang()]+(showAll?'':' ('+hid.length+')');} else b.style.display='none'; }
+  }
+  window.__subToggleAll=function(){showAll=!showAll;apply();};
+  if(!document.getElementById('subShowAllCss')){
+    const st=document.createElement('style');st.id='subShowAllCss';
+    st.textContent='.sub-showall{border:2px dashed var(--mint-mid,#b8e4dd);background:transparent;color:var(--teal-dark,#1a6b64);font-family:Outfit,sans-serif;font-weight:700;font-size:.82rem;border-radius:14px;padding:10px 14px;cursor:pointer;width:100%;margin-top:2px}.sub-showall:active{transform:scale(.98)}';
+    document.head.appendChild(st);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
 </script>
 </body>
 </html>

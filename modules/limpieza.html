@@ -164,7 +164,7 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
 
   <div class="sec-label" data-i18n="mode_label">Elige tu modo</div>
 
-  <button class="express-btn" onclick="startExpress()">
+  <button class="express-btn" data-sub="express" onclick="startExpress()">
     <span style="font-size:2rem;">⚡</span>
     <div style="flex:1;text-align:left;">
       <div style="font-size:1.1rem;font-weight:800;" data-i18n="exp_t">Express — Recoge ahora</div>
@@ -173,19 +173,20 @@ body{font-family:'Outfit',sans-serif;background:var(--ms);min-height:100vh;color
     <span class="mc-pill" style="margin:0;white-space:nowrap;" data-i18n="exp_pill">~15 min</span>
   </button>
 
-  <button class="mode-card" style="background:linear-gradient(135deg,#26a69a,#1a6b64);" onclick="go('v-week')">
+  <button class="mode-card" data-sub="plan5" style="background:linear-gradient(135deg,#26a69a,#1a6b64);" onclick="go('v-week')">
     <span class="mc-em">📅</span>
     <span class="mc-title" data-i18n="plan_t">Plan de 5 días</span>
     <span class="mc-sub" data-i18n="plan_s">Una zona de la casa cada día.<br>El viernes el hogar está limpio.</span>
     <span class="mc-pill" data-i18n="plan_pill">15-20 min/día</span>
   </button>
 
-  <button class="mode-card" style="background:linear-gradient(135deg,#7c3aed,#a855f7);" onclick="startGeneral()">
+  <button class="mode-card" data-sub="general" style="background:linear-gradient(135deg,#7c3aed,#a855f7);" onclick="startGeneral()">
     <span class="mc-em">🏠</span>
     <span class="mc-title" data-i18n="full_t">Limpieza Completa</span>
     <span class="mc-sub" data-i18n="full_s">Todas las zonas de una vez.<br>Para cuando tienes energía extra.</span>
     <span class="mc-pill" data-i18n="full_pill">~90 min</span>
   </button>
+  <button id="subShowAll" class="sub-showall" onclick="__subToggleAll()" style="display:none"></button>
 </div>
 
 <!-- ▌WEEK VIEW ▐ -->
@@ -784,6 +785,33 @@ window.addEventListener('message',function(e){
     try{parent.postMessage('cris:back-ok','*');}catch(_){}
   }
 });
+</script>
+<script>
+/* Submenús: esconde las tarjetas que quedaron fuera en el test inicial (index),
+   con un botón «Mostrar todo» para recuperarlas. Preferencia: cris_hidden_v1. */
+(function(){
+  const AREA='limpieza';
+  const LBL={es:'Mostrar todo',en:'Show all',fr:'Tout afficher'},
+        LBL2={es:'Ocultar extras',en:'Hide extras',fr:'Masquer les extras'};
+  function lang(){try{const l=localStorage.getItem('cris_lang');return({es:1,en:1,fr:1})[l]?l:'es';}catch(e){return'es';}}
+  function hidden(){try{const o=JSON.parse(localStorage.getItem('cris_hidden_v1')||'{}');return o[AREA]||[];}catch(e){return[];}}
+  let showAll=false;
+  function apply(){
+    const hid=hidden();
+    document.querySelectorAll('[data-sub]').forEach(el=>{
+      el.style.display=(!showAll&&hid.indexOf(el.getAttribute('data-sub'))>=0)?'none':'';
+    });
+    const b=document.getElementById('subShowAll');
+    if(b){ if(hid.length){b.style.display='';b.textContent=(showAll?LBL2:LBL)[lang()]+(showAll?'':' ('+hid.length+')');} else b.style.display='none'; }
+  }
+  window.__subToggleAll=function(){showAll=!showAll;apply();};
+  if(!document.getElementById('subShowAllCss')){
+    const st=document.createElement('style');st.id='subShowAllCss';
+    st.textContent='.sub-showall{border:2px dashed var(--mint-mid,#b8e4dd);background:transparent;color:var(--teal-dark,#1a6b64);font-family:Outfit,sans-serif;font-weight:700;font-size:.82rem;border-radius:14px;padding:10px 14px;cursor:pointer;width:100%;margin-top:2px}.sub-showall:active{transform:scale(.98)}';
+    document.head.appendChild(st);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
 </script>
 </body>
 </html>
