@@ -179,8 +179,12 @@ body{
 .ao-sname{flex:1;font-size:.84rem;font-weight:600;color:var(--teal-dark);}
 .ao-stick{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.72rem;background:transparent;color:var(--teal);border:1.5px solid var(--mint-mid);}
 .ao-sub-chip.on .ao-stick{background:var(--mint-deep);color:#fff;border-color:var(--mint-deep);}
+.ao-grp{display:flex;align-items:center;gap:12px;padding:4px 2px 2px;}
+.ao-grp .ao-name{font-size:1rem;font-weight:800;color:var(--teal-dark);}
 .ao-save{width:100%;border:none;background:var(--teal);color:#fff;font-family:'Outfit',sans-serif;font-size:1.02rem;font-weight:800;border-radius:16px;padding:15px;cursor:pointer;box-shadow:0 6px 16px rgba(38,166,154,.35);}
 .ao-save:active{transform:scale(.98);}
+.ao-back{width:100%;border:none;background:transparent;color:var(--text-soft);font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;padding:12px;margin-top:4px;cursor:pointer;}
+.ao-back:active{transform:scale(.98);}
 #areasBtn{width:100%;border:2px solid var(--mint-mid);background:var(--white-card);color:var(--teal-dark);font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;border-radius:14px;padding:11px;cursor:pointer;margin-top:2px;text-align:left;}
 #areasBtn:active{transform:scale(.98);}
 /* AHORA / LUEGO: qué toca ya y qué viene después */
@@ -720,15 +724,16 @@ const modules = [
    ocultas, y se pueden activar cuando quiera desde «¿En qué te acompaño?».
    Fuente de verdad: cris_areas_v1 (lista de ids). null = aún no ha elegido. */
 const AREAS=[
-  {id:'trabajo',    e:'💼', cat:'trabajo'},
-  {id:'ejercicios', e:'🧘', cat:'pilates'},
-  {id:'comida',     e:'🍽️', cat:'comida'},
-  {id:'limpieza',   e:'🧹', cat:'limpieza'},
-  {id:'intereses',  e:'🎨', cat:'intereses'},
-  {id:'noche',      e:'🌙', cat:'noche'},
-  {id:'botiquin',   e:'🫀', cat:'calma'},
-  {id:'juego',      e:'🔍', cat:'juego'}
+  {id:'trabajo',    e:'💼', cat:'trabajo',    need:{es:'Organizarme y ponerme con las tareas',en:'Getting organized and starting tasks',fr:'M’organiser et me mettre au travail'}},
+  {id:'ejercicios', e:'🧘', cat:'pilates',    need:{es:'Mover el cuerpo',en:'Moving my body',fr:'Bouger mon corps'}},
+  {id:'comida',     e:'🍽️', cat:'comida',     need:{es:'Comer y cocinar',en:'Eating and cooking',fr:'Manger et cuisiner'}},
+  {id:'limpieza',   e:'🧹', cat:'limpieza',   need:{es:'Mantener la casa',en:'Keeping the home',fr:'Entretenir la maison'}},
+  {id:'intereses',  e:'🎨', cat:'intereses',  need:{es:'Aprender y mis aficiones',en:'Learning and my hobbies',fr:'Apprendre et mes loisirs'}},
+  {id:'noche',      e:'🌙', cat:'noche',      need:{es:'Dormir y desconectar de noche',en:'Sleep and winding down',fr:'Dormir et décompresser le soir'}},
+  {id:'botiquin',   e:'🫀', cat:'calma',      need:{es:'Calmarme cuando lo paso mal',en:'Calming down when it’s hard',fr:'Me calmer quand ça va mal'}},
+  {id:'juego',      e:'🔍', cat:'juego',      need:{es:'Despejar la mente jugando',en:'Clearing my head with a game',fr:'Me changer les idées avec un jeu'}}
 ];
+function needL(a){return (a.need&&(a.need[crisLang()]||a.need.es))||t('mod_'+a.id+'_t');}
 // id del panel «Hoy» (DAY_CATALOG) → id de área
 const CAT2AREA={trabajo:'trabajo',pilates:'ejercicios',comida:'comida',limpieza:'limpieza',intereses:'intereses',noche:'noche',calma:'botiquin',juego:'juego'};
 function getAreas(){try{const v=JSON.parse(localStorage.getItem('cris_areas_v1'));return Array.isArray(v)?v:null;}catch(e){return null;}}
@@ -778,58 +783,77 @@ function subL(s){return (s.t&&(s.t[crisLang()]||s.t.es))||'';}
 function getHidden(){try{const v=JSON.parse(localStorage.getItem('cris_hidden_v1'));return (v&&typeof v==='object')?v:{};}catch(e){return{};}}
 
 const AREAS_I18N={
- es:{hdr:'¿En qué quieres que te acompañe?',sub:'Esto es todo lo que Quico puede hacer. Marca lo que quieres en tu pantalla principal; debajo de cada cosa están sus partes (deja solo las que quieras ver dentro). Todo sigue siempre en el menú ☰.',save:'Guardar y empezar',menu:'🧭 ¿En qué te acompaño?'},
- en:{hdr:'What would you like company with?',sub:'This is everything Quico can do. Tick what you want on your main screen; under each one are its parts (keep only the ones you want to see inside). It all stays in the menu ☰.',save:'Save and start',menu:'🧭 What do I help with?'},
- fr:{hdr:'Sur quoi veux-tu de la compagnie ?',sub:'Voici tout ce que Quico peut faire. Coche ce que tu veux sur ton écran principal ; sous chaque chose, ses parties (garde seulement celles que tu veux voir dedans). Tout reste dans le menu ☰.',save:'Enregistrer et commencer',menu:'🧭 Sur quoi je t’aide ?'}
+ es:{hdr1:'¿En qué necesitas acompañamiento?',sub1:'Elige lo que te vendría bien. Puedes marcar varias y cambiarlo cuando quieras. En tu pantalla principal aparecerá solo lo que elijas.',
+     hdr2:'¿Y qué te vendría bien dentro?',sub2:'Deja marcado solo lo que quieras ver dentro de cada apartado. Todo lo demás sigue siempre en el menú ☰.',
+     next:'Siguiente →',save:'Guardar y empezar',back:'← Atrás',menu:'🧭 ¿En qué te acompaño?'},
+ en:{hdr1:'What do you need company with?',sub1:'Pick whatever would help. You can choose several and change it anytime. Only what you pick will show on your main screen.',
+     hdr2:'And what would help inside?',sub2:'Keep only what you want to see inside each one. Everything else always stays in the menu ☰.',
+     next:'Next →',save:'Save and start',back:'← Back',menu:'🧭 What do I help with?'},
+ fr:{hdr1:'Sur quoi as-tu besoin d’être accompagné·e ?',sub1:'Choisis ce qui t’aiderait. Tu peux en cocher plusieurs et changer quand tu veux. Seul ce que tu choisis apparaîtra sur ton écran principal.',
+     hdr2:'Et qu’est-ce qui t’aiderait dedans ?',sub2:'Garde seulement ce que tu veux voir dans chaque partie. Tout le reste reste toujours dans le menu ☰.',
+     next:'Suivant →',save:'Enregistrer et commencer',back:'← Retour',menu:'🧭 Sur quoi je t’aide ?'}
 };
 function aL(k){return (AREAS_I18N[crisLang()]||AREAS_I18N.es)[k];}
 
-let _areasSel={}, _subsSel={};
+/* Test guiado en 2 pasos:
+   Paso 1 = pregunta «¿en qué necesitas acompañamiento?» con las áreas como
+            opciones (en modo necesidad). Lo elegido va a la pantalla principal.
+   Paso 2 = solo para las áreas elegidas que tengan submenús: «¿qué te vendría
+            bien dentro?». Deseleccionar esconde esa parte dentro del apartado. */
+let _areasSel={}, _subsSel={}, _step=1;
+function chosenWithSubs(){return AREAS.filter(a=>_areasSel[a.id]&&SUBS[a.id]&&SUBS[a.id].length);}
 function openAreas(){
   const cur=getAreas(), hid=getHidden();
-  _areasSel={}; _subsSel={};
-  // Áreas: primer uso (null) → nada marcado (pantalla principal limpia). Reapertura → refleja lo elegido.
+  _areasSel={}; _subsSel={}; _step=1;
   AREAS.forEach(a=>{ _areasSel[a.id]= cur ? cur.indexOf(a.id)>=0 : false; });
-  // Submenús: marcados por defecto; solo los que estén en cris_hidden_v1 empiezan desmarcados.
   Object.keys(SUBS).forEach(area=>{
     _subsSel[area]={};
     const off=hid[area]||[];
     SUBS[area].forEach(s=>{ _subsSel[area][s.id]= off.indexOf(s.id)<0; });
   });
-  document.getElementById('ao-hdr').textContent=aL('hdr');
-  document.getElementById('ao-sub').textContent=aL('sub');
-  document.getElementById('ao-save').textContent=aL('save');
-  renderAreasGrid();
+  renderStep();
   document.getElementById('areasOv').classList.add('show');
-  const c=document.querySelector('.ao-card');if(c)c.scrollTop=0;
 }
-function renderAreasGrid(){
+function renderStep(){
   const g=document.getElementById('ao-grid');if(!g)return;
-  g.innerHTML=AREAS.map(a=>{
-    const on=!!_areasSel[a.id], subs=SUBS[a.id];
-    let h=`<div class="ao-area${on?'':' off'}" data-area="${a.id}">
-      <button class="ao-chip${on?' on':''}" data-id="${a.id}" role="switch" aria-checked="${on}" onclick="toggleArea('${a.id}')">
+  const back=document.getElementById('ao-back');
+  if(_step===1){
+    document.getElementById('ao-hdr').textContent=aL('hdr1');
+    document.getElementById('ao-sub').textContent=aL('sub1');
+    document.getElementById('ao-save').textContent=chosenWithSubs().length?aL('next'):aL('save');
+    if(back)back.style.display='none';
+    g.innerHTML=AREAS.map(a=>{
+      const on=!!_areasSel[a.id];
+      return `<button class="ao-chip${on?' on':''}" data-id="${a.id}" role="switch" aria-checked="${on}" onclick="toggleArea('${a.id}')">
         <span class="ao-em">${a.e}</span>
-        <span class="ao-name">${t('mod_'+a.id+'_t')}</span>
+        <span class="ao-name">${needL(a)}</span>
         <span class="ao-tick">${on?'✓':'+'}</span></button>`;
-    if(subs&&subs.length){
-      h+=`<div class="ao-subs">`+subs.map(s=>{
-        const son=_subsSel[a.id][s.id]!==false;
-        return `<button class="ao-sub-chip${son?' on':''}" data-a="${a.id}" data-s="${s.id}" role="switch" aria-checked="${son}" onclick="toggleSub('${a.id}','${s.id}')">
-          <span class="ao-sem">${s.e}</span><span class="ao-sname">${subL(s)}</span>
-          <span class="ao-stick">${son?'✓':''}</span></button>`;
-      }).join('')+`</div>`;
-    }
-    return h+`</div>`;
-  }).join('');
+    }).join('');
+  }else{
+    document.getElementById('ao-hdr').textContent=aL('hdr2');
+    document.getElementById('ao-sub').textContent=aL('sub2');
+    document.getElementById('ao-save').textContent=aL('save');
+    if(back){back.style.display='';back.textContent=aL('back');}
+    g.innerHTML=chosenWithSubs().map(a=>{
+      return `<div class="ao-area" data-area="${a.id}">
+        <div class="ao-grp"><span class="ao-em">${a.e}</span><span class="ao-name">${needL(a)}</span></div>
+        <div class="ao-subs">`+SUBS[a.id].map(s=>{
+          const son=_subsSel[a.id][s.id]!==false;
+          return `<button class="ao-sub-chip${son?' on':''}" data-a="${a.id}" data-s="${s.id}" role="switch" aria-checked="${son}" onclick="toggleSub('${a.id}','${s.id}')">
+            <span class="ao-sem">${s.e}</span><span class="ao-sname">${subL(s)}</span>
+            <span class="ao-stick">${son?'✓':''}</span></button>`;
+        }).join('')+`</div></div>`;
+    }).join('');
+  }
+  const c=document.querySelector('.ao-card');if(c)c.scrollTop=0;
 }
 function toggleArea(id){
   _areasSel[id]=!_areasSel[id];
   const on=_areasSel[id];
-  const wrap=document.querySelector('#ao-grid .ao-area[data-area="'+id+'"]');
-  if(wrap)wrap.classList.toggle('off',!on);
   const r=document.querySelector('#ao-grid .ao-chip[data-id="'+id+'"]');
   if(r){r.classList.toggle('on',on);r.setAttribute('aria-checked',on);const tk=r.querySelector('.ao-tick');if(tk)tk.textContent=on?'✓':'+';}
+  // El botón principal cambia entre «Siguiente» y «Guardar» según haya submenús que afinar
+  document.getElementById('ao-save').textContent=chosenWithSubs().length?aL('next'):aL('save');
 }
 function toggleSub(area,sid){
   _subsSel[area][sid]=!(_subsSel[area][sid]!==false);
@@ -837,18 +861,25 @@ function toggleSub(area,sid){
   const r=document.querySelector('#ao-grid .ao-sub-chip[data-a="'+area+'"][data-s="'+sid+'"]');
   if(r){r.classList.toggle('on',on);r.setAttribute('aria-checked',on);const tk=r.querySelector('.ao-stick');if(tk)tk.textContent=on?'✓':'';}
 }
+function areasBack(){ _step=1; renderStep(); }
+// Botón principal: en paso 1 avanza al 2 (si hay submenús que afinar) o guarda; en paso 2 guarda.
 function saveAreasFromChooser(){
+  if(_step===1&&chosenWithSubs().length){ _step=2; renderStep(); return; }
+  commitAreas();
+}
+function commitAreas(){
   const list=AREAS.filter(a=>_areasSel[a.id]).map(a=>a.id);
   saveAreas(list);
-  // Submenús ocultos (los desmarcados) por área
   const hidden={};
   Object.keys(SUBS).forEach(area=>{
+    // Solo esconde submenús de áreas elegidas; en las no elegidas se conservan todos.
+    if(!_areasSel[area])return;
     const off=SUBS[area].filter(s=>_subsSel[area][s.id]===false).map(s=>s.id);
     if(off.length)hidden[area]=off;
   });
   try{localStorage.setItem('cris_hidden_v1',JSON.stringify(hidden));}catch(e){}
-  try{localStorage.removeItem('cris_hoy_mods_v1');}catch(e){} // el día vuelve a seguir las áreas elegidas
-  try{localStorage.setItem('cris_onboarded','1');}catch(e){} // no relanzar el recorrido tras el test
+  try{localStorage.removeItem('cris_hoy_mods_v1');}catch(e){}
+  try{localStorage.setItem('cris_onboarded','1');}catch(e){}
   document.getElementById('areasOv').classList.remove('show');
   buildModuleList();renderToday();
 }
@@ -1469,6 +1500,7 @@ if('serviceWorker' in navigator){
   <p class="ao-sub" id="ao-sub"></p>
   <div class="ao-grid" id="ao-grid"></div>
   <button class="ao-save" id="ao-save" onclick="saveAreasFromChooser()"></button>
+  <button class="ao-back" id="ao-back" onclick="areasBack()" style="display:none"></button>
 </div></div>
 <div id="onboard"><div id="ob-spot"></div><div id="ob-tip"></div></div>
 </body>
