@@ -727,9 +727,9 @@ function areaOn(id){const a=getAreas();return a?a.indexOf(id)>=0:true;} // sin e
 function saveAreas(list){try{localStorage.setItem('cris_areas_v1',JSON.stringify(list));}catch(e){}}
 
 const AREAS_I18N={
- es:{hdr:'¿En qué quieres que te acompañe?',sub:'Elige solo lo que necesites hoy. Están todos en el menú; aquí decides cuáles aparecen. Puedes cambiarlo cuando quieras.',save:'Guardar y empezar',menu:'🧭 ¿En qué te acompaño?'},
- en:{hdr:'What would you like company with?',sub:'Pick only what you need right now. They’re all in the menu; here you choose which ones show. Change it whenever you like.',save:'Save and start',menu:'🧭 What do I help with?'},
- fr:{hdr:'Sur quoi veux-tu de la compagnie ?',sub:'Choisis seulement ce dont tu as besoin. Tout reste dans le menu ; ici tu choisis ce qui apparaît. Modifiable quand tu veux.',save:'Enregistrer et commencer',menu:'🧭 Sur quoi je t’aide ?'}
+ es:{hdr:'¿En qué quieres que te acompañe?',sub:'Esto es todo lo que Quico puede hacer. Todo se queda siempre en el menú ☰ por si algún día lo necesitas; en tu pantalla principal aparecerá solo lo que elijas aquí.',save:'Guardar y empezar',menu:'🧭 ¿En qué te acompaño?'},
+ en:{hdr:'What would you like company with?',sub:'This is everything Quico can do. It all stays in the menu ☰ in case you ever need it; only what you pick here will show on your main screen.',save:'Save and start',menu:'🧭 What do I help with?'},
+ fr:{hdr:'Sur quoi veux-tu de la compagnie ?',sub:'Voici tout ce que Quico peut faire. Tout reste dans le menu ☰ si un jour tu en as besoin ; sur ton écran principal, seul ce que tu choisis ici apparaîtra.',save:'Enregistrer et commencer',menu:'🧭 Sur quoi je t’aide ?'}
 };
 function aL(k){return (AREAS_I18N[crisLang()]||AREAS_I18N.es)[k];}
 
@@ -1189,7 +1189,8 @@ function buildModuleList(){
   const moduleList = document.getElementById('moduleList');
   moduleList.innerHTML='';
   modules.forEach(m => {
-    if(!areaOn(m.id))return; // solo las áreas elegidas en el test inicial
+    // El menú SIEMPRE muestra todo (para revisar cuando quiera). Lo que se filtra
+    // por el test inicial es la pantalla principal (el plan de «Hoy»), no el menú.
     const row = document.createElement('button');
     row.className = 'dm-row';
     row.innerHTML = `<span class="dm-em">${m.icon}</span><span class="dm-info"><span class="dm-t">${t('mod_'+m.id+'_t')}</span><span class="dm-s">${t('mod_'+m.id+'_s')}</span></span>`;
