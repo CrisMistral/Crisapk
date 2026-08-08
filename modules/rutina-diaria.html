@@ -230,34 +230,35 @@ textarea.tool-field{min-height:74px;resize:vertical}
     <h1 data-i18n="h1">Trabajo</h1>
   </div>
 
-  <button class="work-start" onclick="openTool('foco')" data-i18n="ws">▶ Empezar a trabajar</button>
-  <button class="work-triage" onclick="openTool('triaje')" data-i18n="wt">🤔 No sé qué me pasa</button>
+  <button class="work-start" data-sub="foco" onclick="openTool('foco')" data-i18n="ws">▶ Empezar a trabajar</button>
+  <button class="work-triage" data-sub="triaje" onclick="openTool('triaje')" data-i18n="wt">🤔 No sé qué me pasa</button>
 
   <div class="section">
     <div style="font-size:0.78rem;opacity:.75;margin-bottom:12px;text-align:center;" data-i18n="sec_hint">…o si ya sabes qué necesitas, elígelo directo:</div>
 
     <div class="wgroup">
       <div class="wg-label" data-i18n="g1">🏁 No puedo empezar</div>
-      <button class="wrow" onclick="openTool('paralisis')"><span class="we">🧩</span><span class="wi"><b data-i18n="w_par_t">Destructor de parálisis</b><i data-i18n="w_par_s">miras la tarea y no arrancas</i></span></button>
-      <button class="wrow" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b data-i18n="w_int_t">Convertir en misión</b><i data-i18n="w_int_s">gamifica una tarea aburrida con algo que te gusta</i></span></button>
+      <button class="wrow" data-sub="paralisis" onclick="openTool('paralisis')"><span class="we">🧩</span><span class="wi"><b data-i18n="w_par_t">Destructor de parálisis</b><i data-i18n="w_par_s">miras la tarea y no arrancas</i></span></button>
+      <button class="wrow" data-sub="interes" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b data-i18n="w_int_t">Convertir en misión</b><i data-i18n="w_int_s">gamifica una tarea aburrida con algo que te gusta</i></span></button>
     </div>
 
     <div class="wgroup">
       <div class="wg-label" data-i18n="g2">🎯 Quiero mantener el foco</div>
-      <button class="wrow" onclick="openTool('doble')"><span class="we">👥</span><span class="wi"><b data-i18n="w_dob_t">Doble de cuerpo</b><i data-i18n="w_dob_s">trabajo acompañado, con avisos cada 10 min</i></span></button>
-      <button class="wrow" onclick="openTool('dopamina')"><span class="we">🍽️</span><span class="wi"><b data-i18n="w_dop_t">Menú de dopamina</b><i data-i18n="w_dop_s">elige un plato y mantén el cerebro enganchado</i></span></button>
+      <button class="wrow" data-sub="doble" onclick="openTool('doble')"><span class="we">👥</span><span class="wi"><b data-i18n="w_dob_t">Doble de cuerpo</b><i data-i18n="w_dob_s">trabajo acompañado, con avisos cada 10 min</i></span></button>
+      <button class="wrow" data-sub="dopamina" onclick="openTool('dopamina')"><span class="we">🍽️</span><span class="wi"><b data-i18n="w_dop_t">Menú de dopamina</b><i data-i18n="w_dop_s">elige un plato y mantén el cerebro enganchado</i></span></button>
     </div>
 
     <div class="wgroup">
       <div class="wg-label" data-i18n="g3">🧠 Tengo la cabeza llena</div>
-      <button class="wrow" onclick="openTool('volcado')"><span class="we">🧠</span><span class="wi"><b data-i18n="w_vol_t">Vaciar la mente</b><i data-i18n="w_vol_s">suelta los bucles abiertos y clasifícalos</i></span></button>
+      <button class="wrow" data-sub="volcado" onclick="openTool('volcado')"><span class="we">🧠</span><span class="wi"><b data-i18n="w_vol_t">Vaciar la mente</b><i data-i18n="w_vol_s">suelta los bucles abiertos y clasifícalos</i></span></button>
     </div>
 
     <div class="wgroup" style="margin-bottom:0">
       <div class="wg-label" data-i18n="g4">🔄 Cambiar de tarea o planificar</div>
-      <button class="wrow" onclick="openTool('contexto')"><span class="we">🔄</span><span class="wi"><b data-i18n="w_ctx_t">Cambio de contexto</b><i data-i18n="w_ctx_s">3 min para pasar de una tarea a otra</i></span></button>
-      <button class="wrow" onclick="openTool('tiempo')" style="margin-bottom:0"><span class="we">⏳</span><span class="wi"><b data-i18n="w_tim_t">Auditor del tiempo</b><i data-i18n="w_tim_s">estima cuánto tardarás de verdad</i></span></button>
+      <button class="wrow" data-sub="contexto" onclick="openTool('contexto')"><span class="we">🔄</span><span class="wi"><b data-i18n="w_ctx_t">Cambio de contexto</b><i data-i18n="w_ctx_s">3 min para pasar de una tarea a otra</i></span></button>
+      <button class="wrow" data-sub="tiempo" onclick="openTool('tiempo')" style="margin-bottom:0"><span class="we">⏳</span><span class="wi"><b data-i18n="w_tim_t">Auditor del tiempo</b><i data-i18n="w_tim_s">estima cuánto tardarás de verdad</i></span></button>
     </div>
+    <button id="subShowAll" class="sub-showall" onclick="__subToggleAll()" style="display:none"></button>
   </div>
 </div>
 
@@ -655,6 +656,39 @@ window.addEventListener('message',function(e){
   }
 });
 applyStaticI18n();
+</script>
+<script>
+/* Submenús: esconde las herramientas que quedaron fuera en el test inicial (index),
+   con un botón «Mostrar todo» para recuperarlas. Preferencia: cris_hidden_v1.
+   Extra: si un grupo se queda sin herramientas visibles, se oculta su título. */
+(function(){
+  const AREA='trabajo';
+  const LBL={es:'Mostrar todo',en:'Show all',fr:'Tout afficher'},
+        LBL2={es:'Ocultar extras',en:'Hide extras',fr:'Masquer les extras'};
+  function lang(){try{const l=localStorage.getItem('cris_lang');return({es:1,en:1,fr:1})[l]?l:'es';}catch(e){return'es';}}
+  function hidden(){try{const o=JSON.parse(localStorage.getItem('cris_hidden_v1')||'{}');return o[AREA]||[];}catch(e){return[];}}
+  let showAll=false;
+  function apply(){
+    const hid=hidden();
+    document.querySelectorAll('[data-sub]').forEach(el=>{
+      el.style.display=(!showAll&&hid.indexOf(el.getAttribute('data-sub'))>=0)?'none':'';
+    });
+    // grupos sin ninguna herramienta visible → ocultar (para no dejar títulos sueltos)
+    document.querySelectorAll('.wgroup').forEach(g=>{
+      const anyVisible=[...g.querySelectorAll('[data-sub]')].some(el=>el.style.display!=='none');
+      g.style.display=anyVisible?'':'none';
+    });
+    const b=document.getElementById('subShowAll');
+    if(b){ if(hid.length){b.style.display='';b.textContent=(showAll?LBL2:LBL)[lang()]+(showAll?'':' ('+hid.length+')');} else b.style.display='none'; }
+  }
+  window.__subToggleAll=function(){showAll=!showAll;apply();};
+  if(!document.getElementById('subShowAllCss')){
+    const st=document.createElement('style');st.id='subShowAllCss';
+    st.textContent='.sub-showall{border:2px dashed var(--mint-mid,#b8e4dd);background:transparent;color:var(--teal-dark,#1a6b64);font-family:Outfit,sans-serif;font-weight:700;font-size:.82rem;border-radius:14px;padding:10px 14px;cursor:pointer;width:100%;margin-top:8px}.sub-showall:active{transform:scale(.98)}';
+    document.head.appendChild(st);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
 </script>
 </body>
 </html>

@@ -167,30 +167,31 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
   <div class="home-q">
     <img src="../quico/quico_happy.png" alt="Quico" style="width:128px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))">
   </div>
-  <button class="acard c-sos" onclick="go('techniques')">
+  <button class="acard c-sos" data-sub="c-sos" onclick="go('techniques')">
     <span class="aicon">🚨</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_sos_t">NECESITO AYUDA YA</span><span class="asub" data-i18n="c_sos_s">Técnicas para salir del bucle ahora mismo</span></div>
   </button>
-  <button class="acard c-know" onclick="go('emotions')">
+  <button class="acard c-know" data-sub="c-know" onclick="go('emotions')">
     <span class="aicon">💭</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_know_t">SÉ QUÉ SIENTO</span><span class="asub" data-i18n="c_know_s">Entiende tu emoción y qué puedes hacer</span></div>
   </button>
-  <button class="acard c-find" onclick="go('find-emotion')">
+  <button class="acard c-find" data-sub="c-find" onclick="go('find-emotion')">
     <span class="aicon">❓</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_find_t">NO SÉ QUÉ SIENTO</span><span class="asub" data-i18n="c_find_s">Ayúdame a identificar lo que me pasa</span></div>
   </button>
-  <button class="acard c-calm" onclick="go('meditations')">
+  <button class="acard c-calm" data-sub="c-calm" onclick="go('meditations')">
     <span class="aicon">🧘</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_calm_t">MEDITAR</span><span class="asub" data-i18n="c_calm_s">Meditaciones guiadas para calmarme</span></div>
   </button>
-  <button class="acard c-anniv" onclick="go('anniversary')">
+  <button class="acard c-anniv" data-sub="c-anniv" onclick="go('anniversary')">
     <span class="aicon">🕯️</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_anniv_t">ÉPOCA DIFÍCIL</span><span class="asub" data-i18n="c_anniv_s">Plan de 7 días para un aniversario duro</span></div>
   </button>
-  <button class="acard c-trans" onclick="go('transition')">
+  <button class="acard c-trans" data-sub="c-trans" onclick="go('transition')">
     <span class="aicon">📴</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_trans_t">SOLTAR EL MÓVIL</span><span class="asub" data-i18n="c_trans_s">Cambia de tarea con una mini-guía</span></div>
   </button>
+  <button id="subShowAll" class="sub-showall" onclick="__subToggleAll()" style="display:none"></button>
 </div>
 </div>
 
@@ -1119,6 +1120,33 @@ window.addEventListener('message',function(e){
     try{parent.postMessage('cris:back-ok','*');}catch(_){}
   }
 });
+</script>
+<script>
+/* Submenús: esconde las tarjetas que quedaron fuera en el test inicial (index),
+   con un botón «Mostrar todo» para recuperarlas. Preferencia: cris_hidden_v1. */
+(function(){
+  const AREA='botiquin';
+  const LBL={es:'Mostrar todo',en:'Show all',fr:'Tout afficher'},
+        LBL2={es:'Ocultar extras',en:'Hide extras',fr:'Masquer les extras'};
+  function lang(){try{const l=localStorage.getItem('cris_lang');return({es:1,en:1,fr:1})[l]?l:'es';}catch(e){return'es';}}
+  function hidden(){try{const o=JSON.parse(localStorage.getItem('cris_hidden_v1')||'{}');return o[AREA]||[];}catch(e){return[];}}
+  let showAll=false;
+  function apply(){
+    const hid=hidden();
+    document.querySelectorAll('[data-sub]').forEach(el=>{
+      el.style.display=(!showAll&&hid.indexOf(el.getAttribute('data-sub'))>=0)?'none':'';
+    });
+    const b=document.getElementById('subShowAll');
+    if(b){ if(hid.length){b.style.display='';b.textContent=(showAll?LBL2:LBL)[lang()]+(showAll?'':' ('+hid.length+')');} else b.style.display='none'; }
+  }
+  window.__subToggleAll=function(){showAll=!showAll;apply();};
+  if(!document.getElementById('subShowAllCss')){
+    const st=document.createElement('style');st.id='subShowAllCss';
+    st.textContent='.sub-showall{border:2px dashed var(--mint-mid,#b8e4dd);background:transparent;color:var(--teal-dark,#1a6b64);font-family:Outfit,sans-serif;font-weight:700;font-size:.82rem;border-radius:14px;padding:10px 14px;cursor:pointer;width:100%;margin-top:2px}.sub-showall:active{transform:scale(.98)}';
+    document.head.appendChild(st);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
 </script>
 </body>
 </html>
