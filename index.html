@@ -724,14 +724,14 @@ const modules = [
    ocultas, y se pueden activar cuando quiera desde «¿En qué te acompaño?».
    Fuente de verdad: cris_areas_v1 (lista de ids). null = aún no ha elegido. */
 const AREAS=[
-  {id:'trabajo',    e:'💼', cat:'trabajo',    need:{es:'Organizarme y ponerme con las tareas',en:'Getting organized and starting tasks',fr:'M’organiser et me mettre au travail'}},
-  {id:'ejercicios', e:'🧘', cat:'pilates',    need:{es:'Mover el cuerpo',en:'Moving my body',fr:'Bouger mon corps'}},
-  {id:'comida',     e:'🍽️', cat:'comida',     need:{es:'Comer y cocinar',en:'Eating and cooking',fr:'Manger et cuisiner'}},
-  {id:'limpieza',   e:'🧹', cat:'limpieza',   need:{es:'Mantener la casa',en:'Keeping the home',fr:'Entretenir la maison'}},
-  {id:'intereses',  e:'🎨', cat:'intereses',  need:{es:'Aprender y mis aficiones',en:'Learning and my hobbies',fr:'Apprendre et mes loisirs'}},
-  {id:'noche',      e:'🌙', cat:'noche',      need:{es:'Dormir y desconectar de noche',en:'Sleep and winding down',fr:'Dormir et décompresser le soir'}},
-  {id:'botiquin',   e:'🫀', cat:'calma',      need:{es:'Calmarme cuando lo paso mal',en:'Calming down when it’s hard',fr:'Me calmer quand ça va mal'}},
-  {id:'juego',      e:'🔍', cat:'juego',      need:{es:'Despejar la mente jugando',en:'Clearing my head with a game',fr:'Me changer les idées avec un jeu'}}
+  {id:'trabajo',    e:'💼', cat:'trabajo',    need:{es:'¿Te cuesta ponerte con las tareas?',en:'Hard to get started on tasks?',fr:'Du mal à te mettre au travail ?'}},
+  {id:'ejercicios', e:'🧘', cat:'pilates',    need:{es:'¿Te cuesta moverte?',en:'Hard to get moving?',fr:'Du mal à bouger ?'}},
+  {id:'comida',     e:'🍽️', cat:'comida',     need:{es:'¿Comer se te hace un mundo?',en:'Does eating feel overwhelming?',fr:'Manger, c’est toute une histoire ?'}},
+  {id:'limpieza',   e:'🧹', cat:'limpieza',   need:{es:'¿Te cuesta limpiar?',en:'Hard to clean the house?',fr:'Du mal à faire le ménage ?'}},
+  {id:'intereses',  e:'🎨', cat:'intereses',  need:{es:'¿No sacas tiempo para tus cosas?',en:'No time for your own things?',fr:'Pas de temps pour tes passions ?'}},
+  {id:'noche',      e:'🌙', cat:'noche',      need:{es:'¿Te cuesta parar y dormir?',en:'Hard to wind down and sleep?',fr:'Du mal à décrocher et dormir ?'}},
+  {id:'botiquin',   e:'🫀', cat:'calma',      need:{es:'¿Lo estás pasando mal?',en:'Are you having a hard time?',fr:'Tu traverses un moment dur ?'}},
+  {id:'juego',      e:'🔍', cat:'juego',      need:{es:'¿Necesitas desconectar la cabeza?',en:'Need to switch your head off?',fr:'Besoin de déconnecter ?'}}
 ];
 function needL(a){return (a.need&&(a.need[crisLang()]||a.need.es))||t('mod_'+a.id+'_t');}
 // id del panel «Hoy» (DAY_CATALOG) → id de área
@@ -748,34 +748,34 @@ function saveAreas(list){try{localStorage.setItem('cris_areas_v1',JSON.stringify
    (ejercicios, intereses, noche, juego) no tienen submenús que elegir. */
 const SUBS={
   trabajo:[
-    {id:'foco',     e:'▶️',t:{es:'Empezar a trabajar',en:'Start working',fr:'Se mettre au travail'}},
-    {id:'triaje',   e:'🤔',t:{es:'No sé qué me pasa',en:'I don’t know what’s wrong',fr:'Je ne sais pas ce qui va pas'}},
-    {id:'paralisis',e:'🧩',t:{es:'Destructor de parálisis',en:'Paralysis buster',fr:'Anti-paralysie'}},
-    {id:'interes',  e:'🎮',t:{es:'Convertir en misión',en:'Turn it into a quest',fr:'En faire une mission'}},
-    {id:'doble',    e:'👥',t:{es:'Doble de cuerpo',en:'Body double',fr:'Doublure corporelle'}},
-    {id:'dopamina', e:'🍽️',t:{es:'Menú de dopamina',en:'Dopamine menu',fr:'Menu dopamine'}},
-    {id:'volcado',  e:'🧠',t:{es:'Vaciar la mente',en:'Brain dump',fr:'Vider la tête'}},
-    {id:'contexto', e:'🔄',t:{es:'Cambio de contexto',en:'Context switch',fr:'Changement de contexte'}},
-    {id:'tiempo',   e:'⏳',t:{es:'Auditor del tiempo',en:'Time auditor',fr:'Auditeur du temps'}}
+    {id:'foco',     e:'▶️',t:{es:'Concentrarme con temporizador',en:'Focus with a timer',fr:'Me concentrer avec un minuteur'}},
+    {id:'triaje',   e:'🤔',t:{es:'Averiguar qué me frena hoy',en:'Figure out what’s blocking me',fr:'Comprendre ce qui me bloque'}},
+    {id:'paralisis',e:'🧩',t:{es:'Salir del bloqueo paso a paso',en:'Get unstuck step by step',fr:'Sortir du blocage pas à pas'}},
+    {id:'interes',  e:'🎮',t:{es:'Convertir la tarea en un juego',en:'Turn the task into a game',fr:'Transformer la tâche en jeu'}},
+    {id:'doble',    e:'👥',t:{es:'Trabajar acompañada (avisos cada 10 min)',en:'Work with company (nudge every 10 min)',fr:'Travailler accompagné·e (rappel toutes les 10 min)'}},
+    {id:'dopamina', e:'🍽️',t:{es:'Elegir una tarea que enganche',en:'Pick a task that hooks you',fr:'Choisir une tâche qui accroche'}},
+    {id:'volcado',  e:'🧠',t:{es:'Vaciar la cabeza en una lista',en:'Empty your head into a list',fr:'Vider la tête dans une liste'}},
+    {id:'contexto', e:'🔄',t:{es:'Cambiar de tarea (pausa de 3 min)',en:'Switch tasks (3-min reset)',fr:'Changer de tâche (pause 3 min)'}},
+    {id:'tiempo',   e:'⏳',t:{es:'Calcular cuánto me llevará',en:'Estimate how long it’ll take',fr:'Estimer le temps que ça prendra'}}
   ],
   comida:[
-    {id:'c-test',   e:'🍽️',t:{es:'¿Qué como hoy?',en:'What do I eat today?',fr:'Je mange quoi ?'}},
+    {id:'c-test',   e:'🍽️',t:{es:'Decidir qué comer hoy',en:'Decide what to eat today',fr:'Décider quoi manger'}},
     {id:'c-season', e:'📅',t:{es:'Menú de la semana',en:'Weekly menu',fr:'Menu de la semaine'}},
     {id:'c-shop',   e:'🛒',t:{es:'Lista de la compra',en:'Shopping list',fr:'Liste de courses'}},
-    {id:'c-express',e:'⚡',t:{es:'Básicos salvavidas',en:'Lifesaver basics',fr:'Basiques dépannage'}},
-    {id:'c-months', e:'🗓️',t:{es:'Todos los meses',en:'All the months',fr:'Tous les mois'}}
+    {id:'c-express',e:'⚡',t:{es:'Comidas rápidas salvavidas',en:'Quick lifesaver meals',fr:'Repas rapides dépannage'}},
+    {id:'c-months', e:'🗓️',t:{es:'Todas las recetas (mes a mes)',en:'All recipes (month by month)',fr:'Toutes les recettes (mois par mois)'}}
   ],
   limpieza:[
-    {id:'express',e:'⚡',t:{es:'Recoge ahora (exprés)',en:'Tidy now (express)',fr:'Ranger vite (express)'}},
-    {id:'plan5',  e:'📅',t:{es:'Plan de 5 días',en:'5-day plan',fr:'Plan sur 5 jours'}},
-    {id:'general',e:'🏠',t:{es:'Limpieza completa',en:'Full clean',fr:'Ménage complet'}}
+    {id:'express',e:'⚡',t:{es:'Limpieza exprés con temporizador',en:'Express clean with a timer',fr:'Ménage express avec minuteur'}},
+    {id:'plan5',  e:'📅',t:{es:'Plan de limpieza progresiva (5 días)',en:'Gradual cleaning plan (5 days)',fr:'Plan de ménage progressif (5 jours)'}},
+    {id:'general',e:'🏠',t:{es:'Limpieza a fondo',en:'Deep clean',fr:'Ménage à fond'}}
   ],
   botiquin:[
-    {id:'c-sos',  e:'🚨',t:{es:'Necesito ayuda ya',en:'I need help now',fr:'J’ai besoin d’aide'}},
-    {id:'c-know', e:'💭',t:{es:'Sé qué siento',en:'I know what I feel',fr:'Je sais ce que je ressens'}},
-    {id:'c-find', e:'❓',t:{es:'No sé qué siento',en:'I don’t know what I feel',fr:'Je ne sais pas ce que je ressens'}},
-    {id:'c-calm', e:'🧘',t:{es:'Meditar',en:'Meditate',fr:'Méditer'}},
-    {id:'c-anniv',e:'🕯️',t:{es:'Época difícil',en:'Hard season',fr:'Période difficile'}},
+    {id:'c-sos',  e:'🚨',t:{es:'Ayuda urgente (crisis)',en:'Urgent help (crisis)',fr:'Aide urgente (crise)'}},
+    {id:'c-know', e:'💭',t:{es:'Sé lo que siento',en:'I know what I feel',fr:'Je sais ce que je ressens'}},
+    {id:'c-find', e:'❓',t:{es:'Descubrir qué siento',en:'Figure out what I feel',fr:'Découvrir ce que je ressens'}},
+    {id:'c-calm', e:'🧘',t:{es:'Meditaciones para calmarme',en:'Meditations to calm down',fr:'Méditations pour me calmer'}},
+    {id:'c-anniv',e:'🕯️',t:{es:'Apoyo en una época difícil',en:'Support through a hard season',fr:'Soutien dans une période dure'}},
     {id:'c-trans',e:'📴',t:{es:'Soltar el móvil',en:'Put the phone down',fr:'Lâcher le téléphone'}}
   ]
 };
@@ -783,14 +783,14 @@ function subL(s){return (s.t&&(s.t[crisLang()]||s.t.es))||'';}
 function getHidden(){try{const v=JSON.parse(localStorage.getItem('cris_hidden_v1'));return (v&&typeof v==='object')?v:{};}catch(e){return{};}}
 
 const AREAS_I18N={
- es:{hdr1:'¿En qué necesitas acompañamiento?',sub1:'Elige lo que te vendría bien. Puedes marcar varias y cambiarlo cuando quieras. En tu pantalla principal aparecerá solo lo que elijas.',
-     hdr2:'¿Y qué te vendría bien dentro?',sub2:'Deja marcado solo lo que quieras ver dentro de cada apartado. Todo lo demás sigue siempre en el menú ☰.',
-     next:'Siguiente →',save:'Guardar y empezar',back:'← Atrás',menu:'🧭 ¿En qué te acompaño?'},
- en:{hdr1:'What do you need company with?',sub1:'Pick whatever would help. You can choose several and change it anytime. Only what you pick will show on your main screen.',
-     hdr2:'And what would help inside?',sub2:'Keep only what you want to see inside each one. Everything else always stays in the menu ☰.',
-     next:'Next →',save:'Save and start',back:'← Back',menu:'🧭 What do I help with?'},
- fr:{hdr1:'Sur quoi as-tu besoin d’être accompagné·e ?',sub1:'Choisis ce qui t’aiderait. Tu peux en cocher plusieurs et changer quand tu veux. Seul ce que tu choisis apparaîtra sur ton écran principal.',
-     hdr2:'Et qu’est-ce qui t’aiderait dedans ?',sub2:'Garde seulement ce que tu veux voir dans chaque partie. Tout le reste reste toujours dans le menu ☰.',
+ es:{hdr1:'¿Con qué se te hace cuesta arriba?',sub1:'Marca lo que te suene. Quico te dará herramientas para eso. Puedes elegir varias y cambiarlo cuando quieras.',
+     hdr2:'Esto es lo que tengo para ti 💪',sub2:'Deja marcado lo que quieras probar. Todo lo demás sigue siempre en el menú ☰.',
+     next:'Siguiente →',save:'Guardar y empezar',back:'← Atrás',menu:'🧭 ¿Con qué te ayudo?'},
+ en:{hdr1:'What feels hard right now?',sub1:'Tick whatever sounds like you. Quico will give you tools for it. Pick several and change it anytime.',
+     hdr2:'Here’s what I’ve got for you 💪',sub2:'Keep whatever you want to try. Everything else always stays in the menu ☰.',
+     next:'Next →',save:'Save and start',back:'← Back',menu:'🧭 What can I help with?'},
+ fr:{hdr1:'Qu’est-ce qui te pèse en ce moment ?',sub1:'Coche ce qui te parle. Quico te donnera des outils pour ça. Choisis-en plusieurs et change quand tu veux.',
+     hdr2:'Voilà ce que j’ai pour toi 💪',sub2:'Garde ce que tu veux essayer. Tout le reste reste toujours dans le menu ☰.',
      next:'Suivant →',save:'Enregistrer et commencer',back:'← Retour',menu:'🧭 Sur quoi je t’aide ?'}
 };
 function aL(k){return (AREAS_I18N[crisLang()]||AREAS_I18N.es)[k];}
