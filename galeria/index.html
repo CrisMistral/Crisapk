@@ -33,9 +33,10 @@
   <div class="inner">
     <a class="brand" href="index.html">Art<em>dequé</em></a>
     <nav class="nav">
-      <a href="explorar.html" class="hide-sm">Explorar</a>
-      <a href="archivo.html" class="hide-sm">Archivo</a>
-      <a class="cta" href="subir.html">Subir una obra</a>
+      <a href="explorar.html" class="hide-sm" data-i18n="nav_explorar">Explorar</a>
+      <a href="archivo.html" class="hide-sm" data-i18n="nav_archivo">Archivo</a>
+      <a class="cta" href="subir.html" data-i18n="nav_subir">Subir una obra</a>
+      <span class="lang-switch" id="lang-switch"></span>
     </nav>
   </div>
 </header>
@@ -43,9 +44,9 @@
 <!-- barra de recordatorio (push) -->
 <div class="push-bar" id="push-bar" hidden>
   <div class="inner">
-    <p>Una obra cada día, en tu pantalla. ¿Te avisamos?</p>
-    <button class="btn-push" id="btn-push">Activar recordatorio</button>
-    <button class="cerrar-push" id="cerrar-push" aria-label="Ahora no">✕</button>
+    <p data-i18n="push_msg">Una obra cada día, en tu pantalla. ¿Te avisamos?</p>
+    <button class="btn-push" id="btn-push" data-i18n="push_btn">Activar recordatorio</button>
+    <button class="cerrar-push" id="cerrar-push" data-i18n-aria="push_close" aria-label="Ahora no">✕</button>
   </div>
 </div>
 
@@ -62,8 +63,8 @@
 
 <div class="bajo-ritual">
   <div class="inner">
-    <a class="mas" href="explorar.html">Explorar todas las obras →</a>
-    <a class="mas" href="archivo.html">Ver las obras de días pasados →</a>
+    <a class="mas" href="explorar.html" data-i18n="bajo_explorar">Explorar todas las obras →</a>
+    <a class="mas" href="archivo.html" data-i18n="bajo_archivo">Ver las obras de días pasados →</a>
   </div>
 </div>
 
@@ -71,11 +72,11 @@
   <div class="inner">
     <div class="col">
       <span class="brand">Art<em>dequé</em></span>
-      <span class="muted" style="font-size:.8rem;max-width:32ch">Una obra cada día. Nos detenemos en una sola, con la voz de quien la hizo.</span>
+      <span class="muted" style="font-size:.8rem;max-width:32ch" data-i18n="foot_tag_home">Una obra cada día. Nos detenemos en una sola, con la voz de quien la hizo.</span>
     </div>
     <div class="cols">
-      <div class="col"><span class="eyebrow">Explorar</span><a href="explorar.html">Todas las obras</a><a href="archivo.html">Archivo diario</a></div>
-      <div class="col"><span class="eyebrow">Artistas</span><a href="subir.html">Subir una obra</a></div>
+      <div class="col"><span class="eyebrow" data-i18n="foot_col_explorar">Explorar</span><a href="explorar.html" data-i18n="foot_todas">Todas las obras</a><a href="archivo.html" data-i18n="foot_archivo">Archivo diario</a></div>
+      <div class="col"><span class="eyebrow" data-i18n="foot_col_artistas">Artistas</span><a href="subir.html" data-i18n="foot_subir">Subir una obra</a></div>
     </div>
   </div>
 </footer>
@@ -87,11 +88,13 @@
 <div class="toast" id="toast"></div>
 
 <script src="taxonomias.js"></script>
+<script src="i18n.js"></script>
 <script src="galeria.js"></script>
 <script>
 (function(){
   'use strict';
   var $=function(id){return document.getElementById(id);};
+  var T=function(k,v){return I18N.t(k,v);};
   var toastT;
   function toast(msg){ var t=$('toast'); t.textContent=msg; t.classList.add('ver'); clearTimeout(toastT); toastT=setTimeout(function(){ t.classList.remove('ver'); },2200); }
 
@@ -99,30 +102,30 @@
 
   function pintar(o){
     obraActual=o;
-    if(!o){ $('ritual').innerHTML='<div class="vacio" style="padding:5rem 1rem"><h3 class="serif">La galería está vacía todavía</h3><p><a class="btn btn-line" href="subir.html">Sé el primero en subir una obra</a></p></div>'; return; }
-    document.title = 'Hoy: '+o.titulo+' — Artdequé';
+    if(!o){ $('ritual').innerHTML='<div class="vacio" style="padding:5rem 1rem"><h3 class="serif">'+T('empty_gallery_h')+'</h3><p><a class="btn btn-line" href="subir.html">'+T('empty_gallery_cta')+'</a></p></div>'; return; }
+    document.title = o.titulo+' — Artdequé';
     $('obra-img').classList.remove('skeleton');
     $('obra-img').innerHTML = GD.imgInterior(o,false);
-    $('obra-img').title='Ampliar';
+    $('obra-img').title=T('enlarge');
 
     var enVenta = o.disponibilidad==='venta' && o.estado!=='vendida';
     var dim = GD.dimTexto(o);
     var acciones =
       (enVenta
-        ? '<span class="precio">'+GD.euro(o.precio)+'</span><a class="btn btn-dark" href="obra.html?id='+encodeURIComponent(o.id)+'#comprar">Comprar</a>'
-        : '<span class="precio">'+GD.euro(o.precio)+'</span><span class="pill">'+(o.disponibilidad==='reservada'?'Reservada':'No disponible')+'</span>');
+        ? '<span class="precio">'+GD.euro(o.precio)+'</span><a class="btn btn-dark" href="obra.html?id='+encodeURIComponent(o.id)+'#comprar">'+T('buy')+'</a>'
+        : '<span class="precio">'+GD.euro(o.precio)+'</span><span class="pill">'+(o.disponibilidad==='reservada'?T('reserved'):T('unavailable'))+'</span>');
 
     $('relato').innerHTML =
-      '<p class="fecha">'+GD.fechaLarga()+' · la obra de hoy</p>'+
+      '<p class="fecha">'+GD.fechaLarga()+' · '+T('hoy_suffix')+'</p>'+
       '<h1>'+GD.esc(o.titulo)+'</h1>'+
       '<p class="artista-linea"><a href="explorar.html?artista='+GD.escAttr(o.artista.slug)+'">'+GD.esc(o.artista.nombre)+'</a> · '+GD.medios(o).join(' · ')+', '+o.anio+'</p>'+
       '<div id="historia-cont"></div>'+
       '<div class="ficha-linea"><span><b>'+GD.esc(o.materiales)+'</b></span>'+(dim?'<span>'+dim+'</span>':'')+'</div>'+
       '<div class="precio-fila">'+acciones+'</div>'+
       '<div class="acciones">'+
-        '<a class="btn btn-line" href="obra.html?id='+encodeURIComponent(o.id)+'">Ver la obra entera</a>'+
-        '<button class="icono solo" id="fav" aria-label="Guardar en favoritos" title="Guardar">'+corazon()+'</button>'+
-        '<button class="icono" id="share" aria-label="Compartir">'+iconoShare()+'Compartir</button>'+
+        '<a class="btn btn-line" href="obra.html?id='+encodeURIComponent(o.id)+'">'+T('see_full')+'</a>'+
+        '<button class="icono solo" id="fav" aria-label="'+T('save')+'" title="'+T('save')+'">'+corazon()+'</button>'+
+        '<button class="icono" id="share" aria-label="'+T('share')+'">'+iconoShare()+T('share')+'</button>'+
       '</div>';
 
     pintarHistoria(o);
@@ -135,11 +138,11 @@
     var cont = $('historia-cont');
     var LIMITE=280;
     if(texto.length<=LIMITE || expandido){
-      cont.innerHTML='<p class="historia">'+GD.esc(texto)+'</p>'+(texto.length>LIMITE?'<button class="leer-mas" id="menos">Leer menos</button>':'');
+      cont.innerHTML='<p class="historia">'+GD.esc(texto)+'</p>'+(texto.length>LIMITE?'<button class="leer-mas" id="menos">'+T('read_less')+'</button>':'');
       var m=$('menos'); if(m) m.addEventListener('click',function(){ expandido=false; pintarHistoria(o); });
     } else {
       var corte = texto.slice(0,LIMITE).replace(/\s+\S*$/,'');
-      cont.innerHTML='<p class="historia">'+GD.esc(corte)+'… </p><button class="leer-mas" id="mas">Seguir leyendo</button>';
+      cont.innerHTML='<p class="historia">'+GD.esc(corte)+'… </p><button class="leer-mas" id="mas">'+T('read_more')+'</button>';
       $('mas').addEventListener('click',function(){ expandido=true; pintarHistoria(o); });
     }
   }
@@ -153,10 +156,10 @@
     fav.addEventListener('click',function(){
       var ahora=GD.favToggle(o.id);
       fav.classList.toggle('fav',ahora);
-      toast(ahora?'Guardada en favoritos':'Quitada de favoritos');
+      toast(ahora?T('saved'):T('unsaved'));
     });
     $('share').addEventListener('click',function(){
-      GD.compartir(o).then(function(r){ if(r==='copiado') toast('Enlace copiado'); });
+      GD.compartir(o).then(function(r){ if(r==='copiado') toast(T('link_copied')); });
     });
   }
 
@@ -186,7 +189,7 @@
   function activarPush(){
     var btn=$('btn-push'); btn.disabled=true; btn.textContent='…';
     Notification.requestPermission().then(function(permiso){
-      if(permiso!=='granted'){ toast('Sin permiso no podemos avisarte. Puedes activarlo desde los ajustes del navegador.'); btn.disabled=false; btn.textContent='Activar recordatorio'; return; }
+      if(permiso!=='granted'){ toast(T('reminder_denied')); btn.disabled=false; btn.textContent=T('push_btn'); return; }
       navigator.serviceWorker.register('sw.js').then(function(reg){
         return fetch('/api/push-key').then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; })
           .then(function(cfg){
@@ -199,11 +202,11 @@
             return false; // sin VAPID configurado: recordatorio local
           })
           .then(function(remoto){
-            reg.showNotification('Artdequé', { body: remoto ? 'Listo. Cada día te traeremos una obra nueva.' : 'Recordatorio activado en este dispositivo.', tag:'gd-bienvenida' });
+            reg.showNotification('Artdequé', { body: remoto ? T('reminder_welcome_remote') : T('reminder_welcome_local'), tag:'gd-bienvenida' });
             $('push-bar').hidden=true;
-            toast(remoto?'Recordatorio diario activado':'Activado en este dispositivo');
+            toast(remoto?T('reminder_remote'):T('reminder_local'));
           });
-      }).catch(function(){ toast('No se pudo activar el recordatorio aquí.'); btn.disabled=false; btn.textContent='Activar recordatorio'; });
+      }).catch(function(){ toast(T('reminder_fail')); btn.disabled=false; btn.textContent=T('push_btn'); });
     });
   }
 
@@ -212,8 +215,11 @@
     pintar(GD.obraDeHoy(todas));
     iniciarPush();
   }).catch(function(){
-    $('ritual').innerHTML='<div class="vacio" style="padding:5rem 1rem"><h3 class="serif">No se pudo cargar la obra de hoy</h3><p>Inténtalo de nuevo en un momento.</p></div>';
+    $('ritual').innerHTML='<div class="vacio" style="padding:5rem 1rem"><h3 class="serif">'+T('load_error_h')+'</h3><p>'+T('load_error_p')+'</p></div>';
   });
+
+  // Cambiar idioma → repintar la obra del día en el nuevo idioma
+  document.addEventListener('i18n:change',function(){ if(obraActual) pintar(obraActual); });
 })();
 </script>
 </body>

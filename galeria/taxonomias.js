@@ -78,15 +78,41 @@
   var COMISION = 0.22;            // 22 %
   var artistaRecibe = function (precio) { return Math.round((precio || 0) * (1 - COMISION)); };
 
+  // ── Nombres en inglés (para la interfaz bilingüe) ──
+  var EN = {
+    // medios
+    'pintura':'Painting','dibujo':'Drawing','obra-grafica':'Printmaking','collage':'Collage',
+    'fotografia':'Photography','escultura':'Sculpture','ceramica':'Ceramics','textil':'Textile & fibre',
+    'objeto':'Object & assemblage','instalacion':'Installation','libro-artista':"Artist's book",
+    'video':'Video','arte-sonoro':'Sound art','performance':'Performance','arte-digital':'Digital & generative art',
+    // estilos
+    'realismo':'Realism','hiperrealismo':'Hyperrealism','figuracion-expresiva':'Expressive figuration',
+    'figuracion-onirica':'Dreamlike figuration','naif-art-brut':'Naïve & art brut',
+    'abstraccion-geometrica':'Geometric abstraction','abstraccion-gestual':'Gestural abstraction',
+    'materico-procesual':'Material & process','minimalismo':'Minimalism','conceptual':'Conceptual',
+    'documental':'Documentary','pop-apropiacion':'Pop & appropriation',
+    // temas
+    'cuerpo-carne':'Body & flesh','identidad-genero':'Identity & gender','intimidad-deseo':'Intimacy & desire',
+    'duelo-perdida':'Grief & loss','paisaje-territorio':'Landscape & territory','ecologia-clima':'Ecology & climate crisis',
+    'domestico':'The domestic','ruina-abandono':'Ruin & abandonment','memoria-archivo':'Memory & archive',
+    'tradicion-ritual':'Tradition & ritual','infancia':'Childhood','lenguaje-escritura':'Language & writing',
+    'tecnologia-vigilancia':'Technology & surveillance','trabajo-precariedad':'Work & precarity','poder-disidencia':'Power & dissent'
+  };
+  var esEN = function () { return typeof root !== 'undefined' && root.I18N && root.I18N.lang === 'en'; };
+
   // ── Helpers de búsqueda ──
   var bySlug = function (lista, slug) {
     for (var i = 0; i < lista.length; i++) if (lista[i].slug === slug) return lista[i];
     return null;
   };
-  var nombreDe = function (lista, slug) { var e = bySlug(lista, slug); return e ? e.nombre : slug; };
+  // Devuelve el nombre en el idioma activo (inglés si procede, español por defecto)
+  var nombreDe = function (lista, slug) {
+    if (esEN() && EN[slug]) return EN[slug];
+    var e = bySlug(lista, slug); return e ? e.nombre : slug;
+  };
 
   var TAX = {
-    MEDIO: MEDIO, ESTILO: ESTILO, TEMA: TEMA, TIEMPO: TIEMPO,
+    MEDIO: MEDIO, ESTILO: ESTILO, TEMA: TEMA, TIEMPO: TIEMPO, EN: EN,
     MEDIOS_TEMPORALES: MEDIOS_TEMPORALES, MEDIOS_EDICION: MEDIOS_EDICION,
     COMISION: COMISION, artistaRecibe: artistaRecibe,
     bySlug: bySlug, nombreDe: nombreDe,

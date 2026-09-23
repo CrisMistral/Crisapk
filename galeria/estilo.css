@@ -49,6 +49,12 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;letter-spacin
 .nav a:hover{color:var(--tinta)}
 .nav a.cta{background:var(--tinta);color:var(--crema)}
 .nav a.cta:hover{opacity:.85;color:var(--crema)}
+/* conmutador de idioma ES | EN */
+.lang-switch{display:inline-flex;align-items:center;gap:.15rem;margin-left:.2rem;font-size:.78rem}
+.lang-switch .lang-op{background:none;border:none;cursor:pointer;color:var(--tinta-3);padding:.3rem .3rem;font-family:inherit;font-size:.78rem;letter-spacing:.04em}
+.lang-switch .lang-op:hover{color:var(--tinta)}
+.lang-switch .lang-op.on{color:var(--tinta);font-weight:600}
+.lang-switch .lang-sep{color:var(--linea)}
 @media(max-width:600px){.nav a.hide-sm{display:none}}
 
 /* ── Botones ── */

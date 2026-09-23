@@ -9,7 +9,7 @@
   var TAX = root.TAX;
 
   // ── Formato ──
-  var euro = function (n) { return new Intl.NumberFormat('es-ES').format(n || 0) + ' €'; };
+  var euro = function (n) { return new Intl.NumberFormat(loc()).format(n || 0) + ' €'; };
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function escAttr(s){ return String(s==null?'':s).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
@@ -22,12 +22,13 @@
   var ENVIO = {'cualquier-pais':'Envío a cualquier país','solo-europa':'Envío solo a Europa','solo-espana':'Envío solo a España','solo-recogida':'Solo recogida en persona'};
   function envioTexto(e){ return ENVIO[e] || 'Consultar envío'; }
 
+  function loc(){ return (root.I18N && root.I18N.lang === 'en') ? 'en-GB' : 'es-ES'; }
   function fechaLarga(d){
-    try { return (d||new Date()).toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'}); }
+    try { return (d||new Date()).toLocaleDateString(loc(),{weekday:'long',day:'numeric',month:'long'}); }
     catch(e){ return ''; }
   }
   function fechaCorta(d){
-    try { return (d||new Date()).toLocaleDateString('es-ES',{day:'numeric',month:'short'}); }
+    try { return (d||new Date()).toLocaleDateString(loc(),{day:'numeric',month:'short'}); }
     catch(e){ return ''; }
   }
   // día epoch en la zona local (para que "hoy" cambie a medianoche local)
@@ -112,7 +113,9 @@
   // ── Compartir ──
   function compartir(o){
     var url = location.origin + location.pathname.replace(/[^/]*$/,'') + 'obra.html?id='+encodeURIComponent(o.id);
-    var datos = { title:'Artdequé — '+o.titulo, text:'«'+o.titulo+'», de '+o.artista.nombre+'. En Artdequé.', url:url };
+    var en = root.I18N && root.I18N.lang === 'en';
+    var texto = en ? ('“'+o.titulo+'” by '+o.artista.nombre+'. On Artdequé.') : ('«'+o.titulo+'», de '+o.artista.nombre+'. En Artdequé.');
+    var datos = { title:'Artdequé — '+o.titulo, text:texto, url:url };
     if(navigator.share){ return navigator.share(datos).catch(function(){}); }
     if(navigator.clipboard){ return navigator.clipboard.writeText(url).then(function(){ return 'copiado'; }).catch(function(){ return 'error'; }); }
     return Promise.resolve('nosoportado');

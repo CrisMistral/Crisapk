@@ -103,16 +103,17 @@
   <div class="inner">
     <a class="brand" href="index.html">Art<em>dequé</em></a>
     <nav class="nav">
-      <a href="index.html" class="hide-sm">Obra del día</a>
-      <a href="explorar.html" class="hide-sm">Explorar</a>
-      <a href="archivo.html" class="hide-sm">Archivo</a>
-      <a class="cta" href="subir.html">Subir una obra</a>
+      <a href="index.html" class="hide-sm" data-i18n="nav_obra_dia">Obra del día</a>
+      <a href="explorar.html" class="hide-sm" data-i18n="nav_explorar">Explorar</a>
+      <a href="archivo.html" class="hide-sm" data-i18n="nav_archivo">Archivo</a>
+      <a class="cta" href="subir.html" data-i18n="nav_subir">Subir una obra</a>
+      <span class="lang-switch" id="lang-switch"></span>
     </nav>
   </div>
 </header>
 
 <main id="root" class="obra">
-  <div class="cargando">Cargando la obra…</div>
+  <div class="cargando" data-i18n="loading_work">Cargando la obra…</div>
 </main>
 
 <div class="lightbox" id="lightbox">
@@ -125,26 +126,29 @@
   <div class="inner">
     <div class="col">
       <span class="brand">Art<em>dequé</em></span>
-      <span class="muted" style="font-size:.8rem;max-width:30ch">Una obra cada día. Arte emergente y la voz de quien lo hace.</span>
+      <span class="muted" style="font-size:.8rem;max-width:30ch" data-i18n="foot_tag">Una obra cada día. Arte emergente y la voz de quien lo hace.</span>
     </div>
     <div class="cols">
-      <div class="col"><span class="eyebrow">Explorar</span><a href="explorar.html">Todas las obras</a><a href="archivo.html">Archivo diario</a></div>
-      <div class="col"><span class="eyebrow">Artistas</span><a href="subir.html">Subir una obra</a></div>
+      <div class="col"><span class="eyebrow" data-i18n="foot_col_explorar">Explorar</span><a href="explorar.html" data-i18n="foot_todas">Todas las obras</a><a href="archivo.html" data-i18n="foot_archivo">Archivo diario</a></div>
+      <div class="col"><span class="eyebrow" data-i18n="foot_col_artistas">Artistas</span><a href="subir.html" data-i18n="foot_subir">Subir una obra</a></div>
     </div>
   </div>
 </footer>
 
 <script src="taxonomias.js"></script>
+<script src="i18n.js"></script>
 <script src="galeria.js"></script>
 <script>
 (function(){
   'use strict';
-  var euro = function(n){ return new Intl.NumberFormat('es-ES').format(n) + ' €'; };
+  var T=function(k,v){return I18N.t(k,v);};
+  var euro = function(n){ return (window.GD?GD.euro(n):(new Intl.NumberFormat('es-ES').format(n||0)+' €')); };
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function escAttr(s){ return String(s==null?'':s).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
   var qs = new URLSearchParams(location.search);
   var id = qs.get('id');
   var TODAS = [];
+  var OBRA = null;
 
   function phDe(o, cls){
     if(o.imagenes && o.imagenes.length){ return '<img loading="lazy" src="'+escAttr(o.imagenes[0])+'" alt="'+escAttr(o.titulo)+'">'; }
@@ -157,25 +161,26 @@
     var t=p.join(' × '); if(d.prof) t+=' × '+d.prof; return t+' cm';
   }
   function envioTexto(e){
-    return ({'cualquier-pais':'Envío a cualquier país','solo-europa':'Envío solo a Europa','solo-espana':'Envío solo a España','solo-recogida':'Solo recogida en persona'})[e] || 'Consultar envío';
+    return ({'cualquier-pais':T('envio_cualquier'),'solo-europa':T('envio_europa'),'solo-espana':T('envio_espana'),'solo-recogida':T('envio_recogida')})[e] || T('envio_cualquier');
   }
 
   function pintar(o){
+    OBRA=o;
     document.title = o.titulo + ' — ' + o.artista.nombre + ' · Artdequé';
     var enVenta = o.disponibilidad === 'venta' && o.estado !== 'vendida';
 
     // ── ficha técnica ──
     var filas = [];
-    filas.push(['Medio', (o.medio||[]).map(TAX.nombreMedio).join(' · ')]);
-    filas.push(['Estilo', (o.estilo||[]).map(TAX.nombreEstilo).join(' · ')]);
-    filas.push(['Materiales y soporte', o.materiales]);
-    var dim = dimTexto(o); if(dim) filas.push([o.duracion?'Duración':'Dimensiones', dim]);
-    if(o.peso) filas.push(['Peso', o.peso+' kg']);
-    filas.push(['Año', String(o.anio)]);
-    if(o.tipoObra==='edicion' && o.edicion){ filas.push(['Edición', 'Ejemplar '+o.edicion.ejemplarVenta+' de '+o.edicion.ejemplares]); }
-    else { filas.push(['Edición', 'Pieza única']); }
-    if(o.certificado) filas.push(['Certificado', 'Incluye certificado de autenticidad firmado']);
-    filas.push(['Envío', envioTexto(o.envio)]);
+    filas.push([T('f_medio'), (o.medio||[]).map(TAX.nombreMedio).join(' · ')]);
+    filas.push([T('f_estilo'), (o.estilo||[]).map(TAX.nombreEstilo).join(' · ')]);
+    filas.push([T('f_materiales'), o.materiales]);
+    var dim = dimTexto(o); if(dim) filas.push([o.duracion?T('f_duracion'):T('f_dimensiones'), dim]);
+    if(o.peso) filas.push([T('f_peso'), o.peso+' kg']);
+    filas.push([T('f_anio'), String(o.anio)]);
+    if(o.tipoObra==='edicion' && o.edicion){ filas.push([T('f_edicion'), T('v_ejemplar',{a:o.edicion.ejemplarVenta,b:o.edicion.ejemplares})]); }
+    else { filas.push([T('f_edicion'), T('v_unica')]); }
+    if(o.certificado) filas.push([T('f_certificado'), T('v_cert')]);
+    filas.push([T('f_envio'), envioTexto(o.envio)]);
     var fichaHTML = '<dl class="ficha">'+filas.filter(function(f){return f[1];}).map(function(f){
       return '<div class="fila"><dt>'+esc(f[0])+'</dt><dd>'+esc(f[1])+'</dd></div>';
     }).join('')+'</dl>';
@@ -188,20 +193,20 @@
     // ── narrativa ──
     var n = o.narrativa || {};
     var bloques = '';
-    if(n.deQueTrata) bloques += '<div class="bloque"><h3>¿De qué trata?</h3><p>'+esc(n.deQueTrata)+'</p></div>';
-    if(n.deDondeViene) bloques += '<div class="bloque"><h3>¿De dónde viene?</h3><p>'+esc(n.deDondeViene)+'</p></div>';
-    if(n.comoSeHizo) bloques += '<div class="bloque"><h3>Cómo se hizo</h3><p>'+esc(n.comoSeHizo)+'</p></div>';
-    if(n.porQueTitulo) bloques += '<div class="bloque"><h3>Sobre el título</h3><p>'+esc(n.porQueTitulo)+'</p></div>';
+    if(n.deQueTrata) bloques += '<div class="bloque"><h3>'+T('n_trata')+'</h3><p>'+esc(n.deQueTrata)+'</p></div>';
+    if(n.deDondeViene) bloques += '<div class="bloque"><h3>'+T('n_viene')+'</h3><p>'+esc(n.deDondeViene)+'</p></div>';
+    if(n.comoSeHizo) bloques += '<div class="bloque"><h3>'+T('n_hizo')+'</h3><p>'+esc(n.comoSeHizo)+'</p></div>';
+    if(n.porQueTitulo) bloques += '<div class="bloque"><h3>'+T('n_titulo')+'</h3><p>'+esc(n.porQueTitulo)+'</p></div>';
 
     // ── panel de compra ──
-    var dispTexto = enVenta ? 'Disponible' : (o.disponibilidad==='reservada' ? 'Reservada' : 'No disponible');
+    var dispTexto = enVenta ? T('available') : (o.disponibilidad==='reservada' ? T('reserved') : T('unavailable'));
     var botones;
     if(enVenta){
       botones =
-        '<button class="btn btn-dark" id="btn-comprar">Comprar</button>'+
-        '<a class="btn btn-line" href="#artista">Contactar al artista</a>';
+        '<button class="btn btn-dark" id="btn-comprar">'+T('buy')+'</button>'+
+        '<a class="btn btn-line" href="#artista">'+T('contact_artist')+'</a>';
     } else {
-      botones = '<a class="btn btn-line" href="#artista">Contactar al artista</a>';
+      botones = '<a class="btn btn-line" href="#artista">'+T('contact_artist')+'</a>';
     }
 
     // ── artista ──
@@ -209,7 +214,7 @@
     var enlaces = [];
     if(a.instagram) enlaces.push('<a href="https://instagram.com/'+escAttr(a.instagram.replace(/^@/,''))+'" target="_blank" rel="noopener">Instagram</a>');
     if(a.web) enlaces.push('<a href="'+escAttr(a.web)+'" target="_blank" rel="noopener">Web</a>');
-    var afinidades = (a.afinidades&&a.afinidades.length) ? '<div class="form">En diálogo con '+esc(a.afinidades.join(', '))+'.</div>' : '';
+    var afinidades = (a.afinidades&&a.afinidades.length) ? '<div class="form">'+T('in_dialogue',{list:esc(a.afinidades.join(', '))})+'</div>' : '';
 
     // ── relacionadas: mismo artista, si no hay, mismo medio ──
     var rel = TODAS.filter(function(x){ return x.id!==o.id && x.estado!=='borrador' && x.artista.slug===a.slug; });
@@ -220,17 +225,17 @@
     rel = rel.slice(0,4);
     var relHTML = rel.length ? (
       '<section class="relacionadas">'+
-        '<div class="sec-head"><h2>'+(rel[0] && rel[0].artista.slug===a.slug ? 'Más de '+esc(a.nombre) : 'También te puede interesar')+'</h2></div>'+
+        '<div class="sec-head"><h2>'+(rel[0] && rel[0].artista.slug===a.slug ? T('related_more_of',{name:esc(a.nombre)}) : T('related_interest'))+'</h2></div>'+
         '<div class="grid">'+rel.map(cardMini).join('')+'</div>'+
       '</section>'
     ) : '';
 
     var root = document.getElementById('root');
     root.innerHTML =
-      '<nav class="migas"><a href="index.html">Artdequé</a> · <a href="explorar.html">Explorar</a> · '+esc(o.titulo)+'</nav>'+
+      '<nav class="migas"><a href="index.html">Artdequé</a> · <a href="explorar.html">'+T('crumb_explore')+'</a> · '+esc(o.titulo)+'</nav>'+
       '<div class="obra-grid">'+
         '<div class="visual">'+
-          '<div class="principal" id="principal" title="Ampliar">'+phDe(o)+'</div>'+
+          '<div class="principal" id="principal" title="'+T('enlarge')+'">'+phDe(o)+'</div>'+
         '</div>'+
         '<div class="panel">'+
           '<p class="eyebrow">'+(o.medio||[]).map(TAX.nombreMedio).join(' · ')+'</p>'+
@@ -240,8 +245,8 @@
           '<div class="comprar-fila" id="comprar">'+botones+'</div>'+
           '<p class="pago-msg" id="pago-msg"></p>'+
           '<div class="acciones" style="display:flex;gap:.6rem;margin:-.2rem 0 1.4rem">'+
-            '<button class="icono solo" id="fav" aria-label="Guardar en favoritos" title="Guardar">'+svgCorazon()+'</button>'+
-            '<button class="icono" id="share" aria-label="Compartir">'+svgShare()+'Compartir</button>'+
+            '<button class="icono solo" id="fav" aria-label="'+T('save')+'" title="'+T('save')+'">'+svgCorazon()+'</button>'+
+            '<button class="icono" id="share" aria-label="'+T('share')+'">'+svgShare()+T('share')+'</button>'+
           '</div>'+
           (chips?'<div class="chips">'+chips+'</div>':'')+
           fichaHTML+
@@ -251,7 +256,7 @@
       '<section class="artista-caja" id="artista">'+
         '<div class="retrato">'+(a.retrato?'<img src="'+escAttr(a.retrato)+'" alt="'+escAttr(a.nombre)+'">':'<div class="ph" style="background:'+(o.gradiente||'var(--crema-2)')+'"></div>')+'</div>'+
         '<div>'+
-          '<p class="eyebrow">El artista</p>'+
+          '<p class="eyebrow">'+T('the_artist')+'</p>'+
           '<h3>'+esc(a.nombre)+'</h3>'+
           '<p class="bio">'+esc(a.bio)+'</p>'+
           (a.formacion?'<div class="form">'+esc(a.formacion)+'</div>':'')+
@@ -267,8 +272,8 @@
     var fav = document.getElementById('fav');
     if(window.GD && fav){
       if(GD.esFav(o.id)) fav.classList.add('fav');
-      fav.addEventListener('click', function(){ var ahora=GD.favToggle(o.id); fav.classList.toggle('fav',ahora); toast(ahora?'Guardada en favoritos':'Quitada de favoritos'); });
-      document.getElementById('share').addEventListener('click', function(){ GD.compartir(o).then(function(r){ if(r==='copiado') toast('Enlace copiado'); }); });
+      fav.addEventListener('click', function(){ var ahora=GD.favToggle(o.id); fav.classList.toggle('fav',ahora); toast(ahora?T('saved'):T('unsaved')); });
+      document.getElementById('share').addEventListener('click', function(){ GD.compartir(o).then(function(r){ if(r==='copiado') toast(T('link_copied')); }); });
     }
     // compra
     if(enVenta){
@@ -307,7 +312,7 @@
   // ── Checkout: reutiliza la función Netlify existente /api/create-checkout ──
   function comprar(o, btn){
     var msg = document.getElementById('pago-msg');
-    btn.disabled = true; btn.textContent = 'Redirigiendo a pago seguro…'; msg.className='pago-msg'; msg.textContent='';
+    btn.disabled = true; btn.textContent = T('pay_go'); msg.className='pago-msg'; msg.textContent='';
     var variante = o.artista.nombre + ' · ' + (dimTexto(o) || (o.medio||[]).map(TAX.nombreMedio).join(', '));
     fetch('/api/create-checkout', {
       method:'POST',
@@ -320,28 +325,29 @@
       else { throw new Error(res.j.error || 'No se pudo iniciar el pago'); }
     })
     .catch(function(err){
-      btn.disabled=false; btn.textContent='Comprar';
+      btn.disabled=false; btn.textContent=T('buy');
       msg.className='pago-msg err';
-      msg.textContent = 'No se pudo iniciar el pago. '+(String(err.message).indexOf('Failed to fetch')>-1 ? 'El pago requiere el entorno publicado (Netlify + Stripe).' : err.message);
+      msg.textContent = T('pay_fail')+(String(err.message).indexOf('Failed to fetch')>-1 ? T('pay_env') : err.message);
     });
   }
 
   function noEncontrada(){
     document.getElementById('root').innerHTML =
-      '<div class="cargando"><h2 class="serif" style="font-size:1.6rem;margin-bottom:.5rem">No encontramos esta obra</h2>'+
-      '<p>Quizá se ha vendido o el enlace no es correcto.</p>'+
-      '<p style="margin-top:1.4rem"><a class="btn btn-line" href="index.html">Volver a la galería</a></p></div>';
+      '<div class="cargando"><h2 class="serif" style="font-size:1.6rem;margin-bottom:.5rem">'+T('notfound_h')+'</h2>'+
+      '<p>'+T('notfound_p')+'</p>'+
+      '<p style="margin-top:1.4rem"><a class="btn btn-line" href="index.html">'+T('back_gallery')+'</a></p></div>';
   }
 
-  fetch('obras.json', {cache:'no-store'})
-    .then(function(r){ return r.json(); })
+  GD.cargarObras()
     .then(function(data){
-      var locales=[]; try{ locales = JSON.parse(localStorage.getItem('gd_obras_locales')||'[]'); }catch(e){}
-      TODAS = locales.concat(data);
+      TODAS = data;
       var o = TODAS.filter(function(x){ return x.id===id || x.slug===id; })[0];
       if(o) pintar(o); else noEncontrada();
     })
     .catch(noEncontrada);
+
+  // Cambiar idioma → repintar la ficha en el nuevo idioma
+  document.addEventListener('i18n:change',function(){ if(OBRA) pintar(OBRA); });
 })();
 </script>
 </body>

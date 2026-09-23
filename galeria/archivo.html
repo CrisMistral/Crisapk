@@ -28,17 +28,18 @@
   <div class="inner">
     <a class="brand" href="index.html">Art<em>dequé</em></a>
     <nav class="nav">
-      <a href="index.html" class="hide-sm">Obra del día</a>
-      <a href="explorar.html" class="hide-sm">Explorar</a>
-      <a class="cta" href="subir.html">Subir una obra</a>
+      <a href="index.html" class="hide-sm" data-i18n="nav_obra_dia">Obra del día</a>
+      <a href="explorar.html" class="hide-sm" data-i18n="nav_explorar">Explorar</a>
+      <a class="cta" href="subir.html" data-i18n="nav_subir">Subir una obra</a>
+      <span class="lang-switch" id="lang-switch"></span>
     </nav>
   </div>
 </header>
 
 <div class="archivo-cab">
-  <p class="eyebrow">El archivo</p>
-  <h1>Cada día, una obra</h1>
-  <p class="sub">Todas las que han pasado por la portada. Cada mañana elegimos una; aquí se quedan.</p>
+  <p class="eyebrow" data-i18n="archive_eyebrow">El archivo</p>
+  <h1 data-i18n="archive_h">Cada día, una obra</h1>
+  <p class="sub" data-i18n="archive_sub">Todas las que han pasado por la portada. Cada mañana elegimos una; aquí se quedan.</p>
 </div>
 
 <main class="wrap section" style="padding-top:1.5rem">
@@ -47,32 +48,36 @@
 
 <footer class="site-footer">
   <div class="inner">
-    <div class="col"><span class="brand">Art<em>dequé</em></span><span class="muted" style="font-size:.8rem;max-width:30ch">Una obra cada día. Arte emergente y la voz de quien lo hace.</span></div>
+    <div class="col"><span class="brand">Art<em>dequé</em></span><span class="muted" style="font-size:.8rem;max-width:30ch" data-i18n="foot_tag">Una obra cada día. Arte emergente y la voz de quien lo hace.</span></div>
     <div class="cols">
-      <div class="col"><span class="eyebrow">Explorar</span><a href="index.html">Obra del día</a><a href="explorar.html">Todas las obras</a></div>
-      <div class="col"><span class="eyebrow">Artistas</span><a href="subir.html">Subir una obra</a></div>
+      <div class="col"><span class="eyebrow" data-i18n="foot_col_explorar">Explorar</span><a href="index.html" data-i18n="foot_obra_dia">Obra del día</a><a href="explorar.html" data-i18n="foot_todas">Todas las obras</a></div>
+      <div class="col"><span class="eyebrow" data-i18n="foot_col_artistas">Artistas</span><a href="subir.html" data-i18n="foot_subir">Subir una obra</a></div>
     </div>
   </div>
 </footer>
 
 <script src="taxonomias.js"></script>
+<script src="i18n.js"></script>
 <script src="galeria.js"></script>
 <script>
 (function(){
   'use strict';
   var $=function(id){return document.getElementById(id);};
+  var T=function(k,v){return I18N.t(k,v);};
   var DIAS=30; // últimos 30 días de portada
+  var TODAS=[];
 
   function pintar(todas){
+    TODAS=todas||TODAS;
     var hoy=GD.epochDay();
     var out=[];
     var i;
     for(i=0;i<DIAS;i++){
       var dia=hoy-i;
-      var o=GD.obraDelDiaPara(dia,todas);
+      var o=GD.obraDelDiaPara(dia,TODAS);
       if(!o) continue;
       var fecha=new Date(dia*86400000);
-      var etq=(i===0?'Hoy':(i===1?'Ayer':GD.fechaCorta(fecha)));
+      var etq=(i===0?T('today'):(i===1?T('yesterday'):GD.fechaCorta(fecha)));
       out.push(
         '<a class="dia'+(i===0?' hoy':'')+'" href="obra.html?id='+encodeURIComponent(o.id)+'">'+
           GD.thumbHTML(o)+
@@ -81,12 +86,14 @@
         '</a>'
       );
     }
-    $('grid').innerHTML=out.join('') || '<p class="muted">Todavía no hay obras en el archivo.</p>';
+    $('grid').innerHTML=out.join('') || '<p class="muted">'+T('archive_empty')+'</p>';
   }
 
   GD.cargarObras().then(pintar).catch(function(){
-    $('grid').innerHTML='<p class="muted">No se pudo cargar el archivo.</p>';
+    $('grid').innerHTML='<p class="muted">'+T('archive_empty')+'</p>';
   });
+
+  document.addEventListener('i18n:change',function(){ pintar(); });
 })();
 </script>
 </body>
