@@ -269,6 +269,7 @@ function tapSeat(i){
   const ns=document.getElementById('seats').children[i];if(ns){ns.classList.add('pop');setTimeout(()=>ns.classList.remove('pop'),300);}
 }
 function checkCase(){
+  if(!cur||!placement.length)return; // aún no hay caso en juego (pantalla de selección)
   if(placement.some(p=>!p)){document.getElementById('msg').textContent=t('fillall');beep(400,.1);return;}
   const ok=placement.every((p,i)=>p===cur.sol[i]);
   if(!ok){

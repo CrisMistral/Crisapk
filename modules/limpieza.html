@@ -672,6 +672,7 @@ function renderQueue(){
 
 // ── Session controls ───────────────────────────────────
 function sessStart(){
+  if(!S||!S.tasks||!S.tasks.length)return; // sin sesión activa aún
   if(S.interval)clearInterval(S.interval);
   S.paused=false;
   S.interval=setInterval(tick,1000);
