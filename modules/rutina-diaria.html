@@ -245,7 +245,7 @@ textarea.tool-field{min-height:74px;resize:vertical}
     <div class="wgroup">
       <div class="wg-label" data-i18n="g2">🎯 Quiero mantener el foco</div>
       <button class="wrow" data-sub="doble" onclick="openTool('doble')"><span class="we">👥</span><span class="wi"><b data-i18n="w_dob_t">Doble de cuerpo</b><i data-i18n="w_dob_s">trabajo acompañado, con avisos cada 10 min</i></span></button>
-      <button class="wrow" data-sub="dopamina" onclick="openTool('dopamina')"><span class="we">🍽️</span><span class="wi"><b data-i18n="w_dop_t">Menú de dopamina</b><i data-i18n="w_dop_s">elige un plato y mantén el cerebro enganchado</i></span></button>
+      <button class="wrow" data-sub="dopamina" onclick="openTool('dopamina')"><span class="we">🧲</span><span class="wi"><b data-i18n="w_dop_t">Menú de dopamina</b><i data-i18n="w_dop_s">elige un plato y mantén el cerebro enganchado</i></span></button>
     </div>
 
     <div class="wgroup">
@@ -293,16 +293,16 @@ const UI={
    tri_C_t:'Sin chispa',tri_C_s:'me aburre o no me engancho',tri_D_t:'En transición',tri_D_s:'vengo de otra cosa o no sé por dónde',
    tri_E_t:'Estoy bien',tri_E_s:'solo quiero ponerme',
    trA_t:'No consigo empezar',trA_d:'¿Qué te frena más?',trA_1t:'Es enorme y no sé por dónde',trA_1s:'la partimos en un paso de 1 minuto',trA_2t:'Es aburrida y no me apetece',trA_2s:'la convertimos en misión',
-   trC_t:'Sin chispa',trC_d:'¿Qué te apetece más?',trC_1t:'Convertirlo en un juego',trC_1s:'con algo que te gusta',trC_2t:'Elegir algo con chispa',trC_2s:'del menú de dopamina',trC_3t:'Que alguien trabaje a tu lado',trC_3s:'doble de cuerpo',
-   trD_t:'En transición',trD_d:'¿Qué necesitas?',trD_1t:'Limpiar la cabeza para cambiar',trD_1s:'3 minutos de transición',trD_2t:'Saber cuánto me va a llevar',trD_2s:'auditor del tiempo',
+   trC_t:'Sin chispa',trC_d:'¿Qué te apetece más?',trC_1t:'Convertirlo en un juego',trC_1s:'con algo que te gusta',trC_2t:'Elegir algo con chispa',trC_2s:'una tarea con enganche',trC_3t:'Que alguien trabaje a tu lado',trC_3s:'trabajo acompañado',
+   trD_t:'En transición',trD_d:'¿Qué necesitas?',trD_1t:'Limpiar la cabeza para cambiar',trD_1s:'3 minutos de transición',trD_2t:'Saber cuánto me va a llevar',trD_2s:'cálculo realista de tiempo',
    foco_t:'Empezar con temporizador',foco_d:'Una sesión de foco. Elige cuánto y a por ello — sin bloques ni configuración.',foco_q:'¿Cuánto rato?',foco_run:'Estoy llevando el tiempo. Tú a lo tuyo.',foco_stop:'Parar',
    par_t:'Salir del bloqueo paso a paso',par_d:'Cuando miras la tarea y no puedes empezar. La partimos en un paso ridículamente pequeño.',par_l1:'¿Qué tarea te tiene atascada?',par_p1:'Ej: escribir el informe',par_l2:'El primer paso RIDÍCULO (menos de 1 minuto)',par_p2:'Ej: abrir el documento y escribir el título',par_l3:'¿Dónde pones las manos AHORA mismo?',par_p3:'Ej: en el teclado / en el boli',par_go:'▶ Hacer solo ese paso (1 min)',par_going:'⏳ Solo este paso...',par_done:'✓ ¡Empezaste! Otra vez',
-   dop_t:'Elegir una tarea que enganche',dop_d:'Elige un plato para mantener el cerebro enganchado. Tócalo y empieza.',dop_l1:'🥗 Aperitivos · 5 min (movimiento rápido)',dop_l2:'🍲 Platos principales · 20 min (trabajo profundo)',dop_l3:'🍮 Acompañamientos · 10 min (juego creativo)',
+   dop_t:'Elegir una tarea que enganche',dop_d:'Elige algo concreto y ponte con ello ahora. Tócalo y empieza.',dop_l1:'⚡ Rápidas · 5 min (para arrancar moviéndote)',dop_l2:'🎯 De fondo · 20 min (trabajo profundo)',dop_l3:'🎨 Creativas · 10 min (algo ligero)',
    dob_t:'Trabajar acompañada',dob_d:'Trabajo acompañado. 30 minutos con un aviso cada 10 para mantener el enfoque anclado.',dob_l:'¿En qué vas a trabajar?',dob_p:'Escríbelo para no perderte',dob_go:'▶ Empezar sesión acompañada',dob_going:'⏳ En marcha — estoy contigo',dob_done:'✓ ¡Sesión completa!',
    ctx_t:'Cambiar de tarea',ctx_d:'Un limpiador de paladar mental de 3 minutos para pasar de una tarea a otra.',ctx_go:'▶ Empezar transición (3 min)',ctx_end:'✨ Listo. Ya puedes empezar la nueva tarea con la mente despejada.',
-   int_t:'Convertir la tarea en un juego',int_d:'Gamifica una tarea aburrida conectándola con lo que te fascina ahora.',int_l1:'Tarea aburrida',int_p1:'Ej: ordenar los correos',int_l2:'Tu hiperfijación / interés de ahora',int_p2:'Ej: una serie, un juego, un tema',int_l3:'Recompensa al terminar',int_p3:'Ej: un capítulo, un café rico',int_go:'Crear misión',
+   int_t:'Convertir la tarea en un juego',int_d:'Convierte una tarea aburrida en un juego uniéndola a algo que te encanta ahora.',int_l1:'Tarea aburrida',int_p1:'Ej: ordenar los correos',int_l2:'Tu hiperfijación / interés de ahora',int_p2:'Ej: una serie, un juego, un tema',int_l3:'Recompensa al terminar',int_p3:'Ej: un capítulo, un café rico',int_go:'Crear misión',
    mis_label:'🎯 MISIÓN:',mis_mid:'Mientras la haces, conéctala con',mis_unlock:'🏆 Al terminar desbloqueas:',mis_go:'▶ Empezar misión (20 min)',
-   tim_t:'Calcular cuánto me llevará',tim_d:'Contra la ceguera del tiempo: suma las subtareas ocultas que siempre olvidamos.',tim_l1:'¿Qué proyecto?',tim_p1:'Ej: preparar la presentación',tim_l2:'Tu estimación optimista (min)',tim_l3:'Subtareas ocultas que solemos olvidar',tim_a:'🏁 Preparación y arranque',tim_b:'🔀 Interrupciones y cambios',tim_c:'✅ Revisión y cierre',tim_real:'Tiempo realista',
+   tim_t:'Calcular cuánto me llevará',tim_d:'Solemos calcular de menos. Suma los pasos ocultos que casi siempre olvidamos y verás el tiempo real.',tim_l1:'¿Qué proyecto?',tim_p1:'Ej: preparar la presentación',tim_l2:'Tu estimación optimista (min)',tim_l3:'Subtareas ocultas que solemos olvidar',tim_a:'🏁 Preparación y arranque',tim_b:'🔀 Interrupciones y cambios',tim_c:'✅ Revisión y cierre',tim_real:'Tiempo realista',
    vol_t:'Vaciar la cabeza en una lista',vol_d:'Saca todos los bucles abiertos y clasifícalos. Deja de cargarlos en la cabeza.',vol_p:'Escribe algo que te ronda...',vol_empty:'Vacía aquí todo lo que te ronde. Luego lo clasificas.',vol_now:'Ahora',vol_later:'Luego',vol_up:'↑ Ahora',vol_to_later:'→ Luego',vol_step_p:'Siguiente paso en 1 frase...',
    dop_ap:['Estiramientos','Bailar 1 canción','20 saltos','Caminar','Agua fría en la cara'],dop_pr:['Trabajo profundo en tu tarea','Estudiar','Escribir','Ordenar un espacio'],dop_ac:['Dibujar o garabatear','Puzzle de gemas','Tocar/escuchar música','Escribir libre'],
    v_foco:'{m} minutos de foco. Empieza ahora, yo llevo el tiempo.',v_foco_half:'Vas por la mitad. Sigue, lo estás haciendo bien.',v_foco_end:'¡Se acabó el tiempo! Buen trabajo. Tómate un respiro.',
@@ -328,16 +328,16 @@ const UI={
    tri_C_t:'No spark',tri_C_s:'it bores me or I can’t get hooked',tri_D_t:'In transition',tri_D_s:'coming from something else or not sure where to start',
    tri_E_t:'I’m okay',tri_E_s:'I just want to get going',
    trA_t:'I can’t get started',trA_d:'What holds you back most?',trA_1t:'It’s huge and I don’t know where to start',trA_1s:'we split it into a 1-minute step',trA_2t:'It’s boring and I don’t feel like it',trA_2s:'we turn it into a mission',
-   trC_t:'No spark',trC_d:'What appeals most?',trC_1t:'Turn it into a game',trC_1s:'with something you like',trC_2t:'Pick something with spark',trC_2s:'from the dopamine menu',trC_3t:'Have someone work beside you',trC_3s:'body double',
-   trD_t:'In transition',trD_d:'What do you need?',trD_1t:'Clear my head to switch',trD_1s:'3 minutes of transition',trD_2t:'Know how long it’ll take',trD_2s:'time auditor',
+   trC_t:'No spark',trC_d:'What appeals most?',trC_1t:'Turn it into a game',trC_1s:'with something you like',trC_2t:'Pick something with spark',trC_2s:'a task with a hook',trC_3t:'Have someone work beside you',trC_3s:'work alongside someone',
+   trD_t:'In transition',trD_d:'What do you need?',trD_1t:'Clear my head to switch',trD_1s:'3 minutes of transition',trD_2t:'Know how long it’ll take',trD_2s:'a realistic time estimate',
    foco_t:'Start with a timer',foco_d:'A focus session. Choose how long and go — no blocks, no setup.',foco_q:'How long?',foco_run:'I’m keeping the time. You do your thing.',foco_stop:'Stop',
    par_t:'Get unstuck step by step',par_d:'For when you stare at the task and can’t begin. We split it into a ridiculously small step.',par_l1:'Which task has you stuck?',par_p1:'e.g. write the report',par_l2:'The RIDICULOUS first step (under 1 minute)',par_p2:'e.g. open the document and write the title',par_l3:'Where do you put your hands RIGHT now?',par_p3:'e.g. on the keyboard / on the pen',par_go:'▶ Do just that step (1 min)',par_going:'⏳ Just this step...',par_done:'✓ You started! Again',
-   dop_t:'Pick a task that hooks you',dop_d:'Pick a dish based on your energy. Each is a different way to get going.',dop_l1:'🥗 Starters · 5 min (quick movement)',dop_l2:'🍲 Mains · 20 min (deep work)',dop_l3:'🍮 Sides · 10 min (creative play)',
+   dop_t:'Pick a task that hooks you',dop_d:'Pick something concrete and start on it now. Tap it and go.',dop_l1:'⚡ Quick · 5 min (get moving)',dop_l2:'🎯 Deep · 20 min (deep work)',dop_l3:'🎨 Creative · 10 min (something light)',
    dob_t:'Work with company',dob_d:'Working with company gets more done. I’m with you and I’ll nudge you every ten minutes.',dob_l:'What will you work on?',dob_p:'Write it so you don’t lose track',dob_go:'▶ Start a session together',dob_going:'⏳ In progress — I’m with you',dob_done:'✓ Session complete!',
    ctx_t:'Switch tasks',ctx_d:'Three minutes to close one task and open your mind to the next.',ctx_go:'▶ Start transition (3 min)',ctx_end:'✨ Done. You can start the new task with a clear mind.',
-   int_t:'Turn the task into a game',int_d:'Gamify a boring task by hooking it to something you love.',int_l1:'Boring task',int_p1:'e.g. sort the emails',int_l2:'Your current hyperfocus / interest',int_p2:'e.g. a show, a game, a topic',int_l3:'Reward when done',int_p3:'e.g. an episode, a nice coffee',int_go:'Create mission',
+   int_t:'Turn the task into a game',int_d:'Turn a boring task into a game by hooking it to something you love.',int_l1:'Boring task',int_p1:'e.g. sort the emails',int_l2:'Your current hyperfocus / interest',int_p2:'e.g. a show, a game, a topic',int_l3:'Reward when done',int_p3:'e.g. an episode, a nice coffee',int_go:'Create mission',
    mis_label:'🎯 MISSION:',mis_mid:'While you do it, connect it with',mis_unlock:'🏆 When you finish you unlock:',mis_go:'▶ Start mission (20 min)',
-   tim_t:'Estimate how long it’ll take',tim_d:'Against time blindness: add up the hidden subtasks we always forget.',tim_l1:'Which project?',tim_p1:'e.g. prepare the presentation',tim_l2:'Your optimistic estimate (min)',tim_l3:'Hidden subtasks we tend to forget',tim_a:'🏁 Prep and start-up',tim_b:'🔀 Interruptions and switches',tim_c:'✅ Review and wrap-up',tim_real:'Realistic time',
+   tim_t:'Estimate how long it’ll take',tim_d:'We usually underestimate. Add the hidden steps we almost always forget and see the real time.',tim_l1:'Which project?',tim_p1:'e.g. prepare the presentation',tim_l2:'Your optimistic estimate (min)',tim_l3:'Hidden subtasks we tend to forget',tim_a:'🏁 Prep and start-up',tim_b:'🔀 Interruptions and switches',tim_c:'✅ Review and wrap-up',tim_real:'Realistic time',
    vol_t:'Empty your head into a list',vol_d:'Get all the open loops out and sort them. Stop carrying them in your head.',vol_p:'Write something on your mind...',vol_empty:'Dump everything on your mind here. You’ll sort it after.',vol_now:'Now',vol_later:'Later',vol_up:'↑ Now',vol_to_later:'→ Later',vol_step_p:'Next step in one sentence...',
    dop_ap:['Stretches','Dance to 1 song','20 jumps','Take a walk','Cold water on your face'],dop_pr:['Deep work on your task','Study','Write','Tidy a space'],dop_ac:['Draw or doodle','Gem puzzle','Play/listen to music','Free writing'],
    v_foco:'{m} minutes of focus. Start now, I’ll keep the time.',v_foco_half:'You’re halfway. Keep going, you’re doing great.',v_foco_end:'Time’s up! Good work. Take a breather.',
@@ -363,16 +363,16 @@ const UI={
    tri_C_t:'Sans étincelle',tri_C_s:'ça m’ennuie ou je n’accroche pas',tri_D_t:'En transition',tri_D_s:'je viens d’autre chose ou je ne sais pas par où',
    tri_E_t:'Ça va',tri_E_s:'je veux juste m’y mettre',
    trA_t:'Je n’arrive pas à commencer',trA_d:'Qu’est-ce qui te freine le plus ?',trA_1t:'C’est énorme et je ne sais pas par où',trA_1s:'on la découpe en une étape d’1 minute',trA_2t:'C’est ennuyeux et je n’en ai pas envie',trA_2s:'on en fait une mission',
-   trC_t:'Sans étincelle',trC_d:'Qu’est-ce qui te tente le plus ?',trC_1t:'En faire un jeu',trC_1s:'avec ce que tu aimes',trC_2t:'Choisir quelque chose de pétillant',trC_2s:'dans le menu dopamine',trC_3t:'Que quelqu’un travaille à côté de toi',trC_3s:'double de corps',
-   trD_t:'En transition',trD_d:'De quoi as-tu besoin ?',trD_1t:'Me vider la tête pour changer',trD_1s:'3 minutes de transition',trD_2t:'Savoir combien de temps ça va prendre',trD_2s:'auditeur du temps',
+   trC_t:'Sans étincelle',trC_d:'Qu’est-ce qui te tente le plus ?',trC_1t:'En faire un jeu',trC_1s:'avec ce que tu aimes',trC_2t:'Choisir quelque chose de pétillant',trC_2s:'une tâche qui accroche',trC_3t:'Que quelqu’un travaille à côté de toi',trC_3s:'travailler accompagné·e',
+   trD_t:'En transition',trD_d:'De quoi as-tu besoin ?',trD_1t:'Me vider la tête pour changer',trD_1s:'3 minutes de transition',trD_2t:'Savoir combien de temps ça va prendre',trD_2s:'une estimation réaliste du temps',
    foco_t:'Démarrer avec un minuteur',foco_d:'Une session de concentration. Choisis la durée et vas-y — sans blocs ni réglages.',foco_q:'Combien de temps ?',foco_run:'Je gère le temps. Toi, occupe-toi de ta tâche.',foco_stop:'Arrêter',
    par_t:'Sortir du blocage pas à pas',par_d:'Quand tu fixes la tâche sans pouvoir commencer. On la découpe en une étape minuscule.',par_l1:'Quelle tâche te bloque ?',par_p1:'Ex : écrire le rapport',par_l2:'La première étape RIDICULE (moins d’1 minute)',par_p2:'Ex : ouvrir le document et écrire le titre',par_l3:'Où poses-tu les mains MAINTENANT ?',par_p3:'Ex : sur le clavier / sur le stylo',par_go:'▶ Faire juste cette étape (1 min)',par_going:'⏳ Juste cette étape...',par_done:'✓ Tu as commencé ! Encore',
-   dop_t:'Choisir une tâche qui accroche',dop_d:'Choisis un plat selon ton énergie. Chacun est une façon différente de démarrer.',dop_l1:'🥗 Entrées · 5 min (mouvement rapide)',dop_l2:'🍲 Plats principaux · 20 min (travail profond)',dop_l3:'🍮 Accompagnements · 10 min (jeu créatif)',
+   dop_t:'Choisir une tâche qui accroche',dop_d:'Choisis quelque chose de concret et mets-toi-y maintenant. Touche et c’est parti.',dop_l1:'⚡ Rapides · 5 min (pour démarrer en bougeant)',dop_l2:'🎯 De fond · 20 min (travail profond)',dop_l3:'🎨 Créatives · 10 min (quelque chose de léger)',
    dob_t:'Travailler accompagné·e',dob_d:'Travailler accompagnée rend plus efficace. Je suis avec toi et je te préviens toutes les dix minutes.',dob_l:'Sur quoi vas-tu travailler ?',dob_p:'Écris-le pour ne pas te perdre',dob_go:'▶ Commencer une session accompagnée',dob_going:'⏳ En cours — je suis avec toi',dob_done:'✓ Session terminée !',
    ctx_t:'Changer de tâche',ctx_d:'Trois minutes pour clore une tâche et ouvrir l’esprit à la suivante.',ctx_go:'▶ Commencer la transition (3 min)',ctx_end:'✨ Voilà. Tu peux commencer la nouvelle tâche l’esprit clair.',
-   int_t:'Transformer la tâche en jeu',int_d:'Gamifie une tâche ennuyeuse en la reliant à ce que tu adores.',int_l1:'Tâche ennuyeuse',int_p1:'Ex : trier les e-mails',int_l2:'Ton hyperfocus / intérêt du moment',int_p2:'Ex : une série, un jeu, un sujet',int_l3:'Récompense à la fin',int_p3:'Ex : un épisode, un bon café',int_go:'Créer la mission',
+   int_t:'Transformer la tâche en jeu',int_d:'Transforme une tâche ennuyeuse en jeu en la reliant à ce que tu adores.',int_l1:'Tâche ennuyeuse',int_p1:'Ex : trier les e-mails',int_l2:'Ton hyperfocus / intérêt du moment',int_p2:'Ex : une série, un jeu, un sujet',int_l3:'Récompense à la fin',int_p3:'Ex : un épisode, un bon café',int_go:'Créer la mission',
    mis_label:'🎯 MISSION :',mis_mid:'Pendant que tu la fais, relie-la à',mis_unlock:'🏆 En finissant tu débloques :',mis_go:'▶ Commencer la mission (20 min)',
-   tim_t:'Estimer le temps que ça prendra',tim_d:'Contre la cécité du temps : additionne les sous-tâches cachées qu’on oublie toujours.',tim_l1:'Quel projet ?',tim_p1:'Ex : préparer la présentation',tim_l2:'Ton estimation optimiste (min)',tim_l3:'Sous-tâches cachées qu’on oublie souvent',tim_a:'🏁 Préparation et démarrage',tim_b:'🔀 Interruptions et changements',tim_c:'✅ Révision et clôture',tim_real:'Temps réaliste',
+   tim_t:'Estimer le temps que ça prendra',tim_d:'On sous-estime souvent. Ajoute les étapes cachées qu’on oublie presque toujours et vois le temps réel.',tim_l1:'Quel projet ?',tim_p1:'Ex : préparer la présentation',tim_l2:'Ton estimation optimiste (min)',tim_l3:'Sous-tâches cachées qu’on oublie souvent',tim_a:'🏁 Préparation et démarrage',tim_b:'🔀 Interruptions et changements',tim_c:'✅ Révision et clôture',tim_real:'Temps réaliste',
    vol_t:'Vider la tête dans une liste',vol_d:'Sors toutes les boucles ouvertes et classe-les. Arrête de les porter dans ta tête.',vol_p:'Écris quelque chose qui te trotte...',vol_empty:'Vide ici tout ce qui te trotte. Tu classeras après.',vol_now:'Maintenant',vol_later:'Plus tard',vol_up:'↑ Maintenant',vol_to_later:'→ Plus tard',vol_step_p:'Prochaine étape en une phrase...',
    dop_ap:['Étirements','Danser 1 chanson','20 sauts','Marcher','Eau froide sur le visage'],dop_pr:['Travail profond sur ta tâche','Étudier','Écrire','Ranger un espace'],dop_ac:['Dessiner ou gribouiller','Puzzle de gemmes','Jouer/écouter de la musique','Écriture libre'],
    v_foco:'{m} minutes de concentration. Commence maintenant, je gère le temps.',v_foco_half:'Tu es à la moitié. Continue, tu t’en sors très bien.',v_foco_end:'Le temps est écoulé ! Beau travail. Prends une pause.',
@@ -464,7 +464,7 @@ function applyStaticI18n(){document.documentElement.lang=crisLang();document.que
       <div style="font-size:.76rem;color:#889;margin-top:10px;text-align:center">No tienes que hacer la tarea. Solo ese paso. Solo un minuto.</div>`,
 
     /* 2 · Menú de dopamina */
-    dopamina:()=>head('🍽️',t('dop_t'),t('dop_d'))+`
+    dopamina:()=>head('🧲',t('dop_t'),t('dop_d'))+`
       <div class="t-label">${t('dop_l1')}</div>
       <div id="dm-ap"></div>
       <div class="t-label">${t('dop_l2')}</div>
@@ -589,22 +589,22 @@ function applyStaticI18n(){document.documentElement.lang=crisLang();document.que
   };
 
   window.triagePick=function(code){
-    const back=`<button class="t-btn sec" style="margin-top:12px" onclick="openTool('triaje')">← Volver a las preguntas</button>`;
+    const back=`<button class="t-btn sec" style="margin-top:12px" onclick="openTool('triaje')">${t('back_q')}</button>`;
     if(code==='A'){
-      sheet.innerHTML=head('🧊','No consigo empezar','¿Qué te frena más?')+`
-        <button class="wrow" onclick="openTool('paralisis')"><span class="we">🐘</span><span class="wi"><b>Es enorme y no sé por dónde</b><i>la partimos en un paso de 1 minuto</i></span></button>
-        <button class="wrow" onclick="openTool('interes')" style="margin-bottom:0"><span class="we">😑</span><span class="wi"><b>Es aburrida y no me apetece</b><i>la convertimos en misión</i></span></button>`+back;
+      sheet.innerHTML=head('🧊',t('trA_t'),t('trA_d'))+`
+        <button class="wrow" onclick="openTool('paralisis')"><span class="we">🐘</span><span class="wi"><b>${t('trA_1t')}</b><i>${t('trA_1s')}</i></span></button>
+        <button class="wrow" onclick="openTool('interes')" style="margin-bottom:0"><span class="we">😑</span><span class="wi"><b>${t('trA_2t')}</b><i>${t('trA_2s')}</i></span></button>`+back;
     }else if(code==='B'){
       openTool('volcado');
     }else if(code==='C'){
-      sheet.innerHTML=head('🥱','Sin chispa','¿Qué te apetece más?')+`
-        <button class="wrow" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b>Convertirlo en un juego</b><i>con algo que te gusta</i></span></button>
-        <button class="wrow" onclick="openTool('dopamina')"><span class="we">🍽️</span><span class="wi"><b>Elegir algo con chispa</b><i>del menú de dopamina</i></span></button>
-        <button class="wrow" onclick="openTool('doble')" style="margin-bottom:0"><span class="we">👥</span><span class="wi"><b>Que alguien trabaje a tu lado</b><i>doble de cuerpo</i></span></button>`+back;
+      sheet.innerHTML=head('🥱',t('trC_t'),t('trC_d'))+`
+        <button class="wrow" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b>${t('trC_1t')}</b><i>${t('trC_1s')}</i></span></button>
+        <button class="wrow" onclick="openTool('dopamina')"><span class="we">🧲</span><span class="wi"><b>${t('trC_2t')}</b><i>${t('trC_2s')}</i></span></button>
+        <button class="wrow" onclick="openTool('doble')" style="margin-bottom:0"><span class="we">👥</span><span class="wi"><b>${t('trC_3t')}</b><i>${t('trC_3s')}</i></span></button>`+back;
     }else if(code==='D'){
-      sheet.innerHTML=head('🔀','En transición','¿Qué necesitas?')+`
-        <button class="wrow" onclick="openTool('contexto')"><span class="we">🔄</span><span class="wi"><b>Limpiar la cabeza para cambiar</b><i>3 minutos de transición</i></span></button>
-        <button class="wrow" onclick="openTool('tiempo')" style="margin-bottom:0"><span class="we">⏳</span><span class="wi"><b>Saber cuánto me va a llevar</b><i>auditor del tiempo</i></span></button>`+back;
+      sheet.innerHTML=head('🔀',t('trD_t'),t('trD_d'))+`
+        <button class="wrow" onclick="openTool('contexto')"><span class="we">🔄</span><span class="wi"><b>${t('trD_1t')}</b><i>${t('trD_1s')}</i></span></button>
+        <button class="wrow" onclick="openTool('tiempo')" style="margin-bottom:0"><span class="we">⏳</span><span class="wi"><b>${t('trD_2t')}</b><i>${t('trD_2s')}</i></span></button>`+back;
     }else if(code==='E'){
       openTool('foco');
     }
