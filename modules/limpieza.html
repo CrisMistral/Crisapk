@@ -610,14 +610,14 @@ function startGeneral(){
 // ── Session render ─────────────────────────────────────
 function renderSession(){
   if(S.idx>=S.tasks.length){finishSession();return;}
-  const t=S.tasks[S.idx];
+  const tk=S.tasks[S.idx];
 
   // Banner for general mode zone transitions
   if(S.mode==='general'){
     const banner=document.getElementById('sess-banner');
     const prev=S.idx>0?S.tasks[S.idx-1]._zone:null;
-    if(!prev||t._zone!==prev){
-      banner.textContent=`${t._ze} Ahora: ${t._zone}`;
+    if(!prev||tk._zone!==prev){
+      banner.textContent=`${tk._ze} Ahora: ${tk._zone}`;
       banner.style.display='block';
     } else {
       banner.style.display='none';
@@ -629,12 +629,12 @@ function renderSession(){
   // Task card
   const card=document.getElementById('task-big');
   card.className='task-big tb-ready';
-  document.getElementById('tb-em').textContent=t.e;
-  document.getElementById('tb-name').textContent=t.n;
-  document.getElementById('tb-tip').textContent=t.tip||'';
+  document.getElementById('tb-em').textContent=tk.e;
+  document.getElementById('tb-name').textContent=tk.n;
+  document.getElementById('tb-tip').textContent=tk.tip||'';
 
   // Timer
-  S.timeLeft=t.d*60;S.totalSecs=t.d*60;
+  S.timeLeft=tk.d*60;S.totalSecs=tk.d*60;
   document.getElementById('timer-dig').textContent=fmt(S.timeLeft);
   __ring('t-ring',1);
   document.getElementById('timer-lbl').textContent='Pulsa Iniciar para empezar';
