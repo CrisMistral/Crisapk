@@ -260,16 +260,16 @@ function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.backgr
 
 /* ─── IDIOMAS (es · en · fr) ─── */
 const UI={
- es:{dur:'Duración',how:'Cómo hacerlo',tech_mus:'Músculos',start:'Comenzar',ex_count:'Ejercicios ({n})',exs_label:'ejercicios',st_short:'Estiramientos',settings:'Ajustes de entrenamiento',rounds_w:'rondas',prep_h:'¡Prepárate!',starts_in:'Empieza en',skip:'Omitir',rest_h:'Descanso',skip_rest:'Omitir descanso',exs:'ejercicio {i}/{n}',ph_down:'Baja',ph_up:'Sube',ph_jump:'Salta',ph_land:'Aterriza',ph_knee:'Rodilla arriba',ph_back:'Vuelve',ph_side1:'Un lado',ph_side2:'Otro lado',ph_out:'Estira',ph_in:'Recoge',ph_squeeze:'Junta',ph_push:'Empuja',ph_inhale:'Inhala',ph_exhale:'Exhala',ph_circle:'Círculo',ph_rock:'Balancea',v_count:'Acuérdate de cuántas has hecho. ',bubble:'La figura marca el ritmo; tú cuentas tus repeticiones 💚',tech_btn:'Técnica',tech_pos:'Posición inicial',tech_exe:'Ejecución',tech_resp:'Respiración',tech_err:'Errores comunes',tech_tip:'Adaptación',tech_close:'Cerrar',tech_close_resume:'▶ Cerrar y seguir',home_h:'💪 Calistenia en casa',home_sub:'20 min · solo una esterilla · sin material',week_title:'Tu semana',btn_start_auto:'▶ Empezar sesión automática',
+ es:{dur:'Duración',how:'Cómo hacerlo',tech_mus:'Músculos',start:'Comenzar',ex_count:'Ejercicios ({n})',exs_label:'ejercicios',st_short:'Estiramientos',settings:'Ajustes de entrenamiento',rounds_w:'rondas',prep_h:'¡Prepárate!',starts_in:'Empieza en',skip:'Omitir',rest_h:'Descanso',skip_rest:'Omitir descanso',exs:'ejercicio {i}/{n}',ph_down:'Baja',ph_up:'Sube',ph_jump:'Salta',ph_land:'Aterriza',ph_knee:'Rodilla arriba',ph_back:'Vuelve',ph_side1:'Un lado',ph_side2:'Otro lado',ph_out:'Estira',ph_in:'Recoge',ph_squeeze:'Junta',ph_push:'Empuja',ph_inhale:'Inhala',ph_exhale:'Exhala',ph_circle:'Círculo',ph_rock:'Balancea',v_count:'Acuérdate de cuántas has hecho. ',bubble:'Tú solo copia a la figura 💚',tech_btn:'Técnica',tech_pos:'Posición inicial',tech_exe:'Ejecución',tech_resp:'Respiración',tech_err:'Errores comunes',tech_tip:'Adaptación',tech_close:'Cerrar',tech_close_resume:'▶ Cerrar y seguir',home_h:'💪 Calistenia en casa',home_sub:'20 min · solo una esterilla · sin material',week_title:'Tu semana',btn_start_auto:'▶ Empezar sesión automática',
   lvl_label:'Nivel',lvl:['Fácil','Medio','Difícil'],prog:'Semana {w} de progreso · {work}s de ejercicio / {rest}s de descanso',prog_up:'Llevas 4 semanas en este nivel: cuando te sientas lista, prueba «{lvl}».',
   tc_today:'Hoy · {name}',tc_meta:'~{m} min · nivel {lvl}',tc_meta_st:'~{m} min · estiramientos extra',dh_meta:'~{m} min',
   sec_warm:'Calentamiento',sec_main:'Circuito · {r} rondas',sec_cool:'Vuelta a la calma',sec_st:'Estiramientos',ex_sec:'{n} s',ex_side:'{n} s cada lado',
   round:'Ronda {r} de {n}',count:'ejercicio {i} de {n}',rep:'Rep {n}',hold:'Aguanta',
-  idle_phase:'Sesión automática',idle_desc:'Dale a empezar y sigue a la figura: ella marca los tiempos (cuándo bajar, cuándo subir y cuánto dura cada fase) y tú cuentas tus repeticiones. La voz te guía y los ejercicios cambian solos. 💚',idle_btn:'▶ Empezar — todo automático',
+  idle_phase:'Sesión automática',idle_desc:'Dale a empezar y copia a la figura. La voz te dice cuándo bajar y cuándo subir. No tienes que contar ni pensar: solo hazlo. 💚',idle_btn:'▶ Empezar — todo automático',
   done_h:'¡Sesión completada!',done_p:'{name} · {focus}<br>Bien hecho, {u} 💚',btn_home:'🏠 Inicio',btn_repeat:'Repetir sesión',
-  ph_prep:'Colócate como la figura',tl_prep:'seg para empezar',tag_prep:'Prepárate',ph_active:'Sigue el ritmo · cuenta tus reps',tl_active:'segundos',tag_follow:'Marco el ritmo',ph_paused:'En pausa',tl_paused:'segundos',tag_paused:'Pausa',ph_switch:'¡Cambia de lado!',tl_switch:'seg',ph_restwait:'Escucha — ya casi',tl_restwait:'escuchando…',ph_rest:'Descansa',tl_rest:'seg de descanso',tag_next:'Siguiente: {name}',
+  ph_prep:'Colócate como la figura',tl_prep:'seg para empezar',tag_prep:'Prepárate',ph_active:'',tl_active:'segundos',tag_follow:'Marco el ritmo',ph_paused:'En pausa',tl_paused:'segundos',tag_paused:'Pausa',ph_switch:'¡Cambia de lado!',tl_switch:'seg',ph_restwait:'Escucha — ya casi',tl_restwait:'escuchando…',ph_rest:'Descansa',tl_rest:'seg de descanso',tag_next:'Siguiente: {name}',
   side_r:' — lado derecho',side_l:' — lado izquierdo',next_prefix:'Luego: {name}',tag_first:'Así empieza',btn_pause:'⏸ Pausa',btn_resume:'▶ Seguir',btn_skip:'Saltar →',
-  v_first:'Primer ejercicio: ',v_next:'Siguiente: ',v_will_be:' Serán {dur}.',v_sec_side:'{n} segundos por cada lado',v_sec:'{n} segundos',v_go:'¡Vamos! Sigue el ritmo de la figura y cuenta tus repeticiones. {n} segundos.',v_half:'Mitad. Quedan {n} segundos.',v_last10:'Últimos diez segundos.',v_switch:'Cambia de lado. Otros {n} segundos.',v_rest:'Muy bien. Descansa {n} segundos. ',v_resume:'Seguimos.',v_done:'¡Sesión completada! Bien hecho.',v_round2:'Segunda ronda: los mismos ejercicios. Intenta igualar tus repeticiones.',
+  v_first:'Primer ejercicio: ',v_next:'Siguiente: ',v_will_be:' Serán {dur}.',v_sec_side:'{n} segundos por cada lado',v_sec:'{n} segundos',v_go:'¡Vamos!',v_follow:'Copia a la figura.',v_half:'Mitad. Quedan {n} segundos.',v_last10:'Últimos diez segundos.',v_switch:'Cambia de lado.',v_rest:'Muy bien. Descansa. ',v_resume:'Seguimos.',v_done:'¡Sesión completada! Bien hecho.',v_round2:'Segunda vuelta.',
   wl:['L','M','X','J','V','S','D'],dn:['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'],
   f_lun:'Piernas y glúteos',f_mar:'Pecho, hombros y brazos',f_mie:'Abdomen y core',f_jue:'Espalda y postura',f_vie:'Cuerpo completo',f_sab:'Estiramientos · cadera y piernas',f_dom:'Estiramientos · espalda, hombros y cuello',
   i_lun:'Empezamos la semana por la base: piernas y glúteos. Muévete despacio y con control; la calidad importa más que la cantidad.',
@@ -279,16 +279,16 @@ const UI={
   i_vie:'Viernes de cuerpo completo: juntamos todo lo de la semana. Con esto ya has trabajado todo el cuerpo. ¡A por ello!',
   i_sab:'Extra del fin de semana: estiramientos suaves para cadera y piernas. Sin prisa y sin dolor; respira en cada postura.',
   i_dom:'Extra del domingo: movilidad y estiramientos para espalda, hombros y cuello. Prepara el cuerpo para la semana.'},
- en:{dur:'Duration',how:'How to do it',tech_mus:'Muscles',start:'Start',ex_count:'Exercises ({n})',exs_label:'exercises',st_short:'Stretching',settings:'Training settings',rounds_w:'rounds',prep_h:'Get ready!',starts_in:'Starts in',skip:'Skip',rest_h:'Rest',skip_rest:'Skip rest',exs:'exercise {i}/{n}',ph_down:'Lower',ph_up:'Up',ph_jump:'Jump',ph_land:'Land',ph_knee:'Knee up',ph_back:'Back',ph_side1:'One side',ph_side2:'Other side',ph_out:'Extend',ph_in:'Tuck',ph_squeeze:'Squeeze',ph_push:'Push',ph_inhale:'Breathe in',ph_exhale:'Breathe out',ph_circle:'Circle',ph_rock:'Rock',v_count:'Remember how many you did. ',bubble:'The figure sets the pace; you count your reps 💚',tech_btn:'Technique',tech_pos:'Starting position',tech_exe:'Execution',tech_resp:'Breathing',tech_err:'Common mistakes',tech_tip:'Adaptation',tech_close:'Close',tech_close_resume:'▶ Close and continue',home_h:'💪 Home calisthenics',home_sub:'20 min · just a mat · no equipment',week_title:'Your week',btn_start_auto:'▶ Start automatic session',
+ en:{dur:'Duration',how:'How to do it',tech_mus:'Muscles',start:'Start',ex_count:'Exercises ({n})',exs_label:'exercises',st_short:'Stretching',settings:'Training settings',rounds_w:'rounds',prep_h:'Get ready!',starts_in:'Starts in',skip:'Skip',rest_h:'Rest',skip_rest:'Skip rest',exs:'exercise {i}/{n}',ph_down:'Lower',ph_up:'Up',ph_jump:'Jump',ph_land:'Land',ph_knee:'Knee up',ph_back:'Back',ph_side1:'One side',ph_side2:'Other side',ph_out:'Extend',ph_in:'Tuck',ph_squeeze:'Squeeze',ph_push:'Push',ph_inhale:'Breathe in',ph_exhale:'Breathe out',ph_circle:'Circle',ph_rock:'Rock',v_count:'Remember how many you did. ',bubble:'Just copy the figure 💚',tech_btn:'Technique',tech_pos:'Starting position',tech_exe:'Execution',tech_resp:'Breathing',tech_err:'Common mistakes',tech_tip:'Adaptation',tech_close:'Close',tech_close_resume:'▶ Close and continue',home_h:'💪 Home calisthenics',home_sub:'20 min · just a mat · no equipment',week_title:'Your week',btn_start_auto:'▶ Start automatic session',
   lvl_label:'Level',lvl:['Easy','Medium','Hard'],prog:'Progress week {w} · {work}s work / {rest}s rest',prog_up:'You’ve done 4 weeks at this level: when you feel ready, try “{lvl}”.',
   tc_today:'Today · {name}',tc_meta:'~{m} min · {lvl} level',tc_meta_st:'~{m} min · extra stretching',dh_meta:'~{m} min',
   sec_warm:'Warm-up',sec_main:'Circuit · {r} rounds',sec_cool:'Cool-down',sec_st:'Stretching',ex_sec:'{n} s',ex_side:'{n} s each side',
   round:'Round {r} of {n}',count:'exercise {i} of {n}',rep:'Rep {n}',hold:'Hold',
-  idle_phase:'Automatic session',idle_desc:'Press start and follow the figure: it sets the tempo (when to lower, when to rise and how long each phase lasts) and you count your reps. The voice guides you and exercises change on their own. 💚',idle_btn:'▶ Start — fully automatic',
+  idle_phase:'Automatic session',idle_desc:'Press start and copy the figure. The voice tells you when to go down and when to come up. No counting, no thinking: just do it. 💚',idle_btn:'▶ Start — fully automatic',
   done_h:'Session complete!',done_p:'{name} · {focus}<br>Well done, {u} 💚',btn_home:'🏠 Home',btn_repeat:'Repeat session',
-  ph_prep:'Get into the figure’s position',tl_prep:'sec to start',tag_prep:'Get ready',ph_active:'Follow the tempo · count your reps',tl_active:'seconds',tag_follow:'I set the pace',ph_paused:'Paused',tl_paused:'seconds',tag_paused:'Pause',ph_switch:'Switch sides!',tl_switch:'sec',ph_restwait:'Listen — almost there',tl_restwait:'listening…',ph_rest:'Rest',tl_rest:'sec of rest',tag_next:'Next: {name}',
+  ph_prep:'Get into the figure’s position',tl_prep:'sec to start',tag_prep:'Get ready',ph_active:'',tl_active:'seconds',tag_follow:'I set the pace',ph_paused:'Paused',tl_paused:'seconds',tag_paused:'Pause',ph_switch:'Switch sides!',tl_switch:'sec',ph_restwait:'Listen — almost there',tl_restwait:'listening…',ph_rest:'Rest',tl_rest:'sec of rest',tag_next:'Next: {name}',
   side_r:' — right side',side_l:' — left side',next_prefix:'Next: {name}',tag_first:'This is how it starts',btn_pause:'⏸ Pause',btn_resume:'▶ Resume',btn_skip:'Skip →',
-  v_first:'First exercise: ',v_next:'Next: ',v_will_be:' It will be {dur}.',v_sec_side:'{n} seconds on each side',v_sec:'{n} seconds',v_go:'Let’s go! Follow the figure’s tempo and count your reps. {n} seconds.',v_half:'Halfway. {n} seconds left.',v_last10:'Last ten seconds.',v_switch:'Switch sides. Another {n} seconds.',v_rest:'Well done. Rest for {n} seconds. ',v_resume:'Let’s continue.',v_done:'Session complete! Well done.',v_round2:'Second round: the same exercises. Try to match your reps.',
+  v_first:'First exercise: ',v_next:'Next: ',v_will_be:' It will be {dur}.',v_sec_side:'{n} seconds on each side',v_sec:'{n} seconds',v_go:'Let’s go!',v_follow:'Copy the figure.',v_half:'Halfway. {n} seconds left.',v_last10:'Last ten seconds.',v_switch:'Switch sides.',v_rest:'Well done. Rest. ',v_resume:'Let’s continue.',v_done:'Session complete! Well done.',v_round2:'Second round.',
   wl:['M','T','W','T','F','S','S'],dn:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
   f_lun:'Legs and glutes',f_mar:'Chest, shoulders and arms',f_mie:'Abs and core',f_jue:'Back and posture',f_vie:'Full body',f_sab:'Stretching · hips and legs',f_dom:'Stretching · back, shoulders and neck',
   i_lun:'We start the week with the foundation: legs and glutes. Move slowly and with control; quality matters more than quantity.',
@@ -298,16 +298,16 @@ const UI={
   i_vie:'Full-body Friday: we bring the whole week together. With this you’ve worked your whole body. Go for it!',
   i_sab:'Weekend extra: gentle stretches for hips and legs. No rush and no pain; breathe into each pose.',
   i_dom:'Sunday extra: mobility and stretches for back, shoulders and neck. Get your body ready for the week.'},
- fr:{dur:'Durée',how:'Comment faire',tech_mus:'Muscles',start:'Commencer',ex_count:'Exercices ({n})',exs_label:'exercices',st_short:'Étirements',settings:'Réglages d’entraînement',rounds_w:'tours',prep_h:'Prépare-toi !',starts_in:'Début dans',skip:'Passer',rest_h:'Repos',skip_rest:'Passer le repos',exs:'exercice {i}/{n}',ph_down:'Descends',ph_up:'Monte',ph_jump:'Saute',ph_land:'Atterris',ph_knee:'Genou haut',ph_back:'Reviens',ph_side1:'Un côté',ph_side2:'L’autre côté',ph_out:'Tends',ph_in:'Ramène',ph_squeeze:'Serre',ph_push:'Pousse',ph_inhale:'Inspire',ph_exhale:'Expire',ph_circle:'Cercle',ph_rock:'Balance',v_count:'Retiens combien tu en as fait. ',bubble:'La figure donne le rythme ; toi, tu comptes tes répétitions 💚',tech_btn:'Technique',tech_pos:'Position de départ',tech_exe:'Exécution',tech_resp:'Respiration',tech_err:'Erreurs fréquentes',tech_tip:'Adaptation',tech_close:'Fermer',tech_close_resume:'▶ Fermer et continuer',home_h:'💪 Callisthénie à la maison',home_sub:'20 min · juste un tapis · sans matériel',week_title:'Ta semaine',btn_start_auto:'▶ Démarrer la séance automatique',
+ fr:{dur:'Durée',how:'Comment faire',tech_mus:'Muscles',start:'Commencer',ex_count:'Exercices ({n})',exs_label:'exercices',st_short:'Étirements',settings:'Réglages d’entraînement',rounds_w:'tours',prep_h:'Prépare-toi !',starts_in:'Début dans',skip:'Passer',rest_h:'Repos',skip_rest:'Passer le repos',exs:'exercice {i}/{n}',ph_down:'Descends',ph_up:'Monte',ph_jump:'Saute',ph_land:'Atterris',ph_knee:'Genou haut',ph_back:'Reviens',ph_side1:'Un côté',ph_side2:'L’autre côté',ph_out:'Tends',ph_in:'Ramène',ph_squeeze:'Serre',ph_push:'Pousse',ph_inhale:'Inspire',ph_exhale:'Expire',ph_circle:'Cercle',ph_rock:'Balance',v_count:'Retiens combien tu en as fait. ',bubble:'Copie simplement la figure 💚',tech_btn:'Technique',tech_pos:'Position de départ',tech_exe:'Exécution',tech_resp:'Respiration',tech_err:'Erreurs fréquentes',tech_tip:'Adaptation',tech_close:'Fermer',tech_close_resume:'▶ Fermer et continuer',home_h:'💪 Callisthénie à la maison',home_sub:'20 min · juste un tapis · sans matériel',week_title:'Ta semaine',btn_start_auto:'▶ Démarrer la séance automatique',
   lvl_label:'Niveau',lvl:['Facile','Moyen','Difficile'],prog:'Semaine de progression {w} · {work}s d’effort / {rest}s de repos',prog_up:'Tu as fait 4 semaines à ce niveau : quand tu te sens prête, essaie « {lvl} ».',
   tc_today:'Aujourd’hui · {name}',tc_meta:'~{m} min · niveau {lvl}',tc_meta_st:'~{m} min · étirements bonus',dh_meta:'~{m} min',
   sec_warm:'Échauffement',sec_main:'Circuit · {r} tours',sec_cool:'Retour au calme',sec_st:'Étirements',ex_sec:'{n} s',ex_side:'{n} s de chaque côté',
   round:'Tour {r} sur {n}',count:'exercice {i} sur {n}',rep:'Rép. {n}',hold:'Tiens',
-  idle_phase:'Séance automatique',idle_desc:'Appuie sur démarrer et suis la figure : elle donne le tempo (quand descendre, quand monter et combien dure chaque phase) et toi, tu comptes tes répétitions. La voix te guide et les exercices changent tout seuls. 💚',idle_btn:'▶ Démarrer — tout automatique',
+  idle_phase:'Séance automatique',idle_desc:'Appuie sur démarrer et copie la figure. La voix te dit quand descendre et quand monter. Rien à compter, rien à penser : fais-le, c’est tout. 💚',idle_btn:'▶ Démarrer — tout automatique',
   done_h:'Séance terminée !',done_p:'{name} · {focus}<br>Bien joué, {u} 💚',btn_home:'🏠 Accueil',btn_repeat:'Refaire la séance',
-  ph_prep:'Place-toi comme la figure',tl_prep:'sec avant de commencer',tag_prep:'Prépare-toi',ph_active:'Suis le rythme · compte tes rép.',tl_active:'secondes',tag_follow:'Je donne le rythme',ph_paused:'En pause',tl_paused:'secondes',tag_paused:'Pause',ph_switch:'Change de côté !',tl_switch:'sec',ph_restwait:'Écoute — presque fini',tl_restwait:'écoute…',ph_rest:'Repose-toi',tl_rest:'sec de repos',tag_next:'Suivant : {name}',
+  ph_prep:'Place-toi comme la figure',tl_prep:'sec avant de commencer',tag_prep:'Prépare-toi',ph_active:'',tl_active:'secondes',tag_follow:'Je donne le rythme',ph_paused:'En pause',tl_paused:'secondes',tag_paused:'Pause',ph_switch:'Change de côté !',tl_switch:'sec',ph_restwait:'Écoute — presque fini',tl_restwait:'écoute…',ph_rest:'Repose-toi',tl_rest:'sec de repos',tag_next:'Suivant : {name}',
   side_r:' — côté droit',side_l:' — côté gauche',next_prefix:'Ensuite : {name}',tag_first:'Voilà comment ça commence',btn_pause:'⏸ Pause',btn_resume:'▶ Continuer',btn_skip:'Passer →',
-  v_first:'Premier exercice : ',v_next:'Suivant : ',v_will_be:' Ce sera {dur}.',v_sec_side:'{n} secondes de chaque côté',v_sec:'{n} secondes',v_go:'C’est parti ! Suis le rythme de la figure et compte tes répétitions. {n} secondes.',v_half:'À la moitié. Il reste {n} secondes.',v_last10:'Dix dernières secondes.',v_switch:'Change de côté. Encore {n} secondes.',v_rest:'Très bien. Repose-toi {n} secondes. ',v_resume:'On continue.',v_done:'Séance terminée ! Bien joué.',v_round2:'Deuxième tour : les mêmes exercices. Essaie d’égaler tes répétitions.',
+  v_first:'Premier exercice : ',v_next:'Suivant : ',v_will_be:' Ce sera {dur}.',v_sec_side:'{n} secondes de chaque côté',v_sec:'{n} secondes',v_go:'C’est parti !',v_follow:'Copie la figure.',v_half:'À la moitié. Il reste {n} secondes.',v_last10:'Dix dernières secondes.',v_switch:'Change de côté.',v_rest:'Très bien. Repose-toi. ',v_resume:'On continue.',v_done:'Séance terminée ! Bien joué.',v_round2:'Deuxième tour.',
   wl:['L','M','M','J','V','S','D'],dn:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],
   f_lun:'Jambes et fessiers',f_mar:'Pectoraux, épaules et bras',f_mie:'Abdos et gainage',f_jue:'Dos et posture',f_vie:'Corps complet',f_sab:'Étirements · hanches et jambes',f_dom:'Étirements · dos, épaules et cou',
   i_lun:'On commence la semaine par la base : jambes et fessiers. Bouge lentement et avec contrôle ; la qualité compte plus que la quantité.',
@@ -440,11 +440,11 @@ function figPhase(an,k){
   let i,start,len;
   if(an.hold)return {i:0,key:'hold',sec:0};
   if(n===2&&an.seq){const q=an.seq,Tt=q[0]+q[1]+q[2]+q[3];let x=k*Tt,j=0;while(j<3&&x>=q[j]){x-=q[j];j++;}
-    const lab=[ph[0]||'',"hold",ph[1]||'',"hold"][j];return {i:j,key:lab,sec:Math.floor(x)+1};}
+    const lab=[ph[0]||'',"hold",ph[1]||'',"hold"][j];return {i:j,key:lab,sec:Math.floor(x)+1,len:q[j]};}
   if(an.loop){const segs=n-1;i=Math.min(segs-1,Math.floor(k*segs));start=i/segs;len=1/segs;}
   else if(n===2&&an.sp){i=k<an.sp?0:1;start=i?an.sp:0;len=i?1-an.sp:an.sp;}
   else{i=Math.floor(k*n)%n;start=i/n;len=1/n;}
-  return {i,key:ph[i%Math.max(1,ph.length)]||'',sec:Math.floor((k-start)*T)+1};
+  return {i,key:ph[i%Math.max(1,ph.length)]||'',sec:Math.floor((k-start)*T)+1,len:len*T};
 }
 
 /* ─── POSTURAS ─── tumbada/cuadrupedia: cabeza a la IZQUIERDA · de pie: mirando a la DERECHA
@@ -791,8 +791,14 @@ function figLoop(){
     if(rep&&!svg.dataset.still&&S.phase!=='paused'){
       const ph=figPhase(an,(time%T)/T),w=ph.key==='hold'?t('hold'):ph.key?t('ph_'+ph.key):'';
       const arrow=ph.key==='down'?'⬇ ':ph.key==='up'?'⬆ ':'';
-      rep.textContent=an.hold?t('hold'):(arrow+w+(w?' · ':'')+ph.sec);rep.style.display='';
-      if(S.phase==='active'&&svg._ph!==ph.i+'/'+Math.floor(time/T)){if(svg._ph!=null&&!an.hold)beep(660,.035);svg._ph=ph.i+'/'+Math.floor(time/T);}
+      rep.textContent=an.hold?t('hold'):(arrow+w);rep.style.display=(an.hold||w)?'':'none';
+      const phId=ph.i+'/'+Math.floor(time/T);
+      if(S.phase==='active'&&svg._ph!==phId&&svg.closest('#s-stage')){
+        if(svg._ph!=null&&!an.hold)beep(660,.035);
+        // la voz dice qué hacer en cada fase (solo si la fase dura lo suficiente y no es un vaivén continuo)
+        if(svg._ph!=null&&!an.hold&&ph.key&&(ph.len||0)>=0.9&&T>=2.2&&!/^(side1|side2|circle|rock)$/.test(ph.key))speakCue(w);
+        svg._ph=phId;
+      }
     }else if(rep)rep.style.display='none';
   });
   requestAnimationFrame(figLoop);
@@ -819,6 +825,7 @@ function beep(f=600,d=.2){if(!__allow('sound'))return;try{const c=__getCtx();if(
 function vibrate(ms=60){if(!__allow('vib'))return;try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
 let _utt=null;
 function speak(tx){try{if(!__allow('voice'))return;if(!window.speechSynthesis)return;window.speechSynthesis.cancel();if(window.speechSynthesis.paused)window.speechSynthesis.resume();_utt=new SpeechSynthesisUtterance(tx);_utt.lang=VOICE_LANG[crisLang()];_utt.rate=.9;const v=window.speechSynthesis.getVoices();const ev=v.find(x=>x.lang.startsWith(crisLang()));if(ev)_utt.voice=ev;window.speechSynthesis.speak(_utt);}catch(e){}}
+function speakCue(w){try{if(!__allow('voice')||!window.speechSynthesis||!w)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(w);u.lang=VOICE_LANG[crisLang()];u.rate=1.05;const v=window.speechSynthesis.getVoices().find(x=>x.lang.startsWith(crisLang()));if(v)u.voice=v;window.speechSynthesis.speak(u);}catch(e){}}
 let _speakSeq=0;
 function speakThen(tx,cb){
   const seq=++_speakSeq;let done=false;
@@ -939,8 +946,8 @@ function voiceOn(){return __allow('voice')&&!!window.speechSynthesis;}
 // La primera vez se explica entero; en la 2.ª ronda basta el nombre y la clave
 function exText(ex,first){
   const durTxt=ex.sides===2?t('v_sec_side',{n:ex.duration}):t('v_sec',{n:ex.duration});
-  if(ex.repeat)return t('v_next')+ex.name+'. '+ex.voice;
-  return (first?t('v_first'):t('v_next'))+ex.name+'. '+ex.desc+' '+ex.voice+t('v_will_be',{dur:durTxt});
+  // Sin explicaciones: solo el nombre. La técnica está en el botón ⓘ para quien la quiera.
+  return (first?t('v_first'):t('v_next'))+ex.name+'.'+(first?' '+t('v_follow'):'');
 }
 function goActive(ex){
   S.phase='active';S.timer=ex.duration;S.total=ex.duration;
@@ -976,8 +983,7 @@ function sessionTick(){
   if(el)el.textContent=el.classList.contains('s-clock')?mmss(S.timer):S.timer;
   __ring('s-ring',S.total?S.timer/S.total:0);
   if(S.phase==='active'){
-    if(S.timer===Math.floor(S.total/2)&&S.total>=40)speak(t('v_half',{n:S.timer}));
-    else if(S.timer===10&&S.total>=25)speak(t('v_last10'));
+    if(S.timer===10&&S.total>=25)speak(t('v_last10'));
   }
   if(S.timer<=3&&S.timer>0&&(S.phase==='active'||S.phase==='prep'||S.phase==='rest'))beep(500,.08);
   if(S.timer>0)return;
@@ -1000,7 +1006,7 @@ function sessionTick(){
       S.nextReady=false;
       const nx=L[S.exIdx+1];
       const pre=(nx.round===2&&nx.slot===1)?t('v_round2')+' ':'';
-      speakThen(t('v_rest',{n:ex.rest})+(ex.round===1?t('v_count'):'')+pre+exText(nx,false),()=>{
+      speakThen(t('v_rest',{n:ex.rest})+pre+exText(nx,false),()=>{
         S.nextReady=true;
         if(S.phase==='restwait')advanceExDirect();
       });
