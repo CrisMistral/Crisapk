@@ -1,4 +1,5 @@
 {
+  "id": "./index.html",
   "name": "Quico — Tu compañero cada día",
   "short_name": "Quico",
   "description": "Quico, tu quokka de cada día: rutinas, ejercicio, comida, limpieza, intereses y botiquín emocional. Un compañero amable para el día a día, pensado para mentes TDAH. En español, inglés y francés.",
@@ -34,5 +35,11 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "categories": [
+    "health",
+    "lifestyle",
+    "productivity"
+  ],
+  "dir": "ltr"
 }

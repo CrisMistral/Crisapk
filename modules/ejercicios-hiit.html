@@ -254,7 +254,7 @@ body{background:#f6fbfa}
 /* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
-function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n||'Cris';}catch(e){return 'Cris';}}
+function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n;}catch(e){return '';}}
 if(__cfg().calm)document.documentElement.classList.add('calm');
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
 
@@ -319,7 +319,7 @@ const UI={
   i_dom:'Bonus du dimanche : mobilité et étirements pour le dos, les épaules et le cou. Prépare ton corps pour la semaine.'}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
-function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars){Object.keys(vars).forEach(x=>{if(vars[x]===''){s=s.split(', {'+x+'}').join('').split(' {'+x+'}').join('').split('{'+x+'} · ').join('');}});Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});}return s;}
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
 function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 

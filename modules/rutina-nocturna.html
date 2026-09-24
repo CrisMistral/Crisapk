@@ -408,7 +408,7 @@ body {
 /* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
-function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n||'Cris';}catch(e){return 'Cris';}}
+function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n;}catch(e){return '';}}
 if(__cfg().calm)document.documentElement.classList.add('calm');
 
 /* ── IDIOMAS (es · en · fr) ── */
@@ -466,7 +466,7 @@ const UI={
    info_t1:'<strong>21h30</strong> - Début de la routine',info_t2:'<strong>21h35</strong> - Hygiène et soins',info_t3:'<strong>21h45</strong> - Étirements et méditation Shiné',info_t4:'<strong>21h55</strong> - Déconnexion numérique'}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
-function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars){Object.keys(vars).forEach(x=>{if(vars[x]===''){s=s.split(', {'+x+'}').join('').split(' {'+x+'}').join('').split('{'+x+'} · ').join('');}});Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});}return s;}
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
 /* Traducción de los 5 pasos (texto; las duraciones vienen del dato ES) */
 const STEPS_L={

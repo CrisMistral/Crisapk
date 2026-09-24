@@ -239,7 +239,7 @@ textarea.tool-field{min-height:74px;resize:vertical}
     <div class="wgroup">
       <div class="wg-label" data-i18n="g1">🏁 No puedo empezar</div>
       <button class="wrow" data-sub="paralisis" onclick="openTool('paralisis')"><span class="we">🧩</span><span class="wi"><b data-i18n="w_par_t">Destructor de parálisis</b><i data-i18n="w_par_s">miras la tarea y no arrancas</i></span></button>
-      <button class="wrow" data-sub="interes" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b data-i18n="w_int_t">Convertir en misión</b><i data-i18n="w_int_s">gamifica una tarea aburrida con algo que te gusta</i></span></button>
+      <button class="wrow" data-sub="interes" onclick="openTool('interes')"><span class="we">🎮</span><span class="wi"><b data-i18n="w_int_t">Convertir en misión</b><i data-i18n="w_int_s">hazla divertida uniéndola a algo que te gusta</i></span></button>
     </div>
 
     <div class="wgroup">
@@ -281,7 +281,7 @@ const UI={
    sec_hint:'…o si ya sabes qué necesitas, elígelo directo:',
    g1:'🏁 No puedo empezar',g2:'🎯 Quiero mantener el foco',g3:'🧠 Tengo la cabeza llena',g4:'🔄 Cambiar de tarea o planificar',
    w_par_t:'Salir del bloqueo paso a paso',w_par_s:'miras la tarea y no arrancas',
-   w_int_t:'Convertir la tarea en un juego',w_int_s:'gamifica una tarea aburrida con algo que te gusta',
+   w_int_t:'Convertir la tarea en un juego',w_int_s:'hazla divertida uniéndola a algo que te gusta',
    w_dob_t:'Trabajar acompañada',w_dob_s:'trabajo acompañado, con avisos cada 10 min',
    w_dop_t:'Elegir una tarea que enganche',w_dop_s:'elige algo y mantén el cerebro enganchado',
    w_vol_t:'Vaciar la cabeza en una lista',w_vol_s:'suelta los bucles abiertos y clasifícalos',
@@ -316,7 +316,7 @@ const UI={
    sec_hint:'…or if you already know what you need, pick it directly:',
    g1:'🏁 I can’t get started',g2:'🎯 I want to keep focus',g3:'🧠 My head is full',g4:'🔄 Switch tasks or plan',
    w_par_t:'Get unstuck step by step',w_par_s:'you stare at the task and can’t begin',
-   w_int_t:'Turn the task into a game',w_int_s:'gamify a boring task with something you love',
+   w_int_t:'Turn the task into a game',w_int_s:'make it fun by linking it to something you like',
    w_dob_t:'Work with company',w_dob_s:'work alongside company, with nudges every 10 min',
    w_dop_t:'Pick a task that hooks you',w_dop_s:'pick something and keep your brain hooked',
    w_vol_t:'Empty your head into a list',w_vol_s:'let out the open loops and sort them',
@@ -351,7 +351,7 @@ const UI={
    sec_hint:'…ou si tu sais déjà ce qu’il te faut, choisis directement :',
    g1:'🏁 Je n’arrive pas à commencer',g2:'🎯 Je veux garder la concentration',g3:'🧠 J’ai la tête pleine',g4:'🔄 Changer de tâche ou planifier',
    w_par_t:'Sortir du blocage pas à pas',w_par_s:'tu fixes la tâche et tu ne démarres pas',
-   w_int_t:'Transformer la tâche en jeu',w_int_s:'gamifie une tâche ennuyeuse avec ce que tu aimes',
+   w_int_t:'Transformer la tâche en jeu',w_int_s:'rends-la amusante en la liant à ce que tu aimes',
    w_dob_t:'Travailler accompagné·e',w_dob_s:'travailler accompagnée, avec des rappels toutes les 10 min',
    w_dop_t:'Choisir une tâche qui accroche',w_dop_s:'choisis quelque chose et garde ton cerveau accroché',
    w_vol_t:'Vider la tête dans une liste',w_vol_s:'sors les boucles ouvertes et classe-les',
@@ -384,7 +384,7 @@ const UI={
    ctx_s1:'Lève-toi et étire-toi. Relâche les épaules et respire profondément.',ctx_s2:'Bois un peu d’eau et regarde quelque chose au loin quelques secondes.',ctx_s3:'Note en un mot ce que tu viens de finir et ce que tu commences maintenant.'}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
-function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars){Object.keys(vars).forEach(x=>{if(vars[x]===''){s=s.split(', {'+x+'}').join('').split(' {'+x+'}').join('').split('{'+x+'} · ').join('');}});Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});}return s;}
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
 function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 
