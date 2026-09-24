@@ -697,7 +697,7 @@ function actStart(){
 function exitAct(){
   if(cur.interval){clearInterval(cur.interval);cur.interval=null;}
   window.speechSynthesis&&window.speechSynthesis.cancel();
-  openInt(cur.intId);
+  if(cur.intId&&findInt(cur.intId))openInt(cur.intId);else go('v-home'); // sin actividad abierta: volver al inicio
 }
 
 function actDone(){
