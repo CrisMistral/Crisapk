@@ -143,6 +143,21 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .quico-mascot .qm-head{display:block;margin:0;filter:none;}
 .qm-paws{position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);width:64%;line-height:0;}
 .qm-paws svg{display:block;width:100%;}
+
+/* Alergias y gustos */
+.fp-sec{background:rgba(255,255,255,.85);border:2px solid var(--mint-mid,#b8e4dd);border-radius:16px;padding:14px;margin-bottom:12px}
+.fp-h{font-weight:800;color:#1a6b64;margin-bottom:4px}
+.fp-hint{font-size:.8rem;color:#4b6b66;margin-bottom:8px;line-height:1.45}
+.fp-chips{display:flex;flex-wrap:wrap;gap:8px}
+.fp-chip{border:2px solid #b8e4dd;background:#fff;border-radius:999px;padding:8px 12px;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:600;color:#1a6b64;cursor:pointer}
+.fp-chip.on{background:#26a69a;border-color:#26a69a;color:#fff}
+.fp-chip.warn.on{background:#dc2626;border-color:#dc2626}
+.fp-add{display:flex;gap:8px;margin-top:10px}
+.fp-add input{flex:1;border:2px solid #b8e4dd;border-radius:12px;padding:9px 10px;font-family:'Outfit',sans-serif;font-size:16px}
+.fp-add button{border:none;background:#b8e4dd;color:#1a6b64;border-radius:12px;padding:0 14px;font-weight:700;font-family:'Outfit',sans-serif}
+.fp-warn{font-size:.8rem;color:#7c2d12;background:#fff7ed;border-radius:12px;padding:10px 12px;margin:4px 0 12px;line-height:1.45}
+.fp-badge{display:inline-block;font-size:.72rem;font-weight:700;color:#b91c1c;background:#fef2f2;border-radius:10px;padding:3px 8px;margin-top:6px}
+.fp-edit{border:none;background:none;color:#1a6b64;font-weight:700;font-family:'Outfit',sans-serif;text-decoration:underline;cursor:pointer;padding:6px 0 0;font-size:.85rem}
 </style>
 </head>
 <body>
@@ -152,7 +167,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
   <div class="home-header">
     <img src="../quico/quico_happy.png" alt="Quico" style="width:124px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))">
     <h1 data-i18n="home_h">🍳 Comer Rico</h1>
-    <p data-i18n="home_sub">De temporada · sin tomate · plato Harvard</p>
+    <p data-i18n="home_sub">De temporada · plato Harvard · a tu gusto</p>
   </div>
   <div class="bubble" id="home-bubble">¿Qué cocinamos hoy? 🌿</div>
   <div class="nav-cards">
@@ -229,6 +244,13 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 </div>
 </div>
 
+<div id="v-prefs" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1 data-i18n="fp_h">Alergias y gustos</h1></div>
+  <div id="prefs-body"></div>
+</div>
+</div>
+
 <div id="v-basicos" class="screen">
 <div class="max-w">
   <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1 data-i18n="basics_h">Básicos salvavidas</h1></div>
@@ -239,7 +261,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div id="v-shopping" class="screen">
 <div class="max-w">
   <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1 data-i18n="shop_h">Lista de Compras</h1></div>
-  <div class="card" style="margin-bottom:14px"><p data-i18n="shop_intro">Una sola compra para las 14 recetas de la semana + básicos salvavidas · 1 persona · sin tomate. Marca según vas comprando 💚</p></div>
+  <div class="card" style="margin-bottom:14px"><p data-i18n="shop_intro">Una sola compra para las 14 recetas de la semana + básicos salvavidas · 1 persona. Marca según vas comprando 💚</p></div>
   <div id="shop-list"></div>
   <div class="btn-row">
     <button class="btn btn-secondary" onclick="shareList()" data-i18n="btn_share">📱 Compartir</button>
@@ -259,10 +281,10 @@ function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.backgr
 
 /* ─── IDIOMAS (es · en · fr) ─── */
 const UI={
- es:{home_h:'🍳 Comer Rico',home_sub:'De temporada · sin tomate · plato Harvard',
+ es:{fp_no:'sin',fp_h:'Alergias y gustos',fp_intro:'Antes de preparar tu menú: marca lo que no puedes o no quieres comer. Puedes cambiarlo cuando quieras.',fp_all:'Alergias e intolerancias',fp_diet:'Tipo de alimentación',fp_dis:'No me gusta',fp_dis_hint:'Si es un ingrediente opcional, solo se quita. Si es el principal, cambiamos la receta.',fp_custom_ph:'Otro ingrediente…',fp_add:'Añadir',fp_save:'✓ Guardar y ver mi menú',fp_none:'Sin alergias · como de todo',fp_warn:'⚠️ Filtramos por ingredientes, pero revisa siempre las etiquetas: no podemos garantizar trazas.',fp_adapted:'Adaptado a ti: {x}',fp_edit:'⚙️ Alergias y gustos',fp_contains:'⚠️ No apta para ti: {x}',fp_short:'Con tus preferencias hay {n} recetas para esta semana. Puedes repetir las que más te gusten.',home_h:'🍳 Comer Rico',home_sub:'De temporada · plato Harvard · a tu gusto',
   nc_pick:'¿QUÉ COMO HOY?',nc_pick_sub:'2 preguntas y te lo digo',nc_week:'MENÚ DE LA SEMANA',nc_week_sub:'14 recetas · 1 sola compra',nc_shop:'LISTA DE LA COMPRA',nc_shop_sub:'Una compra · toda la semana',nc_basics:'COMIDAS RÁPIDAS',nc_basics_sub:'Recetas de 10 min con despensa',nc_months:'RECETAS DE TEMPORADA',nc_months_sub:'Recetas de temporada todo el año',
   months_h:'Elige el mes',tab_lunch:'☀️ Comidas',tab_dinner:'🌙 Cenas',test_h:'¿Qué como hoy?',week_h:'Menú de la semana',basics_h:'Comidas rápidas',shop_h:'Lista de Compras',
-  shop_intro:'Una sola compra para las 14 recetas de la semana + básicos salvavidas · 1 persona · sin tomate. Marca según vas comprando 💚',btn_share:'📱 Compartir',btn_clear:'↺ Borrar marcas',
+  shop_intro:'Una sola compra para las 14 recetas de la semana + básicos salvavidas · 1 persona. Marca según vas comprando 💚',btn_share:'📱 Compartir',btn_clear:'↺ Borrar marcas',
   home_bubble:'📅 {m} · temporada: {s} 🌿',week_sub_full:'14 recetas · 1 sola compra',week_sub_rem:'Te quedan {n} de 14 esta semana',pick_sub_n:'2 preguntas · quedan {n} recetas',pick_sub_done:'Salvavidas de 10 min listos',
   sb_title:'🌿 De temporada en {m}',hv_title:'Plato Harvard',hv_veg:'🥦 ½ Verdura',hv_prot:'💪 ¼ Proteína',hv_grain:'🌾 ¼ Cereal',per_person:'/persona',ingr_title:'Ingredientes (1 persona)',btn_addshop:'🛒 Añadir ingredientes a la compra',btn_guide:'🎵 Guía paso a paso →',
   cook_done_h:'¡A comer!',cook_done_p:'Lo has hecho genial 💚',cook_done_ticked:'<br><br>✓ Tachada del menú de la semana',btn_home:'🏠 Inicio',btn_repeat_recipe:'Repetir receta',
@@ -273,14 +295,14 @@ const UI={
   q2_title:'2️⃣ ¿Te apetece proteína animal?',q2_a:'🐟 Sí — pescado, pollo o huevo',q2_b:'🌱 Mejor vegetariano',q2_c:'🤷 Me da igual, sorpréndeme',
   note_fast:'No queda nada tan rápido — esto es lo más cercano:',note_type:'De ese tipo no queda esta semana — pero mira:',note_left:'Esto es lo que queda esta semana:',note_complete:'¡Semana completada! 🎉 Un salvavidas de despensa:',
   btn_another:'🔄 Otra opción ({n} disponibles)',btn_change:'↺ Cambiar mis respuestas',btn_express10:'⚡ Mejor algo de 10 minutos',chip_lunch:'☀️ Comida',chip_dinner:'🌙 Cena',
-  week_banner_rem:'Te quedan <strong>{n} de 14</strong> recetas esta semana. Marca ✓ al comerla — así siempre sabes qué puedes cocinar con lo que queda en la nevera 💚',week_banner_done:'🎉 ¡Semana completada! El lunes el menú se reinicia solo.',from_pantry:' · de despensa',week_lunch7:'☀️ Comidas (7)',week_dinner7:'🌙 Cenas (7)',
+  week_banner_rem:'Te quedan <strong>{n} de {tot}</strong> recetas esta semana. Marca ✓ al comerla — así siempre sabes qué puedes cocinar con lo que queda en la nevera 💚',week_banner_done:'🎉 ¡Semana completada! El lunes el menú se reinicia solo.',from_pantry:' · de despensa',week_lunch7:'☀️ Comidas ({n})',week_dinner7:'🌙 Cenas ({n})',
   basics_intro:'Con estos básicos siempre en casa nunca te quedas sin comer. Recetas de ~10 minutos, cero pensar ⚡',basics_recipes:'Recetas salvavidas',basics_pantry:'Tu despensa salvavidas',all_pantry:'todo de despensa',
   shop_week_label:'📅 La compra de la semana — cubre las 14 recetas',in_n_recipes:'en {n} recetas del menú',shop_extras:'➕ Extras que añadiste tú',btn_remove:'✕ quitar',shop_basics_label:'🧺 Básicos salvavidas (revisa que no falten)',
   share_title:'🛒 Compra de la semana — {u}\n',share_basics:'🧺 BÁSICOS SALVAVIDAS',share_in:'(en {n} recetas)',share_share_title:'Lista de compras {u}',copied:'📋 Lista copiada 💚'},
- en:{home_h:'🍳 Eat Well',home_sub:'Seasonal · tomato-free · Harvard plate',
+ en:{fp_no:'no',fp_h:'Allergies and tastes',fp_intro:'Before we make your menu: tick what you can’t or don’t want to eat. You can change it anytime.',fp_all:'Allergies and intolerances',fp_diet:'Diet',fp_dis:'I don’t like',fp_dis_hint:'If it’s an optional ingredient, it’s just removed. If it’s the main one, we swap the recipe.',fp_custom_ph:'Another ingredient…',fp_add:'Add',fp_save:'✓ Save and see my menu',fp_none:'No allergies · I eat everything',fp_warn:'⚠️ We filter by ingredients, but always check labels: we can’t rule out traces.',fp_adapted:'Adapted to you: {x}',fp_edit:'⚙️ Allergies and tastes',fp_contains:'⚠️ Not for you: {x}',fp_short:'With your preferences there are {n} recipes this week. Repeat the ones you like best.',home_h:'🍳 Eat Well',home_sub:'Seasonal · Harvard plate',
   nc_pick:'WHAT DO I EAT TODAY?',nc_pick_sub:'2 questions and I\u2019ll tell you',nc_week:'THIS WEEK\u2019S MENU',nc_week_sub:'14 recipes · one single shop',nc_shop:'SHOPPING LIST',nc_shop_sub:'One shop · the whole week',nc_basics:'QUICK MEALS',nc_basics_sub:'10-min recipes from your pantry',nc_months:'SEASONAL RECIPES',nc_months_sub:'Seasonal recipes all year round',
   months_h:'Choose the month',tab_lunch:'☀️ Lunches',tab_dinner:'🌙 Dinners',test_h:'What do I eat today?',week_h:'This week\u2019s menu',basics_h:'Quick meals',shop_h:'Shopping List',
-  shop_intro:'One single shop for the week\u2019s 14 recipes + lifesaver basics · 1 person · tomato-free. Tick as you shop 💚',btn_share:'📱 Share',btn_clear:'↺ Clear ticks',
+  shop_intro:'One single shop for the week\u2019s 14 recipes + lifesaver basics · 1 person. Tick as you shop 💚',btn_share:'📱 Share',btn_clear:'↺ Clear ticks',
   home_bubble:'📅 {m} · in season: {s} 🌿',week_sub_full:'14 recipes · one single shop',week_sub_rem:'{n} of 14 left this week',pick_sub_n:'2 questions · {n} recipes left',pick_sub_done:'10-min lifesavers ready',
   sb_title:'🌿 In season in {m}',hv_title:'Harvard plate',hv_veg:'🥦 ½ Veg',hv_prot:'💪 ¼ Protein',hv_grain:'🌾 ¼ Grain',per_person:'/person',ingr_title:'Ingredients (1 person)',btn_addshop:'🛒 Add ingredients to the shopping list',btn_guide:'🎵 Step-by-step guide →',
   cook_done_h:'Time to eat!',cook_done_p:'You did great 💚',cook_done_ticked:'<br><br>✓ Ticked off this week\u2019s menu',btn_home:'🏠 Home',btn_repeat_recipe:'Repeat recipe',
@@ -291,14 +313,14 @@ const UI={
   q2_title:'2️⃣ Do you fancy animal protein?',q2_a:'🐟 Yes — fish, chicken or egg',q2_b:'🌱 Rather vegetarian',q2_c:'🤷 I don\u2019t mind, surprise me',
   note_fast:'Nothing that quick is left — this is the closest:',note_type:'None of that kind left this week — but look:',note_left:'This is what\u2019s left this week:',note_complete:'Week complete! 🎉 A pantry lifesaver:',
   btn_another:'🔄 Another option ({n} available)',btn_change:'↺ Change my answers',btn_express10:'⚡ Rather something 10-minute',chip_lunch:'☀️ Lunch',chip_dinner:'🌙 Dinner',
-  week_banner_rem:'You have <strong>{n} of 14</strong> recipes left this week. Tick ✓ when you eat it — so you always know what you can cook with what\u2019s left in the fridge 💚',week_banner_done:'🎉 Week complete! On Monday the menu resets on its own.',from_pantry:' · from the pantry',week_lunch7:'☀️ Lunches (7)',week_dinner7:'🌙 Dinners (7)',
+  week_banner_rem:'You have <strong>{n} of {tot}</strong> recipes left this week. Tick ✓ when you eat it — so you always know what you can cook with what\u2019s left in the fridge 💚',week_banner_done:'🎉 Week complete! On Monday the menu resets on its own.',from_pantry:' · from the pantry',week_lunch7:'☀️ Lunches ({n})',week_dinner7:'🌙 Dinners ({n})',
   basics_intro:'With these basics always at home you never run out of food. ~10-minute recipes, zero thinking ⚡',basics_recipes:'Lifesaver recipes',basics_pantry:'Your lifesaver pantry',all_pantry:'all from the pantry',
   shop_week_label:'📅 This week\u2019s shop — covers all 14 recipes',in_n_recipes:'in {n} menu recipes',shop_extras:'➕ Extras you added',btn_remove:'✕ remove',shop_basics_label:'🧺 Lifesaver basics (check you\u2019re not out)',
   share_title:'🛒 This week\u2019s shop — {u}\n',share_basics:'🧺 LIFESAVER BASICS',share_in:'(in {n} recipes)',share_share_title:'{u} shopping list',copied:'📋 List copied 💚'},
- fr:{home_h:'🍳 Bien Manger',home_sub:'De saison · sans tomate · assiette Harvard',
+ fr:{fp_no:'sans',fp_h:'Allergies et goûts',fp_intro:'Avant de préparer ton menu : coche ce que tu ne peux pas ou ne veux pas manger. Tu peux changer quand tu veux.',fp_all:'Allergies et intolérances',fp_diet:'Alimentation',fp_dis:'Je n’aime pas',fp_dis_hint:'Si c’est un ingrédient facultatif, on l’enlève. Si c’est le principal, on change la recette.',fp_custom_ph:'Autre ingrédient…',fp_add:'Ajouter',fp_save:'✓ Enregistrer et voir mon menu',fp_none:'Pas d’allergie · je mange de tout',fp_warn:'⚠️ On filtre par ingrédients, mais vérifie toujours les étiquettes : on ne peut pas exclure les traces.',fp_adapted:'Adapté à toi : {x}',fp_edit:'⚙️ Allergies et goûts',fp_contains:'⚠️ Pas pour toi : {x}',fp_short:'Avec tes préférences, il y a {n} recettes cette semaine. Refais celles que tu préfères.',home_h:'🍳 Bien Manger',home_sub:'De saison · assiette Harvard',
   nc_pick:'JE MANGE QUOI AUJOURD\u2019HUI ?',nc_pick_sub:'2 questions et je te le dis',nc_week:'MENU DE LA SEMAINE',nc_week_sub:'14 recettes · une seule course',nc_shop:'LISTE DE COURSES',nc_shop_sub:'Une course · toute la semaine',nc_basics:'REPAS RAPIDES',nc_basics_sub:'Recettes de 10 min avec le placard',nc_months:'RECETTES DE SAISON',nc_months_sub:'Des recettes de saison toute l\u2019année',
   months_h:'Choisis le mois',tab_lunch:'☀️ Déjeuners',tab_dinner:'🌙 Dîners',test_h:'Je mange quoi aujourd\u2019hui ?',week_h:'Menu de la semaine',basics_h:'Repas rapides',shop_h:'Liste de Courses',
-  shop_intro:'Une seule course pour les 14 recettes de la semaine + basiques de dépannage · 1 personne · sans tomate. Coche au fur et à mesure 💚',btn_share:'📱 Partager',btn_clear:'↺ Effacer les coches',
+  shop_intro:'Une seule course pour les 14 recettes de la semaine + basiques de dépannage · 1 personne. Coche au fur et à mesure 💚',btn_share:'📱 Partager',btn_clear:'↺ Effacer les coches',
   home_bubble:'📅 {m} · de saison : {s} 🌿',week_sub_full:'14 recettes · une seule course',week_sub_rem:'Il te reste {n} sur 14 cette semaine',pick_sub_n:'2 questions · il reste {n} recettes',pick_sub_done:'Dépannages de 10 min prêts',
   sb_title:'🌿 De saison en {m}',hv_title:'Assiette Harvard',hv_veg:'🥦 ½ Légume',hv_prot:'💪 ¼ Protéine',hv_grain:'🌾 ¼ Céréale',per_person:'/personne',ingr_title:'Ingrédients (1 personne)',btn_addshop:'🛒 Ajouter les ingrédients à la liste',btn_guide:'🎵 Guide pas à pas →',
   cook_done_h:'À table !',cook_done_p:'Tu as très bien fait 💚',cook_done_ticked:'<br><br>✓ Cochée du menu de la semaine',btn_home:'🏠 Accueil',btn_repeat_recipe:'Refaire la recette',
@@ -309,7 +331,7 @@ const UI={
   q2_title:'2️⃣ Tu as envie de protéine animale ?',q2_a:'🐟 Oui — poisson, poulet ou œuf',q2_b:'🌱 Plutôt végétarien',q2_c:'🤷 Ça m\u2019est égal, surprends-moi',
   note_fast:'Il ne reste rien d\u2019aussi rapide — voici le plus proche :',note_type:'Rien de ce type cette semaine — mais regarde :',note_left:'Voici ce qu\u2019il reste cette semaine :',note_complete:'Semaine terminée ! 🎉 Un dépannage du placard :',
   btn_another:'🔄 Une autre option ({n} disponibles)',btn_change:'↺ Changer mes réponses',btn_express10:'⚡ Plutôt quelque chose de 10 minutes',chip_lunch:'☀️ Déjeuner',chip_dinner:'🌙 Dîner',
-  week_banner_rem:'Il te reste <strong>{n} sur 14</strong> recettes cette semaine. Coche ✓ quand tu la manges — comme ça tu sais toujours quoi cuisiner avec ce qu\u2019il reste au frigo 💚',week_banner_done:'🎉 Semaine terminée ! Lundi le menu se réinitialise tout seul.',from_pantry:' · du placard',week_lunch7:'☀️ Déjeuners (7)',week_dinner7:'🌙 Dîners (7)',
+  week_banner_rem:'Il te reste <strong>{n} sur {tot}</strong> recettes cette semaine. Coche ✓ quand tu la manges — comme ça tu sais toujours quoi cuisiner avec ce qu\u2019il reste au frigo 💚',week_banner_done:'🎉 Semaine terminée ! Lundi le menu se réinitialise tout seul.',from_pantry:' · du placard',week_lunch7:'☀️ Déjeuners ({n})',week_dinner7:'🌙 Dîners ({n})',
   basics_intro:'Avec ces basiques toujours à la maison, tu ne te retrouves jamais sans repas. Recettes de ~10 minutes, zéro réflexion ⚡',basics_recipes:'Recettes de dépannage',basics_pantry:'Ton placard de dépannage',all_pantry:'tout du placard',
   shop_week_label:'📅 La course de la semaine — couvre les 14 recettes',in_n_recipes:'dans {n} recettes du menu',shop_extras:'➕ Extras que tu as ajoutés',btn_remove:'✕ retirer',shop_basics_label:'🧺 Basiques de dépannage (vérifie qu\u2019il n\u2019en manque pas)',
   share_title:'🛒 Course de la semaine — {u}\n',share_basics:'🧺 BASIQUES DE DÉPANNAGE',share_in:'(dans {n} recettes)',share_share_title:'Liste de courses {u}',copied:'📋 Liste copiée 💚'}
@@ -1093,16 +1115,98 @@ const EXPRESS={
 };
 
 /* Menú semanal: 14 recetas de la estación actual (6+1 comidas, 6+1 cenas) */
+/* ─── TOMATE OPCIONAL: se añade a las recetas donde encaja y se puede quitar en «Alergias y gustos» ─── */
+const TOMATO_ADD={'ene-c1':'A','ene-c2':'B','ene-n2':'D','feb-c1':'C','mar-c1':'C','mar-c2':'A','abr-c1':'A','abr-c2':'C','may-c1':'A','may-c2':'E','may-n2':'C','jun-c1':'C','jun-c2':'A','jul-c1':'C','jul-c2':'A','jul-n2':'F','ago-c1':'G','ago-n2':'H','sep-n2':'C','exp-c1':'E','exp-n2':'C'};
+const TOMATO_TXT={
+ es:{A:'1 tomate (opcional · rallado, al rehogar)',B:'1 tomate (opcional · en dados, por encima al servir)',C:'1 tomate (opcional · en dados)',D:'1 tomate (opcional · en rodajas, para acompañar)',E:'2 cdas tomate triturado (opcional)',F:'2 cdas tomate triturado (opcional · en el relleno)',G:'2 tomates maduros (opcional · para el pisto)',H:'1 tomate (opcional · en rodajas)'},
+ en:{A:'1 tomato (optional · grated, when sautéing)',B:'1 tomato (optional · diced, on top to serve)',C:'1 tomato (optional · diced)',D:'1 tomato (optional · sliced, on the side)',E:'2 tbsp crushed tomato (optional)',F:'2 tbsp crushed tomato (optional · in the filling)',G:'2 ripe tomatoes (optional · for the ratatouille)',H:'1 tomato (optional · sliced)'},
+ fr:{A:'1 tomate (facultatif · râpée, en faisant revenir)',B:'1 tomate (facultatif · en dés, par-dessus au service)',C:'1 tomate (facultatif · en dés)',D:'1 tomate (facultatif · en rondelles, pour accompagner)',E:'2 c. à soupe de tomate concassée (facultatif)',F:'2 c. à soupe de tomate concassée (facultatif · dans la farce)',G:'2 tomates mûres (facultatif · pour la ratatouille)',H:'1 tomate (facultatif · en rondelles)'}};
+const ALL_RECIPES=[...MONTHS.flatMap(m=>[...m.comidas,...m.cenas]),...EXPRESS.comidas,...EXPRESS.cenas];
+ALL_RECIPES.forEach(r=>{const k=TOMATO_ADD[r.id];if(!k)return;r.ingredients=r.ingredients.concat(TOMATO_TXT.es[k]);
+  ['en','fr'].forEach(l=>{const tr=REC_L[l]&&REC_L[l][r.id];if(tr&&tr.ingredients)tr.ingredients=tr.ingredients.concat(TOMATO_TXT[l][k]);});});
+if(NORM_L.en)Object.assign(NORM_L.en,{'tomate':'Tomatoes','tomate triturado':'Crushed tomato'});
+if(NORM_L.fr)Object.assign(NORM_L.fr,{'tomate':'Tomates','tomate triturado':'Tomate concassée'});
+
+/* ─── ALERGIAS, ALIMENTACIÓN Y GUSTOS ─── (se comprueba sobre los ingredientes en español) */
+const L3=(es,en,fr)=>({es,en,fr});
+const RE_GLUTEN=/\bpan\b|pasta|harina|cusc[uú]s|bulgur|cebada|centeno|trigo|seit[aá]n|galleta|picatoste|fideo|espagueti|macarr|avena/;
+const RE_DAIRY=/leche(?! de coco)|queso|yogur|nata\b|mantequilla|feta|mozzarella|parmesano|reques[oó]n|k[eé]fir/;
+const RE_FISH=/at[uú]n|merluza|salm[oó]n|sardina|caballa|bacalao|anchoa|boquer|pescado|dorada|lubina|trucha/;
+const RE_SHELL=/gamba|langostino|mejill|calamar|sepia|pulpo|almeja|marisco|berberecho/;
+const RE_MEAT=/pollo|pavo|ternera|cerdo|jam[oó]n|bacon|beic|chorizo|lomo|salchich|carne|panceta|morcilla/;
+const RE_PORK=/cerdo|jam[oó]n|bacon|beic|chorizo|lomo|salchich|panceta|morcilla|sobrasada/;
+const FP_ALLERGENS=[
+ ['gluten','🌾',L3('Gluten','Gluten','Gluten'),RE_GLUTEN],
+ ['lacteos','🥛',L3('Lácteos','Dairy','Produits laitiers'),RE_DAIRY],
+ ['huevo','🥚',L3('Huevo','Egg','Œuf'),/huevo/],
+ ['frutos','🌰',L3('Frutos secos','Tree nuts','Fruits à coque'),/almendra|nuez(?! moscada)|nueces|avellana|anacardo|pistacho|pi[ñn][oó]n|macadamia/],
+ ['cacahuete','🥜',L3('Cacahuete','Peanut','Arachide'),/cacahuete|\bman[ií]\b/],
+ ['pescado','🐟',L3('Pescado','Fish','Poisson'),RE_FISH],
+ ['marisco','🦐',L3('Marisco','Shellfish','Fruits de mer'),RE_SHELL],
+ ['soja','🫘',L3('Soja','Soy','Soja'),/soja|tofu|tempeh|edamame|miso/],
+ ['sesamo','⚪',L3('Sésamo','Sesame','Sésame'),/s[eé]samo|tahin/],
+ ['apio','🥬',L3('Apio','Celery','Céleri'),/\bapio\b/],
+ ['mostaza','🟡',L3('Mostaza','Mustard','Moutarde'),/mostaza/]];
+const FP_DIETS=[['omni','🍽️',L3('Como de todo','I eat everything','Je mange de tout')],['veg','🥦',L3('Vegetariana','Vegetarian','Végétarienne')],['vegan','🌱',L3('Vegana','Vegan','Végane')],['nopork','🐖',L3('Sin cerdo','No pork','Sans porc')]];
+const FP_DISLIKES=[
+ ['tomate','🍅',L3('Tomate','Tomato','Tomate'),/tomate/],['setas','🍄',L3('Setas','Mushrooms','Champignons'),/seta|champi/],
+ ['berenjena','🍆',L3('Berenjena','Aubergine','Aubergine'),/berenjena/],['coliflor','🥦',L3('Coliflor','Cauliflower','Chou-fleur'),/coliflor/],
+ ['brocoli','🥦',L3('Brócoli','Broccoli','Brocoli'),/br[oó]coli/],['espinacas','🥬',L3('Espinacas','Spinach','Épinards'),/espinaca/],
+ ['legumbres','🫘',L3('Legumbres','Pulses','Légumineuses'),/lenteja|garbanzo|alubia|jud[ií]a|\bhaba|guisante/],
+ ['pimiento','🫑',L3('Pimiento','Pepper','Poivron'),/pimiento/],['cebolla','🧅',L3('Cebolla','Onion','Oignon'),/cebolla/],
+ ['calabaza','🎃',L3('Calabaza','Pumpkin','Courge'),/calabaza/],['pescado2','🐟',L3('Pescado','Fish','Poisson'),RE_FISH],
+ ['queso','🧀',L3('Queso','Cheese','Fromage'),/queso|feta|mozzarella/],['coco','🥥',L3('Coco','Coconut','Coco'),/coco/],
+ ['picante','🌶️',L3('Picante','Spicy','Épicé'),/guindilla|chile|cayena|picante/]];
+function foodPrefs(){try{return JSON.parse(localStorage.getItem('cris_food_prefs'))||null;}catch(e){return null;}}
+function isOptLine(x){return /\((opcional|optional|facultatif)/i.test(x);}
+function prefRules(){
+  const p=foodPrefs()||{},lg=crisLang(),rules=[];
+  (p.allergies||[]).forEach(id=>{const a=FP_ALLERGENS.find(x=>x[0]===id);if(a)rules.push({re:a[3],label:a[2][lg]||a[2].es});});
+  const d=FP_DIETS.find(x=>x[0]===p.diet);const dl=d?(d[2][lg]||d[2].es):'';
+  if(p.diet==='veg'||p.diet==='vegan'){rules.push({re:RE_MEAT,label:dl},{re:RE_FISH,label:dl},{re:RE_SHELL,label:dl});}
+  if(p.diet==='vegan'){rules.push({re:RE_DAIRY,label:dl},{re:/huevo/,label:dl},{re:/\bmiel\b/,label:dl});}
+  if(p.diet==='nopork')rules.push({re:RE_PORK,label:dl});
+  (p.dislikes||[]).forEach(id=>{const a=FP_DISLIKES.find(x=>x[0]===id);if(a)rules.push({re:a[3],label:a[2][lg]||a[2].es});});
+  (p.custom||[]).forEach(w=>{const q=String(w).toLowerCase().trim();if(q)rules.push({word:q,label:w});});
+  return rules;
+}
+/* Aplica las preferencias: quita los ingredientes opcionales que no quieres y marca como «no apta»
+   la receta cuyo ingrediente principal choca con una alergia, tu alimentación o algo que no te gusta. */
+function applyFoodPrefs(){
+  const rules=prefRules();
+  ALL_RECIPES.forEach(r=>{
+    if(!r._ingAll)r._ingAll=r.ingredients.slice();
+    const trs=['en','fr'].map(l=>REC_L[l]&&REC_L[l][r.id]).filter(Boolean);
+    trs.forEach(tr=>{if(tr.ingredients&&!tr._ingAll)tr._ingAll=tr.ingredients.slice();});
+    const strip=new Set(),why=new Set();
+    r._ingAll.forEach((line,i)=>{
+      const es=line.toLowerCase(),tl=trs.map(tr=>(tr._ingAll&&tr._ingAll[i]||'').toLowerCase()).join(' | ');
+      rules.forEach(ru=>{const hit=ru.re?ru.re.test(es):(es.includes(ru.word)||tl.includes(ru.word));
+        if(hit){if(isOptLine(line))strip.add(i);else why.add(ru.label);}});
+    });
+    rules.forEach(ru=>{if(ru.word&&((r.name||'').toLowerCase().includes(ru.word)))why.add(ru.label);});
+    r.ingredients=r._ingAll.filter((_,i)=>!strip.has(i));
+    trs.forEach(tr=>{if(tr._ingAll)tr.ingredients=tr._ingAll.filter((_,i)=>!strip.has(i));});
+    r._blocked=[...why];
+  });
+}
+function recipeOK(r){return !(r._blocked&&r._blocked.length);}
+applyFoodPrefs();
+
 const SEASON_GROUPS=[['dic','ene','feb'],['mar','abr','may'],['jun','jul','ago'],['sep','oct','nov']];
 function weekMenu(){
   const curId=MONTHS[new Date().getMonth()].id;
   const grp=SEASON_GROUPS.find(g=>g.includes(curId))||SEASON_GROUPS[0];
   const order=[curId,...grp.filter(x=>x!==curId)];
-  const comidas=[],cenas=[];
-  order.forEach(id=>{const m=MONTHS.find(m=>m.id===id);if(m){comidas.push(...m.comidas);cenas.push(...m.cenas);}});
-  comidas.push(EXPRESS.comidas[0]);
-  cenas.push(EXPRESS.cenas[0]);
-  return {comidas,cenas};
+  const rest=MONTHS.map(m=>m.id).filter(id=>!order.includes(id));
+  // Primero lo de temporada; si tus preferencias descartan alguna, se completa con otras recetas aptas
+  const build=meal=>{const out=[];const add=r=>{if(out.length<7&&recipeOK(r)&&!out.includes(r))out.push(r);};
+    order.forEach(id=>{const m=MONTHS.find(x=>x.id===id);if(m)m[meal].forEach(add);});
+    EXPRESS[meal].slice(0,1).forEach(add);
+    rest.forEach(id=>{const m=MONTHS.find(x=>x.id===id);if(m)m[meal].forEach(add);});
+    EXPRESS[meal].forEach(add);
+    return out;};
+  return {comidas:build('comidas'),cenas:build('cenas')};
 }
 function menuKey(){const d=new Date(),y=d.getFullYear(),s=new Date(y,0,1),w=Math.ceil(((d-s)/864e5+s.getDay()+1)/7);return 'cris_menu_w'+w+'_'+y;}
 function getMenuDone(){try{return JSON.parse(localStorage.getItem(menuKey())||'{}');}catch(e){return{};}}
@@ -1141,12 +1245,15 @@ function speak(t){
 }
 
 /* ── NAVEGACIÓN ── */
+let PREFS_NEXT='week';
 function go(v){
+  if(v==='week'&&!foodPrefs()){PREFS_NEXT='week';v='prefs';}
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('v-'+v).classList.add('active');
   window.scrollTo(0,0);
   if(v==='shopping')renderShop();
   if(v==='week')renderWeek();
+  if(v==='prefs'){fpDraft=null;renderPrefs();}
   if(v==='basicos')renderBasicos();
   if(v==='home')initHome();
   if(v==='test')renderPick(); // al volver de una receta, la sugerencia se recalcula
@@ -1206,6 +1313,7 @@ function renderRecipeList(){
       </div>
       <p class="recipe-desc">${r.desc}</p>
       <div class="tag-row">${r.tags.map(tg=>`<span class="tag">${tg}</span>`).join('')}</div>
+      ${recipeOK(r0)?'':`<span class="fp-badge">${t('fp_contains',{x:r0._blocked.join(', ')})}</span>`}
     </div>`;}).join('');
 }
 
@@ -1230,6 +1338,7 @@ function openRecipe(id,from){
   document.getElementById('detail-content').innerHTML=`
     <div class="card" style="text-align:center;margin-bottom:12px">
       <div style="font-size:2.8rem;margin-bottom:10px">${r.emoji}</div>
+      ${recipeOK(curRecipe)?'':`<div class="fp-badge" style="margin:0 0 10px">${t('fp_contains',{x:curRecipe._blocked.join(', ')})}</div>`}
       <div class="tag-row" style="justify-content:center">${r.tags.map(tg=>`<span class="tag">${tg}</span>`).join('')}
         <span class="badge b-time" style="font-size:.75rem;padding:4px 10px">${r.time}</span>
         <span class="badge b-budget" style="font-size:.75rem;padding:4px 10px">${r.budget}${t('per_person')}</span>
@@ -1379,8 +1488,8 @@ function pickFilter(){
   if(!list.length&&rem.length){list=rem;note=t('note_left');}
   if(!list.length){
     // Semana completada: el salvavidas también respeta tu respuesta si puede
-    const ex=EXPRESS[pickMeal].filter(pOK);
-    list=ex.length?ex:EXPRESS[pickMeal];
+    const safe=EXPRESS[pickMeal].filter(recipeOK),ex=safe.filter(pOK);
+    list=ex.length?ex:(safe.length?safe:EXPRESS[pickMeal]);
     note=t('note_complete');
   }
   return {list,note};
@@ -1414,13 +1523,52 @@ function renderPick(){
   el.innerHTML=`<div class="tabs">${chip('comidas',t('chip_lunch'))}${chip('cenas',t('chip_dinner'))}</div>`+body;
 }
 
+/* ── ALERGIAS Y GUSTOS ── */
+let fpDraft=null;
+function prefSummary(){
+  const p=foodPrefs();if(!p)return '';const lg=crisLang(),nm=(arr,id)=>{const a=arr.find(x=>x[0]===id);return a?(a[2][lg]||a[2].es):'';};
+  const out=[];if(p.diet&&p.diet!=='omni')out.push(nm(FP_DIETS,p.diet));
+  (p.allergies||[]).forEach(id=>out.push(t('fp_no')+' '+nm(FP_ALLERGENS,id).toLowerCase()));
+  (p.dislikes||[]).forEach(id=>out.push(t('fp_no')+' '+nm(FP_DISLIKES,id).toLowerCase()));
+  (p.custom||[]).forEach(w=>out.push(t('fp_no')+' '+w));
+  return out.join(' · ');
+}
+function renderPrefs(){
+  if(!fpDraft){const p=foodPrefs()||{};fpDraft={allergies:[...(p.allergies||[])],diet:p.diet||'omni',dislikes:[...(p.dislikes||[])],custom:[...(p.custom||[])]};}
+  const lg=crisLang(),d=fpDraft,esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const chips=(arr,key,warn)=>arr.map(a=>`<button class="fp-chip ${warn?'warn':''} ${d[key].includes(a[0])?'on':''}" onclick="fpToggle('${key}','${a[0]}')">${a[1]} ${a[2][lg]||a[2].es}</button>`).join('');
+  document.getElementById('prefs-body').innerHTML=`
+    <div class="card" style="margin-bottom:12px"><p>${t('fp_intro')}</p></div>
+    <div class="fp-sec"><div class="fp-h">${t('fp_all')}</div>
+      <div class="fp-chips">${chips(FP_ALLERGENS,'allergies',true)}</div></div>
+    <div class="fp-sec"><div class="fp-h">${t('fp_diet')}</div>
+      <div class="fp-chips">${FP_DIETS.map(a=>`<button class="fp-chip ${d.diet===a[0]?'on':''}" onclick="fpDraft.diet='${a[0]}';renderPrefs()">${a[1]} ${a[2][lg]||a[2].es}</button>`).join('')}</div></div>
+    <div class="fp-sec"><div class="fp-h">${t('fp_dis')}</div><div class="fp-hint">${t('fp_dis_hint')}</div>
+      <div class="fp-chips">${chips(FP_DISLIKES,'dislikes')}${d.custom.map((w,i)=>`<button class="fp-chip on" onclick="fpDraft.custom.splice(${i},1);renderPrefs()">✕ ${esc(w)}</button>`).join('')}</div>
+      <div class="fp-add"><input id="fp-in" maxlength="30" placeholder="${t('fp_custom_ph')}" onkeydown="if(event.key==='Enter')fpAdd()"><button onclick="fpAdd()">${t('fp_add')}</button></div></div>
+    <div class="fp-warn">${t('fp_warn')}</div>
+    <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="fpSave()">${t('fp_save')}</button>
+    <button class="btn btn-secondary" style="width:100%" onclick="fpDraft={allergies:[],diet:'omni',dislikes:[],custom:[]};fpSave()">${t('fp_none')}</button>`;
+}
+function fpToggle(key,id){const a=fpDraft[key],i=a.indexOf(id);if(i<0)a.push(id);else a.splice(i,1);beep(520,.05);renderPrefs();}
+function fpAdd(){const el=document.getElementById('fp-in');const w=(el.value||'').trim().toLowerCase();if(w.length>=3&&!fpDraft.custom.includes(w))fpDraft.custom.push(w);renderPrefs();}
+function fpSave(){
+  const inp=document.getElementById('fp-in');if(inp&&inp.value.trim())fpAdd();
+  try{localStorage.setItem('cris_food_prefs',JSON.stringify(fpDraft));}catch(e){}
+  fpDraft=null;applyFoodPrefs();vibrate(40);go(PREFS_NEXT||'week');
+}
+
 /* ── MENÚ SEMANAL ── */
 function renderWeek(){
   const w=weekMenu(),d=getMenuDone();
   const rem=w.comidas.filter(r=>!d[r.id]).length+w.cenas.filter(r=>!d[r.id]).length;
-  document.getElementById('week-banner').innerHTML=rem
-    ?`<p>${t('week_banner_rem',{n:rem})}</p>`
-    :`<p>${t('week_banner_done')}</p>`;
+  const sum=prefSummary(),n=Math.min(w.comidas.length,w.cenas.length);
+  document.getElementById('week-banner').innerHTML=(rem
+    ?`<p>${t('week_banner_rem',{n:rem,tot:w.comidas.length+w.cenas.length})}</p>`
+    :`<p>${t('week_banner_done')}</p>`)
+    +(sum?`<p style="font-size:.82rem;margin-top:6px;color:#1a6b64">${t('fp_adapted',{x:sum})}</p>`:'')
+    +(n<7?`<p style="font-size:.82rem;margin-top:6px">${t('fp_short',{n})}</p>`:'')
+    +`<button class="fp-edit" onclick="PREFS_NEXT='week';go('prefs')">${t('fp_edit')}</button>`;
   const row=r0=>{const r=recL(r0),done=!!d[r0.id];return `
     <div class="wk-row ${done?'wk-done':''}">
       <button class="wk-check" onclick="tickMenu('${r0.id}')">${done?'✓':''}</button>
@@ -1431,8 +1579,8 @@ function renderWeek(){
       </div>
     </div>`;};
   document.getElementById('week-list').innerHTML=
-    `<p class="section-label">${t('week_lunch7')}</p>`+w.comidas.map(row).join('')+
-    `<p class="section-label" style="margin-top:16px">${t('week_dinner7')}</p>`+w.cenas.map(row).join('');
+    `<p class="section-label">${t('week_lunch7',{n:w.comidas.length})}</p>`+w.comidas.map(row).join('')+
+    `<p class="section-label" style="margin-top:16px">${t('week_dinner7',{n:w.cenas.length})}</p>`+w.cenas.map(row).join('');
 }
 function tickMenu(id){
   beep(500,.1);vibrate(40);
