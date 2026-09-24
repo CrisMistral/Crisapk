@@ -384,7 +384,7 @@ const UI={
    ctx_s1:'Lève-toi et étire-toi. Relâche les épaules et respire profondément.',ctx_s2:'Bois un peu d’eau et regarde quelque chose au loin quelques secondes.',ctx_s3:'Note en un mot ce que tu viens de finir et ce que tu commences maintenant.'}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
-function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars){Object.keys(vars).forEach(x=>{if(vars[x]===''){s=s.split(', {'+x+'}').join('').split(' {'+x+'}').join('').split('{'+x+'} · ').join('');}});Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});}return s;}
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
 function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 

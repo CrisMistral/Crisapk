@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quico — Privacidad y aviso de salud</title>
+<style>
+:root{--teal:#26a69a;--teal-dark:#1a6b64;--mint:#e8f6f3}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--mint);color:#1d3532;line-height:1.65;letter-spacing:.01em}
+main{max-width:720px;margin:0 auto;padding:24px 20px 60px}
+h1{color:var(--teal-dark);font-size:1.6rem;margin:8px 0 4px}
+h2{color:var(--teal-dark);font-size:1.1rem;margin:26px 0 6px}
+.upd{color:#5f7f7a;font-size:.85rem;margin-bottom:18px}
+.card{background:#fff;border-radius:16px;padding:18px 20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(26,107,100,.08)}
+.langs{display:flex;gap:8px;margin-bottom:14px}
+.langs button{border:2px solid #b8e4dd;background:#fff;border-radius:10px;padding:6px 12px;font-weight:700;color:var(--teal-dark);cursor:pointer}
+.langs button.on{background:var(--teal);border-color:var(--teal);color:#fff}
+ul{padding-left:20px}li{margin-bottom:6px}
+a{color:var(--teal-dark)}
+.back{display:inline-block;margin-bottom:10px;text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← Quico</a>
+  <div class="langs"><button data-l="es">Español</button><button data-l="en">English</button><button data-l="fr">Français</button></div>
+  <div id="doc"></div>
+</main>
+<script>
+/* Email de contacto PROVISIONAL: cambiarlo cuando haya dominio o email definitivo */
+const CONTACT='contacto@tudominio.com';
+const UPDATED='2026-09-24';
+const DOC={
+es:`<h1>Privacidad y aviso de salud</h1><div class="upd">Última actualización: ${UPDATED}</div>
+<div class="card"><h2>En resumen</h2><ul>
+<li>No necesitas cuenta. No pedimos tu nombre, email ni teléfono.</li>
+<li>Todo lo que escribes o marcas se guarda <b>solo en tu dispositivo</b>.</li>
+<li>No hay publicidad, ni analítica, ni seguimiento.</li>
+<li>No vendemos ni compartimos datos, porque no los recogemos.</li></ul></div>
+<div class="card"><h2>Qué datos se guardan y dónde</h2>
+<p>La app guarda en el almacenamiento local de tu navegador o dispositivo: tus preferencias (idioma, nombre opcional, sonido, voz), tus áreas elegidas, tu progreso diario, tus intereses personalizados y tus notas. Estos datos no salen de tu dispositivo y no llegan a ningún servidor nuestro.</p>
+<p>Puedes hacer una copia desde el menú (Copia de seguridad) y borrarlo todo borrando los datos de la app o desinstalándola.</p></div>
+<div class="card"><h2>Servicios de terceros</h2>
+<p>Para mostrar las tipografías, la app puede descargarlas de Google Fonts. Como cualquier web, Google recibe entonces la dirección IP de tu dispositivo. La voz usa el motor de voz de tu propio dispositivo. Los recordatorios son locales.</p></div>
+<div class="card"><h2>Permisos</h2>
+<p>Notificaciones (solo si activas recordatorios), vibración y mantener la pantalla encendida durante los ejercicios. Puedes desactivarlos cuando quieras.</p></div>
+<div class="card"><h2>Aviso de salud</h2>
+<p>Quico es una herramienta de apoyo y bienestar. <b>No es un producto sanitario</b> y no diagnostica ni trata ninguna enfermedad. No sustituye a una profesional de la medicina, la psicología o la fisioterapia.</p>
+<p>Haz los ejercicios a tu ritmo y para si notas dolor, mareo o falta de aire. Si tienes una lesión, un embarazo o una enfermedad, consulta antes con una profesional.</p>
+<p><b>Si estás en peligro o piensas en hacerte daño, llama al 112 (emergencias) o al 024 (atención a la conducta suicida, España).</b></p></div>
+<div class="card"><h2>Menores</h2><p>La app no está dirigida a menores de 16 años.</p></div>
+<div class="card"><h2>Cambios y contacto</h2><p>Si cambiamos esta política, actualizaremos la fecha de arriba. Para cualquier duda: <a href="mailto:${CONTACT}">${CONTACT}</a></p></div>`,
+en:`<h1>Privacy and health notice</h1><div class="upd">Last updated: ${UPDATED}</div>
+<div class="card"><h2>In short</h2><ul>
+<li>No account needed. We don’t ask for your name, email or phone number.</li>
+<li>Everything you write or tick is stored <b>only on your device</b>.</li>
+<li>No ads, no analytics, no tracking.</li>
+<li>We don’t sell or share data, because we don’t collect it.</li></ul></div>
+<div class="card"><h2>What is stored and where</h2>
+<p>The app stores in your browser’s or device’s local storage: your preferences (language, optional name, sound, voice), your chosen areas, your daily progress, your custom interests and your notes. This data never leaves your device and never reaches any server of ours.</p>
+<p>You can make a copy from the menu (Backup) and delete everything by clearing the app’s data or uninstalling it.</p></div>
+<div class="card"><h2>Third-party services</h2>
+<p>To show its fonts, the app may download them from Google Fonts. As with any website, Google then receives your device’s IP address. The voice uses your device’s own speech engine. Reminders are local.</p></div>
+<div class="card"><h2>Permissions</h2>
+<p>Notifications (only if you turn on reminders), vibration and keeping the screen on during exercises. You can turn them off at any time.</p></div>
+<div class="card"><h2>Health notice</h2>
+<p>Quico is a support and wellbeing tool. <b>It is not a medical device</b> and does not diagnose or treat any condition. It does not replace a doctor, psychologist or physiotherapist.</p>
+<p>Exercise at your own pace and stop if you feel pain, dizziness or shortness of breath. If you have an injury, are pregnant or have a health condition, check with a professional first.</p>
+<p><b>If you are in danger or thinking of hurting yourself, call your local emergency number (112 in Europe, 911 in the US and Canada, 999 in the UK) or 988 (US Suicide & Crisis Lifeline).</b></p></div>
+<div class="card"><h2>Children</h2><p>The app is not intended for children under 16.</p></div>
+<div class="card"><h2>Changes and contact</h2><p>If we change this policy we will update the date above. Questions: <a href="mailto:${CONTACT}">${CONTACT}</a></p></div>`,
+fr:`<h1>Confidentialité et avertissement santé</h1><div class="upd">Dernière mise à jour : ${UPDATED}</div>
+<div class="card"><h2>En bref</h2><ul>
+<li>Pas besoin de compte. Nous ne demandons ni ton nom, ni ton email, ni ton téléphone.</li>
+<li>Tout ce que tu écris ou coches est enregistré <b>uniquement sur ton appareil</b>.</li>
+<li>Pas de publicité, pas d’analytique, pas de suivi.</li>
+<li>Nous ne vendons ni ne partageons de données, car nous n’en collectons pas.</li></ul></div>
+<div class="card"><h2>Quelles données et où</h2>
+<p>L’app enregistre dans le stockage local de ton navigateur ou appareil : tes préférences (langue, prénom facultatif, son, voix), tes domaines choisis, ta progression, tes centres d’intérêt personnalisés et tes notes. Ces données ne quittent pas ton appareil et n’arrivent sur aucun de nos serveurs.</p>
+<p>Tu peux faire une copie depuis le menu (Sauvegarde) et tout effacer en supprimant les données de l’app ou en la désinstallant.</p></div>
+<div class="card"><h2>Services tiers</h2>
+<p>Pour afficher ses polices, l’app peut les télécharger depuis Google Fonts. Comme pour tout site web, Google reçoit alors l’adresse IP de ton appareil. La voix utilise le moteur vocal de ton appareil. Les rappels sont locaux.</p></div>
+<div class="card"><h2>Autorisations</h2>
+<p>Notifications (seulement si tu actives les rappels), vibration et écran allumé pendant les exercices. Tu peux les désactiver quand tu veux.</p></div>
+<div class="card"><h2>Avertissement santé</h2>
+<p>Quico est un outil de soutien et de bien-être. <b>Ce n’est pas un dispositif médical</b> : il ne diagnostique ni ne traite aucune maladie. Il ne remplace pas une ou un médecin, psychologue ou kinésithérapeute.</p>
+<p>Fais les exercices à ton rythme et arrête-toi en cas de douleur, de vertige ou d’essoufflement. En cas de blessure, de grossesse ou de maladie, demande d’abord l’avis d’une ou d’un professionnel.</p>
+<p><b>Si tu es en danger ou si tu penses à te faire du mal, appelle le 112 (urgences) ou le 3114 (prévention du suicide, France).</b></p></div>
+<div class="card"><h2>Mineurs</h2><p>L’app ne s’adresse pas aux moins de 16 ans.</p></div>
+<div class="card"><h2>Modifications et contact</h2><p>Si nous modifions cette politique, nous mettrons à jour la date ci-dessus. Questions : <a href="mailto:${CONTACT}">${CONTACT}</a></p></div>`};
+function show(l){if(!DOC[l])l='es';document.documentElement.lang=l;document.getElementById('doc').innerHTML=DOC[l];document.querySelectorAll('.langs button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));}
+document.querySelectorAll('.langs button').forEach(b=>b.onclick=()=>show(b.dataset.l));
+let lang='es';try{const q=new URLSearchParams(location.search).get('lang');lang=q||localStorage.getItem('cris_lang')||'es';}catch(e){}
+show(lang);
+</script>
+</body>
+</html>

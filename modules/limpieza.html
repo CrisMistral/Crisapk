@@ -311,7 +311,7 @@ const UI={
    motivs:['✨ 15 minutes aujourd’hui = maison étincelante vendredi','🧠 Ton cerveau se repose quand l’espace est dégagé','💪 Une zone par jour. Rien de plus. Sans stress.','🎯 Tu n’as pas à tout faire. Juste celle d’aujourd’hui.','🌟 Chaque tâche finie est une petite victoire.','⏱️ Le minuteur travaille pour toi — il suffit de commencer.','🫂 Tu prends soin de ta maison et de toi. Ça compte.']}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
-function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars){Object.keys(vars).forEach(x=>{if(vars[x]===''){s=s.split(', {'+x+'}').join('').split(' {'+x+'}').join('').split('{'+x+'} · ').join('');}});Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});}return s;}
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
 /* Traducción de zonas y tareas (el emoji y la duración vienen del dato ES) */
 const ZONES_L={

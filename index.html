@@ -375,6 +375,10 @@ body.mod-open #menuBtn{display:none;}
 .lang-row button.on::after{content:'✓';float:right;color:var(--teal);}
 
 .calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
+.menu-extra{width:100%;margin-top:10px;border:2px solid var(--mint-mid);background:var(--white-card,#fff);color:var(--teal-dark);border-radius:14px;padding:11px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;}
+.backup-box{display:none;padding:8px 2px 0}.backup-box.open{display:block}
+.backup-row{display:flex;gap:8px;margin-top:8px}
+.backup-row button{flex:1;border:none;background:var(--mint-mid);color:var(--teal-dark);border-radius:12px;padding:10px 6px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer}
 </style>
 </head>
 <body>
@@ -386,7 +390,7 @@ body.mod-open #menuBtn{display:none;}
 <!-- Pantalla 1: solo HOY -->
 <div id="dashboard">
   <div class="hero">
-    <div class="greeting-row" id="greeting">¡Hola, Cris!</div>
+    <div class="greeting-row" id="greeting">¡Hola!</div>
     <div class="hero-sub" data-i18n="hero_sub">¿en qué te ayudo hoy?</div>
   </div>
 
@@ -418,7 +422,7 @@ body.mod-open #menuBtn{display:none;}
 <div id="drawerBg" onclick="closeDrawer()"></div>
 <aside id="drawer">
   <div class="dw-head">
-    <span class="dw-title" data-i18n="menu_title">🌿 Menú de Cris</span>
+    <span class="dw-title" data-i18n="menu_title">🌿 Quico</span>
     <button class="dw-close" aria-label="Cerrar menú" data-i18n-aria="menu_close" onclick="closeDrawer()">✕</button>
   </div>
 
@@ -441,7 +445,7 @@ body.mod-open #menuBtn{display:none;}
       <div class="nt-row"><span data-i18n="notif_night">🌙 Rutina nocturna</span><input type="time" id="nt-n" value="21:30" onchange="saveNotifTimes()"></div>
       <div class="cfg-note" data-i18n="notif_hint">Suenan con la app abierta o instalada en la pantalla de inicio</div>
     </div>
-    <div class="nt-row" style="margin-bottom:12px"><span data-i18n="cfg_name">🙂 Tu nombre</span><input type="text" id="nameInput" maxlength="18" placeholder="Cris" oninput="saveName(this.value)" style="width:130px;border:2px solid var(--mint-mid);border-radius:10px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark);background:#fff"></div>
+    <div class="nt-row" style="margin-bottom:12px"><span data-i18n="cfg_name">🙂 Tu nombre</span><input type="text" id="nameInput" maxlength="18" placeholder="…" oninput="saveName(this.value)" style="width:130px;border:2px solid var(--mint-mid);border-radius:10px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark);background:#fff"></div>
     <button id="calmBtn" onclick="toggleCalm()">🕯️ Reducir estímulos</button>
     <div class="cfg-chips">
       <button id="c-voice" onclick="toggleCfg('voice')" data-i18n="cfg_voice">🗣️ Voz</button>
@@ -452,9 +456,16 @@ body.mod-open #menuBtn{display:none;}
   </div>
 
   <button id="tourBtn" onclick="closeDrawer();setTimeout(startOnboard,320);"><span data-i18n="ob_replay">🦘 Ver el recorrido</span></button>
+  <button id="backupBtn" class="menu-extra" onclick="document.getElementById('backupBox').classList.toggle('open')"><span data-i18n="backup_btn">💾 Copia de seguridad</span></button>
+  <div id="backupBox" class="backup-box">
+    <div class="cfg-note" data-i18n="backup_hint">Guarda un archivo con tus datos para pasarlos a otro móvil o no perderlos.</div>
+    <div class="backup-row"><button onclick="exportData()" data-i18n="backup_export">⬇️ Guardar copia</button><button onclick="document.getElementById('importFile').click()" data-i18n="backup_import">⬆️ Recuperar copia</button></div>
+    <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importData(this.files[0]);this.value=''">
+  </div>
+  <button class="menu-extra" onclick="location.href='privacidad.html?lang='+crisLang()"><span data-i18n="privacy_btn">🔒 Privacidad y aviso de salud</span></button>
 
   <div class="cfg-note" data-i18n="drawer_footer" style="margin-top:22px;line-height:1.7;">
-    Cris · tu compañera de cada día 💚
+    Quico · tu compañero cada día 💚
   </div>
 </aside>
 </div>
@@ -490,6 +501,7 @@ const I18N={
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
   drawer_footer:'Quico · tu compañero cada día 💚',
+  backup_btn:'💾 Copia de seguridad',backup_export:'⬇️ Guardar copia',backup_import:'⬆️ Recuperar copia',backup_hint:'Guarda un archivo con tus datos para pasarlos a otro móvil o no perderlos.',backup_ok:'Copia recuperada. La app se va a recargar.',backup_confirm:'Esto sustituirá tus datos actuales por los de la copia. ¿Seguir?',backup_bad:'Ese archivo no parece una copia de Quico.',privacy_btn:'🔒 Privacidad y aviso de salud',
   day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia', drop:' Soltar', drop_title:'Soltar el móvil y cambiar de tarea', drop_menu:'📴 Soltar el móvil',
   greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
@@ -552,6 +564,7 @@ const I18N={
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
   drawer_footer:'Quico · your everyday companion 💚',
+  backup_btn:'💾 Backup',backup_export:'⬇️ Save a copy',backup_import:'⬆️ Restore a copy',backup_hint:'Save a file with your data to move it to another phone or keep it safe.',backup_ok:'Copy restored. The app will reload.',backup_confirm:'This will replace your current data with the copy. Continue?',backup_bad:'That file doesn’t look like a Quico backup.',privacy_btn:'🔒 Privacy and health notice',
   day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit', drop:' Drop it', drop_title:'Put the phone down and switch tasks', drop_menu:'📴 Put the phone down',
   greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
@@ -614,6 +627,7 @@ const I18N={
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
   drawer_footer:'Quico · ton compagnon de chaque jour 💚',
+  backup_btn:'💾 Sauvegarde',backup_export:'⬇️ Enregistrer une copie',backup_import:'⬆️ Restaurer une copie',backup_hint:'Enregistre un fichier avec tes données pour les passer sur un autre téléphone ou ne pas les perdre.',backup_ok:'Copie restaurée. L’app va se recharger.',backup_confirm:'Cela remplacera tes données actuelles par celles de la copie. Continuer ?',backup_bad:'Ce fichier ne ressemble pas à une sauvegarde de Quico.',privacy_btn:'🔒 Confidentialité et avertissement santé',
   day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence', drop:' Lâcher', drop_title:'Lâcher le téléphone et changer de tâche', drop_menu:'📴 Lâcher le téléphone',
   greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
@@ -670,7 +684,7 @@ const I18N={
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return I18N[l]?l:'es';}
 function L(){return I18N[crisLang()];}
-function t(key,vars){let s=L()[key];if(s===undefined)s=I18N.es[key];if(s===undefined)return key;if(vars)Object.keys(vars).forEach(k=>{s=s.split('{'+k+'}').join(vars[k]);});return s;}
+function t(key,vars){let s=L()[key];if(s===undefined)s=I18N.es[key];if(s===undefined)return key;if(vars){Object.keys(vars).forEach(k=>{if(vars[k]===''){s=s.split(', {'+k+'}').join('').split(' {'+k+'}').join('').split('{'+k+'} · ').join('');}});Object.keys(vars).forEach(k=>{s=s.split('{'+k+'}').join(vars[k]);});}return s;}
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
 function applyStaticI18n(){
   document.documentElement.lang=crisLang();
@@ -952,8 +966,8 @@ function renderDayEdit(){
 /* ── AJUSTES GLOBALES (voz/sonido/vibración/reducir estímulos) ── */
 function getCfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function setCfgStore(c){try{localStorage.setItem('cris_cfg',JSON.stringify(c));}catch(e){}}
-/* Nombre configurable: la app deja de estar «pegada» a una persona (por defecto Cris) */
-function cfgName(){const n=(getCfg().name||'').trim();return n||'Cris';}
+/* Nombre configurable: la app deja de estar «pegada» a una persona (sin nombre: saluda sin nombre) */
+function cfgName(){return (getCfg().name||'').trim();}
 let _nameSaveT=null;
 function saveName(v){const c=getCfg();c.name=(v||'').slice(0,18);setCfgStore(c);clearTimeout(_nameSaveT);_nameSaveT=setTimeout(()=>{applyStaticI18n();setGreeting();renderNotif();},350);}
 function toggleCfg(k){const c=getCfg();c[k]=c[k]===false;setCfgStore(c);renderCfg();}
@@ -1315,6 +1329,23 @@ function buildModuleList(){
 }
 buildModuleList();
 
+/* ── COPIA DE SEGURIDAD: todos los datos cris_* a un archivo, y de vuelta ── */
+function exportData(){
+  const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('cris_')===0)data[k]=localStorage.getItem(k);}
+  const blob=new Blob([JSON.stringify({app:'quico',v:1,date:new Date().toISOString(),data},null,1)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='quico-copia-'+dayKey(0)+'.json';document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+function importData(file){
+  if(!file)return;const r=new FileReader();
+  r.onload=()=>{let o;try{o=JSON.parse(r.result);}catch(e){o=null;}
+    if(!o||o.app!=='quico'||!o.data||typeof o.data!=='object'){alert(t('backup_bad'));return;}
+    if(!confirm(t('backup_confirm')))return;
+    for(let i=localStorage.length-1;i>=0;i--){const k=localStorage.key(i);if(k&&k.indexOf('cris_')===0)localStorage.removeItem(k);}
+    Object.keys(o.data).forEach(k=>{if(k.indexOf('cris_')===0)try{localStorage.setItem(k,String(o.data[k]));}catch(e){}});
+    alert(t('backup_ok'));location.reload();};
+  r.readAsText(file);
+}
 /* ── RECORRIDO DE BIENVENIDA (tour real: foco + flecha sobre cada elemento) ── */
 const ONBOARD={
  es:{skip:'Saltar',next:'Siguiente →',start:'¡A jugar!',steps:[

@@ -229,7 +229,7 @@ const UI={
    motivs:['🌱 10 minutes par jour construisent une compétence en un an.','🎯 Une seule activité. Juste aujourd’hui. C’est tout.','🧠 Apprendre du nouveau, c’est de la bonne dopamine.','✨ Pas besoin que ce soit parfait — juste que ce soit fait.','💚 Ta curiosité est un muscle : aujourd’hui tu l’entraînes.','🐾 Pas à pas, on va loin.','🔥 Tu es déjà là. C’est la moitié du travail.']}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
-function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars)Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});return s;}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars){Object.keys(vars).forEach(x=>{if(vars[x]===''){s=s.split(', {'+x+'}').join('').split(' {'+x+'}').join('').split('{'+x+'} · ').join('');}});Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});}return s;}
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
 
 /* Traducción del contenido de las aficiones (nombre + días). El emoji, mins y
