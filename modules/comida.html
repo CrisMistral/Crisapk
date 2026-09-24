@@ -160,6 +160,8 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .fp-badge{display:inline-block;font-size:.72rem;font-weight:700;color:#b91c1c;background:#fef2f2;border-radius:10px;padding:3px 8px;margin-top:6px}
 .pt-cat{font-size:.78rem;font-weight:800;color:#4b6b66;text-transform:uppercase;letter-spacing:.04em;margin:12px 0 6px}
 .pt-go{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc(100% - 32px);max-width:440px;z-index:20;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.fz-tag{display:inline-block;font-size:.7rem;font-weight:700;color:#0369a1;background:#e0f2fe;border-radius:8px;padding:1px 7px;margin-left:4px;white-space:nowrap}
+.fz-tag:not(.on){color:#64748b;background:#f1f5f9}
 .pt-miss{font-size:.78rem;color:#7c2d12;margin-top:4px}
 .fp-edit{border:none;background:none;color:#1a6b64;font-weight:700;font-family:'Outfit',sans-serif;text-decoration:underline;cursor:pointer;padding:6px 0 0;font-size:.85rem}
 </style>
@@ -296,7 +298,7 @@ function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.backgr
 
 /* ─── IDIOMAS (es · en · fr) ─── */
 const UI={
- es:{pt_see1:'✅ Ver la receta que puedes hacer ↓',pt_see:'✅ Ver {n} recetas que puedes hacer ↓',pt_see0:'Ver lo que te falta ↓',pt_h:'Con lo que tengo',pt_intro:'Toca lo que tienes en casa y te digo qué puedes cocinar. Aceite, sal, ajo y especias los doy por hechos.',pt_ready:'✅ Puedes hacerlas ya ({n})',pt_miss1:'🛒 Te falta solo 1 cosa',pt_miss:'falta: {x}',pt_none:'Aún no llega para una receta entera. Marca algo más o mira abajo lo que te falta.',pt_from_shop:'🛒 Marcar lo que he comprado',pt_clear:'↺ Empezar de cero',pt_have:'Lo que tengo',pt_count:'{n} marcados',nc_pantry:'CON LO QUE TENGO',nc_pantry_sub:'Dime qué hay en casa y te digo qué cocinar',pt_all20:'Todas en 20 min o menos',fp_no:'sin',fp_h:'Alergias y gustos',fp_intro:'Antes de preparar tu menú: marca lo que no puedes o no quieres comer. Puedes cambiarlo cuando quieras.',fp_all:'Alergias e intolerancias',fp_diet:'Tipo de alimentación',fp_dis:'No quiero que aparezca',fp_dis_hint:'Toca o escribe lo que sea. Si es opcional en una receta, solo se quita; si es el ingrediente principal, cambiamos la receta.',fp_custom_ph:'Escribe lo que sea: pepino, cilantro…',fp_add:'Añadir',fp_save:'✓ Guardar y ver mi menú',fp_none:'Sin alergias · como de todo',fp_warn:'⚠️ Filtramos por ingredientes, pero revisa siempre las etiquetas: no podemos garantizar trazas.',fp_adapted:'Adaptado a ti: {x}',fp_edit:'⚙️ Alergias y gustos',fp_contains:'⚠️ No apta para ti: {x}',fp_short:'Con tus preferencias hay {n} recetas para esta semana. Puedes repetir las que más te gusten.',home_h:'🍳 Comer Rico',home_sub:'De temporada · plato Harvard · a tu gusto',
+ es:{fz_h:'¿Fresco o congelado?',fz_hint:'Lo congelado no se estropea: si un día no cocinas, no pasa nada.',fz_fresh:'🥬 Fresco',fz_mix:'🔀 Mitad y mitad',fz_frozen:'❄️ Congelado siempre que se pueda',fz_mix_sub:'fresco los 3 primeros días, congelado el resto',fz_use:'usa congelado',fz_ok:'vale congelado',fz_tip:'❄️ Con congelado: échalo directo, sin descongelar ni trocear, y súmale 2–3 min. Si son espinacas, deja que suelten el agua antes de seguir.',fz_week_mix:'🥬 Cocina primero las de arriba: llevan lo fresco. Las de abajo usan ❄️ congelado y aguantan.',fz_shop_on:'❄️ Lo congelado aguanta meses: si esta semana no lo usas, no se tira nada.',fz_shop_off:'¿Se te pone mala la verdura? Pásate a congelado:',pt_see1:'✅ Ver la receta que puedes hacer ↓',pt_see:'✅ Ver {n} recetas que puedes hacer ↓',pt_see0:'Ver lo que te falta ↓',pt_h:'Con lo que tengo',pt_intro:'Toca lo que tienes en casa y te digo qué puedes cocinar. Fresco o congelado cuenta igual ❄️. Aceite, sal, ajo y especias los doy por hechos.',pt_ready:'✅ Puedes hacerlas ya ({n})',pt_miss1:'🛒 Te falta solo 1 cosa',pt_miss:'falta: {x}',pt_none:'Aún no llega para una receta entera. Marca algo más o mira abajo lo que te falta.',pt_from_shop:'🛒 Marcar lo que he comprado',pt_clear:'↺ Empezar de cero',pt_have:'Lo que tengo',pt_count:'{n} marcados',nc_pantry:'CON LO QUE TENGO',nc_pantry_sub:'Dime qué hay en casa y te digo qué cocinar',pt_all20:'Todas en 20 min o menos',fp_no:'sin',fp_h:'Alergias y gustos',fp_intro:'Antes de preparar tu menú: marca lo que no puedes o no quieres comer. Puedes cambiarlo cuando quieras.',fp_all:'Alergias e intolerancias',fp_diet:'Tipo de alimentación',fp_dis:'No quiero que aparezca',fp_dis_hint:'Toca o escribe lo que sea. Si es opcional en una receta, solo se quita; si es el ingrediente principal, cambiamos la receta.',fp_custom_ph:'Escribe lo que sea: pepino, cilantro…',fp_add:'Añadir',fp_save:'✓ Guardar y ver mi menú',fp_none:'Sin alergias · como de todo',fp_warn:'⚠️ Filtramos por ingredientes, pero revisa siempre las etiquetas: no podemos garantizar trazas.',fp_adapted:'Adaptado a ti: {x}',fp_edit:'⚙️ Alergias y gustos',fp_contains:'⚠️ No apta para ti: {x}',fp_short:'Con tus preferencias hay {n} recetas para esta semana. Puedes repetir las que más te gusten.',home_h:'🍳 Comer Rico',home_sub:'De temporada · plato Harvard · a tu gusto',
   nc_pick:'¿QUÉ COMO HOY?',nc_pick_sub:'2 preguntas y te lo digo',nc_week:'MENÚ DE LA SEMANA',nc_week_sub:'14 recetas · 1 sola compra',nc_shop:'LISTA DE LA COMPRA',nc_shop_sub:'Una compra · toda la semana',nc_basics:'COMIDAS RÁPIDAS',nc_basics_sub:'Recetas de 10 min con despensa',nc_months:'RECETAS DE TEMPORADA',nc_months_sub:'Recetas de temporada todo el año',
   months_h:'Elige el mes',tab_lunch:'☀️ Comidas',tab_dinner:'🌙 Cenas',test_h:'¿Qué como hoy?',week_h:'Menú de la semana',basics_h:'Comidas rápidas',shop_h:'Lista de Compras',
   shop_intro:'Una sola compra para las 14 recetas de la semana + básicos salvavidas · 1 persona. Marca según vas comprando 💚',btn_share:'📱 Compartir',btn_clear:'↺ Borrar marcas',
@@ -314,7 +316,7 @@ const UI={
   basics_intro:'Con estos básicos siempre en casa nunca te quedas sin comer. Recetas de ~10 minutos, cero pensar ⚡',basics_recipes:'Recetas salvavidas',basics_pantry:'Tu despensa salvavidas',all_pantry:'todo de despensa',
   shop_week_label:'📅 La compra de la semana — cubre las 14 recetas',in_n_recipes:'en {n} recetas del menú',shop_extras:'➕ Extras que añadiste tú',btn_remove:'✕ quitar',shop_basics_label:'🧺 Básicos salvavidas (revisa que no falten)',
   share_title:'🛒 Compra de la semana — {u}\n',share_basics:'🧺 BÁSICOS SALVAVIDAS',share_in:'(en {n} recetas)',share_share_title:'Lista de compras {u}',copied:'📋 Lista copiada 💚'},
- en:{pt_see1:'✅ See the recipe you can make ↓',pt_see:'✅ See {n} recipes you can make ↓',pt_see0:'See what you’re missing ↓',pt_h:'With what I have',pt_intro:'Tap what you have at home and I’ll tell you what you can cook. Oil, salt, garlic and spices are taken for granted.',pt_ready:'✅ You can make these now ({n})',pt_miss1:'🛒 Missing just 1 thing',pt_miss:'missing: {x}',pt_none:'Not enough for a full recipe yet. Tick something else or see below what you’re missing.',pt_from_shop:'🛒 Tick what I bought',pt_clear:'↺ Start over',pt_have:'What I have',pt_count:'{n} ticked',nc_pantry:'WITH WHAT I HAVE',nc_pantry_sub:'Tell me what’s at home and I’ll tell you what to cook',pt_all20:'All in 20 min or less',fp_no:'no',fp_h:'Allergies and tastes',fp_intro:'Before we make your menu: tick what you can’t or don’t want to eat. You can change it anytime.',fp_all:'Allergies and intolerances',fp_diet:'Diet',fp_dis:'I don’t want to see',fp_dis_hint:'Tap or type anything. If it’s optional in a recipe, it’s just removed; if it’s the main ingredient, we swap the recipe.',fp_custom_ph:'Type anything: cucumber, coriander…',fp_add:'Add',fp_save:'✓ Save and see my menu',fp_none:'No allergies · I eat everything',fp_warn:'⚠️ We filter by ingredients, but always check labels: we can’t rule out traces.',fp_adapted:'Adapted to you: {x}',fp_edit:'⚙️ Allergies and tastes',fp_contains:'⚠️ Not for you: {x}',fp_short:'With your preferences there are {n} recipes this week. Repeat the ones you like best.',home_h:'🍳 Eat Well',home_sub:'Seasonal · Harvard plate',
+ en:{fz_h:'Fresh or frozen?',fz_hint:'Frozen doesn’t go off: if you skip cooking one day, nothing is lost.',fz_fresh:'🥬 Fresh',fz_mix:'🔀 Half and half',fz_frozen:'❄️ Frozen whenever possible',fz_mix_sub:'fresh the first 3 days, frozen the rest',fz_use:'use frozen',fz_ok:'frozen is fine',fz_tip:'❄️ With frozen: add it straight in, no thawing or chopping, and add 2–3 min. For spinach, let the water cook off first.',fz_week_mix:'🥬 Cook the top ones first: they use the fresh food. The bottom ones use ❄️ frozen and keep.',fz_shop_on:'❄️ Frozen keeps for months: if you don’t use it this week, nothing goes to waste.',fz_shop_off:'Does your veg go off? Switch to frozen:',pt_see1:'✅ See the recipe you can make ↓',pt_see:'✅ See {n} recipes you can make ↓',pt_see0:'See what you’re missing ↓',pt_h:'With what I have',pt_intro:'Tap what you have at home and I’ll tell you what you can cook. Fresh or frozen counts the same ❄️. Oil, salt, garlic and spices are taken for granted.',pt_ready:'✅ You can make these now ({n})',pt_miss1:'🛒 Missing just 1 thing',pt_miss:'missing: {x}',pt_none:'Not enough for a full recipe yet. Tick something else or see below what you’re missing.',pt_from_shop:'🛒 Tick what I bought',pt_clear:'↺ Start over',pt_have:'What I have',pt_count:'{n} ticked',nc_pantry:'WITH WHAT I HAVE',nc_pantry_sub:'Tell me what’s at home and I’ll tell you what to cook',pt_all20:'All in 20 min or less',fp_no:'no',fp_h:'Allergies and tastes',fp_intro:'Before we make your menu: tick what you can’t or don’t want to eat. You can change it anytime.',fp_all:'Allergies and intolerances',fp_diet:'Diet',fp_dis:'I don’t want to see',fp_dis_hint:'Tap or type anything. If it’s optional in a recipe, it’s just removed; if it’s the main ingredient, we swap the recipe.',fp_custom_ph:'Type anything: cucumber, coriander…',fp_add:'Add',fp_save:'✓ Save and see my menu',fp_none:'No allergies · I eat everything',fp_warn:'⚠️ We filter by ingredients, but always check labels: we can’t rule out traces.',fp_adapted:'Adapted to you: {x}',fp_edit:'⚙️ Allergies and tastes',fp_contains:'⚠️ Not for you: {x}',fp_short:'With your preferences there are {n} recipes this week. Repeat the ones you like best.',home_h:'🍳 Eat Well',home_sub:'Seasonal · Harvard plate',
   nc_pick:'WHAT DO I EAT TODAY?',nc_pick_sub:'2 questions and I\u2019ll tell you',nc_week:'THIS WEEK\u2019S MENU',nc_week_sub:'14 recipes · one single shop',nc_shop:'SHOPPING LIST',nc_shop_sub:'One shop · the whole week',nc_basics:'QUICK MEALS',nc_basics_sub:'10-min recipes from your pantry',nc_months:'SEASONAL RECIPES',nc_months_sub:'Seasonal recipes all year round',
   months_h:'Choose the month',tab_lunch:'☀️ Lunches',tab_dinner:'🌙 Dinners',test_h:'What do I eat today?',week_h:'This week\u2019s menu',basics_h:'Quick meals',shop_h:'Shopping List',
   shop_intro:'One single shop for the week\u2019s 14 recipes + lifesaver basics · 1 person. Tick as you shop 💚',btn_share:'📱 Share',btn_clear:'↺ Clear ticks',
@@ -332,7 +334,7 @@ const UI={
   basics_intro:'With these basics always at home you never run out of food. ~10-minute recipes, zero thinking ⚡',basics_recipes:'Lifesaver recipes',basics_pantry:'Your lifesaver pantry',all_pantry:'all from the pantry',
   shop_week_label:'📅 This week\u2019s shop — covers all 14 recipes',in_n_recipes:'in {n} menu recipes',shop_extras:'➕ Extras you added',btn_remove:'✕ remove',shop_basics_label:'🧺 Lifesaver basics (check you\u2019re not out)',
   share_title:'🛒 This week\u2019s shop — {u}\n',share_basics:'🧺 LIFESAVER BASICS',share_in:'(in {n} recipes)',share_share_title:'{u} shopping list',copied:'📋 List copied 💚'},
- fr:{pt_see1:'✅ Voir la recette possible ↓',pt_see:'✅ Voir {n} recettes possibles ↓',pt_see0:'Voir ce qui manque ↓',pt_h:'Avec ce que j’ai',pt_intro:'Touche ce que tu as à la maison et je te dis quoi cuisiner. Huile, sel, ail et épices sont considérés comme acquis.',pt_ready:'✅ Tu peux les faire tout de suite ({n})',pt_miss1:'🛒 Il ne manque qu’1 chose',pt_miss:'manque : {x}',pt_none:'Pas encore de quoi faire une recette entière. Coche autre chose ou regarde en bas ce qui manque.',pt_from_shop:'🛒 Cocher ce que j’ai acheté',pt_clear:'↺ Recommencer',pt_have:'Ce que j’ai',pt_count:'{n} cochés',nc_pantry:'AVEC CE QUE J’AI',nc_pantry_sub:'Dis-moi ce qu’il y a chez toi et je te dis quoi cuisiner',pt_all20:'Toutes en 20 min ou moins',fp_no:'sans',fp_h:'Allergies et goûts',fp_intro:'Avant de préparer ton menu : coche ce que tu ne peux pas ou ne veux pas manger. Tu peux changer quand tu veux.',fp_all:'Allergies et intolérances',fp_diet:'Alimentation',fp_dis:'Je ne veux pas voir',fp_dis_hint:'Touche ou écris ce que tu veux. Si c’est facultatif dans une recette, on l’enlève ; si c’est l’ingrédient principal, on change la recette.',fp_custom_ph:'Écris ce que tu veux : concombre, coriandre…',fp_add:'Ajouter',fp_save:'✓ Enregistrer et voir mon menu',fp_none:'Pas d’allergie · je mange de tout',fp_warn:'⚠️ On filtre par ingrédients, mais vérifie toujours les étiquettes : on ne peut pas exclure les traces.',fp_adapted:'Adapté à toi : {x}',fp_edit:'⚙️ Allergies et goûts',fp_contains:'⚠️ Pas pour toi : {x}',fp_short:'Avec tes préférences, il y a {n} recettes cette semaine. Refais celles que tu préfères.',home_h:'🍳 Bien Manger',home_sub:'De saison · assiette Harvard',
+ fr:{fz_h:'Frais ou surgelé ?',fz_hint:'Le surgelé ne s’abîme pas : si un jour tu ne cuisines pas, ce n’est pas grave.',fz_fresh:'🥬 Frais',fz_mix:'🔀 Moitié-moitié',fz_frozen:'❄️ Surgelé dès que possible',fz_mix_sub:'frais les 3 premiers jours, surgelé ensuite',fz_use:'prends du surgelé',fz_ok:'surgelé possible',fz_tip:'❄️ Avec du surgelé : mets-le directement, sans décongeler ni couper, et ajoute 2–3 min. Pour les épinards, laisse l’eau s’évaporer d’abord.',fz_week_mix:'🥬 Cuisine d’abord celles du haut : elles utilisent le frais. Celles du bas utilisent du ❄️ surgelé et se gardent.',fz_shop_on:'❄️ Le surgelé se garde des mois : si tu ne l’utilises pas cette semaine, rien n’est perdu.',fz_shop_off:'Tes légumes s’abîment ? Passe au surgelé :',pt_see1:'✅ Voir la recette possible ↓',pt_see:'✅ Voir {n} recettes possibles ↓',pt_see0:'Voir ce qui manque ↓',pt_h:'Avec ce que j’ai',pt_intro:'Touche ce que tu as à la maison et je te dis quoi cuisiner. Frais ou surgelé, c’est pareil ❄️. Huile, sel, ail et épices sont considérés comme acquis.',pt_ready:'✅ Tu peux les faire tout de suite ({n})',pt_miss1:'🛒 Il ne manque qu’1 chose',pt_miss:'manque : {x}',pt_none:'Pas encore de quoi faire une recette entière. Coche autre chose ou regarde en bas ce qui manque.',pt_from_shop:'🛒 Cocher ce que j’ai acheté',pt_clear:'↺ Recommencer',pt_have:'Ce que j’ai',pt_count:'{n} cochés',nc_pantry:'AVEC CE QUE J’AI',nc_pantry_sub:'Dis-moi ce qu’il y a chez toi et je te dis quoi cuisiner',pt_all20:'Toutes en 20 min ou moins',fp_no:'sans',fp_h:'Allergies et goûts',fp_intro:'Avant de préparer ton menu : coche ce que tu ne peux pas ou ne veux pas manger. Tu peux changer quand tu veux.',fp_all:'Allergies et intolérances',fp_diet:'Alimentation',fp_dis:'Je ne veux pas voir',fp_dis_hint:'Touche ou écris ce que tu veux. Si c’est facultatif dans une recette, on l’enlève ; si c’est l’ingrédient principal, on change la recette.',fp_custom_ph:'Écris ce que tu veux : concombre, coriandre…',fp_add:'Ajouter',fp_save:'✓ Enregistrer et voir mon menu',fp_none:'Pas d’allergie · je mange de tout',fp_warn:'⚠️ On filtre par ingrédients, mais vérifie toujours les étiquettes : on ne peut pas exclure les traces.',fp_adapted:'Adapté à toi : {x}',fp_edit:'⚙️ Allergies et goûts',fp_contains:'⚠️ Pas pour toi : {x}',fp_short:'Avec tes préférences, il y a {n} recettes cette semaine. Refais celles que tu préfères.',home_h:'🍳 Bien Manger',home_sub:'De saison · assiette Harvard',
   nc_pick:'JE MANGE QUOI AUJOURD\u2019HUI ?',nc_pick_sub:'2 questions et je te le dis',nc_week:'MENU DE LA SEMAINE',nc_week_sub:'14 recettes · une seule course',nc_shop:'LISTE DE COURSES',nc_shop_sub:'Une course · toute la semaine',nc_basics:'REPAS RAPIDES',nc_basics_sub:'Recettes de 10 min avec le placard',nc_months:'RECETTES DE SAISON',nc_months_sub:'Des recettes de saison toute l\u2019année',
   months_h:'Choisis le mois',tab_lunch:'☀️ Déjeuners',tab_dinner:'🌙 Dîners',test_h:'Je mange quoi aujourd\u2019hui ?',week_h:'Menu de la semaine',basics_h:'Repas rapides',shop_h:'Liste de Courses',
   shop_intro:'Une seule course pour les 14 recettes de la semaine + basiques de dépannage · 1 personne. Coche au fur et à mesure 💚',btn_share:'📱 Partager',btn_clear:'↺ Effacer les coches',
@@ -1227,12 +1229,12 @@ function menuKey(){const d=new Date(),y=d.getFullYear(),s=new Date(y,0,1),w=Math
 function getMenuDone(){try{return JSON.parse(localStorage.getItem(menuKey())||'{}');}catch(e){return{};}}
 function setMenuDone(d){try{localStorage.setItem(menuKey(),JSON.stringify(d));}catch(e){}}
 function remainingMenu(){const w=weekMenu(),d=getMenuDone();return {comidas:w.comidas.filter(r=>!d[r.id]),cenas:w.cenas.filter(r=>!d[r.id])};}
-function ingrLine(r){
+function ingrLine(r,fz){
   const seen={},out=[];
   r.ingredients.forEach(i=>{
     if(PANTRY_RE.test(i))return;
-    const n=normIngr(i).toLowerCase();
-    if(!seen[n]){seen[n]=1;out.push(normL(n)||n);}
+    const z=fz&&lineFz(i),n=z?FZ[z].es.toLowerCase():normIngr(i).toLowerCase();
+    if(!seen[n]){seen[n]=1;out.push((z?'❄️ ':'')+(normL(n)||n));}
   });
   return out.length?out.join(' · '):t('all_pantry');
 }
@@ -1348,7 +1350,7 @@ function openRecipe(id,from){
   backView=from||'month';
   curRecipe=findRecipe(id);
   if(!curRecipe)return;
-  const r=recL(curRecipe);
+  const r=recL(curRecipe),fzOn=recipeFz(curRecipe);
   document.getElementById('detail-title').textContent=r.name;
   document.getElementById('detail-back').onclick=()=>go(backView);
   document.getElementById('detail-content').innerHTML=`
@@ -1370,8 +1372,9 @@ function openRecipe(id,from){
     <div class="tip-box">💡 ${r.tip}</div>
     <p class="section-label">${t('ingr_title')}</p>
     <div class="card" style="margin-bottom:14px">
-      <ul class="ingr-list">${r.ingredients.map(i=>`<li>${i}</li>`).join('')}</ul>
+      <ul class="ingr-list">${r.ingredients.map((i,k)=>{const z=lineFz(curRecipe.ingredients[k]||'');return `<li><span>${i}${z?` <span class="fz-tag ${fzOn?'on':''}">❄️ ${fzOn?t('fz_use'):t('fz_ok')}</span>`:''}</span></li>`;}).join('')}</ul>
     </div>
+    ${curRecipe.ingredients.some(lineFz)?`<div class="tip-box" style="margin-bottom:14px">${t('fz_tip')}</div>`:''}
     <button class="btn btn-secondary" style="margin-bottom:8px" onclick="addToShop('${r.id}')">${t('btn_addshop')}</button>
     <button class="btn btn-primary" onclick="startCook()">${t('btn_guide')}</button>`;
   go('detail');
@@ -1562,6 +1565,7 @@ function renderPrefs(){
     <div class="fp-sec"><div class="fp-h">${t('fp_dis')}</div><div class="fp-hint">${t('fp_dis_hint')}</div>
       <div class="fp-chips">${chips(FP_DISLIKES,'dislikes')}${d.custom.map((w,i)=>`<button class="fp-chip on" onclick="fpDraft.custom.splice(${i},1);renderPrefs()">✕ ${esc(w)}</button>`).join('')}</div>
       <div class="fp-add"><input id="fp-in" maxlength="30" placeholder="${t('fp_custom_ph')}" onkeydown="if(event.key==='Enter')fpAdd()"><button onclick="fpAdd()">${t('fp_add')}</button></div></div>
+    <div class="fp-sec"><div class="fp-h">${t('fz_h')}</div><div class="fp-hint">${t('fz_hint')}</div>${fzRow('renderPrefs()')}</div>
     <div class="fp-warn">${t('fp_warn')}</div>
     <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="fpSave()">${t('fp_save')}</button>
     <button class="btn btn-secondary" style="width:100%" onclick="fpDraft={allergies:[],diet:'omni',dislikes:[],custom:[]};fpSave()">${t('fp_none')}</button>`;
@@ -1655,6 +1659,29 @@ function renderPantry(){
     ${have.size?`<div style="height:70px"></div><button class="btn btn-primary pt-go" onclick="document.getElementById('pt-res').scrollIntoView({behavior:'smooth'})">${ready.length>1?t('pt_see',{n:ready.length}):ready.length?t('pt_see1'):t('pt_see0')}</button>`:''}`;
 }
 
+/* ── FRESCO O CONGELADO ── la verdura fresca se estropea si pasan días sin cocinar;
+   la congelada aguanta. Modo: fresh | mix (fresco 3 días, congelado el resto) | frozen. */
+const FZ={
+ brocoli:L3('Brócoli congelado','Frozen broccoli','Brocoli surgelé'),coliflor:L3('Coliflor congelada','Frozen cauliflower','Chou-fleur surgelé'),
+ espinacas:L3('Espinacas congeladas','Frozen spinach','Épinards surgelés'),guisantes:L3('Guisantes congelados','Frozen peas','Petits pois surgelés'),
+ habas:L3('Habas congeladas','Frozen broad beans','Fèves surgelées'),calabaza:L3('Calabaza en dados congelada','Frozen diced pumpkin','Courge en dés surgelée'),
+ pimiento:L3('Pimiento en tiras congelado','Frozen pepper strips','Poivron en lanières surgelé'),cebolla:L3('Cebolla picada congelada','Frozen chopped onion','Oignon émincé surgelé'),
+ puerro:L3('Puerro en rodajas congelado','Frozen sliced leek','Poireau en rondelles surgelé'),zanahoria:L3('Zanahoria en dados congelada','Frozen diced carrot','Carotte en dés surgelée'),
+ calabacin:L3('Calabacín en dados congelado','Frozen diced courgette','Courgette en dés surgelée'),berenjena:L3('Berenjena asada congelada','Frozen grilled aubergine','Aubergine grillée surgelée'),
+ setas:L3('Setas congeladas','Frozen mushrooms','Champignons surgelés'),esparragos:L3('Espárragos verdes congelados','Frozen green asparagus','Asperges vertes surgelées'),
+ maiz:L3('Maíz congelado','Frozen sweetcorn','Maïs surgelé'),pollo:L3('Pollo en dados congelado','Frozen diced chicken','Poulet en dés surgelé'),
+ salmon:L3('Salmón congelado (porciones)','Frozen salmon (portions)','Saumon surgelé (portions)'),pan:L3('Pan integral congelado','Frozen wholemeal bread','Pain complet surgelé')};
+Object.values(FZ).forEach(x=>{const k=x.es.toLowerCase();if(NORM_L.en)NORM_L.en[k]=x.en;if(NORM_L.fr)NORM_L.fr[k]=x.fr;});
+function fzMode(){try{return localStorage.getItem('cris_food_fz')||'fresh';}catch(e){return 'fresh';}}
+function setFz(m){try{localStorage.setItem('cris_food_fz',m);}catch(e){}beep(520,.05);vibrate(20);}
+/* ¿Esta línea tiene versión congelada? Devuelve el id del alimento o null */
+function lineFz(line){if((/congelad/i.test(line)&&!/fresc/i.test(line))||isOptLine(line)||/para acompañar/i.test(line))return null;const it=ptItemOf(line);return it&&FZ[it[0]]?it[0]:null;}
+/* ¿Esta receta se hace con congelado? En «mitad», los días 4-7 del menú */
+function recipeFz(r,pos){const m=fzMode();if(m==='frozen')return true;if(m!=='mix')return false;
+  if(pos===undefined){const w=weekMenu();pos=Math.max(w.comidas.indexOf(r),w.cenas.indexOf(r));}return pos>=3;}
+function fzRow(after){const m=fzMode(),b=(id,l)=>`<button class="fp-chip ${m===id?'on':''}" onclick="setFz('${id}');${after}">${l}</button>`;
+  return `<div class="fp-chips">${b('fresh',t('fz_fresh'))}${b('mix',t('fz_mix'))}${b('frozen',t('fz_frozen'))}</div>${m==='mix'?`<div class="fp-hint" style="margin:6px 0 0">🔀 ${t('fz_mix_sub')}</div>`:''}`;}
+
 /* ── MENÚ SEMANAL ── */
 function renderWeek(){
   const w=weekMenu(),d=getMenuDone();
@@ -1665,14 +1692,16 @@ function renderWeek(){
     :`<p>${t('week_banner_done')}</p>`)
     +(sum?`<p style="font-size:.82rem;margin-top:6px;color:#1a6b64">${t('fp_adapted',{x:sum})}</p>`:'')
     +(n<7?`<p style="font-size:.82rem;margin-top:6px">${t('fp_short',{n})}</p>`:'')
+    +(fzMode()==='mix'?`<p style="font-size:.82rem;margin-top:6px">${t('fz_week_mix')}</p>`:'')
+    +`<div style="margin-top:10px">${fzRow('renderWeek()')}</div>`
     +`<button class="fp-edit" onclick="PREFS_NEXT='week';go('prefs')">${t('fp_edit')}</button>`;
-  const row=r0=>{const r=recL(r0),done=!!d[r0.id];return `
+  const row=(r0,pos)=>{const r=recL(r0),done=!!d[r0.id];return `
     <div class="wk-row ${done?'wk-done':''}">
       <button class="wk-check" onclick="tickMenu('${r0.id}')">${done?'✓':''}</button>
       <div class="wk-info" onclick="openRecipe('${r0.id}','week')">
         <div class="wk-name">${r.emoji} ${r.name}</div>
         <div class="wk-meta">${r.time} · ${r.budget}${r0.express?t('from_pantry'):''}</div>
-        ${done?'':`<div class="wk-ingr">🧺 ${ingrLine(r0)}</div>`}
+        ${done?'':`<div class="wk-ingr">🧺 ${ingrLine(r0,recipeFz(r0,pos))}</div>`}
       </div>
     </div>`;};
   document.getElementById('week-list').innerHTML=
@@ -1729,7 +1758,7 @@ function normIngr(s){
   t=t.replace(/^(cdas?|cucharadas?|cucharaditas?|g|gr|kg|ml|l|vasos?|tazas?|rebanadas?|filetes?|latas?|botes?|bolsas?|briks?|bricks?|puñados?|hojas?|rodajas?|ramas?|docenas?|paquetes?|zumo)\s+(de\s+)?/i,'');
   t=t.replace(/^[\d½¼¾.,\/\s]+/,'');
   t=t.replace(/\b(grande|pequeñ[oa]s?|crud[oa]s?|madur[oa]s?|fileteada|en rodajas|en dados|de temporada|o verde|o molid[oa]s)\b/gi,'').replace(/\s+/g,' ').trim();
-  const SING={'pepinos':'pepino','pimientos':'pimiento','berenjenas':'berenjena','calabacines':'calabacín','limones':'limón','zanahorias':'zanahoria','puerros':'puerro','cebollas':'cebolla','tomates':'tomate','yogures naturales':'yogur natural'};
+  const SING={'pepinos':'pepino','pimientos':'pimiento','berenjenas':'berenjena','calabacines':'calabacín','limones':'limón','zanahorias':'zanahoria','puerros':'puerro','cebollas':'cebolla','tomates':'tomate','yogures naturales':'yogur natural','setas variadas':'setas','huevos':'huevo','espinacas frescas':'espinacas'};
   if(SING[t.toLowerCase()])t=SING[t.toLowerCase()];
   return t?t.charAt(0).toUpperCase()+t.slice(1):s;
 }
@@ -1745,10 +1774,11 @@ function ingrCat(n){
 const CAT_ORDER=['🥬 Frescos: fruta y verdura','❄️ Congelados','🫙 Conservas y botes','🥚 Huevos y lácteos','🍗 Carne y pescado','🌾 Cereales y frutos secos'];
 function weeklyShop(){
   const w=weekMenu(),map={};
-  [...w.comidas,...w.cenas].filter(r=>!r.express).forEach(r=>{
+  [...w.comidas.map((r,i)=>[r,i]),...w.cenas.map((r,i)=>[r,i])].filter(x=>!x[0].express).forEach(([r,pos])=>{
+    const fz=recipeFz(r,pos);
     r.ingredients.forEach(ing=>{
       if(PANTRY_RE.test(ing))return;
-      const n=normIngr(ing),k=n.toLowerCase();
+      const z=fz&&lineFz(ing),n=z?FZ[z].es:normIngr(ing),k=n.toLowerCase();
       if(!map[k])map[k]={name:n,count:0};
       map[k].count++;
     });
@@ -1790,6 +1820,7 @@ function renderShop(){
     :'';
 
   el.innerHTML=`
+    <div class="fp-sec"><div class="fp-hint" style="margin-bottom:8px">${fzMode()==='fresh'?t('fz_shop_off'):t('fz_shop_on')}</div>${fzRow('renderShop()')}</div>
     <p class="section-label">${t('shop_week_label')}</p>
     ${weekHtml}
     ${extrasHtml}
