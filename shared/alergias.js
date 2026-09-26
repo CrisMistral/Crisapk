@@ -16,12 +16,19 @@
     ['apio','🥬',{es:'Apio',en:'Celery',fr:'Céleri'},/\bapio\b|celery|celeri/],
     ['mostaza','🟡',{es:'Mostaza',en:'Mustard',fr:'Moutarde'},/mostaza|mustard|moutarde/]];
   const fold=s=>String(s||'').toLowerCase().replace(/\u0153/g,'oe').replace(/\u00e6/g,'ae').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  function parse(text){
-    const ids=[],words=[];
+  /* Trocea lo escrito: «sin carne, setas y picante» → ['carne','setas','picante'] */
+  function tokens(text){
+    const out=[];
     fold(text).split(/[,;\/\n·]+|\s+(?:y|e|and|et|o|or|ou)\s+/).forEach(raw=>{
       const tok=raw.replace(/^(soy |je suis |i am |i'm )/,'').replace(/^(sin|no|pas de|sans|without|alergi[ac]o?s? (a|al|a la|a los|a las)|allergi[ce]s? (a|to|au|aux)?|intoleran\w* (a|al|a la|to|au)?|al|a la|el|la|los|las)\s+/,'')
-        .replace(/^(a|al|a la|a los|a las)\s+/,'').trim();
-      if(tok.length<3)return;
+        .replace(/^(a|al|a la|a los|a las)\s+/,'').replace(/^(soy |je suis |i am |i'm )/,'').trim();
+      if(tok.length>=3&&out.indexOf(tok)<0)out.push(tok);
+    });
+    return out;
+  }
+  function parse(text){
+    const ids=[],words=[];
+    tokens(text).forEach(tok=>{
       const hit=SYN.find(x=>x[3].test(tok));
       if(hit){if(ids.indexOf(hit[0])<0)ids.push(hit[0]);}
       else if(words.indexOf(tok)<0)words.push(tok);
@@ -30,5 +37,5 @@
   }
   function label(id,lang){const x=SYN.find(y=>y[0]===id);return x?x[1]+' '+(x[2][lang]||x[2].es):id;}
   function fromIds(ids,lang){return (ids||[]).map(id=>{const x=SYN.find(y=>y[0]===id);return x?(x[2][lang]||x[2].es):id;}).join(', ');}
-  window.QUICO_ALLERGY={parse,label,fromIds,fold};
+  window.QUICO_ALLERGY={parse,tokens,label,fromIds,fold};
 })();
