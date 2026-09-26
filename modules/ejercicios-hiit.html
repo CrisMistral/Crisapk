@@ -249,8 +249,9 @@ body{background:#f6fbfa}
 .xs-map span{font:600 .74rem/1.25 'Lexend','Outfit',sans-serif;color:var(--xs-ink)}
 .xs-map small{display:block;font-size:.62rem;font-weight:500;color:var(--xs-soft);text-transform:uppercase;letter-spacing:.06em}
 .bmap .bz-base,.bmap .bz rect{fill:#cfdcd9}
-.bmap .bz.s rect{fill:#fdc9a4}
-.bmap .bz.m rect{fill:var(--xs-heat)}
+.bmap .bz.s rect,.bmap .bz.m rect{fill:inherit}
+.xs-map em{display:flex;align-items:center;gap:5px;font-style:normal;white-space:nowrap}
+.xs-map em i{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .xs-count{position:absolute;z-index:3;inset:0;display:grid;place-items:center;pointer-events:none;font-family:'DM Serif Display',Georgia,serif;
   font-size:min(38vw,24dvh);color:var(--xs-accent);opacity:0}
 .xs-count.on{animation:xsCount .95s ease-out forwards}
@@ -485,18 +486,29 @@ function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===un
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
 function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 
-/* ─── FIGURA ARTICULADA (cinemática directa) ───
+/* ─── AVATAR BIOMECÁNICO (vista lateral, cinemática directa) ───
    Cada postura = ángulos (grados; 0=derecha, 90=abajo, -90=arriba).
    t: tronco (cadera→cuello) · c: curva de la columna · hd: cabeza (relativa)
    a/b: brazo cercano/lejano [brazo, antebrazo] · l/m: pierna cercana/lejana [muslo, espinilla, pie]
-   La figura se escala y centra sola, y cada fotograma se «apoya» en la esterilla. */
+   Bases biomecánicas:
+   · Proporciones: longitudes de segmento relativas a la estatura (Winter 2009; Drillis y Contini).
+   · Silueta: perfiles sagitales de cada segmento a partir de perímetros antropométricos de mujer adulta
+     (gemelo y glúteo por detrás, pecho por delante, cintura, lordosis), como los modelos estadísticos
+     de cuerpo 3D. Un poco más gruesos que la media por legibilidad y por la ropa.
+   · Reajuste («retargeting»): al pasar de las proporciones antiguas a las antropométricas, cada postura
+     se corrige lo mínimo para conservar sus apoyos (manos, rodillas, pies en la esterilla) sin salir
+     del rango articular.
+   · Movimiento de mínimo tirón («minimum jerk», Flash y Hogan 1985): así acelera y frena una persona.
+   · Centro de masas con las fracciones de masa de Dempster/Winter: la sombra cae bajo él. */
 const FIG_FLOOR=134,FIG_VB='0 0 200 150',FIG_MAT='<rect x="6" y="134" width="188" height="7" rx="3.5" fill="#b8e4dd"/>';
-const FIG_LEN={T:44,UA:21,FA:19,TH:29,SH:27,FT:9,NK:11,HR:9};
+const FIG_H=120; // estatura de referencia en unidades del dibujo
+const FIG_LEN={T:.317*FIG_H,UA:.186*FIG_H,FA:.146*FIG_H,TH:.245*FIG_H,SH:.246*FIG_H,FT:.104*FIG_H,NK:.088*FIG_H,HR:.066*FIG_H,HAND:.066*FIG_H};
+const FIG_LEN0={T:44,UA:21,FA:19,TH:29,SH:27,FT:9,NK:11,HR:9}; // proporciones con las que se diseñaron las posturas
 const FIG_COL={near:'#1a6b64',far:'#8ccdc3',torso:'#26a69a',hl:'#f59e0b',hlFar:'#fbc97a',skin:'#1a6b64',mat:'#b8e4dd'};
 function fd(a){const r=a*Math.PI/180;return [Math.cos(r),Math.sin(r)];}
 function fadd(p,a,len){const d=fd(a);return [p[0]+d[0]*len,p[1]+d[1]*len];}
-function figJoints(P){
-  const L=FIG_LEN,hip=[0,0];
+function figJoints(P,Ln){
+  const L=Ln||FIG_LEN,hip=[0,0];
   const neck=fadd(hip,P.t,L.T);
   const perp=fd(P.t+90),mid=[(hip[0]+neck[0])/2+perp[0]*(P.c||0),(hip[1]+neck[1])/2+perp[1]*(P.c||0)];
   const head=fadd(neck,P.t+(P.hd||0),L.NK);
@@ -504,7 +516,10 @@ function figJoints(P){
   // hombro: sobre la curva, cerca del cuello
   const sh=[.1*mid[0]+.9*neck[0]+(neck[0]-hip[0])*-.08,.1*mid[1]+.9*neck[1]+(neck[1]-hip[1])*-.08];
   const arm=(A)=>{const e=fadd(sh,A[0],L.UA);return [sh,e,fadd(e,A[1],L.FA)];};
-  const leg=(G)=>{const k=fadd(hip,G[0],L.TH),an=fadd(k,G[1],L.SH);const f=G[2]!=null?G[2]:G[1]-90;return [hip,k,an,fadd(an,f,L.FT)];};
+  // pie sin ángulo indicado: si la espinilla baja hacia el suelo, la planta queda plana (dorsiflexión del tobillo)
+  const leg=(G)=>{const k=fadd(hip,G[0],L.TH),an=fadd(k,G[1],L.SH);let f=G[2];
+    if(f==null){f=G[1]-90;if(Math.sin(G[1]*Math.PI/180)>.5)f=Math.cos(f*Math.PI/180)>=0?0:180;}
+    return [hip,k,an,fadd(an,f,L.FT)];};
   return {hip,neck,mid,head,bun,a:arm(P.a),b:arm(P.b),l:leg(P.l),m:leg(P.m)};
 }
 function figPoints(J){return [J.hip,J.neck,J.mid,J.head,J.bun,...J.a,...J.b,...J.l,...J.m];}
@@ -522,16 +537,63 @@ function figFit(A,B){
   const s=Math.min(1.2,180/(x1-x0),(FIG_FLOOR-8)/(y1-y0));
   return {s,cx:100-((x0+x1)/2)*s};
 }
-/* Forma de «cápsula» cónica entre dos círculos (miembros con volumen) */
-function figCap(p1,r1,p2,r2){
-  const dx=p2[0]-p1[0],dy=p2[1]-p1[1],d=Math.max(.01,Math.hypot(dx,dy));
-  if(d<=Math.abs(r1-r2)+.01){const c=r1>r2?p1:p2,r=Math.max(r1,r2);return `M${(c[0]-r).toFixed(1)} ${c[1].toFixed(1)}a${r.toFixed(1)} ${r.toFixed(1)} 0 1 0 ${(2*r).toFixed(1)} 0a${r.toFixed(1)} ${r.toFixed(1)} 0 1 0 ${(-2*r).toFixed(1)} 0Z`;}
-  const a=Math.atan2(dy,dx),th=Math.acos(Math.max(-1,Math.min(1,(r1-r2)/d)));
-  const P=(p,r,g)=>(p[0]+r*Math.cos(g)).toFixed(1)+' '+(p[1]+r*Math.sin(g)).toFixed(1);
-  const A1=P(p1,r1,a+th),B1=P(p2,r2,a+th),B2=P(p2,r2,a-th),A2=P(p1,r1,a-th);
-  return `M${A1}L${B1}A${r2.toFixed(1)} ${r2.toFixed(1)} 0 ${th>Math.PI/2?1:0} 0 ${B2}L${A2}A${r1.toFixed(1)} ${r1.toFixed(1)} 0 ${th<Math.PI/2?1:0} 0 ${A1}Z`;
+/* ── Apoyos en el suelo: altura de cada punto de contacto sobre la esterilla ── */
+function figSupport(P,Ln){
+  const L=Ln||FIG_LEN,J=figJoints(P,L);
+  const pts={head:[J.head,L.HR],hip:[J.hip,8],neck:[J.neck,8],mid:[J.mid,7],
+    elbowA:[J.a[1],3.6],wristA:[J.a[2],3.6],elbowB:[J.b[1],3.6],wristB:[J.b[2],3.6],
+    kneeL:[J.l[1],3.6],ankleL:[J.l[2],3.6],toeL:[J.l[3],3.6],kneeM:[J.m[1],3.6],ankleM:[J.m[2],3.6],toeM:[J.m[3],3.6]};
+  let low=-1e9;for(const k in pts)low=Math.max(low,pts[k][0][1]+pts[k][1]);
+  const h={};for(const k in pts)h[k]=low-(pts[k][0][1]+pts[k][1]);
+  return h;
 }
-const FIG_SKIN={skin:'#f1c6a4',skinFar:'#d8a584',top:'#26a69a',topFar:'#1d8a80',leg:'#1f5f58',legFar:'#3f8078',shoe:'#f8fafc',shoeFar:'#dfe7ec',hair:'#4a2f25',line:'rgba(12,52,48,.55)',glow:'rgba(251,146,60,.5)',heat:'#fb923c'};
+function figPosition(P){return figMap(P,{s:1,cx:0}).M;}
+/* Ángulo relativo (flexión) de una articulación, en (-180,180] */
+function figRel(a,b){let d=((b-a)%360+540)%360-180;return d;}
+/* Centro de masas en coordenadas del esqueleto (sin encuadre) */
+function figCOMJ(J){return figCOM(J,v=>v);}
+/* Base de apoyo: tramo horizontal que cubren los puntos que tocan el suelo (con el talón) */
+function figBase(P,Ln){
+  const L=Ln||FIG_LEN,J=figJoints(P,L),h=figSupport(P,L),xs=[];
+  const pt={head:J.head,hip:J.hip,neck:J.neck,mid:J.mid,elbowA:J.a[1],wristA:J.a[2],elbowB:J.b[1],wristB:J.b[2],kneeL:J.l[1],ankleL:J.l[2],toeL:J.l[3],kneeM:J.m[1],ankleM:J.m[2],toeM:J.m[3]};
+  const EXT={hip:7,mid:6,neck:5,head:4,kneeL:2,kneeM:2,elbowA:2,elbowB:2}; // superficie de apoyo de cada zona
+  for(const k in h)if(h[k]<2){const e=EXT[k]||0;xs.push(pt[k][0]-e,pt[k][0]+e);if(k.startsWith('ankle')){const G=k==='ankleL'?J.l:J.m,d=[G[3][0]-G[2][0],G[3][1]-G[2][1]],n=Math.hypot(d[0],d[1])||1;xs.push(G[2][0]-d[0]/n*2.6);}}
+  return xs.length?[Math.min(...xs),Math.max(...xs)]:null;
+}
+/* ── Reajuste a proporciones antropométricas conservando los apoyos y el equilibrio ── */
+const FIG_RT_KEYS=[['t'],['a',0],['a',1],['b',0],['b',1],['l',0],['l',1],['l',2],['m',0],['m',1],['m',2]];
+function figRetarget(P){
+  // apoyos pensados: lo que tocaba o casi tocaba la esterilla (manos y rodillas «flotando» por las proporciones antiguas)
+  const h0=figSupport(P,FIG_LEN0),C=Object.keys(h0).filter(k=>h0[k]<5.5);
+  if(!C.length)return P;
+  // si el centro de masas queda fuera de los apoyos, el cuerpo caería hacia ese lado:
+  // la mano / antebrazo / rodilla más baja de ese lado es un apoyo aunque en el dibujo antiguo flotara
+  if(!P.up){const J0=figJoints(P,FIG_LEN0),x=figCOM(J0,v=>v)[0],B=figBase(P,FIG_LEN0);
+    if(B&&(x<B[0]-1||x>B[1]+1)){const side=x<B[0]?-1:1,pt={wristA:J0.a[2],wristB:J0.b[2],elbowA:J0.a[1],elbowB:J0.b[1],kneeL:J0.l[1],kneeM:J0.m[1],ankleL:J0.l[2],toeL:J0.l[3],ankleM:J0.m[2],toeM:J0.m[3]};
+      const cand=Object.keys(pt).filter(k=>h0[k]<30&&(pt[k][0]-x)*side>-4).sort((a,b)=>h0[a]-h0[b]);
+      if(cand.length){const lo=h0[cand[0]];cand.filter(k=>h0[k]<=lo+4).forEach(k=>{if(!C.includes(k))C.push(k);});}}}
+  const get=(Q,k)=>k.length===1?Q[k[0]]:Q[k[0]][k[1]];
+  const set=(Q,k,v)=>{if(k.length===1)Q[k[0]]=v;else Q[k[0]][k[1]]=v;};
+  const keys=FIG_RT_KEYS.filter(k=>get(P,k)!=null);
+  const base=keys.map(k=>get(P,k));
+  const rel0=[figRel(P.a[0],P.a[1]),figRel(P.b[0],P.b[1]),figRel(P.l[0],P.l[1]),figRel(P.m[0],P.m[1])];
+  const Q={...P,a:[...P.a],b:[...P.b],l:[...P.l],m:[...P.m]};
+  const onFeet=!P.up; // en un salto no hay equilibrio que guardar
+  const cost=()=>{const h=figSupport(Q);let e=0;for(const c of C)e+=10*h[c]*h[c];
+    // equilibrio: el centro de masas cae dentro de la base de apoyo (con 1,5 de margen)
+    if(onFeet){const B=figBase(Q),x=figCOMJ(figJoints(Q))[0];if(B){const lo=B[0]+1.5,hi=B[1]-1.5,o=x<lo?lo-x:x>hi?x-hi:0;e+=6*o*o;}}
+    keys.forEach((k,i)=>{const d=get(Q,k)-base[i];e+=.004*d*d;});
+    // rango articular: codo y rodilla no se hiperextienden ni pasan de ~160°
+    [[Q.a[0],Q.a[1]],[Q.b[0],Q.b[1]],[Q.l[0],Q.l[1]],[Q.m[0],Q.m[1]]].forEach(([u,v],i)=>{const r=figRel(u,v),r0=rel0[i];
+      if(Math.abs(r0)>8&&Math.sign(r)!==Math.sign(r0))e+=400;if(Math.abs(r)>160)e+=(Math.abs(r)-160)*20;});
+    return e;};
+  let best=cost();
+  for(const step of [8,4,2,1,.5,.25]){let improved=true,pass=0;
+    while(improved&&pass++<8){improved=false;
+      keys.forEach((k,i)=>{for(const dir of [1,-1]){const v=get(Q,k),nv=v+dir*step;if(Math.abs(nv-base[i])>(k[0]==='t'?16:32))continue;set(Q,k,nv);const c=cost();if(c<best-1e-6){best=c;improved=true;}else set(Q,k,v);}});}}
+  return Q;
+}
+function figRetargetAnim(an){if(!an||an._rt)return an;an.K0=an.K;an.K=an.K.map(figRetarget);an._rt=1;return an;}
 /* Posición en pantalla (unidades del viewBox) de las articulaciones de una postura:
    la figura se «apoya» en la esterilla por su punto más bajo */
 function figMap(P,fit){
@@ -540,62 +602,160 @@ function figMap(P,fit){
   for(const q of [...J.a.slice(1),...J.b.slice(1),...J.l.slice(1),...J.m.slice(1)])low=Math.max(low,q[1]+3.6);
   return {J,M:v=>[fit.cx+v[0]*s,FIG_FLOOR-(low-v[1]+(P.up||0))*s]};
 }
-/* hl = partes que trabajan (se tiñen de naranja); amp 0-1 = intensidad (late con el esfuerzo) */
-function figSVG(P,fit,hl,amp){
+/* Centro de masas (fracciones de masa y posición del CM de cada segmento, Winter) */
+function figCOM(J,M){
+  const L=(p,q,f)=>{const a=M(p),b=M(q);return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];};
+  const S=[[M(J.head),.081],[L(J.hip,J.neck,.5),.497],
+    [L(J.a[0],J.a[1],.436),.028],[L(J.a[1],J.a[2],.43),.022],[L(J.b[0],J.b[1],.436),.028],[L(J.b[1],J.b[2],.43),.022],
+    [L(J.l[0],J.l[1],.433),.1],[L(J.l[1],J.l[2],.433),.0465],[L(J.l[2],J.l[3],.5),.0145],
+    [L(J.m[0],J.m[1],.433),.1],[L(J.m[1],J.m[2],.433),.0465],[L(J.m[2],J.m[3],.5),.0145]];
+  let x=0,y=0,w=0;for(const [p,m] of S){x+=p[0]*m;y+=p[1]*m;w+=m;}return [x/w,y/w];
+}
+/* Forma de «cápsula» cónica entre dos círculos */
+function figCap(p1,r1,p2,r2){
+  const dx=p2[0]-p1[0],dy=p2[1]-p1[1],d=Math.max(.01,Math.hypot(dx,dy));
+  if(d<=Math.abs(r1-r2)+.01){const c=r1>r2?p1:p2,r=Math.max(r1,r2);return `M${(c[0]-r).toFixed(1)} ${c[1].toFixed(1)}a${r.toFixed(1)} ${r.toFixed(1)} 0 1 0 ${(2*r).toFixed(1)} 0a${r.toFixed(1)} ${r.toFixed(1)} 0 1 0 ${(-2*r).toFixed(1)} 0Z`;}
+  const a=Math.atan2(dy,dx),th=Math.acos(Math.max(-1,Math.min(1,(r1-r2)/d)));
+  const P=(p,r,g)=>(p[0]+r*Math.cos(g)).toFixed(1)+' '+(p[1]+r*Math.sin(g)).toFixed(1);
+  const A1=P(p1,r1,a+th),B1=P(p2,r2,a+th),B2=P(p2,r2,a-th),A2=P(p1,r1,a-th);
+  return `M${A1}L${B1}A${r2.toFixed(1)} ${r2.toFixed(1)} 0 ${th>Math.PI/2?1:0} 0 ${B2}L${A2}A${r1.toFixed(1)} ${r1.toFixed(1)} 0 ${th<Math.PI/2?1:0} 0 ${A1}Z`;
+}
+/* Contorno cerrado suave (Catmull-Rom → Bézier) por una lista de puntos */
+function figSmooth(pts){
+  const n=pts.length,f=v=>v.toFixed(1);let d=`M${f(pts[0][0])} ${f(pts[0][1])}`;
+  for(let i=0;i<n;i++){const p0=pts[(i-1+n)%n],p1=pts[i],p2=pts[(i+1)%n],p3=pts[(i+2)%n];
+    const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
+    d+=`C${f(c1[0])} ${f(c1[1])} ${f(c2[0])} ${f(c2[1])} ${f(p2[0])} ${f(p2[1])}`;}
+  return d+'Z';
+}
+/* Segmento con perfil muscular: prof = [[t, radio delante, radio detrás]…]; post = vector hacia «detrás» */
+function figLimb(p1,p2,prof,s,post,t0,t1,side){
+  const dx=p2[0]-p1[0],dy=p2[1]-p1[1],len=Math.max(.01,Math.hypot(dx,dy)),u=[dx/len,dy/len];
+  let n=[-u[1],u[0]];if(post&&(n[0]*post[0]+n[1]*post[1])<0)n=[-n[0],-n[1]];
+  const r=(t,j)=>{for(let i=1;i<prof.length;i++)if(t<=prof[i][0]){const a=prof[i-1],b=prof[i],k=(t-a[0])/Math.max(1e-6,b[0]-a[0]);return a[j]+(b[j]-a[j])*k;}return prof[prof.length-1][j];};
+  t0=t0==null?0:t0;t1=t1==null?1:t1;const NS=side?10:6,ts=[];for(let i=0;i<=NS;i++)ts.push(t0+(t1-t0)*i/NS);
+  // vientre muscular: más ancho en el centro, fino hacia los tendones
+  const tp=t=>side?.2+.8*Math.pow(Math.sin(Math.PI*Math.max(0,Math.min(1,(t-t0)/Math.max(1e-6,t1-t0)))),.55):1;
+  const c=t=>[p1[0]+dx*t,p1[1]+dy*t];
+  const k1=side==='back'?-.15:side==='mid'?.45:1,k2=side==='front'?-.15:side==='mid'?.45:1;
+  // el borde exterior sigue la piel (ligeramente por dentro) y el interior se estrecha
+  const edge=(t,j,k)=>{const R=r(t,j)*s;return k>0?R*(k===1?.97:k)*(side==='front'||side==='back'?1:tp(t)):R*k*tp(t);};
+  const front=ts.map(t=>{const q=c(t),w=side==='back'?-r(t,2)*s*(1-.75*tp(t)):edge(t,1,k1);return [q[0]-n[0]*w,q[1]-n[1]*w];});
+  const back=ts.slice().reverse().map(t=>{const q=c(t),w=side==='front'?-r(t,1)*s*(1-.75*tp(t)):edge(t,2,k2);return [q[0]+n[0]*w,q[1]+n[1]*w];});
+  if(side)return figSmooth([...front,...back]);
+  const e1=c(t1),re=(r(t1,1)+r(t1,2))/2*s*.85,e0=c(t0),rs=(r(t0,1)+r(t0,2))/2*s*.85;
+  return figSmooth([...front,[e1[0]+u[0]*re,e1[1]+u[1]*re],...back,[e0[0]-u[0]*rs,e0[1]-u[1]*rs]]);
+}
+/* Perfiles sagitales (radios en unidades del dibujo; estatura 120) */
+const FIG_PROF={
+  thigh:[[0,6.1,7.0],[.18,6.0,6.5],[.55,5.0,5.1],[.9,4.1,4.0],[1,3.9,3.8]],
+  shank:[[0,3.9,3.8],[.22,3.5,4.9],[.5,3.0,4.0],[.8,2.4,2.5],[1,2.3,2.3]],
+  uarm:[[0,4.2,4.2],[.25,3.8,3.8],[.6,3.1,3.2],[1,2.6,2.6]],
+  farm:[[0,2.7,2.7],[.25,2.9,2.9],[.7,2.2,2.2],[1,1.8,1.8]],
+  // tronco: [t a lo largo de cadera→cuello, delante, detrás]
+  torso:[[-.07,5.0,6.8],[.05,6.0,8.6],[.22,6.1,7.0],[.42,5.4,5.6],[.6,6.2,6.1],[.72,7.8,6.4],[.86,6.4,6.8],[1,3.2,3.4]]
+};
+/* Grupos musculares: color y dónde se pintan en la vista lateral */
+const FIG_ZC={quads:'#f97316',hams:'#e11d48',glutes:'#db2777',calves:'#9333ea',inner:'#f59e0b',hips:'#fb7185',
+  core:'#0ea5e9',back:'#2563eb',upperback:'#6366f1',chest:'#10b981',shoulders:'#eab308',arms:'#84cc16'};
+const FIG_ZPAINT={quads:[['thigh',.08,.92,'front']],hams:[['thigh',.12,.9,'back']],glutes:[['torso',-.07,.2,'back'],['thigh',0,.2,'back']],
+  calves:[['shank',.05,.62,'back']],inner:[['thigh',.18,.8,'mid']],hips:[['torso',-.07,.14,'front'],['thigh',0,.22,'front']],
+  core:[['torso',.12,.62,'front']],back:[['torso',.1,.6,'back']],upperback:[['torso',.55,.95,'back']],chest:[['torso',.6,.9,'front']],
+  shoulders:[['uarm',0,.32,'full']],arms:[['uarm',.28,.95,'back']]};
+const FIG_SKIN={skin:'#f1c6a4',skinFar:'#d8a584',top:'#26a69a',topFar:'#1d8a80',leg:'#1f5f58',legFar:'#3f8078',shoe:'#f8fafc',shoeFar:'#dfe7ec',hair:'#4a2f25',body:'#efc9ab',bodyFar:'#d6a98a',line:'rgba(12,52,48,.55)',glow:'rgba(251,146,60,.5)',heat:'#fb923c'};
+/* hl = partes que trabajan (se tiñen de naranja); amp 0-1 = intensidad del esfuerzo */
+function figSVG(P,fit,hl,amp,zones){
   const {J,M}=figMap(P,fit),s=fit.s,FLOOR=FIG_FLOOR,C=FIG_SKIN,H=hl||[];
   const A=amp==null?.6:amp,heatOp=(.5+.38*A).toFixed(2),haloOp=(.45+.55*A).toFixed(2);
+  const MQ=!!zones; // maniquí: cuerpo sin ropa, músculos pintados por grupos
+  const Z=zones||{main:[],more:[]},zOp=z=>Z.main.includes(z)?(.62+.33*A).toFixed(2):Z.more.includes(z)?'.38':null;
+  // pinta en un segmento los grupos que le tocan (solo en las extremidades que trabajan)
+  const paint=(seg,mk,far)=>{let o='';for(const z of [...Z.more,...Z.main]){const op=zOp(z);if(!op||!FIG_ZPAINT[z])continue;
+    for(const [sg,t0,t1,side] of FIG_ZPAINT[z])if(sg===seg){const d=mk(t0,t1,side==='full'?null:side);if(d)o+=`<path d="${d}" fill="${FIG_ZC[z]}" fill-opacity="${far?(op*.75).toFixed(2):op}"/>`;}}return o;};
+  const limbOn=part=>!H.length||H.includes(part)||(!H.some(x=>x.startsWith(part.replace('2',''))));
   const r=n=>n*s;
   const lw=(.9*s).toFixed(2);
-  // grupo de piezas: halo (si trabaja) → contorno de todas → relleno de todas (sin costuras internas)
+  // grupo de piezas: halo (si trabaja) → contorno de todas → relleno de todas (sin costuras internas) → tinte de esfuerzo
   const grp=(parts,glow)=>{let o='';
     if(glow)o+=parts.map(([d])=>`<path d="${d}" fill="none" stroke="${C.glow}" stroke-opacity="${haloOp}" stroke-width="${(5*s).toFixed(1)}" stroke-linejoin="round"/>`).join('');
     o+=parts.map(([d])=>`<path d="${d}" fill="none" stroke="${C.line}" stroke-width="${(1.9*s).toFixed(2)}" stroke-linejoin="round"/>`).join('');
     o+=parts.map(([d,fill])=>`<path d="${d}" fill="${fill}"/>`).join('');
-    // músculo que trabaja: tinte cálido encima de la ropa/piel
     if(glow)o+=parts.map(([d])=>`<path d="${d}" fill="${C.heat}" fill-opacity="${heatOp}"/>`).join('');
     return o;};
   const shape=(d,fill,glow)=>grp([[d,fill]],glow);
   const circ=(p,rad,fill,noLine)=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${rad.toFixed(1)}" fill="${fill}"${noLine?'':` stroke="${C.line}" stroke-width="${lw}"`}/>`;
   const dirv=g=>{const x=g*Math.PI/180;return [Math.cos(x),Math.sin(x)];};
   const off=(p,g,len)=>{const d=dirv(g);return [p[0]+d[0]*len,p[1]+d[1]*len];};
-  // piernas: muslo ancho → rodilla → tobillo fino → zapatilla
-  const legSVG=(G,far,glow)=>{const [h,k,a,t]=G.map(M),c=far?C.legFar:C.leg;
-    return grp([[figCap(h,r(7),k,r(4.9)),c],[figCap(k,r(4.9),a,r(3.2)),c]],glow)+shape(figCap(a,r(3.3),t,r(2.7)),far?C.shoeFar:C.shoe);};
-  // brazos: manga corta del top + piel + mano
-  const armSVG=(A,far,glow)=>{const [sh,e,w]=A.map(M),mid=[sh[0]+(e[0]-sh[0])*.45,sh[1]+(e[1]-sh[1])*.45],sk=far?C.skinFar:C.skin;
-    const hand=[w[0]+(w[0]-e[0])*.14,w[1]+(w[1]-e[1])*.14];
-    const hp=figCap(hand,r(3.1),hand,r(3.1));return grp([[figCap(sh,r(4.3),e,r(3.4)),sk],[figCap(e,r(3.4),w,r(2.6)),sk],[hp,sk]],glow)+shape(figCap(sh,r(5),mid,r(4.4)),far?C.topFar:C.top);};
+  const unit=(a,b)=>{const x=b[0]-a[0],y=b[1]-a[1],d=Math.max(1e-6,Math.hypot(x,y));return [x/d,y/d];};
+  const headM=M(J.head),hipM=M(J.hip),towardHead=headM[0]>=hipM[0]?1:-1;
+  // pierna: muslo y espinilla con perfil (gemelo e isquios por detrás) + zapatilla con talón
+  const legSVG=(G,far,glow)=>{const [h,k,a,t]=G.map(M),c=MQ?(far?C.bodyFar:C.body):far?C.legFar:C.leg,fdir=unit(a,t);
+    const shPost=[-fdir[0],-fdir[1]];const kd=unit(k,a),th=unit(h,k),dotp=kd[0]*-th[1]+kd[1]*th[0];
+    const thPost=Math.abs(dotp)>.25?[kd[0],kd[1]]:shPost;
+    const heel=[a[0]-fdir[0]*r(2.6),a[1]-fdir[1]*r(2.6)+r(.6)];
+    if(MQ){const on=limbOn(far?'leg2':'leg');
+      return grp([[figLimb(h,k,FIG_PROF.thigh,s,thPost),c],[figLimb(k,a,FIG_PROF.shank,s,shPost),c],[figCap(heel,r(2.3),t,r(1.7)),c]],false)
+        +(on?paint('thigh',(t0,t1,sd)=>figLimb(h,k,FIG_PROF.thigh,s,thPost,t0,t1,sd||'full'),far)+paint('shank',(t0,t1,sd)=>figLimb(k,a,FIG_PROF.shank,s,shPost,t0,t1,sd||'full'),far):'');}
+    return grp([[figLimb(h,k,FIG_PROF.thigh,s,thPost),c],[figLimb(k,a,FIG_PROF.shank,s,shPost),c]],glow)+shape(figCap(heel,r(2.7),t,r(2.1)),far?C.shoeFar:C.shoe);};
+  // brazo: piel con perfil (deltoides) + manga corta + mano (plana si se apoya en el suelo)
+  const armSVG=(A,far,glow)=>{const [sh,e,w]=A.map(M),sk=MQ?(far?C.bodyFar:C.body):far?C.skinFar:C.skin;
+    const fa=unit(e,w);let hd=fa;
+    if(w[1]>FLOOR-r(6)){hd=Math.abs(fa[0])>.3?[Math.sign(fa[0]),0]:[towardHead,0];}
+    const hand=[w[0]+hd[0]*r(FIG_LEN.HAND),w[1]+hd[1]*r(FIG_LEN.HAND)];
+    if(MQ){const on=limbOn(far?'arm2':'arm'),post=[-fa[0],-fa[1]];
+      return grp([[figLimb(sh,e,FIG_PROF.uarm,s),sk],[figLimb(e,w,FIG_PROF.farm,s),sk],[figCap(w,r(2),hand,r(1.7)),sk]],false)
+        +(on?paint('uarm',(t0,t1,sd)=>figLimb(sh,e,FIG_PROF.uarm,s,post,t0,t1,sd||'full'),far):'');}
+    return grp([[figLimb(sh,e,FIG_PROF.uarm,s),sk],[figLimb(e,w,FIG_PROF.farm,s),sk],[figCap(w,r(2),hand,r(1.7)),sk]],glow)
+      +shape(figLimb(sh,e,FIG_PROF.uarm.map(([t,a,b])=>[t,a+.35,b+.35]),s,null,0,.42),far?C.topFar:C.top);};
   const g=part=>H.includes(part);
   const fr=P.fr==null?1:P.fr;
   const tAng=P.t+(P.hd||0),face=tAng+90*(fr>=0?1:-1);
   const hip=M(J.hip),mid=M(J.mid),neck=M(J.neck),head=M(J.head);
+  // tronco: eje curvo cadera→(mitad)→cuello; delante = hacia donde mira el pecho
+  const ctl=[2*mid[0]-(hip[0]+neck[0])/2,2*mid[1]-(hip[1]+neck[1])/2];
+  const bz=t=>{const tt=Math.max(0,Math.min(1,t)),q=1-tt;const p=[q*q*hip[0]+2*q*tt*ctl[0]+tt*tt*neck[0],q*q*hip[1]+2*q*tt*ctl[1]+tt*tt*neck[1]];
+    const d=[2*q*(ctl[0]-hip[0])+2*tt*(neck[0]-ctl[0]),2*q*(ctl[1]-hip[1])+2*tt*(neck[1]-ctl[1])],dl=Math.max(1e-6,Math.hypot(d[0],d[1])),u=[d[0]/dl,d[1]/dl];
+    return t<0?[[p[0]+u[0]*t*Math.hypot(neck[0]-hip[0],neck[1]-hip[1]),p[1]+u[1]*t*Math.hypot(neck[0]-hip[0],neck[1]-hip[1])],u]:[p,u];};
+  const fdv=dirv(P.t+90*(fr>=0?1:-1));
+  const torsoPath=(t0,t1,grow,half)=>{const pr=FIG_PROF.torso,rr=(t,j)=>{for(let i=1;i<pr.length;i++)if(t<=pr[i][0]){const a=pr[i-1],b=pr[i],k=(t-a[0])/(b[0]-a[0]);return a[j]+(b[j]-a[j])*k;}return pr[pr.length-1][j];};
+    const ts=[];for(let i=0;i<=10;i++)ts.push(t0+(t1-t0)*i/10);
+    const side=(t,j)=>{const [p,u]=bz(t);let n=[-u[1],u[0]];if(n[0]*fdv[0]+n[1]*fdv[1]<0)n=[-n[0],-n[1]];const w=(rr(t,j)+(grow||0))*s,sg=j===1?1:-1;return [p[0]+n[0]*w*sg,p[1]+n[1]*w*sg];};
+    const [pe,ue]=bz(t1),[p0,u0]=bz(t0);const re=(rr(t1,1)+rr(t1,2))/2*s*.7,rs=(rr(t0,1)+rr(t0,2))/2*s*.8;
+    if(half){const tp=t=>Math.pow(Math.sin(Math.PI*(t-t0)/(t1-t0)),.55);
+      const ax=t=>{const [p,u]=bz(t);let n=[-u[1],u[0]];if(n[0]*fdv[0]+n[1]*fdv[1]<0)n=[-n[0],-n[1]];const j=half==='front'?1:2,sg=j===1?1:-1,w=rr(t,j)*s*(1-.8*tp(t))*sg;return [p[0]+n[0]*w,p[1]+n[1]*w];};
+      const edgeP=t=>{const q=side(t,half==='front'?1:2),[p]=bz(t);return [p[0]+(q[0]-p[0])*.97,p[1]+(q[1]-p[1])*.97];};
+      return figSmooth([...ts.map(edgeP),...ts.slice().reverse().map(ax)]);}
+    return figSmooth([...ts.map(t=>side(t,1)),[pe[0]+ue[0]*re,pe[1]+ue[1]*re],...ts.slice().reverse().map(t=>side(t,2)),[p0[0]-u0[0]*rs,p0[1]-u0[1]*rs]]);};
   const sh=M(J.a[0]);
-  // sombra en la esterilla
-  const xs=[...J.a,...J.b,...J.l,...J.m,J.head,J.hip].map(p=>M(p)[0]);
-  const x0=Math.min(...xs),x1=Math.max(...xs);
-  let out=`<ellipse cx="${((x0+x1)/2).toFixed(1)}" cy="${(FLOOR+1).toFixed(1)}" rx="${((x1-x0)/2+4).toFixed(1)}" ry="${(3*s).toFixed(1)}" fill="rgba(26,107,100,.13)"/>`;
+  // sombra en la esterilla, centrada bajo el centro de masas y tan ancha como los apoyos
+  const com=figCOM(J,M);
+  const sup=[...J.a.slice(1),...J.b.slice(1),...J.l.slice(1),...J.m.slice(1),J.head,J.hip,J.mid].map(M).filter(p=>p[1]>FLOOR-r(7)).map(p=>p[0]);
+  const sx0=sup.length?Math.min(...sup,com[0]):com[0]-r(8),sx1=sup.length?Math.max(...sup,com[0]):com[0]+r(8);
+  let out=`<ellipse cx="${((sx0+sx1)/2*.4+com[0]*.6).toFixed(1)}" cy="${(FLOOR+1).toFixed(1)}" rx="${((sx1-sx0)/2+r(5)).toFixed(1)}" ry="${(2.6*s).toFixed(1)}" fill="rgba(26,107,100,.14)"/>`;
   out+=armSVG(J.b,1,g('arm2'));
   out+=legSVG(J.m,1,g('leg2'));
-  // tronco: cadera ancha → cintura → pecho
-  out+=shape(figCap(sh,r(3.6),head,r(3.2)),C.skin);
-  out+=grp([[figCap(hip,r(8.8),mid,r(7.2)),C.top],[figCap(mid,r(7.2),sh,r(8.6)),C.top]],g('torso'));
-  // cabeza
+  // cuello, tronco (mallas abajo, camiseta arriba) y cabeza
+  if(MQ){out+=grp([[figCap(sh,r(3),off(head,tAng+180,r(3)),r(2.7)),C.body],[torsoPath(-.07,1),C.body]],false);
+    out+=paint('torso',(t0,t1,sd)=>torsoPath(t0,t1,0,sd));}
+  else{out+=shape(figCap(sh,r(3),off(head,tAng+180,r(3)),r(2.7)),C.skin);
+    out+=grp([[torsoPath(-.07,1),C.leg],[torsoPath(.34,1,.05),C.top]],g('torso'));}
   const hr=r(FIG_LEN.HR*.92);
-  const back=off(head,face+180,r(1.6)),tail0=off(head,face+180+35,hr*.8),tail1=off(tail0,face+180+80,r(8));
-  out+=shape(figCap(tail0,r(3.4),tail1,r(1.8)),C.hair);           // coleta
+  const back=off(head,face+180,r(1.4)),tail0=off(head,face+180+35,hr*.8),tail1=off(tail0,face+180+80,r(7.4));
+  out+=shape(figCap(tail0,r(3.1),tail1,r(1.7)),C.hair);           // coleta
   out+=circ(back,hr*1.02,C.hair);                                 // pelo
-  out+=circ(off(head,face,r(1.1)),hr*.9,C.skin);                  // cara
-  out+=circ(off(head,face-8,hr*1.02),r(1.5),C.skin,true);         // nariz
-  out+=circ(off(off(head,face,hr*.5),face-90,hr*.28),r(1),'#2b2b2b',true); // ojo
+  out+=circ(off(head,face,r(1)),hr*.9,MQ?C.body:C.skin);          // cara
+  out+=circ(off(head,face-8,hr*1.02),r(1.4),MQ?C.body:C.skin,true); // nariz
+  out+=circ(off(off(head,face,hr*.5),face-90,hr*.28),r(.95),'#2b2b2b',true); // ojo
   out+=legSVG(J.l,0,g('leg'));
   out+=armSVG(J.a,0,g('arm'));
   return out;
 }
 /* Postura en el instante k∈[0,1) del ciclo. an.K = fotogramas; an.loop: recorre y vuelve
-   al primero de golpe (para giros completos); si no, va y vuelve (ping-pong). */
+   al primero de golpe (para giros completos); si no, va y vuelve (ping-pong).
+   Interpolación de mínimo tirón: 10x³−15x⁴+6x⁵ (velocidad en campana, como el movimiento humano). */
 function figAt(an,k){
   const K=an.K,n=K.length;
-  const ease=x=>x*x*(3-2*x);
+  const ease=x=>x*x*x*(10+x*(6*x-15));
   if(an.loop){const f=k*(n-1),i=Math.min(n-2,Math.floor(f));return figLerp(K[i],K[i+1],ease(f-i));}
   if(n===2&&an.seq){const q=an.seq,T=q[0]+q[1]+q[2]+q[3];let x=k*T;
     if(x<q[0])return figLerp(K[0],K[1],ease(x/q[0]));x-=q[0];
@@ -604,7 +764,6 @@ function figAt(an,k){
   if(n===2&&an.sp){return k<an.sp?figLerp(K[0],K[1],ease(k/an.sp)):figLerp(K[1],K[0],ease((k-an.sp)/(1-an.sp)));}
   const f=k*n,i=Math.floor(f)%n;return figLerp(K[i],K[(i+1)%n],ease(f-Math.floor(f)));
 }
-
 /* Fase actual del ciclo (para marcar el ritmo): índice, etiqueta y segundos dentro de la fase */
 function figPhase(an,k){
   const n=an.K.length,T=an.tempo||3,ph=an.ph||[];
@@ -942,17 +1101,18 @@ function figReset(){FIG_T0=performance.now();FIG_PAUSED=false;}
 function figPause(p){if(p&&!FIG_PAUSED){FIG_PAUSE_AT=performance.now();FIG_PAUSED=true;}else if(!p&&FIG_PAUSED){FIG_T0+=performance.now()-FIG_PAUSE_AT;FIG_PAUSED=false;}}
 const _ANC={};
 function animFor(key,exid){
-  const an=FIG_ANIMS[key]||FIG_ANIMS.breathe,tp=exid&&EX[exid]&&EX[exid].tp;
+  const an=figRetargetAnim(FIG_ANIMS[key]||FIG_ANIMS.breathe),tp=exid&&EX[exid]&&EX[exid].tp;
   if(tp==null)return an;const ck=key+'|'+exid;if(_ANC[ck])return _ANC[ck];
   return _ANC[ck]=Array.isArray(tp)&&an.K.length===2?{...an,seq:tp,sp:null,tempo:tp.reduce((a,b)=>a+b,0)}:{...an,tempo:+tp};
 }
 function figFrame(svg,key,k){
   const an=animFor(key,svg.dataset.ex);
   if(!svg._fit||svg._key!==key+svg.dataset.ex){svg._fit=figFit(an.K);svg._key=key+svg.dataset.ex;svg._hl=null;
+    const ex=svg.dataset.ex;svg._zones=ex&&EXT[ex]?exZones(ex):{main:[],more:[]};
     if(svg.dataset.guide)figGuideBuild(svg,an,svg._fit);else svg._hl=exParts(svg.dataset.ex,an,null);}
   // el músculo que trabaja «late» con el esfuerzo (más intenso a mitad del recorrido)
   const amp=svg.dataset.still?.7:an.hold?.55+.45*Math.sin(k*Math.PI*2*2)**2:.35+.65*Math.sin(k*Math.PI)**2;
-  svg.querySelector('g.fig-body').innerHTML=figSVG(figAt(an,k),svg._fit,svg._hl||an.hl,amp);
+  svg.querySelector('g.fig-body').innerHTML=figSVG(figAt(an,k),svg._fit,svg._hl||an.hl,amp,svg._zones);
   if(svg.dataset.guide)figGuideDyn(svg,an,svg._fit,k);
 }
 function figLoop(){
@@ -1289,7 +1449,7 @@ function figGuideBuild(svg,an,fit){
   // posturas extremas (no en giros continuos ni posturas mantenidas)
   let ghost='';
   if(!an.loop&&!an.hold){const K=an.K,idx=K.length<=3?K.map((_,i)=>i):[0,Math.floor(K.length/2)];
-    ghost=idx.map(i=>`<g opacity=".13">${figSVG(K[i],fit,[],0)}</g>`).join('');}
+    ghost=idx.map(i=>`<g opacity=".16">${figSVG(K[i],fit,[],0,{main:[],more:[]})}</g>`).join('');}
   gh.innerHTML=ghost;
   // estela: la parte que más recorre de las que TRABAJAN (y la segunda si se mueve casi igual y es otra extremidad)
   const hl=svg._hl||[],rel=k=>{const p=EFF_PART[k];return hl.includes(p)||(k==='hip'&&(hl.includes('leg')||hl.includes('leg2')||hl.includes('torso')));};
@@ -1318,8 +1478,8 @@ function figGuideDyn(svg,an,fit,k){
 }
 /* Mapa corporal (delante / detrás) con las zonas que trabajan */
 function bodyMapSVG(z){
-  const on=x=>z.main.includes(x)?'m':z.more.includes(x)?'s':'';
-  const fig=(ox,front)=>{const Z=(zone,shape)=>`<g class="bz ${on(zone)}">${shape}</g>`;
+  const on=x=>z.main.includes(x)?'m':z.more.includes(x)?'s':'',col=x=>on(x)?` style="fill:${FIG_ZC[x]};fill-opacity:${on(x)==='m'?1:.45}"`:'';
+  const fig=(ox,front)=>{const Z=(zone,shape)=>`<g class="bz ${on(zone)}"${col(zone)}>${shape}</g>`;
     const R=(x,y,w,h,r)=>`<rect x="${ox+x}" y="${y}" width="${w}" height="${h}" rx="${r}"/>`;
     return `<circle class="bz-base" cx="${ox+14}" cy="6" r="4.6"/>`+
       Z('shoulders',R(3,12,6,6,3)+R(19,12,6,6,3))+
@@ -1402,7 +1562,7 @@ function xsMap(ex){
   const z=exZones(ex.id);if(!z.main.length){m.innerHTML='';m.hidden=true;return;}
   m.hidden=false;const k=ex.id;if(m.dataset.k===k)return;m.dataset.k=k;
   m.setAttribute('aria-label',t('works')+': '+z.main.map(x=>t('z_'+x)).join(', '));m.setAttribute('role','img');
-  m.innerHTML=bodyMapSVG(z)+`<span><small>${t('works')}</small>${z.main.slice(0,2).map(x=>t('z_'+x)).join(' · ')}</span>`;
+  m.innerHTML=bodyMapSVG(z)+`<span><small>${t('works')}</small>${z.main.slice(0,3).map(x=>`<em><i style="background:${FIG_ZC[x]}"></i>${t('z_'+x)}</em>`).join('')}</span>`;
 }
 function addRest(){if(S.phase==='rest'||(S.phase==='paused'&&S.pausedPhase==='rest')){S.timer+=20;S.total+=20;renderSession();}}
 
