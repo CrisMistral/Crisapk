@@ -216,6 +216,159 @@ body{background:#f6fbfa}
 .sh-name,.s-name,.day-title,.s-big{font-family:'Lexend','Outfit',sans-serif;font-weight:700;letter-spacing:-.005em}
 .sh-name{font-size:1.45rem}.day-title{font-size:1.8rem}.s-big{font-size:2rem}.s-name{font-size:1.15rem}
 .ex-row .ex-name{font-weight:500;font-size:1rem}
+/*XS_V1*/
+/* ── Pantalla de ejercicio (composición vertical: figura → progreso → tiempo → nombre → controles → sesión) ── */
+#v-session.screen{padding:0;background:var(--xs-bg)}
+.xs{--xs-bg:#f6f9f8;--xs-media:#edf3f1;--xs-ink:#12302d;--xs-soft:#6d8a86;--xs-track:#dbe7e4;--xs-accent:#1f8a7e;--xs-accent-ink:#0f5f57;--xs-rest:#e6f4ef;--xs-heat:#f97316;--xs-surface:#e8f0ee;
+  height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;background:var(--xs-bg);color:var(--xs-ink);transition:background-color .5s ease}
+.xs.is-rest{--xs-bg:var(--xs-rest);--xs-media:#e1f1eb;--xs-surface:#d9ece6}
+.xs-media{position:relative;flex:0 1 auto;min-height:170px;height:clamp(210px,calc(100dvh - 310px),64dvh);background:var(--xs-media);overflow:hidden;transition:background-color .5s ease}
+#s-stage.xs-visual,#s-stage{position:absolute;inset:0}
+#s-stage .anim-wrap.big{position:absolute;inset:0;height:100%;margin:0;border:none;border-radius:0;background:transparent}
+#s-stage .anim-wrap svg{top:64px;left:12px;width:calc(100% - 24px);height:calc(100% - 130px)}
+.xs-media-el{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.xs-media-el.mirror{transform:scaleX(-1)}
+.xs-enter{animation:xsEnter .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes xsEnter{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+.xs.is-paused .xs-media #s-stage{opacity:.72;transition:opacity .3s}
+/* Controles secundarios sobre la figura: discretos y translúcidos */
+.xs-ic{position:absolute;z-index:4;width:44px;height:44px;border-radius:50%;border:none;display:grid;place-items:center;cursor:pointer;
+  background:rgba(255,255,255,.62);color:rgba(18,48,45,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .2s,transform .15s}
+.xs-ic svg{width:21px;height:21px}
+.xs-ic:active{transform:scale(.92)}
+.xs-ic.back-btn{top:max(12px,env(safe-area-inset-top));left:12px;box-shadow:none;font-size:0;padding:0;margin:0}
+.xs-top-r{position:absolute;z-index:4;top:max(12px,env(safe-area-inset-top));right:12px;display:flex;gap:10px}
+.xs-top-r .xs-ic{position:static}
+/* Marca de ritmo y mapa corporal: esquinas inferiores, sin tapar a la figura */
+#s-stage .rep-badge{left:14px;bottom:14px;top:auto;right:auto;background:rgba(255,255,255,.78);color:var(--xs-accent-ink);font:600 .9rem 'Lexend','Outfit',sans-serif;
+  border-radius:999px;padding:6px 13px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);letter-spacing:.01em}
+.xs-map{position:absolute;z-index:3;right:12px;bottom:12px;display:flex;align-items:center;gap:7px;padding:6px 10px 6px 6px;border-radius:16px;
+  background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);max-width:55%}
+.xs-map[hidden]{display:none}
+.xs-map .bmap{width:44px;height:50px;flex-shrink:0}
+.xs-map span{font:600 .74rem/1.25 'Lexend','Outfit',sans-serif;color:var(--xs-ink)}
+.xs-map small{display:block;font-size:.62rem;font-weight:500;color:var(--xs-soft);text-transform:uppercase;letter-spacing:.06em}
+.bmap .bz-base,.bmap .bz rect{fill:#cfdcd9}
+.bmap .bz.s rect{fill:#fdc9a4}
+.bmap .bz.m rect{fill:var(--xs-heat)}
+.xs-count{position:absolute;z-index:3;inset:0;display:grid;place-items:center;pointer-events:none;font-family:'DM Serif Display',Georgia,serif;
+  font-size:min(38vw,24dvh);color:var(--xs-accent);opacity:0}
+.xs-count.on{animation:xsCount .95s ease-out forwards}
+@keyframes xsCount{0%{opacity:0;transform:scale(1.35)}18%{opacity:.85;transform:scale(1)}80%{opacity:.75}100%{opacity:0;transform:scale(.92)}}
+/* Progreso del ejercicio: línea fina justo debajo de la figura */
+.xs-line{position:relative;height:4px;background:var(--xs-track);flex-shrink:0;overflow:hidden}
+.xs-line i{position:absolute;inset:0;background:var(--xs-accent);transform-origin:0 50%;transform:scaleX(0);border-radius:0 3px 3px 0}
+.xs.is-rest .xs-line i{background:#34b39b}
+.xs.is-switch .xs-line i{background:#e08a1e}
+/* Cuerpo */
+.xs-body{flex:1 0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;max-width:480px;margin:0 auto;
+  padding:clamp(10px,2.4dvh,26px) 20px max(16px,env(safe-area-inset-bottom))}
+.xs-body>*{animation:xsFade .4s ease both}
+@keyframes xsFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.xs-cap{font:600 .72rem 'Lexend','Outfit',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--xs-accent);min-height:1em}
+.xs.is-paused .xs-cap{color:var(--xs-soft)}
+.xs-clock{font-family:'DM Serif Display',Georgia,serif;font-weight:400;line-height:.95;letter-spacing:-.01em;color:var(--xs-ink);
+  font-size:clamp(3.3rem,min(20vw,10.5dvh),6.4rem);margin:clamp(2px,1dvh,10px) 0 clamp(4px,1dvh,10px);transition:color .3s,opacity .3s}
+.xs-clock b{display:inline-block;width:.54em;font-weight:400}
+.xs-clock i{font-style:normal;display:inline-block;width:.28em;transform:translateY(-.06em)}
+.xs-clock.rest{color:#138a74}.xs-clock.sw{color:#c26a0c}
+.xs.is-paused .xs-clock{opacity:.45}
+.xs-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2.1rem,min(10.5vw,6.2dvh),3.2rem);line-height:1.05;color:var(--xs-ink);margin:clamp(4px,1.2dvh,12px) 0 clamp(4px,1dvh,10px);text-wrap:balance}
+.xs-name{display:flex;align-items:center;justify-content:center;gap:8px;max-width:100%;min-height:1.4em}
+.xs-name span{font:700 clamp(1.1rem,5.2vw,1.4rem)/1.25 'Lexend','Outfit',sans-serif;color:var(--xs-ink);text-wrap:balance;overflow-wrap:anywhere;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.xs-name small{display:block;font:600 .7rem 'Lexend','Outfit',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--xs-soft);margin-bottom:2px}
+.xs-i{flex-shrink:0;width:32px;height:32px;margin-right:-4px;border:none;background:none;color:#8fa9a5;display:grid;place-items:center;cursor:pointer;border-radius:50%}
+.xs-i svg{width:21px;height:21px}
+.xs-i:active{background:var(--xs-surface)}
+.xs-text{font:400 .95rem/1.6 'Lexend','Outfit',sans-serif;color:#46635f;max-width:34ch;margin:0 0 4px;text-wrap:pretty}
+/* Controles: cápsula grande, el central protagonista */
+.xs-ctrl{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:340px;background:var(--xs-surface);border-radius:999px;
+  padding:7px;margin:auto 0 0;transition:background-color .5s}
+.xs-name{margin-bottom:14px}
+.xs-c{width:60px;height:60px;border-radius:50%;border:none;background:transparent;color:var(--xs-ink);display:grid;place-items:center;cursor:pointer;transition:transform .15s,background .2s}
+.xs-c svg{width:26px;height:26px}
+.xs-c:active{transform:scale(.9);background:rgba(255,255,255,.6)}
+.xs-c:disabled{opacity:.3;cursor:default}
+.xs-play{width:72px;height:72px;background:var(--xs-accent);color:#fff;box-shadow:0 8px 20px rgba(31,138,126,.28)}
+.xs-play svg{width:30px;height:30px}
+.xs-play:active{background:var(--xs-accent-ink)}
+.xs-play svg{animation:xsPop .28s ease}
+@keyframes xsPop{from{transform:scale(.6);opacity:.3}to{transform:none;opacity:1}}
+.xs-pills{display:flex;gap:10px;margin-top:10px}
+.xs-pill{border:none;background:rgba(255,255,255,.75);color:var(--xs-accent-ink);font:600 .92rem 'Lexend','Outfit',sans-serif;border-radius:999px;padding:11px 20px;min-height:44px;cursor:pointer}
+.xs-pill:active{transform:scale(.96)}
+/* Progreso de la sesión */
+.xs-sess{width:100%;max-width:340px;margin-top:clamp(12px,2.2dvh,22px)}
+.xs-sess>span{display:block;font:500 .84rem 'Lexend','Outfit',sans-serif;color:var(--xs-soft);margin-bottom:8px;font-variant-numeric:tabular-nums}
+.xs-segs{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:3px}
+.xs-segs i{height:4px;border-radius:2px;background:var(--xs-track);transition:background-color .4s}
+.xs-segs i.d{background:#8fcfc4}
+.xs-segs i.c{background:var(--xs-accent)}
+/* Inicio y final */
+.xs-cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:340px;min-height:60px;margin-top:auto;border:none;border-radius:999px;
+  background:var(--xs-accent);color:#fff;font:600 1.08rem 'Lexend','Outfit',sans-serif;cursor:pointer;box-shadow:0 8px 20px rgba(31,138,126,.25)}
+.xs-cta svg{width:22px;height:22px}
+.xs-cta:active{transform:scale(.98)}
+.xs-actions-row{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;margin-top:auto}
+.xs-actions-row .xs-cta{margin-top:0}
+.xs-ghost{border:none;background:none;color:var(--xs-accent-ink);font:600 .95rem 'Lexend','Outfit',sans-serif;padding:12px 20px;min-height:44px;cursor:pointer}
+.xs.is-idle .xs-top-r,.xs.is-done .xs-top-r{display:none}
+/* Pantalla completa: la figura ocupa todo y lo esencial flota abajo */
+.xs.focus .xs-media{position:fixed;inset:0;height:auto;z-index:1}
+.xs.focus .xs-line{position:fixed;left:0;right:0;bottom:0;z-index:6}
+.xs.focus .xs-body{position:fixed;z-index:5;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));width:calc(100% - 24px);max-width:440px;
+  display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"clock name ctrl";align-items:center;gap:4px 12px;padding:8px 8px 8px 16px;
+  background:rgba(255,255,255,.84);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:26px;text-align:left}
+.xs.focus .xs-body>*{animation:none}
+.xs.focus .xs-cap,.xs.focus .xs-sess,.xs.focus .xs-pills,.xs.focus .xs-text{display:none}
+.xs.focus .xs-clock{grid-area:clock;font-size:2.1rem;margin:0}
+.xs.focus .xs-title{grid-area:clock;font-size:1.3rem;margin:0}
+.xs.focus .xs-name{grid-area:name;justify-content:flex-start}.xs.focus .xs-name span{font-size:.92rem;-webkit-line-clamp:2}
+.xs.focus .xs-ctrl{grid-area:ctrl;margin:0;padding:3px;background:transparent;width:auto}
+.xs.focus .xs-ctrl .xs-c:not(.xs-play){display:none}
+.xs.focus .xs-play{width:52px;height:52px}
+.xs.focus .xs-map{bottom:auto;top:calc(max(12px,env(safe-area-inset-top)) + 54px)}
+.xs.focus #s-stage .anim-wrap svg{top:112px}
+.xs.focus #s-stage .anim-wrap svg{height:calc(100% - 190px)}
+/* Móvil en horizontal: mismo modo de pantalla completa */
+@media (max-height:700px) and (orientation:portrait){
+  #s-stage .anim-wrap svg{top:58px;height:calc(100% - 104px)}
+  .xs-map{top:max(12px,env(safe-area-inset-top));bottom:auto;right:auto;left:50%;transform:translateX(-50%);padding:3px 5px;border-radius:12px}
+  .xs-map .bmap{width:34px;height:38px}
+  .xs-map span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+}
+@media (orientation:landscape) and (max-height:520px){
+  .xs .xs-media{position:fixed;inset:0;height:auto;z-index:1}
+  .xs .xs-line{position:fixed;left:0;right:0;bottom:0;z-index:6}
+  .xs .xs-body{position:fixed;z-index:5;left:50%;transform:translateX(-50%);bottom:10px;width:auto;min-width:320px;max-width:520px;display:grid;grid-template-columns:auto 1fr auto;
+    grid-template-areas:"clock name ctrl";align-items:center;gap:4px 12px;padding:6px 6px 6px 16px;background:rgba(255,255,255,.86);border-radius:24px;text-align:left}
+  .xs .xs-body>*{animation:none}
+  .xs .xs-cap,.xs .xs-sess,.xs .xs-pills,.xs .xs-text{display:none}
+  .xs .xs-clock{grid-area:clock;font-size:2rem;margin:0}.xs .xs-title{grid-area:clock;font-size:1.25rem;margin:0}
+  .xs .xs-name{grid-area:name;justify-content:flex-start}.xs .xs-name span{font-size:.9rem;-webkit-line-clamp:2}
+  .xs .xs-ctrl{grid-area:ctrl;margin:0;padding:2px;width:auto}.xs .xs-c{width:44px;height:44px}.xs .xs-play{width:50px;height:50px}
+  .xs .xs-cta{grid-area:ctrl;min-height:48px;padding:0 20px;margin:0}.xs .xs-actions-row{grid-area:ctrl;margin:0}
+  #xs-focus{display:none}
+  .xs .xs-map{bottom:auto;top:12px;right:66px}
+  #s-stage .anim-wrap svg{top:14px;height:calc(100% - 96px)}
+}
+/* Tablet */
+@media (min-width:600px) and (min-height:700px){
+  .xs-media{height:min(63dvh,700px)}
+  .xs-ctrl,.xs-sess,.xs-cta{max-width:380px}
+}
+/* Escritorio y tablet en horizontal: figura a la izquierda, panel a la derecha */
+@media (min-width:900px) and (orientation:landscape) and (min-height:521px){
+  .xs{flex-direction:row;height:100dvh}
+  .xs-media{flex:1 1 auto;height:auto}
+  .xs-line{position:absolute;left:0;bottom:0;width:calc(100% - 440px);z-index:4}
+  .xs-body{flex:0 0 440px;max-width:440px;justify-content:center;padding:40px 36px;border-left:1px solid var(--xs-track)}
+  .xs-body .xs-ctrl,.xs-actions-row,.xs-cta{margin-top:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .xs *,.xs{animation:none!important;transition:none!important}
+}
 </style>
 </head>
 <body>
@@ -244,8 +397,17 @@ body{background:#f6fbfa}
 </div>
 
 <div id="v-session" class="screen">
-  <div class="s-top"><div class="s-prog"><div class="s-fill" id="s-fill"></div></div><button class="back-btn s-back" onclick="confirmStop()">←</button><div id="s-stage"></div></div>
-  <div class="s-bottom" id="s-content"></div>
+<div class="xs" id="xs">
+  <div class="xs-media">
+    <div id="s-stage" class="xs-visual"></div>
+    <div class="xs-count" id="xs-count" aria-hidden="true"></div>
+    <div class="xs-map" id="xs-map" hidden></div>
+    <button class="xs-ic back-btn" onclick="confirmStop()" aria-label="←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="xs-top-r"><button class="xs-ic" id="xs-mute" onclick="xsToggleMute()"></button><button class="xs-ic" id="xs-focus" onclick="xsToggleFocus()"></button></div>
+  </div>
+  <div class="xs-line" aria-hidden="true"><i id="xs-line"></i></div>
+  <div class="xs-body" id="s-content"></div>
+</div>
 </div>
 
 <div id="tech-ov" class="tech-ov" onclick="if(event.target===this)closeSheet()"><div class="tech-card" role="dialog" aria-modal="true"><button class="sh-x" onclick="closeSheet()" aria-label="✕">✕</button><div id="tech-body"></div><div class="sh-foot"><div id="sh-nav"></div><button class="btn btn-primary" id="tech-close" onclick="closeSheet()"></button></div></div></div>
@@ -260,7 +422,7 @@ function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.backgr
 
 /* ─── IDIOMAS (es · en · fr) ─── */
 const UI={
- es:{dur:'Duración',how:'Cómo hacerlo',tech_mus:'Músculos',start:'Comenzar',ex_count:'Ejercicios ({n})',exs_label:'ejercicios',st_short:'Estiramientos',settings:'Ajustes de entrenamiento',rounds_w:'rondas',prep_h:'¡Prepárate!',starts_in:'Empieza en',skip:'Omitir',rest_h:'Descanso',skip_rest:'Omitir descanso',exs:'ejercicio {i}/{n}',ph_down:'Baja',ph_up:'Sube',ph_jump:'Salta',ph_land:'Aterriza',ph_knee:'Rodilla arriba',ph_back:'Vuelve',ph_side1:'Un lado',ph_side2:'Otro lado',ph_out:'Estira',ph_in:'Recoge',ph_squeeze:'Junta',ph_push:'Empuja',ph_inhale:'Inhala',ph_exhale:'Exhala',ph_circle:'Círculo',ph_rock:'Balancea',v_count:'Acuérdate de cuántas has hecho. ',bubble:'Tú solo copia a la figura 💚',tech_btn:'Técnica',tech_pos:'Posición inicial',tech_exe:'Ejecución',tech_resp:'Respiración',tech_err:'Errores comunes',tech_tip:'Adaptación',tech_close:'Cerrar',tech_close_resume:'▶ Cerrar y seguir',home_h:'💪 Calistenia en casa',home_sub:'20 min · solo una esterilla · sin material',week_title:'Tu semana',btn_start_auto:'▶ Empezar sesión automática',
+ es:{works:'Trabaja',ex_of:'Ejercicio {i} de {n}',add20:'+20 s',xs_mute:'Silenciar voz y sonido',xs_unmute:'Activar voz y sonido',xs_focus:'Ver la figura a pantalla completa',xs_prev:'Ejercicio anterior',xs_next:'Siguiente',next_lbl:'Siguiente',idle_meta:'{n} ejercicios · ~{m} min',idle_btn_short:'Empezar',done_cap:'Sesión terminada',z_shoulders:'Hombros',z_chest:'Pecho',z_arms:'Brazos',z_upperback:'Espalda alta',z_back:'Espalda',z_core:'Abdomen',z_hips:'Cadera',z_glutes:'Glúteos',z_quads:'Muslo delantero',z_hams:'Muslo trasero',z_inner:'Muslo interior',z_calves:'Gemelos',dur:'Duración',how:'Cómo hacerlo',tech_mus:'Músculos',start:'Comenzar',ex_count:'Ejercicios ({n})',exs_label:'ejercicios',st_short:'Estiramientos',settings:'Ajustes de entrenamiento',rounds_w:'rondas',prep_h:'¡Prepárate!',starts_in:'Empieza en',skip:'Omitir',rest_h:'Descanso',skip_rest:'Omitir descanso',exs:'ejercicio {i}/{n}',ph_down:'Baja',ph_up:'Sube',ph_jump:'Salta',ph_land:'Aterriza',ph_knee:'Rodilla arriba',ph_back:'Vuelve',ph_side1:'Un lado',ph_side2:'Otro lado',ph_out:'Estira',ph_in:'Recoge',ph_squeeze:'Junta',ph_push:'Empuja',ph_inhale:'Inhala',ph_exhale:'Exhala',ph_circle:'Círculo',ph_rock:'Balancea',v_count:'Acuérdate de cuántas has hecho. ',bubble:'Tú solo copia a la figura 💚',tech_btn:'Técnica',tech_pos:'Posición inicial',tech_exe:'Ejecución',tech_resp:'Respiración',tech_err:'Errores comunes',tech_tip:'Adaptación',tech_close:'Cerrar',tech_close_resume:'▶ Cerrar y seguir',home_h:'💪 Calistenia en casa',home_sub:'20 min · solo una esterilla · sin material',week_title:'Tu semana',btn_start_auto:'▶ Empezar sesión automática',
   lvl_label:'Nivel',lvl:['Fácil','Medio','Difícil'],prog:'Semana {w} de progreso · {work}s de ejercicio / {rest}s de descanso',prog_up:'Llevas 4 semanas en este nivel: cuando te sientas lista, prueba «{lvl}».',
   tc_today:'Hoy · {name}',tc_meta:'~{m} min · nivel {lvl}',tc_meta_st:'~{m} min · estiramientos extra',dh_meta:'~{m} min',
   sec_warm:'Calentamiento',sec_main:'Circuito · {r} rondas',sec_cool:'Vuelta a la calma',sec_st:'Estiramientos',ex_sec:'{n} s',ex_side:'{n} s cada lado',
@@ -279,7 +441,7 @@ const UI={
   i_vie:'Viernes de cuerpo completo: juntamos todo lo de la semana. Con esto ya has trabajado todo el cuerpo. ¡A por ello!',
   i_sab:'Extra del fin de semana: estiramientos suaves para cadera y piernas. Sin prisa y sin dolor; respira en cada postura.',
   i_dom:'Extra del domingo: movilidad y estiramientos para espalda, hombros y cuello. Prepara el cuerpo para la semana.'},
- en:{dur:'Duration',how:'How to do it',tech_mus:'Muscles',start:'Start',ex_count:'Exercises ({n})',exs_label:'exercises',st_short:'Stretching',settings:'Training settings',rounds_w:'rounds',prep_h:'Get ready!',starts_in:'Starts in',skip:'Skip',rest_h:'Rest',skip_rest:'Skip rest',exs:'exercise {i}/{n}',ph_down:'Lower',ph_up:'Up',ph_jump:'Jump',ph_land:'Land',ph_knee:'Knee up',ph_back:'Back',ph_side1:'One side',ph_side2:'Other side',ph_out:'Extend',ph_in:'Tuck',ph_squeeze:'Squeeze',ph_push:'Push',ph_inhale:'Breathe in',ph_exhale:'Breathe out',ph_circle:'Circle',ph_rock:'Rock',v_count:'Remember how many you did. ',bubble:'Just copy the figure 💚',tech_btn:'Technique',tech_pos:'Starting position',tech_exe:'Execution',tech_resp:'Breathing',tech_err:'Common mistakes',tech_tip:'Adaptation',tech_close:'Close',tech_close_resume:'▶ Close and continue',home_h:'💪 Home calisthenics',home_sub:'20 min · just a mat · no equipment',week_title:'Your week',btn_start_auto:'▶ Start automatic session',
+ en:{works:'Works',ex_of:'Exercise {i} of {n}',add20:'+20 s',xs_mute:'Mute voice and sound',xs_unmute:'Turn voice and sound on',xs_focus:'Show the figure full screen',xs_prev:'Previous exercise',xs_next:'Next',next_lbl:'Next',idle_meta:'{n} exercises · ~{m} min',idle_btn_short:'Start',done_cap:'Session complete',z_shoulders:'Shoulders',z_chest:'Chest',z_arms:'Arms',z_upperback:'Upper back',z_back:'Back',z_core:'Core',z_hips:'Hips',z_glutes:'Glutes',z_quads:'Front thigh',z_hams:'Back thigh',z_inner:'Inner thigh',z_calves:'Calves',dur:'Duration',how:'How to do it',tech_mus:'Muscles',start:'Start',ex_count:'Exercises ({n})',exs_label:'exercises',st_short:'Stretching',settings:'Training settings',rounds_w:'rounds',prep_h:'Get ready!',starts_in:'Starts in',skip:'Skip',rest_h:'Rest',skip_rest:'Skip rest',exs:'exercise {i}/{n}',ph_down:'Lower',ph_up:'Up',ph_jump:'Jump',ph_land:'Land',ph_knee:'Knee up',ph_back:'Back',ph_side1:'One side',ph_side2:'Other side',ph_out:'Extend',ph_in:'Tuck',ph_squeeze:'Squeeze',ph_push:'Push',ph_inhale:'Breathe in',ph_exhale:'Breathe out',ph_circle:'Circle',ph_rock:'Rock',v_count:'Remember how many you did. ',bubble:'Just copy the figure 💚',tech_btn:'Technique',tech_pos:'Starting position',tech_exe:'Execution',tech_resp:'Breathing',tech_err:'Common mistakes',tech_tip:'Adaptation',tech_close:'Close',tech_close_resume:'▶ Close and continue',home_h:'💪 Home calisthenics',home_sub:'20 min · just a mat · no equipment',week_title:'Your week',btn_start_auto:'▶ Start automatic session',
   lvl_label:'Level',lvl:['Easy','Medium','Hard'],prog:'Progress week {w} · {work}s work / {rest}s rest',prog_up:'You’ve done 4 weeks at this level: when you feel ready, try “{lvl}”.',
   tc_today:'Today · {name}',tc_meta:'~{m} min · {lvl} level',tc_meta_st:'~{m} min · extra stretching',dh_meta:'~{m} min',
   sec_warm:'Warm-up',sec_main:'Circuit · {r} rounds',sec_cool:'Cool-down',sec_st:'Stretching',ex_sec:'{n} s',ex_side:'{n} s each side',
@@ -298,7 +460,7 @@ const UI={
   i_vie:'Full-body Friday: we bring the whole week together. With this you’ve worked your whole body. Go for it!',
   i_sab:'Weekend extra: gentle stretches for hips and legs. No rush and no pain; breathe into each pose.',
   i_dom:'Sunday extra: mobility and stretches for back, shoulders and neck. Get your body ready for the week.'},
- fr:{dur:'Durée',how:'Comment faire',tech_mus:'Muscles',start:'Commencer',ex_count:'Exercices ({n})',exs_label:'exercices',st_short:'Étirements',settings:'Réglages d’entraînement',rounds_w:'tours',prep_h:'Prépare-toi !',starts_in:'Début dans',skip:'Passer',rest_h:'Repos',skip_rest:'Passer le repos',exs:'exercice {i}/{n}',ph_down:'Descends',ph_up:'Monte',ph_jump:'Saute',ph_land:'Atterris',ph_knee:'Genou haut',ph_back:'Reviens',ph_side1:'Un côté',ph_side2:'L’autre côté',ph_out:'Tends',ph_in:'Ramène',ph_squeeze:'Serre',ph_push:'Pousse',ph_inhale:'Inspire',ph_exhale:'Expire',ph_circle:'Cercle',ph_rock:'Balance',v_count:'Retiens combien tu en as fait. ',bubble:'Copie simplement la figure 💚',tech_btn:'Technique',tech_pos:'Position de départ',tech_exe:'Exécution',tech_resp:'Respiration',tech_err:'Erreurs fréquentes',tech_tip:'Adaptation',tech_close:'Fermer',tech_close_resume:'▶ Fermer et continuer',home_h:'💪 Callisthénie à la maison',home_sub:'20 min · juste un tapis · sans matériel',week_title:'Ta semaine',btn_start_auto:'▶ Démarrer la séance automatique',
+ fr:{works:'Travaille',ex_of:'Exercice {i} sur {n}',add20:'+20 s',xs_mute:'Couper la voix et le son',xs_unmute:'Activer la voix et le son',xs_focus:'Voir la figurine en plein écran',xs_prev:'Exercice précédent',xs_next:'Suivant',next_lbl:'Ensuite',idle_meta:'{n} exercices · ~{m} min',idle_btn_short:'Commencer',done_cap:'Séance terminée',z_shoulders:'Épaules',z_chest:'Poitrine',z_arms:'Bras',z_upperback:'Haut du dos',z_back:'Dos',z_core:'Abdos',z_hips:'Hanches',z_glutes:'Fessiers',z_quads:'Avant de la cuisse',z_hams:'Arrière de la cuisse',z_inner:'Intérieur de la cuisse',z_calves:'Mollets',dur:'Durée',how:'Comment faire',tech_mus:'Muscles',start:'Commencer',ex_count:'Exercices ({n})',exs_label:'exercices',st_short:'Étirements',settings:'Réglages d’entraînement',rounds_w:'tours',prep_h:'Prépare-toi !',starts_in:'Début dans',skip:'Passer',rest_h:'Repos',skip_rest:'Passer le repos',exs:'exercice {i}/{n}',ph_down:'Descends',ph_up:'Monte',ph_jump:'Saute',ph_land:'Atterris',ph_knee:'Genou haut',ph_back:'Reviens',ph_side1:'Un côté',ph_side2:'L’autre côté',ph_out:'Tends',ph_in:'Ramène',ph_squeeze:'Serre',ph_push:'Pousse',ph_inhale:'Inspire',ph_exhale:'Expire',ph_circle:'Cercle',ph_rock:'Balance',v_count:'Retiens combien tu en as fait. ',bubble:'Copie simplement la figure 💚',tech_btn:'Technique',tech_pos:'Position de départ',tech_exe:'Exécution',tech_resp:'Respiration',tech_err:'Erreurs fréquentes',tech_tip:'Adaptation',tech_close:'Fermer',tech_close_resume:'▶ Fermer et continuer',home_h:'💪 Callisthénie à la maison',home_sub:'20 min · juste un tapis · sans matériel',week_title:'Ta semaine',btn_start_auto:'▶ Démarrer la séance automatique',
   lvl_label:'Niveau',lvl:['Facile','Moyen','Difficile'],prog:'Semaine de progression {w} · {work}s d’effort / {rest}s de repos',prog_up:'Tu as fait 4 semaines à ce niveau : quand tu te sens prête, essaie « {lvl} ».',
   tc_today:'Aujourd’hui · {name}',tc_meta:'~{m} min · niveau {lvl}',tc_meta_st:'~{m} min · étirements bonus',dh_meta:'~{m} min',
   sec_warm:'Échauffement',sec_main:'Circuit · {r} tours',sec_cool:'Retour au calme',sec_st:'Étirements',ex_sec:'{n} s',ex_side:'{n} s de chaque côté',
@@ -369,20 +531,29 @@ function figCap(p1,r1,p2,r2){
   const A1=P(p1,r1,a+th),B1=P(p2,r2,a+th),B2=P(p2,r2,a-th),A2=P(p1,r1,a-th);
   return `M${A1}L${B1}A${r2.toFixed(1)} ${r2.toFixed(1)} 0 ${th>Math.PI/2?1:0} 0 ${B2}L${A2}A${r1.toFixed(1)} ${r1.toFixed(1)} 0 ${th<Math.PI/2?1:0} 0 ${A1}Z`;
 }
-const FIG_SKIN={skin:'#f1c6a4',skinFar:'#d8a584',top:'#26a69a',topFar:'#1d8a80',leg:'#1f5f58',legFar:'#3f8078',shoe:'#f8fafc',shoeFar:'#dfe7ec',hair:'#4a2f25',line:'rgba(12,52,48,.55)',glow:'rgba(245,158,11,.38)'};
-function figSVG(P,fit,hl){
-  const J=figJoints(P),s=fit.s,FLOOR=FIG_FLOOR,C=FIG_SKIN,H=hl||[];
-  let low=-1e9;
-  low=Math.max(low,J.head[1]+FIG_LEN.HR,J.hip[1]+8,J.neck[1]+8,J.mid[1]+7);
+const FIG_SKIN={skin:'#f1c6a4',skinFar:'#d8a584',top:'#26a69a',topFar:'#1d8a80',leg:'#1f5f58',legFar:'#3f8078',shoe:'#f8fafc',shoeFar:'#dfe7ec',hair:'#4a2f25',line:'rgba(12,52,48,.55)',glow:'rgba(251,146,60,.5)',heat:'#fb923c'};
+/* Posición en pantalla (unidades del viewBox) de las articulaciones de una postura:
+   la figura se «apoya» en la esterilla por su punto más bajo */
+function figMap(P,fit){
+  const J=figJoints(P),s=fit.s;
+  let low=Math.max(J.head[1]+FIG_LEN.HR,J.hip[1]+8,J.neck[1]+8,J.mid[1]+7);
   for(const q of [...J.a.slice(1),...J.b.slice(1),...J.l.slice(1),...J.m.slice(1)])low=Math.max(low,q[1]+3.6);
-  const M=v=>[fit.cx+v[0]*s,FLOOR-(low-v[1]+(P.up||0))*s];
+  return {J,M:v=>[fit.cx+v[0]*s,FIG_FLOOR-(low-v[1]+(P.up||0))*s]};
+}
+/* hl = partes que trabajan (se tiñen de naranja); amp 0-1 = intensidad (late con el esfuerzo) */
+function figSVG(P,fit,hl,amp){
+  const {J,M}=figMap(P,fit),s=fit.s,FLOOR=FIG_FLOOR,C=FIG_SKIN,H=hl||[];
+  const A=amp==null?.6:amp,heatOp=(.5+.38*A).toFixed(2),haloOp=(.45+.55*A).toFixed(2);
   const r=n=>n*s;
   const lw=(.9*s).toFixed(2);
   // grupo de piezas: halo (si trabaja) → contorno de todas → relleno de todas (sin costuras internas)
   const grp=(parts,glow)=>{let o='';
-    if(glow)o+=parts.map(([d])=>`<path d="${d}" fill="none" stroke="${C.glow}" stroke-width="${(4.2*s).toFixed(1)}" stroke-linejoin="round"/>`).join('');
+    if(glow)o+=parts.map(([d])=>`<path d="${d}" fill="none" stroke="${C.glow}" stroke-opacity="${haloOp}" stroke-width="${(5*s).toFixed(1)}" stroke-linejoin="round"/>`).join('');
     o+=parts.map(([d])=>`<path d="${d}" fill="none" stroke="${C.line}" stroke-width="${(1.9*s).toFixed(2)}" stroke-linejoin="round"/>`).join('');
-    o+=parts.map(([d,fill])=>`<path d="${d}" fill="${fill}"/>`).join('');return o;};
+    o+=parts.map(([d,fill])=>`<path d="${d}" fill="${fill}"/>`).join('');
+    // músculo que trabaja: tinte cálido encima de la ropa/piel
+    if(glow)o+=parts.map(([d])=>`<path d="${d}" fill="${C.heat}" fill-opacity="${heatOp}"/>`).join('');
+    return o;};
   const shape=(d,fill,glow)=>grp([[d,fill]],glow);
   const circ=(p,rad,fill,noLine)=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${rad.toFixed(1)}" fill="${fill}"${noLine?'':` stroke="${C.line}" stroke-width="${lw}"`}/>`;
   const dirv=g=>{const x=g*Math.PI/180;return [Math.cos(x),Math.sin(x)];};
@@ -777,8 +948,12 @@ function animFor(key,exid){
 }
 function figFrame(svg,key,k){
   const an=animFor(key,svg.dataset.ex);
-  if(!svg._fit||svg._key!==key+svg.dataset.ex){svg._fit=figFit(an.K);svg._key=key+svg.dataset.ex;}
-  svg.querySelector('g.fig-body').innerHTML=figSVG(figAt(an,k),svg._fit,an.hl);
+  if(!svg._fit||svg._key!==key+svg.dataset.ex){svg._fit=figFit(an.K);svg._key=key+svg.dataset.ex;svg._hl=null;
+    if(svg.dataset.guide)figGuideBuild(svg,an,svg._fit);else svg._hl=exParts(svg.dataset.ex,an,null);}
+  // el músculo que trabaja «late» con el esfuerzo (más intenso a mitad del recorrido)
+  const amp=svg.dataset.still?.7:an.hold?.55+.45*Math.sin(k*Math.PI*2*2)**2:.35+.65*Math.sin(k*Math.PI)**2;
+  svg.querySelector('g.fig-body').innerHTML=figSVG(figAt(an,k),svg._fit,svg._hl||an.hl,amp);
+  if(svg.dataset.guide)figGuideDyn(svg,an,svg._fit,k);
 }
 function figLoop(){
   document.querySelectorAll('svg.fig').forEach(svg=>{
@@ -807,12 +982,12 @@ requestAnimationFrame(figLoop);
 function getAnim(key,opts){
   opts=opts||{};
   return `<div class="anim-wrap${opts.big?' big':''}">
-    <svg class="fig" data-anim="${key}"${opts.ex?` data-ex="${opts.ex}"`:''}${opts.still?' data-still="1"':''} viewBox="${FIG_VB}" xmlns="http://www.w3.org/2000/svg"${opts.mirror?' style="transform:scaleX(-1)"':''}>${FIG_MAT}<g class="fig-body"></g></svg>
+    <svg class="fig" data-anim="${key}"${opts.ex?` data-ex="${opts.ex}"`:''}${opts.still?' data-still="1"':''}${opts.guide?' data-guide="1"':''} viewBox="${FIG_VB}" xmlns="http://www.w3.org/2000/svg"${opts.mirror?' style="transform:scaleX(-1)"':''}>${FIG_MAT}${opts.guide?'<g class="fig-ghost"></g><g class="fig-trail"></g>':''}<g class="fig-body"></g>${opts.guide?'<g class="fig-dyn"></g>':''}</svg>
     ${opts.tag?`<span class="anim-tag">${opts.tag}</span>`:''}
     ${opts.big?'<span class="rep-badge" style="display:none"></span>':''}
   </div>`;
 }
-function thumb(key){return `<svg class="fig thumb" data-anim="${key}" data-still="1" viewBox="${FIG_VB}" xmlns="http://www.w3.org/2000/svg">${FIG_MAT}<g class="fig-body"></g></svg>`;}
+function thumb(key,exid){return `<svg class="fig thumb" data-anim="${key}"${exid?` data-ex="${exid}"`:''} data-still="1" viewBox="${FIG_VB}" xmlns="http://www.w3.org/2000/svg">${FIG_MAT}<g class="fig-body"></g></svg>`;}
 
 const TODAY=new Date().getDay();
 function todayDayIdx(){const m={1:0,2:1,3:2,4:3,5:4,6:5,0:6};return m[TODAY];}
@@ -918,7 +1093,7 @@ function renderDayScreen(){
   let html=`<div class="ex-count">${t('ex_count',{n:list.length})}</div>`,last='';
   list.forEach(ex=>{
     if(ex.sec!==last){html+=`<div class="sec-title">${sec[ex.sec]}</div>`;last=ex.sec;}
-    html+=`<button class="ex-row" onclick="openSheet('${ex.id}')">${thumb(ex.anim)}<div class="ex-txt"><div class="ex-name">${ex.name}</div><div class="ex-meta">${mmss(ex.duration)}${ex.sides===2?' ×2':''}${ex.sec==='main'?' · ×2 '+t('rounds_w'):''}</div></div><span class="ex-i">ⓘ</span></button>`;
+    html+=`<button class="ex-row" onclick="openSheet('${ex.id}')">${thumb(ex.anim,ex.id)}<div class="ex-txt"><div class="ex-name">${ex.name}</div><div class="ex-meta">${mmss(ex.duration)}${ex.sides===2?' ×2':''}${ex.sec==='main'?' · ×2 '+t('rounds_w'):''}</div></div><span class="ex-i">ⓘ</span></button>`;
   });
   document.getElementById('ex-list').innerHTML=html;
 }
@@ -939,7 +1114,7 @@ function startSession(){
   go('session');renderSession();
 }
 function confirmStop(){stopSession();go('day');}
-function stopSession(){stopTimer();releaseAwake();_speakSeq++;try{speechSynthesis.cancel();}catch(e){}}
+function stopSession(){xsToggleFocus(false);stopTimer();releaseAwake();_speakSeq++;try{speechSynthesis.cancel();}catch(e){}}
 function stopTimer(){if(S.interval){clearInterval(S.interval);S.interval=null;}}
 function beginAll(){keepAwake();startPrep();}
 function voiceOn(){return __allow('voice')&&!!window.speechSynthesis;}
@@ -980,7 +1155,8 @@ function advanceExDirect(){
 function sessionTick(){
   S.timer--;
   const el=document.getElementById('s-timer');
-  if(el)el.textContent=el.classList.contains('s-clock')?mmss(S.timer):S.timer;
+  if(el)el.innerHTML=el.classList.contains('xs-clock')?xsClock(S.timer):el.classList.contains('s-clock')?mmss(S.timer):S.timer;
+  xsTick();
   __ring('s-ring',S.total?S.timer/S.total:0);
   if(S.phase==='active'){
     if(S.timer===10&&S.total>=25)speak(t('v_last10'));
@@ -1065,25 +1241,195 @@ function prevEx(){
   stopTimer();_speakSeq++;try{speechSynthesis.cancel();}catch(e){}
   S.pausedPhase=null;figPause(false);if(S.exIdx>0)S.exIdx--;S.side=1;startPrep();
 }
+/* ─── AVATAR DINÁMICO: qué se mueve y con qué parte del cuerpo ───
+   · Zonas que trabajan: salen de la ficha de músculos de cada ejercicio (EXT.mus).
+     Las dos primeras son las principales (se tiñen en la figura y en el mapa corporal).
+   · Guías de movimiento (solo en la figura grande): siluetas fantasma de las posturas
+     extremas + estela con flecha de la parte del cuerpo que más se desplaza. */
+const ZONE_RE=[['shoulders',/hombro|deltoid/],['chest',/pecho|pectoral/],['arms',/brazo|tricep|bicep/],['upperback',/trapecio|espalda alta|romboid/],
+  ['back',/espalda|erector|lumbar|dorsal|multifid/],['core',/barriga|abdom|transverso|oblicuo|costado|serrato|costilla/],['hips',/psoas|flexores de la cadera|iliaco/],
+  ['glutes',/gluteo|culo/],['quads',/cuadricep|delantera del muslo|recto femoral|muslo delantero/],['hams',/isquio|atras del muslo|muslo trasero/],
+  ['inner',/aductor|interior del muslo/],['calves',/gemelo|pantorrilla|soleo|gastrocnem/]];
+const _ZC={};
+function exZones(id){
+  if(_ZC[id])return _ZC[id];
+  const mus=EXT[id]&&EXT[id].es&&EXT[id].es.mus;const out={main:[],more:[]};
+  if(mus){
+    const fold=x=>x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    let depth=0,cur='';const items=[];for(const ch of mus){if(ch==='(')depth++;if(ch===')')depth--;if(ch===','&&!depth){items.push(cur);cur='';}else cur+=ch;}items.push(cur);
+    items.forEach((it,i)=>{const f=fold(it);ZONE_RE.forEach(([z,re])=>{if(re.test(f)){const tgt=i<2?out.main:out.more;if(!out.main.includes(z)&&!out.more.includes(z))tgt.push(z);}});});
+  }
+  return _ZC[id]=out;
+}
+const ZONE_PARTS={shoulders:['arm','arm2'],chest:['arm','arm2','torso'],arms:['arm','arm2'],upperback:['torso','arm','arm2'],back:['torso'],core:['torso'],
+  hips:['leg','leg2'],glutes:['leg','leg2'],quads:['leg','leg2'],hams:['leg','leg2'],inner:['leg','leg2'],calves:['leg','leg2']};
+/* Recorrido de cada parte a lo largo del ciclo (en unidades de pantalla) */
+const FIG_EFF={hand:J=>J.a[2],hand2:J=>J.b[2],foot:J=>J.l[3],foot2:J=>J.m[3],knee:J=>J.l[1],knee2:J=>J.m[1],head:J=>J.head,hip:J=>J.hip};
+const EFF_PART={hand:'arm',hand2:'arm2',foot:'leg',foot2:'leg2',knee:'leg',knee2:'leg2',head:'torso',hip:'torso'};
+function figMotion(an,fit){
+  const N=48,tr={};Object.keys(FIG_EFF).forEach(k=>tr[k]=[]);
+  for(let i=0;i<=N;i++){const {J,M}=figMap(figAt(an,i/N),fit);for(const k in FIG_EFF)tr[k].push(M(FIG_EFF[k](J)));}
+  const len={};for(const k in tr){let L=0;for(let i=1;i<tr[k].length;i++)L+=Math.hypot(tr[k][i][0]-tr[k][i-1][0],tr[k][i][1]-tr[k][i-1][1]);len[k]=L;}
+  return {tr,len};
+}
+/* Partes a teñir: las de las zonas principales; si solo se mueve un brazo o una pierna, solo ese */
+function exParts(exid,an,mot){
+  if(exid==='_done')return [];
+  const z=exid&&EXT[exid]?exZones(exid).main:[];
+  let parts=[...new Set(z.flatMap(x=>ZONE_PARTS[x]||[]))];
+  if(!parts.length)return an.hl||[];
+  if(mot&&!an.hold){const L=mot.len,one=(a,b,pa,pb)=>{if(L[a]>3*L[b]&&L[a]>25)parts=parts.filter(p=>p!==pb);else if(L[b]>3*L[a]&&L[b]>25)parts=parts.filter(p=>p!==pa);};
+    one('foot','foot2','leg','leg2');one('hand','hand2','arm','arm2');}
+  return parts;
+}
+/* Capas fijas de la figura grande: fantasmas + estela (se calculan una vez por ejercicio) */
+function figGuideBuild(svg,an,fit){
+  const mot=figMotion(an,fit);svg._mot=mot;svg._hl=exParts(svg.dataset.ex,an,mot);
+  const gh=svg.querySelector('g.fig-ghost'),tl=svg.querySelector('g.fig-trail');if(!gh||!tl)return;
+  // posturas extremas (no en giros continuos ni posturas mantenidas)
+  let ghost='';
+  if(!an.loop&&!an.hold){const K=an.K,idx=K.length<=3?K.map((_,i)=>i):[0,Math.floor(K.length/2)];
+    ghost=idx.map(i=>`<g opacity=".13">${figSVG(K[i],fit,[],0)}</g>`).join('');}
+  gh.innerHTML=ghost;
+  // estela: la parte que más recorre de las que TRABAJAN (y la segunda si se mueve casi igual y es otra extremidad)
+  const hl=svg._hl||[],rel=k=>{const p=EFF_PART[k];return hl.includes(p)||(k==='hip'&&(hl.includes('leg')||hl.includes('leg2')||hl.includes('torso')));};
+  let pool=Object.keys(mot.len).filter(k=>!(k.startsWith('knee')&&mot.len['foot'+k.slice(4)]>=mot.len[k]*.85));
+  if(hl.length&&pool.some(k=>rel(k)&&mot.len[k]>=10))pool=pool.filter(rel);
+  const ks=pool.sort((a,b)=>mot.len[b]-mot.len[a]);
+  const eff=[];if(!an.hold&&mot.len[ks[0]]>=10){eff.push(ks[0]);const b=ks[1];if(b&&mot.len[b]>=mot.len[ks[0]]*.7&&EFF_PART[b]!==EFF_PART[ks[0]])eff.push(b);}
+  svg._eff=eff;
+  // encuadre ajustado a este ejercicio (todas sus posturas + la esterilla)
+  let x0=1e9,x1=-1e9,y0=1e9;
+  for(let i=0;i<=12;i++){const {J,M}=figMap(figAt(an,i/12),fit);for(const q of figPoints(J)){const m=M(q);x0=Math.min(x0,m[0]);x1=Math.max(x1,m[0]);y0=Math.min(y0,m[1]);}}
+  x0-=12;x1+=12;y0-=12;const y1=FIG_FLOOR+10;let w=x1-x0,h=y1-y0;
+  if(w<h*.75){const c=(x0+x1)/2;w=h*.75;x0=c-w/2;}
+  svg.setAttribute('viewBox',`${x0.toFixed(1)} ${y0.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);svg.setAttribute('preserveAspectRatio','xMidYMax meet');
+  tl.innerHTML=eff.map(k=>{const pts=mot.tr[k];return `<path d="M${pts.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L')}" fill="none" stroke="#f97316" stroke-opacity=".5" stroke-width="1.3" stroke-dasharray="1.6 2.6" stroke-linecap="round"/>`;}).join('');
+}
+/* Punto y flecha que recorren la estela al ritmo de la figura */
+function figGuideDyn(svg,an,fit,k){
+  const dyn=svg.querySelector('g.fig-dyn');if(!dyn)return;
+  if(!svg._eff||!svg._eff.length){dyn.innerHTML='';return;}
+  const a=figMap(figAt(an,k),fit),b=figMap(figAt(an,(k+.025)%1),fit);
+  dyn.innerHTML=svg._eff.map(e=>{const p=a.M(FIG_EFF[e](a.J)),q=b.M(FIG_EFF[e](b.J));let dx=q[0]-p[0],dy=q[1]-p[1];const d=Math.hypot(dx,dy);
+    let arrow='';if(d>.35){dx/=d;dy/=d;const tip=[p[0]+dx*7.5,p[1]+dy*7.5],bs=[p[0]+dx*3.2,p[1]+dy*3.2],n=[-dy*2.8,dx*2.8];
+      arrow=`<path d="M${tip[0].toFixed(1)} ${tip[1].toFixed(1)}L${(bs[0]+n[0]).toFixed(1)} ${(bs[1]+n[1]).toFixed(1)}L${(bs[0]-n[0]).toFixed(1)} ${(bs[1]-n[1]).toFixed(1)}Z" fill="#f97316"/>`;}
+    return `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="5.2" fill="#f97316" fill-opacity=".18"/><circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.4" fill="#f97316" stroke="#fff" stroke-width=".9"/>`+arrow;}).join('');
+}
+/* Mapa corporal (delante / detrás) con las zonas que trabajan */
+function bodyMapSVG(z){
+  const on=x=>z.main.includes(x)?'m':z.more.includes(x)?'s':'';
+  const fig=(ox,front)=>{const Z=(zone,shape)=>`<g class="bz ${on(zone)}">${shape}</g>`;
+    const R=(x,y,w,h,r)=>`<rect x="${ox+x}" y="${y}" width="${w}" height="${h}" rx="${r}"/>`;
+    return `<circle class="bz-base" cx="${ox+14}" cy="6" r="4.6"/>`+
+      Z('shoulders',R(3,12,6,6,3)+R(19,12,6,6,3))+
+      Z('arms',R(1.5,18,4.5,17,2.2)+R(22,18,4.5,17,2.2))+
+      (front?Z('chest',R(8,12.5,12,8,3))+Z('core',R(9,21,10,12,3))+Z('hips',R(8,33,12,5,2.5))
+            :Z('upperback',R(8,12.5,12,7,3))+Z('back',R(9,20,10,13,3))+Z('glutes',R(8,33,12,6,3)))+
+      (front?Z('quads',R(8,39,5.4,15,2.6)+R(14.6,39,5.4,15,2.6))+Z('inner',R(12.6,40,2.8,12,1.4))
+            :Z('hams',R(8,40,5.4,14,2.6)+R(14.6,40,5.4,14,2.6)))+
+      (front?`<g class="bz">${R(8.6,55,4.4,13,2.2)+R(15,55,4.4,13,2.2)}</g>`:Z('calves',R(8.6,55,4.4,13,2.2)+R(15,55,4.4,13,2.2)));};
+  return `<svg class="bmap" viewBox="0 0 62 70" aria-hidden="true">${fig(0,true)}${fig(33,false)}</svg>`;
+}
+
+/* ─── PANTALLA DE EJERCICIO ───
+   Jerarquía: figura → progreso del ejercicio → tiempo → nombre → controles → progreso de la sesión.
+   ExerciseVisual: la zona superior no depende de un tipo de recurso. Cada ejercicio puede declarar
+   EX[id].visual = {type:'video'|'image'|'illustration'|'avatar', src, poster, alt}.
+   Sin declarar → avatar animado con guías de movimiento. */
+const VISUALS={
+  avatar:(ex,o)=>getAnim(ex.anim,{big:true,guide:!!EX[ex.id],mirror:o.mirror,ex:ex.id}),
+  video:(ex,o,v)=>`<div class="anim-wrap big"><video class="xs-media-el${o.mirror?' mirror':''}" src="${v.src}"${v.poster?` poster="${v.poster}"`:''} muted loop playsinline autoplay preload="auto" aria-label="${v.alt||ex.name}"></video></div>`,
+  image:(ex,o,v)=>`<div class="anim-wrap big"><img class="xs-media-el${o.mirror?' mirror':''}" src="${v.src}" alt="${v.alt||ex.name}"></div>`,
+  illustration:(ex,o,v)=>VISUALS.image(ex,o,v)
+};
+function exVisual(ex){const v=EX[ex.id]&&EX[ex.id].visual;return v&&VISUALS[v.type]?v:{type:'avatar'};}
+function mountVisual(host,ex,o){
+  o=o||{};const v=exVisual(ex),k=v.type+'|'+ex.anim+'|'+ex.id+(o.mirror?'|m':'');
+  if(host.dataset.key===k)return false;
+  host.innerHTML=VISUALS[v.type](ex,o,v);host.dataset.key=k;
+  host.classList.remove('xs-enter');void host.offsetWidth;host.classList.add('xs-enter');
+  return true;
+}
+function syncVisual(host,paused){host.querySelectorAll('video').forEach(v=>{try{paused?v.pause():v.play().catch(()=>{});}catch(e){}});}
+
+const XS_IC={
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  prev:'<svg viewBox="0 0 24 24"><rect x="5" y="5.5" width="2.6" height="13" rx="1.1" fill="currentColor"/><path d="M19 6.4v11.2a1 1 0 0 1-1.5.86L9.3 13.3a1.5 1.5 0 0 1 0-2.6l8.2-5.16A1 1 0 0 1 19 6.4z" fill="currentColor"/></svg>',
+  next:'<svg viewBox="0 0 24 24"><rect x="16.4" y="5.5" width="2.6" height="13" rx="1.1" fill="currentColor"/><path d="M5 6.4v11.2a1 1 0 0 0 1.5.86l8.2-5.16a1.5 1.5 0 0 0 0-2.6L6.5 5.54A1 1 0 0 0 5 6.4z" fill="currentColor"/></svg>',
+  play:'<svg viewBox="0 0 24 24"><path d="M8 5.9v12.2a1.1 1.1 0 0 0 1.7.93l9.4-6.1a1.1 1.1 0 0 0 0-1.86L9.7 4.97A1.1 1.1 0 0 0 8 5.9z" fill="currentColor"/></svg>',
+  pause:'<svg viewBox="0 0 24 24"><rect x="6.2" y="5" width="4.2" height="14" rx="1.4" fill="currentColor"/><rect x="13.6" y="5" width="4.2" height="14" rx="1.4" fill="currentColor"/></svg>',
+  vol:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>',
+  mute:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>',
+  expand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
+  shrink:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>'
+};
+const XS_REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Reloj con cifras de ancho fijo: no «baila» al cambiar de segundo */
+function xsClock(sec){return mmss(sec).split('').map(c=>c===':'?'<i>:</i>':`<b>${c}</b>`).join('');}
+function xsSoundOn(){return __allow('voice')||__allow('sound');}
+function xsTop(){
+  const m=document.getElementById('xs-mute'),f=document.getElementById('xs-focus'),xs=document.getElementById('xs');
+  if(m){const on=xsSoundOn();m.innerHTML=on?XS_IC.vol:XS_IC.mute;m.setAttribute('aria-label',on?t('xs_mute'):t('xs_unmute'));m.setAttribute('aria-pressed',on?'false':'true');}
+  if(f&&xs){const fo=xs.classList.contains('focus');f.innerHTML=fo?XS_IC.shrink:XS_IC.expand;f.setAttribute('aria-label',t('xs_focus'));f.setAttribute('aria-pressed',fo?'true':'false');}
+}
+function xsToggleMute(){const c=__cfg(),on=xsSoundOn();c.voice=!on;c.sound=!on;try{localStorage.setItem('cris_cfg',JSON.stringify(c));}catch(e){}if(on){try{speechSynthesis.cancel();}catch(e){}}xsTop();}
+function xsToggleFocus(v){const xs=document.getElementById('xs');xs.classList.toggle('focus',v==null?!xs.classList.contains('focus'):v);xsTop();}
+/* Línea de progreso del ejercicio: avanza de forma continua (transición de 1 s entre segundos) */
+function xsLine(animate){
+  const f=document.getElementById('xs-line');if(!f)return;
+  const ph=S.phase==='paused'?(S.pausedPhase||'active'):S.phase;let v=0;
+  if(S.phase==='done')v=1;
+  else if(['active','switch','rest','restwait'].includes(ph)&&S.total)v=1-(animate&&S.phase!=='paused'?Math.max(0,S.timer-1):S.timer)/S.total;
+  f.style.transition=animate&&!XS_REDUCED&&S.phase!=='paused'?'transform 1s linear':'none';
+  f.style.transform='scaleX('+Math.max(0,Math.min(1,v)).toFixed(4)+')';
+}
+/* Cuenta atrás grande sobre la figura al prepararse */
+function xsCount(){
+  const c=document.getElementById('xs-count');if(!c)return;
+  const show=S.phase==='prep'&&S.timer>0&&S.timer<=5&&!!S.interval;
+  if(!show){c.className='xs-count';c.textContent='';return;}
+  if(c.textContent!==String(S.timer)){c.textContent=S.timer;c.className='xs-count';void c.offsetWidth;c.className='xs-count on';}
+}
+function xsTick(){xsLine(true);xsCount();}
+function xsSegs(){
+  const L=CUR.items,n=L.length,i=S.phase==='done'?n:S.exIdx;
+  return `<div class="xs-segs" style="--n:${n}">${L.map((_,j)=>`<i class="${j<i?'d':j===i?'c':''}"></i>`).join('')}</div>`;
+}
+function xsMap(ex){
+  const m=document.getElementById('xs-map');if(!m)return;
+  if(!ex||!EXT[ex.id]){m.innerHTML='';m.hidden=true;return;}
+  const z=exZones(ex.id);if(!z.main.length){m.innerHTML='';m.hidden=true;return;}
+  m.hidden=false;const k=ex.id;if(m.dataset.k===k)return;m.dataset.k=k;
+  m.setAttribute('aria-label',t('works')+': '+z.main.map(x=>t('z_'+x)).join(', '));m.setAttribute('role','img');
+  m.innerHTML=bodyMapSVG(z)+`<span><small>${t('works')}</small>${z.main.slice(0,2).map(x=>t('z_'+x)).join(' · ')}</span>`;
+}
+function addRest(){if(S.phase==='rest'||(S.phase==='paused'&&S.pausedPhase==='rest')){S.timer+=20;S.total+=20;renderSession();}}
+
 function renderSession(){
-  const d=CUR,L=d.items,total=L.length,el=document.getElementById('s-content'),stage=document.getElementById('s-stage');
-  const setStage=(key,mirror,exid)=>{const k=key+'|'+(exid||'')+(mirror?'|m':'');if(stage.dataset.key!==k){stage.innerHTML=getAnim(key,{big:true,mirror,ex:exid});stage.dataset.key=k;}};
+  const d=CUR,L=d.items,total=L.length,el=document.getElementById('s-content'),stage=document.getElementById('s-stage'),xs=document.getElementById('xs');
+  const state=s=>{xs.className='xs '+s+(xs.classList.contains('focus')?' focus':'');};
+  const iBtn=id=>`<button class="xs-i" onclick="openSheet('${id}')" aria-label="${t('how')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></svg></button>`;
+  xsTop();
   if(S.phase==='done'){
     try{localStorage.setItem('cris_hiit_v1_'+dayKey(),'1');}catch(e){}
     const log=lsGet('cris_calis_log',{});log[dayKey()]=d.stretch?'st':getLevel();lsSet('cris_calis_log',log);
-    document.getElementById('s-fill').style.width='100%';
-    setStage('breathe');
-    el.innerHTML=`<div class="s-big">🎉 ${t('done_h')}</div><p class="s-small">${t('done_p',{name:d.name,focus:d.focus,u:__uname()})}</p><button class="btn btn-primary cta" onclick="startSession()">${t('btn_repeat')}</button><button class="pill" onclick="initHome();go('home')">${t('btn_home')}</button>`;
+    state('is-done');xsToggleFocus(false);
+    mountVisual(stage,{id:'_done',anim:'breathe',name:''});xsMap(null);xsLine(false);xsCount();
+    el.innerHTML=`<div class="xs-cap">${d.name}</div><div class="xs-title">${t('done_h')}</div><p class="xs-text">${t('done_p',{name:d.name,focus:d.focus,u:__uname()})}</p>
+      <div class="xs-actions-row"><button class="xs-cta" onclick="startSession()">${t('btn_repeat')}</button><button class="xs-ghost" onclick="initHome();go('home')">${t('btn_home')}</button></div>
+      <div class="xs-sess"><span>${t('ex_of',{i:total,n:total})}</span>${xsSegs()}</div>`;
     beep(800,.2);setTimeout(()=>beep(1000,.3),250);vibrate([80,50,80]);
     speak(t('v_done'));
     return;
   }
   const ex=L[S.exIdx];
-  document.getElementById('s-fill').style.width=(S.exIdx/total*100)+'%';
-  const iBtn=id=>`<button class="i-btn" onclick="openSheet('${id}')" aria-label="${t('how')}">i</button>`;
   if(S.phase==='idle'){
-    setStage(ex.anim,false,ex.id);
-    el.innerHTML=`<div class="s-cap">${t('idle_phase')}</div><div class="s-big">${d.focus}</div><p class="s-small">${t('idle_desc')}</p><button class="btn btn-primary cta" onclick="beginAll()">${t('idle_btn')}</button>`;
+    state('is-idle');
+    mountVisual(stage,ex,{});xsMap(ex);xsLine(false);xsCount();
+    el.innerHTML=`<div class="xs-cap">${t('idle_phase')}</div><div class="xs-title">${d.focus}</div><p class="xs-text">${t('idle_desc')}</p>
+      <button class="xs-cta" onclick="beginAll()">${XS_IC.play}<span>${t('idle_btn_short')}</span></button>
+      <div class="xs-sess"><span>${t('idle_meta',{n:total,m:d.mins})}</span>${xsSegs()}</div>`;
     figReset();return;
   }
   const ph=S.phase==='paused'?(S.pausedPhase||'active'):S.phase;
@@ -1091,18 +1437,33 @@ function renderSession(){
   const nextEx=S.exIdx<total-1?L[S.exIdx+1]:null;
   const showEx=(isRest&&nextEx)?nextEx:ex;
   const mirror=ex.sides===2&&S.side===2&&!isRest;
-  setStage(showEx.anim,mirror,showEx.id);
-  const sideLabel=ex.sides===2&&!isRest?(S.side===1?t('side_r'):t('side_l')):'';
+  mountVisual(stage,showEx,{mirror});xsMap(showEx);
   const paused=S.phase==='paused';
-  const ctrl=`<div class="ctrl"><button onclick="prevEx()" aria-label="⏮">⏮</button><button class="play" onclick="togglePlay()" aria-label="${paused?t('btn_resume'):t('btn_pause')}">${paused?'▶':'⏸'}</button><button onclick="skipPhase()" aria-label="⏭">⏭</button></div>`;
-  if(ph==='prep'&&!paused){
-    el.innerHTML=`<div class="s-big">${t('prep_h')}</div><div class="s-name">${ex.name}${sideLabel} ${iBtn(ex.id)}</div><div class="s-small">${t('starts_in')} <b id="s-timer">${S.timer}</b></div><button class="pill" onclick="skipPhase()">${t('skip')}</button><div class="s-count">${secLabel(ex)}</div>`;
+  syncVisual(stage,paused);
+  state('is-'+(isRest?'rest':ph)+(paused?' is-paused':''));
+  const sideLabel=ex.sides===2&&!isRest?(S.side===1?t('side_r'):t('side_l')):'';
+  const ctrl=`<div class="xs-ctrl">
+      <button class="xs-c" onclick="prevEx()" aria-label="${t('xs_prev')}"${S.exIdx===0?' disabled':''}>${XS_IC.prev}</button>
+      <button class="xs-c xs-play" onclick="togglePlay()" aria-label="${paused?t('btn_resume'):t('btn_pause')}">${paused?XS_IC.play:XS_IC.pause}</button>
+      <button class="xs-c" onclick="skipPhase()" aria-label="${t('xs_next')}">${XS_IC.next}</button></div>`;
+  const sess=`<div class="xs-sess"><span>${t('ex_of',{i:S.exIdx+1,n:total})} · ${secLabel(ex).split(' · ')[0]}</span>${xsSegs()}</div>`;
+  let cap,main,name,extra='';
+  if(ph==='prep'){
+    cap=paused?t('ph_paused'):t('ph_prep');
+    main=`<div class="xs-title">${t('prep_h')}</div>`;
+    name=`${ex.name}${sideLabel}`;
   }else if(isRest){
-    el.innerHTML=`<div class="s-cap">${paused?t('ph_paused'):ph==='restwait'?t('ph_restwait'):t('rest_h')}</div><div class="s-clock rest" id="s-timer">${mmss(S.timer)}</div><div class="s-name">${nextEx?t('next_prefix',{name:nextEx.name})+' '+iBtn(nextEx.id):''}</div>${paused?ctrl:`<button class="pill" onclick="skipPhase()">${t('skip_rest')}</button>`}<div class="s-count">${secLabel(ex)}</div>`;
+    cap=paused?t('ph_paused'):ph==='restwait'?t('ph_restwait'):t('rest_h');
+    main=`<div class="xs-clock s-clock rest" id="s-timer">${xsClock(S.timer)}</div>`;
+    name=nextEx?`<small>${t('next_lbl')}</small>${nextEx.name}`:'';
+    if(ph==='rest')extra=`<div class="xs-pills"><button class="xs-pill" onclick="addRest()">${t('add20')}</button><button class="xs-pill" onclick="skipPhase()">${t('skip')}</button></div>`;
   }else{
-    const cap=paused?t('ph_paused'):ph==='switch'?t('ph_switch'):t('ph_active');
-    el.innerHTML=`<div class="s-cap">${cap}</div><div class="s-clock${ph==='switch'?' sw':''}" id="s-timer">${mmss(S.timer)}</div><div class="s-name">${ex.name}${sideLabel} ${iBtn(ex.id)}</div>${ctrl}<div class="s-count">${secLabel(ex)}</div>`;
+    cap=paused?t('ph_paused'):ph==='switch'?t('ph_switch'):t('ph_active');
+    main=`<div class="xs-clock s-clock${ph==='switch'?' sw':''}" id="s-timer">${xsClock(S.timer)}</div>`;
+    name=`${ex.name}${sideLabel}`;
   }
+  el.innerHTML=`<div class="xs-cap">${cap}</div>${main}<div class="xs-name"><span>${name}</span>${iBtn(showEx.id)}</div>${extra}${ctrl}${sess}`;
+  xsLine(false);xsCount();
 }
 
 applyStaticI18n();
