@@ -2,6 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<script>/* Kindle de tinta electrónica (no las tablets Fire «Silk»): versión sencilla */
+try{var ua=navigator.userAgent||"";if(/Kindle\//.test(ua)&&!/Silk|KF[A-Z]{2}/.test(ua)&&location.search.indexOf("app=1")<0)location.replace("kindle/");}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#26a69a">
 <title>Quico</title>
@@ -482,6 +484,12 @@ body.mod-open #menuBtn{display:none;}
     <div class="backup-row"><button onclick="exportData()" data-i18n="backup_export">⬇️ Guardar copia</button><button onclick="document.getElementById('importFile').click()" data-i18n="backup_import">⬆️ Recuperar copia</button></div>
     <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importData(this.files[0]);this.value=''">
   </div>
+  <button class="menu-extra" onclick="var b=document.getElementById('kindleBox');b.classList.toggle('open');document.getElementById('kindleUrl').textContent=location.origin+location.pathname.replace(/index\.html$/,'')+'kindle/'"><span data-i18n="kindle_btn">📖 Versión para Kindle</span></button>
+  <div id="kindleBox" class="backup-box">
+    <div class="cfg-note" data-i18n="kindle_hint">En el Kindle, abre el navegador (Menú → Navegador experimental) y escribe esta dirección:</div>
+    <div id="kindleUrl" style="font-weight:800;color:var(--teal-dark);word-break:break-all;margin:6px 0 2px;user-select:all"></div>
+    <div class="cfg-note" data-i18n="kindle_note">Versión sencilla: ejercicio del día, comida, limpieza, rutina de noche y calma. Sin sonido ni animaciones.</div>
+  </div>
   <button class="menu-extra" onclick="location.href='privacidad.html?lang='+crisLang()"><span data-i18n="privacy_btn">🔒 Privacidad y aviso de salud</span></button>
 
   <div class="cfg-note" data-i18n="drawer_footer" style="margin-top:22px;line-height:1.7;">
@@ -521,7 +529,7 @@ const I18N={
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
   drawer_footer:'Quico · tu compañero cada día 💚',
-  backup_btn:'💾 Copia de seguridad',backup_export:'⬇️ Guardar copia',backup_import:'⬆️ Recuperar copia',backup_hint:'Guarda un archivo con tus datos para pasarlos a otro móvil o no perderlos.',backup_ok:'Copia recuperada. La app se va a recargar.',backup_confirm:'Esto sustituirá tus datos actuales por los de la copia. ¿Seguir?',backup_bad:'Ese archivo no parece una copia de Quico.',privacy_btn:'🔒 Privacidad y aviso de salud',
+  backup_btn:'💾 Copia de seguridad',backup_export:'⬇️ Guardar copia',backup_import:'⬆️ Recuperar copia',backup_hint:'Guarda un archivo con tus datos para pasarlos a otro móvil o no perderlos.',backup_ok:'Copia recuperada. La app se va a recargar.',backup_confirm:'Esto sustituirá tus datos actuales por los de la copia. ¿Seguir?',backup_bad:'Ese archivo no parece una copia de Quico.',privacy_btn:'🔒 Privacidad y aviso de salud',kindle_btn:'📖 Versión para Kindle',kindle_hint:'En el Kindle, abre el navegador (Menú → Navegador experimental) y escribe esta dirección:',kindle_note:'Versión sencilla: ejercicio del día, comida, limpieza, rutina de noche y calma. Sin sonido ni animaciones.',
   day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia', drop:' Soltar', drop_title:'Soltar el móvil y cambiar de tarea', drop_menu:'📴 Soltar el móvil',
   greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
@@ -584,7 +592,7 @@ const I18N={
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
   drawer_footer:'Quico · your everyday companion 💚',
-  backup_btn:'💾 Backup',backup_export:'⬇️ Save a copy',backup_import:'⬆️ Restore a copy',backup_hint:'Save a file with your data to move it to another phone or keep it safe.',backup_ok:'Copy restored. The app will reload.',backup_confirm:'This will replace your current data with the copy. Continue?',backup_bad:'That file doesn’t look like a Quico backup.',privacy_btn:'🔒 Privacy and health notice',
+  backup_btn:'💾 Backup',backup_export:'⬇️ Save a copy',backup_import:'⬆️ Restore a copy',backup_hint:'Save a file with your data to move it to another phone or keep it safe.',backup_ok:'Copy restored. The app will reload.',backup_confirm:'This will replace your current data with the copy. Continue?',backup_bad:'That file doesn’t look like a Quico backup.',privacy_btn:'🔒 Privacy and health notice',kindle_btn:'📖 Kindle version',kindle_hint:'On your Kindle, open the browser (Menu → Experimental browser) and type this address:',kindle_note:'Simple version: today’s exercise, food, cleaning, night routine and calm. No sound or animations.',
   day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit', drop:' Drop it', drop_title:'Put the phone down and switch tasks', drop_menu:'📴 Put the phone down',
   greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
@@ -647,7 +655,7 @@ const I18N={
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
   drawer_footer:'Quico · ton compagnon de chaque jour 💚',
-  backup_btn:'💾 Sauvegarde',backup_export:'⬇️ Enregistrer une copie',backup_import:'⬆️ Restaurer une copie',backup_hint:'Enregistre un fichier avec tes données pour les passer sur un autre téléphone ou ne pas les perdre.',backup_ok:'Copie restaurée. L’app va se recharger.',backup_confirm:'Cela remplacera tes données actuelles par celles de la copie. Continuer ?',backup_bad:'Ce fichier ne ressemble pas à une sauvegarde de Quico.',privacy_btn:'🔒 Confidentialité et avertissement santé',
+  backup_btn:'💾 Sauvegarde',backup_export:'⬇️ Enregistrer une copie',backup_import:'⬆️ Restaurer une copie',backup_hint:'Enregistre un fichier avec tes données pour les passer sur un autre téléphone ou ne pas les perdre.',backup_ok:'Copie restaurée. L’app va se recharger.',backup_confirm:'Cela remplacera tes données actuelles par celles de la copie. Continuer ?',backup_bad:'Ce fichier ne ressemble pas à une sauvegarde de Quico.',privacy_btn:'🔒 Confidentialité et avertissement santé',kindle_btn:'📖 Version Kindle',kindle_hint:'Sur ta Kindle, ouvre le navigateur (Menu → Navigateur expérimental) et tape cette adresse :',kindle_note:'Version simple : exercice du jour, repas, ménage, routine du soir et calme. Sans son ni animations.',
   day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence', drop:' Lâcher', drop_title:'Lâcher le téléphone et changer de tâche', drop_menu:'📴 Lâcher le téléphone',
   greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
