@@ -8,21 +8,21 @@ const T={
   lv:['Fácil','Medio','Difícil'],level:'Nivel',start:'Empezar sesión',how:'Cómo hacerlo',pos:'Posición',works:'Trabaja',tip:'Consejo',fig:'Inicio y final del movimiento',
   sides:'cada lado',prep:'Prepárate',rest:'Descanso',next:'Siguiente',pause:'Pausa',resume:'Seguir',exit:'Salir',done:'Sesión terminada. Bien hecho.',
   side1:'Lado derecho',side2:'Lado izquierdo',exOf:'Ejercicio {i} de {n}',lunch:'Comidas',dinner:'Cenas',shop:'Lista de la compra',ing:'Ingredientes',steps:'Pasos',
-  noclean:'Hoy no toca limpieza. Descansa.',other:'Otros días',calmCall:'Si estás en peligro, llama:',sec:'s',min:'min',
+  noclean:'Hoy no toca limpieza. Descansa.',other:'Otros días',calmCall:'¿Te apetece hablar con alguien? Hay personas que te escuchan, gratis y a cualquier hora:',sec:'s',min:'min',
   note:'Versión sencilla para Kindle: sin sonido ni animaciones. Para la voz y la figura en movimiento, usa Quico en el móvil.',
   week:['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo']},
  en:{title:'Quico for Kindle',home:['Today’s exercise','This week’s food','Today’s cleaning','Night routine','Calm'],back:'Back',lang:'Language',
   lv:['Easy','Medium','Hard'],level:'Level',start:'Start session',how:'How to do it',pos:'Position',works:'Works',tip:'Tip',fig:'Start and end of the movement',
   sides:'each side',prep:'Get ready',rest:'Rest',next:'Next',pause:'Pause',resume:'Resume',exit:'Exit',done:'Session complete. Well done.',
   side1:'Right side',side2:'Left side',exOf:'Exercise {i} of {n}',lunch:'Lunches',dinner:'Dinners',shop:'Shopping list',ing:'Ingredients',steps:'Steps',
-  noclean:'No cleaning today. Rest.',other:'Other days',calmCall:'If you are in danger, call:',sec:'s',min:'min',
+  noclean:'No cleaning today. Rest.',other:'Other days',calmCall:'Would you like to talk to someone? There are people who will listen, free and at any hour:',sec:'s',min:'min',
   note:'Simple version for Kindle: no sound or animations. For the voice and the moving figure, use Quico on your phone.',
   week:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']},
  fr:{title:'Quico pour Kindle',home:['Exercice du jour','Repas de la semaine','Ménage du jour','Routine du soir','Calme'],back:'Retour',lang:'Langue',
   lv:['Facile','Moyen','Difficile'],level:'Niveau',start:'Commencer la séance',how:'Comment faire',pos:'Position',works:'Travaille',tip:'Conseil',fig:'Début et fin du mouvement',
   sides:'de chaque côté',prep:'Prépare-toi',rest:'Repos',next:'Suivant',pause:'Pause',resume:'Reprendre',exit:'Quitter',done:'Séance terminée. Bien joué.',
   side1:'Côté droit',side2:'Côté gauche',exOf:'Exercice {i} sur {n}',lunch:'Déjeuners',dinner:'Dîners',shop:'Liste de courses',ing:'Ingrédients',steps:'Étapes',
-  noclean:'Pas de ménage aujourd’hui. Repose-toi.',other:'Autres jours',calmCall:'Si tu es en danger, appelle :',sec:'s',min:'min',
+  noclean:'Pas de ménage aujourd’hui. Repose-toi.',other:'Autres jours',calmCall:'Tu as envie de parler à quelqu’un ? Des personnes t’écoutent, gratuitement et à toute heure :',sec:'s',min:'min',
   note:'Version simple pour Kindle : sans son ni animations. Pour la voix et la figure en mouvement, utilise Quico sur ton téléphone.',
   week:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']}
 };
@@ -117,9 +117,9 @@ function night(){var h=bar('#')+'<h1>'+L.home[3]+'</h1>',k='night_'+todayKey(),c
     if(s.str.length){h+='<ul>';for(var q=0;q<s.str.length;q++)h+='<li><b>'+esc(s.str[q].n)+'</b> ('+esc(s.str[q].t)+'): '+esc(s.str[q].d)+'</li>';h+='</ul>';}}
   return h;}
 /* ── Calma ── */
-function calm(){var h=bar('#')+'<h1>'+L.home[4]+'</h1><div class="n"><b>'+L.calmCall+'</b>';
-  for(var i=0;i<D.calm.crisis.length;i++)h+='<br><span class="tel">'+esc(D.calm.crisis[i][0])+'</span> &middot; '+esc(D.calm.crisis[i][1]);h+='</div>';
-  for(var j=0;j<D.calm.rescues.length;j++)h+='<a href="#res/'+j+'">'+esc(D.calm.rescues[j].name)+'<br><span class="m">'+esc(D.calm.rescues[j].when)+'</span></a>';return h;}
+function calm(){var h=bar('#')+'<h1>'+L.home[4]+'</h1>';
+  for(var j=0;j<D.calm.rescues.length;j++)h+='<a href="#res/'+j+'">'+esc(D.calm.rescues[j].name)+'<br><span class="m">'+esc(D.calm.rescues[j].when)+'</span></a>';
+  h+='<div class="n">'+L.calmCall;for(var i=0;i<D.calm.crisis.length;i++)h+='<br><b>'+esc(D.calm.crisis[i][0])+'</b> &middot; '+esc(D.calm.crisis[i][1]);return h+'</div>';}
 function rescue(j){var r=D.calm.rescues[j],h=bar('#calm')+'<h1>'+esc(r.name)+'</h1><p>'+esc(r.desc)+'</p><ol>';
   for(var i=0;i<r.steps.length;i++)h+='<li><b>'+esc(r.steps[i].t)+'</b> ('+r.steps[i].s+' '+L.sec+'): '+esc(r.steps[i].i)+'</li>';return h+'</ol>';}
 /* ── Navegación por #ruta ── */
