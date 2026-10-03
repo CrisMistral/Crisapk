@@ -202,6 +202,12 @@ body{
 .ao-pill{border:2px solid var(--mint-mid);background:#fff;border-radius:999px;padding:8px 12px;font-family:'Outfit',sans-serif;font-size:.86rem;font-weight:700;color:var(--teal-dark);cursor:pointer}
 .ao-pill.on{background:var(--teal);border-color:var(--teal);color:#fff}
 .ao-input{resize:vertical;width:100%;border:2px solid var(--mint-mid);border-radius:12px;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark)}
+.perso-card{margin:10px 16px 6px;max-width:480px;background:#fff;border:2px solid var(--mint-mid);border-radius:20px;padding:14px 16px;box-shadow:0 4px 14px rgba(26,107,100,.10)}
+.perso-card b{display:block;font-family:'Outfit',sans-serif;font-size:1.02rem;color:var(--teal-dark);margin-bottom:2px}
+.perso-card p{font-size:.86rem;color:var(--text-soft);line-height:1.45;margin:0 0 10px}
+.perso-card .pc-row{display:flex;gap:8px}
+.perso-card button{flex:1;border:none;border-radius:14px;padding:11px;font:700 .92rem 'Outfit',sans-serif;cursor:pointer}
+.perso-card .pc-go{background:var(--teal);color:#fff}.perso-card .pc-no{background:var(--mint-bg);color:var(--teal-dark)}
 .ao-link{display:block;margin:16px auto 0;border:none;background:none;color:var(--teal-dark);font-family:'Outfit',sans-serif;font-weight:700;font-size:.86rem;text-decoration:underline;cursor:pointer}
 .ao-subs{margin:0;padding:0;border:none}
 .ao-grid{gap:0}
@@ -415,6 +421,7 @@ body.mod-open #menuBtn{display:none;}
     <div class="greeting-row" id="greeting">¡Hola!</div>
     <div class="hero-sub" data-i18n="hero_sub">¿en qué te ayudo hoy?</div>
   </div>
+  <div id="persoCard" class="perso-card" style="display:none"></div>
 
   <div class="quokka-zone">
     <div class="bubble" id="bubble-msg">¡Aquí estoy! Elige un módulo 🌿</div>
@@ -457,7 +464,7 @@ body.mod-open #menuBtn{display:none;}
 
   <div class="dw-label" data-i18n="modules_label">Módulos</div>
   <div id="moduleList"></div>
-  <button id="areasBtn" onclick="closeDrawer();setTimeout(openAreas,320);"><span id="areasBtnLbl">🧭 ¿En qué te acompaño?</span></button>
+  <button id="areasBtn" onclick="closeDrawer();setTimeout(openAreas,320);"><span id="areasBtnLbl">🎨 Personalizar mi Quico</span></button>
 
   <div class="dw-label" data-i18n="settings_label">Ajustes</div>
   <div class="cfg-zone">
@@ -722,6 +729,7 @@ function applyStaticI18n(){
   document.querySelectorAll('[data-i18n-title]').forEach(el=>{el.setAttribute('title',t(el.getAttribute('data-i18n-title'),nv));});
   document.querySelectorAll('#langRow button').forEach(b=>b.classList.toggle('on',b.dataset.lang===crisLang()));
   const ab=document.getElementById('areasBtnLbl');if(ab)ab.textContent=aL('menu');
+  try{renderPersoCard();}catch(e){}
   updateLangBtn();
 }
 const LANG_ORDER=['es','en','fr'];
@@ -827,15 +835,15 @@ function subL(s){return (s.t&&(s.t[crisLang()]||s.t.es))||'';}
 function getHidden(){try{const v=JSON.parse(localStorage.getItem('cris_hidden_v1'));return (v&&typeof v==='object')?v:{};}catch(e){return{};}}
 
 const AREAS_I18N={
- es:{dis:'¿Algo que no quieras que aparezca?',dis_hint:'Escribe lo que sea, separado por comas. Si eres vegetariana o vegana, ponlo aquí.',dis_ph:'Ej.: tomate, setas, picante',dis_got:'Quitaré:',alg_hint:'Escríbelas como quieras, separadas por comas. Si no tienes, déjalo en blanco.',alg_ph:'Ej.: celiaca, lactosa, kiwi',alg_got:'Entendido:',w_hdr:'¡Hola! Soy Quico 🦘',w_sub:'Vamos a dar una vuelta por la app. En cada parte eliges si la quieres y cómo. Ya te dejo marcado lo más habitual: si te vale, solo pulsa «Siguiente».',w_lang:'Idioma',w_name:'¿Cómo te llamo? (opcional)',skip:'Saltar y usar lo recomendado',yes:'✓ Sí, en mi pantalla',no:'Ahora no',no_note:'Seguirá en el menú ☰ por si algún día lo necesitas.',sos_note:'El botón 🫀 de arriba está siempre, lo elijas o no.',parts:'¿Qué partes quieres ver?',lvl:'Tu nivel para empezar',lvl_hint:'Cada semana sube un poquito, sin que tengas que hacer nada.',fz:'¿Verdura fresca o congelada?',fz_hint:'La congelada no se estropea si un día no cocinas.',alg:'¿Alguna alergia?',alg_none:'Ninguna',diet:'Alimentación',food_note:'Lo que no te guste lo quitas dentro, en ⚙️ Alergias y gustos.',f_hdr:'¡Listo! 💚',f_sub:'Esto tendrás en tu pantalla principal (toca uno para cambiarlo):',f_none:'No has elegido nada: todo seguirá en el menú ☰.',f_feel:'Cómo te acompaño',f_edit:'Puedes cambiarlo todo cuando quieras en ☰ Menú → 🧭.',start:'Empezar 🌿',show:'Enséñame cómo funciona la pantalla',hdr1:'¿Con qué se te hace cuesta arriba?',sub1:'Marca lo que te suene. Quico te dará herramientas para eso. Puedes elegir varias y cambiarlo cuando quieras.',
+ es:{w_sub2:'Aquí tienes todo lo que te puedo ofrecer. Cuando quieras, quita lo que no uses o ajústalo a tu manera en ☰ Menú → Personalizar.',perso_h:'✨ Quico es tuyo',perso_p:'Elige qué quieres ver en tu inicio y quita lo que no uses.',perso_go:'Personalizar',perso_no:'Ahora no',dis:'¿Algo que no quieras que aparezca?',dis_hint:'Escribe lo que sea, separado por comas. Si eres vegetariana o vegana, ponlo aquí.',dis_ph:'Ej.: tomate, setas, picante',dis_got:'Quitaré:',alg_hint:'Escríbelas como quieras, separadas por comas. Si no tienes, déjalo en blanco.',alg_ph:'Ej.: celiaca, lactosa, kiwi',alg_got:'Entendido:',w_hdr:'¡Hola! Soy Quico 🦘',w_sub:'Vamos a dar una vuelta por la app. En cada parte eliges si la quieres y cómo. Ya te dejo marcado lo más habitual: si te vale, solo pulsa «Siguiente».',w_lang:'Idioma',w_name:'¿Cómo te llamo? (opcional)',skip:'Saltar y usar lo recomendado',yes:'✓ Sí, en mi pantalla',no:'Ahora no',no_note:'Seguirá en el menú ☰ por si algún día lo necesitas.',sos_note:'El botón 🫀 de arriba está siempre, lo elijas o no.',parts:'¿Qué partes quieres ver?',lvl:'Tu nivel para empezar',lvl_hint:'Cada semana sube un poquito, sin que tengas que hacer nada.',fz:'¿Verdura fresca o congelada?',fz_hint:'La congelada no se estropea si un día no cocinas.',alg:'¿Alguna alergia?',alg_none:'Ninguna',diet:'Alimentación',food_note:'Lo que no te guste lo quitas dentro, en ⚙️ Alergias y gustos.',f_hdr:'¡Listo! 💚',f_sub:'Esto tendrás en tu pantalla principal (toca uno para cambiarlo):',f_none:'No has elegido nada: todo seguirá en el menú ☰.',f_feel:'Cómo te acompaño',f_edit:'Puedes cambiarlo todo cuando quieras en ☰ Menú → 🎨 Personalizar.',start:'Empezar 🌿',show:'Enséñame cómo funciona la pantalla',hdr1:'¿Con qué se te hace cuesta arriba?',sub1:'Marca lo que te suene. Quico te dará herramientas para eso. Puedes elegir varias y cambiarlo cuando quieras.',
      hdr2:'Esto es lo que tengo para ti 💪',sub2:'Deja marcado lo que quieras probar. Todo lo demás sigue siempre en el menú ☰.',
-     next:'Siguiente →',save:'Guardar y empezar',back:'← Atrás',menu:'🧭 ¿Con qué te ayudo?'},
- en:{dis:'Anything you don’t want to see?',dis_hint:'Type anything, separated by commas. If you’re vegetarian or vegan, write it here.',dis_ph:'E.g. tomato, mushrooms, spicy',dis_got:'I’ll leave out:',alg_hint:'Write them however you like, separated by commas. Leave it blank if you have none.',alg_ph:'E.g. coeliac, lactose, kiwi',alg_got:'Got it:',w_hdr:'Hi! I’m Quico 🦘',w_sub:'Let’s take a quick tour of the app. In each part you choose whether you want it and how. I’ve already ticked the usual choices: if they suit you, just tap «Next».',w_lang:'Language',w_name:'What should I call you? (optional)',skip:'Skip and use the recommended setup',yes:'✓ Yes, on my screen',no:'Not now',no_note:'It stays in the menu ☰ in case you need it one day.',sos_note:'The 🫀 button at the top is always there, whether you pick it or not.',parts:'Which parts do you want to see?',lvl:'Your starting level',lvl_hint:'It goes up a little each week, without you doing anything.',fz:'Fresh or frozen veg?',fz_hint:'Frozen doesn’t go off if you skip cooking one day.',alg:'Any allergies?',alg_none:'None',diet:'Diet',food_note:'Anything you don’t like can be removed inside, in ⚙️ Allergies and tastes.',f_hdr:'All set! 💚',f_sub:'This is what you’ll have on your home screen (tap one to change it):',f_none:'You haven’t picked anything: everything stays in the menu ☰.',f_feel:'How I keep you company',f_edit:'You can change everything anytime in ☰ Menu → 🧭.',start:'Let’s start 🌿',show:'Show me how the screen works',hdr1:'What feels hard right now?',sub1:'Tick whatever sounds like you. Quico will give you tools for it. Pick several and change it anytime.',
+     next:'Siguiente →',save:'Guardar y empezar',back:'← Atrás',menu:'🎨 Personalizar mi Quico'},
+ en:{w_sub2:'Here’s everything I can offer you. Whenever you like, remove what you don’t use or adjust it your way in ☰ Menu → Personalise.',perso_h:'✨ Quico is yours',perso_p:'Choose what you want to see on your home screen and remove what you don’t use.',perso_go:'Personalise',perso_no:'Not now',dis:'Anything you don’t want to see?',dis_hint:'Type anything, separated by commas. If you’re vegetarian or vegan, write it here.',dis_ph:'E.g. tomato, mushrooms, spicy',dis_got:'I’ll leave out:',alg_hint:'Write them however you like, separated by commas. Leave it blank if you have none.',alg_ph:'E.g. coeliac, lactose, kiwi',alg_got:'Got it:',w_hdr:'Hi! I’m Quico 🦘',w_sub:'Let’s take a quick tour of the app. In each part you choose whether you want it and how. I’ve already ticked the usual choices: if they suit you, just tap «Next».',w_lang:'Language',w_name:'What should I call you? (optional)',skip:'Skip and use the recommended setup',yes:'✓ Yes, on my screen',no:'Not now',no_note:'It stays in the menu ☰ in case you need it one day.',sos_note:'The 🫀 button at the top is always there, whether you pick it or not.',parts:'Which parts do you want to see?',lvl:'Your starting level',lvl_hint:'It goes up a little each week, without you doing anything.',fz:'Fresh or frozen veg?',fz_hint:'Frozen doesn’t go off if you skip cooking one day.',alg:'Any allergies?',alg_none:'None',diet:'Diet',food_note:'Anything you don’t like can be removed inside, in ⚙️ Allergies and tastes.',f_hdr:'All set! 💚',f_sub:'This is what you’ll have on your home screen (tap one to change it):',f_none:'You haven’t picked anything: everything stays in the menu ☰.',f_feel:'How I keep you company',f_edit:'You can change everything anytime in ☰ Menu → 🎨 Personalise.',start:'Let’s start 🌿',show:'Show me how the screen works',hdr1:'What feels hard right now?',sub1:'Tick whatever sounds like you. Quico will give you tools for it. Pick several and change it anytime.',
      hdr2:'Here’s what I’ve got for you 💪',sub2:'Keep whatever you want to try. Everything else always stays in the menu ☰.',
-     next:'Next →',save:'Save and start',back:'← Back',menu:'🧭 What can I help with?'},
- fr:{dis:'Quelque chose que tu ne veux pas voir ?',dis_hint:'Écris ce que tu veux, séparé par des virgules. Si tu es végétarienne ou végane, écris-le ici.',dis_ph:'Ex. : tomate, champignons, épicé',dis_got:'J’enlèverai :',alg_hint:'Écris-les comme tu veux, séparées par des virgules. Laisse vide si tu n’en as pas.',alg_ph:'Ex. : cœliaque, lactose, kiwi',alg_got:'Compris :',w_hdr:'Coucou ! Je suis Quico 🦘',w_sub:'On fait un petit tour de l’appli. Pour chaque partie, tu choisis si tu la veux et comment. J’ai déjà coché le plus courant : si ça te va, appuie juste sur « Suivant ».',w_lang:'Langue',w_name:'Comment je t’appelle ? (facultatif)',skip:'Passer et garder la config recommandée',yes:'✓ Oui, sur mon écran',no:'Pas maintenant',no_note:'Ça reste dans le menu ☰ au cas où.',sos_note:'Le bouton 🫀 en haut est toujours là, que tu le choisisses ou non.',parts:'Quelles parties veux-tu voir ?',lvl:'Ton niveau pour commencer',lvl_hint:'Il monte un peu chaque semaine, sans que tu aies rien à faire.',fz:'Légumes frais ou surgelés ?',fz_hint:'Le surgelé ne s’abîme pas si un jour tu ne cuisines pas.',alg:'Une allergie ?',alg_none:'Aucune',diet:'Alimentation',food_note:'Ce que tu n’aimes pas, tu l’enlèves dedans, dans ⚙️ Allergies et goûts.',f_hdr:'C’est prêt ! 💚',f_sub:'Voilà ce que tu auras sur ton écran principal (touche pour changer) :',f_none:'Tu n’as rien choisi : tout reste dans le menu ☰.',f_feel:'Comment je t’accompagne',f_edit:'Tu peux tout changer quand tu veux dans ☰ Menu → 🧭.',start:'On commence 🌿',show:'Montre-moi comment marche l’écran',hdr1:'Qu’est-ce qui te pèse en ce moment ?',sub1:'Coche ce qui te parle. Quico te donnera des outils pour ça. Choisis-en plusieurs et change quand tu veux.',
+     next:'Next →',save:'Save and start',back:'← Back',menu:'🎨 Personalise my Quico'},
+ fr:{w_sub2:'Voici tout ce que je peux t’offrir. Quand tu veux, enlève ce que tu n’utilises pas ou ajuste-le à ta façon dans ☰ Menu → Personnaliser.',perso_h:'✨ Quico est à toi',perso_p:'Choisis ce que tu veux voir sur ton accueil et enlève ce que tu n’utilises pas.',perso_go:'Personnaliser',perso_no:'Pas maintenant',dis:'Quelque chose que tu ne veux pas voir ?',dis_hint:'Écris ce que tu veux, séparé par des virgules. Si tu es végétarienne ou végane, écris-le ici.',dis_ph:'Ex. : tomate, champignons, épicé',dis_got:'J’enlèverai :',alg_hint:'Écris-les comme tu veux, séparées par des virgules. Laisse vide si tu n’en as pas.',alg_ph:'Ex. : cœliaque, lactose, kiwi',alg_got:'Compris :',w_hdr:'Coucou ! Je suis Quico 🦘',w_sub:'On fait un petit tour de l’appli. Pour chaque partie, tu choisis si tu la veux et comment. J’ai déjà coché le plus courant : si ça te va, appuie juste sur « Suivant ».',w_lang:'Langue',w_name:'Comment je t’appelle ? (facultatif)',skip:'Passer et garder la config recommandée',yes:'✓ Oui, sur mon écran',no:'Pas maintenant',no_note:'Ça reste dans le menu ☰ au cas où.',sos_note:'Le bouton 🫀 en haut est toujours là, que tu le choisisses ou non.',parts:'Quelles parties veux-tu voir ?',lvl:'Ton niveau pour commencer',lvl_hint:'Il monte un peu chaque semaine, sans que tu aies rien à faire.',fz:'Légumes frais ou surgelés ?',fz_hint:'Le surgelé ne s’abîme pas si un jour tu ne cuisines pas.',alg:'Une allergie ?',alg_none:'Aucune',diet:'Alimentation',food_note:'Ce que tu n’aimes pas, tu l’enlèves dedans, dans ⚙️ Allergies et goûts.',f_hdr:'C’est prêt ! 💚',f_sub:'Voilà ce que tu auras sur ton écran principal (touche pour changer) :',f_none:'Tu n’as rien choisi : tout reste dans le menu ☰.',f_feel:'Comment je t’accompagne',f_edit:'Tu peux tout changer quand tu veux dans ☰ Menu → 🎨 Personnaliser.',start:'On commence 🌿',show:'Montre-moi comment marche l’écran',hdr1:'Qu’est-ce qui te pèse en ce moment ?',sub1:'Coche ce qui te parle. Quico te donnera des outils pour ça. Choisis-en plusieurs et change quand tu veux.',
      hdr2:'Voilà ce que j’ai pour toi 💪',sub2:'Garde ce que tu veux essayer. Tout le reste reste toujours dans le menu ☰.',
-     next:'Suivant →',save:'Enregistrer et commencer',back:'← Retour',menu:'🧭 Sur quoi je t’aide ?'}
+     next:'Suivant →',save:'Enregistrer et commencer',back:'← Retour',menu:'🎨 Personnaliser mon Quico'}
 };
 function aL(k){return (AREAS_I18N[crisLang()]||AREAS_I18N.es)[k];}
 
@@ -856,12 +864,45 @@ const TOUR_DESC={
  juego:{es:'Misterios de lógica cortos para desconectar la cabeza.',en:'Short logic mysteries to switch your head off.',fr:'De courts mystères de logique pour déconnecter.'}
 };
 // Lo recomendado para empezar: todos los módulos, y dentro, lo más útil
-const TOUR_DEF_OFF={trabajo:['triaje','interes','dopamina','contexto','tiempo'],comida:['c-months'],limpieza:['general'],botiquin:['c-pp']};
+const TOUR_DEF_OFF={}; // todo activado por defecto: cada persona quita lo que no use
 function lsParse(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
 function lsPut(k,v){try{localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));}catch(e){}}
 function tl(o){return o[crisLang()]||o.es;}
 let _tour=null;
+/* ── BIENVENIDA: una sola pantalla, todo activado ──
+   Idioma y nombre, y a empezar. La personalización (qué ver, ajustes de cada módulo) queda en
+   ☰ Menú → Personalizar, con el recorrido completo, y en una tarjeta del inicio los primeros días. */
+let _welcome=false;
+function openWelcome(){_tour=null;_welcome=true;renderWelcome();document.getElementById('areasOv').classList.add('show');}
+function renderWelcome(){
+  const g=document.getElementById('ao-grid');if(!g)return;
+  document.querySelector('.ao-quico').style.display='';
+  document.getElementById('ao-hdr').textContent=aL('w_hdr');document.getElementById('ao-sub').textContent=aL('w_sub2');
+  document.getElementById('ao-back').style.display='none';document.getElementById('ao-save').textContent=aL('start');
+  g.innerHTML=`<div class="ao-set">${aL('w_lang')}</div>
+    <div class="ao-pills">${[['es','🇪🇸 Español'],['en','🇬🇧 English'],['fr','🇫🇷 Français']].map(x=>`<button class="ao-pill${crisLang()===x[0]?' on':''}" onclick="setLang('${x[0]}');renderWelcome()">${x[1]}</button>`).join('')}</div>
+    <div class="ao-set">${aL('w_name')}</div>
+    <input class="ao-input" maxlength="18" value="${(cfgName()||'').replace(/"/g,'&quot;')}" oninput="saveName(this.value)" placeholder="…">
+    <button class="ao-link" onclick="commitWelcome(true)">${aL('show')}</button>`;
+}
+function commitWelcome(showScreen){
+  _welcome=false;
+  saveAreas(AREAS.map(a=>a.id));lsPut('cris_hidden_v1',{});lsPut('cris_onboarded','1');lsPut('cris_perso_card','1');
+  try{localStorage.removeItem('cris_hoy_mods_v1');}catch(e){}
+  document.getElementById('areasOv').classList.remove('show');
+  buildModuleList();renderToday();setGreeting();renderPersoCard();
+  if(showScreen)setTimeout(startOnboard,350);
+}
+/* Tarjeta «Quico es tuyo» en el inicio, hasta que se personaliza o se descarta */
+function renderPersoCard(){
+  const el=document.getElementById('persoCard');if(!el)return;
+  if(localStorage.getItem('cris_perso_card')!=='1'){el.style.display='none';return;}
+  el.style.display='';
+  el.innerHTML=`<b>${aL('perso_h')}</b><p>${aL('perso_p')}</p><div class="pc-row"><button class="pc-go" onclick="persoCardOff();openAreas()">${aL('perso_go')}</button><button class="pc-no" onclick="persoCardOff()">${aL('perso_no')}</button></div>`;
+}
+function persoCardOff(){lsPut('cris_perso_card','0');renderPersoCard();}
 function openAreas(){
+  if(localStorage.getItem('cris_perso_card')==='1')persoCardOff();
   const cur=getAreas(),hid=getHidden(),edit=cur!==null,fp=lsParse('cris_food_prefs',{})||{};
   _tour={edit,step:edit?1:0,areas:{},subs:{},
     lvl:lsParse('cris_calis_level',0),fz:localStorage.getItem('cris_food_fz')||'mix',
@@ -931,7 +972,7 @@ function tourAlgEcho(){const el=document.getElementById('ao-alg-echo');if(!el||!
   const e2=document.getElementById('ao-dis-echo');if(e2){const w=QUICO_ALLERGY.tokens(_tour.disText||'');e2.innerHTML=w.length?aL('dis_got')+' '+w.map(x=>'<b>«'+x.replace(/[<>&]/g,'')+'»</b>').join(' · '):'';}}
 function tourGo(i){if(!_tour)return;_tour.step=Math.max(0,Math.min(TOUR_LAST,i));renderStep();}
 function areasBack(){if(_tour)tourGo(_tour.step-1);}
-function saveAreasFromChooser(){if(!_tour)return;if(_tour.step<TOUR_LAST){tourGo(_tour.step+1);return;}commitAreas();}
+function saveAreasFromChooser(){if(_welcome){commitWelcome();return;}if(!_tour)return;if(_tour.step<TOUR_LAST){tourGo(_tour.step+1);return;}commitAreas();}
 function commitAreas(showScreen){
   const T=_tour;if(!T)return;
   saveAreas(AREAS.filter(a=>T.areas[a.id]).map(a=>a.id));
@@ -1482,7 +1523,8 @@ function nextOnboard(){const O=obL();if(obStep>=O.steps.length-1){finishOnboard(
 function finishOnboard(){try{localStorage.setItem('cris_onboarded','1');}catch(e){}const el=document.getElementById('onboard');el.classList.remove('show','center');document.getElementById('ob-spot').style.display='none';document.getElementById('ob-tip').style.display='none';}
 // Primer uso: en vez del recorrido, el test inicial (menos de golpe). El recorrido
 // queda disponible en el menú. Si ya eligió áreas, no se vuelve a preguntar.
-try{if(!areasChosen())setTimeout(openAreas,500);}catch(e){}
+try{if(!areasChosen())setTimeout(openWelcome,500);}catch(e){}
+try{renderPersoCard();}catch(e){}
 
 /* El iframe se RECREA en cada apertura/cierre en vez de cambiarle el src:
    cambiar el src de un iframe ya cargado crea entradas en el historial
