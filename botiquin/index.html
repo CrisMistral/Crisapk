@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Botiquín Emocional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#26a69a;--teal-dark:#1a6b64;--teal-light:#4dd0e1;--mint:#d6f0eb;--mint-mid:#b8e4dd;--mint-soft:#e8f8f5;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;color:var(--teal-dark)}
+.screen{display:none;min-height:100vh;padding:16px 16px 100px}
+.screen.active{display:block}
+.mw{max-width:440px;margin:0 auto;padding-top:8px}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.back{background:rgba(26,107,100,.12);border:none;border-radius:50%;width:44px;height:44px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--teal-dark);font-weight:700}
+.topbar h1{font-size:1.1rem;font-weight:700;color:var(--teal-dark)}
+.home-hdr{text-align:center;margin-bottom:14px}
+.home-hdr h1{font-size:1.5rem;font-weight:800;color:var(--teal-dark)}
+.home-hdr p{font-size:.85rem;color:var(--teal);margin-top:3px}
+.home-q{display:flex;justify-content:center;margin-bottom:18px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.acard{border:none;border-radius:20px;padding:18px 20px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:left;display:flex;align-items:center;gap:16px;width:100%;transition:transform .1s,filter .1s;margin-bottom:10px}
+.acard:active{transform:scale(.97);filter:brightness(.92)}
+.aicon{font-size:2rem;flex-shrink:0;line-height:1}
+.ainfo{display:flex;flex-direction:column;gap:3px}
+.atitle{font-size:1rem;font-weight:800;color:#fff}
+.asub{font-size:.76rem;font-weight:500;color:rgba(255,255,255,.88)}
+.c-sos{background:linear-gradient(135deg,#ef4444,#f97316)}
+.c-know{background:linear-gradient(135deg,var(--teal-dark),var(--teal))}
+.c-find{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+.c-calm{background:rgba(255,255,255,.7);border:2px solid var(--mint-mid)!important}
+.c-calm .atitle{color:var(--teal-dark)}
+.c-calm .asub{color:var(--teal)}
+.c-anniv{background:linear-gradient(135deg,#0e7490,#0891b2)}
+/* Aniversario · plan de 7 días (acordeón) */
+.an-intro{background:rgba(255,255,255,.85);border:2px solid var(--mint-mid);border-radius:16px;padding:15px 16px;font-size:.85rem;line-height:1.55;color:var(--teal-dark);margin-bottom:14px}
+.an-day{background:rgba(255,255,255,.85);border:2px solid var(--mint-mid);border-radius:16px;margin-bottom:9px;overflow:hidden}
+.an-head{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:12px;font-family:'Outfit',sans-serif}
+.an-num{width:34px;height:34px;border-radius:50%;background:#0891b2;color:#fff;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.an-htxt{flex:1}
+.an-htxt h3{font-size:.9rem;font-weight:800;color:var(--teal-dark)}
+.an-htxt p{font-size:.74rem;color:var(--teal);margin-top:2px;line-height:1.3}
+.an-arrow{color:var(--teal);font-size:1.1rem;transition:transform .2s;flex-shrink:0}
+.an-day.open .an-arrow{transform:rotate(90deg)}
+.an-body{display:none;padding:0 16px 16px 62px}
+.an-day.open .an-body{display:block}
+.an-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);margin-bottom:3px}
+.an-body .an-why{font-size:.82rem;color:var(--text-soft);line-height:1.5;margin-bottom:10px}
+.an-body .an-today{font-size:.88rem;color:var(--fg,#1a2e2b);line-height:1.5}
+.an-safe{background:var(--mint);border-radius:16px;padding:15px 16px;font-size:.83rem;line-height:1.55;color:var(--teal-dark);margin-top:14px}
+.an-close{font-size:.85rem;line-height:1.55;color:var(--teal-dark);text-align:center;padding:12px 8px 2px;font-style:italic}
+.an-status{margin-top:12px;background:#e0f2fe;border-radius:12px;padding:10px 12px;font-size:.82rem;font-weight:700;color:#0e7490}
+.an-cal{display:flex;gap:6px;margin-top:10px}
+.an-chip{flex:1;background:#fff;border:2px solid var(--mint-mid);border-radius:12px;padding:6px 2px;text-align:center;position:relative}
+.an-chip.done{background:#0891b2;border-color:#0891b2}
+.an-chip.done .an-wd,.an-chip.done .an-dn{color:#fff}
+.an-chip.cur{border-color:#0891b2;box-shadow:0 0 0 2px rgba(8,145,178,.25)}
+.an-wd{display:block;font-size:.58rem;font-weight:800;color:var(--teal);text-transform:uppercase}
+.an-dn{display:block;font-size:1rem;font-weight:800;color:var(--teal-dark)}
+.an-ck{position:absolute;top:1px;right:4px;font-size:.58rem;color:#fff}
+.an-start{width:100%;margin-top:12px;border:none;border-radius:12px;padding:12px;background:#0891b2;color:#fff;font-family:'Outfit',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer}
+.an-reset{width:100%;margin-top:10px;border:none;border-radius:10px;padding:8px;background:transparent;color:var(--teal);font-family:'Outfit',sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;text-decoration:underline}
+.an-date{font-size:.64rem;font-weight:800;color:#0891b2;background:#e0f2fe;border-radius:8px;padding:3px 7px;flex-shrink:0}
+.an-note{width:100%;border:2px solid var(--mint-mid);border-radius:12px;padding:10px;font-family:'Outfit',sans-serif;font-size:16px;color:#1a2e2b;background:#fff;resize:vertical;min-height:52px;margin:4px 0 10px}
+.an-note:focus{outline:none;border-color:#0891b2}
+.an-donebtn{width:100%;border:2px solid var(--mint-mid);border-radius:12px;padding:10px;background:#fff;color:var(--teal-dark);font-family:'Outfit',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer}
+.an-donebtn.on{background:#0891b2;border-color:#0891b2;color:#fff}
+/* Soltar el móvil · transición */
+.c-trans{background:linear-gradient(135deg,#059669,#10b981)}
+.tr-intro{background:rgba(255,255,255,.85);border:2px solid var(--mint-mid);border-radius:16px;padding:15px 16px;font-size:.85rem;line-height:1.55;color:var(--teal-dark);margin-bottom:14px}
+.tr-input{width:100%;border:2px solid var(--mint-mid);border-radius:14px;padding:13px;font-family:'Outfit',sans-serif;font-size:16px;color:#1a2e2b;background:#fff;margin-bottom:12px}
+.tr-input:focus{outline:none;border-color:#10b981}
+.tr-go{width:100%;border:none;border-radius:16px;padding:16px;background:linear-gradient(135deg,#059669,#10b981);color:#fff;font-family:'Outfit',sans-serif;font-weight:800;font-size:1.05rem;cursor:pointer}
+.tr-stepbox{background:rgba(255,255,255,.9);border-radius:20px;padding:22px 18px;text-align:center;margin-top:8px}
+.tr-phase{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#059669;margin-bottom:8px}
+.tr-name{font-size:1.3rem;font-weight:800;color:var(--teal-dark);margin-bottom:14px;line-height:1.25}
+.tr-count{font-size:3.4rem;font-weight:800;color:#059669;line-height:1}
+.slabel{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin:16px 0 8px}
+.tlist{display:flex;flex-direction:column;gap:8px}
+.titem{background:rgba(255,255,255,.82);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;width:100%;text-align:left;border:2px solid var(--mint-mid);transition:transform .1s}
+.titem:active{transform:scale(.98)}
+.tico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.tinfo h3{font-size:.92rem;font-weight:700;color:var(--teal-dark)}
+.tinfo p{font-size:.74rem;color:var(--teal);margin-top:2px;line-height:1.3}
+.tcard{background:rgba(255,255,255,.88);border-radius:20px;padding:20px;box-shadow:0 4px 16px rgba(38,166,154,.1);margin-bottom:16px}
+.ttag{display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72rem;font-weight:700;margin-bottom:10px;color:#fff}
+.tdesc{font-size:.82rem;color:var(--teal);margin-bottom:14px;line-height:1.4}
+.sbox{background:var(--mint-soft);border-radius:16px;padding:20px;text-align:center;margin-bottom:14px;border:2px solid var(--mint-mid)}
+/* Círculo de respiración: respira a la vez que él */
+.breath-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 0 8px;}
+.breath-circle{width:110px;height:110px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#a7e8df,var(--teal));box-shadow:0 0 42px rgba(38,166,154,.4);animation:breathe-anim var(--bdur,10s) ease-in-out infinite;}
+.breath-circle.paused{animation-play-state:paused;}
+.breath-hint{font-size:.74rem;color:var(--teal-dark);font-weight:600;margin-top:12px;opacity:.75;}
+.snum{font-size:.72rem;font-weight:700;color:var(--teal);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.sname{font-size:1.4rem;font-weight:800;color:var(--teal-dark);margin-bottom:8px}
+.sinstr{font-size:.88rem;color:#3d5a58;line-height:1.5}
+.stimer{font-size:3.5rem;font-weight:800;color:var(--teal);margin:12px 0 4px;font-variant-numeric:tabular-nums}
+.dots{display:flex;justify-content:center;gap:6px;margin-bottom:14px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mint-mid);transition:background .3s}
+.dot.done{background:var(--teal)}.dot.active{background:var(--teal-light);transform:scale(1.3)}
+.pbar{background:var(--mint-mid);border-radius:999px;height:4px;margin-bottom:8px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--teal-dark),var(--teal-light));border-radius:999px;transition:width .5s}
+.btn{border:none;border-radius:12px;padding:14px 18px;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:transform .1s,filter .1s}
+.btn:active{transform:scale(.97);filter:brightness(.92)}
+.bpri{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff}
+.bsec{background:rgba(255,255,255,.82);color:var(--teal-dark);border:2px solid var(--mint-mid)}
+.bful{width:100%}
+.brow{display:flex;gap:10px}.brow .btn{flex:1}
+.brow .bprev{flex:0 0 auto;padding:14px 16px;font-size:1.15rem;line-height:1}
+.done{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border-radius:20px;padding:28px;text-align:center;margin-bottom:18px}
+.done .big{font-size:3rem;margin-bottom:8px}
+.done h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
+.done p{font-size:.88rem;opacity:.9}
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.etile{border:none;border-radius:18px;padding:18px 12px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:center;transition:transform .1s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.etile:active{transform:scale(.96)}
+.etile .be{font-size:2.2rem}
+.etile .el{font-size:.85rem;font-weight:700;color:rgba(0,0,0,.65)}
+.ecard{background:rgba(255,255,255,.92);border-radius:20px;padding:22px;margin-bottom:14px;box-shadow:0 4px 20px rgba(38,166,154,.1)}
+.ehead{text-align:center;margin-bottom:18px}
+.ebig{font-size:3.5rem;display:block;margin-bottom:6px}
+.ename{font-size:1.4rem;font-weight:800;color:var(--teal-dark)}
+.irow{background:var(--mint-soft);border-radius:12px;padding:13px;margin-bottom:9px;border:2px solid var(--mint-mid)}
+.irow.hi{border-color:var(--teal)}
+.ilbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin-bottom:4px}
+.ival{font-size:.92rem;font-weight:700;color:var(--teal-dark)}
+.isub{font-size:.76rem;color:var(--teal);margin-top:3px;line-height:1.3}
+.qcard{background:rgba(255,255,255,.88);border-radius:20px;padding:22px;margin-bottom:14px;border:2px solid var(--mint-mid)}
+.qcard h2{font-size:1.05rem;font-weight:700;color:var(--teal-dark);margin-bottom:14px;line-height:1.3}
+.qopts{display:flex;flex-direction:column;gap:8px}
+.qbtn{background:var(--mint-soft);border:2px solid var(--mint-mid);border-radius:12px;padding:14px 16px;text-align:left;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:600;color:var(--teal-dark);width:100%;line-height:1.3}
+.qbtn:active{border-color:var(--teal);background:var(--mint-mid)}
+.mlist{display:flex;flex-direction:column;gap:10px}
+.mitem{background:rgba(255,255,255,.82);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;border:2px solid var(--mint-mid);width:100%;text-align:left;transition:transform .1s}
+.mitem:active{transform:scale(.98)}
+.mico{font-size:2rem;flex-shrink:0}
+.minfo h3{font-size:.95rem;font-weight:700;color:var(--teal-dark)}
+.minfo p{font-size:.78rem;color:var(--teal);margin-top:2px}
+.sprow{display:flex;gap:8px;margin-bottom:18px}
+.spbtn{flex:1;padding:10px;border:2px solid var(--mint-mid);border-radius:10px;background:rgba(255,255,255,.7);font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--teal)}
+.spbtn.active{border-color:var(--teal);background:var(--teal);color:#fff}
+
+.calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
+
+/* Anillo de tiempo: se vacía según pasa — para ver cuánto queda sin leer números */
+.tring{width:176px;height:176px;border-radius:50%;margin:4px auto 10px;display:flex;align-items:center;justify-content:center;background:conic-gradient(#26a69a 360deg,#cde9e4 0);flex-shrink:0;}
+.tring-in{width:144px;height:144px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;text-align:center;}
+.tring{width:150px;height:150px}.tring-in{width:120px;height:120px;background:var(--mint-soft)}.tring .stimer{font-size:2.2rem;margin:0}
+
+/* Quico con manitas (mascota) */
+.quico-mascot{position:relative;width:-moz-fit-content;width:fit-content;margin:0 auto 6px;filter:drop-shadow(0 3px 8px rgba(93,64,55,.18));}
+.quico-mascot .qm-head{display:block;margin:0;filter:none;}
+.qm-paws{position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);width:64%;line-height:0;}
+.qm-paws svg{display:block;width:100%;}
+
+/* Ayuda en crisis (siempre visible) */
+.crisis-box{margin:22px 0 8px;background:#fff;border:2px solid #fecaca;border-radius:16px;padding:14px 16px}
+.crisis-h{font-weight:800;color:#b91c1c;font-size:.95rem;margin-bottom:6px;line-height:1.35}
+.crisis-box p{font-size:.85rem;line-height:1.5;color:#374151;margin-bottom:8px}
+.crisis-nums{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.crisis-nums a{display:flex;align-items:center;gap:10px;text-decoration:none;background:#fef2f2;border-radius:12px;padding:10px 12px;color:#991b1b;font-weight:700;font-size:.9rem}
+.crisis-nums a b{font-size:1.15rem;min-width:64px}
+.crisis-box .crisis-note{font-size:.78rem;color:#6b7280;margin:0}
+</style>
+
+<link rel="manifest" href="manifest.json">
+<script>/* primera vez: el idioma del móvil, antes de que se pinte nada */try{if(!localStorage.getItem('cris_lang')){var n=(navigator.language||'es').slice(0,2);localStorage.setItem('cris_lang',(n==='en'||n==='fr')?n:'es');}}catch(e){}</script>
+<meta name="theme-color" content="#1a6b64">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Botiquín">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+#bk-cfg{position:fixed;top:max(12px,env(safe-area-inset-top));right:12px;z-index:900;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.85);box-shadow:0 2px 10px rgba(26,107,100,.2);font-size:1.2rem;cursor:pointer}
+#bk-sheet{position:fixed;inset:0;z-index:950;background:rgba(15,59,55,.45);display:none;align-items:flex-end;justify-content:center}
+#bk-sheet.show{display:flex}
+#bk-sheet .c{background:#fff;width:100%;max-width:460px;border-radius:22px 22px 0 0;padding:20px 20px max(20px,env(safe-area-inset-bottom));font-family:'Outfit',sans-serif;color:#12302d}
+#bk-sheet h3{margin:0 0 12px;font-size:1.15rem}
+#bk-sheet .r{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+#bk-sheet button.p{border:2px solid #b8e4dd;background:#fff;color:#1a6b64;border-radius:999px;padding:9px 14px;font:700 .92rem 'Outfit',sans-serif;cursor:pointer}
+#bk-sheet button.p.on{background:#26a69a;border-color:#26a69a;color:#fff}
+#bk-sheet a{display:block;color:#1a6b64;font-weight:700;margin:6px 0 14px}
+#bk-sheet .x{width:100%;border:none;background:#26a69a;color:#fff;border-radius:16px;padding:14px;font:800 1rem 'Outfit',sans-serif;cursor:pointer}
+@media print{#bk-cfg{display:none}}
+</style>
+</head>
+<body>
+
+<div id="v-home" class="screen active">
+<div class="mw">
+  <div class="home-hdr">
+    <h1 data-i18n="home_h">Botiquín Emocional 🧰</h1>
+    <p data-i18n="home_p">¿Qué necesitas ahora mismo?</p>
+  </div>
+  <div class="home-q">
+    <img src="../quico/quico_happy.png" alt="Quico" style="width:128px;height:auto;object-fit:contain;display:block;margin:0 auto 6px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18))">
+  </div>
+  <button class="acard c-sos" data-sub="c-sos" onclick="go('techniques')">
+    <span class="aicon">🚨</span>
+    <div class="ainfo"><span class="atitle" data-i18n="c_sos_t">NECESITO AYUDA YA</span><span class="asub" data-i18n="c_sos_s">Técnicas para salir del bucle ahora mismo</span></div>
+  </button>
+  <button class="acard c-know" data-sub="c-know" onclick="go('emotions')">
+    <span class="aicon">💭</span>
+    <div class="ainfo"><span class="atitle" data-i18n="c_know_t">SÉ QUÉ SIENTO</span><span class="asub" data-i18n="c_know_s">Entiende tu emoción y qué puedes hacer</span></div>
+  </button>
+  <button class="acard c-find" data-sub="c-find" onclick="go('find-emotion')">
+    <span class="aicon">❓</span>
+    <div class="ainfo"><span class="atitle" data-i18n="c_find_t">NO SÉ QUÉ SIENTO</span><span class="asub" data-i18n="c_find_s">Ayúdame a identificar lo que me pasa</span></div>
+  </button>
+  <button class="acard c-calm" data-sub="c-calm" onclick="go('meditations')">
+    <span class="aicon">🧘</span>
+    <div class="ainfo"><span class="atitle" data-i18n="c_calm_t">MEDITAR</span><span class="asub" data-i18n="c_calm_s">Meditaciones guiadas para calmarme</span></div>
+  </button>
+  <button class="acard c-anniv" data-sub="c-anniv" onclick="go('anniversary')">
+    <span class="aicon">🕯️</span>
+    <div class="ainfo"><span class="atitle" data-i18n="c_anniv_t">ÉPOCA DIFÍCIL</span><span class="asub" data-i18n="c_anniv_s">Plan de 7 días para un aniversario duro</span></div>
+  </button>
+  <button class="acard c-trans" data-sub="c-trans" onclick="go('transition')">
+    <span class="aicon">📴</span>
+    <div class="ainfo"><span class="atitle" data-i18n="c_trans_t">SOLTAR EL MÓVIL</span><span class="asub" data-i18n="c_trans_s">Cambia de tarea con una mini-guía</span></div>
+  </button>
+  <button id="subShowAll" class="sub-showall" onclick="__subToggleAll()" style="display:none"></button>
+  <div class="crisis-box" role="note">
+    <div class="crisis-h" data-i18n="crisis_h">¿Estás en peligro o piensas en hacerte daño?</div>
+    <p data-i18n="crisis_p">No estás sola. Llama ahora, es gratis y te atienden a cualquier hora:</p>
+    <div class="crisis-nums" id="crisis-nums"></div>
+    <p class="crisis-note" data-i18n="crisis_note">Quico te acompaña, pero no sustituye a una profesional de la salud mental.</p>
+  </div>
+</div>
+</div>
+
+<div id="v-techniques" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1 data-i18n="tech_h">Técnicas de Rescate</h1>
+  </div>
+  <div id="tech-list"></div>
+</div>
+</div>
+
+<div id="v-technique-detail" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" id="tec-back">←</button>
+    <h1 id="tec-title" data-i18n="tec_h_fb">Técnica</h1>
+  </div>
+  <div id="tec-content"></div>
+</div>
+</div>
+
+<div id="v-emotions" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1 data-i18n="emo_h">¿Qué sientes?</h1>
+  </div>
+  <p style="font-size:.83rem;color:var(--teal);margin-bottom:14px" data-i18n="emo_hint">Toca lo que más se acerca a lo que sientes ahora mismo</p>
+  <div class="egrid" id="emo-grid"></div>
+</div>
+</div>
+
+<div id="v-emotion-detail" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" id="emo-back">←</button>
+    <h1 data-i18n="emo_detail_h">Tu emoción</h1>
+  </div>
+  <div id="emo-detail"></div>
+</div>
+</div>
+
+<div id="v-find-emotion" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1 data-i18n="find_h">Vamos a descubrirlo</h1>
+  </div>
+  <div id="find-content"></div>
+</div>
+</div>
+
+<div id="v-meditations" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1 data-i18n="med_h">Meditaciones</h1>
+  </div>
+  <div class="mlist" id="med-list"></div>
+</div>
+</div>
+
+<div id="v-meditation-detail" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="stopTimer();go('meditations')">←</button>
+    <h1 id="med-title"></h1>
+  </div>
+  <div class="sprow">
+    <button class="spbtn" id="sp-lento" onclick="setSpeed('lento')" data-i18n="sp_lento">Lento</button>
+    <button class="spbtn active" id="sp-normal" onclick="setSpeed('normal')" data-i18n="sp_normal">Normal</button>
+    <button class="spbtn" id="sp-rapido" onclick="setSpeed('rapido')" data-i18n="sp_rapido">Rápido</button>
+  </div>
+  <div id="med-content"></div>
+</div>
+</div>
+
+<div id="v-anniversary" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1 id="anniv-title"></h1>
+  </div>
+  <div id="anniv-content"></div>
+</div>
+</div>
+
+<div id="v-transition" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="stopTrans();go('home')">←</button>
+    <h1 id="trans-title"></h1>
+  </div>
+  <div id="trans-content"></div>
+</div>
+</div>
+
+<script>
+/* Ajustes globales (voz/sonido/vibración/reducir estímulos) — compartidos vía localStorage */
+function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
+function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
+if(__cfg().calm)document.documentElement.classList.add('calm');
+
+/* ── IDIOMAS (es · en · fr) ── */
+const UI={
+ es:{crisis_h:'¿Estás en peligro o piensas en hacerte daño?',crisis_p:'No estás sola. Llama ahora, es gratis y te atienden a cualquier hora:',crisis_note:'Quico te acompaña, pero no sustituye a una profesional de la salud mental.',home_h:'Botiquín Emocional 🧰',home_p:'¿Qué necesitas ahora mismo?',
+   c_sos_t:'NECESITO AYUDA YA',c_sos_s:'Técnicas para salir del bucle ahora mismo',
+   c_know_t:'SÉ QUÉ SIENTO',c_know_s:'Entiende tu emoción y qué puedes hacer',
+   c_find_t:'NO SÉ QUÉ SIENTO',c_find_s:'Ayúdame a identificar lo que me pasa',
+   c_calm_t:'MEDITAR',c_calm_s:'Meditaciones guiadas para calmarme',c_anniv_t:'ÉPOCA DIFÍCIL',c_anniv_s:'Plan de 7 días para un aniversario duro',c_trans_t:'SOLTAR EL MÓVIL',c_trans_s:'Cambia de tarea con una mini-guía',
+   tech_h:'Técnicas de Rescate',tec_h_fb:'Técnica',emo_h:'¿Qué sientes?',emo_hint:'Toca lo que más se acerca a lo que sientes ahora mismo',
+   emo_detail_h:'Tu emoción',find_h:'Vamos a descubrirlo',med_h:'Meditaciones',
+   sp_lento:'Lento',sp_normal:'Normal',sp_rapido:'Rápido',
+   tec_done_t:'¡Lo conseguiste!',tec_done_q:'¿Cómo te sientes ahora?',home_btn:'🏠 Inicio',other_tec:'Otra técnica',
+   step_of:'Paso {i} de {n}',start_btn:'▶ Iniciar',pause_btn:'⏸ Pausar',next_btn:'Siguiente →',prev_aria:'Paso anterior',
+   emo_impulse:'Tu impulso va a ser...',emo_need:'Lo que realmente necesitas',emo_help:'Qué puede ayudarte ahora',
+   emo_start:'Empezar:',emo_other:'← Elegir otra emoción',
+   find_q:'¿Qué notas en tu cuerpo ahora mismo?',find_hint:'Elige lo que más se acerca, no tiene que ser exacto',
+   find_maybe:'Puede que estés sintiendo...',find_retry:'← Intentarlo de nuevo',
+   med_steps:'pasos · avanza sola con voz',med_done_t:'Meditación completada',med_list:'← Lista',med_repeat:'Repetir',
+   breath_hint:'🌬️ Respira con el círculo · {b}',breath_hold:'Inhala {i} · mantén {h} · exhala {o}',breath_simple:'Inhala {i} · exhala {o}',
+   min_word:'min'},
+ en:{crisis_h:'Are you in danger or thinking of hurting yourself?',crisis_p:'You are not alone. Call now, it’s free and someone will answer at any hour:',crisis_note:'Quico keeps you company, but it doesn’t replace a mental health professional.',home_h:'Emotional Kit 🧰',home_p:'What do you need right now?',
+   c_sos_t:'I NEED HELP NOW',c_sos_s:'Techniques to break the loop right now',
+   c_know_t:'I KNOW WHAT I FEEL',c_know_s:'Understand your emotion and what you can do',
+   c_find_t:'I DON’T KNOW WHAT I FEEL',c_find_s:'Help me name what’s going on',
+   c_calm_t:'MEDITATE',c_calm_s:'Guided meditations to calm down',c_anniv_t:'A HARD TIME',c_anniv_s:'7-day plan for a difficult anniversary',c_trans_t:'PUT THE PHONE DOWN',c_trans_s:'Switch tasks with a mini-guide',
+   tech_h:'Rescue Techniques',tec_h_fb:'Technique',emo_h:'What do you feel?',emo_hint:'Tap what’s closest to how you feel right now',
+   emo_detail_h:'Your emotion',find_h:'Let’s find out',med_h:'Meditations',
+   sp_lento:'Slow',sp_normal:'Normal',sp_rapido:'Fast',
+   tec_done_t:'You did it!',tec_done_q:'How do you feel now?',home_btn:'🏠 Home',other_tec:'Another technique',
+   step_of:'Step {i} of {n}',start_btn:'▶ Start',pause_btn:'⏸ Pause',next_btn:'Next →',prev_aria:'Previous step',
+   emo_impulse:'Your impulse will be to...',emo_need:'What you really need',emo_help:'What can help you now',
+   emo_start:'Start:',emo_other:'← Choose another emotion',
+   find_q:'What do you notice in your body right now?',find_hint:'Pick what’s closest, it doesn’t have to be exact',
+   find_maybe:'You might be feeling...',find_retry:'← Try again',
+   med_steps:'steps · advances on its own with voice',med_done_t:'Meditation complete',med_list:'← List',med_repeat:'Repeat',
+   breath_hint:'🌬️ Breathe with the circle · {b}',breath_hold:'Inhale {i} · hold {h} · exhale {o}',breath_simple:'Inhale {i} · exhale {o}',
+   min_word:'min'},
+ fr:{crisis_h:'Tu es en danger ou tu penses à te faire du mal ?',crisis_p:'Tu n’es pas seule. Appelle maintenant, c’est gratuit et on te répond à toute heure :',crisis_note:'Quico t’accompagne, mais ne remplace pas une ou un professionnel de santé mentale.',home_h:'Trousse Émotionnelle 🧰',home_p:'De quoi as-tu besoin maintenant ?',
+   c_sos_t:'J’AI BESOIN D’AIDE MAINTENANT',c_sos_s:'Des techniques pour sortir de la boucle tout de suite',
+   c_know_t:'JE SAIS CE QUE JE RESSENS',c_know_s:'Comprends ton émotion et ce que tu peux faire',
+   c_find_t:'JE NE SAIS PAS CE QUE JE RESSENS',c_find_s:'Aide-moi à nommer ce qui se passe',
+   c_calm_t:'MÉDITER',c_calm_s:'Méditations guidées pour me calmer',c_anniv_t:'PÉRIODE DIFFICILE',c_anniv_s:'Plan de 7 jours pour un anniversaire difficile',c_trans_t:'LÂCHER LE TÉLÉPHONE',c_trans_s:'Change de tâche avec un mini-guide',
+   tech_h:'Techniques de Secours',tec_h_fb:'Technique',emo_h:'Que ressens-tu ?',emo_hint:'Touche ce qui se rapproche le plus de ce que tu ressens là',
+   emo_detail_h:'Ton émotion',find_h:'On va le découvrir',med_h:'Méditations',
+   sp_lento:'Lent',sp_normal:'Normal',sp_rapido:'Rapide',
+   tec_done_t:'Tu as réussi !',tec_done_q:'Comment te sens-tu maintenant ?',home_btn:'🏠 Accueil',other_tec:'Une autre technique',
+   step_of:'Étape {i} sur {n}',start_btn:'▶ Démarrer',pause_btn:'⏸ Pause',next_btn:'Suivant →',prev_aria:'Étape précédente',
+   emo_impulse:'Ton impulsion sera de...',emo_need:'Ce dont tu as vraiment besoin',emo_help:'Ce qui peut t’aider maintenant',
+   emo_start:'Commencer :',emo_other:'← Choisir une autre émotion',
+   find_q:'Que remarques-tu dans ton corps là, maintenant ?',find_hint:'Choisis ce qui se rapproche le plus, ça n’a pas à être exact',
+   find_maybe:'Tu ressens peut-être...',find_retry:'← Réessayer',
+   med_steps:'étapes · avance toute seule avec la voix',med_done_t:'Méditation terminée',med_list:'← Liste',med_repeat:'Répéter',
+   breath_hint:'🌬️ Respire avec le cercle · {b}',breath_hold:'Inspire {i} · retiens {h} · expire {o}',breath_simple:'Inspire {i} · expire {o}',
+   min_word:'min'}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
+function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars){Object.keys(vars).forEach(x=>{if(vars[x]===''){s=s.split(', {'+x+'}').join('').split(' {'+x+'}').join('').split('{'+x+'} · ').join('');}});Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});}return s;}
+const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
+/* Traducción de contenido (el emoji, color, time, breath vienen del dato ES) */
+const RESCUES_L={
+ en:{3:{name:'Cold water (crisis)',when:'When the emotion is unbearable — full crisis',desc:'Changes your body chemistry in seconds',steps:[['COLD WATER','Splash cold water on your face or wrists for 30 seconds. It triggers the dive reflex'],['MOVE','Run in place or jump with all your energy'],['STOP','Stop. Breathe. Feel your body starting to calm'],['RELAX','Relax shoulders, jaw, hands. Muscle by muscle']]},
+     2:{name:'4-7-8 breathing',when:'When anxiety or panic kicks in',desc:'Calms the nervous system in minutes',steps:[['INHALE 4','Inhale slowly through your nose counting to 4'],['HOLD 7','Hold the air gently, count to 7'],['EXHALE 8','Exhale fully through your mouth over 8 counts. Let it all go'],['INHALE 4','Second round — inhale again through your nose'],['HOLD 7','Hold gently'],['EXHALE 8','Exhale everything. Notice yourself calming']]},
+     1:{name:'5-4-3-2-1',when:'When your mind won’t stop or you feel dissociated',desc:'Anchors your senses to the present',steps:[['5 SEE','Name 5 things you can see around you right now'],['4 TOUCH','Feel 4 different textures with your hands. What are they like?'],['3 HEAR','Identify 3 different sounds around you'],['2 SMELL','Find 2 scents in the space you’re in'],['1 TASTE','Notice the taste in your mouth right now']]},
+     4:{name:'Movement',when:'When you feel built-up tension, anger or frustration',desc:'Discharges cortisol through movement',steps:[['SHAKE','Shake your arms and legs for 30 seconds. Let it all drop'],['JUMP','10 jumping jacks. Count out loud as you do them'],['BREATHE','Hands on knees, leaning. Breathe deeply 3 times'],['NOTICE','How is your body now? Notice it without judging']]},
+     7:{name:'Cognitive defusion',when:'When a thought grips you and you can’t stop',desc:'Creates distance from the thought without fighting it',steps:[['IDENTIFY','What’s the thought that grips you most right now? Just one'],['NAME IT','Say out loud: “I’m having the thought that...” and complete it'],['THANK','Tell your mind: “Thanks for the heads-up. I don’t need to act now”'],['RETURN','Put your attention on something physical: the chair, your feet, the air coming in']]},
+     6:{name:'Self-compassion',when:'When you punish yourself, feel guilt or shame',desc:'Treat yourself as you’d treat someone you love',steps:[['ACKNOWLEDGE','Put a hand on your heart. This is pain, and it’s real. Don’t minimise it'],['HUMANITY','Remember: everyone suffers sometimes. You’re not alone'],['KINDNESS','Say softly: “May I be well. May I treat myself with care”'],['STAY','Feel the warmth of your hand on your chest. Breathe. Here is comfort']]},
+     5:{name:'Free writing',when:'When you need to get out what’s inside',desc:'Empty your mind with no filters',steps:[['PREPARE','Grab paper or notes. No filters — whatever comes out is fine'],['WRITE','Write everything you feel, non-stop, without erasing. Let it flow'],['READ','Read what you wrote once. Without judging'],['RELEASE','Close it or save it. It’s out of you now. That’s enough']]},
+     8:{name:'Connect',when:'When you feel alone or isolated',desc:'A small gesture breaks the isolation',steps:[['CHOOSE','Think of someone you feel safe with. Just one'],['REACH OUT','Send a voice note, a message, or call them right now'],['RECEIVE','If they can’t answer, that’s okay. You made the gesture — that counts'],['ACKNOWLEDGE','You broke the isolation. That’s courage']]}},
+ fr:{3:{name:'Eau froide (crise)',when:'Quand l’émotion est insupportable — crise totale',desc:'Change ta chimie corporelle en quelques secondes',steps:[['EAU FROIDE','Passe de l’eau froide sur ton visage ou tes poignets pendant 30 secondes. Ça déclenche le réflexe de plongée'],['BOUGE','Cours sur place ou saute avec toute ton énergie'],['STOP','Arrête. Respire. Sens ton corps commencer à se calmer'],['RELÂCHE','Relâche épaules, mâchoire, mains. Muscle par muscle']]},
+     2:{name:'Respiration 4-7-8',when:'Quand l’anxiété ou la panique montent',desc:'Calme le système nerveux en quelques minutes',steps:[['INSPIRE 4','Inspire lentement par le nez en comptant jusqu’à 4'],['RETIENS 7','Retiens l’air doucement, compte jusqu’à 7'],['EXPIRE 8','Expire complètement par la bouche en 8 temps. Lâche tout'],['INSPIRE 4','Deuxième cycle — inspire de nouveau par le nez'],['RETIENS 7','Retiens doucement'],['EXPIRE 8','Expire tout. Remarque que tu te calmes']]},
+     1:{name:'5-4-3-2-1',when:'Quand ton esprit tourne sans arrêt ou que tu te sens dissociée',desc:'Ancre tes sens dans le présent',steps:[['5 VOIS','Nomme 5 choses que tu vois autour de toi maintenant'],['4 TOUCHES','Sens 4 textures différentes avec tes mains. Comment sont-elles ?'],['3 ENTENDS','Identifie 3 sons différents autour de toi'],['2 SENS','Trouve 2 odeurs dans l’endroit où tu es'],['1 GOÛTES','Remarque le goût dans ta bouche maintenant']]},
+     4:{name:'Mouvement',when:'Quand tu sens de la tension, de la colère ou de la frustration accumulée',desc:'Décharge le cortisol par le mouvement',steps:[['SECOUE','Secoue bras et jambes pendant 30 secondes. Laisse tout tomber'],['SAUTE','10 jumping jacks. Compte à voix haute en les faisant'],['RESPIRE','Mains sur les genoux, penchée. Respire profondément 3 fois'],['OBSERVE','Comment est ton corps maintenant ? Remarque-le sans juger']]},
+     7:{name:'Défusion cognitive',when:'Quand une pensée t’accroche et tu ne peux pas t’arrêter',desc:'Crée de la distance avec la pensée sans lutter',steps:[['IDENTIFIE','Quelle est la pensée qui t’accroche le plus maintenant ? Une seule'],['NOMME-LA','Dis à voix haute : « J’ai la pensée que... » et complète'],['REMERCIE','Dis à ton esprit : « Merci pour l’alerte. Je n’ai pas besoin d’agir maintenant »'],['REVIENS','Porte ton attention sur quelque chose de physique : la chaise, tes pieds, l’air qui entre']]},
+     6:{name:'Auto-compassion',when:'Quand tu te punis, ressens de la culpabilité ou de la honte',desc:'Traite-toi comme tu traiterais quelqu’un que tu aimes',steps:[['RECONNAIS','Pose une main sur ton cœur. C’est de la douleur, et c’est réel. Ne la minimise pas'],['HUMANITÉ','Rappelle-toi : tout le monde souffre parfois. Tu n’es pas seule'],['BIENVEILLANCE','Dis doucement : « Que je sois bien. Que je me traite avec tendresse »'],['RESTE','Sens la chaleur de ta main sur ta poitrine. Respire. Voilà le réconfort']]},
+     5:{name:'Écriture libre',when:'Quand tu as besoin de sortir ce que tu as en toi',desc:'Vide ton esprit sans filtres',steps:[['PRÉPARE','Prends du papier ou des notes. Sans filtres — ce qui sort est bien'],['ÉCRIS','Écris tout ce que tu ressens sans t’arrêter, sans effacer. Laisse couler'],['LIS','Lis ce que tu as écrit une fois. Sans juger'],['LÂCHE','Ferme ou range. C’est sorti de toi. C’est suffisant']]},
+     8:{name:'Se connecter',when:'Quand tu te sens seule ou isolée',desc:'Un petit geste brise l’isolement',steps:[['CHOISIS','Pense à une personne avec qui tu te sens en sécurité. Une seule'],['CONTACTE','Envoie un audio, un message, ou appelle-la maintenant'],['REÇOIS','Si elle ne peut pas répondre, c’est bon. Tu as fait le geste — ça compte'],['RECONNAIS','Tu as brisé l’isolement. C’est du courage']]}}
+};
+const TEC_LABELS={
+ en:['🔥 For when you’re in full crisis','🫁 To calm anxiety or panic','👁️ To break the loop or ground yourself with fear','💪 To discharge anger or frustration','🧠 For the thought that grips you','🤍 For guilt or shame','✍️ To let go of what weighs on you','🫂 For when you feel alone'],
+ fr:['🔥 Pour quand tu es en pleine crise','🫁 Pour calmer l’anxiété ou la panique','👁️ Pour sortir de la boucle ou t’ancrer avec la peur','💪 Pour décharger colère ou frustration','🧠 Pour la pensée qui t’accroche','🤍 Pour la culpabilité ou la honte','✍️ Pour lâcher ce qui pèse','🫂 Pour quand tu te sens seule']
+};
+const EMOTIONS_L={
+ en:{ansiedad:{label:'Anxiety',impulse:'Avoid or escape what scares you',need:'To feel safe',helps:'Slow breathing',helpsDesc:'Calms the activated nervous system'},
+  miedo:{label:'Fear',impulse:'Flee, freeze or seek protection',need:'To feel safe and protected',helps:'Anchor to the here and now',helpsDesc:'Name what you see and touch: the danger isn’t in this moment'},
+  rabia:{label:'Anger',impulse:'Attack, shout or explode',need:'To set a clear boundary',helps:'Say it clearly',helpsDesc:'First discharge with movement, then express'},
+  tristeza:{label:'Sadness',impulse:'Shut down and see no one',need:'Comfort and company',helps:'Reach out to someone',helpsDesc:'A small message breaks the isolation'},
+  celos:{label:'Jealousy',impulse:'Cling, control or check',need:'To feel secure in the relationship',helps:'Ask directly for what you need',helpsDesc:'First write down what you feel'},
+  culpa:{label:'Guilt',impulse:'Ruminate and punish yourself',need:'To repair what happened',helps:'Apologise or do something concrete',helpsDesc:'Self-compassion helps you act without punishing yourself'},
+  'vergüenza':{label:'Shame',impulse:'Hide or disappear',need:'Compassion toward yourself',helps:'Hand on your heart',helpsDesc:'Self-compassion is the antidote to shame'},
+  agobio:{label:'Overwhelm',impulse:'Freeze up',need:'To reduce the load',helps:'Just one small step now',helpsDesc:'Sensory anchoring gets you out of the loop'},
+  soledad:{label:'Loneliness',impulse:'Isolate even more',need:'Real connection',helps:'Write to someone right now',helpsDesc:'Even a short message'},
+  'frustración':{label:'Frustration',impulse:'Give up or blow up',need:'Flexibility and a fresh approach',helps:'Move, then re-plan',helpsDesc:'Movement discharges and clears the mind'},
+  entumecimiento:{label:'Numbness',impulse:'Disconnect completely',need:'To feel safe again',helps:'Gentle movement',helpsDesc:'A moving body brings you back'}},
+ fr:{ansiedad:{label:'Anxiété',impulse:'Éviter ou fuir ce qui fait peur',need:'Te sentir en sécurité',helps:'Respiration lente',helpsDesc:'Calme le système nerveux activé'},
+  miedo:{label:'Peur',impulse:'Fuir, te figer ou chercher une protection',need:'Te sentir à l’abri et protégée',helps:'T’ancrer à l’ici et maintenant',helpsDesc:'Nomme ce que tu vois et touches : le danger n’est pas dans cet instant'},
+  rabia:{label:'Colère',impulse:'Attaquer, crier ou exploser',need:'Poser une limite claire',helps:'Le dire clairement',helpsDesc:'D’abord décharge avec le mouvement, puis exprime'},
+  tristeza:{label:'Tristesse',impulse:'Te renfermer et ne voir personne',need:'Réconfort et compagnie',helps:'Contacter quelqu’un',helpsDesc:'Un petit message brise l’isolement'},
+  celos:{label:'Jalousie',impulse:'T’accrocher, contrôler ou vérifier',need:'Te sentir en sécurité dans la relation',helps:'Demander directement ce dont tu as besoin',helpsDesc:'Écris d’abord ce que tu ressens'},
+  culpa:{label:'Culpabilité',impulse:'Ruminer et te punir',need:'Réparer ce qui s’est passé',helps:'T’excuser ou faire quelque chose de concret',helpsDesc:'L’auto-compassion t’aide à agir sans te punir'},
+  'vergüenza':{label:'Honte',impulse:'Te cacher ou disparaître',need:'De la compassion envers toi-même',helps:'Main sur le cœur',helpsDesc:'L’auto-compassion est l’antidote à la honte'},
+  agobio:{label:'Débordement',impulse:'Rester paralysée',need:'Réduire la charge',helps:'Un seul petit pas maintenant',helpsDesc:'L’ancrage sensoriel te sort de la boucle'},
+  soledad:{label:'Solitude',impulse:'T’isoler encore plus',need:'Une vraie connexion',helps:'Écrire à quelqu’un tout de suite',helpsDesc:'Même un message court'},
+  'frustración':{label:'Frustration',impulse:'Abandonner ou exploser',need:'De la souplesse et une nouvelle approche',helps:'Bouger puis replanifier',helpsDesc:'Le mouvement décharge et éclaircit l’esprit'},
+  entumecimiento:{label:'Engourdissement',impulse:'Te déconnecter complètement',need:'Te sentir de nouveau en sécurité',helps:'Mouvement doux',helpsDesc:'Le corps en mouvement te ramène'}}
+};
+const BODY_LABELS={
+ en:['⚡ Tension, agitation, racing heart','🪨 Heaviness, tiredness, wanting to hide','🧊 Blocked, paralysed, can’t think','🕳️ Emptiness, distance, as if nothing mattered'],
+ fr:['⚡ Tension, agitation, cœur qui s’emballe','🪨 Lourdeur, fatigue, envie de te cacher','🧊 Bloquée, paralysée, incapable de penser','🕳️ Vide, distance, comme si rien n’importait']
+};
+const MED_L={
+ en:{1:{name:'Mindful breathing',steps:[['Get comfortable','Sit or lie down. Close your eyes if you like'],['Breathe naturally','Just watch your breath without changing it. Nothing to do'],['Inhale...','Notice the air coming in. Feel your chest or belly rise'],['Exhale...','Notice the air going out. Relax a little more with each exhale'],['Thoughts','If a thought appears, greet it without grabbing it and return to the breath'],['Closing','Open your eyes gently. Take this calm with you']]},
+  2:{name:'Body scan',steps:[['Begin','Lie on your back. Close your eyes. No rush'],['Feet','Bring attention to your feet. Feel their weight and temperature'],['Legs','Move up your legs. Notice any tension or warmth'],['Belly','Feel your belly rise and fall with each breath'],['Chest and arms','Notice your heart. Relax your shoulders and arms'],['Face','Relax your jaw, forehead, eyes. All soft'],['Whole body','Feel your whole body. You are here, now'],['Come back','Wiggle your fingers. Open your eyes. Welcome back']]},
+  3:{name:'Tong-Len (Giving and Taking)',steps:[['Get ready','Sit comfortably, back straight and shoulders loose. Take a couple of unhurried breaths'],['Start with yourself','Think of something weighing on you today. You don’t need to fix it, just acknowledge it kindly'],['Take — as you inhale','As you breathe in, imagine gathering that weight like dark smoke flowing into your chest'],['Transform','In your heart, the smoke dissolves and turns into light. Your heart is bigger than the pain'],['Give — as you exhale','As you breathe out, send relief, calm and kindness like a clear, gentle light'],['Widen the circle','Think of someone you love who is having a hard time. Take in their weight as you inhale; give them relief as you exhale'],['If it feels too heavy','If at any point it’s too much, stop. Just go back to simple breathing. Caring for yourself is compassion too'],['Closing','Let your breath flow freely. Stay a moment with this kind intention, towards yourself and others']]},
+  4:{name:'Observe without grasping',steps:[['Posture','Sit upright but without tension. Close your eyes'],['Anchor','Bring attention to your feet on the floor'],['Observe','Notice sensations that arise. Don’t follow them, just observe'],['No judgement','Pleasant, unpleasant, neutral — just notice. Nothing to fix'],['Everything passes','Each sensation arises and passes on its own'],['Closing','Slowly come back. Open your eyes. Thank you for this time']]},
+  5:{name:'4-7-8 breathing',steps:[['Get ready','Sit comfortably with your back supported. This rhythm calms the nervous system in minutes'],['Learn the rhythm','Inhale through the nose for 4. Hold for 7. Release through the mouth for 8, like blowing out a candle'],['Cycle 1','Follow the circle: inhale 4... hold 7... exhale 8'],['Cycle 2','Again. Inhale 4... hold 7... release slowly 8'],['Cycle 3','You’re doing great. Inhale... hold... and let all the air go'],['Cycle 4','Last cycle. Notice your body feeling a bit heavier'],['Closing','Breathe normally. Notice the difference. You can repeat it whenever you want']]},
+  6:{name:'Your safe place',steps:[['Close your eyes','Get comfortable. We’re going to build a refuge in your mind'],['Imagine the place','A place where you feel completely safe. Real or made up: a beach, a forest, your bed, a cabin'],['See it','What do you see around you? The colours, the light, the shapes. Take your time'],['Hear it','What can you hear there? Waves, birds, soft rain, silence?'],['Feel it','What’s the temperature? What do you touch? Notice the safety in your body'],['Anchor','Put a hand on your chest. This place is yours. You can return whenever you need'],['Come back','Say goodbye for now. Open your eyes slowly. The refuge stays with you']]}},
+ fr:{1:{name:'Respiration consciente',steps:[['Mets-toi à l’aise','Assieds-toi ou allonge-toi. Ferme les yeux si tu veux'],['Respire naturellement','Observe juste ta respiration sans la changer. Rien à faire'],['Inspire...','Remarque l’air qui entre. Sens la poitrine ou le ventre monter'],['Expire...','Remarque l’air qui sort. Détends-toi un peu plus à chaque expiration'],['Pensées','Si une pensée apparaît, salue-la sans la saisir et reviens au souffle'],['Clôture','Ouvre les yeux doucement. Emporte ce calme avec toi']]},
+  2:{name:'Scan corporel',steps:[['Commence','Allonge-toi sur le dos. Ferme les yeux. Sans hâte'],['Pieds','Amène l’attention à tes pieds. Sens leur poids et leur température'],['Jambes','Remonte le long de tes jambes. Remarque toute tension ou chaleur'],['Ventre','Sens ton ventre monter et descendre à chaque respiration'],['Poitrine et bras','Remarque ton cœur. Détends tes épaules et tes bras'],['Visage','Détends la mâchoire, le front, les yeux. Tout en douceur'],['Tout le corps','Sens ton corps entier. Tu es ici, maintenant'],['Reviens','Bouge les doigts. Ouvre les yeux. Bienvenue']]},
+  3:{name:'Tong-Len (Donner et Prendre)',steps:[['Prépare-toi','Assieds-toi confortablement, le dos droit et les épaules relâchées. Respire deux fois sans te presser'],['Commence par toi','Pense à quelque chose qui te pèse aujourd’hui. Pas besoin de le régler, juste de le reconnaître avec douceur'],['Prendre — en inspirant','En inspirant, imagine que tu recueilles ce poids comme une fumée sombre qui entre dans ta poitrine'],['Transformer','Dans ton cœur, cette fumée se dissout et devient lumière. Ton cœur est plus grand que la douleur'],['Donner — en expirant','En expirant, envoie du soulagement, du calme et de la douceur, comme une lumière claire'],['Élargis le cercle','Pense à quelqu’un que tu aimes et qui passe un moment difficile. Prends son poids en inspirant ; offre-lui du soulagement en expirant'],['Si c’est trop lourd','Si à un moment c’est trop, arrête-toi. Reviens simplement à ta respiration. Prendre soin de toi, c’est aussi de la compassion'],['Clôture','Laisse ta respiration libre. Reste un instant avec cette intention bienveillante, envers toi et envers les autres']]},
+  4:{name:'Observer sans saisir',steps:[['Posture','Assieds-toi droite mais sans tension. Ferme les yeux'],['Ancre','Amène l’attention à tes pieds au sol'],['Observe','Remarque les sensations qui surgissent. Ne les suis pas, observe simplement'],['Sans jugement','Agréable, désagréable, neutre — remarque juste. Rien à réparer'],['Tout passe','Chaque sensation surgit et s’en va d’elle-même'],['Clôture','Reviens peu à peu. Ouvre les yeux. Merci pour ce temps']]},
+  5:{name:'Respiration 4-7-8',steps:[['Prépare-toi','Assieds-toi confortablement, le dos soutenu. Ce rythme calme le système nerveux en quelques minutes'],['Apprends le rythme','Inspire par le nez en comptant 4. Retiens en comptant 7. Relâche par la bouche en comptant 8, comme pour souffler une bougie'],['Cycle 1','Suis le cercle : inspire 4... retiens 7... expire 8'],['Cycle 2','Encore. Inspire 4... retiens 7... relâche doucement 8'],['Cycle 3','Tu t’en sors très bien. Inspire... retiens... et lâche tout l’air'],['Cycle 4','Dernier cycle. Remarque ton corps un peu plus lourd'],['Clôture','Respire normalement. Remarque la différence. Tu peux la répéter quand tu veux']]},
+  6:{name:'Ton endroit sûr',steps:[['Ferme les yeux','Mets-toi à l’aise. On va construire un refuge dans ton esprit'],['Imagine l’endroit','Un endroit où tu te sens complètement en sécurité. Réel ou inventé : une plage, une forêt, ton lit, une cabane'],['Regarde-le','Que vois-tu autour de toi ? Les couleurs, la lumière, les formes. Prends ton temps'],['Écoute-le','Qu’entends-tu là ? Des vagues, des oiseaux, une pluie douce, le silence ?'],['Ressens-le','Quelle température fait-il ? Que touches-tu ? Remarque la sécurité dans ton corps'],['Ancre','Pose une main sur ta poitrine. Cet endroit est à toi. Tu peux y revenir dès que tu en as besoin'],['Reviens','Dis au revoir pour l’instant. Ouvre les yeux doucement. Le refuge reste avec toi']]}}
+};
+function rescL(r){const lang=crisLang();if(lang==='es'||!RESCUES_L[lang]||!RESCUES_L[lang][r.id])return r;const tr=RESCUES_L[lang][r.id];return {...r,name:tr.name,when:tr.when,desc:tr.desc,steps:r.steps.map((s,i)=>({...s,text:tr.steps[i][0],instruction:tr.steps[i][1]}))};}
+function emoL(e){const lang=crisLang();if(lang==='es'||!EMOTIONS_L[lang]||!EMOTIONS_L[lang][e.id])return e;return {...e,...EMOTIONS_L[lang][e.id]};}
+function medL(m){const lang=crisLang();if(lang==='es'||!MED_L[lang]||!MED_L[lang][m.id])return m;const tr=MED_L[lang][m.id];return {...m,name:tr.name,steps:m.steps.map((s,i)=>({...s,text:tr.steps[i][0],instruction:tr.steps[i][1]}))};}
+function tecGroupLabel(i,esLabel){const lang=crisLang();return (lang!=='es'&&TEC_LABELS[lang])?TEC_LABELS[lang][i]:esLabel;}
+function bodyLabel(i,esLabel){const lang=crisLang();return (lang!=='es'&&BODY_LABELS[lang])?BODY_LABELS[lang][i]:esLabel;}
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
+
+/* ── ÉPOCA DIFÍCIL · plan de 7 días para regular el sistema nervioso ── */
+const ANNIV={
+ es:{title:'🕯️ Época difícil',
+  intro:'Hay emociones que vuelven cada año, en la misma época, sin saber por qué. No estás rota: es tu sistema nervioso recordando una huella que la mente ya olvidó. Este plan de 7 días no analiza el pasado — ayuda a que tu cuerpo deje de reaccionar en automático y recuperes claridad sobre qué sientes, cuándo y por qué.<br><br>Ve a tu ritmo: un día, un paso. Si algún día pesa demasiado, para y vuelve mañana. 💚',
+  why:'Para qué',today:'Hoy',
+  start_btn:'▶ Empezar el plan',hoy:'Hoy toca',dw:'Día',mark:'Marcar hecho',doneL:'✓ Hecho',noteph:'Tus notas (se guardan solas)',reset:'↺ Reiniciar plan',complete:'🎉 Plan completado. Puedes reiniciarlo cuando quieras.',wl:['D','L','M','X','J','V','S'],
+  days:[
+   {t:'Detectar la señal',w:'Antes de calmar algo, hay que verlo.',a:'Cada vez que notes un cambio brusco (tensión, cansancio, irritabilidad), apúntalo con la hora y qué estaba pasando. Sin analizar — solo registrar.'},
+   {t:'Bajar el pulso',w:'Decirle al cuerpo que ya no hay peligro.',a:'Respiración 4-7-8 (inhala 4, retén 7, exhala 8), tres veces a lo largo del día. La tienes guiada en «Meditar».'},
+   {t:'Nombrar sin juzgar',w:'Poner nombre baja la intensidad de la alarma del cerebro.',a:'Coge tus notas del día 1 y, por cada momento, escribe una palabra que nombre la emoción real: miedo, pérdida, vergüenza, cansancio…'},
+   {t:'Rastrear el patrón',w:'Encontrar de dónde viene.',a:'Mira si esas emociones se repiten en fechas, lugares o personas. No busques la explicación perfecta — busca la coincidencia. Ahí suele estar el origen.'},
+   {t:'Soltar el cuerpo',w:'Lo que se guarda en el cuerpo se suelta con movimiento, no solo con palabras.',a:'15 minutos de movimiento suave: estirar, caminar sin móvil, o sacudir brazos y piernas. Si quieres, usa el módulo de Pilates.'},
+   {t:'Reescribir la reacción',w:'Entre lo que pasa y cómo reaccionas hay un hueco: ahí está tu libertad.',a:'Cuando notes la señal del día 1, para 10 segundos y pregúntate: ¿esto es de ahora… o es de antes? Esa pausa es donde empieza el control.'},
+   {t:'Integrar y decidir',w:'Recuperar el control, no borrar la emoción.',a:'Relee lo que anotaste esta semana y elige UNA sola cosa que harás distinto la próxima vez que aparezca esa sensación.'}
+  ],
+  close:'El cuerpo recuerda incluso cuando la mente olvida — pero también aprende a soltar. Esto no borra tu historia: te devuelve el control sobre cómo reaccionas a ella.',
+  safe:'Si en algún momento pesa demasiado, no estás sola. Habla con alguien de confianza o con un profesional. Esto es un apoyo, no sustituye a la terapia. 💚'},
+ en:{title:'🕯️ A hard time',
+  intro:'Some emotions come back every year, at the same time, without you knowing why. You’re not broken: it’s your nervous system remembering an imprint your mind has forgotten. This 7-day plan doesn’t analyse the past — it helps your body stop reacting on autopilot and gives you clarity about what you feel, when, and why.<br><br>Go at your own pace: one day, one step. If a day feels like too much, stop and come back tomorrow. 💚',
+  why:'Why',today:'Today',
+  start_btn:'▶ Start the plan',hoy:'Today',dw:'Day',mark:'Mark done',doneL:'✓ Done',noteph:'Your notes (saved automatically)',reset:'↺ Restart plan',complete:'🎉 Plan complete. You can restart it whenever you want.',wl:['S','M','T','W','T','F','S'],
+  days:[
+   {t:'Spot the signal',w:'Before you can calm something, you have to see it.',a:'Every time you notice a sudden shift (tension, tiredness, irritability), jot it down with the time and what was happening. No analysing — just logging.'},
+   {t:'Lower the pulse',w:'Tell your body there’s no danger anymore.',a:'4-7-8 breathing (inhale 4, hold 7, exhale 8), three times through the day. You have it guided under “Meditate”.'},
+   {t:'Name without judging',w:'Naming lowers the intensity of the brain’s alarm.',a:'Take your notes from day 1 and, for each moment, write one word for the real emotion: fear, loss, shame, tiredness…'},
+   {t:'Track the pattern',w:'Find where it comes from.',a:'See whether those emotions repeat around certain dates, places or people. Don’t look for a perfect explanation — look for the coincidence. That’s usually where the origin is.'},
+   {t:'Release the body',w:'What’s stored in the body is released through movement, not just words.',a:'15 minutes of gentle movement: stretching, walking without your phone, or shaking out your arms and legs. If you like, use the Pilates module.'},
+   {t:'Rewrite the reaction',w:'Between what happens and how you react there’s a gap: that’s your freedom.',a:'When you notice the day-1 signal, pause for 10 seconds and ask: is this from now… or from before? That pause is where control begins.'},
+   {t:'Integrate and decide',w:'Regain control — not erase the emotion.',a:'Reread what you noted this week and choose ONE thing you’ll do differently next time that feeling appears.'}
+  ],
+  close:'The body remembers even when the mind forgets — but it can also learn to let go. This doesn’t erase your story: it gives you back control over how you react to it.',
+  safe:'If it ever feels like too much, you’re not alone. Talk to someone you trust or a professional. This is support, not a replacement for therapy. 💚'},
+ fr:{title:'🕯️ Période difficile',
+  intro:'Certaines émotions reviennent chaque année, à la même période, sans que tu saches pourquoi. Tu n’es pas cassée : c’est ton système nerveux qui se souvient d’une empreinte que ton esprit a oubliée. Ce plan de 7 jours n’analyse pas le passé — il aide ton corps à cesser de réagir en pilote automatique et te rend de la clarté sur ce que tu ressens, quand et pourquoi.<br><br>Va à ton rythme : un jour, un pas. Si un jour c’est trop lourd, arrête-toi et reviens demain. 💚',
+  why:'Pourquoi',today:'Aujourd’hui',
+  start_btn:'▶ Commencer le plan',hoy:'Aujourd’hui',dw:'Jour',mark:'Marquer fait',doneL:'✓ Fait',noteph:'Tes notes (sauvegardées seules)',reset:'↺ Recommencer le plan',complete:'🎉 Plan terminé. Tu peux le recommencer quand tu veux.',wl:['D','L','M','M','J','V','S'],
+  days:[
+   {t:'Repérer le signal',w:'Avant de calmer quelque chose, il faut le voir.',a:'Chaque fois que tu remarques un changement brusque (tension, fatigue, irritabilité), note-le avec l’heure et ce qui se passait. Sans analyser — juste enregistrer.'},
+   {t:'Baisser le pouls',w:'Dire à ton corps qu’il n’y a plus de danger.',a:'Respiration 4-7-8 (inspire 4, retiens 7, expire 8), trois fois dans la journée. Tu l’as guidée dans « Méditer ».'},
+   {t:'Nommer sans juger',w:'Nommer réduit l’intensité de l’alarme du cerveau.',a:'Reprends tes notes du jour 1 et, pour chaque moment, écris un mot qui nomme l’émotion réelle : peur, perte, honte, fatigue…'},
+   {t:'Suivre le schéma',w:'Trouver d’où ça vient.',a:'Regarde si ces émotions reviennent à certaines dates, certains lieux ou personnes. Ne cherche pas l’explication parfaite — cherche la coïncidence. L’origine est souvent là.'},
+   {t:'Relâcher le corps',w:'Ce qui est stocké dans le corps se libère par le mouvement, pas seulement par les mots.',a:'15 minutes de mouvement doux : t’étirer, marcher sans téléphone, ou secouer bras et jambes. Si tu veux, utilise le module de Pilates.'},
+   {t:'Réécrire la réaction',w:'Entre ce qui arrive et ta façon de réagir, il y a un espace : c’est ta liberté.',a:'Quand tu remarques le signal du jour 1, fais une pause de 10 secondes et demande-toi : est-ce de maintenant… ou d’avant ? Cette pause, c’est là que commence le contrôle.'},
+   {t:'Intégrer et décider',w:'Reprendre le contrôle, pas effacer l’émotion.',a:'Relis ce que tu as noté cette semaine et choisis UNE seule chose que tu feras autrement la prochaine fois que cette sensation apparaît.'}
+  ],
+  close:'Le corps se souvient même quand l’esprit oublie — mais il peut aussi apprendre à lâcher. Ceci n’efface pas ton histoire : ça te rend le contrôle sur la façon dont tu y réagis.',
+  safe:'Si à un moment c’est trop lourd, tu n’es pas seule. Parle à quelqu’un de confiance ou à un professionnel. Ceci est un soutien, pas un remplacement de la thérapie. 💚'}
+};
+function annivL(){return ANNIV[crisLang()]||ANNIV.es;}
+/* Estado guardado del plan: fecha de inicio, días hechos y notas */
+function _ymd(dt){return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');}
+function _pd(s){const p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function annivData(){try{return JSON.parse(localStorage.getItem('cris_anniv_v1')||'{}');}catch(e){return{};}}
+function annivSave(d){try{localStorage.setItem('cris_anniv_v1',JSON.stringify(d));}catch(e){}}
+let annivOpen={};
+function annivStart(){const d=annivData();d.start=_ymd(new Date());annivSave(d);annivOpen={};beep(600,.12);vibrate(40);renderAnniversary();}
+function annivReset(){annivSave({});annivOpen={};renderAnniversary();}
+function annivToggleDone(i){const d=annivData();d.done=d.done||{};d.done[i]=!d.done[i];annivSave(d);if(d.done[i]){beep(700,.12);vibrate([60,40,60]);}renderAnniversary();}
+function annivNote(i,v){const d=annivData();d.notes=d.notes||{};d.notes[i]=v;annivSave(d);}
+function toggleAnniv(i){annivOpen[i]=!annivOpen[i];const el=document.getElementById('an-day-'+i);if(el)el.classList.toggle('open',!!annivOpen[i]);}
+function _esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+function renderAnniversary(){
+  const A=annivL(), d=annivData();
+  document.getElementById('anniv-title').textContent=A.title;
+  const started=!!d.start;
+  const dates=started?A.days.map((_,i)=>{const x=_pd(d.start);x.setDate(x.getDate()+i);return x;}):null;
+  const cur=started?Math.max(0,Math.min(6,Math.round((new Date().setHours(0,0,0,0)-_pd(d.start))/864e5))):-1;
+  const done=d.done||{}, notes=d.notes||{}, nDone=A.days.reduce((a,_,i)=>a+(done[i]?1:0),0), allDone=nDone>=7;
+  let head=`<div class="an-intro">${A.intro}`;
+  if(started){
+    head+=`<div class="an-status">${allDone?A.complete:('🕯️ '+A.hoy+': '+A.dw+' '+(cur+1)+' · '+A.days[cur].t)}</div>`;
+    head+=`<div class="an-cal">`+A.days.map((_,i)=>{const x=dates[i];const cls=(done[i]?' done':'')+(i===cur&&!allDone?' cur':'');return `<div class="an-chip${cls}"><span class="an-wd">${A.wl[x.getDay()]}</span><span class="an-dn">${x.getDate()}</span><span class="an-ck">${done[i]?'✓':''}</span></div>`;}).join('')+`</div>`;
+    head+=`<button class="an-reset" onclick="annivReset()">${A.reset}</button>`;
+  }else{
+    head+=`<button class="an-start" onclick="annivStart()">${A.start_btn}</button>`;
+  }
+  head+=`</div>`;
+  const daysHtml=A.days.map((day,i)=>{
+    const dateLbl=started?(A.wl[dates[i].getDay()]+' '+dates[i].getDate()):'';
+    const isDone=!!done[i];
+    return `<div class="an-day${annivOpen[i]?' open':''}" id="an-day-${i}">
+      <button class="an-head" onclick="toggleAnniv(${i})">
+        <span class="an-num">${isDone?'✓':i+1}</span>
+        <span class="an-htxt"><h3>${day.t}</h3><p>${day.w}</p></span>
+        ${dateLbl?`<span class="an-date">${dateLbl}</span>`:''}
+        <span class="an-arrow">›</span>
+      </button>
+      <div class="an-body">
+        <div class="an-lbl">${A.today}</div><div class="an-today">${day.a}</div>
+        <textarea class="an-note" placeholder="${A.noteph}" oninput="annivNote(${i},this.value)">${_esc(notes[i])}</textarea>
+        <button class="an-donebtn${isDone?' on':''}" onclick="annivToggleDone(${i})">${isDone?A.doneL:A.mark}</button>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('anniv-content').innerHTML=head+daysHtml+`<div class="an-close">${A.close}</div><div class="an-safe">${A.safe}</div>`;
+  if(started&&!Object.keys(annivOpen).length&&!allDone){annivOpen[cur]=true;const el=document.getElementById('an-day-'+cur);if(el)el.classList.add('open');}
+}
+
+/* ── SOLTAR EL MÓVIL · transición guiada para cambiar de tarea ── */
+const TRANS={
+ es:{title:'📴 Soltar el móvil',intro:'¿Enganchada al móvil y quieres ponerte a otra cosa? Escribe qué vas a hacer (o déjalo en blanco) y te acompaño unos segundos para soltarlo.',ph:'¿Qué vas a hacer ahora?',start:'▶ Suéltalo',again:'↺ Otra vez',home:'🏠 Inicio',done_h:'¡Ya lo tienes!',done_p:'Móvil abajo. A por ello 💚',
+  steps:[['Deja el móvil','Deja el móvil boca abajo, lejos de tu mano',5],['Respira','Respira hondo. Suelta los hombros y la mandíbula',5],['Ponte de pie','Ponte de pie y estírate un segundo',5],['Tu tarea','',5],['¡Ve!','',4]],
+  task_v:'Tu única tarea ahora es: {task}',task_none:'Elige una sola cosa y ve a por ella',go_v:'A la de tres. Tres. Dos. Uno. ¡Ve!'},
+ en:{title:'📴 Put the phone down',intro:'Stuck on your phone and want to switch to something else? Type what you’ll do (or leave it blank) and I’ll walk you through a few seconds to let it go.',ph:'What are you going to do now?',start:'▶ Let it go',again:'↺ Again',home:'🏠 Home',done_h:'You’ve got this!',done_p:'Phone down. Go for it 💚',
+  steps:[['Put the phone down','Put your phone face down, away from your hand',5],['Breathe','Breathe deeply. Drop your shoulders and jaw',5],['Stand up','Stand up and stretch for a second',5],['Your task','',5],['Go!','',4]],
+  task_v:'Your only task now is: {task}',task_none:'Pick one thing and go for it',go_v:'On the count of three. Three. Two. One. Go!'},
+ fr:{title:'📴 Lâcher le téléphone',intro:'Scotchée au téléphone et tu veux passer à autre chose ? Écris ce que tu vas faire (ou laisse vide) et je t’accompagne quelques secondes pour le lâcher.',ph:'Que vas-tu faire maintenant ?',start:'▶ Lâche-le',again:'↺ Encore',home:'🏠 Accueil',done_h:'Tu vas y arriver !',done_p:'Téléphone posé. Fonce 💚',
+  steps:[['Pose le téléphone','Pose ton téléphone face vers le bas, loin de ta main',5],['Respire','Respire profondément. Relâche les épaules et la mâchoire',5],['Lève-toi','Lève-toi et étire-toi une seconde',5],['Ta tâche','',5],['Go !','',4]],
+  task_v:'Ta seule tâche maintenant, c’est : {task}',task_none:'Choisis une seule chose et fonce',go_v:'À trois. Trois. Deux. Un. Vas-y !'}
+};
+function transL(){return TRANS[crisLang()]||TRANS.es;}
+let transTask='',transStep=0,transTimer=0,transInt=null;
+function renderTransition(){
+  const T=transL();
+  document.getElementById('trans-title').textContent=T.title;
+  document.getElementById('trans-content').innerHTML=
+    `<div class="tr-intro">${T.intro}</div>
+     <input class="tr-input" id="trans-task" placeholder="${T.ph}" value="${_esc(transTask)}">
+     <button class="tr-go" onclick="startTrans()">${T.start}</button>`;
+}
+function startTrans(){
+  const el=document.getElementById('trans-task');transTask=el?el.value:'';
+  transStep=0;runTransStep();
+}
+function stopTrans(){if(transInt){clearInterval(transInt);transInt=null;}try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}}
+function runTransStep(){
+  const T=transL();
+  if(transStep>=T.steps.length){transDone();return;}
+  const s=T.steps[transStep];
+  let voice=s[1];
+  if(transStep===3)voice=transTask.trim()?T.task_v.split('{task}').join(transTask.trim()):T.task_none;
+  if(transStep===4)voice=T.go_v;
+  transTimer=s[2];
+  const total=s[2];
+  document.getElementById('trans-content').innerHTML=
+    `<div class="tr-stepbox">
+       <div class="tr-phase">${transStep+1} / ${T.steps.length}</div>
+       <div class="tr-name">${s[0]}</div>
+       <div class="tring" id="tr-ring"><div class="tring-in"><div class="tr-count" id="tr-count">${transTimer}</div></div></div>
+     </div>`;
+  __ring('tr-ring',1);
+  beep(transStep===4?840:520,.14);vibrate(transStep===4?[80,50,80]:50);speak(voice);
+  transInt=setInterval(()=>{
+    transTimer--;
+    const c=document.getElementById('tr-count');if(c)c.textContent=Math.max(0,transTimer);
+    __ring('tr-ring',total?transTimer/total:0);
+    if(transStep===4&&transTimer<=3&&transTimer>0)beep(560,.08);
+    if(transTimer<=0){clearInterval(transInt);transInt=null;transStep++;runTransStep();}
+  },1000);
+}
+function transDone(){
+  const T=transL();
+  beep(900,.2);setTimeout(()=>beep(1150,.3),240);vibrate([90,50,90,50,160]);
+  document.getElementById('trans-content').innerHTML=
+    `<div class="tr-stepbox"><div style="font-size:3rem;margin-bottom:8px">🚀</div>
+       <div class="tr-name">${T.done_h}</div>
+       <div style="font-size:.9rem;color:var(--teal);margin-bottom:16px">${T.done_p}</div>
+     </div>
+     <button class="an-start" onclick="renderTransition()">${T.again}</button>
+     <button class="an-reset" onclick="go('home')">${T.home}</button>`;
+}
+
+function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
+
+const RESCUES = [
+  { id:3, name:"Agua fría (crisis)", icon:"🧊", color:"#0ea5e9",
+    when:"Cuando la emoción es insoportable — crisis total",
+    desc:"Cambia tu química corporal en segundos",
+    steps:[
+      {text:"AGUA FRÍA",instruction:"Pon agua fría en tu cara o muñecas durante 30 segundos. Activa el reflejo de inmersión",time:30},
+      {text:"MUÉVETE",instruction:"Corre en el sitio o haz saltos con toda tu energía",time:60},
+      {text:"PARA",instruction:"Para. Respira. Siente cómo tu cuerpo empieza a calmarse",time:30},
+      {text:"RELAJA",instruction:"Relaja hombros, mandíbula, manos. Músculo a músculo",time:30}
+    ]},
+  { id:2, name:"Respiración 4-7-8", icon:"🌬️", color:"#10b981",
+    when:"Cuando la ansiedad o el pánico se activan",
+    desc:"Calma el sistema nervioso en minutos",
+    steps:[
+      {text:"INHALA 4",instruction:"Inhala lentamente por la nariz contando hasta 4",time:4},
+      {text:"MANTÉN 7",instruction:"Retén el aire suavemente, cuenta hasta 7",time:7},
+      {text:"EXHALA 8",instruction:"Exhala completamente por la boca en 8 tiempos. Suelta todo",time:8},
+      {text:"INHALA 4",instruction:"Segunda ronda — inhala de nuevo por la nariz",time:4},
+      {text:"MANTÉN 7",instruction:"Retén suavemente",time:7},
+      {text:"EXHALA 8",instruction:"Exhala todo. Nota cómo te vas calmando",time:8}
+    ]},
+  { id:1, name:"5-4-3-2-1", icon:"👁️", color:"#3b82f6",
+    when:"Cuando tu mente no para de girar o estás disociada",
+    desc:"Ancla los sentidos al momento presente",
+    steps:[
+      {text:"5 VES",instruction:"Nombra 5 cosas que puedes ver ahora mismo a tu alrededor",time:25},
+      {text:"4 TOCAS",instruction:"Siente 4 texturas distintas con tus manos. ¿Cómo son?",time:25},
+      {text:"3 ESCUCHAS",instruction:"Identifica 3 sonidos diferentes a tu alrededor",time:20},
+      {text:"2 HUELES",instruction:"Encuentra 2 aromas en el ambiente donde estás",time:15},
+      {text:"1 SABOREAS",instruction:"Detecta el sabor que hay en tu boca ahora mismo",time:10}
+    ]},
+  { id:4, name:"Movimiento", icon:"🏃", color:"#f59e0b",
+    when:"Cuando sientes tensión, rabia o frustración acumulada",
+    desc:"Descarga el cortisol con movimiento",
+    steps:[
+      {text:"SACUDE",instruction:"Sacude brazos y piernas durante 30 segundos. Déjalo caer todo",time:30},
+      {text:"SALTA",instruction:"10 saltos de tijera. Cuenta en voz alta mientras los haces",time:20},
+      {text:"RESPIRA",instruction:"Manos en rodillas, inclinada. Respira profundo 3 veces",time:15},
+      {text:"OBSERVA",instruction:"¿Cómo está tu cuerpo ahora? Nótalo sin juzgar",time:15}
+    ]},
+  { id:7, name:"Defusión cognitiva", icon:"🧠", color:"#6366f1",
+    when:"Cuando un pensamiento te engancha y no puedes parar",
+    desc:"Crea distancia del pensamiento sin luchar",
+    steps:[
+      {text:"IDENTIFICA",instruction:"¿Cuál es el pensamiento que más te engancha ahora? Solo uno",time:15},
+      {text:"NÓMBRALO",instruction:"Di en voz alta: 'Estoy teniendo el pensamiento de que...' y complétalo",time:15},
+      {text:"AGRADECE",instruction:"Di a tu mente: 'Gracias por el aviso. No necesito actuar ahora'",time:15},
+      {text:"VUELVE",instruction:"Pon atención en algo físico: la silla, tus pies, el aire que entra",time:15}
+    ]},
+  { id:6, name:"Auto-compasión", icon:"🤍", color:"#ec4899",
+    when:"Cuando te castigas, sientes culpa o vergüenza",
+    desc:"Trátate como tratarías a alguien que quieres",
+    steps:[
+      {text:"RECONOCE",instruction:"Pon una mano en el corazón. Esto es dolor, y es real. No lo minimices",time:15},
+      {text:"HUMANIDAD",instruction:"Recuerda: todas las personas sufrimos a veces. No estás sola",time:15},
+      {text:"AMABILIDAD",instruction:"Di en voz baja: 'Que esté bien. Que me trate con cariño'",time:20},
+      {text:"QUÉDATE",instruction:"Siente el calor de tu mano en el pecho. Respira. Aquí está el consuelo",time:20}
+    ]},
+  { id:5, name:"Escritura libre", icon:"✍️", color:"#8b5cf6",
+    when:"Cuando necesitas sacar lo que tienes dentro",
+    desc:"Vacía la mente sin filtros",
+    steps:[
+      {text:"PREPARA",instruction:"Coge papel o notas. Sin filtros — lo que salga está bien",time:10},
+      {text:"ESCRIBE",instruction:"Escribe todo lo que sientes sin parar, sin borrar. Que fluya",time:120},
+      {text:"LEE",instruction:"Lee lo que escribiste una vez. Sin juzgar",time:30},
+      {text:"SUELTA",instruction:"Cierra o guarda. Ya salió de ti. Eso es suficiente",time:10}
+    ]},
+  { id:8, name:"Conectar", icon:"📞", color:"#14b8a6",
+    when:"Cuando te sientes sola o aislada",
+    desc:"Un gesto pequeño rompe el aislamiento",
+    steps:[
+      {text:"ELIGE",instruction:"Piensa en una persona con la que te sientas segura. Solo una",time:10},
+      {text:"CONTACTA",instruction:"Mándale un audio, un mensaje o llámala ahora mismo",time:60},
+      {text:"RECIBE",instruction:"Si no puede responder, está bien. Ya hiciste el gesto — eso cuenta",time:15},
+      {text:"RECONOCE",instruction:"Has roto el aislamiento. Eso es valentía",time:10}
+    ]}
+];
+
+// Cada técnica aparece UNA sola vez, bajo la etiqueta de síntoma que mejor la describe.
+// (id:3 Agua fría primero, para crisis total.)
+const TEC_GROUPS = [
+  {label:"🔥 Para cuando estás en crisis total", ids:[3]},
+  {label:"🫁 Para calmar la ansiedad o el pánico", ids:[2]},
+  {label:"👁️ Para salir del bucle o anclarte con miedo", ids:[1]},
+  {label:"💪 Para descargar rabia o frustración", ids:[4]},
+  {label:"🧠 Para el pensamiento que te engancha", ids:[7]},
+  {label:"🤍 Para la culpa o la vergüenza", ids:[6]},
+  {label:"✍️ Para soltar lo que pesa", ids:[5]},
+  {label:"🫂 Para cuando te sientes sola", ids:[8]}
+];
+
+const EMOTIONS = [
+  {id:'ansiedad', emoji:'😰', label:'Ansiedad', color:'#fef3c7',
+    impulse:'Evitar o escapar de lo que da miedo',
+    need:'Sentirte segura',
+    helps:'Respiración lenta', helpsDesc:'Calma el sistema nervioso activado', tecId:2},
+  {id:'miedo', emoji:'😨', label:'Miedo', color:'#e0e7ff',
+    impulse:'Huir, congelarte o buscar protección',
+    need:'Sentirte a salvo y protegida',
+    helps:'Anclarte al aquí y ahora', helpsDesc:'Nombra lo que ves y tocas: el peligro no está en este momento', tecId:1},
+  {id:'rabia', emoji:'😠', label:'Rabia', color:'#fee2e2',
+    impulse:'Atacar, gritar o explotar',
+    need:'Poner un límite claro',
+    helps:'Decirlo con claridad', helpsDesc:'Primero descarga con movimiento, luego expresa', tecId:4},
+  {id:'tristeza', emoji:'😢', label:'Tristeza', color:'#dbeafe',
+    impulse:'Encerrarte y no ver a nadie',
+    need:'Consuelo y compañía',
+    helps:'Contactar a alguien', helpsDesc:'Un mensaje pequeño rompe el aislamiento', tecId:8},
+  {id:'celos', emoji:'💚', label:'Celos', color:'#d1fae5',
+    impulse:'Aferrarte, controlar o revisar',
+    need:'Sentirte segura en la relación',
+    helps:'Pedir lo que necesitas de forma directa', helpsDesc:'Escribe primero lo que sientes', tecId:5},
+  {id:'culpa', emoji:'😔', label:'Culpa', color:'#ede9fe',
+    impulse:'Rumiar y castigarte',
+    need:'Reparar lo que ocurrió',
+    helps:'Disculparte o hacer algo concreto', helpsDesc:'La auto-compasión te ayuda a actuar sin castigarte', tecId:6},
+  {id:'vergüenza', emoji:'😳', label:'Vergüenza', color:'#fce7f3',
+    impulse:'Esconderte o desaparecer',
+    need:'Compasión hacia ti misma',
+    helps:'Mano en el corazón', helpsDesc:'La auto-compasión es el antídoto de la vergüenza', tecId:6},
+  {id:'agobio', emoji:'😵', label:'Agobio', color:'#ffedd5',
+    impulse:'Quedarte paralizada',
+    need:'Reducir la carga',
+    helps:'Un solo paso pequeño ahora', helpsDesc:'El anclaje sensorial te saca del bucle', tecId:1},
+  {id:'soledad', emoji:'🫂', label:'Soledad', color:'#e0f2fe',
+    impulse:'Aislarte todavía más',
+    need:'Conexión real',
+    helps:'Escribir a alguien ahora mismo', helpsDesc:'Aunque sea un mensaje corto', tecId:8},
+  {id:'frustración', emoji:'😤', label:'Frustración', color:'#ffedd5',
+    impulse:'Rendirte o estallar',
+    need:'Flexibilidad y un nuevo enfoque',
+    helps:'Moverte y luego replanificar', helpsDesc:'El movimiento descarga y aclara la mente', tecId:4},
+  {id:'entumecimiento', emoji:'😑', label:'Entumecimiento', color:'#f1f5f9',
+    impulse:'Desconectarte del todo',
+    need:'Volver a sentirte segura',
+    helps:'Movimiento suave', helpsDesc:'El cuerpo en movimiento te trae de vuelta', tecId:4}
+];
+
+const BODY_OPTIONS = [
+  {label:'⚡ Tensión, agitación, corazón acelerado', ids:['ansiedad','miedo','rabia','frustración']},
+  {label:'🪨 Pesadez, cansancio, querer esconderte', ids:['tristeza','culpa','vergüenza']},
+  {label:'🧊 Bloqueada, paralizada, no puedo pensar', ids:['agobio','entumecimiento','miedo']},
+  {label:'🕳️ Vacío, distancia, como si nada importara', ids:['soledad','entumecimiento','tristeza']}
+];
+
+const MEDITATIONS = [
+  {id:1, name:"Respiración consciente", icon:"🌿", breath:{in:4,out:6},
+    steps:[
+      {text:"Ponte cómoda",instruction:"Siéntate o túmbate. Cierra los ojos si quieres",time:15},
+      {text:"Respira natural",instruction:"Solo observa tu respiración sin cambiarla. No hay que hacer nada",time:20},
+      {text:"Inhala...",instruction:"Nota cómo el aire entra. Siente el pecho o el abdomen subir",time:20},
+      {text:"Exhala...",instruction:"Nota cómo el aire sale. Relájate un poco más en cada exhalación",time:20},
+      {text:"Pensamientos",instruction:"Si aparece un pensamiento, salúdalo sin agarrarlo y vuelve al aire",time:25},
+      {text:"Cierre",instruction:"Abre los ojos suavemente. Lleva esta calma contigo",time:15}
+    ]},
+  {id:2, name:"Escaneo corporal", icon:"🧘", breath:{in:5,out:5},
+    steps:[
+      {text:"Empieza",instruction:"Túmbate boca arriba. Cierra los ojos. Sin prisa",time:15},
+      {text:"Pies",instruction:"Lleva la atención a tus pies. Siente su peso y temperatura",time:30},
+      {text:"Piernas",instruction:"Sube por tus piernas. Nota cualquier tensión o calor",time:30},
+      {text:"Abdomen",instruction:"Siente tu vientre subir y bajar con cada respiración",time:30},
+      {text:"Pecho y brazos",instruction:"Nota el corazón. Relaja los hombros y los brazos",time:30},
+      {text:"Cara",instruction:"Relaja la mandíbula, la frente, los ojos. Todo suave",time:25},
+      {text:"Todo el cuerpo",instruction:"Siente el cuerpo completo. Estás aquí, ahora",time:25},
+      {text:"Regresa",instruction:"Mueve los dedos. Abre los ojos. Bienvenida de vuelta",time:20}
+    ]},
+  {id:3, name:"Tong-Len (Dar y Tomar)", icon:"🤲", breath:{in:5,out:5},
+    steps:[
+      {text:"Prepárate",instruction:"Siéntate cómoda, con la espalda recta y los hombros sueltos. Respira un par de veces sin prisa",time:20},
+      {text:"Empieza por ti",instruction:"Piensa en algo que hoy te pesa. No hace falta arreglarlo, solo reconocerlo con cariño",time:25},
+      {text:"Tomar — al inhalar",instruction:"Al inhalar, imagina que recoges ese peso como un humo oscuro que entra en tu pecho",time:25},
+      {text:"Transformar",instruction:"En tu corazón, ese humo se disuelve y se convierte en luz. Tu corazón es más grande que el dolor",time:30},
+      {text:"Dar — al exhalar",instruction:"Al soltar el aire, envía alivio, calma y amabilidad como una luz clara y suave",time:30},
+      {text:"Amplía el círculo",instruction:"Piensa en alguien que quieres y que lo está pasando mal. Toma su peso al inhalar; dale alivio al exhalar",time:30},
+      {text:"Si se hace pesado",instruction:"Si en algún momento te agobia, para. Vuelve a respirar sin más. Cuidarte también es compasión",time:25},
+      {text:"Cierre",instruction:"Deja la respiración libre. Quédate un momento con esta intención amable, hacia ti y hacia los demás",time:20}
+    ]},
+  {id:4, name:"Observar sin agarrar", icon:"🌊", breath:{in:5,out:5},
+    steps:[
+      {text:"Postura",instruction:"Siéntate derecha pero sin tensión. Cierra los ojos",time:15},
+      {text:"Ancla",instruction:"Lleva la atención a tus pies en el suelo",time:30},
+      {text:"Observa",instruction:"Nota sensaciones que surgen. No las sigas, solo observa",time:60},
+      {text:"Sin juicio",instruction:"Agradable, desagradable, neutro — solo nota. No hay nada que arreglar",time:60},
+      {text:"Todo pasa",instruction:"Cada sensación surge y se va por sí sola",time:60},
+      {text:"Cierre",instruction:"Poco a poco vuelve. Abre los ojos. Gracias por este tiempo",time:20}
+    ]},
+  {id:5, name:"Respiración 4-7-8", icon:"🌬️", breath:{in:4,hold:7,out:8},
+    steps:[
+      {text:"Prepárate",instruction:"Siéntate cómoda con la espalda apoyada. Este ritmo calma el sistema nervioso en minutos",time:15},
+      {text:"Aprende el ritmo",instruction:"Inhala por la nariz contando 4. Mantén el aire contando 7. Suelta por la boca contando 8, como soplando una vela",time:20},
+      {text:"Ciclo 1",instruction:"Sigue el círculo: inhala 4... mantén 7... exhala 8",time:20},
+      {text:"Ciclo 2",instruction:"Otra vez. Inhala 4... mantén 7... suelta despacio 8",time:20},
+      {text:"Ciclo 3",instruction:"Vas muy bien. Inhala... mantén... y suelta todo el aire",time:20},
+      {text:"Ciclo 4",instruction:"Último ciclo. Nota cómo el cuerpo pesa un poco más",time:20},
+      {text:"Cierre",instruction:"Respira normal. Nota la diferencia. Puedes repetirla cuando quieras",time:15}
+    ]},
+  {id:6, name:"Tu lugar seguro", icon:"🏝️", breath:{in:5,out:5},
+    steps:[
+      {text:"Cierra los ojos",instruction:"Ponte cómoda. Vamos a construir un refugio en tu mente",time:15},
+      {text:"Imagina el lugar",instruction:"Un sitio donde te sientes completamente a salvo. Real o inventado: una playa, un bosque, tu cama, una cabaña",time:30},
+      {text:"Míralo",instruction:"¿Qué ves a tu alrededor? Los colores, la luz, las formas. Tómate tu tiempo",time:30},
+      {text:"Escúchalo",instruction:"¿Qué se oye ahí? ¿Olas, pájaros, lluvia suave, silencio?",time:30},
+      {text:"Siéntelo",instruction:"¿Qué temperatura hace? ¿Qué tocas? Nota la seguridad en el cuerpo",time:30},
+      {text:"Ancla",instruction:"Pon una mano en el pecho. Este lugar es tuyo. Puedes volver siempre que lo necesites",time:25},
+      {text:"Regresa",instruction:"Despídete por ahora. Abre los ojos despacio. El refugio queda contigo",time:20}
+    ]}
+];
+function medDur(m){const s=m.steps.reduce((a,x)=>a+x.time,0);return Math.max(1,Math.round(s/60))+' '+t('min_word');}
+
+const SPEED = {lento:1.5, normal:1, rapido:0.7};
+const S = {
+  view:'home',
+  tecCurrent:null, tecStep:0, tecPlaying:false, tecTimer:0, tecDone:false, tecSource:'techniques',
+  emoSource:'emotions', findStep:0, findMatches:[],
+  medCurrent:null, medStep:0, medPlaying:false, medTimer:0, medSpeed:'normal', medDone:false
+};
+let timerInterval = null;
+
+let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
+function beep(f=600,d=0.2){if(!__allow('sound'))return;try{const c=__getCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+function vibrate(ms=80){if(!__allow('vib'))return;try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
+// Marca diaria para que el panel «Hoy» tache «Momento de calma» al volver
+function markCalmaDone(){try{var _n=new Date();localStorage.setItem('cris_calma_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}}
+let _utt=null;
+function speak(t){
+  try{if(!__allow('voice'))return;
+    if(!window.speechSynthesis)return;
+    window.speechSynthesis.cancel();
+    if(window.speechSynthesis.paused)window.speechSynthesis.resume();
+    _utt=new SpeechSynthesisUtterance(t);
+    _utt.lang=VOICE_LANG[crisLang()];_utt.rate=0.9;
+    const voices=window.speechSynthesis.getVoices();
+    const lv=voices.find(v=>v.lang.startsWith(crisLang()));
+    if(lv)_utt.voice=lv;
+    window.speechSynthesis.speak(_utt);
+  }catch(e){}
+}
+
+/* Habla y llama a cb SOLO al terminar el dictado (o al instante si la voz está
+   apagada). Red de seguridad temporal por si el navegador no emite 'end'. */
+let _speakSeq=0;
+function speakThen(t,cb){
+  const seq=++_speakSeq;let done=false;
+  const fin=()=>{if(done||seq!==_speakSeq)return;done=true;cb();};
+  try{
+    if(!__allow('voice')||!window.speechSynthesis){fin();return;}
+    window.speechSynthesis.cancel();
+    if(window.speechSynthesis.paused)window.speechSynthesis.resume();
+    _utt=new SpeechSynthesisUtterance(t);
+    _utt.lang=VOICE_LANG[crisLang()];_utt.rate=0.9;
+    const voices=window.speechSynthesis.getVoices();
+    const lv=voices.find(v=>v.lang.startsWith(crisLang()));
+    if(lv)_utt.voice=lv;
+    _utt.onend=fin;_utt.onerror=fin;
+    window.speechSynthesis.speak(_utt);
+    setTimeout(fin,Math.max(4000,t.length*110));
+  }catch(e){fin();}
+}
+// stopTimer también invalida dictados pendientes (pausa, navegación, ← anterior)
+function stopTimer(){_speakSeq++;if(timerInterval){clearInterval(timerInterval);timerInterval=null;}try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}}
+
+function go(view){
+  stopTimer();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('v-'+view).classList.add('active');
+  S.view=view;
+  if(view==='techniques') renderTecList();
+  if(view==='emotions') renderEmoGrid();
+  if(view==='find-emotion'){S.findStep=0;S.findMatches=[];renderFind();}
+  if(view==='meditations') renderMedList();
+  if(view==='anniversary') renderAnniversary();
+  if(view==='transition'){stopTrans();transTask='';renderTransition();}
+}
+
+function renderTecList(){
+  document.getElementById('tech-list').innerHTML = TEC_GROUPS.map((g,gi)=>`
+    <div class="slabel">${tecGroupLabel(gi,g.label)}</div>
+    <div class="tlist">
+    ${g.ids.map(id=>{const r=rescL(RESCUES.find(x=>x.id===id));return`
+      <button class="titem" onclick="startTec(${r.id},'techniques')">
+        <div class="tico" style="background:${r.color}22">${r.icon}</div>
+        <div class="tinfo"><h3>${r.name}</h3><p>${r.desc}</p></div>
+      </button>`;}).join('')}
+    </div>`).join('');
+}
+
+function startTec(id, source){
+  beep(400); vibrate(50);
+  S.tecCurrent=rescL(RESCUES.find(r=>r.id===id));
+  S.tecStep=0; S.tecPlaying=false; S.tecTimer=0; S.tecDone=false; S.tecSource=source||'techniques';
+  document.getElementById('tec-title').textContent=S.tecCurrent.name;
+  document.getElementById('tec-back').onclick=()=>{stopTimer();go(S.tecSource);};
+  go('technique-detail');
+  renderTec();
+}
+
+function renderTec(){
+  const tec=S.tecCurrent; if(!tec)return;
+  const el=document.getElementById('tec-content');
+  if(S.tecDone){
+    el.innerHTML=`<div class="done"><div class="big">🎉</div><h2>${t('tec_done_t')}</h2><p>${tec.name}</p></div>
+      <p style="text-align:center;color:var(--teal);font-size:.88rem;margin-bottom:18px">${t('tec_done_q')}</p>
+      <div class="brow">
+        <button class="btn bsec" onclick="go('home')">${t('home_btn')}</button>
+        <button class="btn bpri" onclick="go('techniques')">${t('other_tec')}</button>
+      </div>`;
+    return;
+  }
+  const step=tec.steps[S.tecStep];
+  const pct=(S.tecStep/tec.steps.length)*100;
+  const dots=tec.steps.map((_,i)=>`<div class="dot ${i<S.tecStep?'done':i===S.tecStep?'active':''}" ></div>`).join('');
+  el.innerHTML=`
+    <div class="tcard">
+      <span class="ttag" style="background:${tec.color}">${tec.icon} ${tec.name}</span>
+      <div class="tdesc">${tec.desc}</div>
+      <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
+      <div class="dots">${dots}</div>
+      <div class="sbox">
+        <div class="snum">${t('step_of',{i:S.tecStep+1,n:tec.steps.length})}</div>
+        <div class="sname">${step.text}</div>
+        <div class="sinstr">${step.instruction}</div>
+        <div class="tring" id="tec-ring"><div class="tring-in"><div class="stimer" id="tec-timer">${S.tecPlaying?S.tecTimer:step.time}</div></div></div>
+      </div>
+    </div>
+    <div class="brow">
+      ${S.tecStep>0?`<button class="btn bsec bprev" onclick="tecPrev()" aria-label="${t('prev_aria')}">←</button>`:''}
+      <button class="btn bsec" onclick="tecToggle()">${S.tecPlaying?t('pause_btn'):t('start_btn')}</button>
+      <button class="btn bpri" onclick="tecNext()">${t('next_btn')}</button>
+    </div>`;
+  __ring('tec-ring',(S.tecPlaying?S.tecTimer:step.time)/Math.max(1,step.time));
+}
+
+function tecToggle(){
+  if(!S.tecPlaying){
+    S.tecPlaying=true; S.tecTimer=S.tecCurrent.steps[S.tecStep].time;
+    renderTec();
+    // La instrucción se dicta ENTERA antes de arrancar la cuenta del paso
+    speakThen(S.tecCurrent.steps[S.tecStep].instruction,()=>{
+      if(!S.tecPlaying||timerInterval)return;
+      timerInterval=setInterval(tecTick,1000);
+    });
+    return;
+  }
+  S.tecPlaying=false; stopTimer();
+  renderTec();
+}
+function tecTick(){S.tecTimer--;const el=document.getElementById('tec-timer');if(el)el.textContent=S.tecTimer;const _tt=S.tecCurrent.steps[S.tecStep].time;__ring('tec-ring',_tt?S.tecTimer/_tt:0);if(S.tecTimer<=0)tecAdv();}
+function tecAdv(){
+  stopTimer(); const tec=S.tecCurrent;
+  if(S.tecStep<tec.steps.length-1){
+    beep(600,0.15);vibrate(60);S.tecStep++;S.tecPlaying=true;S.tecTimer=tec.steps[S.tecStep].time;
+    renderTec();
+    speakThen(tec.steps[S.tecStep].instruction,()=>{
+      if(!S.tecPlaying||timerInterval)return;
+      timerInterval=setInterval(tecTick,1000);
+    });
+  } else {beep(800,0.2);setTimeout(()=>beep(1000,0.3),250);vibrate([80,50,80]);S.tecDone=true;S.tecPlaying=false;markCalmaDone();renderTec();}
+}
+function tecNext(){stopTimer();S.tecPlaying=false;tecAdv();}
+function tecPrev(){if(S.tecStep<=0)return;stopTimer();S.tecStep--;S.tecPlaying=false;S.tecTimer=0;S.tecDone=false;renderTec();}
+
+function renderEmoGrid(){
+  document.getElementById('emo-grid').innerHTML=EMOTIONS.map(e0=>{const e=emoL(e0);return`
+    <button class="etile" style="background:${e.color}" onclick="showEmo('${e.id}','emotions')">
+      <span class="be">${e.emoji}</span><span class="el">${e.label}</span>
+    </button>`;}).join('');
+}
+
+function showEmo(id, source){
+  beep(400,0.1); vibrate(30);
+  S.emoSource=source||'emotions';
+  const e=emoL(EMOTIONS.find(x=>x.id===id));
+  const tec=rescL(RESCUES.find(r=>r.id===e.tecId));
+  document.getElementById('emo-back').onclick=()=>go(S.emoSource);
+  document.getElementById('emo-detail').innerHTML=`
+    <div class="ecard">
+      <div class="ehead"><span class="ebig">${e.emoji}</span><div class="ename">${e.label}</div></div>
+      <div class="irow"><div class="ilbl">${t('emo_impulse')}</div><div class="ival">${e.impulse}</div></div>
+      <div class="irow"><div class="ilbl">${t('emo_need')}</div><div class="ival">${e.need}</div></div>
+      <div class="irow hi">
+        <div class="ilbl">${t('emo_help')}</div>
+        <div class="ival">${e.helps}</div>
+        <div class="isub">${e.helpsDesc}</div>
+      </div>
+    </div>
+    <button class="btn bpri bful" onclick="startTec(${tec.id},'emotion-detail')">${tec.icon} ${t('emo_start')} ${tec.name}</button>
+    <button class="btn bsec bful" style="margin-top:10px" onclick="go('${S.emoSource}')">${t('emo_other')}</button>`;
+  go('emotion-detail');
+}
+
+function renderFind(){
+  const el=document.getElementById('find-content');
+  if(S.findStep===0){
+    el.innerHTML=`
+      <div class="qcard">
+        <h2>${t('find_q')}</h2>
+        <div class="qopts">
+          ${BODY_OPTIONS.map((o,i)=>`<button class="qbtn" onclick="findPick(${i})">${bodyLabel(i,o.label)}</button>`).join('')}
+        </div>
+      </div>
+      <p style="font-size:.78rem;color:var(--teal);text-align:center">${t('find_hint')}</p>`;
+  } else {
+    const emos=S.findMatches.map(id=>EMOTIONS.find(e=>e.id===id)).filter(Boolean).map(emoL);
+    el.innerHTML=`
+      <div class="qcard"><h2>${t('find_maybe')}</h2></div>
+      <div class="egrid">
+        ${emos.map(e=>`<button class="etile" style="background:${e.color}" onclick="showEmo('${e.id}','find-emotion')">
+          <span class="be">${e.emoji}</span><span class="el">${e.label}</span></button>`).join('')}
+      </div>
+      <button class="btn bsec bful" style="margin-top:4px" onclick="S.findStep=0;renderFind()">${t('find_retry')}</button>`;
+  }
+}
+function findPick(i){beep(400,0.1);vibrate(30);S.findMatches=BODY_OPTIONS[i].ids;S.findStep=1;renderFind();}
+
+function renderMedList(){
+  document.getElementById('med-list').innerHTML=MEDITATIONS.map(m0=>{const m=medL(m0);return`
+    <button class="mitem" onclick="startMed(${m.id})">
+      <span class="mico">${m.icon}</span>
+      <div class="minfo"><h3>${m.name}</h3><p>${medDur(m)} · ${m.steps.length} ${t('med_steps')}</p></div>
+    </button>`;}).join('');
+}
+function setBreathAnim(b){
+  // Genera la animación del círculo con el ritmo de esta meditación
+  const hold=b.hold||0, total=b.in+hold+b.out;
+  const pIn=(b.in/total*100).toFixed(1), pHold=((b.in+hold)/total*100).toFixed(1);
+  let st=document.getElementById('breath-style');
+  if(!st){st=document.createElement('style');st.id='breath-style';document.head.appendChild(st);}
+  st.textContent=`@keyframes breathe-anim{0%{transform:scale(.55)}${pIn}%{transform:scale(1)}${pHold}%{transform:scale(1)}100%{transform:scale(.55)}}`;
+  document.documentElement.style.setProperty('--bdur',total+'s');
+}
+function breathHint(b){
+  return b.hold?t('breath_hold',{i:b.in,h:b.hold,o:b.out}):t('breath_simple',{i:b.in,o:b.out});
+}
+function startMed(id){
+  beep(400);vibrate(40);
+  S.medCurrent=medL(MEDITATIONS.find(m=>m.id===id));
+  S.medStep=0;S.medPlaying=false;S.medTimer=0;S.medDone=false;
+  setBreathAnim(S.medCurrent.breath||{in:4,out:6});
+  document.getElementById('med-title').textContent=S.medCurrent.name;
+  go('meditation-detail'); renderMedStep();
+}
+function setSpeed(sp){
+  S.medSpeed=sp;
+  ['lento','normal','rapido'].forEach(s=>document.getElementById('sp-'+s).classList.toggle('active',s===sp));
+}
+function renderMedStep(){
+  const med=S.medCurrent; if(!med)return;
+  const el=document.getElementById('med-content');
+  if(S.medDone){
+    el.innerHTML=`<div class="done"><div class="big">🙏</div><h2>${t('med_done_t')}</h2><p>${med.name}</p></div>
+      <div class="brow">
+        <button class="btn bsec" onclick="go('meditations')">${t('med_list')}</button>
+        <button class="btn bpri" onclick="startMed(${med.id})">${t('med_repeat')}</button>
+      </div>`;
+    return;
+  }
+  const step=med.steps[S.medStep];
+  const pct=(S.medStep/med.steps.length)*100;
+  const dots=med.steps.map((_,i)=>`<div class="dot ${i<S.medStep?'done':i===S.medStep?'active':''}" ></div>`).join('');
+  const tv=S.medPlaying?S.medTimer:Math.round(step.time*SPEED[S.medSpeed]);
+  const b=med.breath||{in:4,out:6};
+  el.innerHTML=`
+    <div class="tcard">
+      <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
+      <div class="dots" style="margin-top:8px">${dots}</div>
+      <div class="breath-wrap">
+        <div class="breath-circle${S.medPlaying?'':' paused'}"></div>
+        <div class="breath-hint">${t('breath_hint',{b:breathHint(b)})}</div>
+      </div>
+      <div class="sbox">
+        <div class="snum">${t('step_of',{i:S.medStep+1,n:med.steps.length})}</div>
+        <div class="sname">${step.text}</div>
+        <div class="sinstr">${step.instruction}</div>
+        <div class="tring" id="med-ring"><div class="tring-in"><div class="stimer" id="med-timer">${tv}</div></div></div>
+      </div>
+    </div>
+    <div class="brow">
+      ${S.medStep>0?`<button class="btn bsec bprev" onclick="medPrev()" aria-label="${t('prev_aria')}">←</button>`:''}
+      <button class="btn bsec" onclick="medToggle()">${S.medPlaying?t('pause_btn'):t('start_btn')}</button>
+      <button class="btn bpri" onclick="medNext()">${t('next_btn')}</button>
+    </div>`;
+  __ring('med-ring',tv/Math.max(1,Math.round(step.time*SPEED[S.medSpeed])));
+}
+function medToggle(){
+  if(!S.medPlaying){
+    S.medPlaying=true;const step=S.medCurrent.steps[S.medStep];
+    S.medTimer=Math.round(step.time*SPEED[S.medSpeed]);
+    renderMedStep();
+    // La instrucción se dicta ENTERA antes de arrancar la cuenta del paso
+    speakThen(step.instruction,()=>{
+      if(!S.medPlaying||timerInterval)return;
+      timerInterval=setInterval(medTick,1000);
+    });
+    return;
+  }
+  S.medPlaying=false;stopTimer();
+  renderMedStep();
+}
+function medTick(){S.medTimer--;const el=document.getElementById('med-timer');if(el)el.textContent=S.medTimer;const _mt=Math.round(S.medCurrent.steps[S.medStep].time*SPEED[S.medSpeed]);__ring('med-ring',_mt?S.medTimer/_mt:0);if(S.medTimer<=0)medAdv();}
+function medAdv(){
+  stopTimer(); const med=S.medCurrent;
+  if(S.medStep<med.steps.length-1){
+    beep(500,0.2);vibrate(40);S.medStep++;S.medPlaying=true;
+    S.medTimer=Math.round(med.steps[S.medStep].time*SPEED[S.medSpeed]);
+    renderMedStep();
+    speakThen(med.steps[S.medStep].instruction,()=>{
+      if(!S.medPlaying||timerInterval)return;
+      timerInterval=setInterval(medTick,1000);
+    });
+  } else {beep(700,0.3);setTimeout(()=>beep(900,0.4),300);vibrate([60,40,60]);S.medDone=true;S.medPlaying=false;markCalmaDone();renderMedStep();}
+}
+function medNext(){stopTimer();S.medPlaying=false;medAdv();}
+function medPrev(){if(S.medStep<=0)return;stopTimer();S.medPlaying=false;S.medTimer=0;S.medDone=false;S.medStep--;renderMedStep();}
+/* Aplica traducciones a los textos estáticos al cargar */
+/* Teléfonos de crisis según idioma (tocar = llamar) */
+const CRISIS={es:[['112','Emergencias'],['024','Atención a la conducta suicida (España)']],
+ en:[['112','Emergencies (EU) · 911 US/Canada · 999 UK'],['988','Suicide & Crisis Lifeline (US)'],['116 123','Samaritans (UK & Ireland)']],
+ fr:[['112','Urgences'],['3114','Prévention du suicide (France)']]};
+function renderCrisis(){const el=document.getElementById('crisis-nums');if(!el)return;el.innerHTML=(CRISIS[crisLang()]||CRISIS.es).map(([n,l])=>`<a href="tel:${n.replace(/\s/g,'')}"><b>📞 ${n}</b><span>${l}</span></a>`).join('');}
+applyStaticI18n();renderCrisis();
+/* Acceso directo: si el index abre este módulo con #transition, va a «Soltar el móvil» */
+if(location.hash==='#transition')go('transition');
+/* Botón atrás del móvil: la app pregunta si este módulo puede retroceder una pantalla */
+/* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió */
+window.__crisBack=function(){
+  var el=document.querySelector('.screen.active .back');
+  if(el){el.click();return true;}
+  return false;
+};
+/* Puente para versiones mezcladas: si el index viejo aún manda postMessage */
+window.addEventListener('message',function(e){
+  if(e&&e.data==='cris:back'&&window.__crisBack&&window.__crisBack()){
+    try{parent.postMessage('cris:back-ok','*');}catch(_){}
+  }
+});
+</script>
+<script>
+/* Submenús: esconde las tarjetas que quedaron fuera en el test inicial (index),
+   con un botón «Mostrar todo» para recuperarlas. Preferencia: cris_hidden_botiquin. */
+(function(){
+  const AREA='botiquin';
+  const LBL={es:'Mostrar todo',en:'Show all',fr:'Tout afficher'},
+        LBL2={es:'Ocultar extras',en:'Hide extras',fr:'Masquer les extras'};
+  function lang(){try{const l=localStorage.getItem('cris_lang');return({es:1,en:1,fr:1})[l]?l:'es';}catch(e){return'es';}}
+  function hidden(){try{const o=JSON.parse(localStorage.getItem('cris_hidden_botiquin')||'{}');return o[AREA]||[];}catch(e){return[];}}
+  let showAll=false;
+  function apply(){
+    const hid=hidden();
+    document.querySelectorAll('[data-sub]').forEach(el=>{
+      el.style.display=(!showAll&&hid.indexOf(el.getAttribute('data-sub'))>=0)?'none':'';
+    });
+    const b=document.getElementById('subShowAll');
+    if(b){ if(hid.length){b.style.display='';b.textContent=(showAll?LBL2:LBL)[lang()]+(showAll?'':' ('+hid.length+')');} else b.style.display='none'; }
+  }
+  window.__subToggleAll=function(){showAll=!showAll;apply();};
+  if(!document.getElementById('subShowAllCss')){
+    const st=document.createElement('style');st.id='subShowAllCss';
+    st.textContent='.sub-showall{border:2px dashed var(--mint-mid,#b8e4dd);background:transparent;color:var(--teal-dark,#1a6b64);font-family:Outfit,sans-serif;font-weight:700;font-size:.82rem;border-radius:14px;padding:10px 14px;cursor:pointer;width:100%;margin-top:2px}.sub-showall:active{transform:scale(.98)}';
+    document.head.appendChild(st);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
+</script>
+
+<button id="bk-cfg" aria-label="⚙" onclick="bkOpen()">⚙️</button>
+<div id="bk-sheet" onclick="if(event.target===this)bkClose()"><div class="c" role="dialog" aria-modal="true"><h3 id="bk-h"></h3>
+<div class="r" id="bk-lang"></div><div class="r" id="bk-fx"></div><a id="bk-priv" href="../privacidad.html"></a><button class="x" id="bk-ok" onclick="bkClose()"></button></div></div>
+<script>
+/* ── Ajustes de la app independiente (idioma, voz, sonido, vibración) ── */
+var BK={es:{h:'Ajustes',voice:'Voz',sound:'Sonido',vib:'Vibración',priv:'Privacidad y aviso de salud',ok:'Listo'},
+ en:{h:'Settings',voice:'Voice',sound:'Sound',vib:'Vibration',priv:'Privacy and health notice',ok:'Done'},
+ fr:{h:'Réglages',voice:'Voix',sound:'Son',vib:'Vibration',priv:'Confidentialité et avertissement santé',ok:'OK'}};
+function bkLang(){try{var l=localStorage.getItem('cris_lang');if(BK[l])return l;}catch(e){}var n=(navigator.language||'es').slice(0,2);return BK[n]?n:'es';}
+function bkCfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return {};}}
+function bkDraw(){var l=bkLang(),T=BK[l],c=bkCfg();
+  document.getElementById('bk-h').textContent=T.h;document.getElementById('bk-ok').textContent=T.ok;
+  var p=document.getElementById('bk-priv');p.textContent=T.priv;p.href='../privacidad.html?lang='+l;
+  document.getElementById('bk-lang').innerHTML=[['es','Español'],['en','English'],['fr','Français']].map(function(x){return '<button class="p'+(x[0]===l?' on':'')+'" onclick="bkSetLang(\''+x[0]+'\')">'+x[1]+'</button>';}).join('');
+  document.getElementById('bk-fx').innerHTML=['voice','sound','vib'].map(function(k){return '<button class="p'+(c[k]!==false?' on':'')+'" onclick="bkToggle(\''+k+'\')">'+T[k]+'</button>';}).join('');}
+function bkOpen(){bkDraw();document.getElementById('bk-sheet').classList.add('show');}
+function bkClose(){document.getElementById('bk-sheet').classList.remove('show');}
+function bkSetLang(l){try{localStorage.setItem('cris_lang',l);}catch(e){}location.reload();}
+function bkToggle(k){var c=bkCfg();c[k]=c[k]===false;try{localStorage.setItem('cris_cfg',JSON.stringify(c));}catch(e){}bkDraw();}
+/* Atrás del móvil: retrocede dentro del botiquín; en la portada, deja salir */
+(function(){if(!history.pushState)return;history.pushState({bk:1},'');
+  window.addEventListener('popstate',function(){
+    if(document.getElementById('bk-sheet').classList.contains('show')){bkClose();history.pushState({bk:1},'');return;}
+    if(window.__crisBack&&window.__crisBack()){history.pushState({bk:1},'');return;}
+    history.back();});})();
+if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});
+</script>
+</body>
+</html>
