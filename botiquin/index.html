@@ -68,6 +68,13 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .an-donebtn{width:100%;border:2px solid var(--mint-mid);border-radius:12px;padding:10px;background:#fff;color:var(--teal-dark);font-family:'Outfit',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer}
 .an-donebtn.on{background:#0891b2;border-color:#0891b2;color:#fff}
 /* Soltar el móvil · transición */
+.c-pp{background:linear-gradient(135deg,#be185d,#ec4899)}
+.pp-intro{background:#fff;border-radius:16px;padding:14px 16px;margin:4px 0 16px;font-size:.92rem;line-height:1.55;color:#374151;box-shadow:0 2px 10px rgba(26,107,100,.08)}
+.pp-info{background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(26,107,100,.06)}
+.pp-info h3{font-size:.95rem;color:var(--teal-dark,#1a6b64);margin-bottom:4px}
+.pp-info p,.pp-more p,.pp-more li{font-size:.86rem;line-height:1.55;color:#374151}
+.pp-more ul{padding-left:20px;margin:6px 0 10px}.pp-more li{margin-bottom:4px}
+.pp-read{font-size:.8rem;color:#6b7280;margin:14px 2px 30px;line-height:1.5}
 .c-trans{background:linear-gradient(135deg,#059669,#10b981)}
 .tr-intro{background:rgba(255,255,255,.85);border:2px solid var(--mint-mid);border-radius:16px;padding:15px 16px;font-size:.85rem;line-height:1.55;color:var(--teal-dark);margin-bottom:14px}
 .tr-input{width:100%;border:2px solid var(--mint-mid);border-radius:14px;padding:13px;font-family:'Outfit',sans-serif;font-size:16px;color:#1a2e2b;background:#fff;margin-bottom:12px}
@@ -223,6 +230,10 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
     <span class="aicon">🕯️</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_anniv_t">ÉPOCA DIFÍCIL</span><span class="asub" data-i18n="c_anniv_s">Plan de 7 días para un aniversario duro</span></div>
   </button>
+  <button class="acard c-pp" data-sub="c-pp" onclick="go('pp')">
+    <span class="aicon">👶</span>
+    <div class="ainfo"><span class="atitle" data-i18n="c_pp_t">REVOLUCIÓN HORMONAL</span><span class="asub" data-i18n="c_pp_s">Para los días difíciles después de tener a tu bebé</span></div>
+  </button>
   <button class="acard c-trans" data-sub="c-trans" onclick="go('transition')">
     <span class="aicon">📴</span>
     <div class="ainfo"><span class="atitle" data-i18n="c_trans_t">SOLTAR EL MÓVIL</span><span class="asub" data-i18n="c_trans_s">Cambia de tarea con una mini-guía</span></div>
@@ -236,6 +247,16 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
     <p class="crisis-note" data-i18n="crisis_note">Quico te acompaña, pero no sustituye a una profesional de la salud mental.</p>
     </div>
   </details>
+</div>
+</div>
+
+<div id="v-pp" class="screen">
+<div class="mw">
+  <div class="topbar">
+    <button class="back" onclick="go('home')">←</button>
+    <h1 data-i18n="pp_h">Revolución hormonal</h1>
+  </div>
+  <div id="pp-body"></div>
 </div>
 </div>
 
@@ -343,7 +364,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
 
 /* ── IDIOMAS (es · en · fr) ── */
 const UI={
- es:{crisis_h:'¿Te apetece hablar con alguien?',crisis_p:'Hay personas que te escuchan, gratis y a cualquier hora:',crisis_note:'Quico te acompaña, pero no sustituye a una profesional de la salud mental.',home_h:'Botiquín Emocional 🧰',home_p:'¿Qué necesitas ahora mismo?',
+ es:{c_pp_t:'REVOLUCIÓN HORMONAL',c_pp_s:'Para los días difíciles después de tener a tu bebé',pp_h:'Revolución hormonal',pp_intro:'Convertirte en madre mueve todo: el cuerpo, las hormonas, el sueño, la identidad. Los días difíciles son muy frecuentes y no dicen nada malo de ti. Aquí tienes ayuda para ahora mismo y algo de información para entender lo que te pasa.',pp_now:'Para ahora mismo',pp_know:'Para entender lo que te pasa',pp_k1_h:'Matrescencia',pp_k1:'Convertirte en madre es una transición tan grande como la adolescencia: cambian el cuerpo, las hormonas, la identidad y el día a día. Es normal sentir a la vez amor, cansancio, miedo y añoranza de tu vida de antes.',pp_k2_h:'Hormonas y sueño',pp_k2:'Tras el parto, los estrógenos y la progesterona caen en picado y el sueño se rompe en trozos. Juntos pueden traer días de llanto y tristeza, sobre todo en las primeras semanas.',pp_k3_h:'La cabeza en otra parte',pp_k3:'Tu atención se reorganiza alrededor del bebé y la carga mental crece. Los despistes son normales y no significan que hayas perdido capacidad. Repartir tareas y apuntar las cosas alivia mucho.',pp_more_h:'¿Cuándo pedir ayuda?',pp_more:'<p>En los primeros días, muchas madres tienen ratos de llanto y tristeza que suelen pasar solos en unas dos semanas.</p><p><b>Habla con tu matrona, tu médica o una psicóloga perinatal si:</b></p><ul><li>el ánimo bajo dura más de dos semanas, casi todo el día</li><li>ya no disfrutas de casi nada</li><li>no consigues dormir aunque el bebé duerma</li><li>te sientes inútil o culpable casi todo el tiempo</li><li>te cuesta cuidarte a ti o a tu bebé</li></ul><p>La depresión posparto le pasa a casi 1 de cada 6 madres y tiene tratamiento. Pedir ayuda no te hace peor madre. Tu matrona puede pasarte un cuestionario corto, la escala de Edimburgo, para ver cómo estás.</p><p><b>Pide ayuda ya (112)</b> si piensas en hacerte daño o temes hacérselo al bebé, o si notas confusión o ves u oyes cosas que otras personas no.</p>',pp_read:'Para saber más: «Neuromaternal», de Susana Carmona (Ediciones B, 2024).',crisis_h:'¿Te apetece hablar con alguien?',crisis_p:'Hay personas que te escuchan, gratis y a cualquier hora:',crisis_note:'Quico te acompaña, pero no sustituye a una profesional de la salud mental.',home_h:'Botiquín Emocional 🧰',home_p:'¿Qué necesitas ahora mismo?',
    c_sos_t:'NECESITO AYUDA YA',c_sos_s:'Técnicas para salir del bucle ahora mismo',
    c_know_t:'SÉ QUÉ SIENTO',c_know_s:'Entiende tu emoción y qué puedes hacer',
    c_find_t:'NO SÉ QUÉ SIENTO',c_find_s:'Ayúdame a identificar lo que me pasa',
@@ -360,7 +381,7 @@ const UI={
    med_steps:'pasos · avanza sola con voz',med_done_t:'Meditación completada',med_list:'← Lista',med_repeat:'Repetir',
    breath_hint:'🌬️ Respira con el círculo · {b}',breath_hold:'Inhala {i} · mantén {h} · exhala {o}',breath_simple:'Inhala {i} · exhala {o}',
    min_word:'min'},
- en:{crisis_h:'Would you like to talk to someone?',crisis_p:'There are people who will listen, free and at any hour:',crisis_note:'Quico keeps you company, but it doesn’t replace a mental health professional.',home_h:'Emotional Kit 🧰',home_p:'What do you need right now?',
+ en:{c_pp_t:'HORMONAL REVOLUTION',c_pp_s:'For the hard days after having your baby',pp_h:'Hormonal revolution',pp_intro:'Becoming a mother shakes everything: your body, hormones, sleep and identity. Hard days are very common and say nothing bad about you. Here you’ll find help for right now and some information to understand what’s happening.',pp_now:'For right now',pp_know:'To understand what’s happening',pp_k1_h:'Matrescence',pp_k1:'Becoming a mother is a transition as big as adolescence: your body, hormones, identity and daily life all change. It’s normal to feel love, tiredness, fear and longing for your old life all at once.',pp_k2_h:'Hormones and sleep',pp_k2:'After birth, oestrogen and progesterone drop sharply and sleep comes in pieces. Together they can bring tearful, sad days, especially in the first weeks.',pp_k3_h:'Your mind elsewhere',pp_k3:'Your attention reorganises around the baby and the mental load grows. Slips are normal and don’t mean you’ve lost ability. Sharing tasks and writing things down helps a lot.',pp_more_h:'When to ask for help?',pp_more:'<p>In the first days, many mothers have tearful, sad moments that usually pass on their own within about two weeks.</p><p><b>Talk to your midwife, doctor or a perinatal psychologist if:</b></p><ul><li>the low mood lasts more than two weeks, most of the day</li><li>you no longer enjoy almost anything</li><li>you can’t sleep even when the baby sleeps</li><li>you feel worthless or guilty most of the time</li><li>it’s hard to look after yourself or your baby</li></ul><p>Postpartum depression affects almost 1 in 6 mothers and it can be treated. Asking for help doesn’t make you a worse mother. Your midwife can give you a short questionnaire, the Edinburgh scale, to see how you’re doing.</p><p><b>Get help now (emergency number)</b> if you think about hurting yourself or fear hurting the baby, or if you notice confusion or see or hear things others don’t.</p>',pp_read:'To learn more: “Neuromaternal” by Susana Carmona (Ediciones B, 2024, in Spanish).',crisis_h:'Would you like to talk to someone?',crisis_p:'There are people who will listen, free and at any hour:',crisis_note:'Quico keeps you company, but it doesn’t replace a mental health professional.',home_h:'Emotional Kit 🧰',home_p:'What do you need right now?',
    c_sos_t:'I NEED HELP NOW',c_sos_s:'Techniques to break the loop right now',
    c_know_t:'I KNOW WHAT I FEEL',c_know_s:'Understand your emotion and what you can do',
    c_find_t:'I DON’T KNOW WHAT I FEEL',c_find_s:'Help me name what’s going on',
@@ -377,7 +398,7 @@ const UI={
    med_steps:'steps · advances on its own with voice',med_done_t:'Meditation complete',med_list:'← List',med_repeat:'Repeat',
    breath_hint:'🌬️ Breathe with the circle · {b}',breath_hold:'Inhale {i} · hold {h} · exhale {o}',breath_simple:'Inhale {i} · exhale {o}',
    min_word:'min'},
- fr:{crisis_h:'Tu as envie de parler à quelqu’un ?',crisis_p:'Des personnes t’écoutent, gratuitement et à toute heure :',crisis_note:'Quico t’accompagne, mais ne remplace pas une ou un professionnel de santé mentale.',home_h:'Trousse Émotionnelle 🧰',home_p:'De quoi as-tu besoin maintenant ?',
+ fr:{c_pp_t:'RÉVOLUTION HORMONALE',c_pp_s:'Pour les jours difficiles après la naissance de ton bébé',pp_h:'Révolution hormonale',pp_intro:'Devenir mère bouscule tout : le corps, les hormones, le sommeil, l’identité. Les jours difficiles sont très fréquents et ne disent rien de mal sur toi. Tu trouveras ici de l’aide pour tout de suite et quelques infos pour comprendre ce qui t’arrive.',pp_now:'Pour tout de suite',pp_know:'Pour comprendre ce qui t’arrive',pp_k1_h:'Matrescence',pp_k1:'Devenir mère est une transition aussi grande que l’adolescence : le corps, les hormones, l’identité et le quotidien changent. C’est normal de ressentir à la fois de l’amour, de la fatigue, de la peur et la nostalgie de ta vie d’avant.',pp_k2_h:'Hormones et sommeil',pp_k2:'Après l’accouchement, les œstrogènes et la progestérone chutent brutalement et le sommeil est en miettes. Ensemble, ils peuvent amener des jours de larmes et de tristesse, surtout les premières semaines.',pp_k3_h:'La tête ailleurs',pp_k3:'Ton attention se réorganise autour du bébé et la charge mentale augmente. Les oublis sont normaux et ne veulent pas dire que tu as perdu tes capacités. Partager les tâches et tout noter soulage beaucoup.',pp_more_h:'Quand demander de l’aide ?',pp_more:'<p>Les premiers jours, beaucoup de mères ont des moments de larmes et de tristesse qui passent en général tout seuls en deux semaines environ.</p><p><b>Parles-en à ta sage-femme, ton médecin ou une psychologue périnatale si :</b></p><ul><li>le moral bas dure plus de deux semaines, presque toute la journée</li><li>tu ne prends plus plaisir à presque rien</li><li>tu n’arrives pas à dormir même quand le bébé dort</li><li>tu te sens inutile ou coupable presque tout le temps</li><li>c’est difficile de prendre soin de toi ou de ton bébé</li></ul><p>La dépression post-partum touche près d’1 mère sur 6 et elle se soigne. Demander de l’aide ne fait pas de toi une moins bonne mère. Ta sage-femme peut te proposer un court questionnaire, l’échelle d’Édimbourg, pour voir comment tu vas.</p><p><b>Demande de l’aide maintenant (112)</b> si tu penses à te faire du mal ou crains d’en faire au bébé, ou si tu remarques de la confusion ou vois ou entends des choses que les autres ne perçoivent pas.</p>',pp_read:'Pour en savoir plus : « Neuromaternal » de Susana Carmona (Ediciones B, 2024, en espagnol).',crisis_h:'Tu as envie de parler à quelqu’un ?',crisis_p:'Des personnes t’écoutent, gratuitement et à toute heure :',crisis_note:'Quico t’accompagne, mais ne remplace pas une ou un professionnel de santé mentale.',home_h:'Trousse Émotionnelle 🧰',home_p:'De quoi as-tu besoin maintenant ?',
    c_sos_t:'J’AI BESOIN D’AIDE MAINTENANT',c_sos_s:'Des techniques pour sortir de la boucle tout de suite',
    c_know_t:'JE SAIS CE QUE JE RESSENS',c_know_s:'Comprends ton émotion et ce que tu peux faire',
    c_find_t:'JE NE SAIS PAS CE QUE JE RESSENS',c_find_s:'Aide-moi à nommer ce qui se passe',
@@ -714,6 +735,81 @@ const RESCUES = [
 
 // Cada técnica aparece UNA sola vez, bajo la etiqueta de síntoma que mejor la describe.
 // (id:3 Agua fría primero, para crisis total.)
+/* ─── POSPARTO ───
+   Técnicas guiadas (mismo reproductor que el resto del botiquín) y explicaciones breves.
+   Contenido propio basado en la divulgación sobre matrescencia, cambios hormonales y cerebrales
+   del posparto y cribado de depresión perinatal. */
+const PP_RESCUES=[
+ {id:101,name:'Me desbordo con el bebé',icon:'🫧',color:'#db2777',when:'Cuando el llanto o el cansancio te superan',desc:'Primero el bebé a salvo, luego tú',steps:[
+  {text:'BEBÉ A SALVO',instruction:'Deja al bebé en la cuna o en un lugar seguro, boca arriba. Puede llorar unos minutos: está a salvo, y tú también importas',time:20},
+  {text:'SAL UN MOMENTO',instruction:'Ve a otra habitación o al pasillo. Dos minutos solo para ti',time:20},
+  {text:'RESPIRA LENTO',instruction:'Coge aire en 4 tiempos y suéltalo en 6, como si soplaras una vela muy despacio',time:60},
+  {text:'AGUA FRÍA',instruction:'Bebe agua o mójate las muñecas y la cara. Ayuda a bajar la tensión del cuerpo',time:30},
+  {text:'VUELVE O PIDE RELEVO',instruction:'Cuando el cuerpo afloje un poco, vuelve con tu bebé. Si no puedes, llama a alguien para que te releve',time:20}]},
+ {id:102,name:'Lloro y no sé por qué',icon:'💧',color:'#7c3aed',when:'Cuando las lágrimas salen solas',desc:'No estás fallando: tu cuerpo se está reajustando',steps:[
+  {text:'PONLE NOMBRE',instruction:'Tras el parto, las hormonas del embarazo caen de golpe y el sueño se rompe en trozos. Llorar sin un motivo claro es muy frecuente',time:20},
+  {text:'DÉJALO SALIR',instruction:'No hace falta entenderlo ni pararlo. Llora lo que necesites',time:45},
+  {text:'MANO EN EL PECHO',instruction:'Pon una mano en el pecho y otra en la tripa. Respira notando cómo suben y bajan',time:45},
+  {text:'UNA COSA PEQUEÑA',instruction:'Elige solo una: un vaso de agua, algo de comer, una ducha corta o asomarte a la ventana',time:30}]},
+ {id:103,name:'Siento que no soy buena madre',icon:'🤍',color:'#0891b2',when:'Cuando la culpa o la comparación aprietan',desc:'Querer a tu bebé y estar harta a la vez es normal',steps:[
+  {text:'LAS DOS COSAS A LA VEZ',instruction:'Puedes querer a tu bebé y a la vez echar de menos tu vida, estar agotada o enfadada. Sentir las dos cosas es parte del camino',time:30},
+  {text:'LO QUE SÍ HAS HECHO',instruction:'Piensa en tres cosas que has hecho hoy por tu bebé: darle de comer, cambiarle, sostenerle… Todas cuentan',time:40},
+  {text:'COMO A UNA AMIGA',instruction:'¿Qué le dirías a una amiga que estuviera así? Dítelo a ti, despacio',time:40},
+  {text:'LA MADRE REAL',instruction:'Las madres perfectas de las redes no existen. Una madre suficientemente buena se equivoca, repara y sigue',time:30}]},
+ {id:104,name:'No me reconozco',icon:'🧩',color:'#059669',when:'Cuando la cabeza no te da o sientes que has perdido quién eras',desc:'Tu cerebro está en obras, no roto',steps:[
+  {text:'CEREBRO EN OBRAS',instruction:'Ser madre reorganiza el cerebro, parecido a lo que pasó en la adolescencia. No se estropea: se adapta a una vida nueva',time:30},
+  {text:'LOS DESPISTES',instruction:'La mayoría de los olvidos se explican por el poco sueño, el ánimo y todo lo que ahora tienes que recordar. No has perdido capacidad',time:30},
+  {text:'SACA LA CARGA DE LA CABEZA',instruction:'Apunta en una lista o en el móvil lo que te ronda: tomas, citas, compras. Lo que está escrito ya no tienes que sostenerlo tú',time:60},
+  {text:'TU NUEVA VERSIÓN',instruction:'No hace falta volver a ser la de antes. Estás conociendo una versión nueva de ti, y eso lleva su tiempo',time:30}]},
+ {id:105,name:'Estoy agotada',icon:'🔋',color:'#d97706',when:'Cuando no puedes más',desc:'Descanso en dosis pequeñas',steps:[
+  {text:'BAJA EL LISTÓN',instruction:'Hoy basta con esto: el bebé está cuidado y tú has comido algo. Lo demás puede esperar',time:20},
+  {text:'PIDE UNA COSA CONCRETA',instruction:'Escribe a alguien: «¿Te quedas con el bebé una hora para que duerma?» o «¿Me traes la cena?». Las peticiones concretas funcionan mejor',time:60},
+  {text:'TÚMBATE',instruction:'Aunque no duermas, túmbate con los ojos cerrados. Diez minutos ya ayudan',time:120},
+  {text:'COME Y BEBE',instruction:'Algo sencillo y un vaso de agua. Tu cuerpo también se está recuperando',time:30}]},
+ {id:106,name:'Me siento sola',icon:'🫂',color:'#be185d',when:'Cuando sientes que nadie entiende cómo estás',desc:'Las madres necesitan a otras personas',steps:[
+  {text:'ESCRIBE A ALGUIEN',instruction:'Manda un mensaje sincero: «Hoy tengo el ánimo bajo, ¿hablamos un rato?». No hace falta estar bien para escribir',time:60},
+  {text:'BUSCA A OTRAS MADRES',instruction:'Pregunta en tu centro de salud por grupos de posparto o de crianza. Escuchar a otras madres de verdad ayuda mucho',time:30},
+  {text:'SAL DIEZ MINUTOS',instruction:'Si puedes, da un paseo corto con el bebé. La luz y el aire ayudan al ánimo',time:30}]},
+ {id:107,name:'Pensamientos que me asustan',icon:'☁️',color:'#475569',when:'Cuando te vienen imágenes o ideas que no quieres',desc:'Que te asusten muestra que no quieres que ocurran',steps:[
+  {text:'SON FRECUENTES',instruction:'Muchas madres tienen imágenes o ideas no deseadas de que al bebé le pase algo. Que te asusten muestra que no quieres que ocurra',time:30},
+  {text:'DÉJALO PASAR',instruction:'No discutas con el pensamiento. Míralo como una nube que cruza el cielo y vuelve a tu respiración',time:45},
+  {text:'CUÉNTALO',instruction:'Díselo a tu matrona, tu médica o una psicóloga. Lo escuchan a menudo y tiene ayuda. Si sientes que podrías hacer daño a alguien, pide ayuda ya',time:30}]}
+];
+const PP_L={
+ en:{101:{name:'I’m overwhelmed with the baby',when:'When crying or tiredness gets too much',desc:'Baby safe first, then you',steps:[['BABY SAFE','Put your baby in the cot or somewhere safe, on their back. They can cry for a few minutes: they’re safe, and you matter too'],['STEP OUT','Go to another room or the hallway. Two minutes just for you'],['BREATHE SLOWLY','Breathe in for 4 and out for 6, as if blowing out a candle very slowly'],['COLD WATER','Drink some water or wet your wrists and face. It helps your body’s tension come down'],['GO BACK OR ASK FOR A BREAK','When your body eases a little, go back to your baby. If you can’t, call someone to take over']]},
+  102:{name:'I cry and don’t know why',when:'When the tears just come',desc:'You’re not failing: your body is readjusting',steps:[['NAME IT','After birth, pregnancy hormones drop suddenly and sleep comes in pieces. Crying with no clear reason is very common'],['LET IT OUT','You don’t need to understand it or stop it. Cry as much as you need'],['HAND ON YOUR CHEST','Put one hand on your chest and the other on your belly. Breathe, feeling them rise and fall'],['ONE SMALL THING','Pick just one: a glass of water, something to eat, a short shower or looking out of the window']]},
+  103:{name:'I feel I’m not a good mother',when:'When guilt or comparison squeezes',desc:'Loving your baby and being fed up at the same time is normal',steps:[['BOTH AT ONCE','You can love your baby and still miss your old life, feel exhausted or angry. Feeling both is part of the journey'],['WHAT YOU DID DO','Think of three things you did for your baby today: feeding, changing, holding… They all count'],['LIKE A FRIEND','What would you say to a friend feeling like this? Say it to yourself, slowly'],['THE REAL MOTHER','The perfect mothers on social media don’t exist. A good-enough mother makes mistakes, repairs and carries on']]},
+  104:{name:'I don’t recognise myself',when:'When your head can’t keep up or you feel you’ve lost who you were',desc:'Your brain is under renovation, not broken',steps:[['BRAIN UNDER RENOVATION','Becoming a mother reorganises the brain, a bit like adolescence did. It isn’t damaged: it’s adapting to a new life'],['THE SLIPS','Most forgetfulness is explained by little sleep, your mood and everything you now have to keep in mind. You haven’t lost ability'],['GET THE LOAD OUT OF YOUR HEAD','Write down what’s going round your head: feeds, appointments, shopping. What’s written down you no longer have to hold'],['YOUR NEW VERSION','You don’t need to go back to who you were. You’re getting to know a new version of yourself, and that takes time']]},
+  105:{name:'I’m exhausted',when:'When you can’t go on',desc:'Rest in small doses',steps:[['LOWER THE BAR','Today this is enough: the baby is cared for and you’ve eaten something. Everything else can wait'],['ASK FOR ONE CONCRETE THING','Text someone: “Can you take the baby for an hour so I can sleep?” or “Could you bring dinner?”. Concrete requests work best'],['LIE DOWN','Even if you don’t sleep, lie down with your eyes closed. Ten minutes already helps'],['EAT AND DRINK','Something simple and a glass of water. Your body is recovering too']]},
+  106:{name:'I feel alone',when:'When it feels like nobody understands',desc:'Mothers need other people',steps:[['TEXT SOMEONE','Send an honest message: “I’m feeling low today, can we talk for a bit?”. You don’t have to be fine to reach out'],['FIND OTHER MOTHERS','Ask at your health centre about postnatal or parenting groups. Hearing real mothers helps a lot'],['GO OUT FOR TEN MINUTES','If you can, take a short walk with the baby. Light and fresh air help your mood']]},
+  107:{name:'Thoughts that scare me',when:'When unwanted images or ideas come',desc:'Being scared by them shows you don’t want them to happen',steps:[['THEY ARE COMMON','Many mothers have unwanted images or ideas of something happening to the baby. Being scared by them shows you don’t want it to happen'],['LET IT PASS','Don’t argue with the thought. Watch it like a cloud crossing the sky and come back to your breath'],['TELL SOMEONE','Tell your midwife, doctor or a psychologist. They hear it often and there is help. If you feel you might harm someone, ask for help now']]}},
+ fr:{101:{name:'Je suis débordée avec le bébé',when:'Quand les pleurs ou la fatigue te dépassent',desc:'D’abord le bébé en sécurité, ensuite toi',steps:[['BÉBÉ EN SÉCURITÉ','Pose ton bébé dans son lit ou dans un endroit sûr, sur le dos. Il peut pleurer quelques minutes : il est en sécurité, et toi aussi tu comptes'],['SORS UN INSTANT','Va dans une autre pièce ou dans le couloir. Deux minutes rien que pour toi'],['RESPIRE LENTEMENT','Inspire sur 4 temps et expire sur 6, comme pour souffler une bougie très doucement'],['EAU FRAÎCHE','Bois de l’eau ou mouille tes poignets et ton visage. Ça aide la tension du corps à redescendre'],['REVIENS OU DEMANDE UN RELAIS','Quand ton corps se relâche un peu, retourne auprès de ton bébé. Si tu ne peux pas, appelle quelqu’un pour prendre le relais']]},
+  102:{name:'Je pleure sans savoir pourquoi',when:'Quand les larmes viennent toutes seules',desc:'Tu n’échoues pas : ton corps se réajuste',steps:[['NOMME-LE','Après l’accouchement, les hormones de la grossesse chutent d’un coup et le sommeil est en miettes. Pleurer sans raison claire est très fréquent'],['LAISSE SORTIR','Pas besoin de comprendre ni d’arrêter. Pleure autant qu’il faut'],['MAIN SUR LA POITRINE','Une main sur la poitrine, l’autre sur le ventre. Respire en les sentant monter et descendre'],['UNE PETITE CHOSE','Choisis-en une seule : un verre d’eau, quelque chose à manger, une douche courte ou regarder par la fenêtre']]},
+  103:{name:'J’ai l’impression d’être une mauvaise mère',when:'Quand la culpabilité ou la comparaison serrent',desc:'Aimer ton bébé et en avoir marre en même temps, c’est normal',steps:[['LES DEUX À LA FOIS','Tu peux aimer ton bébé et regretter ta vie d’avant, être épuisée ou en colère. Ressentir les deux fait partie du chemin'],['CE QUE TU AS FAIT','Pense à trois choses faites aujourd’hui pour ton bébé : le nourrir, le changer, le porter… Elles comptent toutes'],['COMME À UNE AMIE','Que dirais-tu à une amie dans cet état ? Dis-le-toi, doucement'],['LA VRAIE MÈRE','Les mères parfaites des réseaux n’existent pas. Une mère suffisamment bonne se trompe, répare et continue']]},
+  104:{name:'Je ne me reconnais plus',when:'Quand ta tête ne suit plus ou que tu as l’impression d’avoir perdu qui tu étais',desc:'Ton cerveau est en travaux, pas cassé',steps:[['CERVEAU EN TRAVAUX','Devenir mère réorganise le cerveau, un peu comme à l’adolescence. Il ne s’abîme pas : il s’adapte à une nouvelle vie'],['LES OUBLIS','La plupart des oublis s’expliquent par le manque de sommeil, le moral et tout ce que tu dois retenir maintenant. Tu n’as pas perdu tes capacités'],['VIDE TA TÊTE','Note sur une liste ou ton téléphone ce qui tourne dans ta tête : tétées, rendez-vous, courses. Ce qui est écrit, tu n’as plus à le porter'],['TA NOUVELLE VERSION','Pas besoin de redevenir celle d’avant. Tu découvres une nouvelle version de toi, et ça prend du temps']]},
+  105:{name:'Je suis épuisée',when:'Quand tu n’en peux plus',desc:'Du repos à petites doses',steps:[['BAISSE LA BARRE','Aujourd’hui, ça suffit : le bébé est soigné et tu as mangé quelque chose. Le reste peut attendre'],['DEMANDE UNE CHOSE PRÉCISE','Écris à quelqu’un : « Tu peux garder le bébé une heure pour que je dorme ? » ou « Tu m’apportes le dîner ? ». Les demandes précises marchent mieux'],['ALLONGE-TOI','Même sans dormir, allonge-toi les yeux fermés. Dix minutes aident déjà'],['MANGE ET BOIS','Quelque chose de simple et un verre d’eau. Ton corps aussi se remet']]},
+  106:{name:'Je me sens seule',when:'Quand tu as l’impression que personne ne comprend',desc:'Les mères ont besoin des autres',steps:[['ÉCRIS À QUELQU’UN','Envoie un message sincère : « J’ai le moral bas aujourd’hui, on parle un peu ? ». Pas besoin d’aller bien pour écrire'],['TROUVE D’AUTRES MÈRES','Demande à ton centre de santé s’il existe des groupes post-partum ou de parentalité. Écouter de vraies mères aide beaucoup'],['SORS DIX MINUTES','Si tu peux, fais une petite promenade avec le bébé. La lumière et l’air aident le moral']]},
+  107:{name:'Des pensées qui me font peur',when:'Quand des images ou des idées non voulues arrivent',desc:'En avoir peur montre que tu ne veux pas que ça arrive',steps:[['C’EST FRÉQUENT','Beaucoup de mères ont des images ou des idées non voulues qu’il arrive quelque chose au bébé. En avoir peur montre que tu ne veux pas que ça arrive'],['LAISSE PASSER','Ne discute pas avec la pensée. Regarde-la comme un nuage qui traverse le ciel et reviens à ta respiration'],['PARLES-EN','Dis-le à ta sage-femme, ton médecin ou une psychologue. Ils l’entendent souvent et il existe de l’aide. Si tu sens que tu pourrais faire du mal à quelqu’un, demande de l’aide maintenant']]}}
+};
+RESCUES.push(...PP_RESCUES);
+Object.keys(PP_L).forEach(l=>{RESCUES_L[l]=RESCUES_L[l]||{};Object.assign(RESCUES_L[l],PP_L[l]);});
+function renderPP(){
+  const card=(h,p)=>`<div class="pp-info"><h3>${h}</h3><p>${p}</p></div>`;
+  document.getElementById('pp-body').innerHTML=`
+    <div class="pp-intro">${t('pp_intro')}</div>
+    <div class="slabel">${t('pp_now')}</div>
+    <div class="tlist">${PP_RESCUES.map(r0=>{const r=rescL(r0);return `
+      <button class="titem" onclick="startTec(${r.id},'pp')">
+        <div class="tico" style="background:${r.color}22">${r.icon}</div>
+        <div class="tinfo"><h3>${r.name}</h3><p>${r.when}</p></div>
+      </button>`;}).join('')}</div>
+    <div class="slabel">${t('pp_know')}</div>
+    ${card(t('pp_k1_h'),t('pp_k1'))}${card(t('pp_k2_h'),t('pp_k2'))}${card(t('pp_k3_h'),t('pp_k3'))}
+    <details class="crisis-box pp-more"><summary><span aria-hidden="true">🌿</span><span class="crisis-h">${t('pp_more_h')}</span></summary>
+      <div class="crisis-in">${t('pp_more')}</div></details>
+    <p class="pp-read">${t('pp_read')}</p>`;
+}
+
 const TEC_GROUPS = [
   {label:"🔥 Para cuando estás en crisis total", ids:[3]},
   {label:"🫁 Para calmar la ansiedad o el pánico", ids:[2]},
@@ -905,6 +1001,7 @@ function go(view){
   if(view==='find-emotion'){S.findStep=0;S.findMatches=[];renderFind();}
   if(view==='meditations') renderMedList();
   if(view==='anniversary') renderAnniversary();
+  if(view==='pp') renderPP();
   if(view==='transition'){stopTrans();transTask='';renderTransition();}
 }
 
@@ -938,7 +1035,7 @@ function renderTec(){
       <p style="text-align:center;color:var(--teal);font-size:.88rem;margin-bottom:18px">${t('tec_done_q')}</p>
       <div class="brow">
         <button class="btn bsec" onclick="go('home')">${t('home_btn')}</button>
-        <button class="btn bpri" onclick="go('techniques')">${t('other_tec')}</button>
+        <button class="btn bpri" onclick="go(S.tecSource==='pp'?'pp':'techniques')">${t('other_tec')}</button>
       </div>`;
     return;
   }

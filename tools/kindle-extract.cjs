@@ -43,7 +43,7 @@ const clean=o=>JSON.parse(JSON.stringify(o,(k,v)=>typeof v==='string'?v.replace(
       o.push({title:s.title,desc:s.desc,list:s.checklist||[],str:(s.stretches||[]).map(x=>({n:x.name,d:x.desc,t:x.time}))});}return o;});
     /* ── Calma ── */
     await open('rescate-emocional.html',lang);
-    L.calm=await p.evaluate(l=>({crisis:CRISIS[l]||CRISIS.es,rescues:RESCUES.map(r=>{const x=rescL(r);return {name:x.name,when:x.when,desc:x.desc,steps:x.steps.map(s=>({t:s.text,i:s.instruction,s:s.time}))};})}),lang);
+    L.calm=await p.evaluate(l=>({crisis:CRISIS[l]||CRISIS.es,rescues:RESCUES.filter(r=>r.id<100).map(r=>{ /* las técnicas de «Revolución hormonal» (id ≥ 100) no van al Kindle */const x=rescL(r);return {name:x.name,when:x.when,desc:x.desc,steps:x.steps.map(s=>({t:s.text,i:s.instruction,s:s.time}))};})}),lang);
     out.langs[lang]=clean(L);
   }
   /* ── Figuras: inicio y final de cada ejercicio (iguales en todos los idiomas) ── */
