@@ -819,6 +819,7 @@ const SUBS={
     {id:'c-find', e:'❓',t:{es:'No sé qué siento',en:'I don’t know what I feel',fr:'Je ne sais pas ce que je ressens'}},
     {id:'c-calm', e:'🧘',t:{es:'Meditaciones para calmarme',en:'Meditations to calm down',fr:'Méditations pour me calmer'}},
     {id:'c-anniv',e:'🕯️',t:{es:'Época difícil',en:'Hard season',fr:'Période difficile'}},
+    {id:'c-pp',   e:'👶',t:{es:'Revolución hormonal (posparto)',en:'Hormonal revolution (postpartum)',fr:'Révolution hormonale (post-partum)'}},
     {id:'c-trans',e:'📴',t:{es:'Soltar el móvil',en:'Put the phone down',fr:'Lâcher le téléphone'}}
   ]
 };
@@ -855,7 +856,7 @@ const TOUR_DESC={
  juego:{es:'Misterios de lógica cortos para desconectar la cabeza.',en:'Short logic mysteries to switch your head off.',fr:'De courts mystères de logique pour déconnecter.'}
 };
 // Lo recomendado para empezar: todos los módulos, y dentro, lo más útil
-const TOUR_DEF_OFF={trabajo:['triaje','interes','dopamina','contexto','tiempo'],comida:['c-months'],limpieza:['general'],botiquin:[]};
+const TOUR_DEF_OFF={trabajo:['triaje','interes','dopamina','contexto','tiempo'],comida:['c-months'],limpieza:['general'],botiquin:['c-pp']};
 function lsParse(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
 function lsPut(k,v){try{localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));}catch(e){}}
 function tl(o){return o[crisLang()]||o.es;}
