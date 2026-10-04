@@ -1,5 +1,5 @@
 /* Botiquín Emocional: funciona sin conexión (en una crisis no puede depender de internet) */
-const CACHE='botiquin-v1-'+"mutq3hre";
+const CACHE='botiquin-v1-'+"mutqarwv";
 const ASSETS=['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png','./icon-192-maskable.png','./icon-512-maskable.png','../quico/quico_happy.png','../privacidad.html'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>Promise.all(ASSETS.map(u=>c.add(u).catch(()=>{})))));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('botiquin-')&&k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
