@@ -31,6 +31,12 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .c-test{background:linear-gradient(135deg,#f59e0b,#ef4444)}
 .c-shop{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
 .c-pantry{background:linear-gradient(135deg,#db2777,#f472b6)}
+.c-tdah{background:linear-gradient(135deg,#4338ca,#7c3aed)}
+.td-legend{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.td-legend span{background:#fff;border-radius:999px;padding:5px 11px;font-size:.78rem;font-weight:700;color:var(--teal-dark)}
+.td-note{font-size:.78rem;color:#6b7280;margin:16px 2px 30px;line-height:1.5}
+.td-info{background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:.86rem;line-height:1.55;color:#374151}
+.simple .td-info{display:none}
 .c-express{background:linear-gradient(135deg,#d97706,#f59e0b)}
 /* Week menu */
 .wk-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.85);border:2px solid var(--mint-mid);border-radius:14px;padding:12px 14px;margin-bottom:8px}
@@ -203,6 +209,10 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
       <span class="nic">🧺</span>
       <div class="info"><span data-i18n="nc_pantry">CON LO QUE TENGO</span><span class="sub" data-i18n="nc_pantry_sub">Dime qué hay en casa y te digo qué cocinar</span></div>
     </button>
+    <button class="nav-card c-tdah" data-sub="c-tdah" onclick="go('tdah')">
+      <span class="nic">🧠</span>
+      <div class="info"><span>COCINA AMIGA DEL TDAH</span><span class="sub">Fibra, fermentados y omega-3</span></div>
+    </button>
     <button class="nav-card c-months" data-sub="c-months" onclick="go('months')">
       <span class="nic">🗓️</span>
       <div class="info"><span data-i18n="nc_months">TODOS LOS MESES</span><span class="sub" data-i18n="nc_months_sub">Recetas de temporada todo el año</span></div>
@@ -271,6 +281,13 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 <div class="max-w">
   <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1 data-i18n="fp_h">Alergias y gustos</h1></div>
   <div id="prefs-body"></div>
+</div>
+</div>
+
+<div id="v-tdah" class="screen">
+<div class="max-w">
+  <div class="topbar"><button class="back-btn" onclick="go('home')">←</button><h1>Cocina amiga del TDAH</h1></div>
+  <div id="tdah-content"></div>
 </div>
 </div>
 
@@ -1146,7 +1163,132 @@ const TOMATO_TXT={
  es:{A:'1 tomate (opcional · rallado, al rehogar)',B:'1 tomate (opcional · en dados, por encima al servir)',C:'1 tomate (opcional · en dados)',D:'1 tomate (opcional · en rodajas, para acompañar)',E:'2 cdas tomate triturado (opcional)',F:'2 cdas tomate triturado (opcional · en el relleno)',G:'2 tomates maduros (opcional · para el pisto)',H:'1 tomate (opcional · en rodajas)'},
  en:{A:'1 tomato (optional · grated, when sautéing)',B:'1 tomato (optional · diced, on top to serve)',C:'1 tomato (optional · diced)',D:'1 tomato (optional · sliced, on the side)',E:'2 tbsp crushed tomato (optional)',F:'2 tbsp crushed tomato (optional · in the filling)',G:'2 ripe tomatoes (optional · for the ratatouille)',H:'1 tomato (optional · sliced)'},
  fr:{A:'1 tomate (facultatif · râpée, en faisant revenir)',B:'1 tomate (facultatif · en dés, par-dessus au service)',C:'1 tomate (facultatif · en dés)',D:'1 tomate (facultatif · en rondelles, pour accompagner)',E:'2 c. à soupe de tomate concassée (facultatif)',F:'2 c. à soupe de tomate concassée (facultatif · dans la farce)',G:'2 tomates mûres (facultatif · pour la ratatouille)',H:'1 tomate (facultatif · en rondelles)'}};
-const ALL_RECIPES=[...MONTHS.flatMap(m=>[...m.comidas,...m.cenas]),...EXPRESS.comidas,...EXPRESS.cenas];
+/* ─── COCINA AMIGA DEL TDAH ───
+   Recetas de 20 min o menos, con pocos pasos, pensadas según la investigación sobre microbiota y salud
+   mental (dieta «psicobiótica»: fibra prebiótica y fermentados a diario, legumbres, pescado azul,
+   hidratos cocidos y enfriados por su almidón resistente, poco azúcar añadido). Apoyo, no tratamiento. */
+const TDAH={
+ comidas:[
+  {id:'tdah-c1',emoji:'🥣',name:'Bowl de lentejas con yogur y comino',time:'12 min',budget:'€',
+   harvard:{veg:'Pepino · zanahoria · cebolla',prot:'Lentejas · yogur',grain:'Arroz integral'},
+   tags:['Vegetariano','Fibra','Fermentado'],
+   desc:'Lentejas, arroz integral y salsa de yogur: fibra y fermentado en un solo plato.',
+   nutrients:[{v:'520',l:'kcal'},{v:'26g',l:'proteína'},{v:'15g',l:'fibra'}],
+   tip:'Haz el doble de arroz: frío de un día para otro tiene más almidón resistente, que también alimenta tu microbiota.',
+   ingredients:['1 bote lentejas cocidas (400g)','1 vaso arroz integral cocido (o de microondas)','½ cebolla roja','1 zanahoria rallada','½ pepino','1 yogur natural o kéfir sin azúcar','Comino, sal, aceite de oliva','1 tomate (opcional · en dados)'],
+   steps:[
+    {text:'Calienta el arroz (o usa el del día anterior). Escurre y enjuaga las lentejas',time:3,voice:'Calienta el arroz y escurre las lentejas'},
+    {text:'Pica la cebolla y el pepino y ralla la zanahoria',time:5,voice:'Pica la cebolla y el pepino y ralla la zanahoria'},
+    {text:'Mezcla el yogur con comino, sal y un chorrito de aceite',time:2,voice:'Mezcla el yogur con comino, sal y aceite'},
+    {text:'Monta el bol: arroz, lentejas, verduras y la salsa por encima',time:2,voice:'Monta el bol y pon la salsa por encima'}]},
+  {id:'tdah-c2',emoji:'🐟',name:'Salmón con espárragos y patata templada',time:'18 min',budget:'€€',
+   harvard:{veg:'Espárragos · cebolleta',prot:'Salmón',grain:'Patata'},
+   tags:['Sin gluten','Omega-3','Fibra'],
+   desc:'Pescado azul, verdura rica en fibra y patata cocida templada.',
+   nutrients:[{v:'560',l:'kcal'},{v:'34g',l:'proteína'},{v:'7g',l:'fibra'}],
+   tip:'Si cueces patatas para dos días, las del segundo día tienen más almidón resistente.',
+   ingredients:['1 lomo salmón','1 manojo espárragos verdes','2 patatas pequeñas','1 cebolleta','1 limón','Aceite de oliva, sal, eneldo'],
+   steps:[
+    {text:'Cuece las patatas en trozos en el microondas 6 min, tapadas y con un poco de agua',time:6,voice:'Cuece las patatas en el microondas seis minutos'},
+    {text:'Saltea los espárragos y la cebolleta en rodajas con aceite 5 min',time:5,voice:'Saltea los espárragos y la cebolleta cinco minutos'},
+    {text:'Haz el salmón en la misma sartén, 3 min por cada lado',time:6,voice:'Haz el salmón tres minutos por cada lado'},
+    {text:'Sirve con la patata, limón y eneldo',time:1,voice:'Sirve con la patata, limón y eneldo'}]},
+  {id:'tdah-c3',emoji:'🍝',name:'Pasta integral con caballa y brócoli',time:'15 min',budget:'€',
+   harvard:{veg:'Brócoli · cebolla roja',prot:'Caballa',grain:'Pasta integral'},
+   tags:['Omega-3','Fibra'],
+   desc:'Pasta integral con brócoli y caballa en lata. Fría también está buena.',
+   nutrients:[{v:'590',l:'kcal'},{v:'30g',l:'proteína'},{v:'11g',l:'fibra'}],
+   tip:'Cuece pasta para dos días: fría tiene más almidón resistente y mañana no cocinas.',
+   ingredients:['80g pasta integral','1 lata caballa','150g brócoli congelado','¼ cebolla roja','1 limón','Sal, pimienta'],
+   steps:[
+    {text:'Cuece la pasta; 4 min antes de acabar, echa el brócoli en la misma olla',time:10,voice:'Cuece la pasta y añade el brócoli cuatro minutos antes de acabar'},
+    {text:'Pica la cebolla muy fina',time:2,voice:'Pica la cebolla muy fina'},
+    {text:'Mezcla con la caballa (con un poco de su aceite), la cebolla, limón, sal y pimienta',time:3,voice:'Escurre y mezcla con la caballa, la cebolla y el limón'}]},
+  {id:'tdah-c4',emoji:'🍗',name:'Pollo con puerro, ajo y arroz integral',time:'18 min',budget:'€',
+   harvard:{veg:'Puerro · espárragos · ajo',prot:'Pollo',grain:'Arroz integral'},
+   tags:['Sin gluten','Fibra'],
+   desc:'Puerro, ajo y espárragos: verduras que alimentan a las bacterias buenas.',
+   nutrients:[{v:'540',l:'kcal'},{v:'36g',l:'proteína'},{v:'6g',l:'fibra'}],
+   tip:'El puerro, la cebolla, el ajo y los espárragos llevan inulina, una fibra que alimenta a la microbiota.',
+   ingredients:['150g pechuga de pollo en trozos','1 puerro','½ manojo espárragos verdes','2 dientes de ajo','1 vaso arroz integral cocido','Aceite de oliva, sal, pimentón'],
+   steps:[
+    {text:'Corta el puerro en rodajas y los espárragos en trozos. Lamina el ajo',time:4,voice:'Corta el puerro, los espárragos y el ajo'},
+    {text:'Saltea el pollo con aceite y sal 5 min a fuego fuerte',time:5,voice:'Saltea el pollo cinco minutos'},
+    {text:'Añade el puerro, el ajo y los espárragos. 6 min más removiendo',time:6,voice:'Añade las verduras, seis minutos más'},
+    {text:'Echa el arroz y el pimentón, mezcla 2 min y sirve',time:2,voice:'Añade el arroz y el pimentón, dos minutos y listo'}]}
+ ],
+ cenas:[
+  {id:'tdah-n1',emoji:'🍳',name:'Huevos con alcachofas y espinacas',time:'10 min',budget:'€',
+   harvard:{veg:'Alcachofa · espinacas',prot:'Huevo',grain:'Pan integral'},
+   tags:['Vegetariano','Fibra'],
+   desc:'Alcachofas de bote, espinacas y huevo: cena rápida con mucha fibra.',
+   nutrients:[{v:'420',l:'kcal'},{v:'22g',l:'proteína'},{v:'10g',l:'fibra'}],
+   tip:'La alcachofa es de las verduras con más inulina. Las de bote valen igual.',
+   ingredients:['4 corazones de alcachofa en bote','2 puñados espinacas (frescas o congeladas)','2 huevos','1 diente de ajo','1 rebanada pan integral','Aceite de oliva, sal'],
+   steps:[
+    {text:'Escurre y corta las alcachofas. Lamina el ajo',time:2,voice:'Escurre las alcachofas y lamina el ajo'},
+    {text:'Saltea el ajo y las alcachofas 3 min y añade las espinacas 2 min',time:5,voice:'Saltea las alcachofas y añade las espinacas'},
+    {text:'Casca los huevos encima, tapa y deja 3 min a fuego bajo',time:3,voice:'Casca los huevos encima y tapa tres minutos'},
+    {text:'Sirve con el pan integral',time:1,voice:'Sirve con el pan'}]},
+  {id:'tdah-n2',emoji:'🥑',name:'Tostadas de sardinas y aguacate',time:'5 min',budget:'€',
+   harvard:{veg:'Aguacate · rúcula',prot:'Sardinas',grain:'Pan integral'},
+   tags:['Omega-3','Sin cocinar'],
+   desc:'Sin fuegos: pescado azul, aguacate y pan integral en 5 minutos.',
+   nutrients:[{v:'480',l:'kcal'},{v:'24g',l:'proteína'},{v:'9g',l:'fibra'}],
+   tip:'Las sardinas en lata, con su espina blanda, también te dan calcio.',
+   ingredients:['1 lata sardinas','½ aguacate','2 rebanadas pan integral','1 puñado rúcula','½ limón','Sal, pimienta','1 tomate (opcional · en rodajas)'],
+   steps:[
+    {text:'Tuesta el pan',time:2,voice:'Tuesta el pan'},
+    {text:'Aplasta el aguacate con limón, sal y pimienta y úntalo',time:2,voice:'Aplasta el aguacate con limón y úntalo'},
+    {text:'Pon encima las sardinas y la rúcula',time:1,voice:'Pon las sardinas y la rúcula encima'}]},
+  {id:'tdah-n3',emoji:'🥕',name:'Hummus exprés con palitos de verdura',time:'8 min',budget:'€',
+   harvard:{veg:'Zanahoria · pepino · pimiento',prot:'Garbanzos',grain:'Pan integral'},
+   tags:['Vegetariano','Fibra','Sin cocinar'],
+   desc:'Garbanzos triturados y verdura cruda para mojar.',
+   nutrients:[{v:'450',l:'kcal'},{v:'17g',l:'proteína'},{v:'14g',l:'fibra'}],
+   tip:'Si no tienes tahini, usa una cucharada de yogur: queda más suave.',
+   ingredients:['1 bote garbanzos cocidos (400g)','1 cda tahini o yogur natural','1 limón','1 diente de ajo','1 zanahoria','½ pepino','½ pimiento rojo','1 rebanada pan integral','Aceite de oliva, sal, comino'],
+   steps:[
+    {text:'Escurre los garbanzos y tritúralos con tahini, limón, ajo, comino, sal y un chorro de aceite y de agua',time:4,voice:'Tritura los garbanzos con tahini, limón, ajo y aceite'},
+    {text:'Corta la zanahoria, el pepino y el pimiento en palitos',time:3,voice:'Corta las verduras en palitos'},
+    {text:'Sirve el hummus con los palitos y el pan',time:1,voice:'Sirve el hummus con las verduras y el pan'}]},
+  {id:'tdah-n4',emoji:'🎃',name:'Crema de calabaza y lentejas rojas con kéfir',time:'20 min',budget:'€',
+   harvard:{veg:'Calabaza · cebolla',prot:'Lentejas rojas · kéfir',grain:'—'},
+   tags:['Vegetariano','Sin gluten','Fibra','Fermentado'],
+   desc:'Crema suave y saciante, con kéfir por encima.',
+   nutrients:[{v:'430',l:'kcal'},{v:'20g',l:'proteína'},{v:'12g',l:'fibra'}],
+   tip:'El kéfir y el yogur, mejor al final y sin hervir, para que conserven sus bacterias vivas.',
+   ingredients:['300g calabaza en dados (fresca o congelada)','60g lentejas rojas','½ cebolla','500ml caldo de verduras','2 cdas kéfir o yogur natural','Aceite de oliva, sal, comino'],
+   steps:[
+    {text:'Rehoga la cebolla picada con aceite 3 min',time:3,voice:'Rehoga la cebolla tres minutos'},
+    {text:'Añade la calabaza, las lentejas rojas, el caldo y el comino. Cuece 15 min tapado',time:15,voice:'Añade la calabaza, las lentejas y el caldo, quince minutos'},
+    {text:'Tritura, prueba de sal y sirve con el kéfir por encima',time:2,voice:'Tritura y sirve con el kéfir por encima'}]}
+ ],
+ extra:[
+  {id:'tdah-d1',emoji:'🥛',name:'Kéfir con avena, plátano y nueces',time:'3 min',budget:'€',
+   harvard:{veg:'Plátano',prot:'Kéfir · nueces',grain:'Avena'},
+   tags:['Vegetariano','Fermentado','Fibra','Omega-3','Sin cocinar'],
+   desc:'Desayuno sin cocinar, con energía que dura.',
+   nutrients:[{v:'430',l:'kcal'},{v:'16g',l:'proteína'},{v:'9g',l:'fibra'}],
+   tip:'Un plátano poco maduro tiene más almidón resistente. Elige kéfir o yogur sin azúcar añadido.',
+   ingredients:['1 vaso kéfir o yogur natural sin azúcar','4 cdas copos de avena','1 plátano','1 puñado nueces','1 cda semillas de lino o chía (opcional)'],
+   steps:[
+    {text:'Pon el kéfir en un bol y añade la avena',time:1,voice:'Pon el kéfir y la avena en un bol'},
+    {text:'Corta el plátano por encima y añade las nueces y las semillas',time:2,voice:'Añade el plátano, las nueces y las semillas'}]},
+  {id:'tdah-d2',emoji:'🍎',name:'Yogur con manzana, canela y almendras',time:'3 min',budget:'€',
+   harvard:{veg:'Manzana',prot:'Yogur · almendras',grain:'—'},
+   tags:['Vegetariano','Sin gluten','Fermentado','Fibra','Sin cocinar'],
+   desc:'Merienda dulce sin azúcar añadido.',
+   nutrients:[{v:'300',l:'kcal'},{v:'12g',l:'proteína'},{v:'6g',l:'fibra'}],
+   tip:'La manzana con piel lleva pectina, otra fibra que alimenta a la microbiota.',
+   ingredients:['1 yogur natural o kéfir sin azúcar','1 manzana','1 puñado almendras','Canela'],
+   steps:[
+    {text:'Corta la manzana en dados, con piel',time:2,voice:'Corta la manzana en dados'},
+    {text:'Ponla sobre el yogur con las almendras y la canela',time:1,voice:'Añade la manzana, las almendras y la canela al yogur'}]}
+ ]
+};
+const TDAH_ALL=[...TDAH.comidas,...TDAH.cenas,...TDAH.extra];
+const ALL_RECIPES=[...MONTHS.flatMap(m=>[...m.comidas,...m.cenas]),...EXPRESS.comidas,...EXPRESS.cenas,...TDAH_ALL];
 ALL_RECIPES.forEach(r=>{const k=TOMATO_ADD[r.id];if(!k)return;r.ingredients=r.ingredients.concat(TOMATO_TXT.es[k]);
   ['en','fr'].forEach(l=>{const tr=REC_L[l]&&REC_L[l][r.id];if(tr&&tr.ingredients)tr.ingredients=tr.ingredients.concat(TOMATO_TXT[l][k]);});});
 if(NORM_L.en)Object.assign(NORM_L.en,{'tomate':'Tomatoes','tomate triturado':'Crushed tomato'});
@@ -1306,6 +1448,7 @@ function go(v){
   if(v==='pantry')renderPantry();
   if(v==='prefs'){fpDraft=null;renderPrefs();}
   if(v==='basicos')renderBasicos();
+  if(v==='tdah')renderTdah();
   if(v==='home')initHome();
   if(v==='test')renderPick(); // al volver de una receta, la sugerencia se recalcula
 }
@@ -1376,6 +1519,7 @@ function findRecipe(id){
   }
   for(const r of EXPRESS.comidas)if(r.id===id)return r;
   for(const r of EXPRESS.cenas)if(r.id===id)return r;
+  for(const r of TDAH_ALL)if(r.id===id)return r;
   return null;
 }
 let backView='month';
@@ -1633,7 +1777,7 @@ const PT_ITEMS=[
  ['leche-coco','🥥','desp',L3('Leche de coco','Coconut milk','Lait de coco'),/leche de coco/],
  ['feta','🧀','desp',L3('Queso feta','Feta','Feta'),/feta/],
  ['queso','🧀','desp',L3('Queso (rallado o para fundir)','Cheese (grated or melting)','Fromage (râpé ou à fondre)'),/queso|mozzarella|parmesano/],
- ['yogur','🥛','desp',L3('Yogur natural','Plain yogurt','Yaourt nature'),/yogur/],
+ ['yogur','🥛','desp',L3('Yogur o kéfir','Yogurt or kefir','Yaourt ou kéfir'),/yogur|k[eé]fir/],
  ['aceitunas','🫒','desp',L3('Aceitunas','Olives','Olives'),/aceituna/],
  ['almendras','🌰','desp',L3('Almendras','Almonds','Amandes'),/almendra/],
  ['maiz','🌽','desp',L3('Maíz dulce','Sweetcorn','Maïs doux'),/ma[ií]z/],
@@ -1650,7 +1794,7 @@ const PT_ITEMS=[
  ['quinoa','🌾','cer',L3('Quinoa','Quinoa','Quinoa'),/quinoa/],
  ['cuscus','🌾','cer',L3('Cuscús','Couscous','Semoule'),/cusc[uú]s/],
  ['pan','🍞','cer',L3('Pan','Bread','Pain'),/\bpan\b/],
- ['cebolla','🧅','veg',L3('Cebolla','Onion','Oignon'),/cebolla/],
+ ['cebolla','🧅','veg',L3('Cebolla','Onion','Oignon'),/ceboll/],
  ['puerro','🥬','veg',L3('Puerro','Leek','Poireau'),/puerro/],
  ['zanahoria','🥕','veg',L3('Zanahoria','Carrot','Carotte'),/zanahoria/],
  ['calabacin','🥒','veg',L3('Calabacín','Courgette','Courgette'),/calabac[ií]n/],
@@ -1666,7 +1810,16 @@ const PT_ITEMS=[
  ['pepino','🥒','veg',L3('Pepino','Cucumber','Concombre'),/pepino/],
  ['limon','🍋','veg',L3('Limón','Lemon','Citron'),/lim[oó]n/],
  ['melon','🍈','veg',L3('Melón','Melon','Melon'),/mel[oó]n/],
- ['tomate','🍅','veg',L3('Tomate','Tomato','Tomate'),/tomate/]];
+ ['tomate','🍅','veg',L3('Tomate','Tomato','Tomate'),/tomate/],
+ ['patata','🥔','cer',L3('Patatas','Potatoes','Pommes de terre'),/patata/],
+ ['alcachofa','🌿','veg',L3('Alcachofas','Artichokes','Artichauts'),/alcachofa/],
+ ['rucula','🥗','veg',L3('Rúcula o lechuga','Rocket or lettuce','Roquette ou salade'),/r[uú]cula|lechuga/],
+ ['avena','🌾','cer',L3('Copos de avena','Oats','Flocons d’avoine'),/avena/],
+ ['platano','🍌','veg',L3('Plátano','Banana','Banane'),/pl[aá]tano/],
+ ['manzana','🍎','veg',L3('Manzana','Apple','Pomme'),/manzana/],
+ ['nueces','🌰','desp',L3('Nueces','Walnuts','Noix'),/nuez|nueces/],
+ ['sardinas','🐟','prot',L3('Sardinas o caballa en lata','Canned sardines or mackerel','Sardines ou maquereau en boîte'),/sardina|caballa/],
+ ['aguacate','🥑','veg',L3('Aguacate','Avocado','Avocat'),/aguacate/]];
 function ptItemOf(line){const k=normIngr(line).toLowerCase();return PT_ITEMS.find(x=>x[4].test(k))||null;}
 /* Lo que hace falta de verdad: sin opcionales, sin «para acompañar» y sin lo de despensa (aceite, sal, ajo, especias) */
 function ptNeeds(r){const need=new Set();r.ingredients.forEach(l=>{if(isOptLine(l)||PANTRY_RE.test(l)||/para acompañar/i.test(l))return;const it=ptItemOf(l);if(it)need.add(it[0]);});return [...need];}
@@ -1777,6 +1930,22 @@ function renderBasicos(){
    <div class="card"><ul class="ingr-list">${SHOPPING.flatMap(c=>c.items).map(i=>`<li>${shopItemL(i.id,'name',i.name)}</li>`).join('')}</ul></div>`;
 }
 
+/* ── COCINA AMIGA DEL TDAH ── */
+function renderTdah(){
+  const card=r0=>{const r=recL(r0);const warn=recipeOK(r0)?'':`<span class="fp-badge">${t('fp_contains',{x:r0._blocked.join(', ')})}</span>`;return `
+    <div class="recipe-card" onclick="openRecipe('${r0.id}','tdah')">
+      <div class="r-head"><span class="r-emoji">${r.emoji}</span>
+      <div class="r-info"><h3>${r.name}</h3><div class="r-badges"><span class="badge b-time">${r.time}</span><span class="badge b-budget">${r.budget}</span></div></div></div>
+      <div class="tag-row">${r.tags.filter(x=>/Fibra|Fermentado|Omega-3|Sin cocinar/.test(x)).map(x=>`<span class="tag">${x}</span>`).join('')}</div>${warn}</div>`;};
+  document.getElementById('tdah-content').innerHTML=`
+    <div class="td-info">Basadas en la investigación sobre microbiota y salud mental: fibra y fermentados cada día, legumbres, pescado azul, hidratos cocidos y enfriados, y poco azúcar. Todas en 20 minutos o menos y con pocos pasos.</div>
+    <div class="td-legend"><span>🌱 Fibra</span><span>🥛 Fermentado</span><span>🐟 Omega-3</span><span>🔥 Sin cocinar</span></div>
+    <p class="section-label">Comidas</p>${TDAH.comidas.map(card).join('')}
+    <p class="section-label" style="margin-top:16px">Cenas</p>${TDAH.cenas.map(card).join('')}
+    <p class="section-label" style="margin-top:16px">Desayunos y meriendas</p>${TDAH.extra.map(card).join('')}
+    <p class="td-note">La comida suma, pero no sustituye al tratamiento.</p>`;
+}
+
 /* ── SHOPPING ── */
 function getChecked(){try{return JSON.parse(localStorage.getItem('cris_comida_shop')||'{}');}catch(e){return{};}}
 function setChecked(d){try{localStorage.setItem('cris_comida_shop',JSON.stringify(d));}catch(e){}}
@@ -1797,7 +1966,7 @@ function removeFromShop(id){
 }
 /* La compra semanal se genera sola desde las 14 recetas del menú.
    Los ingredientes de despensa (aceite, especias...) se filtran: ya están en básicos. */
-const PANTRY_RE=/(aceite|(^|\s)sal\b|sal,|pimienta|orégano|oregano|comino|cúrcuma|curcuma|pimentón|pimenton|vinagre|ajo|especias|agua|papel de horno|eneldo|jengibre|menta|hierbabuena|laurel|curry)/i;
+const PANTRY_RE=/(canela|aceite|(^|\s)sal\b|sal,|pimienta|orégano|oregano|comino|cúrcuma|curcuma|pimentón|pimenton|vinagre|ajo|especias|\bagua\b|papel de horno|eneldo|jengibre|menta|hierbabuena|laurel|curry)/i;
 function normIngr(s){
   let t=s.replace(/\(.*?\)/g,'').trim();
   t=t.replace(/^[\d½¼¾.,\/\s]+/,'');
