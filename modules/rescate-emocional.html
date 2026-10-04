@@ -175,6 +175,9 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .crisis-nums a{display:flex;align-items:center;gap:10px;text-decoration:none;background:var(--mint-soft,#f0fbf9);border-radius:12px;padding:10px 12px;color:var(--teal-dark,#1a6b64);font-weight:700;font-size:.9rem}
 .crisis-nums a b{font-size:1.15rem;min-width:64px}
 .crisis-box .crisis-note{font-size:.78rem;color:#6b7280;margin:0}
+
+/* modo «menos texto» */
+.simple .home-hdr p,.simple .asub,.simple .pp-intro,.simple .tlist .tinfo p,.simple .tdesc{display:none}
 </style>
 </head>
 <body>
@@ -339,6 +342,8 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 if(__cfg().calm)document.documentElement.classList.add('calm');
+/* Menos texto: descripciones y frases decorativas ocultas salvo que se activen las explicaciones (☰ Menú) */
+if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 
 /* ── IDIOMAS (es · en · fr) ── */
 const UI={

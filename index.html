@@ -406,6 +406,9 @@ body.mod-open #menuBtn{display:none;}
 .backup-box{display:none;padding:8px 2px 0}.backup-box.open{display:block}
 .backup-row{display:flex;gap:8px;margin-top:8px}
 .backup-row button{flex:1;border:none;background:var(--mint-mid);color:var(--teal-dark);border-radius:12px;padding:10px 6px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer}
+
+/* modo «menos texto» */
+.simple .hero-sub,.simple .tp-s,.simple .tp-hint,.simple .ao-desc{display:none}
 </style>
 <script src="shared/alergias.js"></script>
 </head>
@@ -480,6 +483,7 @@ body.mod-open #menuBtn{display:none;}
       <button id="c-voice" onclick="toggleCfg('voice')" data-i18n="cfg_voice">🗣️ Voz</button>
       <button id="c-sound" onclick="toggleCfg('sound')" data-i18n="cfg_sound">🔔 Sonido</button>
       <button id="c-vib" onclick="toggleCfg('vib')" data-i18n="cfg_vib">📳 Vibración</button>
+      <button id="c-explain" onclick="toggleExplain()" data-i18n="cfg_explain">📖 Explicaciones</button>
     </div>
     <div class="cfg-note" data-i18n="cfg_note">Los ajustes se aplican a toda la app</div>
   </div>
@@ -527,7 +531,7 @@ body.mod-open #menuBtn{display:none;}
 <script>
 /* ══════════ IDIOMAS (es por defecto · en · fr) ══════════ */
 const I18N={
- es:{
+ es:{cfg_explain:'📖 Explicaciones',
   menu:'Menú', menu_open:'Abrir menú', menu_close:'Cerrar menú', menu_title:'🌿 Menú de Quico', lang_change:'Cambiar idioma',
   hero_sub:'¿en qué te ayudo hoy?',
   lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes', ob_replay:'🦘 Ver el recorrido',
@@ -590,7 +594,7 @@ const I18N={
   pil:['Estiramientos de espalda','Piernas y glúteos','Pecho, hombros y brazos','Abdomen y core','Espalda y postura','Cuerpo completo','Estiramientos de cadera'],
   zone:{cocina:'Cocina',bano:'Baño',salon:'Salón',dormitorio:'Dormitorio',comunes:'Zonas Comunes'}
  },
- en:{
+ en:{cfg_explain:'📖 Explanations',
   menu:'Menu', menu_open:'Open menu', menu_close:'Close menu', menu_title:'🌿 Quico menu', lang_change:'Change language',
   hero_sub:'how can I help you today?',
   lang_label:'Language', modules_label:'Modules', settings_label:'Settings', ob_replay:'🦘 Watch the tour',
@@ -653,7 +657,7 @@ const I18N={
   pil:['Back stretches','Legs & glutes','Chest, shoulders & arms','Abs & core','Back & posture','Full body','Hip stretches'],
   zone:{cocina:'Kitchen',bano:'Bathroom',salon:'Living room',dormitorio:'Bedroom',comunes:'Common areas'}
  },
- fr:{
+ fr:{cfg_explain:'📖 Explications',
   menu:'Menu', menu_open:'Ouvrir le menu', menu_close:'Fermer le menu', menu_title:'🌿 Menu de Quico', lang_change:'Changer de langue',
   hero_sub:'comment puis-je t’aider aujourd’hui ?',
   lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages', ob_replay:'🦘 Revoir la visite',
@@ -1062,6 +1066,7 @@ function setCfgStore(c){try{localStorage.setItem('cris_cfg',JSON.stringify(c));}
 function cfgName(){return (getCfg().name||'').trim();}
 let _nameSaveT=null;
 function saveName(v){const c=getCfg();c.name=(v||'').slice(0,18);setCfgStore(c);clearTimeout(_nameSaveT);_nameSaveT=setTimeout(()=>{applyStaticI18n();setGreeting();renderNotif();},350);}
+function toggleExplain(){const c=getCfg();c.explain=c.explain!==true;setCfgStore(c);document.documentElement.classList.toggle('simple',c.explain!==true);renderCfg();}
 function toggleCfg(k){const c=getCfg();c[k]=c[k]===false;setCfgStore(c);renderCfg();}
 function toggleCalm(){
   const c=getCfg();c.calm=c.calm!==true;setCfgStore(c);
@@ -1074,11 +1079,13 @@ function renderCfg(){
   document.getElementById('c-voice').classList.toggle('off',c.voice===false||c.calm===true);
   document.getElementById('c-sound').classList.toggle('off',c.sound===false||c.calm===true);
   document.getElementById('c-vib').classList.toggle('off',c.vib===false||c.calm===true);
+  const ce=document.getElementById('c-explain');if(ce)ce.classList.toggle('off',c.explain!==true);
   const cb=document.getElementById('calmBtn');
   cb.classList.toggle('on',c.calm===true);
   cb.textContent=c.calm?t('calm_on'):t('calm_off');
 }
 if(getCfg().calm)document.documentElement.classList.add('calm');
+if(getCfg().explain!==true)document.documentElement.classList.add('simple');
 
 /* ── RECORDATORIOS (notificaciones locales mientras la app está abierta) ── */
 function getNotifCfg(){try{return JSON.parse(localStorage.getItem('cris_notif')||'{}');}catch(e){return{};}}
