@@ -322,6 +322,9 @@ body {
 .quico-mascot .qm-head{display:block;margin:0;filter:none;}
 .qm-paws{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);width:66%;line-height:0;}
 .qm-paws svg{display:block;width:100%;}
+
+/* modo «menos texto» */
+.simple .subtitle{display:none}
 </style>
 </head>
 <body>
@@ -410,6 +413,8 @@ function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n;}catch(e){return '';}}
 if(__cfg().calm)document.documentElement.classList.add('calm');
+/* Menos texto: descripciones y frases decorativas ocultas salvo que se activen las explicaciones (☰ Menú) */
+if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 
 /* ── IDIOMAS (es · en · fr) ── */
 const UI={

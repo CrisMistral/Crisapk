@@ -370,6 +370,9 @@ body{background:#f6fbfa}
 @media (prefers-reduced-motion:reduce){
   .xs *,.xs{animation:none!important;transition:none!important}
 }
+
+/* modo «menos texto» */
+.simple .home-header p,.simple .prog-note{display:none}
 </style>
 </head>
 <body>
@@ -419,6 +422,8 @@ function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n;}catch(e){return '';}}
 if(__cfg().calm)document.documentElement.classList.add('calm');
+/* Menos texto: descripciones y frases decorativas ocultas salvo que se activen las explicaciones (☰ Menú) */
+if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
 
 /* ─── IDIOMAS (es · en · fr) ─── */

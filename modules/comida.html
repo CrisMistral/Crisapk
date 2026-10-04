@@ -166,6 +166,9 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .fp-text{width:100%;border:2px solid #b8e4dd;border-radius:12px;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:16px;color:#1a6b64;resize:vertical}
 .fp-echo{font-size:.8rem;color:#1a6b64;margin-top:6px;line-height:1.5}
 .fp-edit{border:none;background:none;color:#1a6b64;font-weight:700;font-family:'Outfit',sans-serif;text-decoration:underline;cursor:pointer;padding:6px 0 0;font-size:.85rem}
+
+/* modo «menos texto» */
+.simple .home-header p,.simple .nav-card .sub{display:none}
 </style>
 <script src="../shared/alergias.js"></script>
 </head>
@@ -296,6 +299,8 @@ function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}
 function __allow(k){const c=__cfg();return c[k]!==false&&c.calm!==true;}
 function __uname(){try{var c=__cfg();var n=(c.name||'').trim();return n;}catch(e){return '';}}
 if(__cfg().calm)document.documentElement.classList.add('calm');
+/* Menos texto: descripciones y frases decorativas ocultas salvo que se activen las explicaciones (☰ Menú) */
+if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 
 function __ring(id,frac){const r=document.getElementById(id);if(r)r.style.background='conic-gradient(#26a69a '+(Math.max(0,Math.min(1,frac))*360)+'deg,#cde9e4 0)';}
 
@@ -315,7 +320,7 @@ const UI={
   q2_title:'2️⃣ ¿Te apetece proteína animal?',q2_a:'🐟 Sí — pescado, pollo o huevo',q2_b:'🌱 Mejor vegetariano',q2_c:'🤷 Me da igual, sorpréndeme',
   note_fast:'No queda nada tan rápido — esto es lo más cercano:',note_type:'De ese tipo no queda esta semana — pero mira:',note_left:'Esto es lo que queda esta semana:',note_complete:'¡Semana completada! 🎉 Un salvavidas de despensa:',
   btn_another:'🔄 Otra opción ({n} disponibles)',btn_change:'↺ Cambiar mis respuestas',btn_express10:'⚡ Mejor algo de 10 minutos',chip_lunch:'☀️ Comida',chip_dinner:'🌙 Cena',
-  week_banner_rem:'Te quedan <strong>{n} de {tot}</strong> recetas esta semana. Marca ✓ al comerla — así siempre sabes qué puedes cocinar con lo que queda en la nevera 💚',week_banner_done:'🎉 ¡Semana completada! El lunes el menú se reinicia solo.',from_pantry:' · de despensa',week_lunch7:'☀️ Comidas ({n})',week_dinner7:'🌙 Cenas ({n})',
+  week_banner_rem:'Te quedan <strong>{n} de {tot}</strong> recetas esta semana.',week_banner_done:'🎉 ¡Semana completada! El lunes el menú se reinicia solo.',from_pantry:' · de despensa',week_lunch7:'☀️ Comidas ({n})',week_dinner7:'🌙 Cenas ({n})',
   basics_intro:'Con estos básicos siempre en casa nunca te quedas sin comer. Recetas de ~10 minutos, cero pensar ⚡',basics_recipes:'Recetas salvavidas',basics_pantry:'Tu despensa salvavidas',all_pantry:'todo de despensa',
   shop_week_label:'📅 La compra de la semana — cubre las 14 recetas',in_n_recipes:'en {n} recetas del menú',shop_extras:'➕ Extras que añadiste tú',btn_remove:'✕ quitar',shop_basics_label:'🧺 Básicos salvavidas (revisa que no falten)',
   share_title:'🛒 Compra de la semana — {u}\n',share_basics:'🧺 BÁSICOS SALVAVIDAS',share_in:'(en {n} recetas)',share_share_title:'Lista de compras {u}',copied:'📋 Lista copiada 💚'},
@@ -333,7 +338,7 @@ const UI={
   q2_title:'2️⃣ Do you fancy animal protein?',q2_a:'🐟 Yes — fish, chicken or egg',q2_b:'🌱 Rather vegetarian',q2_c:'🤷 I don\u2019t mind, surprise me',
   note_fast:'Nothing that quick is left — this is the closest:',note_type:'None of that kind left this week — but look:',note_left:'This is what\u2019s left this week:',note_complete:'Week complete! 🎉 A pantry lifesaver:',
   btn_another:'🔄 Another option ({n} available)',btn_change:'↺ Change my answers',btn_express10:'⚡ Rather something 10-minute',chip_lunch:'☀️ Lunch',chip_dinner:'🌙 Dinner',
-  week_banner_rem:'You have <strong>{n} of {tot}</strong> recipes left this week. Tick ✓ when you eat it — so you always know what you can cook with what\u2019s left in the fridge 💚',week_banner_done:'🎉 Week complete! On Monday the menu resets on its own.',from_pantry:' · from the pantry',week_lunch7:'☀️ Lunches ({n})',week_dinner7:'🌙 Dinners ({n})',
+  week_banner_rem:'You have <strong>{n} of {tot}</strong> recipes left this week.',week_banner_done:'🎉 Week complete! On Monday the menu resets on its own.',from_pantry:' · from the pantry',week_lunch7:'☀️ Lunches ({n})',week_dinner7:'🌙 Dinners ({n})',
   basics_intro:'With these basics always at home you never run out of food. ~10-minute recipes, zero thinking ⚡',basics_recipes:'Lifesaver recipes',basics_pantry:'Your lifesaver pantry',all_pantry:'all from the pantry',
   shop_week_label:'📅 This week\u2019s shop — covers all 14 recipes',in_n_recipes:'in {n} menu recipes',shop_extras:'➕ Extras you added',btn_remove:'✕ remove',shop_basics_label:'🧺 Lifesaver basics (check you\u2019re not out)',
   share_title:'🛒 This week\u2019s shop — {u}\n',share_basics:'🧺 LIFESAVER BASICS',share_in:'(in {n} recipes)',share_share_title:'{u} shopping list',copied:'📋 List copied 💚'},
@@ -351,7 +356,7 @@ const UI={
   q2_title:'2️⃣ Tu as envie de protéine animale ?',q2_a:'🐟 Oui — poisson, poulet ou œuf',q2_b:'🌱 Plutôt végétarien',q2_c:'🤷 Ça m\u2019est égal, surprends-moi',
   note_fast:'Il ne reste rien d\u2019aussi rapide — voici le plus proche :',note_type:'Rien de ce type cette semaine — mais regarde :',note_left:'Voici ce qu\u2019il reste cette semaine :',note_complete:'Semaine terminée ! 🎉 Un dépannage du placard :',
   btn_another:'🔄 Une autre option ({n} disponibles)',btn_change:'↺ Changer mes réponses',btn_express10:'⚡ Plutôt quelque chose de 10 minutes',chip_lunch:'☀️ Déjeuner',chip_dinner:'🌙 Dîner',
-  week_banner_rem:'Il te reste <strong>{n} sur {tot}</strong> recettes cette semaine. Coche ✓ quand tu la manges — comme ça tu sais toujours quoi cuisiner avec ce qu\u2019il reste au frigo 💚',week_banner_done:'🎉 Semaine terminée ! Lundi le menu se réinitialise tout seul.',from_pantry:' · du placard',week_lunch7:'☀️ Déjeuners ({n})',week_dinner7:'🌙 Dîners ({n})',
+  week_banner_rem:'Il te reste <strong>{n} sur {tot}</strong> recettes cette semaine.',week_banner_done:'🎉 Semaine terminée ! Lundi le menu se réinitialise tout seul.',from_pantry:' · du placard',week_lunch7:'☀️ Déjeuners ({n})',week_dinner7:'🌙 Dîners ({n})',
   basics_intro:'Avec ces basiques toujours à la maison, tu ne te retrouves jamais sans repas. Recettes de ~10 minutes, zéro réflexion ⚡',basics_recipes:'Recettes de dépannage',basics_pantry:'Ton placard de dépannage',all_pantry:'tout du placard',
   shop_week_label:'📅 La course de la semaine — couvre les 14 recettes',in_n_recipes:'dans {n} recettes du menu',shop_extras:'➕ Extras que tu as ajoutés',btn_remove:'✕ retirer',shop_basics_label:'🧺 Basiques de dépannage (vérifie qu\u2019il n\u2019en manque pas)',
   share_title:'🛒 Course de la semaine — {u}\n',share_basics:'🧺 BASIQUES DE DÉPANNAGE',share_in:'(dans {n} recettes)',share_share_title:'Liste de courses {u}',copied:'📋 Liste copiée 💚'}
