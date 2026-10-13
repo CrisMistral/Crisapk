@@ -1,19 +1,21 @@
-// ─── Recordatorios de citas: Google Calendar → WhatsApp ─────────────────────
-// Lógica compartida por las funciones recordatorios-citas.js (programada) y
-// citas-prueba.js (manual, protegida por contraseña).
+// ─── Recordatorios de citas: Google Calendar → WhatsApp (gratis) ────────────
+// Lógica compartida por citas.js (la página citas.html) y citas-resumen.js
+// (el email de cada mañana).
 //
 //   1. Lee las citas de tu Google Calendar con una "cuenta de servicio"
 //      (sin dependencias: el token JWT se firma con el módulo crypto de Node).
 //   2. Saca de cada cita el teléfono de la clienta (descripción o ubicación).
-//   3. Envía una plantilla de WhatsApp aprobada con la API oficial de Meta
-//      (WhatsApp Cloud API).
-//   4. Apunta cada envío en Netlify Blobs para no repetir nunca un recordatorio.
+//   3. Prepara un enlace wa.me con el mensaje ya escrito: lo abres, WhatsApp
+//      se abre con el texto listo y solo pulsas enviar. Sin API de Meta, sin coste.
 //
 // Guía paso a paso: docs/RECORDATORIOS_WHATSAPP.md
 // ─────────────────────────────────────────────────────────────────────────────
 const crypto = require('crypto');
 
-const env = (k, def = '') => (process.env[k] || def).trim();
+const env = (k, def = '') => (process.env[k] || '').trim() || def;
+
+const MENSAJE_POR_DEFECTO =
+  'Hola {nombre} 👋 Te recuerdo tu cita del {fecha} a las {hora}. Si no puedes venir, avísame por aquí. ¡Gracias!';
 
 function config() {
   return {
@@ -21,19 +23,14 @@ function config() {
     clientEmail: env('GOOGLE_CLIENT_EMAIL'),
     // En Netlify los saltos de línea de la clave suelen llegar como "\n" literal
     privateKey: env('GOOGLE_PRIVATE_KEY').replace(/\\n/g, '\n'),
-    waToken: env('WHATSAPP_TOKEN'),
-    waPhoneId: env('WHATSAPP_PHONE_NUMBER_ID'),
-    template: env('WHATSAPP_TEMPLATE', 'recordatorio_cita'),
-    templateLang: env('WHATSAPP_TEMPLATE_LANG', 'es'),
-    horasAntes: Number(env('RECORDATORIO_HORAS_ANTES', '24')) || 24,
     zona: env('CALENDAR_TIMEZONE', 'Europe/Madrid'),
     prefijo: env('PREFIJO_PAIS', '34').replace(/\D/g, ''),
+    mensaje: env('MENSAJE_RECORDATORIO', MENSAJE_POR_DEFECTO),
   };
 }
 
-function faltan(cfg, conWhatsApp = true) {
+function faltan(cfg) {
   const req = { GOOGLE_CALENDAR_ID: cfg.calendarId, GOOGLE_CLIENT_EMAIL: cfg.clientEmail, GOOGLE_PRIVATE_KEY: cfg.privateKey };
-  if (conWhatsApp) Object.assign(req, { WHATSAPP_TOKEN: cfg.waToken, WHATSAPP_PHONE_NUMBER_ID: cfg.waPhoneId });
   return Object.keys(req).filter((k) => !req[k]);
 }
 
@@ -64,7 +61,7 @@ async function tokenGoogle(cfg) {
   return data.access_token;
 }
 
-async function citasProximas(cfg, desde, hasta) {
+async function eventosEntre(cfg, desde, hasta) {
   const token = await tokenGoogle(cfg);
   const url = new URL(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cfg.calendarId)}/events`);
   url.search = new URLSearchParams({
@@ -78,6 +75,31 @@ async function citasProximas(cfg, desde, hasta) {
   const data = await res.json();
   if (!res.ok) throw new Error(`Google Calendar: ${(data.error && data.error.message) || res.status}`);
   return data.items || [];
+}
+
+// ── Fechas en tu zona horaria ───────────────────────────────────────────────
+// "2026-10-14" del día de esa fecha en la zona indicada
+const diaLocal = (d, zona) => new Intl.DateTimeFormat('en-CA', { timeZone: zona, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+const horaLocal = (d, zona) => Number(new Intl.DateTimeFormat('en-GB', { timeZone: zona, hour: '2-digit', hourCycle: 'h23' }).format(d));
+
+function fechaHora(iso, zona) {
+  const d = new Date(iso);
+  const fecha = new Intl.DateTimeFormat('es-ES', { timeZone: zona, weekday: 'long', day: 'numeric', month: 'long' }).format(d).replace(',', '');
+  const hora = new Intl.DateTimeFormat('es-ES', { timeZone: zona, hour: '2-digit', minute: '2-digit' }).format(d);
+  return { fecha, hora };
+}
+
+// Citas de hoy (desplazamiento 0), mañana (1)… según tu zona horaria
+async function citasDelDia(cfg, desplazamiento = 1) {
+  const ahora = Date.now();
+  const objetivo = diaLocal(new Date(ahora + desplazamiento * 86400000), cfg.zona);
+  // Ventana amplia (±36 h alrededor del día) y luego se filtra por fecha local
+  const centro = ahora + desplazamiento * 86400000;
+  const eventos = await eventosEntre(cfg, new Date(centro - 36 * 3600000), new Date(centro + 36 * 3600000));
+  const citas = eventos
+    .filter((ev) => ev.start && ev.start.dateTime && diaLocal(new Date(ev.start.dateTime), cfg.zona) === objetivo)
+    .map((ev) => analizarCita(ev, cfg));
+  return { dia: objetivo, citas };
 }
 
 // ── Datos de la cita ────────────────────────────────────────────────────────
@@ -96,7 +118,7 @@ function normalizarTelefono(crudo, prefijo) {
 // Prioridad: línea "Tel:/Teléfono:/WhatsApp:/Móvil:" → cualquier número largo
 function telefonoDeCita(ev, prefijo) {
   const texto = `${textoPlano(ev.description)}\n${ev.location || ''}`;
-  const etiquetado = texto.match(/(?:tel[eé]fono|tel|whats ?app|wa|m[oó]vil|movil)\s*[:.]?\s*(\+?[\d][\d\s.()-]{7,}\d)/i);
+  const etiquetado = texto.match(/(?:tel[eé]fono|tel|whats ?app|wa|m[oó]vil)\s*[:.]?\s*(\+?\d[\d\s.()-]{7,}\d)/i);
   if (etiquetado) return normalizarTelefono(etiquetado[1], prefijo);
   const suelto = texto.match(/(\+|00)?\d[\d\s.-]{7,}\d/);
   return suelto ? normalizarTelefono(suelto[0], prefijo) : null;
@@ -105,57 +127,28 @@ function telefonoDeCita(ev, prefijo) {
 // "Nombre: Ana" en la descripción; si no, el título de la cita
 function nombreDeCita(ev) {
   const m = textoPlano(ev.description).match(/(?:nombre|cliente|clienta)\s*:\s*([^\n]+)/i);
-  return (m ? m[1] : ev.summary || '').trim() || 'hola';
+  return (m ? m[1] : ev.summary || '').replace(/#sin-?recordatorio/gi, '').trim();
 }
 
-function fechaHora(iso, zona) {
-  const d = new Date(iso);
-  const fecha = new Intl.DateTimeFormat('es-ES', { timeZone: zona, weekday: 'long', day: 'numeric', month: 'long' }).format(d);
-  const hora = new Intl.DateTimeFormat('es-ES', { timeZone: zona, hour: '2-digit', minute: '2-digit' }).format(d);
-  return { fecha, hora };
-}
+const rellenar = (plantilla, datos) => plantilla.replace(/\{(\w+)\}/g, (m, k) => (k in datos ? datos[k] : m));
 
 // Convierte un evento de Google en una cita lista para avisar, o explica por qué no
 function analizarCita(ev, cfg) {
   const base = { id: ev.id, titulo: ev.summary || '(sin título)', inicio: ev.start && (ev.start.dateTime || ev.start.date) };
   if (ev.status === 'cancelled') return { ...base, omitida: 'cancelada' };
   if (!ev.start || !ev.start.dateTime) return { ...base, omitida: 'evento de día completo' };
+  const { fecha, hora } = fechaHora(ev.start.dateTime, cfg.zona);
+  Object.assign(base, { fecha, hora });
   if (/#sin-?recordatorio/i.test(`${ev.summary || ''} ${textoPlano(ev.description)}`)) return { ...base, omitida: 'marcada #sinrecordatorio' };
   const telefono = telefonoDeCita(ev, cfg.prefijo);
   if (!telefono) return { ...base, omitida: 'sin teléfono en la descripción' };
-  return { ...base, telefono, nombre: nombreDeCita(ev), ...fechaHora(ev.start.dateTime, cfg.zona) };
+  const nombre = nombreDeCita(ev);
+  const mensaje = rellenar(cfg.mensaje, { nombre: nombre || '', fecha, hora }).replace(/\s+([,.!?])/g, '$1').replace(/ {2,}/g, ' ');
+  return { ...base, telefono, nombre, mensaje, enlace: `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}` };
 }
-
-// ── WhatsApp (Meta Cloud API) ───────────────────────────────────────────────
-// La plantilla debe tener 3 variables en el cuerpo: {{1}} nombre, {{2}} fecha, {{3}} hora
-async function enviarWhatsApp(cfg, cita) {
-  const res = await fetch(`https://graph.facebook.com/v21.0/${cfg.waPhoneId}/messages`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${cfg.waToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      messaging_product: 'whatsapp',
-      to: cita.telefono,
-      type: 'template',
-      template: {
-        name: cfg.template,
-        language: { code: cfg.templateLang },
-        components: [{
-          type: 'body',
-          parameters: [cita.nombre, cita.fecha, cita.hora].map((text) => ({ type: 'text', text })),
-        }],
-      },
-    }),
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(`WhatsApp: ${(data.error && data.error.message) || res.status}`);
-  return data.messages && data.messages[0] && data.messages[0].id;
-}
-
-// Una cita movida de hora es otra clave → recibe un recordatorio nuevo
-const claveEnvio = (cita) => `${cita.id}_${cita.inicio}`.replace(/[^\w.-]/g, '_');
 
 module.exports = {
-  config, faltan, citasProximas, analizarCita, enviarWhatsApp, claveEnvio,
+  config, faltan, citasDelDia, analizarCita, horaLocal,
   // exportadas para pruebas
   telefonoDeCita, nombreDeCita, normalizarTelefono,
 };

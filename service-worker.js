@@ -1,7 +1,7 @@
 // Service Worker - Cris App
 // Cachea todos los módulos para que la app funcione sin conexión.
 
-const CACHE_NAME = 'cris-app-v102';
+const CACHE_NAME = 'cris-app-v103';
 
 const ASSETS = [
   './',
@@ -50,6 +50,9 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
+  // Las funciones del servidor (citas, pedidos…) nunca se cachean
+  const path = new URL(req.url).pathname;
+  if (path.startsWith('/api/') || path.startsWith('/.netlify/')) return;
   const isHTML = req.mode === 'navigate' || req.destination === 'document' ||
                  (req.headers.get('accept') || '').includes('text/html');
 

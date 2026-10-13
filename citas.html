@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#FAF8F5">
+<title>Recordatorios de citas</title>
+<style>
+:root{
+  --fondo:#FAF8F5; --tarjeta:#fff; --tinta:#22201c; --tinta-2:#6f6a62; --linea:#e7e2da;
+  --verde:#1f8f4e; --verde-2:#e6f4ec; --aviso:#a3402f; --r:14px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --fondo:#171614; --tarjeta:#211f1c; --tinta:#f1ede6; --tinta-2:#a8a197; --linea:#34312c;
+    --verde:#2fae66; --verde-2:#1d3326; --aviso:#e08a78; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --fondo:#171614; --tarjeta:#211f1c; --tinta:#f1ede6; --tinta-2:#a8a197; --linea:#34312c;
+  --verde:#2fae66; --verde-2:#1d3326; --aviso:#e08a78; color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--fondo);color:var(--tinta);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+.wrap{max-width:560px;margin:0 auto;padding:28px 16px 64px}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:normal;font-size:1.7rem;margin-bottom:4px}
+.sub{color:var(--tinta-2);font-size:.92rem;margin-bottom:22px}
+input{width:100%;font:inherit;padding:12px 14px;border:1px solid var(--linea);border-radius:var(--r);background:var(--tarjeta);color:var(--tinta);margin-bottom:10px}
+input:focus{outline:2px solid var(--verde);outline-offset:1px}
+button,.btn{font:inherit;border:none;border-radius:999px;padding:11px 18px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.primario{background:var(--verde);color:#fff}
+.suave{background:transparent;color:var(--tinta-2);border:1px solid var(--linea)}
+.msg{font-size:.88rem;color:var(--aviso);min-height:1.3em;margin-top:6px}
+.tabs{display:flex;gap:6px;margin-bottom:18px}
+.tab{flex:1;background:var(--tarjeta);color:var(--tinta-2);border:1px solid var(--linea)}
+.tab.on{background:var(--tinta);color:var(--fondo);border-color:var(--tinta)}
+.resumen{font-size:.9rem;color:var(--tinta-2);margin-bottom:12px}
+.cita{background:var(--tarjeta);border:1px solid var(--linea);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.cita .hora{font-weight:600;font-variant-numeric:tabular-nums;min-width:3.2em}
+.cita .info{flex:1;min-width:0}
+.cita .nombre{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cita .tel{font-size:.82rem;color:var(--tinta-2)}
+.cita.hecha{opacity:.7}
+.cita.hecha .primario{background:var(--verde-2);color:var(--verde)}
+.omitidas{margin-top:22px;font-size:.86rem;color:var(--tinta-2)}
+.omitidas li{list-style:none;padding:4px 0;border-top:1px dashed var(--linea)}
+.vacio{text-align:center;color:var(--tinta-2);padding:40px 0}
+.pie{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
+.oculto{display:none}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <section id="login" class="oculto">
+    <h1>Recordatorios</h1>
+    <p class="sub">Escribe la contraseña (la variable <b>CITAS_TOKEN</b> de Netlify).</p>
+    <form id="form-login">
+      <input id="pass" type="password" autocomplete="current-password" placeholder="Contraseña" required>
+      <button class="primario" type="submit" style="width:100%">Entrar</button>
+      <p class="msg" id="msg-login"></p>
+    </form>
+  </section>
+
+  <section id="panel" class="oculto">
+    <h1>Recordatorios</h1>
+    <p class="sub">Toca <b>Enviar</b>: se abre WhatsApp con el mensaje escrito y solo tienes que mandarlo.</p>
+    <div class="tabs">
+      <button class="tab" data-dia="hoy">Hoy</button>
+      <button class="tab on" data-dia="manana">Mañana</button>
+    </div>
+    <p class="resumen" id="resumen"></p>
+    <div id="lista"></div>
+    <p class="msg" id="msg-panel"></p>
+    <div class="pie">
+      <button class="suave" id="probar-email">Mandarme el email ahora</button>
+      <button class="suave" id="salir">Salir</button>
+    </div>
+  </section>
+
+</main>
+<script>
+(function () {
+  var CLAVE_PASS = 'citas-pass', CLAVE_HECHAS = 'citas-hechas';
+  var $ = function (id) { return document.getElementById(id); };
+  var leer = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  var guardar = function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} };
+  var borrar = function (k) { try { localStorage.removeItem(k); } catch (e) {} };
+  var pass = leer(CLAVE_PASS) || '';
+  var dia = 'manana';
+
+  // Recordatorios ya enviados, para marcarlos (solo en este móvil)
+  function hechas() { try { return JSON.parse(leer(CLAVE_HECHAS) || '{}'); } catch (e) { return {}; } }
+  function marcar(clave) {
+    var h = hechas(), limite = Date.now() - 7 * 86400000;
+    Object.keys(h).forEach(function (k) { if (h[k] < limite) delete h[k]; });
+    h[clave] = Date.now();
+    guardar(CLAVE_HECHAS, JSON.stringify(h));
+  }
+
+  function el(tag, cls, texto) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (texto != null) n.textContent = texto;
+    return n;
+  }
+
+  function api(metodo, ruta, cuerpo) {
+    return fetch(ruta, {
+      method: metodo,
+      cache: 'no-store',
+      headers: { 'x-citas-token': pass, 'Content-Type': 'application/json' },
+      body: cuerpo ? JSON.stringify(cuerpo) : undefined
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) {
+        if (r.status === 401) { var e = new Error(d.error || 'Contraseña incorrecta.'); e.auth = true; throw e; }
+        if (!r.ok) throw new Error(d.error || ('Error ' + r.status));
+        return d;
+      });
+    });
+  }
+
+  function mostrar(vista) {
+    $('login').classList.toggle('oculto', vista !== 'login');
+    $('panel').classList.toggle('oculto', vista !== 'panel');
+  }
+
+  function pintar(datos) {
+    var lista = $('lista'), h = hechas();
+    lista.innerHTML = '';
+    var con = datos.citas.filter(function (c) { return !c.omitida; });
+    var sin = datos.citas.filter(function (c) { return c.omitida; });
+    var enviadas = con.filter(function (c) { return h[c.id + c.inicio]; }).length;
+    $('resumen').textContent = con.length
+      ? (con.length === 1 ? '1 recordatorio' : con.length + ' recordatorios') + ' · ' + enviadas + (enviadas === 1 ? ' enviado' : ' enviados')
+      : '';
+
+    if (!datos.citas.length) lista.appendChild(el('p', 'vacio', 'No hay citas ' + (dia === 'hoy' ? 'hoy' : 'mañana') + '. 🌿'));
+
+    con.forEach(function (c) {
+      var clave = c.id + c.inicio;
+      var fila = el('div', 'cita' + (h[clave] ? ' hecha' : ''));
+      fila.appendChild(el('div', 'hora', c.hora));
+      var info = el('div', 'info');
+      info.appendChild(el('div', 'nombre', c.nombre || c.titulo));
+      info.appendChild(el('div', 'tel', '+' + c.telefono));
+      fila.appendChild(info);
+      var a = el('a', 'btn primario', h[clave] ? '✓ Enviado' : '💬 Enviar');
+      a.href = c.enlace;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.addEventListener('click', function () {
+        marcar(clave);
+        fila.classList.add('hecha');
+        a.textContent = '✓ Enviado';
+        setTimeout(function () { pintar(datos); }, 300);
+      });
+      fila.appendChild(a);
+      lista.appendChild(fila);
+    });
+
+    if (sin.length) {
+      var caja = el('div', 'omitidas');
+      caja.appendChild(el('p', null, 'Sin recordatorio:'));
+      var ul = el('ul');
+      sin.forEach(function (c) { ul.appendChild(el('li', null, (c.hora ? c.hora + ' · ' : '') + c.titulo + ' — ' + c.omitida)); });
+      caja.appendChild(ul);
+      lista.appendChild(caja);
+    }
+  }
+
+  function cargar() {
+    $('msg-panel').style.color = '';
+    $('msg-panel').textContent = '';
+    $('lista').innerHTML = '<p class="vacio">Cargando…</p>';
+    $('resumen').textContent = '';
+    return api('GET', '/api/citas?dia=' + dia).then(pintar).catch(function (e) {
+      if (e.auth) { salir(e.message); return; }
+      $('lista').innerHTML = '';
+      $('msg-panel').textContent = e.message;
+    });
+  }
+
+  function salir(motivo) {
+    pass = '';
+    borrar(CLAVE_PASS);
+    mostrar('login');
+    $('msg-login').textContent = motivo || '';
+  }
+
+  $('form-login').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    pass = $('pass').value.trim();
+    $('msg-login').textContent = '';
+    api('GET', '/api/citas?dia=' + dia).then(function (d) {
+      guardar(CLAVE_PASS, pass);
+      mostrar('panel');
+      pintar(d);
+    }).catch(function (e) {
+      if (e.auth) { $('msg-login').textContent = e.message; return; }
+      // Contraseña buena pero falta configurar algo: entra igualmente y lo muestra
+      guardar(CLAVE_PASS, pass);
+      mostrar('panel');
+      $('lista').innerHTML = '';
+      $('msg-panel').textContent = e.message;
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
+    t.addEventListener('click', function () {
+      dia = t.getAttribute('data-dia');
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (o) { o.classList.toggle('on', o === t); });
+      cargar();
+    });
+  });
+
+  $('probar-email').addEventListener('click', function () {
+    var b = $('probar-email');
+    b.disabled = true;
+    $('msg-panel').textContent = '';
+    api('POST', '/api/citas', { accion: 'probar-email' }).then(function (d) {
+      $('msg-panel').style.color = 'var(--verde)';
+      $('msg-panel').textContent = 'Email enviado a ' + d.enviadoA;
+    }).catch(function (e) {
+      $('msg-panel').style.color = '';
+      $('msg-panel').textContent = e.message;
+    }).then(function () { b.disabled = false; });
+  });
+
+  $('salir').addEventListener('click', function () { salir(''); });
+
+  // Al volver de WhatsApp, refresca la lista
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && pass && !$('panel').classList.contains('oculto')) cargar();
+  });
+
+  if (pass) { mostrar('panel'); cargar(); } else mostrar('login');
+})();
+</script>
+</body>
+</html>
