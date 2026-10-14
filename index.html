@@ -148,7 +148,7 @@ body{
 .ds-title{font-size:1.15rem;font-weight:800;color:var(--teal-dark);}
 .ds-done{border:none;background:var(--teal);color:#fff;border-radius:999px;padding:8px 18px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;}
 .ds-done:active{transform:scale(.96);}
-.ds-sub{font-size:.76rem;color:var(--text-soft);margin-bottom:14px;line-height:1.4;}
+.ds-sub{font-size:.76rem;color:var(--text-soft);margin:20px 0 14px;line-height:1.4;}
 .ds-row{display:flex;align-items:center;gap:12px;width:100%;border:2px solid var(--mint-mid);background:var(--white-card);border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;transition:transform .1s,border-color .1s,background .1s;}
 .ds-row:active{transform:scale(.98);}
 .ds-row.on{border-color:var(--teal);background:#fff;}
@@ -236,6 +236,8 @@ body{
 .tp-pend button{border:none;border-radius:999px;padding:7px 12px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;background:var(--teal);color:#fff;}
 .tp-pend button.x{background:transparent;color:var(--text-soft);padding:7px 8px;}
 .de-row{display:flex;align-items:center;gap:8px;background:var(--white-card);border:2px solid var(--mint-mid);border-radius:14px;padding:8px 8px 8px 12px;margin-bottom:8px;}
+.de-in{flex:1;min-width:0;border:2px solid transparent;border-radius:10px;background:var(--mint-bg);padding:9px 10px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--teal-dark);}
+.de-in:focus{outline:none;border-color:var(--teal);background:#fff;}
 .de-row .de-t{flex:1;font-size:.92rem;font-weight:700;color:var(--teal-dark);min-width:0;overflow-wrap:anywhere;}
 .de-row button{width:40px;height:40px;border:none;border-radius:12px;background:var(--mint-bg);color:var(--teal-dark);font-size:1rem;font-weight:800;cursor:pointer;flex-shrink:0;}
 .de-row button:disabled{opacity:.3;}
@@ -533,7 +535,7 @@ body.mod-open #menuBtn{display:none;}
     <span class="ds-title" data-i18n="day_title">✏️ Tu día</span>
     <button class="ds-done" data-i18n="done" onclick="closeDayEdit()">Listo</button>
   </div>
-  <div class="ds-sub" id="ds-sub">Ordena con las flechas o quita lo que sobre.</div>
+  <div class="ds-sub" id="ds-sub">Toca una tarea para cambiarla. Ordénalas con las flechas o bórralas.</div>
   <div id="daySheetList"></div>
 </aside>
 
@@ -591,7 +593,7 @@ const I18N={
   energy_q:'🔋 ¿Cómo vienes de energía hoy?', energy_good:'💪 Bien', energy_low:'🪫 Poca',
   badge_now:'AHORA', badge_next:'LUEGO',
   empty:'Tu día está vacío 🌿<br>Añade lo que quieras hacer hoy.',
-  edit_btn:'✏️ Ordenar o quitar',today_q:'¿Qué quieres hacer hoy?',add_ph:'Escribe algo y pulsa +',add_btn:'Añadir',from_quico:'＋ De Quico',pend:'De otros días: {n}',pend_bring:'Traer',pend_drop:'Descartar',ds_sub_list:'Ordena con las flechas o quita lo que sobre.',de_up:'Subir',de_down:'Bajar',de_del:'Quitar', hint:'Toca el círculo ✓ al terminar · toca la tarea para abrirla',
+  edit_btn:'✏️ Editar',today_q:'¿Qué quieres hacer hoy?',add_ph:'Escribe algo y pulsa +',add_btn:'Añadir',from_quico:'＋ De Quico',pend:'De otros días: {n}',pend_bring:'Traer',pend_drop:'Descartar',ds_sub_list:'Toca una tarea para cambiarla. Ordénalas con las flechas o bórralas.',de_edit:'Cambiar la tarea',de_up:'Subir',de_down:'Bajar',de_del:'Borrar', hint:'Toca el círculo ✓ al terminar · toca la tarea para abrirla',
   mark_done:'hecha', mark_pending:'pendiente', mark_as:'Marcar {t} como {s}',
   r_respira_t:'Respira 2 minutos', r_respira_s:'Con eso ya cuenta',
   r_movilidad_t:'Movilidad suave', r_movilidad_s:'Solo lo que te apetezca, sin más',
@@ -654,7 +656,7 @@ const I18N={
   energy_q:'🔋 How’s your energy today?', energy_good:'💪 Good', energy_low:'🪫 Low',
   badge_now:'NOW', badge_next:'NEXT',
   empty:'Your day is empty 🌿<br>Add whatever you want to do today.',
-  edit_btn:'✏️ Reorder or remove',today_q:'What do you want to do today?',add_ph:'Type something and tap +',add_btn:'Add',from_quico:'＋ From Quico',pend:'From other days: {n}',pend_bring:'Bring',pend_drop:'Dismiss',ds_sub_list:'Reorder with the arrows or remove what you don’t need.',de_up:'Move up',de_down:'Move down',de_del:'Remove', hint:'Tap the ✓ circle when done · tap the task to open it',
+  edit_btn:'✏️ Edit',today_q:'What do you want to do today?',add_ph:'Type something and tap +',add_btn:'Add',from_quico:'＋ From Quico',pend:'From other days: {n}',pend_bring:'Bring',pend_drop:'Dismiss',ds_sub_list:'Tap a task to change it. Reorder with the arrows or delete it.',de_edit:'Change the task',de_up:'Move up',de_down:'Move down',de_del:'Delete', hint:'Tap the ✓ circle when done · tap the task to open it',
   mark_done:'done', mark_pending:'pending', mark_as:'Mark {t} as {s}',
   r_respira_t:'Breathe for 2 minutes', r_respira_s:'That already counts',
   r_movilidad_t:'Gentle mobility', r_movilidad_s:'Only what you feel like, nothing more',
@@ -717,7 +719,7 @@ const I18N={
   energy_q:'🔋 Comment est ton énergie aujourd’hui ?', energy_good:'💪 Bien', energy_low:'🪫 Faible',
   badge_now:'MAINTENANT', badge_next:'ENSUITE',
   empty:'Ta journée est vide 🌿<br>Ajoute ce que tu veux faire aujourd’hui.',
-  edit_btn:'✏️ Réordonner ou retirer',today_q:'Que veux-tu faire aujourd’hui ?',add_ph:'Écris quelque chose et touche +',add_btn:'Ajouter',from_quico:'＋ De Quico',pend:'D’autres jours : {n}',pend_bring:'Reprendre',pend_drop:'Ignorer',ds_sub_list:'Réordonne avec les flèches ou retire ce qui est en trop.',de_up:'Monter',de_down:'Descendre',de_del:'Retirer', hint:'Touche le cercle ✓ à la fin · touche la tâche pour l’ouvrir',
+  edit_btn:'✏️ Modifier',today_q:'Que veux-tu faire aujourd’hui ?',add_ph:'Écris quelque chose et touche +',add_btn:'Ajouter',from_quico:'＋ De Quico',pend:'D’autres jours : {n}',pend_bring:'Reprendre',pend_drop:'Ignorer',ds_sub_list:'Touche une tâche pour la modifier. Réordonne avec les flèches ou supprime-la.',de_edit:'Modifier la tâche',de_up:'Monter',de_down:'Descendre',de_del:'Supprimer', hint:'Touche le cercle ✓ à la fin · touche la tâche pour l’ouvrir',
   mark_done:'faite', mark_pending:'à faire', mark_as:'Marquer {t} comme {s}',
   r_respira_t:'Respire 2 minutes', r_respira_s:'Ça compte déjà',
   r_movilidad_t:'Mobilité douce', r_movilidad_s:'Seulement ce dont tu as envie, rien de plus',
@@ -1070,14 +1072,17 @@ function renderDayEdit(){
   const items=QDIA.items();
   if(!items.length){el.innerHTML='<div class="tp-q">'+t('today_q')+'</div>';return;}
   el.innerHTML=items.map((it,k)=>`<div class="de-row">
-      <span class="de-t">${it.e?it.e+' ':''}${escH(it.t)}</span>
+      ${it.mod?`<span class="de-t">${it.e?it.e+' ':''}${escH(t('day_'+it.mod)!=='day_'+it.mod?t('day_'+it.mod):it.t)}</span>`
+        :`<input class="de-in" value="${escH(it.t)}" maxlength="140" aria-label="${t('de_edit')}" onchange="dayRename('${it.id}',this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">`}
       <button onclick="dayMove('${it.id}',-1)" aria-label="${t('de_up')}"${k===0?' disabled':''}>↑</button>
       <button onclick="dayMove('${it.id}',1)" aria-label="${t('de_down')}"${k===items.length-1?' disabled':''}>↓</button>
-      <button class="del" onclick="dayRemove('${it.id}')" aria-label="${t('de_del')}">✕</button>
+      <button class="del" onclick="dayRemove('${it.id}')" aria-label="${t('de_del')}">🗑️</button>
     </div>`).join('');
 }
 function dayMove(id,dir){QDIA.move(id,dir);renderDayEdit();renderToday();}
 function dayRemove(id){QDIA.remove(id);renderDayEdit();renderToday();}
+/* Cambiar el texto: si se deja vacío, vuelve al que tenía */
+function dayRename(id,el){if(!QDIA.rename(id,el.value)){const it=QDIA.get(id);if(it)el.value=it.t;}renderToday();}
 
 /* ── AJUSTES GLOBALES (voz/sonido/vibración/reducir estímulos) ── */
 function getCfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
@@ -1456,7 +1461,7 @@ const ONBOARD={
   {t:'¡Hola! Soy Quico 🦘',x:'Te enseño tu pantalla en un momentín, señalando cada cosa con una flecha. ¿Vamos?'},
   {sel:'#today-panel',t:'Tu día, en blanco 🌿',x:'Cada mañana empieza vacío. Lo llenas tú con lo que quieras hacer hoy.'},
   {sel:'.tp-add',t:'Escribe y pulsa + ✍️',x:'Una cosa cada vez, o pega una lista entera. Con «＋ De Quico» añades ejercicio, comida o limpieza de un toque.'},
-  {sel:'.tp-edit',t:'Ordena o quita ✏️',x:'Sube arriba lo importante. Toca el círculo ✓ cuando termines algo.'},
+  {sel:'.tp-edit',t:'Editar ✏️',x:'Cambia, ordena o borra tus tareas. Toca el círculo ✓ cuando termines algo.'},
   {sel:'#menuBtn',t:'El menú ☰',x:'Aquí dentro está todo: los módulos, el idioma 🇪🇸🇬🇧🇫🇷, TU nombre y «reducir estímulos» para los días sensibles.'},
   {sel:'#sosBtn',t:'El corazón 🫀',x:'El Botiquín Emocional: técnicas, meditaciones y ayuda cuando el día pesa.'},
   {sel:'#dropBtn',t:'Soltar el móvil 📵',x:'¿Enganchada al móvil? Este botón te da un empujoncito para dejarlo y ponerte a lo tuyo.'},
@@ -1466,7 +1471,7 @@ const ONBOARD={
   {t:'Hi! I’m Quico 🦘',x:'I’ll show you your screen in a jiffy, pointing at each thing with an arrow. Ready?'},
   {sel:'#today-panel',t:'Your day, blank 🌿',x:'Every morning starts empty. You fill it with what you want to do today.'},
   {sel:'.tp-add',t:'Type and tap + ✍️',x:'One thing at a time, or paste a whole list. With “＋ From Quico” you add exercise, food or cleaning in one tap.'},
-  {sel:'.tp-edit',t:'Reorder or remove ✏️',x:'Move what matters to the top. Tap the ✓ circle when you finish something.'},
+  {sel:'.tp-edit',t:'Edit ✏️',x:'Change, reorder or delete your tasks. Tap the ✓ circle when you finish something.'},
   {sel:'#menuBtn',t:'The menu ☰',x:'Everything lives in here: the modules, the language 🇪🇸🇬🇧🇫🇷, YOUR name and «reduce stimulation» for sensitive days.'},
   {sel:'#sosBtn',t:'The heart 🫀',x:'The Emotional Kit: techniques, meditations and help when the day weighs on you.'},
   {sel:'#dropBtn',t:'Put the phone down 📵',x:'Stuck scrolling? This button gives you a little nudge to drop it and get going.'},
@@ -1476,7 +1481,7 @@ const ONBOARD={
   {t:'Coucou ! Je suis Quico 🦘',x:'Je te montre ton écran en deux secondes, en pointant chaque chose avec une flèche. On y va ?'},
   {sel:'#today-panel',t:'Ta journée, vierge 🌿',x:'Chaque matin commence vide. Tu la remplis avec ce que tu veux faire aujourd’hui.'},
   {sel:'.tp-add',t:'Écris et touche + ✍️',x:'Une chose à la fois, ou colle une liste entière. Avec « ＋ De Quico » tu ajoutes sport, repas ou ménage en un toucher.'},
-  {sel:'.tp-edit',t:'Réordonne ou retire ✏️',x:'Mets en haut ce qui compte. Touche le cercle ✓ quand tu finis quelque chose.'},
+  {sel:'.tp-edit',t:'Modifier ✏️',x:'Change, réordonne ou supprime tes tâches. Touche le cercle ✓ quand tu finis quelque chose.'},
   {sel:'#menuBtn',t:'Le menu ☰',x:'Tout est là-dedans : les modules, la langue 🇪🇸🇬🇧🇫🇷, TON prénom et « réduire les stimulations » pour les jours sensibles.'},
   {sel:'#sosBtn',t:'Le cœur 🫀',x:'La Trousse émotionnelle : techniques, méditations et aide quand la journée pèse.'},
   {sel:'#dropBtn',t:'Lâcher le téléphone 📵',x:'Scotchée à l’écran ? Ce bouton te donne un petit coup de pouce pour le poser et t’y mettre.'},

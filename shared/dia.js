@@ -51,6 +51,8 @@
       save(d);return now;
     },
     setDone(id,v){const d=load();const i=d.items.find(x=>x.id===id);if(!i)return;i.done=!!v;save(d);},
+    /* Cambiar el texto de una tarea propia (vacío = no se cambia) */
+    rename(id,text){const v=String(text||'').replace(/\s+/g,' ').trim().slice(0,140);const d=load();const i=d.items.find(x=>x.id===id);if(!i||i.mod||!v)return false;i.t=v;save(d);return true;},
     remove(id){const d=load();d.items=d.items.filter(x=>x.id!==id);save(d);},
     move(id,dir){const d=load();const a=d.items,k=a.findIndex(x=>x.id===id),j=k+dir;if(k<0||j<0||j>=a.length)return;[a[k],a[j]]=[a[j],a[k]];save(d);},
     bringPending(){const d=load();const have=new Set(d.items.map(i=>i.id));d.pending.forEach(p=>{if(!have.has(p.id))d.items.push({...p,done:false});});d.pending=[];save(d);},

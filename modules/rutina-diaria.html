@@ -209,6 +209,12 @@ textarea.tool-field{min-height:74px;resize:vertical}
 .dl-ck.on{background:var(--turq);color:#fff}
 .dl-t{flex:1;min-width:0;font-size:.92rem;font-weight:700;color:var(--text);overflow-wrap:anywhere;background:none;border:none;text-align:left;font-family:inherit;padding:4px 0;cursor:default}
 button.dl-t{cursor:pointer}
+.dl-pen{color:#aab;font-weight:400;font-size:.85rem}
+.dl-row.dl-editing{flex-direction:column;align-items:stretch;gap:8px;padding:10px}
+.dl-edit{width:100%;border:2px solid var(--turq);border-radius:10px;padding:10px;font-family:inherit;font-size:16px;font-weight:700;color:var(--text)}
+.dl-edit-btns{display:flex;gap:8px}
+.dl-edit-btns button{flex:1;border:none;border-radius:10px;padding:11px;font-family:inherit;font-weight:800;font-size:.9rem;cursor:pointer}
+.dl-save{background:var(--turq);color:#fff}.dl-del{background:#fef2f2;color:#b91c1c}
 .dl-go{width:40px;height:40px;border-radius:12px;border:none;background:var(--turq);color:#fff;font-size:1rem;cursor:pointer;flex-shrink:0}
 .dl-go:active,.dl-ck:active{transform:scale(.93)}
 .dl-add{display:flex;gap:8px;align-items:flex-end;margin-top:4px}
@@ -309,7 +315,7 @@ if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 
 /* ── IDIOMAS (es · en · fr) ── */
 const UI={
- es:{h1:'Trabajo',ws:'▶ Empezar',wt:'🤔 No sé qué me pasa',stuck:'🆘 Me atasco',day_h:'📝 Mi día',day_q:'¿Qué tienes que hacer hoy? Escríbelo todo.',day_ph:'Añade una tarea…',day_add:'Añadir',day_pend:'De otros días: {n}',day_bring:'Traer',day_drop:'Descartar',day_go:'Empezar con esta tarea',day_mark:'Marcar como hecha',foco_now:'Ahora: {t}',foco_done_q:'¿La has terminado?',foco_yes:'✓ Sí, tachar',foco_no:'Aún no',vol_today:'＋ Hoy',vol_added:'Añadido a tu día',
+ es:{h1:'Trabajo',ws:'▶ Empezar',wt:'🤔 No sé qué me pasa',stuck:'🆘 Me atasco',day_h:'📝 Mi día',day_q:'¿Qué tienes que hacer hoy? Escríbelo todo.',day_ph:'Añade una tarea…',day_add:'Añadir',day_pend:'De otros días: {n}',day_bring:'Traer',day_drop:'Descartar',day_go:'Empezar con esta tarea',day_mark:'Marcar como hecha',day_edit:'Editar tarea',day_save:'Guardar',day_del:'Borrar',foco_now:'Ahora: {t}',foco_done_q:'¿La has terminado?',foco_yes:'✓ Sí, tachar',foco_no:'Aún no',vol_today:'＋ Hoy',vol_added:'Añadido a tu día',
    sec_hint:'…o si ya sabes qué necesitas, elígelo directo:',
    g1:'🏁 No puedo empezar',g2:'🎯 Quiero mantener el foco',g3:'🧠 Tengo la cabeza llena',g4:'🔄 Cambiar de tarea o planificar',
    w_par_t:'Salir del bloqueo paso a paso',w_par_s:'miras la tarea y no arrancas',
@@ -344,7 +350,7 @@ const UI={
    v_ctx_end:'Listo. Mente despejada. Ya puedes empezar.',
    v_mis:'Misión activada: {t}. Veinte minutos. Al terminar, tu recompensa.',v_mis_end:'¡Tiempo! Misión cumplida. Disfruta tu recompensa, te la has ganado.',
    ctx_s1:'Levántate y estírate. Suelta los hombros y respira hondo.',ctx_s2:'Bebe un poco de agua y mira algo lejano unos segundos.',ctx_s3:'Anota en una palabra qué acabas de terminar y qué empiezas ahora.'},
- en:{h1:'Work',ws:'▶ Start',wt:'🤔 I don’t know what’s wrong',stuck:'🆘 I’m stuck',day_h:'📝 My day',day_q:'What do you need to do today? Write it all down.',day_ph:'Add a task…',day_add:'Add',day_pend:'From other days: {n}',day_bring:'Bring',day_drop:'Dismiss',day_go:'Start with this task',day_mark:'Mark as done',foco_now:'Now: {t}',foco_done_q:'Did you finish it?',foco_yes:'✓ Yes, tick it',foco_no:'Not yet',vol_today:'＋ Today',vol_added:'Added to your day',
+ en:{h1:'Work',ws:'▶ Start',wt:'🤔 I don’t know what’s wrong',stuck:'🆘 I’m stuck',day_h:'📝 My day',day_q:'What do you need to do today? Write it all down.',day_ph:'Add a task…',day_add:'Add',day_pend:'From other days: {n}',day_bring:'Bring',day_drop:'Dismiss',day_go:'Start with this task',day_mark:'Mark as done',day_edit:'Edit task',day_save:'Save',day_del:'Delete',foco_now:'Now: {t}',foco_done_q:'Did you finish it?',foco_yes:'✓ Yes, tick it',foco_no:'Not yet',vol_today:'＋ Today',vol_added:'Added to your day',
    sec_hint:'…or if you already know what you need, pick it directly:',
    g1:'🏁 I can’t get started',g2:'🎯 I want to keep focus',g3:'🧠 My head is full',g4:'🔄 Switch tasks or plan',
    w_par_t:'Get unstuck step by step',w_par_s:'you stare at the task and can’t begin',
@@ -379,7 +385,7 @@ const UI={
    v_ctx_end:'Done. Clear mind. You can start now.',
    v_mis:'Mission activated: {t}. Twenty minutes. When you finish, your reward.',v_mis_end:'Time! Mission accomplished. Enjoy your reward, you’ve earned it.',
    ctx_s1:'Stand up and stretch. Drop your shoulders and breathe deeply.',ctx_s2:'Drink a little water and look at something far away for a few seconds.',ctx_s3:'Note in one word what you just finished and what you’re starting now.'},
- fr:{h1:'Travail',ws:'▶ Commencer',wt:'🤔 Je ne sais pas ce qui m’arrive',stuck:'🆘 Je bloque',day_h:'📝 Ma journée',day_q:'Qu’as-tu à faire aujourd’hui ? Écris tout.',day_ph:'Ajoute une tâche…',day_add:'Ajouter',day_pend:'D’autres jours : {n}',day_bring:'Reprendre',day_drop:'Ignorer',day_go:'Commencer avec cette tâche',day_mark:'Marquer comme faite',foco_now:'Maintenant : {t}',foco_done_q:'Tu l’as terminée ?',foco_yes:'✓ Oui, cocher',foco_no:'Pas encore',vol_today:'＋ Aujourd’hui',vol_added:'Ajouté à ta journée',
+ fr:{h1:'Travail',ws:'▶ Commencer',wt:'🤔 Je ne sais pas ce qui m’arrive',stuck:'🆘 Je bloque',day_h:'📝 Ma journée',day_q:'Qu’as-tu à faire aujourd’hui ? Écris tout.',day_ph:'Ajoute une tâche…',day_add:'Ajouter',day_pend:'D’autres jours : {n}',day_bring:'Reprendre',day_drop:'Ignorer',day_go:'Commencer avec cette tâche',day_mark:'Marquer comme faite',day_edit:'Modifier la tâche',day_save:'Enregistrer',day_del:'Supprimer',foco_now:'Maintenant : {t}',foco_done_q:'Tu l’as terminée ?',foco_yes:'✓ Oui, cocher',foco_no:'Pas encore',vol_today:'＋ Aujourd’hui',vol_added:'Ajouté à ta journée',
    sec_hint:'…ou si tu sais déjà ce qu’il te faut, choisis directement :',
    g1:'🏁 Je n’arrive pas à commencer',g2:'🎯 Je veux garder la concentration',g3:'🧠 J’ai la tête pleine',g4:'🔄 Changer de tâche ou planifier',
    w_par_t:'Sortir du blocage pas à pas',w_par_s:'tu fixes la tâche et tu ne démarres pas',
@@ -707,7 +713,10 @@ function renderDay(){
   const items=QDIA.items(),pend=QDIA.pending();
   const rows=[...items].sort((a,b)=>(QDIA.isDone(a)?1:0)-(QDIA.isDone(b)?1:0)).map(it=>{
     const done=QDIA.isDone(it),label=(it.e?it.e+' ':'')+escD(it.t);
-    const text=it.mod&&it.mod!=='trabajo'?`<button class="dl-t" onclick="openDayMod('${it.mod}')">${label}</button>`:`<span class="dl-t">${label}</span>`;
+    if(DAY_EDIT===it.id)return `<div class="dl-row dl-editing"><input class="dl-edit" id="dl-edit" value="${escD(it.t)}" maxlength="140" aria-label="${escD(t('day_edit'))}" onkeydown="if(event.key==='Enter'){event.preventDefault();dayEditSave('${it.id}');}else if(event.key==='Escape'){dayEditCancel();}">
+      <div class="dl-edit-btns"><button class="dl-save" onclick="dayEditSave('${it.id}')">${t('day_save')}</button><button class="dl-del" onclick="dayEditDelete('${it.id}')">🗑️ ${t('day_del')}</button></div></div>`;
+    const text=it.mod?(it.mod!=='trabajo'?`<button class="dl-t" onclick="openDayMod('${it.mod}')">${label}</button>`:`<span class="dl-t">${label}</span>`)
+      :`<button class="dl-t" onclick="dayEdit('${it.id}')" aria-label="${escD(t('day_edit'))}: ${escD(it.t)}">${label} <span class="dl-pen" aria-hidden="true">✎</span></button>`;
     const go=!it.mod&&!done?`<button class="dl-go" onclick="startFocus('${it.id}')" aria-label="${escD(t('day_go'))}">▶</button>`:'';
     return `<div class="dl-row${done?' done':''}"><button class="dl-ck${done?' on':''}" role="checkbox" aria-checked="${done}" aria-label="${escD(t('day_mark'))}" onclick="dayToggle('${it.id}')">✓</button>${text}${go}</div>`;
   }).join('');
@@ -716,6 +725,11 @@ function renderDay(){
     ${items.length?rows:`<div class="dl-q">${t('day_q')}</div>`}
     <div class="dl-add"><textarea id="dl-in" rows="1" maxlength="2000" enterkeyhint="done" placeholder="${t('day_ph')}" aria-label="${t('day_ph')}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();dayAddTask();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,140)+'px'"></textarea><button onclick="dayAddTask()" aria-label="${t('day_add')}">+</button></div>`;
 }
+let DAY_EDIT=null;
+function dayEdit(id){DAY_EDIT=id;renderDay();const el=document.getElementById('dl-edit');if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length);}}
+function dayEditSave(id){const el=document.getElementById('dl-edit');if(el)QDIA.rename(id,el.value);DAY_EDIT=null;renderDay();}
+function dayEditCancel(){DAY_EDIT=null;renderDay();}
+function dayEditDelete(id){QDIA.remove(id);DAY_EDIT=null;try{if(navigator.vibrate&&__allow('vib'))navigator.vibrate(30);}catch(e){}renderDay();}
 function dayAddTask(){
   const el=document.getElementById('dl-in');if(!el||!window.QDIA)return;
   if(!QDIA.add(el.value))return;
