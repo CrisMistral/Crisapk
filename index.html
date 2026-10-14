@@ -219,11 +219,27 @@ body{
 .tp-badge{display:inline-block;font-size:.58rem;font-weight:800;letter-spacing:.05em;border-radius:999px;padding:2px 7px;margin-left:7px;vertical-align:1px;}
 .tp-badge.now{background:var(--teal);color:#fff;}
 .tp-badge.next{background:var(--mint-mid);color:var(--teal-dark);}
-/* Check-in de energía matinal */
-.tp-energy{background:var(--mint-bg);border:1.5px solid var(--mint-mid);border-radius:12px;padding:10px 12px;font-size:.8rem;color:var(--teal-dark);font-weight:700;margin-bottom:10px;}
-.tp-energy-btns{display:flex;gap:8px;margin-top:8px;}
-.tp-energy-btns button{flex:1;border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:999px;padding:8px 4px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;}
-.tp-energy-btns button:active{transform:scale(.96);}
+/* ── «Hoy» se forma con tu lista ── */
+.tp-q{font-size:1.02rem;font-weight:800;color:var(--teal-dark);text-align:center;margin:6px 0 12px;}
+.tp-add{display:flex;gap:8px;align-items:flex-end;margin:4px 0 8px;}
+.tp-add textarea{flex:1;resize:none;min-height:46px;max-height:140px;border:2px solid var(--mint-mid);border-radius:14px;padding:11px 12px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark);background:#fff;line-height:1.35;}
+.tp-add textarea:focus{outline:none;border-color:var(--teal);}
+.tp-add button{flex-shrink:0;width:46px;height:46px;border:none;border-radius:14px;background:var(--teal);color:#fff;font-size:1.5rem;font-weight:800;cursor:pointer;}
+.tp-add button:active{transform:scale(.95);}
+.tp-quico{display:block;margin:2px auto 6px;border:none;background:none;color:var(--teal-dark);font-family:'Outfit',sans-serif;font-size:.86rem;font-weight:700;cursor:pointer;padding:8px 10px;}
+.tp-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:6px;}
+.tp-chips[hidden]{display:none;}
+.tp-chip{border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:999px;padding:8px 12px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;cursor:pointer;}
+.tp-chip:active{transform:scale(.95);background:var(--mint-soft);}
+.tp-pend{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px dashed var(--mint-deep);border-radius:12px;padding:8px 10px;margin-bottom:10px;font-size:.82rem;font-weight:700;color:var(--teal-dark);}
+.tp-pend span{flex:1;}
+.tp-pend button{border:none;border-radius:999px;padding:7px 12px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;background:var(--teal);color:#fff;}
+.tp-pend button.x{background:transparent;color:var(--text-soft);padding:7px 8px;}
+.de-row{display:flex;align-items:center;gap:8px;background:var(--white-card);border:2px solid var(--mint-mid);border-radius:14px;padding:8px 8px 8px 12px;margin-bottom:8px;}
+.de-row .de-t{flex:1;font-size:.92rem;font-weight:700;color:var(--teal-dark);min-width:0;overflow-wrap:anywhere;}
+.de-row button{width:40px;height:40px;border:none;border-radius:12px;background:var(--mint-bg);color:var(--teal-dark);font-size:1rem;font-weight:800;cursor:pointer;flex-shrink:0;}
+.de-row button:disabled{opacity:.3;}
+.de-row button.del{color:#b91c1c;background:#fef2f2;}
 
 /* ── Quokka asomado agarrando el panel ── */
 .quokka-peek{display:flex;justify-content:center;margin-bottom:-30px;position:relative;z-index:1;}
@@ -411,6 +427,7 @@ body.mod-open #menuBtn{display:none;}
 .simple .hero-sub,.simple .tp-s,.simple .tp-hint,.simple .ao-desc{display:none}
 </style>
 <script src="shared/alergias.js"></script>
+<script src="shared/dia.js"></script>
 </head>
 <body>
 
@@ -509,14 +526,14 @@ body.mod-open #menuBtn{display:none;}
 </aside>
 </div>
 
-<!-- Hoja: editar qué módulos hay en el día -->
+<!-- Hoja: ordenar o quitar cosas del día -->
 <div id="daySheetBg" onclick="closeDayEdit()"></div>
 <aside id="daySheet" role="dialog" aria-modal="true" aria-label="Editar mi día">
   <div class="ds-head">
     <span class="ds-title" data-i18n="day_title">✏️ Tu día</span>
     <button class="ds-done" data-i18n="done" onclick="closeDayEdit()">Listo</button>
   </div>
-  <div class="ds-sub" id="ds-sub">Toca para añadir o quitar del panel «Hoy». Sin presión: pon solo lo que quieras.</div>
+  <div class="ds-sub" id="ds-sub">Ordena con las flechas o quita lo que sobre.</div>
   <div id="daySheetList"></div>
 </aside>
 
@@ -574,7 +591,7 @@ const I18N={
   energy_q:'🔋 ¿Cómo vienes de energía hoy?', energy_good:'💪 Bien', energy_low:'🪫 Poca',
   badge_now:'AHORA', badge_next:'LUEGO',
   empty:'Tu día está vacío 🌿<br>Añade lo que quieras hacer hoy.',
-  edit_btn:'✏️ Editar mi día', hint:'Toca el círculo ✓ al terminar · toca la tarea para abrirla',
+  edit_btn:'✏️ Ordenar o quitar',today_q:'¿Qué quieres hacer hoy?',add_ph:'Escribe algo y pulsa +',add_btn:'Añadir',from_quico:'＋ De Quico',pend:'De otros días: {n}',pend_bring:'Traer',pend_drop:'Descartar',ds_sub_list:'Ordena con las flechas o quita lo que sobre.',de_up:'Subir',de_down:'Bajar',de_del:'Quitar', hint:'Toca el círculo ✓ al terminar · toca la tarea para abrirla',
   mark_done:'hecha', mark_pending:'pendiente', mark_as:'Marcar {t} como {s}',
   r_respira_t:'Respira 2 minutos', r_respira_s:'Con eso ya cuenta',
   r_movilidad_t:'Movilidad suave', r_movilidad_s:'Solo lo que te apetezca, sin más',
@@ -637,7 +654,7 @@ const I18N={
   energy_q:'🔋 How’s your energy today?', energy_good:'💪 Good', energy_low:'🪫 Low',
   badge_now:'NOW', badge_next:'NEXT',
   empty:'Your day is empty 🌿<br>Add whatever you want to do today.',
-  edit_btn:'✏️ Edit my day', hint:'Tap the ✓ circle when done · tap the task to open it',
+  edit_btn:'✏️ Reorder or remove',today_q:'What do you want to do today?',add_ph:'Type something and tap +',add_btn:'Add',from_quico:'＋ From Quico',pend:'From other days: {n}',pend_bring:'Bring',pend_drop:'Dismiss',ds_sub_list:'Reorder with the arrows or remove what you don’t need.',de_up:'Move up',de_down:'Move down',de_del:'Remove', hint:'Tap the ✓ circle when done · tap the task to open it',
   mark_done:'done', mark_pending:'pending', mark_as:'Mark {t} as {s}',
   r_respira_t:'Breathe for 2 minutes', r_respira_s:'That already counts',
   r_movilidad_t:'Gentle mobility', r_movilidad_s:'Only what you feel like, nothing more',
@@ -700,7 +717,7 @@ const I18N={
   energy_q:'🔋 Comment est ton énergie aujourd’hui ?', energy_good:'💪 Bien', energy_low:'🪫 Faible',
   badge_now:'MAINTENANT', badge_next:'ENSUITE',
   empty:'Ta journée est vide 🌿<br>Ajoute ce que tu veux faire aujourd’hui.',
-  edit_btn:'✏️ Modifier ma journée', hint:'Touche le cercle ✓ à la fin · touche la tâche pour l’ouvrir',
+  edit_btn:'✏️ Réordonner ou retirer',today_q:'Que veux-tu faire aujourd’hui ?',add_ph:'Écris quelque chose et touche +',add_btn:'Ajouter',from_quico:'＋ De Quico',pend:'D’autres jours : {n}',pend_bring:'Reprendre',pend_drop:'Ignorer',ds_sub_list:'Réordonne avec les flèches ou retire ce qui est en trop.',de_up:'Monter',de_down:'Descendre',de_del:'Retirer', hint:'Touche le cercle ✓ à la fin · touche la tâche pour l’ouvrir',
   mark_done:'faite', mark_pending:'à faire', mark_as:'Marquer {t} comme {s}',
   r_respira_t:'Respire 2 minutes', r_respira_s:'Ça compte déjà',
   r_movilidad_t:'Mobilité douce', r_movilidad_s:'Seulement ce dont tu as envie, rien de plus',
@@ -1028,7 +1045,7 @@ function closeDrawer(){
 function openDayEdit(){
   renderDayEdit();
   const sub=document.getElementById('ds-sub');
-  if(sub)sub.textContent=isEco()?t('ds_sub_eco'):t('ds_sub_normal');
+  if(sub)sub.textContent=t('ds_sub_list');
   document.getElementById('daySheet').classList.add('open');
   document.getElementById('daySheetBg').classList.add('open');
   document.body.style.overflow='hidden'; // sin scroll-bleed del panel de detrás
@@ -1050,15 +1067,17 @@ document.addEventListener('keydown',e=>{
 function renderDayEdit(){
   const el=document.getElementById('daySheetList');
   if(!el)return;
-  el.innerHTML=DAY_CATALOG.map(m=>{
-    const on=modOn(m.id);
-    return `<button class="ds-row${on?' on':''}" data-id="${m.id}" role="switch" aria-checked="${on}" onclick="toggleDayMod('${m.id}')">
-      <span class="ds-em">${m.e}</span>
-      <span class="ds-name">${t('day_'+m.id)}</span>
-      <span class="ds-toggle">${on?t('ds_in_day'):t('ds_add')}</span>
-    </button>`;
-  }).join('');
+  const items=QDIA.items();
+  if(!items.length){el.innerHTML='<div class="tp-q">'+t('today_q')+'</div>';return;}
+  el.innerHTML=items.map((it,k)=>`<div class="de-row">
+      <span class="de-t">${it.e?it.e+' ':''}${escH(it.t)}</span>
+      <button onclick="dayMove('${it.id}',-1)" aria-label="${t('de_up')}"${k===0?' disabled':''}>↑</button>
+      <button onclick="dayMove('${it.id}',1)" aria-label="${t('de_down')}"${k===items.length-1?' disabled':''}>↓</button>
+      <button class="del" onclick="dayRemove('${it.id}')" aria-label="${t('de_del')}">✕</button>
+    </div>`).join('');
 }
+function dayMove(id,dir){QDIA.move(id,dir);renderDayEdit();renderToday();}
+function dayRemove(id){QDIA.remove(id);renderDayEdit();renderToday();}
 
 /* ── AJUSTES GLOBALES (voz/sonido/vibración/reducir estímulos) ── */
 function getCfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
@@ -1186,21 +1205,28 @@ const DAY_CATALOG=[
   {id:'calma',    e:'🫀', def:false},
   {id:'juego',    e:'🔍', def:false}
 ];
-function getDayMods(){return lsJSON('cris_hoy_mods_v1');}
-function modOn(id){
-  const c=getDayMods();
-  if(c[id]!==undefined)return !!c[id]; // ajuste manual desde «Editar mi día» manda
-  if(areasChosen()){const a=CAT2AREA[id];if(a)return areaOn(a);} // si no, sigue el test inicial
-  const d=DAY_CATALOG.find(m=>m.id===id);return !!(d&&d.def);
+/* «De Quico»: atajos para añadir al día cosas de la app (solo las áreas activas) */
+let showQuicoChips=false;
+function quicoChips(){
+  const list=QDIA.items(),has=id=>list.some(i=>i.mod===id);
+  const eco=isEco()?[['eco1','🫁','r_respira_t'],['eco2','🧘','r_movilidad_t'],['eco3','🧹','r_recoge_t'],['eco4','🍽️','r_receta_t']]:[];
+  const normal=DAY_CATALOG.filter(m=>{const a=CAT2AREA[m.id];return !a||areaOn(a);}).map(m=>[m.id,m.e,'day_'+m.id]);
+  return [...eco,...normal].filter(c=>!has(c[0]));
 }
-function toggleDayMod(id){
-  const c=getDayMods();c[id]=!modOn(id);
-  try{localStorage.setItem('cris_hoy_mods_v1',JSON.stringify(c));}catch(e){}
+function dayAdd(){
+  const el=document.getElementById('tp-in');if(!el)return;
+  const n=QDIA.add(el.value);if(!n)return;
+  if(hapticOK())navigator.vibrate(25);
   renderToday();
-  // Actualiza SOLO la fila tocada en la hoja (no recrea la lista → no se pierde el foco)
-  const on=modOn(id),row=document.querySelector('#daySheetList .ds-row[data-id="'+id+'"]');
-  if(row){row.classList.toggle('on',on);row.setAttribute('aria-checked',on);const tg=row.querySelector('.ds-toggle');if(tg)tg.textContent=on?t('ds_in_day'):t('ds_add');}
+  const again=document.getElementById('tp-in');if(again)again.focus(); // seguir escribiendo sin tocar nada más
 }
+function dayAddMod(id){
+  const c=quicoChips().find(x=>x[0]===id);if(!c)return;
+  QDIA.add(t(c[2]),c[0],c[1]);if(hapticOK())navigator.vibrate(25);renderToday();
+}
+function dayBring(){QDIA.bringPending();renderToday();}
+function dayDrop(){QDIA.dropPending();renderToday();}
+function toggleQuicoChips(){showQuicoChips=!showQuicoChips;renderToday();}
 
 function weekNum(){const d=new Date(),y=d.getFullYear(),s=new Date(y,0,1);return Math.ceil(((d-s)/864e5+s.getDay()+1)/7);}
 function lsJSON(k){try{const v=JSON.parse(localStorage.getItem(k)||'{}');return (v&&typeof v==='object')?v:{};}catch(e){return{};}}
@@ -1219,20 +1245,6 @@ function setEcoHist(h){
   Object.keys(h).forEach(k=>{ if(k<min)delete h[k]; });
   try{localStorage.setItem('cris_eco_hist_v1',JSON.stringify(h));}catch(e){}
 }
-// Si ayer y anteayer fueron eco y hoy aún no lo has declarado, se propone solo:
-// no hay que gastar energía cada mañana en decir "hoy tampoco puedo".
-function ecoSuggested(){const h=getEcoHist();return !isEco()&&!!h[dayKey(-1)]&&!!h[dayKey(-2)];}
-
-/* Check-in de energía (idea de Tiimo): una pregunta de un toque al día.
-   «Poca» activa el modo eco directamente — y alimenta la racha con datos reales. */
-function energyAsked(){return !!localStorage.getItem('cris_energia_v1_'+todayLocal());}
-function setEnergy(v){
-  tapCooldownUntil=Date.now()+350; // el panel se re-renderiza: sin toques fantasma
-  try{localStorage.setItem('cris_energia_v1_'+todayLocal(),v);}catch(e){}
-  if(v==='baja'&&!isEco()){toggleEco();return;}
-  renderToday();
-}
-
 function toggleEco(){
   tapCooldownUntil=Date.now()+350; // el panel cambia entero: sin toques fantasma
   const h=getEcoHist();
@@ -1249,69 +1261,67 @@ function toggleEco(){
   renderToday();
 }
 
+function escH(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+/* Panel «Hoy»: empieza cada día en blanco y se forma con la lista de la persona.
+   Las tareas propias abren el temporizador de Trabajo con esa tarea; las de Quico
+   (ejercicio, comida…) abren su módulo y se tachan solas cuando el módulo las completa. */
 function renderToday(){
   const el=document.getElementById('today-panel');
   const d=new Date(),day=d.getDay(),h=d.getHours();
   const eco=isEco();
   const w=weekNum(),y=d.getFullYear();
-  const rows=[];
+  const tl=todayLocal();
+  const ek=n=>'cris_eco'+n+'_v1_'+tl;
+  const build={
+    trabajo:()=>{const k='cris_trabajo_v1_'+tl;return {e:'💼',t:t('r_trabajo_t'),s:t('r_trabajo_s'),f:'modules/rutina-diaria.html',done:markDone(k)};},
+    pilates:()=>{const p=PILATES[day],k='cris_hiit_v1_'+tl;return {e:p[0],t:t('r_pilates_pre')+t('pil')[day],s:t('r_pilates_s',{d:p[2]}),f:'modules/ejercicios-hiit.html',done:markDone(k)};},
+    comida:()=>{
+      const menuDone=Object.values(lsJSON('cris_menu_w'+w+'_'+y)).filter(Boolean).length;
+      const left=Math.max(0,14-menuDone),k='cris_comida_v1_'+tl;
+      return {e:'🍽️',t:h<17?t('r_comida_lunch'):t('r_comida_dinner'),s:left>0?t('r_comida_left',{n:left}):t('r_comida_done'),f:'modules/comida.html',done:markDone(k)};
+    },
+    limpieza:()=>{
+      const k='cris_limpieza_v1_'+tl;
+      if(ZONES[day]){
+        const z=ZONES[day],zoneDone=!!lsJSON('lim-w'+w+'-'+y)[z[2]];
+        // la zona hecha en su módulo cuenta como hecha y no se puede «destachar» desde aquí
+        return {e:z[0],t:t('r_limpieza_pre')+t('zone')[z[2]],s:(zoneDone||markDone(k))?t('r_limpieza_done'):t('r_limpieza_pending'),f:'modules/limpieza.html',done:zoneDone||markDone(k),lock:zoneDone};
+      }
+      return {e:'⚡',t:t('r_finde_t'),s:t('r_finde_s'),f:'modules/limpieza.html#express',done:markDone(k)};
+    },
+    intereses:()=>{const k='cris_intereses_v1_'+tl;return {e:'🎨',t:t('r_intereses_t'),s:t('r_intereses_s'),f:'modules/intereses.html',done:markDone(k)};},
+    noche:()=>{const k='cris_noche_v1_'+tl;return {e:'🌙',t:t('r_noche_t'),s:h>=20?t('r_noche_s_night'):t('r_noche_s_eve'),f:'modules/rutina-nocturna.html',done:markDone(k)};},
+    calma:()=>{const k='cris_calma_v1_'+tl;return {e:'🫀',t:t('r_calma_t'),s:t('r_calma_s'),f:'modules/rescate-emocional.html',done:markDone(k)};},
+    juego:()=>{const k='cris_juego_v1_'+tl;return {e:'🔍',t:t('r_juego_t'),s:t('r_juego_s'),f:'modules/juegos.html',done:markDone(k)};},
+    eco1:()=>({e:'🫁',t:t('r_respira_t'),s:t('r_respira_s'),f:'modules/rescate-emocional.html',done:markDone(ek(1))}),
+    eco2:()=>({e:'🧘',t:t('r_movilidad_t'),s:t('r_movilidad_s'),f:'modules/ejercicios-hiit.html#suave',done:markDone(ek(2))}),
+    eco3:()=>({e:'🧹',t:t('r_recoge_t'),s:t('r_recoge_s'),f:'modules/limpieza.html#express',done:markDone(ek(3))}),
+    eco4:()=>({e:'🍽️',t:t('r_receta_t'),s:t('r_receta_s'),f:'modules/comida.html#basicos',done:markDone(ek(4))})
+  };
+  const rows=QDIA.items().map(it=>{
+    if(it.mod&&build[it.mod]){const b=build[it.mod]();return {...b,id:it.id,done:b.done||QDIA.isDone(it)};}
+    return {id:it.id,e:it.e||'📝',t:escH(it.t),s:'',f:'modules/rutina-diaria.html#foco='+encodeURIComponent(it.id),done:QDIA.isDone(it)};
+  });
 
-  if(eco){
-    // También en eco se puede tachar: el refuerzo importa más los días de poca batería
-    const tl=todayLocal();
-    const ek=n=>'cris_eco'+n+'_v1_'+tl;
-    rows.push({e:'🫁',t:t('r_respira_t'),s:t('r_respira_s'),f:'modules/rescate-emocional.html',key:ek(1),done:markDone(ek(1))});
-    rows.push({e:'🧘',t:t('r_movilidad_t'),s:t('r_movilidad_s'),f:'modules/ejercicios-hiit.html#suave',key:ek(2),done:markDone(ek(2))});
-    rows.push({e:'🧹',t:t('r_recoge_t'),s:t('r_recoge_s'),f:'modules/limpieza.html#express',key:ek(3),done:markDone(ek(3))});
-    rows.push({e:'🍽️',t:t('r_receta_t'),s:t('r_receta_s'),f:'modules/comida.html#basicos',key:ek(4),done:markDone(ek(4))});
-  }else{
-    // El día se arma según lo que Cris tenga activado en «Editar mi día».
-    // Cada fila lleva `key`: la marca diaria en localStorage (la escribe el módulo
-    // al completar, o el círculo ✓ del panel). `done` = intrínseco || marca manual.
-    const tl=todayLocal();
-    const build={
-      trabajo:()=>{const k='cris_trabajo_v1_'+tl;return {e:'💼',t:t('r_trabajo_t'),s:t('r_trabajo_s'),f:'modules/rutina-diaria.html',key:k,done:markDone(k)};},
-      pilates:()=>{const p=PILATES[day],k='cris_hiit_v1_'+tl;return {e:p[0],t:t('r_pilates_pre')+t('pil')[day],s:t('r_pilates_s',{d:p[2]}),f:'modules/ejercicios-hiit.html',key:k,done:markDone(k)};},
-      comida:()=>{
-        const menuDone=Object.values(lsJSON('cris_menu_w'+w+'_'+y)).filter(Boolean).length;
-        const left=Math.max(0,14-menuDone),k='cris_comida_v1_'+tl;
-        return {e:'🍽️',t:h<17?t('r_comida_lunch'):t('r_comida_dinner'),s:left>0?t('r_comida_left',{n:left}):t('r_comida_done'),f:'modules/comida.html',key:k,done:markDone(k)};
-      },
-      limpieza:()=>{
-        const k='cris_limpieza_v1_'+tl;
-        if(ZONES[day]){
-          const z=ZONES[day],done=!!lsJSON('lim-w'+w+'-'+y)[z[2]]||markDone(k);
-          return {e:z[0],t:t('r_limpieza_pre')+t('zone')[z[2]],s:done?t('r_limpieza_done'):t('r_limpieza_pending'),f:'modules/limpieza.html',key:k,done};
-        }
-        return {e:'⚡',t:t('r_finde_t'),s:t('r_finde_s'),f:'modules/limpieza.html#express',key:k,done:markDone(k)};
-      },
-      intereses:()=>{const k='cris_intereses_v1_'+tl;return {e:'🎨',t:t('r_intereses_t'),s:t('r_intereses_s'),f:'modules/intereses.html',key:k,done:markDone(k)};},
-      noche:()=>{const k='cris_noche_v1_'+tl;return {e:'🌙',t:t('r_noche_t'),s:h>=20?t('r_noche_s_night'):t('r_noche_s_eve'),f:'modules/rutina-nocturna.html',key:k,done:markDone(k)};},
-      calma:()=>{const k='cris_calma_v1_'+tl;return {e:'🫀',t:t('r_calma_t'),s:t('r_calma_s'),f:'modules/rescate-emocional.html',key:k,done:markDone(k)};},
-      juego:()=>{const k='cris_juego_v1_'+tl;return {e:'🔍',t:t('r_juego_t'),s:t('r_juego_s'),f:'modules/juegos.html',key:k,done:markDone(k)};}
-    };
-    DAY_CATALOG.forEach(m=>{ if(modOn(m.id)&&build[m.id])rows.push(build[m.id]()); });
+  // AHORA / LUEGO: la primera pendiente es «ahora» y la siguiente «luego». Desde las 20h,
+  // si la rutina nocturna está en el día, ella manda (con la nocturna hecha, el día se cierra).
+  let nowIdx;
+  const nocheIdx=rows.findIndex(r=>r.f&&r.f.indexOf('rutina-nocturna')>=0);
+  if(h>=20&&nocheIdx>=0)nowIdx=rows[nocheIdx].done?-1:nocheIdx;
+  else nowIdx=rows.findIndex(r=>!r.done);
+  const nextIdx=nowIdx<0?-1:rows.findIndex((r,i)=>i>nowIdx&&!r.done);
+  rows.forEach((r,i)=>{r.badge=i===nowIdx?'now':i===nextIdx?'next':'';});
 
-    // AHORA / LUEGO: orientación sin horarios rígidos — la primera pendiente
-    // es "ahora" y la siguiente pendiente "luego". A partir de las 20h, si la
-    // rutina nocturna está en el día, ella manda; con la nocturna hecha el día
-    // se cierra (sin AHORA: a las 23h no se sugiere empezar a trabajar).
-    let nowIdx;
-    const nocheIdx=rows.findIndex(r=>r.f&&r.f.indexOf('rutina-nocturna')>=0);
-    if(h>=20&&nocheIdx>=0)nowIdx=rows[nocheIdx].done?-1:nocheIdx;
-    else nowIdx=rows.findIndex(r=>!r.done);
-    const nextIdx=nowIdx<0?-1:rows.findIndex((r,i)=>i>nowIdx&&!r.done); // LUEGO siempre después de AHORA
-    rows.forEach((r,i)=>{r.badge=i===nowIdx?'now':i===nextIdx?'next':'';});
-  }
-
-  // Quico cambia de humor: orgulloso si TODO está tachado (también en eco —
-  // completar el mínimo un día de poca batería merece celebración), calmado en eco, feliz si no
+  // Quico cambia de humor: orgulloso con todo tachado, calmado en eco, feliz si no
   const allDone=rows.length>0&&rows.every(r=>r.done);
   const mood=allDone?'proud':eco?'calm':'happy';
   const qp=document.getElementById('quico-peek');
   const src='quico/quico_head_'+mood+'.png';
   if(qp&&!qp.src.endsWith(src))qp.src=src;
 
+  const pend=QDIA.pending();
+  const chips=quicoChips();
+  const chipsOpen=showQuicoChips||!rows.length;
   const dias=t('dias');
   el.innerHTML=`
     <div class="tp-head">
@@ -1319,16 +1329,17 @@ function renderToday(){
       <button class="tp-eco ${eco?'on':''}" onclick="toggleEco()">${eco?t('eco_on_btn'):t('eco_off_btn')}</button>
     </div>
     ${eco?'<div class="tp-eco-msg">'+t('eco_msg')+'</div>':''}
-    ${(!eco&&ecoSuggested()&&!energyAsked())?'<div class="tp-eco-suggest">'+t('eco_suggest_q')+'<div class="tp-eco-btns"><button class="tp-eco-cta" onclick="toggleEco()">'+t('eco_suggest_yes')+'</button><button class="tp-eco-cta alt" onclick="setEnergy(\'alta\')">'+t('eco_suggest_fine')+'</button></div></div>':''}
-    ${(!eco&&!ecoSuggested()&&!energyAsked())?'<div class="tp-energy">'+t('energy_q')+'<div class="tp-energy-btns"><button onclick="setEnergy(\'alta\')">'+t('energy_good')+'</button><button onclick="setEnergy(\'baja\')">'+t('energy_low')+'</button></div></div>':''}
+    ${pend.length?`<div class="tp-pend"><span>${t('pend',{n:pend.length})}</span><button onclick="dayBring()">${t('pend_bring')}</button><button class="x" onclick="dayDrop()" aria-label="${t('pend_drop')}">✕</button></div>`:''}
     ${rows.length?[...rows].sort((a,b)=>(a.done?1:0)-(b.done?1:0)).map(r=>`
-      <button class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-file="${r.f}" data-key="${r.key||''}">
+      <button class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-file="${r.f}" data-id="${r.id}"${r.lock?' data-lock="1"':''}>
         <span class="tp-em">${r.e}</span>
-        <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">'+t('badge_now')+'</span>':r.badge==='next'?'<span class="tp-badge next">'+t('badge_next')+'</span>':''}</span><span class="tp-s">${r.s}</span></span>
-        ${r.key?`<span class="tp-check${r.done?' on':''}" tabindex="0" role="checkbox" aria-checked="${!!r.done}" aria-label="${t('mark_as',{t:r.t,s:r.done?t('mark_pending'):t('mark_done')})}">✓</span>`:`<span class="tp-arrow">›</span>`}
-      </button>`).join(''):'<div class="tp-empty">'+t('empty')+'</div>'}
-    <button class="tp-edit" onclick="openDayEdit()">${t('edit_btn')}</button>
-    ${rows.length?'<div class="tp-hint">'+t('hint')+'</div>':''}`;
+        <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">'+t('badge_now')+'</span>':r.badge==='next'?'<span class="tp-badge next">'+t('badge_next')+'</span>':''}</span>${r.s?`<span class="tp-s">${r.s}</span>`:''}</span>
+        <span class="tp-check${r.done?' on':''}" tabindex="0" role="checkbox" aria-checked="${!!r.done}" aria-label="${t('mark_as',{t:r.t.replace(/<[^>]*>/g,''),s:r.done?t('mark_pending'):t('mark_done')})}">✓</span>
+      </button>`).join(''):`<div class="tp-q">${t('today_q')}</div>`}
+    <div class="tp-add"><textarea id="tp-in" rows="1" maxlength="2000" enterkeyhint="done" placeholder="${t('add_ph')}" aria-label="${t('add_ph')}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();dayAdd();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,140)+'px'"></textarea><button onclick="dayAdd()" aria-label="${t('add_btn')}">+</button></div>
+    ${chips.length?`${rows.length?`<button class="tp-quico" onclick="toggleQuicoChips()" aria-expanded="${chipsOpen}">${t('from_quico')} ${chipsOpen?'▴':'▾'}</button>`:''}
+      <div class="tp-chips"${chipsOpen?'':' hidden'}>${chips.map(c=>`<button class="tp-chip" onclick="dayAddMod('${c[0]}')">${c[1]} ${t(c[2])}</button>`).join('')}</div>`:''}
+    ${rows.length?`<button class="tp-edit" onclick="openDayEdit()">${t('edit_btn')}</button><div class="tp-hint">${t('hint')}</div>`:''}`;
 }
 
 /* Vibración corta respetando ajustes (vib + modo calma) */
@@ -1338,12 +1349,11 @@ function hapticOK(){const c=getCfg();return c.vib!==false&&c.calm!==true&&'vibra
    tapCooldownUntil evita que un doble-toque nervioso deshaga la marca o abra
    un módulo cuando el panel se re-renderiza bajo el dedo. */
 let tapCooldownUntil=0;
-function toggleMark(key){
-  if(!key)return;
+function toggleItem(id){
+  if(!id)return;
   tapCooldownUntil=Date.now()+350;
-  const on=markDone(key);
-  if(on)localStorage.removeItem(key); else localStorage.setItem(key,'1');
-  if(hapticOK())navigator.vibrate(on?30:[40,40,40]);
+  const on=QDIA.toggle(id);
+  if(hapticOK())navigator.vibrate(on?[40,40,40]:30);
   renderToday();
 }
 
@@ -1358,28 +1368,23 @@ function toggleMark(key){
   const cancel=()=>{ if(timer){clearTimeout(timer);timer=null;} };
   panel.addEventListener('pointerdown',e=>{
     const row=e.target.closest('.tp-row');
-    if(!row)return;
-    const key=row.getAttribute('data-key');
-    if(!key)return;
+    if(!row||row.getAttribute('data-lock'))return;
+    const id=row.getAttribute('data-id');
     timer=setTimeout(()=>{
       timer=null;
       tapCooldownUntil=Date.now()+700; // el click que llega al soltar se ignora
-      toggleMark(key);
+      toggleItem(id);
     },500);
   });
   panel.addEventListener('pointerup',cancel);
   panel.addEventListener('pointerleave',cancel);
   panel.addEventListener('pointercancel',cancel);
-  // Marca intrínseca (p.ej. zona de limpieza completada en su módulo): el círculo
-  // no puede deshacerla desde aquí — mejor ni feedback que feedback mentiroso.
-  const intrinsicDone=(row,key)=>row.classList.contains('done')&&!markDone(key);
   panel.addEventListener('click',e=>{
     if(Date.now()<tapCooldownUntil)return;
     const row=e.target.closest('.tp-row');
     if(!row)return;
     if(e.target.closest('.tp-check')){
-      const key=row.getAttribute('data-key');
-      if(!intrinsicDone(row,key))toggleMark(key);
+      if(!row.getAttribute('data-lock'))toggleItem(row.getAttribute('data-id'));
       return;
     }
     if(row.getAttribute('data-file'))openModule(row.getAttribute('data-file'));
@@ -1389,8 +1394,7 @@ function toggleMark(key){
     if((e.key==='Enter'||e.key===' ')&&e.target.closest&&e.target.closest('.tp-check')){
       e.preventDefault();e.stopPropagation();
       const row=e.target.closest('.tp-row');
-      const key=row&&row.getAttribute('data-key');
-      if(row&&!intrinsicDone(row,key))toggleMark(key);
+      if(row&&!row.getAttribute('data-lock'))toggleItem(row.getAttribute('data-id'));
     }
   });
   panel.addEventListener('contextmenu',e=>{ if(e.target.closest('.tp-row'))e.preventDefault(); });
@@ -1450,10 +1454,9 @@ function importData(file){
 const ONBOARD={
  es:{skip:'Saltar',next:'Siguiente →',start:'¡A jugar!',steps:[
   {t:'¡Hola! Soy Quico 🦘',x:'Te enseño tu pantalla en un momentín, señalando cada cosa con una flecha. ¿Vamos?'},
-  {sel:'#today-panel',t:'Tu plan de HOY 🌿',x:'Aquí te preparo el día: una cosa cada vez, a tu ritmo. Nada de listas eternas.'},
-  {sel:'.tp-energy',t:'¿Cómo vienes hoy? 💪🔋',x:'Dime tu energía y ajusto el día a como estás de verdad. Sin culpa.'},
-  {sel:'.tp-row',t:'Cada tarea, un mundo 🎨',x:'Toca una tarjeta y te guío paso a paso… ¡con mi voz!'},
-  {sel:'.tp-edit',t:'Tu día, a tu manera ✏️',x:'Aquí eliges qué aparece en tu plan. Pones y quitas lo que quieras. Mandas tú.'},
+  {sel:'#today-panel',t:'Tu día, en blanco 🌿',x:'Cada mañana empieza vacío. Lo llenas tú con lo que quieras hacer hoy.'},
+  {sel:'.tp-add',t:'Escribe y pulsa + ✍️',x:'Una cosa cada vez, o pega una lista entera. Con «＋ De Quico» añades ejercicio, comida o limpieza de un toque.'},
+  {sel:'.tp-edit',t:'Ordena o quita ✏️',x:'Sube arriba lo importante. Toca el círculo ✓ cuando termines algo.'},
   {sel:'#menuBtn',t:'El menú ☰',x:'Aquí dentro está todo: los módulos, el idioma 🇪🇸🇬🇧🇫🇷, TU nombre y «reducir estímulos» para los días sensibles.'},
   {sel:'#sosBtn',t:'El corazón 🫀',x:'El Botiquín Emocional: técnicas, meditaciones y ayuda cuando el día pesa.'},
   {sel:'#dropBtn',t:'Soltar el móvil 📵',x:'¿Enganchada al móvil? Este botón te da un empujoncito para dejarlo y ponerte a lo tuyo.'},
@@ -1461,10 +1464,9 @@ const ONBOARD={
  ]},
  en:{skip:'Skip',next:'Next →',start:'Let’s play!',steps:[
   {t:'Hi! I’m Quico 🦘',x:'I’ll show you your screen in a jiffy, pointing at each thing with an arrow. Ready?'},
-  {sel:'#today-panel',t:'Your plan for TODAY 🌿',x:'Here I set up your day: one thing at a time, at your pace. No endless lists.'},
-  {sel:'.tp-energy',t:'How are you today? 💪🔋',x:'Tell me your energy and I’ll shape the day to how you really are. No guilt.'},
-  {sel:'.tp-row',t:'Each task, a world 🎨',x:'Tap a card and I’ll guide you step by step… with my voice!'},
-  {sel:'.tp-edit',t:'Your day, your way ✏️',x:'Here you choose what shows up in your plan. Add and remove whatever you like. You’re the boss.'},
+  {sel:'#today-panel',t:'Your day, blank 🌿',x:'Every morning starts empty. You fill it with what you want to do today.'},
+  {sel:'.tp-add',t:'Type and tap + ✍️',x:'One thing at a time, or paste a whole list. With “＋ From Quico” you add exercise, food or cleaning in one tap.'},
+  {sel:'.tp-edit',t:'Reorder or remove ✏️',x:'Move what matters to the top. Tap the ✓ circle when you finish something.'},
   {sel:'#menuBtn',t:'The menu ☰',x:'Everything lives in here: the modules, the language 🇪🇸🇬🇧🇫🇷, YOUR name and «reduce stimulation» for sensitive days.'},
   {sel:'#sosBtn',t:'The heart 🫀',x:'The Emotional Kit: techniques, meditations and help when the day weighs on you.'},
   {sel:'#dropBtn',t:'Put the phone down 📵',x:'Stuck scrolling? This button gives you a little nudge to drop it and get going.'},
@@ -1472,10 +1474,9 @@ const ONBOARD={
  ]},
  fr:{skip:'Passer',next:'Suivant →',start:'On joue !',steps:[
   {t:'Coucou ! Je suis Quico 🦘',x:'Je te montre ton écran en deux secondes, en pointant chaque chose avec une flèche. On y va ?'},
-  {sel:'#today-panel',t:'Ton plan d’AUJOURD’HUI 🌿',x:'Ici je prépare ta journée : une chose à la fois, à ton rythme. Pas de listes interminables.'},
-  {sel:'.tp-energy',t:'Comment tu te sens ? 💪🔋',x:'Dis-moi ton énergie et j’adapte la journée à ton état réel. Sans culpabilité.'},
-  {sel:'.tp-row',t:'Chaque tâche, un monde 🎨',x:'Touche une carte et je te guide pas à pas… avec ma voix !'},
-  {sel:'.tp-edit',t:'Ta journée, à ta façon ✏️',x:'Ici tu choisis ce qui apparaît dans ton plan. Tu ajoutes et enlèves ce que tu veux. C’est toi qui décides.'},
+  {sel:'#today-panel',t:'Ta journée, vierge 🌿',x:'Chaque matin commence vide. Tu la remplis avec ce que tu veux faire aujourd’hui.'},
+  {sel:'.tp-add',t:'Écris et touche + ✍️',x:'Une chose à la fois, ou colle une liste entière. Avec « ＋ De Quico » tu ajoutes sport, repas ou ménage en un toucher.'},
+  {sel:'.tp-edit',t:'Réordonne ou retire ✏️',x:'Mets en haut ce qui compte. Touche le cercle ✓ quand tu finis quelque chose.'},
   {sel:'#menuBtn',t:'Le menu ☰',x:'Tout est là-dedans : les modules, la langue 🇪🇸🇬🇧🇫🇷, TON prénom et « réduire les stimulations » pour les jours sensibles.'},
   {sel:'#sosBtn',t:'Le cœur 🫀',x:'La Trousse émotionnelle : techniques, méditations et aide quand la journée pèse.'},
   {sel:'#dropBtn',t:'Lâcher le téléphone 📵',x:'Scotchée à l’écran ? Ce bouton te donne un petit coup de pouce pour le poser et t’y mettre.'},

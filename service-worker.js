@@ -1,13 +1,14 @@
 // Service Worker - Cris App
 // Cachea todos los módulos para que la app funcione sin conexión.
 
-const CACHE_NAME = 'cris-app-v102';
+const CACHE_NAME = 'cris-app-v103';
 
 const ASSETS = [
   './',
   './index.html',
   './privacidad.html',
   './manifest.json',
+  './shared/dia.js',
   './shared/alergias.js',
   './modules/rutina-diaria.html',
   './modules/ejercicios-hiit.html',
