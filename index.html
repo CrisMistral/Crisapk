@@ -1147,7 +1147,7 @@ function saveName(v){const c=getCfg();c.name=(v||'').slice(0,18);setCfgStore(c);
 function toggleExplain(){const c=getCfg();c.explain=c.explain!==true;setCfgStore(c);document.documentElement.classList.toggle('simple',c.explain!==true);renderCfg();}
 function toggleCfg(k){const c=getCfg();c[k]=c[k]===false;setCfgStore(c);renderCfg();}
 function toggleCalm(){
-  const c=getCfg();c.calm=c.calm!==true;setCfgStore(c);
+  const c=getCfg();c.calm=c.calm!==true;delete c.calmAudio;setCfgStore(c);
   document.documentElement.classList.toggle('calm',c.calm);
   renderCfg();
 }
@@ -1711,6 +1711,8 @@ function closeViewer(){
   document.getElementById('viewer').classList.remove('show');
   document.getElementById('homeBtn').classList.remove('show');
   document.body.classList.remove('mod-open');
+  // que no siga hablando la frase que estaba a medias
+  try{const w=document.getElementById('moduleFrame').contentWindow;if(w&&w.speechSynthesis)w.speechSynthesis.cancel();}catch(e){}
   setFrame(null); // fuera el módulo y sus temporizadores, sin tocar el historial
   clearTimeout(legacyBackTimer);legacyBackTimer=null;
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
