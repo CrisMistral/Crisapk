@@ -39,7 +39,7 @@ body{
 #dashboard{
   max-width:440px;
   margin:0 auto;
-  padding:14px 18px 24px;
+  padding:14px 18px calc(96px + env(safe-area-inset-bottom)); /* sitio para 📵 y 🫀 al bajar del todo */
   min-height:100vh;
   min-height:100dvh;
   display:flex;
@@ -117,15 +117,18 @@ body{
 .tp-eco-cta{flex:1;border:none;background:#f59e0b;color:#fff;border-radius:999px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;}
 .tp-eco-cta.alt{background:#fff;color:#8a6410;border:2px solid #f5d78a;}
 .tp-eco-cta:active{transform:scale(.96);}
-.tp-row{display:flex;align-items:center;gap:11px;width:100%;border:none;background:var(--mint-bg);border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;transition:transform .1s;
-  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+.tp-row{display:flex;align-items:center;width:100%;background:var(--mint-bg);border-radius:14px;margin-bottom:8px;transition:transform .1s;}
 .tp-row:active{transform:scale(.98);}
-/* Tarea hecha: baja al final y se encoge (compacta) */
-.tp-row.done{opacity:.5;padding:6px 12px;margin-bottom:5px;}
-.tp-row.done .tp-em{font-size:1.05rem;}
-.tp-row.done .tp-t{font-size:.8rem;}
+/* La fila son dos botones hermanos: abrir (texto) y tachar (círculo) */
+.tp-open{flex:1;min-width:0;display:flex;align-items:center;gap:11px;border:none;background:none;padding:12px 4px 12px 12px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;color:inherit;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+/* Tarea hecha: baja al final y se encoge (compacta), en gris legible */
+.tp-row.done{background:transparent;margin-bottom:3px;}
+.tp-row.done .tp-open{padding:5px 4px 5px 12px;}
+.tp-row.done .tp-em{font-size:1.05rem;opacity:.6;}
+.tp-row.done .tp-t{font-size:.8rem;color:#5f6b72;}
 .tp-row.done .tp-s{display:none;}
-.tp-row.done .tp-check{width:24px;height:24px;font-size:.85rem;}
+.tp-row.done .tp-ck{width:24px;height:24px;font-size:.85rem;}
 .tp-em{font-size:1.5rem;flex-shrink:0;}
 .tp-info{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0;}
 .tp-t{font-size:.88rem;font-weight:700;color:var(--teal-dark);}
@@ -133,8 +136,10 @@ body{
 .tp-s{font-size:.73rem;color:var(--text-soft);font-weight:500;}
 .tp-arrow{font-size:1.1rem;color:var(--teal);font-weight:800;flex-shrink:0;}
 /* Círculo de tachar: visible y de un toque (el long-press sigue funcionando) */
-.tp-check{width:32px;height:32px;border-radius:50%;border:2px solid var(--mint-deep);background:#fff;color:transparent;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;flex-shrink:0;transition:background .12s,border-color .12s;}
-.tp-check.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tp-check{width:48px;height:48px;border:none;background:none;padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;}
+.tp-check[aria-disabled="true"]{cursor:default;}
+.tp-ck{width:32px;height:32px;border-radius:50%;border:2px solid var(--mint-deep);background:#fff;color:transparent;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;transition:background .12s,border-color .12s;}
+.tp-check.on .tp-ck{background:var(--teal-dark);border-color:var(--teal-dark);color:#fff;}
 .tp-hint{font-size:.68rem;color:var(--text-soft);text-align:center;margin-top:8px;opacity:.85;}
 .tp-empty{text-align:center;color:var(--text-soft);font-size:.9rem;font-weight:600;padding:26px 10px;line-height:1.6;}
 .tp-edit{display:block;margin:12px auto 0;border:2px dashed var(--mint-deep);background:transparent;color:var(--teal-dark);border-radius:14px;padding:10px 16px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;}
@@ -142,8 +147,8 @@ body{
 /* Hoja inferior: editar el día */
 #daySheetBg{position:fixed;inset:0;background:rgba(15,77,71,.38);z-index:320;opacity:0;pointer-events:none;transition:opacity .28s;}
 #daySheetBg.open{opacity:1;pointer-events:auto;}
-#daySheet{position:fixed;left:0;right:0;bottom:0;z-index:321;background:var(--mint-bg);border-radius:22px 22px 0 0;max-width:440px;margin:0 auto;max-height:82vh;overflow-y:auto;padding:18px 18px 32px;transform:translateY(102%);transition:transform .28s ease;box-shadow:0 -6px 30px rgba(15,77,71,.22);}
-#daySheet.open{transform:translateY(0);}
+#daySheet{position:fixed;left:0;right:0;bottom:0;z-index:321;background:var(--mint-bg);border-radius:22px 22px 0 0;max-width:440px;margin:0 auto;max-height:82vh;overflow-y:auto;padding:18px 18px 32px;transform:translateY(102%);visibility:hidden;transition:transform .28s ease,visibility 0s .28s;box-shadow:0 -6px 30px rgba(15,77,71,.22);}
+#daySheet.open{transform:translateY(0);visibility:visible;transition:transform .28s ease;}
 .ds-head{position:sticky;top:0;z-index:2;background:var(--mint-bg);display:flex;justify-content:space-between;align-items:center;margin:-18px -18px 4px;padding:16px 18px 8px;}
 .ds-title{font-size:1.15rem;font-weight:800;color:var(--teal-dark);}
 .ds-done{border:none;background:var(--teal);color:#fff;border-radius:999px;padding:8px 18px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;}
@@ -215,7 +220,8 @@ body{
 #areasBtn{width:100%;border:2px solid var(--mint-mid);background:var(--white-card);color:var(--teal-dark);font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;border-radius:14px;padding:11px;cursor:pointer;margin-top:2px;text-align:left;}
 #areasBtn:active{transform:scale(.98);}
 /* AHORA / LUEGO: qué toca ya y qué viene después */
-.tp-row.is-now{background:#fff;border:2px solid var(--teal);padding:10px;}
+.tp-row.is-now{background:#fff;border:2px solid var(--teal);}
+.tp-row.is-now .tp-open{padding:10px 4px 10px 10px;}
 .tp-badge{display:inline-block;font-size:.58rem;font-weight:800;letter-spacing:.05em;border-radius:999px;padding:2px 7px;margin-left:7px;vertical-align:1px;}
 .tp-badge.now{background:var(--teal);color:#fff;}
 .tp-badge.next{background:var(--mint-mid);color:var(--teal-dark);}
@@ -226,15 +232,36 @@ body{
 .tp-add textarea:focus{outline:none;border-color:var(--teal);}
 .tp-add button{flex-shrink:0;width:46px;height:46px;border:none;border-radius:14px;background:var(--teal);color:#fff;font-size:1.5rem;font-weight:800;cursor:pointer;}
 .tp-add button:active{transform:scale(.95);}
-.tp-quico{display:block;margin:2px auto 6px;border:none;background:none;color:var(--teal-dark);font-family:'Outfit',sans-serif;font-size:.86rem;font-weight:700;cursor:pointer;padding:8px 10px;}
+.tp-quico{display:block;margin:2px auto 6px;border:none;background:none;color:var(--teal-dark);font-family:'Outfit',sans-serif;font-size:.86rem;font-weight:700;cursor:pointer;padding:8px 14px;min-height:44px;}
 .tp-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:6px;}
 .tp-chips[hidden]{display:none;}
-.tp-chip{border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:999px;padding:8px 12px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;cursor:pointer;}
+.tp-chip{min-height:44px;border:2px solid var(--mint-mid);background:#fff;color:var(--teal-dark);border-radius:999px;padding:8px 14px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;cursor:pointer;}
 .tp-chip:active{transform:scale(.95);background:var(--mint-soft);}
-.tp-pend{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px dashed var(--mint-deep);border-radius:12px;padding:8px 10px;margin-bottom:10px;font-size:.82rem;font-weight:700;color:var(--teal-dark);}
-.tp-pend span{flex:1;}
-.tp-pend button{border:none;border-radius:999px;padding:7px 12px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;background:var(--teal);color:#fff;}
-.tp-pend button.x{background:transparent;color:var(--text-soft);padding:7px 8px;}
+.tp-pend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border:1.5px dashed var(--mint-deep);border-radius:12px;padding:8px 10px;margin-bottom:10px;font-size:.84rem;font-weight:700;color:var(--teal-dark);}
+.tp-pend>span,.tp-pend-t{flex:1 1 100%;}
+.tp-pend-t{border:none;background:none;text-align:left;padding:6px 2px;min-height:40px;font:inherit;color:inherit;cursor:pointer;}
+.tp-pend button:not(.tp-pend-t){flex:1;min-height:44px;border:none;border-radius:999px;padding:10px 14px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:800;cursor:pointer;background:var(--teal-dark);color:#fff;}
+.tp-pend button.x{background:#fff;color:#4b5563;border:2px solid #d1d5db;}
+.tp-pend-list{background:#fff;border-radius:12px;margin:-4px 0 10px;padding:4px 6px;}
+.tp-pend-i{display:flex;align-items:center;gap:8px;padding:2px 4px;font-size:.84rem;font-weight:600;color:var(--teal-dark);}
+.tp-pend-i span{flex:1;min-width:0;overflow-wrap:anywhere;}
+.tp-pend-i button{width:44px;height:44px;border:none;border-radius:12px;background:var(--mint-bg);color:var(--teal-dark);font-size:1.2rem;font-weight:800;cursor:pointer;flex-shrink:0;}
+/* Tiempo de cada tarea, total del día y temporizador en marcha */
+.tp-min{display:inline-block;font-size:.72rem;font-weight:800;color:var(--teal-dark);background:#fff;border:1.5px solid var(--mint-mid);border-radius:999px;padding:0 7px;margin-left:7px;vertical-align:1px;white-space:nowrap;}
+.tp-total{font-size:.8rem;font-weight:700;color:var(--teal-dark);margin:-4px 2px 10px;}
+.tp-run{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--teal);border-radius:14px;padding:4px 4px 4px 6px;margin-bottom:10px;}
+.tp-run-open{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:none;background:none;padding:8px 6px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:left;color:var(--teal-dark);}
+.tp-run-left{font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums;flex-shrink:0;}
+.tp-run-name{font-size:.86rem;font-weight:700;min-width:0;overflow-wrap:anywhere;}
+.tp-run-stop{width:44px;height:44px;border:none;border-radius:12px;background:var(--mint-bg);color:var(--teal-dark);font-size:1rem;cursor:pointer;flex-shrink:0;}
+.tp-run.end{flex-direction:column;align-items:stretch;padding:10px;background:#fff8e6;border-color:#f59e0b;}
+.tp-run-t{font-size:.92rem;font-weight:800;color:#7c4a03;margin:0 2px 8px;overflow-wrap:anywhere;}
+.tp-run-b{display:flex;gap:6px;}
+.tp-run-b button{flex:1;min-height:44px;border:none;border-radius:12px;padding:8px 4px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:800;cursor:pointer;background:var(--teal-dark);color:#fff;}
+.tp-run-b button.alt{background:#fff;color:#4b5563;border:2px solid #d1d5db;}
+#tmToast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:400;max-width:min(92vw,420px);display:none;align-items:center;gap:10px;background:#7c4a03;color:#fff;border-radius:16px;padding:10px 10px 10px 16px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+#tmToast.show{display:flex;}
+#tmToast button{min-height:44px;border:none;border-radius:12px;background:#fff;color:#7c4a03;font-family:inherit;font-weight:800;padding:8px 14px;cursor:pointer;flex-shrink:0;}
 .de-row{display:flex;align-items:center;gap:8px;background:var(--white-card);border:2px solid var(--mint-mid);border-radius:14px;padding:8px 8px 8px 12px;margin-bottom:8px;}
 .de-in{flex:1;min-width:0;border:2px solid transparent;border-radius:10px;background:var(--mint-bg);padding:9px 10px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--teal-dark);}
 .de-in:focus{outline:none;border-color:var(--teal);background:#fff;}
@@ -242,6 +269,11 @@ body{
 .de-row button{width:40px;height:40px;border:none;border-radius:12px;background:var(--mint-bg);color:var(--teal-dark);font-size:1rem;font-weight:800;cursor:pointer;flex-shrink:0;}
 .de-row button:disabled{opacity:.3;}
 .de-row button.del{color:#b91c1c;background:#fef2f2;}
+/* Tarea propia: el texto arriba y debajo su tiempo y los botones */
+.de-row.own{flex-wrap:wrap;}
+.de-row.own .de-in{flex:1 1 100%;}
+.de-row.done .de-t,.de-row.done .de-in{color:#5f6b72;text-decoration:line-through;}
+.de-min{margin-right:auto;height:40px;border:2px solid var(--mint-mid);border-radius:12px;background:#fff;color:var(--teal-dark);font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700;padding:0 8px;}
 
 /* ── Quokka asomado agarrando el panel ── */
 .quokka-peek{display:flex;justify-content:center;margin-bottom:-30px;position:relative;z-index:1;}
@@ -530,14 +562,17 @@ body.mod-open #menuBtn{display:none;}
 
 <!-- Hoja: ordenar o quitar cosas del día -->
 <div id="daySheetBg" onclick="closeDayEdit()"></div>
-<aside id="daySheet" role="dialog" aria-modal="true" aria-label="Editar mi día">
+<aside id="daySheet" role="dialog" aria-modal="true" aria-label="Tu día" data-i18n-aria="day_title">
   <div class="ds-head">
     <span class="ds-title" data-i18n="day_title">✏️ Tu día</span>
     <button class="ds-done" data-i18n="done" onclick="closeDayEdit()">Listo</button>
   </div>
-  <div class="ds-sub" id="ds-sub">Toca una tarea para cambiarla. Ordénalas con las flechas o bórralas.</div>
+  <div class="ds-sub" id="ds-sub">Cambia el texto, ponle tiempo, ordénalas o bórralas.</div>
   <div id="daySheetList"></div>
 </aside>
+
+<!-- Aviso de fin del temporizador mientras hay otro módulo abierto -->
+<div id="tmToast" role="alert"><span id="tmToastT"></span><button onclick="tmToastGo()" data-i18n="tm_see">Ver</button></div>
 
 <!-- Visor de módulos -->
 <div id="viewer">
@@ -582,9 +617,6 @@ const I18N={
   calm_on:'🕯️ Modo calma activo — toca para salir', calm_off:'🕯️ Reducir estímulos',
   day_trabajo:'Trabajo', day_pilates:'Ejercicio (calistenia)', day_comida:'Comida', day_limpieza:'Limpieza',
   day_intereses:'Aprende algo', day_noche:'Rutina nocturna', day_calma:'Momento de calma', day_juego:'Un rato de juego',
-  ds_in_day:'✓ En tu día', ds_add:'+ Añadir',
-  ds_sub_normal:'Toca para añadir o quitar del panel «Hoy». Sin presión: pon solo lo que quieras.',
-  ds_sub_eco:'Esto configura tu día normal — hoy estás en modo eco, así que lo verás al volver a normal 💚',
   today_eco:'🪫 Hoy, en modo eco', today_prefix:'✨ Hoy, ',
   eco_on_btn:'💪 Volver a normal', eco_off_btn:'🪫 Modo eco',
   eco_msg:'Día de poca batería — lo mínimo cuenta. Hacer poco también es cuidarte 💚',
@@ -593,7 +625,7 @@ const I18N={
   energy_q:'🔋 ¿Cómo vienes de energía hoy?', energy_good:'💪 Bien', energy_low:'🪫 Poca',
   badge_now:'AHORA', badge_next:'LUEGO',
   empty:'Tu día está vacío 🌿<br>Añade lo que quieras hacer hoy.',
-  edit_btn:'✏️ Editar',today_q:'¿Qué quieres hacer hoy?',add_ph:'Escribe algo y pulsa +',add_btn:'Añadir',from_quico:'＋ De Quico',pend:'De otros días: {n}',pend_bring:'Traer',pend_drop:'Descartar',ds_sub_list:'Toca una tarea para cambiarla. Ordénalas con las flechas o bórralas.',de_edit:'Cambiar la tarea',de_up:'Subir',de_down:'Bajar',de_del:'Borrar', hint:'Toca el círculo ✓ al terminar · toca la tarea para abrirla',
+  edit_btn:'✏️ Editar',today_q:'¿Qué quieres hacer hoy?',add_ph:'Añade una tarea…',pend_undo:'Deshacer',pend_dropped:'Descartadas: {n}',de_min:'Tiempo',de_nomin:'⏱ Sin tiempo',tm_total:'⏱ {x} · acabas ~{h}',tm_end:'¡Tiempo!',tm_yes:'✓ Hecha',tm_more:'+5 min',tm_not:'Aún no',tm_ok:'Listo',tm_stop:'Parar el temporizador',tm_left:'Tiempo que queda',tm_focus:'Concentración',tm_see:'Ver',add_btn:'Añadir',from_quico:'＋ De Quico',pend:'De otros días: {n}',pend_bring:'Traer',pend_drop:'Descartar',ds_sub_list:'Cambia el texto, ponle tiempo, ordénalas o bórralas.',de_edit:'Cambiar la tarea',de_up:'Subir',de_down:'Bajar',de_del:'Borrar', hint:'Toca el círculo ✓ al terminar · toca la tarea para abrirla',
   mark_done:'hecha', mark_pending:'pendiente', mark_as:'Marcar {t} como {s}',
   r_respira_t:'Respira 2 minutos', r_respira_s:'Con eso ya cuenta',
   r_movilidad_t:'Movilidad suave', r_movilidad_s:'Solo lo que te apetezca, sin más',
@@ -645,9 +677,6 @@ const I18N={
   calm_on:'🕯️ Calm mode on — tap to exit', calm_off:'🕯️ Reduce stimulation',
   day_trabajo:'Work', day_pilates:'Exercise (calisthenics)', day_comida:'Food', day_limpieza:'Cleaning',
   day_intereses:'Learn something', day_noche:'Night routine', day_calma:'A calm moment', day_juego:'A bit of play',
-  ds_in_day:'✓ In your day', ds_add:'+ Add',
-  ds_sub_normal:'Tap to add or remove from the “Today” panel. No pressure: keep only what you want.',
-  ds_sub_eco:'This sets your normal day — you’re in eco mode today, so you’ll see it when you go back to normal 💚',
   today_eco:'🪫 Today, eco mode', today_prefix:'✨ Today, ',
   eco_on_btn:'💪 Back to normal', eco_off_btn:'🪫 Eco mode',
   eco_msg:'Low-battery day — the minimum counts. Doing little is also self-care 💚',
@@ -656,7 +685,7 @@ const I18N={
   energy_q:'🔋 How’s your energy today?', energy_good:'💪 Good', energy_low:'🪫 Low',
   badge_now:'NOW', badge_next:'NEXT',
   empty:'Your day is empty 🌿<br>Add whatever you want to do today.',
-  edit_btn:'✏️ Edit',today_q:'What do you want to do today?',add_ph:'Type something and tap +',add_btn:'Add',from_quico:'＋ From Quico',pend:'From other days: {n}',pend_bring:'Bring',pend_drop:'Dismiss',ds_sub_list:'Tap a task to change it. Reorder with the arrows or delete it.',de_edit:'Change the task',de_up:'Move up',de_down:'Move down',de_del:'Delete', hint:'Tap the ✓ circle when done · tap the task to open it',
+  edit_btn:'✏️ Edit',today_q:'What do you want to do today?',add_ph:'Add a task…',pend_undo:'Undo',pend_dropped:'Dismissed: {n}',de_min:'Time',de_nomin:'⏱ No time',tm_total:'⏱ {x} · done by ~{h}',tm_end:'Time’s up!',tm_yes:'✓ Done',tm_more:'+5 min',tm_not:'Not yet',tm_ok:'OK',tm_stop:'Stop the timer',tm_left:'Time left',tm_focus:'Focus',tm_see:'See',add_btn:'Add',from_quico:'＋ From Quico',pend:'From other days: {n}',pend_bring:'Bring',pend_drop:'Dismiss',ds_sub_list:'Change the text, give it a time, reorder or delete.',de_edit:'Change the task',de_up:'Move up',de_down:'Move down',de_del:'Delete', hint:'Tap the ✓ circle when done · tap the task to open it',
   mark_done:'done', mark_pending:'pending', mark_as:'Mark {t} as {s}',
   r_respira_t:'Breathe for 2 minutes', r_respira_s:'That already counts',
   r_movilidad_t:'Gentle mobility', r_movilidad_s:'Only what you feel like, nothing more',
@@ -708,9 +737,6 @@ const I18N={
   calm_on:'🕯️ Mode calme actif — touche pour sortir', calm_off:'🕯️ Réduire les stimuli',
   day_trabajo:'Travail', day_pilates:'Exercice (callisthénie)', day_comida:'Repas', day_limpieza:'Ménage',
   day_intereses:'Apprendre', day_noche:'Routine du soir', day_calma:'Un moment de calme', day_juego:'Un peu de jeu',
-  ds_in_day:'✓ Dans ta journée', ds_add:'+ Ajouter',
-  ds_sub_normal:'Touche pour ajouter ou retirer du panneau « Aujourd’hui ». Sans pression : garde ce que tu veux.',
-  ds_sub_eco:'Ceci configure ta journée normale — tu es en mode éco aujourd’hui, tu le verras en revenant à la normale 💚',
   today_eco:'🪫 Aujourd’hui, mode éco', today_prefix:'✨ ',
   eco_on_btn:'💪 Revenir à la normale', eco_off_btn:'🪫 Mode éco',
   eco_msg:'Journée petite batterie — le minimum compte. Faire peu, c’est aussi prendre soin de toi 💚',
@@ -719,7 +745,7 @@ const I18N={
   energy_q:'🔋 Comment est ton énergie aujourd’hui ?', energy_good:'💪 Bien', energy_low:'🪫 Faible',
   badge_now:'MAINTENANT', badge_next:'ENSUITE',
   empty:'Ta journée est vide 🌿<br>Ajoute ce que tu veux faire aujourd’hui.',
-  edit_btn:'✏️ Modifier',today_q:'Que veux-tu faire aujourd’hui ?',add_ph:'Écris quelque chose et touche +',add_btn:'Ajouter',from_quico:'＋ De Quico',pend:'D’autres jours : {n}',pend_bring:'Reprendre',pend_drop:'Ignorer',ds_sub_list:'Touche une tâche pour la modifier. Réordonne avec les flèches ou supprime-la.',de_edit:'Modifier la tâche',de_up:'Monter',de_down:'Descendre',de_del:'Supprimer', hint:'Touche le cercle ✓ à la fin · touche la tâche pour l’ouvrir',
+  edit_btn:'✏️ Modifier',today_q:'Que veux-tu faire aujourd’hui ?',add_ph:'Ajoute une tâche…',pend_undo:'Annuler',pend_dropped:'Ignorées : {n}',de_min:'Durée',de_nomin:'⏱ Sans durée',tm_total:'⏱ {x} · fini vers {h}',tm_end:'C’est l’heure !',tm_yes:'✓ Faite',tm_more:'+5 min',tm_not:'Pas encore',tm_ok:'OK',tm_stop:'Arrêter le minuteur',tm_left:'Temps restant',tm_focus:'Concentration',tm_see:'Voir',add_btn:'Ajouter',from_quico:'＋ De Quico',pend:'D’autres jours : {n}',pend_bring:'Reprendre',pend_drop:'Ignorer',ds_sub_list:'Change le texte, donne une durée, réordonne ou supprime.',de_edit:'Modifier la tâche',de_up:'Monter',de_down:'Descendre',de_del:'Supprimer', hint:'Touche le cercle ✓ à la fin · touche la tâche pour l’ouvrir',
   mark_done:'faite', mark_pending:'à faire', mark_as:'Marquer {t} comme {s}',
   r_respira_t:'Respire 2 minutes', r_respira_s:'Ça compte déjà',
   r_movilidad_t:'Mobilité douce', r_movilidad_s:'Seulement ce dont tu as envie, rien de plus',
@@ -776,7 +802,7 @@ function setLang(l){
   renderToday();renderCfg();renderNotif();
   if(document.getElementById('daySheet').classList.contains('open')){
     renderDayEdit();
-    document.getElementById('ds-sub').textContent=isEco()?t('ds_sub_eco'):t('ds_sub_normal');
+    document.getElementById('ds-sub').textContent=t('ds_sub_list');
   }
 }
 
@@ -912,7 +938,6 @@ function renderWelcome(){
 function commitWelcome(showScreen){
   _welcome=false;
   saveAreas(AREAS.map(a=>a.id));lsPut('cris_hidden_v1',{});lsPut('cris_onboarded','1');lsPut('cris_perso_card','1');
-  try{localStorage.removeItem('cris_hoy_mods_v1');}catch(e){}
   document.getElementById('areasOv').classList.remove('show');
   buildModuleList();renderToday();setGreeting();renderPersoCard();
   if(showScreen)setTimeout(startOnboard,350);
@@ -1007,7 +1032,7 @@ function commitAreas(showScreen){
   if(lsParse('cris_calis_level',null)!==T.lvl){lsPut('cris_calis_level',T.lvl);lsPut('cris_calis_start',JSON.stringify(todayLocal()));}
   lsPut('cris_food_fz',T.fz);
   const fp=lsParse('cris_food_prefs',{})||{};fp.allergyText=(T.algText||'').trim();fp.allergies=[];fp.dislikeText=(T.disText||'').trim();fp.diet='omni';fp.dislikes=[];fp.custom=[];lsPut('cris_food_prefs',fp);
-  try{localStorage.removeItem('cris_hoy_mods_v1');}catch(e){}
+  QDIA.items().filter(i=>i.mod&&CAT2AREA[i.mod]&&!areaOn(CAT2AREA[i.mod])).forEach(i=>QDIA.remove(i.id));
   lsPut('cris_onboarded','1');
   document.getElementById('areasOv').classList.remove('show');
   buildModuleList();renderToday();setGreeting();
@@ -1043,7 +1068,7 @@ function closeDrawer(){
   else closeDrawerUI();
 }
 
-/* ── EDITAR MI DÍA (qué módulos aparecen en el panel Hoy) ── */
+/* ── EDITAR MI DÍA (cambiar, poner tiempo, ordenar o borrar) ── */
 function openDayEdit(){
   renderDayEdit();
   const sub=document.getElementById('ds-sub');
@@ -1055,9 +1080,13 @@ function openDayEdit(){
   const done=document.querySelector('#daySheet .ds-done');if(done)done.focus();
 }
 function closeDayEditUI(){
-  document.getElementById('daySheet').classList.remove('open');
+  const sh=document.getElementById('daySheet'),had=sh.contains(document.activeElement);
+  // Si había un texto a medio cambiar, se guarda antes de cerrar
+  if(document.activeElement&&document.activeElement.classList&&document.activeElement.classList.contains('de-in'))document.activeElement.blur();
+  sh.classList.remove('open');
   document.getElementById('daySheetBg').classList.remove('open');
   document.body.style.overflow='';
+  if(had){const b=document.querySelector('#today-panel .tp-edit')||document.getElementById('tp-in');if(b)try{b.focus({preventScroll:true});}catch(e){}}
 }
 function closeDayEdit(){if(history.state&&history.state.v==='daysheet')history.back();else closeDayEditUI();}
 // Escape cierra la hoja o el menú (teclado / tablet con teclado)
@@ -1066,23 +1095,47 @@ document.addEventListener('keydown',e=>{
   if(document.getElementById('daySheet').classList.contains('open'))closeDayEdit();
   else if(document.getElementById('drawer').classList.contains('open'))closeDrawer();
 });
+const MIN_OPTS=[5,10,15,20,25,30,45,60,90,120];
 function renderDayEdit(){
   const el=document.getElementById('daySheetList');
   if(!el)return;
-  const items=QDIA.items();
-  if(!items.length){el.innerHTML='<div class="tp-q">'+t('today_q')+'</div>';return;}
-  el.innerHTML=items.map((it,k)=>`<div class="de-row">
-      ${it.mod?`<span class="de-t">${it.e?it.e+' ':''}${escH(t('day_'+it.mod)!=='day_'+it.mod?t('day_'+it.mod):it.t)}</span>`
-        :`<input class="de-in" value="${escH(it.t)}" maxlength="140" aria-label="${t('de_edit')}" onchange="dayRename('${it.id}',this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">`}
-      <button onclick="dayMove('${it.id}',-1)" aria-label="${t('de_up')}"${k===0?' disabled':''}>↑</button>
-      <button onclick="dayMove('${it.id}',1)" aria-label="${t('de_down')}"${k===items.length-1?' disabled':''}>↓</button>
-      <button class="del" onclick="dayRemove('${it.id}')" aria-label="${t('de_del')}">🗑️</button>
-    </div>`).join('');
+  const fk=focusKey(el);
+  const items=QDIA.view(); // mismo orden que el panel: lo hecho al final
+  if(!items.length){el.innerHTML='<div class="tp-q">'+t('today_q')+'</div>';focusBack(el,fk);return;}
+  el.innerHTML=items.map(it=>{
+    const done=QDIA.isDone(it),m=modRow(it),name=escH(m?m.plain:it.t);
+    const opts=MIN_OPTS.indexOf(it.min||0)<0&&it.min?[...MIN_OPTS,it.min].sort((a,b)=>a-b):MIN_OPTS;
+    return `<div class="de-row${it.mod?'':' own'}${done?' done':''}" data-id="${it.id}">
+      ${it.mod?`<span class="de-t">${m?m.e+' '+m.t:escH(it.t)}</span>`
+        :`<input class="de-in" value="${escH(it.t)}" maxlength="300" aria-label="${t('de_edit')}: ${name}" onchange="dayRename('${it.id}',this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
+      <select class="de-min" aria-label="${t('de_min')}: ${name}" onchange="daySetMin('${it.id}',this.value)"><option value="0">${t('de_nomin')}</option>${opts.map(n=>`<option value="${n}"${n===it.min?' selected':''}>⏱ ${QDIA.fmtMin(n)}</option>`).join('')}</select>`}
+      <button class="de-up" onclick="dayMove('${it.id}',-1)" aria-label="${t('de_up')}: ${name}"${QDIA.canMove(it.id,-1)?'':' disabled'}>↑</button>
+      <button class="de-down" onclick="dayMove('${it.id}',1)" aria-label="${t('de_down')}: ${name}"${QDIA.canMove(it.id,1)?'':' disabled'}>↓</button>
+      <button class="del" onclick="dayRemove('${it.id}')" aria-label="${t('de_del')}: ${name}">🗑️</button>
+    </div>`;}).join('');
+  focusBack(el,fk);
 }
-function dayMove(id,dir){QDIA.move(id,dir);renderDayEdit();renderToday();}
-function dayRemove(id){QDIA.remove(id);renderDayEdit();renderToday();}
+function dayMove(id,dir){
+  QDIA.move(id,dir);renderDayEdit();renderToday();
+  // si la flecha se ha quedado sin uso (arriba del todo), el foco pasa a la otra
+  const b=document.querySelector('#daySheetList [data-id="'+id+'"] .'+(dir<0?'de-up':'de-down'));
+  if(b&&b.disabled){const o=document.querySelector('#daySheetList [data-id="'+id+'"] .'+(dir<0?'de-down':'de-up'));if(o)o.focus();}
+}
+function dayRemove(id){
+  const rows=[...document.querySelectorAll('#daySheetList .de-row')],k=rows.findIndex(r=>r.getAttribute('data-id')===id);
+  const next=rows[k+1]||rows[k-1],nid=next&&next.getAttribute('data-id');
+  QDIA.remove(id);renderDayEdit();renderToday();
+  const f=(nid&&document.querySelector('#daySheetList [data-id="'+nid+'"] .del'))||document.querySelector('#daySheet .ds-done');if(f)f.focus();
+}
 /* Cambiar el texto: si se deja vacío, vuelve al que tenía */
-function dayRename(id,el){if(!QDIA.rename(id,el.value)){const it=QDIA.get(id);if(it)el.value=it.t;}renderToday();}
+function dayRename(id,el){
+  QDIA.rename(id,el.value);
+  const it=QDIA.get(id);if(it){el.value=it.t; // «Informe 30 min» → texto «Informe» y tiempo 30
+    const sel=el.parentNode.querySelector('.de-min');
+    if(sel){if(it.min&&![...sel.options].some(o=>+o.value===it.min)){const o=document.createElement('option');o.value=it.min;o.textContent='⏱ '+QDIA.fmtMin(it.min);sel.appendChild(o);}sel.value=String(it.min||0);}}
+  renderToday();
+}
+function daySetMin(id,v){QDIA.setMin(id,+v);renderToday();}
 
 /* ── AJUSTES GLOBALES (voz/sonido/vibración/reducir estímulos) ── */
 function getCfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
@@ -1190,7 +1243,10 @@ function checkNotif(){
   }
 }
 setInterval(checkNotif,30000);
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden)checkNotif(); });
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();} });
+// La PWA puede quedarse abierta de un día para otro: al volver, el día empieza en blanco
+window.addEventListener('pageshow',()=>{ if(_shownDay&&todayLocal()!==_shownDay)renderToday(); });
+setInterval(homeTick,1000);
 
 /* ── PANEL HOY (lee el progreso real de cada módulo en localStorage) ── */
 const PILATES={1:['🦵','Piernas y glúteos','20 min'],2:['💪','Pecho, hombros y brazos','20 min'],3:['🎯','Abdomen y core','20 min'],4:['🌿','Espalda y postura','20 min'],5:['🔥','Cuerpo completo','20 min'],6:['🧘','Estiramientos de cadera','15 min'],0:['☀️','Estiramientos de espalda','15 min']};
@@ -1211,27 +1267,80 @@ const DAY_CATALOG=[
   {id:'juego',    e:'🔍', def:false}
 ];
 /* «De Quico»: atajos para añadir al día cosas de la app (solo las áreas activas) */
-let showQuicoChips=false;
+let showQuicoChips=false,showPend=false,dropUndoUntil=0,dropN=0;
+const ECO_CHIPS=[['eco1','🫁','r_respira_t'],['eco2','🧘','r_movilidad_t'],['eco3','🧹','r_recoge_t'],['eco4','🍽️','r_receta_t']];
 function quicoChips(){
   const list=QDIA.items(),has=id=>list.some(i=>i.mod===id);
-  const eco=isEco()?[['eco1','🫁','r_respira_t'],['eco2','🧘','r_movilidad_t'],['eco3','🧹','r_recoge_t'],['eco4','🍽️','r_receta_t']]:[];
-  const normal=DAY_CATALOG.filter(m=>{const a=CAT2AREA[m.id];return !a||areaOn(a);}).map(m=>[m.id,m.e,'day_'+m.id]);
-  return [...eco,...normal].filter(c=>!has(c[0]));
+  // En modo eco, solo lo mínimo; en un día normal, las áreas activas
+  const src=isEco()?ECO_CHIPS:DAY_CATALOG.filter(m=>{const a=CAT2AREA[m.id];return !a||areaOn(a);}).map(m=>[m.id,m.e,'day_'+m.id]);
+  return src.filter(c=>!has(c[0]));
 }
 function dayAdd(){
   const el=document.getElementById('tp-in');if(!el)return;
   const n=QDIA.add(el.value);if(!n)return;
+  el.value=QDIA.rest; // lo que no cabe se queda en el cuadro: no se pierde nada
   if(hapticOK())navigator.vibrate(25);
   renderToday();
   const again=document.getElementById('tp-in');if(again)again.focus(); // seguir escribiendo sin tocar nada más
 }
 function dayAddMod(id){
   const c=quicoChips().find(x=>x[0]===id);if(!c)return;
-  QDIA.add(t(c[2]),c[0],c[1]);if(hapticOK())navigator.vibrate(25);renderToday();
+  const all=[...document.querySelectorAll('#tp-chips .tp-chip')],k=all.findIndex(b=>b.getAttribute('data-mod')===id);
+  const nid=(all[k+1]||all[k-1]||{}).getAttribute?(all[k+1]||all[k-1]).getAttribute('data-mod'):null;
+  QDIA.add(t(c[2]),c[0],c[1]);if(hapticOK())navigator.vibrate(25);
+  showQuicoChips=true; // siguen abiertos para añadir varias seguidas
+  renderToday();
+  const f=(nid&&document.querySelector('#tp-chips [data-mod="'+nid+'"]'))||document.querySelector('#today-panel .tp-quico')||document.getElementById('tp-in');
+  if(f&&document.activeElement===document.body)try{f.focus({preventScroll:true});}catch(e){}
 }
-function dayBring(){QDIA.bringPending();renderToday();}
-function dayDrop(){QDIA.dropPending();renderToday();}
+function dayBring(){QDIA.bringPending();showPend=false;renderToday();}
+function dayBringOne(id){QDIA.bringOne(id);if(!QDIA.pending().length)showPend=false;renderToday();}
+function togglePend(){showPend=!showPend;renderToday();}
+/* Descartar se puede deshacer durante unos segundos */
+function dayDrop(){dropN=QDIA.pending().length;QDIA.dropPending();showPend=false;dropUndoUntil=Date.now()+8000;renderToday();setTimeout(()=>{if(Date.now()>=dropUndoUntil)renderToday();},8100);}
+function dayUndoDrop(){QDIA.undoDrop();dropUndoUntil=0;renderToday();}
 function toggleQuicoChips(){showQuicoChips=!showQuicoChips;renderToday();}
+
+/* ── TEMPORIZADOR DE TAREAS (lo lleva Trabajo; aquí se ve, avisa y se responde) ── */
+function mmss(ms){const s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function tmName(tm){const it=tm&&tm.id?QDIA.get(tm.id):null;return it?it.t:t('tm_focus');}
+function tmDone(){const tm=QDIA.timer();if(tm&&tm.id)QDIA.setDone(tm.id,true);QDIA.stopTimer();if(hapticOK())navigator.vibrate([40,40,40]);renderToday();}
+function tmMore(){QDIA.addTime(5);renderToday();}
+function tmStop(){QDIA.stopTimer();renderToday();}
+function tmOpen(){const tm=QDIA.timer();openModule('modules/rutina-diaria.html#foco='+encodeURIComponent((tm&&tm.id)||''));}
+let _alarmCtx=null;
+function homeAlarm(){
+  const c=getCfg();
+  if(c.sound!==false&&c.calm!==true){try{
+    if(!_alarmCtx)_alarmCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(_alarmCtx.state==='suspended')_alarmCtx.resume();
+    [[760,0,.22],[980,.26,.22],[1240,.52,.42]].forEach(([f,at,d])=>{const o=_alarmCtx.createOscillator(),g=_alarmCtx.createGain(),t0=_alarmCtx.currentTime+at;
+      o.frequency.value=f;o.connect(g);g.connect(_alarmCtx.destination);g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(.2,t0+.02);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.start(t0);o.stop(t0+d+.02);});
+  }catch(e){}}
+  if(hapticOK())navigator.vibrate([160,90,160,90,320]);
+}
+function tmToastGo(){document.getElementById('tmToast').classList.remove('show');if(document.body.classList.contains('mod-open'))document.getElementById('homeBtn').click();}
+/* Cada segundo: cuenta atrás en el panel y aviso al acabar (solo avisa una pantalla) */
+function homeTick(){
+  if(todayLocal()!==_shownDay){renderToday();return;}
+  const tm=QDIA.timer(),modOpen=document.body.classList.contains('mod-open');
+  if(!tm){if(!modOpen&&document.querySelector('#today-panel .tp-run'))renderToday();return;}
+  const left=tm.end-Date.now();
+  if(left<=0){
+    // Con Trabajo abierto, avisa Trabajo; si no, avisa el inicio
+    let inWork=false;try{inWork=modOpen&&/rutina-diaria/.test(document.getElementById('moduleFrame').src)&&!document.hidden;}catch(e){}
+    if(!inWork&&QDIA.claimEnd()){
+      homeAlarm();
+      if(document.hidden)fireNotif('⏰ '+t('tm_end'),tmName(tm));
+      else if(modOpen){document.getElementById('tmToastT').textContent='⏰ '+t('tm_end')+' '+tmName(tm);document.getElementById('tmToast').classList.add('show');setTimeout(()=>document.getElementById('tmToast').classList.remove('show'),15000);}
+    }
+    if(!modOpen&&!document.querySelector('#today-panel .tp-run.end'))renderToday();
+    return;
+  }
+  if(modOpen||document.hidden)return;
+  const el=document.getElementById('tp-run-left');
+  if(el)el.textContent=mmss(left);else renderToday();
+}
 
 function weekNum(){const d=new Date(),y=d.getFullYear(),s=new Date(y,0,1);return Math.ceil(((d-s)/864e5+s.getDay()+1)/7);}
 function lsJSON(k){try{const v=JSON.parse(localStorage.getItem(k)||'{}');return (v&&typeof v==='object')?v:{};}catch(e){return{};}}
@@ -1261,23 +1370,29 @@ function toggleEco(){
   }else{
     localStorage.setItem('cris_eco_day',todayLocal());
     h[todayLocal()]=1;
+    showQuicoChips=true;
   }
   setEcoHist(h);
   renderToday();
 }
 
 function escH(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-/* Panel «Hoy»: empieza cada día en blanco y se forma con la lista de la persona.
-   Las tareas propias abren el temporizador de Trabajo con esa tarea; las de Quico
-   (ejercicio, comida…) abren su módulo y se tachan solas cuando el módulo las completa. */
-function renderToday(){
-  const el=document.getElementById('today-panel');
+/* Foco tras repintar: se vuelve al mismo control (misma fila por data-id) */
+function focusKey(root){const a=document.activeElement;if(!a||a===document.body||!root||!root.contains(a))return null;const row=a.closest('[data-id]');return {id:row?row.getAttribute('data-id'):null,cls:String(a.className||'').split(' ')[0],elId:a.id||null};}
+function focusBack(root,k){if(!k||!root)return;let el=null;
+  if(k.elId)el=document.getElementById(k.elId);
+  if(!el&&k.id&&k.cls)el=root.querySelector('[data-id="'+k.id+'"] .'+k.cls);
+  if(!el&&k.cls)el=root.querySelector('.'+k.cls);
+  if(el&&!el.disabled)try{el.focus({preventScroll:true});}catch(e){}}
+function autoGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,140)+'px';}
+let _shownDay='';
+/* Cómo se ve cada cosa de Quico en el día (título, detalle, módulo y si está hecha) */
+function modBuild(){
   const d=new Date(),day=d.getDay(),h=d.getHours();
-  const eco=isEco();
   const w=weekNum(),y=d.getFullYear();
   const tl=todayLocal();
   const ek=n=>'cris_eco'+n+'_v1_'+tl;
-  const build={
+  return {
     trabajo:()=>{const k='cris_trabajo_v1_'+tl;return {e:'💼',t:t('r_trabajo_t'),s:t('r_trabajo_s'),f:'modules/rutina-diaria.html',done:markDone(k)};},
     pilates:()=>{const p=PILATES[day],k='cris_hiit_v1_'+tl;return {e:p[0],t:t('r_pilates_pre')+t('pil')[day],s:t('r_pilates_s',{d:p[2]}),f:'modules/ejercicios-hiit.html',done:markDone(k)};},
     comida:()=>{
@@ -1303,9 +1418,26 @@ function renderToday(){
     eco3:()=>({e:'🧹',t:t('r_recoge_t'),s:t('r_recoge_s'),f:'modules/limpieza.html#express',done:markDone(ek(3))}),
     eco4:()=>({e:'🍽️',t:t('r_receta_t'),s:t('r_receta_s'),f:'modules/comida.html#basicos',done:markDone(ek(4))})
   };
-  const rows=QDIA.items().map(it=>{
-    if(it.mod&&build[it.mod]){const b=build[it.mod]();return {...b,id:it.id,done:b.done||QDIA.isDone(it)};}
-    return {id:it.id,e:it.e||'📝',t:escH(it.t),s:'',f:'modules/rutina-diaria.html#foco='+encodeURIComponent(it.id),done:QDIA.isDone(it)};
+}
+function modRow(it){const b=it&&it.mod&&modBuild()[it.mod];if(!b)return null;const r=b();return {e:r.e,t:r.t,plain:String(r.t).replace(/<[^>]*>/g,'')};}
+/* Panel «Hoy»: empieza cada día en blanco y se forma con la lista de la persona.
+   Las tareas propias abren el temporizador de Trabajo con esa tarea; las de Quico
+   (ejercicio, comida…) abren su módulo y se tachan solas cuando el módulo las completa. */
+function renderToday(){
+  const el=document.getElementById('today-panel');
+  _shownDay=todayLocal();
+  // lo escrito sin añadir y el foco sobreviven al repintado
+  const prevIn=document.getElementById('tp-in'),draft=prevIn?prevIn.value:'',fk=focusKey(el);
+  const d=new Date(),day=d.getDay(),h=d.getHours();
+  const eco=isEco();
+  const build=modBuild();
+  const tm=QDIA.timer();
+  const rows=QDIA.view().map(it=>{
+    if(it.mod&&build[it.mod]){const b=build[it.mod]();return {...b,id:it.id,done:b.done||QDIA.isDone(it),lock:b.lock||QDIA.locked(it)};}
+    const done=QDIA.isDone(it);
+    // el tiempo va junto al nombre (se ve también en modo sencillo)
+    return {id:it.id,e:it.e||'📝',t:escH(it.t)+(it.min&&!done?'<span class="tp-min">⏱ '+QDIA.fmtMin(it.min)+'</span>':''),name:it.t,s:'',
+      f:done?'modules/rutina-diaria.html':'modules/rutina-diaria.html#foco='+encodeURIComponent(it.id),done};
   });
 
   // AHORA / LUEGO: la primera pendiente es «ahora» y la siguiente «luego». Desde las 20h,
@@ -1326,25 +1458,42 @@ function renderToday(){
 
   const pend=QDIA.pending();
   const chips=quicoChips();
-  const chipsOpen=showQuicoChips||!rows.length;
+  const chipsOpen=showQuicoChips;
   const dias=t('dias');
+  const tot=QDIA.totalMin();
+  let run='';
+  if(tm){
+    const name=escH(tmName(tm)),own=!!(tm.id&&QDIA.get(tm.id));
+    run=Date.now()>=tm.end
+      ?`<div class="tp-run end" role="status"><div class="tp-run-t">⏰ ${t('tm_end')} ${name}</div><div class="tp-run-b">${own?`<button onclick="tmDone()">${t('tm_yes')}</button>`:''}<button onclick="tmMore()">${t('tm_more')}</button><button class="alt" onclick="tmStop()">${own?t('tm_not'):t('tm_ok')}</button></div></div>`
+      :`<div class="tp-run"><button class="tp-run-open" onclick="tmOpen()" aria-label="${t('tm_left')}: ${name}"><span class="tp-run-left" id="tp-run-left">${mmss(tm.end-Date.now())}</span><span class="tp-run-name">${name}</span></button><button class="tp-run-stop" onclick="tmStop()" aria-label="${t('tm_stop')}">⏹</button></div>`;
+  }
+  const pendBar=Date.now()<dropUndoUntil
+    ?`<div class="tp-pend" role="status"><span>${t('pend_dropped',{n:dropN})}</span><button onclick="dayUndoDrop()">${t('pend_undo')}</button></div>`
+    :pend.length?`<div class="tp-pend"><button class="tp-pend-t" onclick="togglePend()" aria-expanded="${showPend}" aria-controls="tp-pend-list">${t('pend',{n:pend.length})} ${showPend?'▴':'▾'}</button><button onclick="dayBring()">${t('pend_bring')}</button><button class="x" onclick="dayDrop()">${t('pend_drop')}</button></div>
+      ${showPend?`<div class="tp-pend-list" id="tp-pend-list">${pend.map(p=>`<div class="tp-pend-i"><span>${escH(p.t)}${p.min?' · ⏱ '+QDIA.fmtMin(p.min):''}</span><button onclick="dayBringOne('${p.id}')" aria-label="${t('pend_bring')}: ${escH(p.t)}">＋</button></div>`).join('')}</div>`:''}`:'';
   el.innerHTML=`
     <div class="tp-head">
       <span class="tp-title">${eco?t('today_eco'):t('today_prefix')+dias[day]}</span>
       <button class="tp-eco ${eco?'on':''}" onclick="toggleEco()">${eco?t('eco_on_btn'):t('eco_off_btn')}</button>
     </div>
     ${eco?'<div class="tp-eco-msg">'+t('eco_msg')+'</div>':''}
-    ${pend.length?`<div class="tp-pend"><span>${t('pend',{n:pend.length})}</span><button onclick="dayBring()">${t('pend_bring')}</button><button class="x" onclick="dayDrop()" aria-label="${t('pend_drop')}">✕</button></div>`:''}
-    ${rows.length?[...rows].sort((a,b)=>(a.done?1:0)-(b.done?1:0)).map(r=>`
-      <button class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-file="${r.f}" data-id="${r.id}"${r.lock?' data-lock="1"':''}>
-        <span class="tp-em">${r.e}</span>
-        <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">'+t('badge_now')+'</span>':r.badge==='next'?'<span class="tp-badge next">'+t('badge_next')+'</span>':''}</span>${r.s?`<span class="tp-s">${r.s}</span>`:''}</span>
-        <span class="tp-check${r.done?' on':''}" tabindex="0" role="checkbox" aria-checked="${!!r.done}" aria-label="${t('mark_as',{t:r.t.replace(/<[^>]*>/g,''),s:r.done?t('mark_pending'):t('mark_done')})}">✓</span>
-      </button>`).join(''):`<div class="tp-q">${t('today_q')}</div>`}
-    <div class="tp-add"><textarea id="tp-in" rows="1" maxlength="2000" enterkeyhint="done" placeholder="${t('add_ph')}" aria-label="${t('add_ph')}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();dayAdd();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,140)+'px'"></textarea><button onclick="dayAdd()" aria-label="${t('add_btn')}">+</button></div>
-    ${chips.length?`${rows.length?`<button class="tp-quico" onclick="toggleQuicoChips()" aria-expanded="${chipsOpen}">${t('from_quico')} ${chipsOpen?'▴':'▾'}</button>`:''}
-      <div class="tp-chips"${chipsOpen?'':' hidden'}>${chips.map(c=>`<button class="tp-chip" onclick="dayAddMod('${c[0]}')">${c[1]} ${t(c[2])}</button>`).join('')}</div>`:''}
+    ${tot?`<div class="tp-total">${t('tm_total',{x:QDIA.fmtMin(tot),h:QDIA.endAt(tot,crisLang())})}</div>`:''}
+    ${run}${pendBar}
+    ${rows.length?[...rows].sort((a,b)=>(a.done?1:0)-(b.done?1:0)).map(r=>{const plain=r.name||String(r.t).replace(/<[^>]*>/g,'');return `
+      <div class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-id="${r.id}"${r.lock?' data-lock="1"':''}>
+        <button class="tp-open" data-file="${r.f}">
+          <span class="tp-em">${r.e}</span>
+          <span class="tp-info"><span class="tp-t">${r.t}${r.badge==='now'?'<span class="tp-badge now">'+t('badge_now')+'</span>':r.badge==='next'?'<span class="tp-badge next">'+t('badge_next')+'</span>':''}</span>${r.s?`<span class="tp-s">${r.s}</span>`:''}</span>
+        </button>
+        <button class="tp-check${r.done?' on':''}" role="checkbox" aria-checked="${!!r.done}" aria-label="${escH(plain)}"${r.lock?' aria-disabled="true"':''}><span class="tp-ck" aria-hidden="true">✓</span></button>
+      </div>`;}).join(''):`<div class="tp-q">${t('today_q')}</div>`}
+    <div class="tp-add"><textarea id="tp-in" rows="1" maxlength="4000" enterkeyhint="done" placeholder="${t('add_ph')}" aria-label="${t('add_ph')}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();dayAdd();}" oninput="autoGrow(this)"></textarea><button onmousedown="event.preventDefault()" onclick="dayAdd()" aria-label="${t('add_btn')}">+</button></div>
+    ${chips.length?`<button class="tp-quico" onclick="toggleQuicoChips()" aria-expanded="${chipsOpen}" aria-controls="tp-chips">${t('from_quico')} ${chipsOpen?'▴':'▾'}</button>
+      <div class="tp-chips" id="tp-chips"${chipsOpen?'':' hidden'}>${chips.map(c=>`<button class="tp-chip" data-mod="${c[0]}" onclick="dayAddMod('${c[0]}')">${c[1]} ${t(c[2])}</button>`).join('')}</div>`:''}
     ${rows.length?`<button class="tp-edit" onclick="openDayEdit()">${t('edit_btn')}</button><div class="tp-hint">${t('hint')}</div>`:''}`;
+  const ni=document.getElementById('tp-in');if(ni&&draft){ni.value=draft;autoGrow(ni);}
+  focusBack(el,fk);
 }
 
 /* Vibración corta respetando ajustes (vib + modo calma) */
@@ -1372,7 +1521,7 @@ function toggleItem(id){
   let timer=null;
   const cancel=()=>{ if(timer){clearTimeout(timer);timer=null;} };
   panel.addEventListener('pointerdown',e=>{
-    const row=e.target.closest('.tp-row');
+    const open=e.target.closest('.tp-open'),row=open&&open.closest('.tp-row');
     if(!row||row.getAttribute('data-lock'))return;
     const id=row.getAttribute('data-id');
     timer=setTimeout(()=>{
@@ -1392,15 +1541,8 @@ function toggleItem(id){
       if(!row.getAttribute('data-lock'))toggleItem(row.getAttribute('data-id'));
       return;
     }
-    if(row.getAttribute('data-file'))openModule(row.getAttribute('data-file'));
-  });
-  // Teclado: Enter/Espacio con el foco en el círculo tacha en vez de abrir
-  panel.addEventListener('keydown',e=>{
-    if((e.key==='Enter'||e.key===' ')&&e.target.closest&&e.target.closest('.tp-check')){
-      e.preventDefault();e.stopPropagation();
-      const row=e.target.closest('.tp-row');
-      if(row&&!row.getAttribute('data-lock'))toggleItem(row.getAttribute('data-id'));
-    }
+    const open=e.target.closest('.tp-open');
+    if(open&&open.getAttribute('data-file'))openModule(open.getAttribute('data-file'));
   });
   panel.addEventListener('contextmenu',e=>{ if(e.target.closest('.tp-row'))e.preventDefault(); });
 })();
@@ -1459,9 +1601,9 @@ function importData(file){
 const ONBOARD={
  es:{skip:'Saltar',next:'Siguiente →',start:'¡A jugar!',steps:[
   {t:'¡Hola! Soy Quico 🦘',x:'Te enseño tu pantalla en un momentín, señalando cada cosa con una flecha. ¿Vamos?'},
-  {sel:'#today-panel',t:'Tu día, en blanco 🌿',x:'Cada mañana empieza vacío. Lo llenas tú con lo que quieras hacer hoy.'},
-  {sel:'.tp-add',t:'Escribe y pulsa + ✍️',x:'Una cosa cada vez, o pega una lista entera. Con «＋ De Quico» añades ejercicio, comida o limpieza de un toque.'},
-  {sel:'.tp-edit',t:'Editar ✏️',x:'Cambia, ordena o borra tus tareas. Toca el círculo ✓ cuando termines algo.'},
+  {sel:'#today-panel',t:'Tu día, en blanco 🌿',x:'Cada mañana empieza vacío. Lo llenas tú. Toca el círculo ✓ cuando termines algo.'},
+  {sel:'.tp-add',t:'Escribe y pulsa + ✍️',x:'Una cosa cada vez, o pega una lista. Pon «10 min» al final y la tarea tendrá su temporizador.'},
+  {sel:'.tp-quico',t:'Ideas de Quico 💡',x:'Ejercicio, comida o limpieza de un toque.'},
   {sel:'#menuBtn',t:'El menú ☰',x:'Aquí dentro está todo: los módulos, el idioma 🇪🇸🇬🇧🇫🇷, TU nombre y «reducir estímulos» para los días sensibles.'},
   {sel:'#sosBtn',t:'El corazón 🫀',x:'El Botiquín Emocional: técnicas, meditaciones y ayuda cuando el día pesa.'},
   {sel:'#dropBtn',t:'Soltar el móvil 📵',x:'¿Enganchada al móvil? Este botón te da un empujoncito para dejarlo y ponerte a lo tuyo.'},
@@ -1469,9 +1611,9 @@ const ONBOARD={
  ]},
  en:{skip:'Skip',next:'Next →',start:'Let’s play!',steps:[
   {t:'Hi! I’m Quico 🦘',x:'I’ll show you your screen in a jiffy, pointing at each thing with an arrow. Ready?'},
-  {sel:'#today-panel',t:'Your day, blank 🌿',x:'Every morning starts empty. You fill it with what you want to do today.'},
-  {sel:'.tp-add',t:'Type and tap + ✍️',x:'One thing at a time, or paste a whole list. With “＋ From Quico” you add exercise, food or cleaning in one tap.'},
-  {sel:'.tp-edit',t:'Edit ✏️',x:'Change, reorder or delete your tasks. Tap the ✓ circle when you finish something.'},
+  {sel:'#today-panel',t:'Your day, blank 🌿',x:'Every morning starts empty. You fill it. Tap the ✓ circle when you finish something.'},
+  {sel:'.tp-add',t:'Type and tap + ✍️',x:'One thing at a time, or paste a list. Add “10 min” at the end and the task gets its own timer.'},
+  {sel:'.tp-quico',t:'Ideas from Quico 💡',x:'Exercise, food or cleaning in one tap.'},
   {sel:'#menuBtn',t:'The menu ☰',x:'Everything lives in here: the modules, the language 🇪🇸🇬🇧🇫🇷, YOUR name and «reduce stimulation» for sensitive days.'},
   {sel:'#sosBtn',t:'The heart 🫀',x:'The Emotional Kit: techniques, meditations and help when the day weighs on you.'},
   {sel:'#dropBtn',t:'Put the phone down 📵',x:'Stuck scrolling? This button gives you a little nudge to drop it and get going.'},
@@ -1479,9 +1621,9 @@ const ONBOARD={
  ]},
  fr:{skip:'Passer',next:'Suivant →',start:'On joue !',steps:[
   {t:'Coucou ! Je suis Quico 🦘',x:'Je te montre ton écran en deux secondes, en pointant chaque chose avec une flèche. On y va ?'},
-  {sel:'#today-panel',t:'Ta journée, vierge 🌿',x:'Chaque matin commence vide. Tu la remplis avec ce que tu veux faire aujourd’hui.'},
-  {sel:'.tp-add',t:'Écris et touche + ✍️',x:'Une chose à la fois, ou colle une liste entière. Avec « ＋ De Quico » tu ajoutes sport, repas ou ménage en un toucher.'},
-  {sel:'.tp-edit',t:'Modifier ✏️',x:'Change, réordonne ou supprime tes tâches. Touche le cercle ✓ quand tu finis quelque chose.'},
+  {sel:'#today-panel',t:'Ta journée, vierge 🌿',x:'Chaque matin commence vide. Tu la remplis. Touche le cercle ✓ quand tu finis quelque chose.'},
+  {sel:'.tp-add',t:'Écris et touche + ✍️',x:'Une chose à la fois, ou colle une liste. Ajoute « 10 min » à la fin et la tâche aura son minuteur.'},
+  {sel:'.tp-quico',t:'Idées de Quico 💡',x:'Sport, repas ou ménage en un toucher.'},
   {sel:'#menuBtn',t:'Le menu ☰',x:'Tout est là-dedans : les modules, la langue 🇪🇸🇬🇧🇫🇷, TON prénom et « réduire les stimulations » pour les jours sensibles.'},
   {sel:'#sosBtn',t:'Le cœur 🫀',x:'La Trousse émotionnelle : techniques, méditations et aide quand la journée pèse.'},
   {sel:'#dropBtn',t:'Lâcher le téléphone 📵',x:'Scotchée à l’écran ? Ce bouton te donne un petit coup de pouce pour le poser et t’y mettre.'},
@@ -1556,7 +1698,9 @@ function setFrame(file){
 function openModule(file){
   // Si venimos del cajón, su entrada del historial se convierte en la del módulo
   if(history.state&&history.state.v==='drawer'){closeDrawerUI();history.replaceState({v:'mod'},'');}
+  else if(document.body.classList.contains('mod-open')&&history.state&&history.state.v==='mod'){history.replaceState({v:'mod'},'');}
   else{closeDrawerUI();history.pushState({v:'mod'},'');}
+  document.getElementById('tmToast').classList.remove('show');
   setFrame(file);
   document.getElementById('viewer').classList.add('show');
   document.getElementById('homeBtn').classList.add('show');
