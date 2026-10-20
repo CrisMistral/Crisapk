@@ -1,7 +1,7 @@
 // Service Worker - Cris App
 // Cachea todos los módulos para que la app funcione sin conexión.
 
-const CACHE_NAME = 'cris-app-v109';
+const CACHE_NAME = 'cris-app-v110';
 
 const ASSETS = [
   './',
@@ -75,7 +75,24 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Resto (fuentes, iconos...): caché primero
+  // Código de la app (scripts, estilos, datos): red primero, como el HTML. Si no, al publicar una
+  // versión nueva el HTML nuevo podría ejecutarse con un script viejo guardado y fallar en silencio.
+  let isCode = false;
+  try { const u = new URL(req.url); isCode = u.origin === self.location.origin && /\.(js|css|json|ics)$/.test(u.pathname); } catch (e) {}
+  if (isCode) {
+    event.respondWith(
+      fetch(req).then((response) => {
+        if (req.method === 'GET' && response.ok) {
+          const respClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, respClone));
+        }
+        return response;
+      }).catch(() => caches.match(req, { ignoreSearch: true }))
+    );
+    return;
+  }
+
+  // Resto (fuentes, iconos, imágenes...): caché primero
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) return cached;
