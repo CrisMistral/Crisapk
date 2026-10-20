@@ -1,0 +1,466 @@
+{
+ "pushup_knee": {
+  "es": {
+   "d": "Flexión con las rodillas en el suelo. Fortalece pecho, hombros y brazos, y te enseña a mantener el cuerpo recto.",
+   "v": "Codos hacia atrás, baja despacio y empuja el suelo.",
+   "pos": "Rodillas en la esterilla, separadas como tu cadera. Manos debajo de los hombros. Cuerpo recto de rodillas a cabeza y mirada al suelo.",
+   "exe": "1. Aprieta la barriga y los glúteos · 2. Baja en 2 s con los codos en diagonal hacia atrás · 3. Para con el pecho a un puño del suelo · 4. Empuja el suelo en 1 s y estira sin bloquear",
+   "resp": "Coge aire al bajar. Suéltalo al empujar.",
+   "err": "Culo en alto: aprieta glúteos y alinea la cadera · Codos muy abiertos: llévalos en diagonal hacia atrás · Cabeza adelantada: cuello recto, mira al suelo",
+   "mus": "Pecho (pectoral), hombro delantero (deltoides), parte de atrás del brazo (tríceps), costado (serrato), barriga (transverso)"
+  },
+  "en": {
+   "d": "A push-up with your knees on the floor. It builds chest, shoulders and arms, and teaches you to keep your body straight.",
+   "v": "Elbows back, lower slowly and push the floor away.",
+   "pos": "Knees on the mat, hip-width apart. Hands under your shoulders. Body straight from knees to head, eyes on the floor.",
+   "exe": "1. Squeeze your tummy and your glutes · 2. Lower in 2 s, elbows angled back · 3. Stop with your chest a fist from the floor · 4. Push the floor for 1 s and straighten without locking",
+   "resp": "Breathe in as you lower. Breathe out as you push.",
+   "err": "Bottom up high: squeeze your glutes and line up your hips · Elbows wide: angle them back · Head poking forward: keep your neck long, look down",
+   "mus": "Chest (pectorals), front of shoulder (deltoid), back of arm (triceps), side of ribs (serratus), deep tummy (transversus)"
+  },
+  "fr": {
+   "d": "Pompe sur les genoux. Elle renforce la poitrine, les épaules et les bras, et t’apprend à garder le corps droit.",
+   "v": "Coudes vers l’arrière, descends doucement et repousse le sol.",
+   "pos": "Genoux sur le tapis, écartés comme ton bassin. Mains sous les épaules. Corps droit des genoux à la tête, regard au sol.",
+   "exe": "1. Serre le ventre et les fessiers · 2. Descends en 2 s, coudes en diagonale vers l’arrière · 3. Arrête-toi, poitrine à un poing du sol · 4. Repousse le sol en 1 s et tends sans verrouiller",
+   "resp": "Inspire en descendant. Expire en poussant.",
+   "err": "Fesses en l’air : serre les fessiers et aligne le bassin · Coudes trop ouverts : ramène-les en diagonale vers l’arrière · Tête en avant : nuque droite, regard au sol",
+   "mus": "Poitrine (pectoraux), avant de l’épaule (deltoïde), arrière du bras (triceps), côtes (dentelé), ventre profond (transverse)"
+  }
+ },
+ "pushup": {
+  "es": {
+   "d": "Flexión completa con las piernas estiradas. Fortalece pecho, hombros y brazos. El cuerpo se mueve entero, como una tabla.",
+   "v": "Cuerpo como una tabla, codos atrás, baja y empuja.",
+   "pos": "Plancha alta (brazos estirados): manos debajo de los hombros. Pies separados como tu cadera. Cuerpo recto de talones a cabeza y mirada al suelo.",
+   "exe": "1. Aprieta barriga y glúteos, rodillas estiradas · 2. Baja en 2 s con los codos en diagonal hacia atrás · 3. Para con el pecho a un puño del suelo · 4. Empuja en 1 s y separa un poco los omóplatos",
+   "resp": "Coge aire al bajar. Suéltalo al empujar.",
+   "err": "Cadera hundida: aprieta barriga y glúteos, o apoya las rodillas · Bajar poco: llega a un puño del suelo · Codos muy abiertos: llévalos en diagonal hacia atrás",
+   "mus": "Pecho (pectoral), hombro delantero (deltoides), parte de atrás del brazo (tríceps), costado (serrato), barriga (abdominales)"
+  },
+  "en": {
+   "d": "A full push-up with straight legs. It builds chest, shoulders and arms. Your whole body moves as one, like a plank of wood.",
+   "v": "Body like a plank, elbows back, lower and push.",
+   "pos": "High plank (arms straight): hands under your shoulders. Feet hip-width apart. Body straight from heels to head, eyes on the floor.",
+   "exe": "1. Squeeze tummy and glutes, knees straight · 2. Lower in 2 s, elbows angled back · 3. Stop with your chest a fist from the floor · 4. Push for 1 s and spread your shoulder blades slightly",
+   "resp": "Breathe in as you lower. Breathe out as you push.",
+   "err": "Sagging hips: squeeze tummy and glutes, or drop to your knees · Going only halfway: lower to a fist from the floor · Elbows wide: angle them back",
+   "mus": "Chest (pectorals), front of shoulder (deltoid), back of arm (triceps), side of ribs (serratus), tummy (abdominals)"
+  },
+  "fr": {
+   "d": "Pompe complète, jambes tendues. Elle renforce la poitrine, les épaules et les bras. Tout le corps bouge d’un bloc, comme une planche.",
+   "v": "Corps en planche, coudes en arrière, descends et pousse.",
+   "pos": "Planche haute (bras tendus) : mains sous les épaules. Pieds écartés comme ton bassin. Corps droit des talons à la tête, regard au sol.",
+   "exe": "1. Serre ventre et fessiers, genoux tendus · 2. Descends en 2 s, coudes en diagonale vers l’arrière · 3. Arrête-toi, poitrine à un poing du sol · 4. Pousse en 1 s et écarte un peu les omoplates",
+   "resp": "Inspire en descendant. Expire en poussant.",
+   "err": "Bassin qui s’affaisse : serre ventre et fessiers, ou pose les genoux · Descente trop courte : va jusqu’à un poing du sol · Coudes trop ouverts : ramène-les en diagonale vers l’arrière",
+   "mus": "Poitrine (pectoraux), avant de l’épaule (deltoïde), arrière du bras (triceps), côtes (dentelé), ventre (abdominaux)"
+  }
+ },
+ "pushup_slow": {
+  "es": {
+   "d": "Flexión muy lenta: 3 segundos para bajar y 3 para subir. Así el músculo trabaja más tiempo sin necesidad de más repeticiones.",
+   "v": "Tres segundos abajo, tres arriba. Cuerpo como una tabla.",
+   "pos": "Plancha alta: manos debajo de los hombros, pies separados como tu cadera. Cuerpo recto de talones a cabeza. Si pierdes la línea, apoya las rodillas.",
+   "exe": "1. Aprieta glúteos y barriga · 2. Baja contando 3 s, codos en diagonal hacia atrás · 3. Sube contando 3 s, siempre a la misma velocidad · 4. Estira los codos sin bloquear y repite",
+   "resp": "Coge aire al bajar. Suéltalo poco a poco al subir. No aguantes el aire.",
+   "err": "Acelerar al final: cuenta en voz baja · Subir primero el pecho: sube todo a la vez apretando glúteos · Aguantar el aire: suéltalo al empujar",
+   "mus": "Pecho (pectoral), hombro delantero (deltoides), parte de atrás del brazo (tríceps), costado (serrato), barriga (transverso)"
+  },
+  "en": {
+   "d": "A very slow push-up: 3 seconds down and 3 seconds up. Your muscles work for longer without adding more reps.",
+   "v": "Three seconds down, three up. Body like a plank.",
+   "pos": "High plank: hands under your shoulders, feet hip-width apart. Body straight from heels to head. If you lose the line, drop to your knees.",
+   "exe": "1. Squeeze glutes and tummy · 2. Lower for a count of 3, elbows angled back · 3. Rise for a count of 3 at the same speed · 4. Straighten your elbows without locking and repeat",
+   "resp": "Breathe in as you lower. Breathe out slowly as you rise. Don’t hold your breath.",
+   "err": "Speeding up at the end: count quietly out loud · Chest rising before hips: lift all together, glutes tight · Holding your breath: breathe out as you push",
+   "mus": "Chest (pectorals), front of shoulder (deltoid), back of arm (triceps), side of ribs (serratus), deep tummy (transversus)"
+  },
+  "fr": {
+   "d": "Pompe très lente : 3 secondes pour descendre et 3 pour monter. Le muscle travaille plus longtemps sans faire plus de répétitions.",
+   "v": "Trois secondes en bas, trois en haut. Corps en planche.",
+   "pos": "Planche haute : mains sous les épaules, pieds écartés comme ton bassin. Corps droit des talons à la tête. Si tu perds la ligne, pose les genoux.",
+   "exe": "1. Serre fessiers et ventre · 2. Descends en comptant 3 s, coudes en diagonale vers l’arrière · 3. Remonte en comptant 3 s, toujours à la même vitesse · 4. Tends les coudes sans verrouiller et recommence",
+   "resp": "Inspire en descendant. Expire doucement en montant. Ne bloque pas ton souffle.",
+   "err": "Accélérer à la fin : compte à voix basse · La poitrine monte avant le bassin : monte d’un bloc, fessiers serrés · Souffle bloqué : expire en poussant",
+   "mus": "Poitrine (pectoraux), avant de l’épaule (deltoïde), arrière du bras (triceps), côtes (dentelé), ventre profond (transverse)"
+  }
+ },
+ "shouldertap_knee": {
+  "es": {
+   "d": "Plancha sobre rodillas tocando el hombro contrario. Entrena el core (músculos de la barriga) para que la cadera no gire.",
+   "v": "Empuja el suelo, toca el hombro. Cadera quieta.",
+   "pos": "Plancha alta con rodillas apoyadas: manos debajo de los hombros. Rodillas algo más separadas que la cadera. Cuerpo recto de rodillas a cabeza.",
+   "exe": "1. Aprieta barriga y glúteos, empuja el suelo con las 2 manos · 2. Lleva una mano al hombro contrario en 1 s · 3. Devuélvela debajo del hombro en 1 s · 4. Cambia de mano sin girar la cadera",
+   "resp": "Respira sin parar: suelta aire en cada toque y cógelo al volver.",
+   "err": "Cadera que se balancea: separa más las rodillas y ve más lenta · Pecho hundido sobre el brazo de apoyo: empuja el suelo · Culo en alto: alinea rodillas, cadera y hombros",
+   "mus": "Barriga (transverso y oblicuos), hombros (deltoides), costado (serrato), pecho (pectoral), lado del culo (glúteo medio)"
+  },
+  "en": {
+   "d": "A kneeling plank where you tap the opposite shoulder. It trains your core (tummy muscles) to stop your hips from twisting.",
+   "v": "Push the floor, tap your shoulder. Hips still.",
+   "pos": "High plank on your knees: hands under your shoulders. Knees a little wider than your hips. Body straight from knees to head.",
+   "exe": "1. Squeeze tummy and glutes, push the floor with 2 hands · 2. Bring one hand to the opposite shoulder in 1 s · 3. Put it back under the shoulder in 1 s · 4. Switch hands without twisting your hips",
+   "resp": "Keep breathing: breathe out on each tap, breathe in as the hand returns.",
+   "err": "Swaying hips: widen your knees and go slower · Chest sinking over the support arm: push the floor away · Bottom up high: line up knees, hips and shoulders",
+   "mus": "Tummy (transversus and obliques), shoulders (deltoids), side of ribs (serratus), chest (pectorals), side of bottom (gluteus medius)"
+  },
+  "fr": {
+   "d": "Planche sur les genoux en touchant l’épaule opposée. Elle entraîne le gainage (muscles du ventre) pour que le bassin ne tourne pas.",
+   "v": "Repousse le sol, touche l’épaule. Bassin immobile.",
+   "pos": "Planche haute sur les genoux : mains sous les épaules. Genoux un peu plus écartés que le bassin. Corps droit des genoux à la tête.",
+   "exe": "1. Serre ventre et fessiers, repousse le sol des 2 mains · 2. Amène une main à l’épaule opposée en 1 s · 3. Replace-la sous l’épaule en 1 s · 4. Change de main sans tourner le bassin",
+   "resp": "Respire sans t’arrêter : expire à chaque toucher, inspire au retour.",
+   "err": "Bassin qui se balance : écarte plus les genoux et va plus lentement · Poitrine qui s’affaisse sur le bras d’appui : repousse le sol · Fesses en l’air : aligne genoux, bassin et épaules",
+   "mus": "Ventre (transverse et obliques), épaules (deltoïdes), côtes (dentelé), poitrine (pectoraux), côté des fesses (moyen fessier)"
+  }
+ },
+ "shouldertap": {
+  "es": {
+   "d": "Plancha alta tocando el hombro contrario. Entrena la barriga para que la cadera no gire. Separa los pies para tener más equilibrio.",
+   "v": "Toca el hombro y cambia. Cadera quieta, glúteos firmes.",
+   "pos": "Plancha alta: manos debajo de los hombros. Pies algo más separados que la cadera y piernas estiradas. Cuerpo recto de talones a cabeza.",
+   "exe": "1. Aprieta glúteos y barriga, empuja el suelo · 2. Toca el hombro contrario en 1 s · 3. Devuelve la mano debajo del hombro en 1 s · 4. Cambia de mano sin mover la cadera",
+   "resp": "Respira sin parar: suelta aire en cada toque y cógelo al apoyar.",
+   "err": "Cadera que se balancea: separa más los pies y ve más lenta · Cadera alta o hundida: cuerpo recto de talones a cabeza · Hombro de apoyo hundido: empuja el suelo",
+   "mus": "Barriga (transverso, oblicuos y recto), hombros (deltoides), costado (serrato), lado del culo (glúteo medio)"
+  },
+  "en": {
+   "d": "A high plank where you tap the opposite shoulder. It trains your tummy to stop your hips from twisting. Wide feet help your balance.",
+   "v": "Tap your shoulder and switch. Hips still, glutes tight.",
+   "pos": "High plank: hands under your shoulders. Feet a little wider than your hips, legs straight. Body straight from heels to head.",
+   "exe": "1. Squeeze glutes and tummy, push the floor · 2. Tap the opposite shoulder in 1 s · 3. Put the hand back under the shoulder in 1 s · 4. Switch hands without moving your hips",
+   "resp": "Keep breathing: breathe out on each tap, breathe in as the hand lands.",
+   "err": "Swaying hips: widen your feet and go slower · Hips too high or too low: keep a straight line from heels to head · Support shoulder sinking: push the floor away",
+   "mus": "Tummy (transversus, obliques and abs), shoulders (deltoids), side of ribs (serratus), side of bottom (gluteus medius)"
+  },
+  "fr": {
+   "d": "Planche haute en touchant l’épaule opposée. Elle entraîne le ventre pour que le bassin ne tourne pas. Écarte les pieds pour plus d’équilibre.",
+   "v": "Touche l’épaule et change. Bassin immobile, fessiers serrés.",
+   "pos": "Planche haute : mains sous les épaules. Pieds un peu plus écartés que le bassin, jambes tendues. Corps droit des talons à la tête.",
+   "exe": "1. Serre fessiers et ventre, repousse le sol · 2. Touche l’épaule opposée en 1 s · 3. Replace la main sous l’épaule en 1 s · 4. Change de main sans bouger le bassin",
+   "resp": "Respire sans t’arrêter : expire à chaque toucher, inspire en reposant la main.",
+   "err": "Bassin qui se balance : écarte plus les pieds et va plus lentement · Bassin trop haut ou trop bas : ligne droite des talons à la tête · Épaule d’appui qui s’affaisse : repousse le sol",
+   "mus": "Ventre (transverse, obliques et grand droit), épaules (deltoïdes), côtes (dentelé), côté des fesses (moyen fessier)"
+  }
+ },
+ "shouldertap_hard": {
+  "es": {
+   "d": "Toques de hombro en plancha alta con los pies juntos. Con menos apoyo, la barriga trabaja más para que nada gire. Cada toque dura 2 segundos.",
+   "v": "Pies juntos, toques de dos segundos. Nada se mueve.",
+   "pos": "Plancha alta: manos debajo de los hombros. Pies juntos, piernas estiradas y glúteos apretados. Cuerpo recto de talones a cabeza.",
+   "exe": "1. Aprieta glúteos, muslos y barriga · 2. Lleva la mano al hombro contrario en 2 s · 3. Devuélvela debajo del hombro en 2 s · 4. Cambia de mano sin girar cadera ni hombros",
+   "resp": "Suelta el aire lento en cada toque. Cógelo al apoyar. No lo aguantes.",
+   "err": "Cadera que gira: aprieta el glúteo contrario y ve más lenta · Toques rápidos: cuenta 2 segundos · Si pierdes la línea: separa un poco los pies",
+   "mus": "Barriga (transverso, oblicuos y recto), hombros (deltoides), costado (serrato), culo (glúteos medio y mayor)"
+  },
+  "en": {
+   "d": "Shoulder taps in a high plank with your feet together. With less support, your tummy works harder so nothing twists. Each tap takes 2 seconds.",
+   "v": "Feet together, two-second taps. Nothing moves.",
+   "pos": "High plank: hands under your shoulders. Feet together, legs straight, glutes squeezed. Body straight from heels to head.",
+   "exe": "1. Squeeze glutes, thighs and tummy · 2. Bring the hand to the opposite shoulder in 2 s · 3. Put it back under the shoulder in 2 s · 4. Switch hands without turning hips or shoulders",
+   "resp": "Breathe out slowly on each tap. Breathe in as the hand lands. Don’t hold it.",
+   "err": "Hips turning: squeeze the opposite glute and go slower · Rushing the taps: count 2 seconds · Losing the line: move your feet slightly apart",
+   "mus": "Tummy (transversus, obliques and abs), shoulders (deltoids), side of ribs (serratus), bottom (gluteus medius and maximus)"
+  },
+  "fr": {
+   "d": "Touchers d’épaule en planche haute, pieds joints. Avec moins d’appui, le ventre travaille plus pour que rien ne tourne. Chaque toucher dure 2 secondes.",
+   "v": "Pieds joints, touchers de deux secondes. Rien ne bouge.",
+   "pos": "Planche haute : mains sous les épaules. Pieds joints, jambes tendues, fessiers serrés. Corps droit des talons à la tête.",
+   "exe": "1. Serre fessiers, cuisses et ventre · 2. Amène la main à l’épaule opposée en 2 s · 3. Replace-la sous l’épaule en 2 s · 4. Change de main sans tourner bassin ni épaules",
+   "resp": "Expire lentement à chaque toucher. Inspire en reposant la main. Ne bloque pas.",
+   "err": "Bassin qui tourne : serre le fessier opposé et va plus lentement · Touchers trop rapides : compte 2 secondes · Tu perds la ligne : écarte un peu les pieds",
+   "mus": "Ventre (transverse, obliques et grand droit), épaules (deltoïdes), côtes (dentelé), fesses (moyen et grand fessier)"
+  }
+ },
+ "floordip": {
+  "es": {
+   "d": "Fondos en el suelo con la cadera levantada. Doblas y estiras los codos hacia atrás. Trabaja sobre todo la parte de atrás del brazo.",
+   "v": "Hombros abajo, codos atrás, empuja hasta estirar.",
+   "pos": "Sentada, con las manos detrás de la cadera y los dedos hacia ti. Rodillas dobladas en ángulo recto, pies planos. Levanta un poco la cadera y abre el pecho.",
+   "exe": "1. Baja los hombros lejos de las orejas, cadera arriba · 2. Dobla los codos hacia atrás en 2 s, como máximo en ángulo recto · 3. Empuja en 1 s y estira los codos sin bloquear",
+   "resp": "Coge aire al doblar los codos. Suéltalo al empujar.",
+   "err": "Hombros encogidos o hacia delante: bájalos y junta un poco los omóplatos · Codos abiertos: apúntalos hacia atrás · Mover la cadera en vez de los brazos: fija la cadera y baja menos",
+   "mus": "Parte de atrás del brazo (tríceps), hombro delantero (deltoides), pecho (pectoral), espalda media (romboides), culo (glúteo)"
+  },
+  "en": {
+   "d": "Floor dips with your hips lifted. You bend and straighten your elbows backward. It mainly works the back of your arms.",
+   "v": "Shoulders down, elbows back, push until straight.",
+   "pos": "Sit with your hands behind your hips, fingers pointing to you. Knees bent at a right angle, feet flat. Lift your hips a little and open your chest.",
+   "exe": "1. Draw your shoulders away from your ears, hips up · 2. Bend your elbows backward in 2 s, no deeper than a right angle · 3. Push for 1 s and straighten without locking",
+   "resp": "Breathe in as your elbows bend. Breathe out as you push.",
+   "err": "Shoulders shrugged or rolled forward: lower them and gently squeeze your shoulder blades · Elbows out wide: point them back · Hips moving instead of arms: fix your hips, go less deep",
+   "mus": "Back of arm (triceps), front of shoulder (deltoid), chest (pectorals), mid back (rhomboids), bottom (gluteus maximus)"
+  },
+  "fr": {
+   "d": "Dips au sol, hanches décollées. Tu plies et tends les coudes vers l’arrière. Ils travaillent surtout l’arrière des bras.",
+   "v": "Épaules basses, coudes en arrière, pousse jusqu’à tendre.",
+   "pos": "Assise, mains derrière les hanches, doigts vers toi. Genoux pliés à angle droit, pieds à plat. Décolle un peu les hanches et ouvre la poitrine.",
+   "exe": "1. Éloigne les épaules des oreilles, hanches hautes · 2. Plie les coudes vers l’arrière en 2 s, au maximum à angle droit · 3. Pousse en 1 s et tends sans verrouiller",
+   "resp": "Inspire en pliant les coudes. Expire en poussant.",
+   "err": "Épaules haussées ou en avant : baisse-les et resserre un peu les omoplates · Coudes ouverts : oriente-les vers l’arrière · Les hanches bougent à la place des bras : fixe le bassin et descends moins",
+   "mus": "Arrière du bras (triceps), avant de l’épaule (deltoïde), poitrine (pectoraux), milieu du dos (rhomboïdes), fesses (grand fessier)"
+  }
+ },
+ "floordip_leg": {
+  "es": {
+   "d": "Fondos en el suelo con una pierna estirada. Con menos apoyo, la parte de atrás del brazo trabaja más. Cambia de pierna a mitad de la serie.",
+   "v": "Cadera alta, codos atrás y estira. Cambia de pierna a mitad.",
+   "pos": "Sentada, manos detrás de la cadera y dedos hacia ti. Una rodilla doblada con el pie plano. La otra pierna estirada, talón en el suelo. Cadera alta y recta.",
+   "exe": "1. Sube la cadera apretando el glúteo de la pierna doblada · 2. Dobla los codos hacia atrás en 2 s, hasta ángulo recto · 3. Empuja en 1 s y estira sin bloquear · 4. A mitad de la serie, cambia de pierna",
+   "resp": "Coge aire al doblar los codos. Suéltalo al empujar.",
+   "err": "Cadera que cae o se ladea: aprieta el glúteo y ponla recta · Hombros encogidos: aléjalos de las orejas · Codos abiertos: apúntalos hacia atrás",
+   "mus": "Parte de atrás del brazo (tríceps), hombro delantero (deltoides), pecho (pectoral), culo (glúteo), parte de atrás del muslo"
+  },
+  "en": {
+   "d": "Floor dips with one leg straight. With less support, the back of your arms works harder. Switch legs halfway through the set.",
+   "v": "Hips high, elbows back, straighten. Switch legs halfway.",
+   "pos": "Sit with your hands behind your hips, fingers toward you. One knee bent, foot flat. Other leg straight, heel on the floor. Hips high and level.",
+   "exe": "1. Lift your hips by squeezing the bent-leg glute · 2. Bend your elbows backward in 2 s, to a right angle · 3. Push for 1 s and straighten without locking · 4. Halfway through the set, switch legs",
+   "resp": "Breathe in as your elbows bend. Breathe out as you push.",
+   "err": "Hips dropping or tilting: squeeze the glute and level your hips · Shoulders shrugged: move them away from your ears · Elbows out wide: point them back",
+   "mus": "Back of arm (triceps), front of shoulder (deltoid), chest (pectorals), bottom (gluteus maximus), back of thigh (hamstrings)"
+  },
+  "fr": {
+   "d": "Dips au sol avec une jambe tendue. Avec moins d’appui, l’arrière des bras travaille plus. Change de jambe à la moitié de la série.",
+   "v": "Hanches hautes, coudes en arrière, tends. Change de jambe à mi-série.",
+   "pos": "Assise, mains derrière les hanches, doigts vers toi. Un genou plié, pied à plat. L’autre jambe tendue, talon au sol. Hanches hautes et bien droites.",
+   "exe": "1. Monte les hanches en serrant le fessier de la jambe pliée · 2. Plie les coudes vers l’arrière en 2 s, jusqu’à angle droit · 3. Pousse en 1 s et tends sans verrouiller · 4. À la moitié de la série, change de jambe",
+   "resp": "Inspire en pliant les coudes. Expire en poussant.",
+   "err": "Hanches qui tombent ou penchent : serre le fessier et remets le bassin droit · Épaules haussées : éloigne-les des oreilles · Coudes ouverts : oriente-les vers l’arrière",
+   "mus": "Arrière du bras (triceps), avant de l’épaule (deltoïde), poitrine (pectoraux), fesses (grand fessier), arrière de la cuisse"
+  }
+ },
+ "downdog": {
+  "es": {
+   "d": "Perro boca abajo en movimiento. Formas una V al revés y doblas una rodilla y luego la otra. Estira la parte de atrás de las piernas y fortalece hombros.",
+   "v": "Empuja el suelo, cadera arriba, pedalea suave.",
+   "pos": "Empieza a cuatro patas, con los dedos de las manos abiertos. Sube la cadera hasta formar una V al revés. Brazos junto a las orejas y cabeza relajada.",
+   "exe": "1. Empuja el suelo y aleja el pecho de las manos · 2. Dobla una rodilla mientras el otro talón baja, en 1 a 2 s · 3. Alterna con ritmo, sin mover la cadera",
+   "resp": "Respira lento y sin parar. Suelta el aire al bajar cada talón.",
+   "err": "Espalda redonda: dobla las 2 rodillas y lleva la cadera atrás y arriba · Hombros hacia las orejas: empuja el suelo · Peso en las muñecas: apoya toda la mano",
+   "mus": "Hombros (deltoides), costado (serrato), brazos (tríceps), espalda (erectores), parte de atrás del muslo, gemelos"
+  },
+  "en": {
+   "d": "A moving downward dog. You make an upside-down V and bend one knee, then the other. It stretches the backs of your legs and strengthens your shoulders.",
+   "v": "Push the floor, hips high, pedal gently.",
+   "pos": "Start on all fours with your fingers spread. Lift your hips into an upside-down V. Arms by your ears, head relaxed.",
+   "exe": "1. Push the floor and move your chest away from your hands · 2. Bend one knee as the other heel lowers, over 1 to 2 s · 3. Alternate with rhythm, keeping your hips still",
+   "resp": "Breathe slowly and steadily. Breathe out as each heel lowers.",
+   "err": "Rounded back: bend both knees and send your hips back and up · Shoulders creeping to your ears: push the floor away · Weight in your wrists: press through the whole hand",
+   "mus": "Shoulders (deltoids), side of ribs (serratus), arms (triceps), back (erector spinae), back of thigh (hamstrings), calves"
+  },
+  "fr": {
+   "d": "Chien tête en bas en mouvement. Tu formes un V à l’envers et tu plies un genou puis l’autre. Il étire l’arrière des jambes et renforce les épaules.",
+   "v": "Repousse le sol, hanches hautes, pédale doucement.",
+   "pos": "Commence à quatre pattes, doigts bien écartés. Monte les hanches pour former un V à l’envers. Bras près des oreilles, tête relâchée.",
+   "exe": "1. Repousse le sol et éloigne la poitrine des mains · 2. Plie un genou pendant que l’autre talon descend, en 1 à 2 s · 3. Alterne en rythme, sans bouger les hanches",
+   "resp": "Respire lentement et sans t’arrêter. Expire quand chaque talon descend.",
+   "err": "Dos rond : plie les 2 genoux et envoie les hanches en arrière et en haut · Épaules vers les oreilles : repousse le sol · Poids sur les poignets : appuie avec toute la main",
+   "mus": "Épaules (deltoïdes), côtes (dentelé), bras (triceps), dos (érecteurs), arrière de la cuisse (ischio-jambiers), mollets"
+  }
+ },
+ "pike": {
+  "es": {
+   "d": "Flexión en pica: desde la V al revés, bajas la cabeza hacia el suelo. Es un empuje hacia arriba que fortalece sobre todo los hombros.",
+   "v": "Cadera alta, codos atrás, cabeza al suelo y empuja.",
+   "pos": "V al revés: manos separadas como tus hombros. Pies a 1 metro de las manos. Cadera alta, piernas estiradas o rodillas un poco dobladas. Mira entre tus manos.",
+   "exe": "1. Pasa el peso a las manos con la cadera alta · 2. Baja en 2 s doblando los codos hacia atrás · 3. Acerca la cabeza al suelo, por delante de las manos · 4. Empuja en 1 s hasta estirar los brazos",
+   "resp": "Coge aire al bajar. Suéltalo al empujar.",
+   "err": "Codos hacia los lados: apúntalos hacia atrás · Bajar la cadera: mantenla alta, no es una flexión normal · Apoyar la cabeza: para a 2 o 3 centímetros del suelo",
+   "mus": "Hombros (deltoides), parte de atrás del brazo (tríceps), parte alta de la espalda (trapecio), costado (serrato), pecho alto"
+  },
+  "en": {
+   "d": "Pike push-up: from the upside-down V, you lower your head toward the floor. It is an overhead push that mainly strengthens your shoulders.",
+   "v": "Hips high, elbows back, head down, then push.",
+   "pos": "Upside-down V: hands shoulder-width apart. Feet about 1 metre from your hands. Hips high, legs straight or knees slightly bent. Look between your hands.",
+   "exe": "1. Shift your weight onto your hands, hips high · 2. Lower in 2 s, bending your elbows back · 3. Bring your head near the floor, ahead of your hands · 4. Push for 1 s until your arms are straight",
+   "resp": "Breathe in as you lower. Breathe out as you push.",
+   "err": "Elbows out to the sides: point them back · Hips dropping: keep them high, this is not a normal push-up · Resting on your head: stop 2 or 3 centimetres from the floor",
+   "mus": "Shoulders (deltoids), back of arm (triceps), upper back (trapezius), side of ribs (serratus), upper chest"
+  },
+  "fr": {
+   "d": "Pompe en pic : depuis le V à l’envers, tu descends la tête vers le sol. C’est une poussée vers le haut qui renforce surtout les épaules.",
+   "v": "Hanches hautes, coudes en arrière, tête vers le sol, pousse.",
+   "pos": "V à l’envers : mains écartées comme tes épaules. Pieds à 1 mètre des mains. Hanches hautes, jambes tendues ou genoux un peu pliés. Regarde entre tes mains.",
+   "exe": "1. Porte le poids sur les mains, hanches hautes · 2. Descends en 2 s en pliant les coudes vers l’arrière · 3. Approche la tête du sol, devant les mains · 4. Pousse en 1 s jusqu’à tendre les bras",
+   "resp": "Inspire en descendant. Expire en poussant.",
+   "err": "Coudes sur les côtés : oriente-les vers l’arrière · Hanches qui descendent : garde-les hautes, ce n’est pas une pompe classique · Tête posée : arrête-toi à 2 ou 3 centimètres du sol",
+   "mus": "Épaules (deltoïdes), arrière du bras (triceps), haut du dos (trapèze), côtes (dentelé), haut de la poitrine"
+  }
+ },
+ "pike_slow": {
+  "es": {
+   "d": "Flexión en pica lenta: 3 segundos para bajar y 1 para subir. Con los pies más cerca de las manos, los hombros trabajan todavía más.",
+   "v": "Baja en tres segundos, codos atrás. Empuja.",
+   "pos": "V al revés con los pies algo más cerca de las manos, a unos 70 u 80 centímetros. Manos separadas como tus hombros. Cadera alta y mirada entre las manos.",
+   "exe": "1. Pasa el peso a las manos · 2. Baja contando 3 s, codos hacia atrás · 3. Pausa breve con la cabeza a 2 o 3 centímetros del suelo · 4. Empuja en 1 s hasta estirar los brazos",
+   "resp": "Coge aire durante la bajada lenta. Suéltalo al empujar.",
+   "err": "Codos hacia los lados: llévalos atrás · Caer rápido al final: controla los 3 segundos enteros · Espalda redonda: dobla un poco las rodillas y sube la cadera",
+   "mus": "Hombros (deltoides), parte de atrás del brazo (tríceps), parte alta de la espalda (trapecio), costado (serrato), pecho alto"
+  },
+  "en": {
+   "d": "A slow pike push-up: 3 seconds down and 1 second up. With your feet closer to your hands, your shoulders work even harder.",
+   "v": "Lower for three seconds, elbows back. Push.",
+   "pos": "Upside-down V with your feet a bit closer to your hands, about 70 to 80 centimetres. Hands shoulder-width apart. Hips high, look between your hands.",
+   "exe": "1. Shift your weight onto your hands · 2. Lower for a count of 3, elbows back · 3. Pause briefly, head 2 or 3 centimetres off the floor · 4. Push for 1 s until your arms are straight",
+   "resp": "Breathe in during the slow lowering. Breathe out as you push.",
+   "err": "Elbows out to the sides: bring them back · Dropping fast at the end: control all 3 seconds · Rounded back: bend your knees a little and lift your hips",
+   "mus": "Shoulders (deltoids), back of arm (triceps), upper back (trapezius), side of ribs (serratus), upper chest"
+  },
+  "fr": {
+   "d": "Pompe en pic lente : 3 secondes pour descendre et 1 pour monter. Avec les pieds plus près des mains, les épaules travaillent encore plus.",
+   "v": "Descends en trois secondes, coudes en arrière. Pousse.",
+   "pos": "V à l’envers, pieds un peu plus près des mains, à 70 ou 80 centimètres environ. Mains écartées comme tes épaules. Hanches hautes, regard entre les mains.",
+   "exe": "1. Porte le poids sur les mains · 2. Descends en comptant 3 s, coudes vers l’arrière · 3. Courte pause, tête à 2 ou 3 centimètres du sol · 4. Pousse en 1 s jusqu’à tendre les bras",
+   "resp": "Inspire pendant la descente lente. Expire en poussant.",
+   "err": "Coudes sur les côtés : ramène-les vers l’arrière · Chute rapide à la fin : contrôle les 3 secondes en entier · Dos rond : plie un peu les genoux et monte les hanches",
+   "mus": "Épaules (deltoïdes), arrière du bras (triceps), haut du dos (trapèze), côtes (dentelé), haut de la poitrine"
+  }
+ },
+ "plank_knee": {
+  "es": {
+   "d": "Plancha quieta sobre las rodillas. Fortalece la barriga y los glúteos, que sujetan tu espalda. Es una buena base para empezar.",
+   "v": "Ombligo adentro, glúteos firmes. Respira.",
+   "pos": "Antebrazos o manos debajo de los hombros. Rodillas apoyadas detrás, cadera estirada. Cuerpo recto de rodillas a cabeza y mirada al suelo.",
+   "exe": "1. Empuja el suelo y separa un poco los omóplatos · 2. Aprieta barriga y glúteos, cadera recta · 3. Aguanta el tiempo indicado sin perder la línea",
+   "resp": "Coge aire por la nariz. Suéltalo lento por la boca, sin soltar la barriga.",
+   "err": "Culo en alto: bájalo apretando glúteos · Zona lumbar hundida: mete un poco la pelvis y activa la barriga · Pecho hundido: empuja el suelo",
+   "mus": "Barriga (transverso, recto y oblicuos), culo (glúteo mayor), costado (serrato), hombros (deltoides)"
+  },
+  "en": {
+   "d": "A still plank on your knees. It strengthens your tummy and glutes, which support your back. It is a good place to start.",
+   "v": "Navel in, glutes tight. Breathe.",
+   "pos": "Forearms or hands under your shoulders. Knees down behind you, hips straight. Body straight from knees to head, eyes on the floor.",
+   "exe": "1. Push the floor and spread your shoulder blades slightly · 2. Squeeze tummy and glutes, hips level · 3. Hold for the set time without losing the line",
+   "resp": "Breathe in through your nose. Breathe out slowly through your mouth, tummy still firm.",
+   "err": "Bottom up high: lower it by squeezing your glutes · Lower back sagging: tuck your pelvis slightly and firm your tummy · Chest sinking: push the floor away",
+   "mus": "Tummy (transversus, abs and obliques), bottom (gluteus maximus), side of ribs (serratus), shoulders (deltoids)"
+  },
+  "fr": {
+   "d": "Planche immobile sur les genoux. Elle renforce le ventre et les fessiers, qui soutiennent ton dos. C’est une bonne base pour commencer.",
+   "v": "Nombril rentré, fessiers serrés. Respire.",
+   "pos": "Avant-bras ou mains sous les épaules. Genoux posés derrière, hanches tendues. Corps droit des genoux à la tête, regard au sol.",
+   "exe": "1. Repousse le sol et écarte un peu les omoplates · 2. Serre ventre et fessiers, bassin droit · 3. Tiens le temps indiqué sans perdre la ligne",
+   "resp": "Inspire par le nez. Expire lentement par la bouche, ventre toujours serré.",
+   "err": "Fesses en l’air : baisse-les en serrant les fessiers · Bas du dos creusé : bascule un peu le bassin et serre le ventre · Poitrine qui s’affaisse : repousse le sol",
+   "mus": "Ventre (transverse, grand droit et obliques), fesses (grand fessier), côtes (dentelé), épaules (deltoïdes)"
+  }
+ },
+ "plank": {
+  "es": {
+   "d": "Plancha alta quieta, con los brazos estirados. Fortalece barriga, glúteos, piernas y hombros. Todo el cuerpo trabaja a la vez.",
+   "v": "Cuerpo recto, glúteos firmes, respira tranquila.",
+   "pos": "Manos debajo de los hombros y brazos estirados sin bloquear. Piernas estiradas, pies separados como tu cadera. Cuerpo recto de talones a cabeza.",
+   "exe": "1. Empuja el suelo y aleja el pecho de las manos · 2. Aprieta glúteos y muslos, ombligo hacia dentro · 3. Aguanta el tiempo indicado respirando con calma",
+   "resp": "Respira sin parar. Suelta el aire largo, sin soltar la barriga.",
+   "err": "Zona lumbar hundida: mete un poco la pelvis o apoya las rodillas · Cadera muy alta: bájala en línea con hombros y talones · Hombros hundidos: empuja el suelo",
+   "mus": "Barriga (transverso, recto y oblicuos), culo (glúteo), muslos (cuádriceps), costado (serrato), hombros"
+  },
+  "en": {
+   "d": "A still high plank with straight arms. It strengthens your tummy, glutes, legs and shoulders. Your whole body works together.",
+   "v": "Body straight, glutes tight, breathe calmly.",
+   "pos": "Hands under your shoulders, arms straight but not locked. Legs straight, feet hip-width apart. Body straight from heels to head.",
+   "exe": "1. Push the floor and move your chest away from your hands · 2. Squeeze glutes and thighs, navel in · 3. Hold for the set time, breathing calmly",
+   "resp": "Keep breathing. Breathe out long, keeping your tummy firm.",
+   "err": "Lower back sagging: tuck your pelvis slightly or drop to your knees · Hips too high: lower them in line with shoulders and heels · Shoulders sinking: push the floor",
+   "mus": "Tummy (transversus, abs and obliques), bottom (glutes), thighs (quadriceps), side of ribs (serratus), shoulders"
+  },
+  "fr": {
+   "d": "Planche haute immobile, bras tendus. Elle renforce le ventre, les fessiers, les jambes et les épaules. Tout le corps travaille ensemble.",
+   "v": "Corps droit, fessiers serrés, respire calmement.",
+   "pos": "Mains sous les épaules, bras tendus sans verrouiller. Jambes tendues, pieds écartés comme ton bassin. Corps droit des talons à la tête.",
+   "exe": "1. Repousse le sol et éloigne la poitrine des mains · 2. Serre fessiers et cuisses, nombril rentré · 3. Tiens le temps indiqué en respirant calmement",
+   "resp": "Respire sans t’arrêter. Expire longuement, ventre toujours serré.",
+   "err": "Bas du dos creusé : bascule un peu le bassin ou pose les genoux · Hanches trop hautes : aligne-les avec épaules et talons · Épaules qui s’affaissent : repousse le sol",
+   "mus": "Ventre (transverse, grand droit et obliques), fesses (fessiers), cuisses (quadriceps), côtes (dentelé), épaules"
+  }
+ },
+ "plankleg": {
+  "es": {
+   "d": "Plancha alta subiendo una pierna y luego la otra. Trabaja glúteos y barriga, y enseña a mantener la cadera quieta.",
+   "v": "Plancha firme, sube una pierna, cadera quieta. Alterna.",
+   "pos": "Plancha alta: manos debajo de los hombros, pies separados como tu cadera. Cuerpo recto de talones a cabeza. Cadera recta, sin ladearse.",
+   "exe": "1. Aprieta la barriga y empuja el suelo · 2. Sube una pierna estirada un palmo en 1 s · 3. Aguanta 1 s y baja en 1 s · 4. Cambia de pierna sin mover la cadera",
+   "resp": "Suelta el aire al subir la pierna. Cógelo al bajarla.",
+   "err": "Cadera que gira: sube menos y aprieta el otro glúteo · Arquear la zona lumbar: sube la pierna solo un palmo · Cadera hundida: barriga firme",
+   "mus": "Culo (glúteo mayor y medio), parte de atrás del muslo, barriga (transverso y oblicuos), hombros, costado (serrato)"
+  },
+  "en": {
+   "d": "A high plank where you lift one leg, then the other. It works your glutes and tummy, and teaches you to keep your hips still.",
+   "v": "Firm plank, lift one leg, hips still. Alternate.",
+   "pos": "High plank: hands under your shoulders, feet hip-width apart. Body straight from heels to head. Hips level, not tilting.",
+   "exe": "1. Firm your tummy and push the floor · 2. Lift one straight leg a hand’s width in 1 s · 3. Hold 1 s, lower in 1 s · 4. Switch legs without moving your hips",
+   "resp": "Breathe out as the leg lifts. Breathe in as it lowers.",
+   "err": "Hips turning: lift less and squeeze the other glute · Lower back arching: lift the leg only a hand’s width · Hips sagging: keep your tummy firm",
+   "mus": "Bottom (gluteus maximus and medius), back of thigh (hamstrings), tummy (transversus and obliques), shoulders, side of ribs"
+  },
+  "fr": {
+   "d": "Planche haute en levant une jambe puis l’autre. Elle travaille les fessiers et le ventre, et t’apprend à garder le bassin immobile.",
+   "v": "Planche solide, lève une jambe, bassin immobile. Alterne.",
+   "pos": "Planche haute : mains sous les épaules, pieds écartés comme ton bassin. Corps droit des talons à la tête. Bassin bien droit, sans pencher.",
+   "exe": "1. Serre le ventre et repousse le sol · 2. Lève une jambe tendue d’une main en 1 s · 3. Tiens 1 s, redescends en 1 s · 4. Change de jambe sans bouger le bassin",
+   "resp": "Expire en levant la jambe. Inspire en la baissant.",
+   "err": "Bassin qui tourne : lève moins haut et serre l’autre fessier · Bas du dos creusé : lève la jambe d’une main seulement · Bassin qui s’affaisse : ventre serré",
+   "mus": "Fesses (grand et moyen fessier), arrière de la cuisse, ventre (transverse et obliques), épaules, côtes (dentelé)"
+  }
+ },
+ "plankdog": {
+  "es": {
+   "d": "Pasas de plancha a perro boca abajo y vuelves. Fortalece hombros y barriga, y estira la parte de atrás de las piernas.",
+   "v": "Empuja el suelo, cadera arriba. Vuelve a plancha firme.",
+   "pos": "Plancha alta: manos debajo de los hombros con los dedos abiertos. Pies separados como tu cadera. Cuerpo recto. Más fácil: rodillas apoyadas.",
+   "exe": "1. Aprieta la barriga y empuja el suelo · 2. Sube la cadera arriba y atrás en 2 s, hasta la V al revés · 3. Vuelve a la plancha en 2 s, hombros sobre las manos",
+   "resp": "Suelta el aire al subir la cadera. Cógelo al volver a plancha.",
+   "err": "Espalda redonda en la V: dobla las rodillas y alarga la espalda · Cadera hundida al volver: frena en línea recta con los glúteos · Hombros encogidos: empuja el suelo",
+   "mus": "Hombros (deltoides), costado (serrato), brazos (tríceps), barriga (transverso y recto), parte de atrás de las piernas"
+  },
+  "en": {
+   "d": "You move from plank to downward dog and back. It strengthens your shoulders and tummy, and stretches the backs of your legs.",
+   "v": "Push the floor, hips up. Back to a firm plank.",
+   "pos": "High plank: hands under your shoulders, fingers spread. Feet hip-width apart. Body straight. Easier: knees down.",
+   "exe": "1. Firm your tummy and push the floor · 2. Send hips up and back in 2 s into the upside-down V · 3. Return to plank in 2 s, shoulders over hands",
+   "resp": "Breathe out as your hips rise. Breathe in as you return to plank.",
+   "err": "Rounded back in the V: bend your knees and lengthen your spine · Hips sagging on the way back: stop at a straight line, glutes tight · Shoulders shrugged: push the floor",
+   "mus": "Shoulders (deltoids), side of ribs (serratus), arms (triceps), tummy (transversus and abs), backs of the legs"
+  },
+  "fr": {
+   "d": "Tu passes de la planche au chien tête en bas, puis tu reviens. Il renforce les épaules et le ventre, et étire l’arrière des jambes.",
+   "v": "Repousse le sol, hanches en haut. Reviens en planche solide.",
+   "pos": "Planche haute : mains sous les épaules, doigts écartés. Pieds écartés comme ton bassin. Corps droit. Plus facile : genoux posés.",
+   "exe": "1. Serre le ventre et repousse le sol · 2. Monte les hanches en haut et en arrière en 2 s · 3. Arrive au V à l’envers, bras près des oreilles · 4. Reviens en planche en 2 s, épaules au-dessus des mains",
+   "resp": "Expire en montant les hanches. Inspire en revenant en planche.",
+   "err": "Dos rond dans le V : plie les genoux et allonge le dos · Bassin qui s’affaisse au retour : arrête-toi en ligne droite, fessiers serrés · Épaules haussées : repousse le sol",
+   "mus": "Épaules (deltoïdes), côtes (dentelé), bras (triceps), ventre (transverse et grand droit), arrière des jambes"
+  }
+ },
+ "scap": {
+  "es": {
+   "d": "Flexión de omóplatos: con los brazos estirados, solo se mueven los omóplatos. Fortalece los músculos que sujetan tus hombros.",
+   "v": "Junta los omóplatos, luego empuja el suelo y sepáralos.",
+   "pos": "Plancha alta: manos debajo de los hombros, codos estirados sin bloquear. Cuerpo recto de talones a cabeza. Más fácil: rodillas apoyadas.",
+   "exe": "1. Brazos rectos, deja bajar el pecho en 2 s · 2. Los omóplatos se juntan (retracción) · 3. Empuja el suelo en 2 s y sepáralos (protracción) · 4. Repite sin doblar los codos ni mover la cadera",
+   "resp": "Coge aire al juntar los omóplatos. Suéltalo al empujar el suelo.",
+   "err": "Doblar los codos: mantenlos estirados, el movimiento es pequeño · Cadera o zona lumbar hundida: aprieta glúteos y barriga · Hombros encogidos: aléjalos de las orejas",
+   "mus": "Costado (serrato), espalda media (romboides y trapecio), pecho profundo (pectoral menor), barriga (transverso)"
+  },
+  "en": {
+   "d": "Scapular push-up: with straight arms, only your shoulder blades move. It strengthens the muscles that hold your shoulders steady.",
+   "v": "Squeeze your shoulder blades, then push the floor apart.",
+   "pos": "High plank: hands under your shoulders, elbows straight but not locked. Body straight from heels to head. Easier: knees down.",
+   "exe": "1. Arms straight, let your chest sink for 2 s · 2. Your shoulder blades come together (retraction) · 3. Push the floor for 2 s, spreading them (protraction) · 4. Repeat without bending elbows or moving hips",
+   "resp": "Breathe in as the blades come together. Breathe out as you push.",
+   "err": "Bending your elbows: keep them straight, the movement is small · Hips or lower back sagging: squeeze glutes and tummy · Shoulders shrugged: move them away from your ears",
+   "mus": "Side of ribs (serratus), mid back (rhomboids and trapezius), deep chest (pectoralis minor), deep tummy (transversus)"
+  },
+  "fr": {
+   "d": "Pompe scapulaire : bras tendus, seules les omoplates bougent. Elle renforce les muscles qui tiennent tes épaules stables.",
+   "v": "Serre les omoplates, puis repousse le sol et écarte-les.",
+   "pos": "Planche haute : mains sous les épaules, coudes tendus sans verrouiller. Corps droit des talons à la tête. Plus facile : genoux posés.",
+   "exe": "1. Bras tendus, laisse descendre la poitrine en 2 s · 2. Les omoplates se rapprochent (rétraction) · 3. Repousse le sol en 2 s et écarte-les (protraction) · 4. Répète sans plier les coudes ni bouger les hanches",
+   "resp": "Inspire quand les omoplates se rapprochent. Expire en repoussant le sol.",
+   "err": "Plier les coudes : garde-les tendus, le mouvement est petit · Bassin ou bas du dos qui s’affaisse : serre fessiers et ventre · Épaules haussées : éloigne-les des oreilles",
+   "mus": "Côtes (dentelé), milieu du dos (rhomboïdes et trapèze), poitrine profonde (petit pectoral), ventre (transverse)"
+  }
+ }
+}

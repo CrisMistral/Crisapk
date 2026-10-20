@@ -1,0 +1,302 @@
+{
+ "p_breath": {
+  "a": "breathe",
+  "e": "🌬️",
+  "sd": 1,
+  "n": {
+   "es": "Respiración de pilates",
+   "en": "Pilates breathing",
+   "fr": "Respiration Pilates"
+  },
+  "tip": {
+   "es": "Las costillas se abren hacia los lados, no hacia arriba.",
+   "en": "Your ribs widen to the sides, not up.",
+   "fr": "Les côtes s’ouvrent sur les côtés, pas vers le haut."
+  }
+ },
+ "p_hundred": {
+  "a": "p_hundred",
+  "e": "💯",
+  "sd": 1,
+  "n": {
+   "es": "Los cien",
+   "en": "The hundred",
+   "fr": "Le cent"
+  },
+  "tip": {
+   "es": "Si te molesta el cuello, deja la cabeza en la esterilla.",
+   "en": "If your neck hurts, keep your head on the mat.",
+   "fr": "Si la nuque gêne, garde la tête sur le tapis."
+  }
+ },
+ "p_hundred_ext": {
+  "a": "p_hundred_ext",
+  "e": "💯",
+  "sd": 1,
+  "n": {
+   "es": "Los cien con piernas largas",
+   "en": "The hundred, long legs",
+   "fr": "Le cent jambes tendues"
+  },
+  "tip": {
+   "es": "Cuanto más altas las piernas, más fácil.",
+   "en": "The higher the legs, the easier it is.",
+   "fr": "Plus les jambes sont hautes, plus c’est facile."
+  }
+ },
+ "p_toetap": {
+  "a": "p_toetap",
+  "e": "🦶",
+  "sd": 1,
+  "n": {
+   "es": "Toques de talón",
+   "en": "Heel taps",
+   "fr": "Touches de talon"
+  },
+  "tip": {
+   "es": "La espalda baja no se despega de la esterilla.",
+   "en": "Your lower back stays on the mat.",
+   "fr": "Le bas du dos reste collé au tapis."
+  }
+ },
+ "p_rollup": {
+  "a": "p_rollup",
+  "e": "🌀",
+  "sd": 1,
+  "n": {
+   "es": "Enrollarse hacia arriba",
+   "en": "Roll up",
+   "fr": "Enroulé vers le haut"
+  },
+  "tip": {
+   "es": "Si no subes, dobla un poco las rodillas.",
+   "en": "If you can’t come up, bend your knees a little.",
+   "fr": "Si tu n’arrives pas à monter, plie un peu les genoux."
+  }
+ },
+ "p_halfroll": {
+  "a": "p_halfroll",
+  "e": "🌀",
+  "sd": 1,
+  "n": {
+   "es": "Medio enrollar atrás",
+   "en": "Half roll back",
+   "fr": "Demi-enroulé arrière"
+  },
+  "tip": {
+   "es": "Baja solo hasta donde puedas volver sin tirones.",
+   "en": "Only go back as far as you can return smoothly.",
+   "fr": "Descends seulement jusqu’où tu peux remonter sans à-coups."
+  }
+ },
+ "p_sls": {
+  "a": "p_sls",
+  "e": "🦵",
+  "sd": 1,
+  "n": {
+   "es": "Estiramiento de una pierna",
+   "en": "Single leg stretch",
+   "fr": "Étirement d’une jambe"
+  },
+  "tip": {
+   "es": "Más alta la pierna larga si notas la espalda.",
+   "en": "Raise the long leg higher if you feel your back.",
+   "fr": "Monte la jambe tendue si tu sens ton dos."
+  }
+ },
+ "p_dls": {
+  "a": "p_dls",
+  "e": "🤸",
+  "sd": 1,
+  "n": {
+   "es": "Estiramiento de dos piernas",
+   "en": "Double leg stretch",
+   "fr": "Étirement des deux jambes"
+  },
+  "tip": {
+   "es": "Brazos y piernas salen a la vez y vuelven a la vez.",
+   "en": "Arms and legs go out together and come back together.",
+   "fr": "Bras et jambes partent ensemble et reviennent ensemble."
+  }
+ },
+ "p_scissors": {
+  "a": "p_scissors",
+  "e": "✂️",
+  "sd": 1,
+  "n": {
+   "es": "Tijeras",
+   "en": "Scissors",
+   "fr": "Ciseaux"
+  },
+  "tip": {
+   "es": "Cambia de pierna sin que la cadera se mueva.",
+   "en": "Switch legs without moving your hips.",
+   "fr": "Change de jambe sans bouger le bassin."
+  }
+ },
+ "p_legcircle": {
+  "a": "p_legcircle",
+  "e": "⭕",
+  "sd": 2,
+  "n": {
+   "es": "Círculos con una pierna",
+   "en": "Single leg circles",
+   "fr": "Cercles d’une jambe"
+  },
+  "tip": {
+   "es": "Círculos pequeños: la cadera no se mueve.",
+   "en": "Small circles: your hips stay still.",
+   "fr": "Petits cercles : le bassin ne bouge pas."
+  }
+ },
+ "p_rollball": {
+  "a": "p_rollball",
+  "e": "⚪",
+  "sd": 1,
+  "n": {
+   "es": "Rodar como una pelota",
+   "en": "Rolling like a ball",
+   "fr": "Rouler comme une balle"
+  },
+  "tip": {
+   "es": "Rueda solo hasta los omóplatos, nunca sobre el cuello.",
+   "en": "Roll only to your shoulder blades, never onto your neck.",
+   "fr": "Roule seulement jusqu’aux omoplates, jamais sur la nuque."
+  }
+ },
+ "p_teaser_prep": {
+  "a": "p_teaser_prep",
+  "e": "🔺",
+  "sd": 1,
+  "n": {
+   "es": "Teaser con una pierna",
+   "en": "Single leg teaser",
+   "fr": "Teaser une jambe"
+  },
+  "tip": {
+   "es": "Sube despacio, vértebra a vértebra.",
+   "en": "Come up slowly, one vertebra at a time.",
+   "fr": "Monte doucement, vertèbre par vertèbre."
+  }
+ },
+ "p_teaser": {
+  "a": "p_teaser",
+  "e": "🔺",
+  "sd": 1,
+  "n": {
+   "es": "Teaser",
+   "en": "Teaser",
+   "fr": "Teaser"
+  },
+  "tip": {
+   "es": "Si te cuesta, haz la versión con una pierna.",
+   "en": "If it’s hard, do the single-leg version.",
+   "fr": "Si c’est difficile, fais la version une jambe."
+  }
+ },
+ "p_slkick": {
+  "a": "p_slkick",
+  "e": "🦵",
+  "sd": 1,
+  "n": {
+   "es": "Patada con una pierna",
+   "en": "Single leg kick",
+   "fr": "Coup de pied d’une jambe"
+  },
+  "tip": {
+   "es": "Pubis apoyado y ombligo hacia dentro.",
+   "en": "Pubic bone down, belly button in.",
+   "fr": "Pubis au sol, nombril rentré."
+  }
+ },
+ "p_sidelift": {
+  "a": "p_sidelift",
+  "e": "🦵",
+  "sd": 2,
+  "n": {
+   "es": "Elevación lateral de pierna",
+   "en": "Side leg lift",
+   "fr": "Élévation latérale de jambe"
+  },
+  "tip": {
+   "es": "Sube solo hasta donde la cadera no se va hacia atrás.",
+   "en": "Lift only as high as your hips stay stacked.",
+   "fr": "Monte seulement tant que le bassin reste aligné."
+  }
+ },
+ "p_clam": {
+  "a": "p_clam",
+  "e": "🐚",
+  "sd": 2,
+  "n": {
+   "es": "Almeja",
+   "en": "Clamshell",
+   "fr": "Coquillage"
+  },
+  "tip": {
+   "es": "Los pies siempre juntos; la cadera no rueda hacia atrás.",
+   "en": "Feet stay together; hips don’t roll back.",
+   "fr": "Pieds toujours joints ; le bassin ne bascule pas en arrière."
+  }
+ },
+ "p_crisscross": {
+  "a": "p_crisscross",
+  "e": "🔀",
+  "sd": 1,
+  "n": {
+   "es": "Giro cruzado",
+   "en": "Criss-cross",
+   "fr": "Criss-cross"
+  },
+  "tip": {
+   "es": "Gira desde las costillas, no tires del cuello.",
+   "en": "Turn from your ribs, don’t pull your neck.",
+   "fr": "Tourne depuis les côtes, ne tire pas sur la nuque."
+  }
+ },
+ "p_kegel": {
+  "a": "p_kegel",
+  "e": "🌸",
+  "sd": 1,
+  "n": {
+   "es": "Suelo pélvico: activar y soltar",
+   "en": "Pelvic floor: lift and release",
+   "fr": "Périnée : activer et relâcher"
+  },
+  "tip": {
+   "es": "Soltar del todo es tan importante como activar.",
+   "en": "Letting go fully matters as much as lifting.",
+   "fr": "Relâcher complètement compte autant qu’activer."
+  }
+ },
+ "p_swan": {
+  "a": "cobra",
+  "e": "🦢",
+  "sd": 1,
+  "n": {
+   "es": "Cisne (preparación)",
+   "en": "Swan prep",
+   "fr": "Cygne (préparation)"
+  },
+  "tip": {
+   "es": "Sube con la espalda, no empujando con los brazos.",
+   "en": "Rise with your back, not by pushing with your arms.",
+   "fr": "Monte avec le dos, pas en poussant avec les bras."
+  }
+ },
+ "p_spinestretch": {
+  "a": "seatedfwd",
+  "e": "🌿",
+  "sd": 1,
+  "n": {
+   "es": "Estirar la columna",
+   "en": "Spine stretch forward",
+   "fr": "Étirement de la colonne"
+  },
+  "tip": {
+   "es": "Si tiran las piernas, dobla un poco las rodillas.",
+   "en": "If your legs pull, bend your knees a little.",
+   "fr": "Si les jambes tirent, plie un peu les genoux."
+  }
+ }
+}

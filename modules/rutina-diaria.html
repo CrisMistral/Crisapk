@@ -10,6 +10,7 @@
 <style>
   :root{
     --turq:#26a69a;
+    --turq-d:#1a6b64; /* turquesa oscuro: texto pequeño y botones con texto blanco (contraste AA) */
     --turq-light:#4dd0e1;
     --lavanda:#e8e6fb;
     --lavanda-soft:#f3f1ff;
@@ -188,8 +189,8 @@ textarea.tool-field{min-height:74px;resize:vertical}
 .t-label{font-size:.78rem;font-weight:700;color:var(--turq);margin:8px 0 5px}
 .t-btn{border:none;border-radius:12px;padding:12px;font-family:inherit;font-size:.92rem;font-weight:700;cursor:pointer;width:100%;color:#fff;background:var(--turq);margin-top:4px}
 .t-btn.sec{background:var(--lavanda);color:var(--turq)}
-.t-chip{display:inline-block;border:2px solid var(--lavanda);background:#fff;color:var(--turq);border-radius:999px;padding:8px 14px;font-size:.82rem;font-weight:600;cursor:pointer;margin:0 6px 6px 0}
-.t-chip:active{background:var(--turq);color:#fff}
+.t-chip{display:inline-block;min-height:44px;border:2px solid var(--lavanda);background:#fff;color:var(--turq-d);border-radius:999px;padding:8px 14px;font-family:inherit;font-size:.86rem;font-weight:700;cursor:pointer;margin:0 6px 6px 0}
+.t-chip:active,.t-chip[aria-pressed="true"]{background:var(--turq-d);border-color:var(--turq-d);color:#fff}
 .t-timer{font-size:3rem;font-weight:800;color:var(--turq);text-align:center;font-variant-numeric:tabular-nums;margin:6px 0}
 .t-card{background:var(--lavanda-soft);border-radius:14px;padding:14px;font-size:.9rem;line-height:1.5;margin:10px 0;color:var(--text)}
 .t-mini{background:var(--lavanda-soft);border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;font-size:.85rem}
@@ -199,6 +200,57 @@ textarea.tool-field{min-height:74px;resize:vertical}
 /* Trabajo: empezar + triaje por momento */
 .work-start{width:100%;border:none;border-radius:16px;padding:16px;font-family:inherit;font-size:1.05rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#26a69a,#4dd0e1);box-shadow:0 4px 14px rgba(38,166,154,.3);cursor:pointer;margin-bottom:10px}
 .work-start:active{transform:scale(.98)}
+/* Mi día (la misma lista que el panel «Hoy» del inicio) */
+.dl{background:var(--lavanda-soft);border-radius:16px;padding:12px;margin-bottom:14px}
+.dl-h{font-weight:800;color:var(--turq-d);font-size:1rem;margin:2px 4px 8px}
+.dl-total{font-size:.8rem;font-weight:700;color:var(--turq-d);margin:-4px 4px 8px}
+.dl-min{display:inline-block;font-size:.74rem;font-weight:700;color:#4b5563;margin-left:6px;white-space:nowrap}
+.dl-run{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--turq);border-radius:14px;padding:4px 4px 4px 6px;margin-bottom:8px}
+.dl-run-open{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:none;background:none;padding:8px 6px;font-family:inherit;cursor:pointer;text-align:left;color:var(--turq-d)}
+.dl-run-left{font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums;flex-shrink:0}
+.dl-run-name{font-size:.88rem;font-weight:700;min-width:0;overflow-wrap:anywhere}
+.dl-run-stop{width:44px;height:44px;border:none;border-radius:12px;background:var(--lavanda-soft);color:var(--turq-d);font-size:1rem;cursor:pointer;flex-shrink:0}
+.dl-run.end{flex-direction:column;align-items:stretch;padding:10px;background:#fff8e6;border-color:#f59e0b}
+.dl-run-t{font-size:.92rem;font-weight:800;color:#7c4a03;margin:0 2px 8px;overflow-wrap:anywhere}
+.dl-run-b{display:flex;gap:6px}
+.dl-run-b button{flex:1;min-height:44px;border:none;border-radius:12px;padding:8px 6px;font-family:inherit;font-size:.86rem;font-weight:800;cursor:pointer;background:var(--turq-d);color:#fff}
+.dl-run-b button.alt{background:#fff;color:#4b5563;border:2px solid #d1d5db}
+.dl-mins{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.dl-mins b{font-size:.82rem;color:#4b5563;margin-right:2px}
+.dl-mins button{min-height:40px;border:2px solid var(--lavanda);background:#fff;color:var(--turq-d);border-radius:999px;padding:6px 12px;font-family:inherit;font-size:.84rem;font-weight:700;cursor:pointer}
+.dl-mins button[aria-pressed="true"]{background:var(--turq-d);border-color:var(--turq-d);color:#fff}
+.fo-btns{display:flex;gap:8px}.fo-btns .t-btn{flex:1}
+.dl-q{font-size:.92rem;font-weight:700;color:#556;text-align:center;margin:6px 0 10px}
+.dl-row{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--lavanda);border-radius:14px;padding:8px 8px 8px 10px;margin-bottom:7px}
+.dl-row.done{background:transparent;border-color:transparent}.dl-row.done .dl-t{text-decoration:line-through;color:#5f6b72}
+.dl-ck{width:36px;height:36px;border-radius:50%;border:2px solid var(--turq-d);background:#fff;color:transparent;font-weight:800;font-size:1rem;cursor:pointer;flex-shrink:0}
+.dl-ck.on{background:var(--turq-d);color:#fff}
+.dl-t{flex:1;min-width:0;min-height:44px;font-size:.92rem;font-weight:700;color:var(--text);overflow-wrap:anywhere;background:none;border:none;text-align:left;font-family:inherit;padding:4px 0;cursor:default}
+button.dl-t{cursor:pointer}
+.dl-pen{color:#6b7280;font-weight:400;font-size:.85rem}
+.dl-row.dl-editing{flex-direction:column;align-items:stretch;gap:8px;padding:10px}
+.dl-edit{width:100%;border:2px solid var(--turq);border-radius:10px;padding:10px;font-family:inherit;font-size:16px;font-weight:700;color:var(--text)}
+.dl-edit-btns{display:flex;gap:8px}
+.dl-edit-btns button{flex:1;border:none;border-radius:10px;padding:11px;font-family:inherit;font-weight:800;font-size:.9rem;cursor:pointer}
+.dl-save{background:var(--turq-d);color:#fff}.dl-del{background:#fef2f2;color:#b91c1c}
+.dl-go{width:44px;height:44px;border-radius:12px;border:none;background:var(--turq-d);color:#fff;font-size:1rem;cursor:pointer;flex-shrink:0}
+.dl-go:active,.dl-ck:active{transform:scale(.93)}
+.dl-add{display:flex;gap:8px;align-items:flex-end;margin-top:4px}
+.dl-add textarea{flex:1;resize:none;min-height:44px;max-height:140px;border:2px solid var(--turq);border-radius:12px;padding:10px;font-family:inherit;font-size:16px;line-height:1.35}
+.dl-add button{width:44px;height:44px;border:none;border-radius:12px;background:var(--turq);color:#fff;font-size:1.4rem;font-weight:800;cursor:pointer;flex-shrink:0}
+.dl-pend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border:1.5px dashed var(--turq);border-radius:12px;padding:7px 10px;margin-bottom:8px;font-size:.84rem;font-weight:700;color:var(--turq-d)}
+.dl-pend>span,.dl-pend-t{flex:1 1 100%}
+.dl-pend-t{border:none;background:none;text-align:left;padding:6px 2px;min-height:40px;font:inherit;color:inherit;cursor:pointer}
+.dl-pend button:not(.dl-pend-t){flex:1;min-height:44px;border:none;border-radius:999px;padding:10px 14px;font-family:inherit;font-weight:800;font-size:.84rem;cursor:pointer;background:var(--turq-d);color:#fff}
+.dl-pend button.x{background:#fff;color:#4b5563;border:2px solid #d1d5db}
+.dl-pend-list{background:#fff;border-radius:12px;margin:-2px 0 8px;padding:4px 6px}
+.dl-pend-i{display:flex;align-items:center;gap:8px;padding:2px 4px;font-size:.84rem;font-weight:600;color:var(--text)}
+.dl-pend-i span{flex:1;min-width:0;overflow-wrap:anywhere}
+.dl-pend-i button{width:44px;height:44px;border:none;border-radius:12px;background:var(--lavanda-soft);color:var(--turq-d);font-size:1.2rem;font-weight:800;cursor:pointer;flex-shrink:0}
+.fo-task{background:var(--lavanda-soft);border-radius:12px;padding:10px 12px;margin:0 0 12px;font-weight:800;color:var(--turq-d);text-align:center;overflow-wrap:anywhere}
+.work-stuck{width:100%;border:2px dashed var(--turq);border-radius:16px;padding:13px;font-family:inherit;font-size:.98rem;font-weight:700;color:var(--turq-d);background:transparent;cursor:pointer;margin-bottom:12px}
+.work-stuck[aria-expanded="true"]{border-style:solid;background:#fff}
+#helpBox[hidden]{display:none}
 .work-triage{width:100%;border:2px solid var(--turq);border-radius:16px;padding:14px;font-family:inherit;font-size:.98rem;font-weight:700;color:var(--turq);background:#fff;cursor:pointer;margin-bottom:18px}
 .work-triage:active{transform:scale(.98);background:var(--lavanda-soft)}
 .wgroup{margin-bottom:14px}
@@ -224,6 +276,8 @@ textarea.tool-field{min-height:74px;resize:vertical}
 /* modo «menos texto» */
 .simple .wrow i,.simple [data-i18n="sec_hint"]{display:none}
 </style>
+<script src="../shared/dia.js"></script>
+<script src="../shared/clases.js"></script>
 </head>
 <body>
 
@@ -233,11 +287,15 @@ textarea.tool-field{min-height:74px;resize:vertical}
     <h1 data-i18n="h1">Trabajo</h1>
   </div>
 
-  <button class="work-start" data-sub="foco" onclick="openTool('foco')" data-i18n="ws">▶ Empezar a trabajar</button>
+  <div class="dl" id="dayList"></div>
+
+  <button class="work-start" data-sub="foco" onclick="startFocus()" data-i18n="ws" style="margin-bottom:10px">▶ Empezar</button>
+  <button class="work-stuck" id="stuckBtn" aria-expanded="false" aria-controls="helpBox" onclick="toggleHelp()" data-i18n="stuck">🆘 Me atasco</button>
+
+  <div id="helpBox" hidden>
   <button class="work-triage" data-sub="triaje" onclick="openTool('triaje')" data-i18n="wt">🤔 No sé qué me pasa</button>
 
   <div class="section">
-    <div style="font-size:0.78rem;opacity:.75;margin-bottom:12px;text-align:center;" data-i18n="sec_hint">…o si ya sabes qué necesitas, elígelo directo:</div>
 
     <div class="wgroup">
       <div class="wg-label" data-i18n="g1">🏁 No puedo empezar</div>
@@ -263,11 +321,12 @@ textarea.tool-field{min-height:74px;resize:vertical}
     </div>
     <button id="subShowAll" class="sub-showall" onclick="__subToggleAll()" style="display:none"></button>
   </div>
+  </div>
 </div>
 
 <!-- OVERLAY HERRAMIENTAS -->
 <div class="tool-ov" id="toolOv">
-  <div class="tool-sheet" id="toolSheet"></div>
+  <div class="tool-sheet" id="toolSheet" role="dialog" aria-modal="true" aria-labelledby="toolTitle"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -282,7 +341,8 @@ if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 
 /* ── IDIOMAS (es · en · fr) ── */
 const UI={
- es:{h1:'Trabajo',ws:'▶ Empezar con temporizador',wt:'🤔 Averiguar qué me frena',
+ es:{h1:'Trabajo',ws:'▶ Empezar',wt:'🤔 No sé qué me pasa',stuck:'🆘 Me atasco',day_h:'📝 Mi día',day_q:'¿Qué tienes que hacer hoy? Escríbelo todo.',day_ph:'Añade una tarea…',day_add:'Añadir',day_pend:'De otros días: {n}',day_bring:'Traer',day_drop:'Descartar',day_go:'Empezar con esta tarea',day_mark:'Marcar como hecha',day_edit:'Editar tarea',day_save:'Guardar',day_del:'Borrar',day_min:'⏱ Tiempo',day_nomin:'Sin tiempo',day_undo:'Deshacer',day_dropped:'Descartadas: {n}',tm_total:'⏱ {x} · acabas ~{h}',tm_end:'¡Tiempo!',tm_more:'+5 min',tm_ok:'Cerrar',tm_now:'✓ Ya está',tm_yes:'✓ Hecha',tm_left:'Tiempo que queda',tm_stop:'Parar el temporizador',tm_focus:'Concentración',close:'Cerrar',
+   m_trabajo:'Trabajo',m_pilates:'Ejercicio',m_comida:'Comida',m_limpieza:'Limpieza',m_intereses:'Aprende algo',m_noche:'Rutina nocturna',m_calma:'Momento de calma',m_juego:'Un rato de juego',m_eco1:'Respira 2 minutos',m_eco2:'Movilidad suave',m_eco3:'Recoge 3 cosas',m_eco4:'Receta salvavidas',foco_now:'Ahora: {t}',foco_done_q:'¿La has terminado?',foco_yes:'✓ Sí, tachar',foco_no:'Aún no',vol_today:'＋ Hoy',vol_added:'Añadido a tu día',
    sec_hint:'…o si ya sabes qué necesitas, elígelo directo:',
    g1:'🏁 No puedo empezar',g2:'🎯 Quiero mantener el foco',g3:'🧠 Tengo la cabeza llena',g4:'🔄 Cambiar de tarea o planificar',
    w_par_t:'Salir del bloqueo paso a paso',w_par_s:'miras la tarea y no arrancas',
@@ -317,7 +377,8 @@ const UI={
    v_ctx_end:'Listo. Mente despejada. Ya puedes empezar.',
    v_mis:'Misión activada: {t}. Veinte minutos. Al terminar, tu recompensa.',v_mis_end:'¡Tiempo! Misión cumplida. Disfruta tu recompensa, te la has ganado.',
    ctx_s1:'Levántate y estírate. Suelta los hombros y respira hondo.',ctx_s2:'Bebe un poco de agua y mira algo lejano unos segundos.',ctx_s3:'Anota en una palabra qué acabas de terminar y qué empiezas ahora.'},
- en:{h1:'Work',ws:'▶ Start with a timer',wt:'🤔 Figure out what’s blocking me',
+ en:{h1:'Work',ws:'▶ Start',wt:'🤔 I don’t know what’s wrong',stuck:'🆘 I’m stuck',day_h:'📝 My day',day_q:'What do you need to do today? Write it all down.',day_ph:'Add a task…',day_add:'Add',day_pend:'From other days: {n}',day_bring:'Bring',day_drop:'Dismiss',day_go:'Start with this task',day_mark:'Mark as done',day_edit:'Edit task',day_save:'Save',day_del:'Delete',day_min:'⏱ Time',day_nomin:'No time',day_undo:'Undo',day_dropped:'Dismissed: {n}',tm_total:'⏱ {x} · done by ~{h}',tm_end:'Time’s up!',tm_more:'+5 min',tm_ok:'Close',tm_now:'✓ Done',tm_yes:'✓ Done',tm_left:'Time left',tm_stop:'Stop the timer',tm_focus:'Focus',close:'Close',
+   m_trabajo:'Work',m_pilates:'Exercise',m_comida:'Food',m_limpieza:'Cleaning',m_intereses:'Learn something',m_noche:'Night routine',m_calma:'A calm moment',m_juego:'A bit of play',m_eco1:'Breathe for 2 minutes',m_eco2:'Gentle mobility',m_eco3:'Tidy 3 things',m_eco4:'Lifesaver recipe',foco_now:'Now: {t}',foco_done_q:'Did you finish it?',foco_yes:'✓ Yes, tick it',foco_no:'Not yet',vol_today:'＋ Today',vol_added:'Added to your day',
    sec_hint:'…or if you already know what you need, pick it directly:',
    g1:'🏁 I can’t get started',g2:'🎯 I want to keep focus',g3:'🧠 My head is full',g4:'🔄 Switch tasks or plan',
    w_par_t:'Get unstuck step by step',w_par_s:'you stare at the task and can’t begin',
@@ -352,7 +413,8 @@ const UI={
    v_ctx_end:'Done. Clear mind. You can start now.',
    v_mis:'Mission activated: {t}. Twenty minutes. When you finish, your reward.',v_mis_end:'Time! Mission accomplished. Enjoy your reward, you’ve earned it.',
    ctx_s1:'Stand up and stretch. Drop your shoulders and breathe deeply.',ctx_s2:'Drink a little water and look at something far away for a few seconds.',ctx_s3:'Note in one word what you just finished and what you’re starting now.'},
- fr:{h1:'Travail',ws:'▶ Démarrer avec un minuteur',wt:'🤔 Comprendre ce qui me bloque',
+ fr:{h1:'Travail',ws:'▶ Commencer',wt:'🤔 Je ne sais pas ce qui m’arrive',stuck:'🆘 Je bloque',day_h:'📝 Ma journée',day_q:'Qu’as-tu à faire aujourd’hui ? Écris tout.',day_ph:'Ajoute une tâche…',day_add:'Ajouter',day_pend:'D’autres jours : {n}',day_bring:'Reprendre',day_drop:'Ignorer',day_go:'Commencer avec cette tâche',day_mark:'Marquer comme faite',day_edit:'Modifier la tâche',day_save:'Enregistrer',day_del:'Supprimer',day_min:'⏱ Durée',day_nomin:'Sans durée',day_undo:'Annuler',day_dropped:'Ignorées : {n}',tm_total:'⏱ {x} · fini vers {h}',tm_end:'C’est l’heure !',tm_more:'+5 min',tm_ok:'Fermer',tm_now:'✓ C’est fait',tm_yes:'✓ Faite',tm_left:'Temps restant',tm_stop:'Arrêter le minuteur',tm_focus:'Concentration',close:'Fermer',
+   m_trabajo:'Travail',m_pilates:'Exercice',m_comida:'Repas',m_limpieza:'Ménage',m_intereses:'Apprendre',m_noche:'Routine du soir',m_calma:'Un moment de calme',m_juego:'Un peu de jeu',m_eco1:'Respire 2 minutes',m_eco2:'Mobilité douce',m_eco3:'Range 3 choses',m_eco4:'Recette de secours',foco_now:'Maintenant : {t}',foco_done_q:'Tu l’as terminée ?',foco_yes:'✓ Oui, cocher',foco_no:'Pas encore',vol_today:'＋ Aujourd’hui',vol_added:'Ajouté à ta journée',
    sec_hint:'…ou si tu sais déjà ce qu’il te faut, choisis directement :',
    g1:'🏁 Je n’arrive pas à commencer',g2:'🎯 Je veux garder la concentration',g3:'🧠 J’ai la tête pleine',g4:'🔄 Changer de tâche ou planifier',
    w_par_t:'Sortir du blocage pas à pas',w_par_s:'tu fixes la tâche et tu ne démarres pas',
@@ -427,10 +489,93 @@ function applyStaticI18n(){document.documentElement.lang=crisLang();document.que
   function lsGet(k,d){try{return JSON.parse(localStorage.getItem(k))??d;}catch(e){return d;}}
   function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 
-  window.openTool=function(id){ stopTimer(); sheet.innerHTML=TOOLS[id](); ov.classList.add('show'); if(INIT[id])INIT[id](); };
-  window.closeTool=function(){ stopTimer(); try{speechSynthesis.cancel();}catch(e){} ov.classList.remove('show'); };
+  /* ▶ Empezar: temporizador con la tarea indicada o con la primera pendiente del día.
+     Se guarda en QDIA con su hora de fin: sigue contando aunque se cierre la hoja,
+     se vuelva al inicio o se bloquee la pantalla. Si la tarea tiene tiempo, arranca solo. */
+  let FOCUS_ID=null,_retFocus=null;
+  const FOCO_MINS=[5,10,15,25,45];
+  window.startFocus=function(id){
+    const Q=window.QDIA;if(!Q){FOCUS_ID=null;openTool('foco');return;}
+    const tm=Q.timer();let it=id?Q.get(id):null;
+    if(it&&(it.mod||Q.isDone(it)))it=null; // una tarea ya hecha no abre su temporizador
+    if(!it){
+      if(tm){FOCUS_ID=tm.id&&Q.get(tm.id)?tm.id:null;openTool('foco');return;}
+      it=Q.nextTask();
+    }
+    FOCUS_ID=it?it.id:null;
+    if(it&&it.min&&!(tm&&tm.id===it.id)){focusBegin(it.min,true);return;}
+    openTool('foco');
+  };
+  function focusBegin(min,open){
+    if(window.QDIA)QDIA.startTimer(FOCUS_ID,min);
+    _tm.prev=null;
+    if(open)openTool('foco');else focusShow();
+    speak(t('v_foco',{m:min}));vib(50);
+  }
+  /* Qué se ve en la hoja: elegir tiempo, cuenta atrás o «¿la has terminado?» */
+  function focusState(){const tm=window.QDIA?QDIA.timer():null;if(!tm||(tm.id||null)!==(FOCUS_ID||null))return 'pick';return Date.now()>=tm.end?'end':'run';}
+  function focusShow(){
+    const st=focusState(),pk=document.getElementById('fo-pick');if(!pk)return;
+    pk.hidden=st!=='pick';document.getElementById('fo-run').hidden=st!=='run';document.getElementById('fo-end').hidden=st!=='end';
+    focusPaint();
+    const f=sheet.querySelector('#fo-'+st+' button');if(f&&sheet.contains(document.activeElement)&&document.activeElement.offsetParent===null)f.focus({preventScroll:true});
+  }
+  function focusPaint(){
+    const tm=window.QDIA?QDIA.timer():null,el=document.getElementById('fo-timer');if(!tm||!el)return;
+    const left=Math.max(0,Math.ceil((tm.end-Date.now())/1000));el.textContent=fmt(left);__ring('fo-ring',left/((tm.min||1)*60));
+  }
+  window.focusDone=function(yes){
+    if(window.QDIA){if(yes&&FOCUS_ID){QDIA.setDone(FOCUS_ID,true);beep(880,.15);vib([40,40,40]);}QDIA.stopTimer();}
+    FOCUS_ID=null;closeTool();
+  };
+  window.focusMore=function(){if(window.QDIA)QDIA.addTime(5);_tm.prev=null;vib(30);focusShow();};
+  window.focusStop=function(){if(window.QDIA)QDIA.stopTimer();try{speechSynthesis.cancel();}catch(e){}focusShow();};
+  /* Un solo reloj para todo: hoja abierta, barra de «Mi día» y aviso al acabar */
+  const _tm={prev:null,end:0,day:''};
+  function taskTick(){
+    const Q=window.QDIA;if(!Q)return;
+    if(_tm.day&&Q.day()!==_tm.day){_tm.day=Q.day();renderDay();return;} // la app siguió abierta y cambió el día
+    _tm.day=Q.day();
+    const tm=Q.timer(),focoOpen=ov.classList.contains('show')&&!!document.getElementById('fo-pick');
+    if(!tm){_tm.prev=null;if(document.getElementById('dl-run'))renderDay();if(focoOpen&&focusState()!=='pick'&&document.getElementById('fo-pick').hidden)focusShow();return;}
+    if(tm.end!==_tm.end){_tm.end=tm.end;_tm.prev=null;}
+    const left=Math.ceil((tm.end-Date.now())/1000),tot=(tm.min||1)*60;
+    if(_tm.prev!=null&&!document.hidden&&left>0){
+      if(tm.min>=25&&_tm.prev>Math.floor(tot/2)&&left<=Math.floor(tot/2)){beep(700,.12);vib(50);speak(t('v_foco_half'));}
+      if(_tm.prev>5&&left<=5)beep(700,.1); // aviso 5 s antes para no pillar por sorpresa
+    }
+    _tm.prev=left;
+    if(left<=0){
+      // Avisa solo una pantalla (el inicio y Trabajo comparten el temporizador)
+      if(!document.hidden&&Q.claimEnd()){alarm();speak(t('v_foco_end'));}
+      if(focoOpen&&focusState()==='end'&&document.getElementById('fo-end').hidden)focusShow();
+      const bar=document.getElementById('dl-run');if(bar&&!bar.classList.contains('end'))renderDay();
+      return;
+    }
+    if(focoOpen)focusPaint();
+    const dl=document.getElementById('dl-run-left');
+    if(dl)dl.textContent=mmss(tm.end-Date.now());else if(!document.getElementById('dl-run'))renderDay();
+  }
+  setInterval(taskTick,1000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)taskTick();});
+  window.addEventListener('pageshow',taskTick);
+  window.openTool=function(id){
+    stopTimer();
+    if(!ov.classList.contains('show')){const a=document.activeElement;_retFocus=a&&a!==document.body&&!sheet.contains(a)?a:null;}
+    sheet.innerHTML=TOOLS[id](); ov.classList.add('show'); if(INIT[id])INIT[id]();
+    // el foco entra en la hoja (teclado y lector de pantalla)
+    const b=[...sheet.querySelectorAll('button')].find(x=>!x.classList.contains('tool-close')&&x.offsetParent!==null)||sheet.querySelector('.tool-close');
+    if(b)try{b.focus({preventScroll:true});}catch(e){}
+  };
+  window.closeTool=function(){
+    stopTimer(); try{speechSynthesis.cancel();}catch(e){} ov.classList.remove('show'); FOCUS_ID=null;
+    // el temporizador de la tarea NO se para: sigue en la barra de «Mi día»
+    const k=_retFocus&&_retFocus.closest?{id:(_retFocus.closest('[data-id]')||{getAttribute:()=>null}).getAttribute('data-id'),cls:String(_retFocus.className||'').split(' ')[0],elId:_retFocus.id||null}:null;
+    renderDay();_retFocus=null;
+    if(k)focusBack(document.body,k);
+  };
   ov.addEventListener('click',e=>{if(e.target===ov)closeTool();});
-  const head=(emoji,title,desc)=>`<button class="tool-close" onclick="closeTool()">✕</button><h3>${emoji} ${title}</h3><div class="t-desc">${desc}</div>`;
+  const head=(emoji,title,desc)=>`<button class="tool-close" onclick="closeTool()" aria-label="${t('close')}">✕</button><h3 id="toolTitle">${emoji} ${title}</h3><div class="t-desc">${desc}</div>`;
 
   const TOOLS={
     /* Triaje · No sé qué me pasa → pregunta y te lleva a la técnica */
@@ -443,18 +588,25 @@ function applyStaticI18n(){document.documentElement.lang=crisLang();document.que
       <button class="wrow" onclick="triagePick('E')" style="margin-bottom:0"><span class="we">🙂</span><span class="wi"><b>${t('tri_E_t')}</b><i>${t('tri_E_s')}</i></span></button>`,
 
     /* 0 · Empezar a trabajar (sesión de foco) */
-    foco:()=>head('▶️',t('foco_t'),t('foco_d'))+`
+    foco:()=>{const it=FOCUS_ID&&window.QDIA?QDIA.get(FOCUS_ID):null,st=focusState();return head('▶️',t('foco_t'),t('foco_d'))+`
+      ${it?`<div class="fo-task">${esc(t('foco_now',{t:it.t}))}</div>`:''}
       <div style="text-align:center">
-        <div id="fo-pick">
+        <div id="fo-pick"${st==='pick'?'':' hidden'}>
           <div class="t-label" style="text-align:center">${t('foco_q')}</div>
-          <div><span class="t-chip" data-m="15">15 min</span><span class="t-chip" data-m="25">25 min</span><span class="t-chip" data-m="45">45 min</span></div>
+          <div>${FOCO_MINS.map(m=>`<button type="button" class="t-chip" data-m="${m}">${m} min</button>`).join('')}</div>
         </div>
-        <div id="fo-run" style="display:none">
-          <div class="tring" id="fo-ring"><div class="tring-in"><div class="t-timer" id="fo-timer" style="margin:0;font-size:2.2rem">25:00</div></div></div>
-          <div style="font-size:.78rem;color:#889;margin-bottom:8px">${t('foco_run')}</div>
-          <button class="t-btn sec" onclick="openTool('foco')">${t('foco_stop')}</button>
+        <div id="fo-run"${st==='run'?'':' hidden'}>
+          <div class="tring" id="fo-ring"><div class="tring-in"><div class="t-timer" id="fo-timer" role="timer" aria-label="${t('tm_left')}" style="margin:0;font-size:2.2rem">--:--</div></div></div>
+          <div style="font-size:.78rem;color:#667;margin-bottom:8px">${t('foco_run')}</div>
+          <div class="fo-btns">${it?`<button class="t-btn" onclick="focusDone(true)">${t('tm_now')}</button>`:''}<button class="t-btn sec" onclick="focusStop()">${t('foco_stop')}</button></div>
         </div>
-      </div>`,
+        <div id="fo-end"${st==='end'?'':' hidden'}>
+          <div class="t-label" style="text-align:center">${it?t('foco_done_q'):t('tm_end')}</div>
+          ${it?`<button class="t-btn" onclick="focusDone(true)">${t('foco_yes')}</button>`:''}
+          <button class="t-btn sec" onclick="focusMore()">${t('tm_more')}</button>
+          <button class="t-btn sec" onclick="focusDone(false)">${it?t('foco_no'):t('tm_ok')}</button>
+        </div>
+      </div>`;},
 
     /* 1 · Destructor de parálisis por tareas */
     paralisis:()=>head('🧩',t('par_t'),t('par_d'))+`
@@ -535,12 +687,10 @@ function applyStaticI18n(){document.documentElement.lang=crisLang();document.que
     foco(){
       sheet.querySelectorAll('#fo-pick .t-chip').forEach(ch=>ch.onclick=()=>{
         const min=+ch.dataset.m;
-        document.getElementById('fo-pick').style.display='none';
-        document.getElementById('fo-run').style.display='block';
-        speak(t('v_foco',{m:min}));vib(50);
-        run(min*60,'fo-timer',(t,tot)=>{ if(min>=25&&t===Math.floor(tot/2)){beep(700,.12);vib(50);speak(t('v_foco_half'));} },
-          ()=>{try{var _n=new Date();localStorage.setItem('cris_trabajo_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}speak(t('v_foco_end'));});
+        if(FOCUS_ID&&window.QDIA)QDIA.setMin(FOCUS_ID,min); // la tarea se queda con ese tiempo
+        focusBegin(min,false);
       });
+      focusPaint();
     },
     paralisis(){
       document.getElementById('pa-go').onclick=function(){
@@ -611,7 +761,7 @@ function applyStaticI18n(){document.documentElement.lang=crisLang();document.que
         <button class="wrow" onclick="openTool('contexto')"><span class="we">🔄</span><span class="wi"><b>${t('trD_1t')}</b><i>${t('trD_1s')}</i></span></button>
         <button class="wrow" onclick="openTool('tiempo')" style="margin-bottom:0"><span class="we">⏳</span><span class="wi"><b>${t('trD_2t')}</b><i>${t('trD_2s')}</i></span></button>`+back;
     }else if(code==='E'){
-      openTool('foco');
+      startFocus();
     }
   };
 
@@ -635,18 +785,125 @@ function applyStaticI18n(){document.documentElement.lang=crisLang();document.que
     if(cat==='basura'){list.splice(i,1);}else{list[i].cat=cat;}
     lsSet('cris_volcado',list);vib(15);renderVolcado();
   };
+  window.volToDay=function(i){
+    const list=lsGet('cris_volcado',[]);if(!list[i]||!window.QDIA)return;
+    const txt=(list[i].t+(list[i].step&&list[i].step.trim()?' → '+list[i].step.trim():'')).replace(/\s+/g,' ');
+    if(!QDIA.add(txt))return;list.splice(i,1);lsSet('cris_volcado',list);
+    beep(700,.1);vib(30);renderVolcado();renderDay();
+    const tt=document.getElementById('toast');if(tt){tt.textContent=t('vol_added');tt.classList.add('show');setTimeout(()=>tt.classList.remove('show'),1600);}
+  };
   window.setVolcadoStep=function(i,val){const list=lsGet('cris_volcado',[]);if(list[i]){list[i].step=val;lsSet('cris_volcado',list);}};
   function renderVolcado(){
     const cont=document.getElementById('vo-list');if(!cont)return;
     const list=lsGet('cris_volcado',[]);
     if(!list.length){cont.innerHTML='<div style="font-size:.82rem;color:#889;text-align:center;padding:14px">'+t('vol_empty')+'</div>';return;}
     cont.innerHTML=list.map((it,i)=>{
-      if(it.cat==='ahora')return `<div class="t-mini" style="flex-wrap:wrap"><span>🔴 <strong>${esc(it.t)}</strong></span><div class="g"><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">${t('vol_to_later')}</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div><input class="tool-field" style="margin:8px 0 0" placeholder="${t('vol_step_p')}" value="${esc(it.step)}" oninput="setVolcadoStep(${i},this.value)"></div>`;
+      if(it.cat==='ahora')return `<div class="t-mini" style="flex-wrap:wrap"><span>🔴 <strong>${esc(it.t)}</strong></span><div class="g"><button style="background:#d7f5ec;color:var(--turq)" onclick="volToDay(${i})">${t('vol_today')}</button><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">${t('vol_to_later')}</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div><input class="tool-field" style="margin:8px 0 0" placeholder="${t('vol_step_p')}" value="${esc(it.step)}" oninput="setVolcadoStep(${i},this.value)"></div>`;
       if(it.cat==='luego')return `<div class="t-mini"><span>🟡 ${esc(it.t)}</span><div class="g"><button style="background:#d7f5ec;color:var(--turq)" onclick="setVolcadoCat(${i},'ahora')">${t('vol_up')}</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div></div>`;
       return `<div class="t-mini"><span>${esc(it.t)}</span><div class="g"><button style="background:#d7f5ec;color:var(--turq)" onclick="setVolcadoCat(${i},'ahora')">${t('vol_now')}</button><button style="background:#eee" onclick="setVolcadoCat(${i},'luego')">${t('vol_later')}</button><button style="background:#fdd" onclick="setVolcadoCat(${i},'basura')">🗑️</button></div></div>`;
     }).join('');
   }
 })();
+/* ═══ MI DÍA (misma lista que el panel «Hoy» del inicio) ═══ */
+const MODFILE={trabajo:'rutina-diaria.html',pilates:'ejercicios-hiit.html',comida:'comida.html',limpieza:'limpieza.html',intereses:'intereses.html',noche:'rutina-nocturna.html',calma:'rescate-emocional.html',juego:'juegos.html',
+  eco1:'rescate-emocional.html',eco2:'ejercicios-hiit.html#suave',eco3:'limpieza.html#express',eco4:'comida.html#basicos',clase:'clases.html'};
+function escD(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+/* Foco tras repintar: se vuelve al mismo control (misma fila por data-id) */
+function focusKey(root){const a=document.activeElement;if(!a||a===document.body||!root||!root.contains(a))return null;const row=a.closest('[data-id]');return {id:row?row.getAttribute('data-id'):null,cls:String(a.className||'').split(' ')[0],elId:a.id||null};}
+function focusBack(root,k){if(!k||!root)return;let el=null;
+  if(k.elId)el=document.getElementById(k.elId);
+  if(!el&&k.id&&k.cls)el=root.querySelector('[data-id="'+k.id+'"] .'+k.cls);
+  if(!el&&k.cls)el=root.querySelector('.'+k.cls);
+  if(el&&!el.disabled)try{el.focus({preventScroll:true});}catch(e){}}
+function autoGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,140)+'px';}
+function mmss(ms){const s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+/* Nombre de las cosas de Quico, siempre en el idioma actual */
+function modName(it){const k='m_'+it.mod,v=t(k);return v!==k?v:it.t;}
+let showPend=false,dropUndoUntil=0,dropN=0;
+function renderDay(){
+  const el=document.getElementById('dayList');if(!el||!window.QDIA)return;
+  const prevIn=document.getElementById('dl-in'),draft=prevIn?prevIn.value:'',fk=focusKey(el);
+  const prevEd=document.getElementById('dl-edit'),edDraft=prevEd?prevEd.value:null,edFocus=prevEd&&document.activeElement===prevEd;
+  if(window.QCLASES)QCLASES.syncDay(); // las clases de hoy, también aquí
+  const items=QDIA.view(),pend=QDIA.pending(),tm=QDIA.timer();
+  const rows=items.map(it=>{
+    const done=QDIA.isDone(it),lock=QDIA.locked(it),name=it.mod?modName(it):it.t,label=(it.e?it.e+' ':'')+(it.cls?new Date(it.cls.st).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'})+' · ':'')+escD(name);
+    const min=!it.mod&&it.min&&!done?`<span class="dl-min">⏱ ${QDIA.fmtMin(it.min)}</span>`:'';
+    if(DAY_EDIT===it.id){
+      const opts=[0,5,10,15,25,45,60];if(it.min&&opts.indexOf(it.min)<0){opts.push(it.min);opts.sort((a,b)=>a-b);}
+      return `<div class="dl-row dl-editing" data-id="${it.id}"><input class="dl-edit" id="dl-edit" value="${escD(it.t)}" maxlength="300" aria-label="${escD(t('day_edit'))}" onkeydown="if(event.key==='Enter'){event.preventDefault();dayEditSave('${it.id}');}else if(event.key==='Escape'){dayEditCancel();}">
+      <div class="dl-mins" role="group" aria-label="${escD(t('day_min'))}"><b aria-hidden="true">${t('day_min')}</b>${opts.map(m=>`<button type="button" aria-pressed="${(it.min||0)===m}" data-m="${m}" onmousedown="event.preventDefault()" onclick="dayEditMin('${it.id}',${m})">${m?QDIA.fmtMin(m):t('day_nomin')}</button>`).join('')}</div>
+      <div class="dl-edit-btns"><button class="dl-save" onclick="dayEditSave('${it.id}')">${t('day_save')}</button><button class="dl-del" onclick="dayEditDelete('${it.id}')">🗑️ ${t('day_del')}</button></div></div>`;
+    }
+    const text=it.mod?(it.mod!=='trabajo'?`<button class="dl-t" onclick="openDayMod('${it.mod}')">${label}</button>`:`<span class="dl-t">${label}</span>`)
+      :`<button class="dl-t" onclick="dayEdit('${it.id}')" aria-label="${escD(t('day_edit'))}: ${escD(it.t)}">${label}${min} <span class="dl-pen" aria-hidden="true">✎</span></button>`;
+    const go=!it.mod&&!done?`<button class="dl-go" onclick="startFocus('${it.id}')" aria-label="${escD(t('day_go'))}: ${escD(it.t)}${it.min?' ('+QDIA.fmtMin(it.min)+')':''}">▶</button>`:'';
+    return `<div class="dl-row${done?' done':''}" data-id="${it.id}"><button class="dl-ck${done?' on':''}" role="checkbox" aria-checked="${done}" aria-label="${escD(name)}"${lock?' aria-disabled="true"':''} onclick="dayToggle('${it.id}')">✓</button>${text}${go}</div>`;
+  }).join('');
+  let run='';
+  if(tm){
+    const ti=tm.id?QDIA.get(tm.id):null,name=escD(ti?ti.t:t('tm_focus'));
+    run=Date.now()>=tm.end
+      ?`<div class="dl-run end" id="dl-run" role="status"><div class="dl-run-t">⏰ ${t('tm_end')} ${name}</div><div class="dl-run-b">${ti?`<button onclick="dayTm('yes')">${t('tm_yes')}</button>`:''}<button onclick="dayTm('more')">${t('tm_more')}</button><button class="alt" onclick="dayTm('no')">${ti?t('foco_no'):t('tm_ok')}</button></div></div>`
+      :`<div class="dl-run" id="dl-run"><button class="dl-run-open" onclick="startFocus('${tm.id||''}')" aria-label="${escD(t('tm_left'))}: ${name}"><span class="dl-run-left" id="dl-run-left">${mmss(tm.end-Date.now())}</span><span class="dl-run-name">${name}</span></button><button class="dl-run-stop" onclick="dayTm('no')" aria-label="${escD(t('tm_stop'))}">⏹</button></div>`;
+  }
+  const tot=QDIA.totalMin();
+  const pendBar=Date.now()<dropUndoUntil
+    ?`<div class="dl-pend" role="status"><span>${t('day_dropped',{n:dropN})}</span><button onclick="dayUndoDrop()">${t('day_undo')}</button></div>`
+    :pend.length?`<div class="dl-pend"><button class="dl-pend-t" onclick="showPend=!showPend;renderDay()" aria-expanded="${showPend}" aria-controls="dl-pend-list">${t('day_pend',{n:pend.length})} ${showPend?'▴':'▾'}</button><button onclick="QDIA.bringPending();showPend=false;renderDay()">${t('day_bring')}</button><button class="x" onclick="dayDrop()">${t('day_drop')}</button></div>
+      ${showPend?`<div class="dl-pend-list" id="dl-pend-list">${pend.map(p=>`<div class="dl-pend-i"><span>${escD(p.t)}${p.min?' · ⏱ '+QDIA.fmtMin(p.min):''}</span><button onclick="QDIA.bringOne('${p.id}');if(!QDIA.pending().length)showPend=false;renderDay()" aria-label="${escD(t('day_bring'))}: ${escD(p.t)}">＋</button></div>`).join('')}</div>`:''}`:'';
+  el.innerHTML=`<div class="dl-h">${t('day_h')}</div>
+    ${tot?`<div class="dl-total">${t('tm_total',{x:QDIA.fmtMin(tot),h:QDIA.endAt(tot,crisLang())})}</div>`:''}
+    ${run}${pendBar}
+    ${items.length?rows:`<div class="dl-q">${t('day_q')}</div>`}
+    <div class="dl-add"><textarea id="dl-in" rows="1" maxlength="4000" enterkeyhint="done" placeholder="${t('day_ph')}" aria-label="${t('day_ph')}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();dayAddTask();}" oninput="autoGrow(this)"></textarea><button onmousedown="event.preventDefault()" onclick="dayAddTask()" aria-label="${t('day_add')}">+</button></div>`;
+  const ni=document.getElementById('dl-in');if(ni&&draft){ni.value=draft;autoGrow(ni);}
+  if(DAY_EDIT===null)focusBack(el,fk);
+  else{const ed=document.getElementById('dl-edit');if(ed&&edDraft!==null){ed.value=edDraft;if(edFocus)ed.focus({preventScroll:true});}}
+}
+let DAY_EDIT=null;
+function dayEdit(id){DAY_EDIT=id;renderDay();const el=document.getElementById('dl-edit');if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length);}}
+function dayEditSave(id){const el=document.getElementById('dl-edit');if(el)QDIA.rename(id,el.value);DAY_EDIT=null;renderDay();const b=document.querySelector('#dayList [data-id="'+id+'"] .dl-t');if(b)b.focus({preventScroll:true});}
+function dayEditCancel(){const id=DAY_EDIT;DAY_EDIT=null;renderDay();const b=id&&document.querySelector('#dayList [data-id="'+id+'"] .dl-t');if(b)b.focus({preventScroll:true});}
+function dayEditDelete(id){QDIA.remove(id);DAY_EDIT=null;try{if(navigator.vibrate&&__allow('vib'))navigator.vibrate(30);}catch(e){}renderDay();const f=document.getElementById('dl-in');if(f)f.focus({preventScroll:true});}
+/* Tiempo de la tarea: se guarda al momento sin perder lo que se está escribiendo */
+function dayEditMin(id,m){QDIA.setMin(id,m);document.querySelectorAll('#dayList .dl-mins button').forEach(b=>b.setAttribute('aria-pressed',String(+b.getAttribute('data-m')===m)));}
+function dayAddTask(){
+  const el=document.getElementById('dl-in');if(!el||!window.QDIA)return;
+  if(!QDIA.add(el.value))return;
+  el.value=QDIA.rest; // lo que no cabe se queda en el cuadro
+  try{if(navigator.vibrate&&__allow('vib'))navigator.vibrate(25);}catch(e){}
+  renderDay();const again=document.getElementById('dl-in');if(again)again.focus();
+}
+function dayToggle(id){
+  const it=QDIA.get(id);if(it&&QDIA.locked(it))return; // la zona de limpieza hecha en su módulo no se destacha aquí
+  const on=QDIA.toggle(id);
+  try{if(navigator.vibrate&&__allow('vib'))navigator.vibrate(on?[40,40,40]:30);}catch(e){}
+  renderDay();
+}
+function dayDrop(){dropN=QDIA.pending().length;QDIA.dropPending();showPend=false;dropUndoUntil=Date.now()+8000;renderDay();setTimeout(()=>{if(Date.now()>=dropUndoUntil)renderDay();},8100);}
+function dayUndoDrop(){QDIA.undoDrop();dropUndoUntil=0;renderDay();}
+/* Respuesta al temporizador desde la barra de «Mi día» */
+function dayTm(a){
+  const tm=QDIA.timer();if(!tm){renderDay();return;}
+  if(a==='more')QDIA.addTime(5);
+  else{if(a==='yes'&&tm.id){QDIA.setDone(tm.id,true);try{if(navigator.vibrate&&__allow('vib'))navigator.vibrate([40,40,40]);}catch(e){}}QDIA.stopTimer();}
+  renderDay();
+}
+/* Las cosas de Quico (ejercicio, comida…) se abren en su módulo a través del inicio */
+function openDayMod(mod){
+  const f=MODFILE[mod];if(!f)return;
+  try{if(window.parent&&window.parent!==window&&window.parent.openModule){window.parent.openModule('modules/'+f);return;}}catch(e){}
+  location.href=f;
+}
+/* «Me atasco»: las soluciones solo aparecen cuando se piden */
+function toggleHelp(){
+  const box=document.getElementById('helpBox'),b=document.getElementById('stuckBtn');
+  const open=box.hasAttribute('hidden');
+  if(open){box.removeAttribute('hidden');b.setAttribute('aria-expanded','true');setTimeout(()=>box.scrollIntoView({behavior:'smooth',block:'start'}),30);}
+  else{box.setAttribute('hidden','');b.setAttribute('aria-expanded','false');}
+}
+
 /* Botón atrás del móvil: si hay una herramienta abierta, se cierra */
 /* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió */
 window.__crisBack=function(){
@@ -661,6 +918,8 @@ window.addEventListener('message',function(e){
   }
 });
 applyStaticI18n();
+renderDay();
+(function(){const m=location.hash.match(/^#foco=(.*)$/);if(m){try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}startFocus(decodeURIComponent(m[1]));}})();
 </script>
 <script>
 /* Submenús: esconde las herramientas que quedaron fuera en el test inicial (index),
