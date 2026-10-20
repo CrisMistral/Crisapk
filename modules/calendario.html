@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Quico - Calendario</title>
+<style>
+  :root{--turq:#26a69a;--turq-d:#1a6b64;--lav:#e8e6fb;--lav-s:#f3f1ff;--bg:#f0f9ff;--text:#2d3748;--soft:#5f6b72;--red:#be123c;--red-s:#ffe4e6;}
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Outfit','Segoe UI',system-ui,sans-serif;}
+  body{background:linear-gradient(135deg,var(--bg) 0%,var(--lav-s) 100%);min-height:100vh;padding:16px 16px 100px;color:var(--text);-webkit-tap-highlight-color:transparent;}
+  .card{max-width:480px;margin:0 auto;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(38,166,154,.12);padding:20px;}
+  .header{text-align:center;margin-bottom:12px;}
+  .header img{width:84px;height:auto;display:block;margin:0 auto 4px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18));}
+  .header h1{color:var(--turq-d);font-size:1.4rem;}
+  button{font-family:inherit;cursor:pointer;}
+  [hidden]{display:none!important;}
+  .acts{display:flex;gap:8px;margin-bottom:10px;}
+  .acts button{flex:1;width:100%;min-height:52px;border:none;border-radius:14px;font-weight:800;font-size:.95rem;padding:10px;}
+  .b-per{background:var(--red-s);color:var(--red);}
+  .b-add{background:var(--turq-d);color:#fff;}
+  .status{font-size:.86rem;font-weight:700;color:var(--red);background:#fff5f6;border:1.5px solid #fecdd3;border-radius:12px;padding:9px 12px;margin-bottom:12px;}
+  .mnav{display:flex;align-items:center;justify-content:space-between;margin:6px 0 8px;}
+  .mnav b{font-size:1.05rem;color:var(--turq-d);}
+  .mnav button{width:44px;height:44px;border:none;border-radius:12px;background:var(--lav-s);color:var(--turq-d);font-size:1.3rem;font-weight:800;}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .wd{font-size:.7rem;font-weight:800;color:var(--soft);text-align:center;text-transform:uppercase;padding:2px 0;}
+  .d{position:relative;aspect-ratio:1;min-height:40px;border:2px solid transparent;border-radius:12px;background:#f8fafc;color:var(--text);font-size:.92rem;font-weight:700;padding:3px 0 0;display:flex;flex-direction:column;align-items:center;gap:2px;}
+  .d.out{visibility:hidden;}
+  .d.per{background:var(--red-s);color:var(--red);}
+  .d.pred{border-style:dashed;border-color:#fda4af;}
+  .d.today{border-color:var(--turq-d);border-style:solid;}
+  .d.sel{background:var(--turq-d);color:#fff;}
+  .d.sel.per{box-shadow:inset 0 -5px 0 #fb7185;}
+  .dots{display:flex;gap:2px;justify-content:center;min-height:6px;}
+  .dots i{width:6px;height:6px;border-radius:50%;}
+  .legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.72rem;color:var(--soft);margin:8px 2px 0;}
+  .legend span{display:inline-flex;align-items:center;gap:4px;}
+  .legend i{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .dayp{margin-top:14px;border-top:1px solid #eef0f4;padding-top:12px;}
+  .dayp h2{font-size:1rem;color:var(--turq-d);margin-bottom:8px;}
+  .it{display:flex;gap:10px;align-items:stretch;width:100%;border:2px solid var(--lav);background:#fff;border-radius:14px;padding:9px 12px;margin-bottom:7px;text-align:left;min-height:48px;}
+  .it .bar{width:6px;border-radius:4px;flex-shrink:0;}
+  .it .tm{font-size:.86rem;font-weight:800;white-space:nowrap;min-width:92px;font-variant-numeric:tabular-nums;}
+  .it .tx{flex:1;min-width:0;}
+  .it .nm{display:block;font-size:.92rem;font-weight:700;overflow-wrap:anywhere;}
+  .it .lc{display:block;font-size:.78rem;color:var(--soft);overflow-wrap:anywhere;}
+  .empty{font-size:.88rem;color:var(--soft);font-weight:600;padding:6px 2px 10px;}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+  .btn{flex:1;min-height:46px;border:none;border-radius:12px;background:var(--turq-d);color:#fff;font-weight:800;font-size:.9rem;padding:10px 12px;}
+  .btn.sec{background:#fff;color:var(--turq-d);border:2px solid var(--lav);}
+  .btn.red{background:#fff;color:var(--red);border:2px solid #fecdd3;}
+  .sec{margin-top:16px;}
+  .sec>button.h{width:100%;min-height:48px;display:flex;justify-content:space-between;align-items:center;border:none;background:var(--lav-s);border-radius:14px;padding:10px 14px;font-weight:800;font-size:.95rem;color:var(--turq-d);}
+  .opt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 4px;font-size:.9rem;font-weight:600;border-bottom:1px solid #eef0f4;}
+  .sw{min-width:64px;min-height:40px;border-radius:999px;border:2px solid var(--lav);background:#fff;font-weight:800;color:var(--soft);}
+  .sw[aria-pressed="true"]{background:var(--turq-d);border-color:var(--turq-d);color:#fff;}
+  .note{font-size:.76rem;color:var(--soft);margin:8px 2px 0;line-height:1.45;}
+  /* Hoja de añadir / editar */
+  .ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:60;}
+  .ov.show{display:flex;}
+  .sheet{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:18px 18px 40px;}
+  .sheet h3{color:var(--turq-d);font-size:1.15rem;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+  .sheet h3 button{border:none;background:none;font-size:1.3rem;color:var(--soft);width:44px;height:44px;}
+  .chips{display:flex;gap:8px;margin-bottom:6px;}
+  .chips button{flex:1;min-height:46px;border:2px solid var(--lav);background:#fff;border-radius:12px;font-weight:800;font-size:.92rem;color:var(--soft);}
+  .chips button[aria-pressed="true"]{border-color:var(--turq-d);background:var(--turq-d);color:#fff;}
+  label.l{display:block;font-size:.84rem;font-weight:700;margin:10px 2px 5px;}
+  .in{width:100%;border:2px solid var(--lav);border-radius:12px;padding:10px 12px;font-size:16px;color:var(--text);background:#fff;min-height:46px;}
+  .in:focus{outline:none;border-color:var(--turq);}
+  .two{display:flex;gap:8px;}.two>div{flex:1;min-width:0;}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--turq-d);color:#fff;font-weight:700;border-radius:14px;padding:10px 16px;display:none;z-index:80;}
+  .toast.show{display:block;}
+</style>
+<script>
+function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
+if(__cfg().explain!==true)document.documentElement.classList.add('simple');
+</script>
+</head>
+<body>
+<div class="card">
+  <div class="header"><img src="../quico/quico_happy.png" alt="Quico"><h1 data-i18n="h1">📅 Calendario</h1></div>
+  <div class="acts">
+    <button class="b-add" onclick="openForm(null,SEL)" data-i18n="add">＋ Tutoría o cita</button>
+  </div>
+  <div class="mnav"><button onclick="moveMonth(-1)" aria-label="‹" id="mPrev">‹</button><b id="mTitle"></b><button onclick="moveMonth(1)" aria-label="›" id="mNext">›</button></div>
+  <div class="grid" id="grid" role="grid"></div>
+  <div class="legend" id="legend"></div>
+  <div class="dayp" id="dayp"></div>
+  <div class="sec">
+    <button class="h" id="cfgBtn" aria-expanded="false" aria-controls="cfgBox" onclick="toggleCfg()"><span data-i18n="settings">⚙️ Ajustes</span><span aria-hidden="true">▾</span></button>
+    <div id="cfgBox" hidden>
+      <p class="note" id="statsNote"></p>
+      <div class="row"><button class="btn red" onclick="clearPer()" data-i18n="o_clear">Borrar los datos de la regla</button></div>
+      <p class="note" data-i18n="privacy">Todo se guarda solo en este móvil. Las fechas de la regla son aproximadas: si te importa evitar o buscar un embarazo, no te fíes solo de ellas.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="ov" onclick="if(event.target===this)closeForm()">
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="fTitle">
+    <h3><span id="fTitle"></span><button onclick="closeForm()" aria-label="✕">✕</button></h3>
+    <div class="chips" role="group"><button id="tyTut" onclick="setType('tut')" data-i18n="ty_tut">👩‍🏫 Tutoría</button><button id="tyCita" onclick="setType('cita')" data-i18n="ty_cita">📌 Otra cita</button></div>
+    <div id="fWhat"><label class="l" for="fT" data-i18n="f_what">¿Qué es?</label><input class="in" id="fT" maxlength="80"></div>
+    <label class="l" for="fW" id="fWl" data-i18n="f_with">¿Con quién o de qué asignatura?</label><input class="in" id="fW" maxlength="80" list="whoList"><datalist id="whoList"></datalist>
+    <label class="l" for="fD" data-i18n="f_day">Día</label><input class="in" id="fD" type="date">
+    <div class="two"><div><label class="l" for="fA" data-i18n="f_from">De</label><input class="in" id="fA" type="time" value="10:00"></div><div><label class="l" for="fB" data-i18n="f_to">A</label><input class="in" id="fB" type="time" value="10:30"></div></div>
+    <label class="l" for="fL" data-i18n="f_where">¿Dónde? (opcional)</label><input class="in" id="fL" maxlength="80">
+    <label class="l" for="fR" data-i18n="f_rem">Aviso</label><select class="in" id="fR"></select>
+    <div class="row" style="margin-top:14px"><button class="btn" onclick="saveForm()" data-i18n="save">Guardar</button><button class="btn red" id="fDel" onclick="delForm()" data-i18n="del">🗑️ Borrar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="../shared/dia.js?v=112"></script>
+<script src="../shared/clases.js?v=112"></script>
+<script src="../shared/cal.js?v=112"></script>
+<script>
+const UI={
+ es:{h1:'📅 Calendario',add:'＋ Tutoría o cita',settings:'⚙️ Ajustes',o_home:'Ver la regla en el inicio',o_clear:'Borrar los datos de la regla',privacy:'Todo se guarda solo en este móvil. Las fechas de la regla son aproximadas: si te importa evitar o buscar un embarazo, no te fíes solo de ellas.',
+   ty_tut:'👩‍🏫 Tutoría',ty_cita:'📌 Otra cita',f_what:'¿Qué es?',f_with:'¿Con quién o de qué asignatura?',f_with2:'¿Con quién? (opcional)',f_day:'Día',f_from:'De',f_to:'A',f_where:'¿Dónde? (opcional)',f_rem:'Aviso',save:'Guardar',del:'🗑️ Borrar',
+   new_t:'Nueva cita',edit_t:'Cambiar cita',tut:'Tutoría',what_ph:'Médico, reunión, entrega…',with_ph:'Profe o asignatura',where_ph:'Despacho, Teams…',
+   per_start:'🩸 Me ha venido la regla',per_end:'🩸 Se me ha ido',per_day:'🩸 Día {n} de la regla',per_next:'🩸 Próxima regla: ~{d} · en {n} días (aprox.)',per_soon:'🩸 La regla puede venir hoy o mañana (aprox.)',per_none:'🩸 Marca el día que te venga la regla y te diré cuándo toca la próxima.',
+   per_this:'🩸 Regla este día',per_yes:'Sí',per_no:'No',per_mark:'🩸 Aquí empieza la regla',per_unmark:'🩸 Quitar esta regla',
+   no_rem:'Sin aviso',rem_min:'{n} min antes',rem_h:'1 hora antes',rem_d:'1 día antes',nothing:'Nada este día.',add_day:'＋ Añadir este día',
+   l_class:'clase',l_tut:'tutoría',l_cita:'cita',l_per:'regla',l_pred:'prevista',
+   stats:'Tu ciclo medio: {c} días · regla de unos {l} días.',stats0:'Con dos reglas apuntadas calcularé tu ciclo (ahora uso 28 días).',
+   clear_q:'¿Borrar todos los días de regla apuntados?',saved:'Guardado',deleted:'Borrado',on:'Sí',off:'No',bad_time:'La hora de fin va después de la de inicio.',future:'Ese día aún no ha llegado.',imported:'Reglas añadidas: {n}'},
+ en:{h1:'📅 Calendar',add:'＋ Tutorial or appointment',settings:'⚙️ Settings',o_home:'Show my period on the home screen',o_clear:'Delete period data',privacy:'Everything stays on this phone only. Period dates are approximate: don’t rely on them alone to avoid or plan a pregnancy.',
+   ty_tut:'👩‍🏫 Tutorial',ty_cita:'📌 Other',f_what:'What is it?',f_with:'With whom, or which subject?',f_with2:'With whom? (optional)',f_day:'Day',f_from:'From',f_to:'To',f_where:'Where? (optional)',f_rem:'Reminder',save:'Save',del:'🗑️ Delete',
+   new_t:'New appointment',edit_t:'Change appointment',tut:'Tutorial',what_ph:'Doctor, meeting, deadline…',with_ph:'Teacher or subject',where_ph:'Office, Teams…',
+   per_start:'🩸 My period started',per_end:'🩸 My period ended',per_day:'🩸 Period day {n}',per_next:'🩸 Next period: ~{d} · in {n} days (approx.)',per_soon:'🩸 Your period may come today or tomorrow (approx.)',per_none:'🩸 Mark the day your period starts and I’ll tell you when the next one is due.',
+   per_this:'🩸 Period this day',per_yes:'Yes',per_no:'No',per_mark:'🩸 My period starts here',per_unmark:'🩸 Remove this period',
+   no_rem:'No reminder',rem_min:'{n} min before',rem_h:'1 hour before',rem_d:'1 day before',nothing:'Nothing this day.',add_day:'＋ Add on this day',
+   l_class:'class',l_tut:'tutorial',l_cita:'appointment',l_per:'period',l_pred:'expected',
+   stats:'Your average cycle: {c} days · period of about {l} days.',stats0:'Once two periods are marked I’ll work out your cycle (for now I use 28 days).',
+   clear_q:'Delete all marked period days?',saved:'Saved',deleted:'Deleted',on:'On',off:'Off',bad_time:'The end time must be after the start time.',future:'That day hasn’t come yet.',imported:'Periods added: {n}'},
+ fr:{h1:'📅 Calendrier',add:'＋ Tutorat ou rendez-vous',settings:'⚙️ Réglages',o_home:'Voir mes règles sur l’accueil',o_clear:'Effacer les données des règles',privacy:'Tout reste uniquement sur ce téléphone. Les dates des règles sont approximatives : ne t’y fie pas seule pour éviter ou chercher une grossesse.',
+   ty_tut:'👩‍🏫 Tutorat',ty_cita:'📌 Autre',f_what:'C’est quoi ?',f_with:'Avec qui, ou quelle matière ?',f_with2:'Avec qui ? (facultatif)',f_day:'Jour',f_from:'De',f_to:'À',f_where:'Où ? (facultatif)',f_rem:'Rappel',save:'Enregistrer',del:'🗑️ Supprimer',
+   new_t:'Nouveau rendez-vous',edit_t:'Modifier le rendez-vous',tut:'Tutorat',what_ph:'Médecin, réunion, rendu…',with_ph:'Prof ou matière',where_ph:'Bureau, Teams…',
+   per_start:'🩸 Mes règles ont commencé',per_end:'🩸 Mes règles sont finies',per_day:'🩸 Jour {n} des règles',per_next:'🩸 Prochaines règles : ~{d} · dans {n} jours (approx.)',per_soon:'🩸 Tes règles peuvent arriver aujourd’hui ou demain (approx.)',per_none:'🩸 Note le jour où tes règles arrivent et je te dirai quand viendront les prochaines.',
+   per_this:'🩸 Règles ce jour',per_yes:'Oui',per_no:'Non',per_mark:'🩸 Mes règles commencent ici',per_unmark:'🩸 Enlever ces règles',
+   no_rem:'Sans rappel',rem_min:'{n} min avant',rem_h:'1 heure avant',rem_d:'1 jour avant',nothing:'Rien ce jour.',add_day:'＋ Ajouter ce jour',
+   l_class:'cours',l_tut:'tutorat',l_cita:'rendez-vous',l_per:'règles',l_pred:'prévues',
+   stats:'Ton cycle moyen : {c} jours · règles d’environ {l} jours.',stats0:'Avec deux règles notées je calculerai ton cycle (pour l’instant 28 jours).',
+   clear_q:'Effacer tous les jours de règles notés ?',saved:'Enregistré',deleted:'Supprimé',on:'Oui',off:'Non',bad_time:'L’heure de fin doit être après celle du début.',future:'Ce jour n’est pas encore arrivé.',imported:'Règles ajoutées : {n}'}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
+function t(k,v){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(v)Object.keys(v).forEach(x=>{s=s.split('{'+x+'}').join(v[x]);});return s;}
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.getAttribute('data-i18n'));});}
+function esc(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const LOC={es:'es-ES',en:'en-GB',fr:'fr-FR'};
+const C=window.QCAL;
+function cap(x){x=String(x||'');return x.charAt(0).toUpperCase()+x.slice(1);}
+function hm(ms){return new Date(ms).toLocaleTimeString(LOC[crisLang()],{hour:'2-digit',minute:'2-digit'});}
+function toast(x){const el=document.getElementById('toast');el.textContent=x;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1600);}
+function vib(m){try{if(navigator.vibrate&&__cfg().vib!==false&&!__cfg().calm)navigator.vibrate(m);}catch(e){}}
+
+let SEL=C.today(),MONTH=SEL.slice(0,7);
+
+
+/* ── Mes ── */
+function moveMonth(d){const [y,m]=MONTH.split('-').map(Number);const n=new Date(y,m-1+d,1);MONTH=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0');renderGrid();}
+function dayItems(dkey){
+  const s=C.pd(dkey).getTime(),e=s+864e5;
+  return C.agenda(s,e).filter(o=>C.dk(o.st)===dkey);
+}
+function allDay(dkey){
+  if(!window.QCLASES||!C.areaOn('clases')||!QCLASES.hasData())return [];
+  const s=C.pd(dkey).getTime();return QCLASES.decorate(QCLASES.between(s,s+864e5)).filter(o=>o.ad);
+}
+const COLK={clase:'#1a6b64',tut:'#7c3aed',cita:'#c2410c',ad:'#334155'};
+function renderGrid(){
+  const [y,m]=MONTH.split('-').map(Number),first=new Date(y,m-1,1),days=new Date(y,m,0).getDate(),lead=(first.getDay()+6)%7,lg=LOC[crisLang()];
+  document.getElementById('mTitle').textContent=cap(first.toLocaleDateString(lg,{month:'long',year:'numeric'}));
+  const wd=[...Array(7)].map((_,i)=>new Date(2024,0,1+i).toLocaleDateString(lg,{weekday:'narrow'}));
+  // lo del mes de una vez (más rápido que día a día)
+  const ms=first.getTime(),me=new Date(y,m,1).getTime(),ag=C.agenda(ms,me),byDay={};
+  ag.forEach(o=>{(byDay[C.dk(o.st)]=byDay[C.dk(o.st)]||[]).push(o.kind);});
+  if(window.QCLASES&&C.areaOn('clases')&&QCLASES.hasData())QCLASES.between(ms,me).filter(o=>o.ad).forEach(o=>{(byDay[C.dk(o.st)]=byDay[C.dk(o.st)]||[]).push('ad');});
+  const td=C.today();let h=wd.map(x=>`<div class="wd" aria-hidden="true">${x}</div>`).join('');
+  for(let i=0;i<lead;i++)h+='<div class="d out" aria-hidden="true"></div>';
+  for(let d=1;d<=days;d++){
+    const k=MONTH+'-'+String(d).padStart(2,'0'),per=C.inPeriod(k),pred=C.predicted(k),kinds=byDay[k]||[];
+    const uniq=[...new Set(kinds)].slice(0,4);
+    const lab=new Date(y,m-1,d).toLocaleDateString(lg,{weekday:'long',day:'numeric',month:'long'})+(kinds.length?': '+kinds.length:'')+(per?', '+t('l_per'):pred?', '+t('l_per')+' '+t('l_pred'):'');
+    h+=`<button class="d${per?' per':''}${pred?' pred':''}${k===td?' today':''}${k===SEL?' sel':''}" onclick="pick('${k}')" aria-label="${esc(lab)}" aria-pressed="${k===SEL}">${d}<span class="dots">${uniq.map(x=>`<i style="background:${COLK[x]}"></i>`).join('')}</span></button>`;
+  }
+  document.getElementById('grid').innerHTML=h;
+  document.getElementById('legend').innerHTML=[['clase','l_class'],['tut','l_tut'],['cita','l_cita']].map(([k,l])=>`<span><i style="background:${COLK[k]}"></i>${t(l)}</span>`).join('')+`<span><i style="background:#ffe4e6;border:1px solid #fb7185"></i>${t('l_per')}</span><span><i style="border:1.5px dashed #fda4af"></i>${t('l_pred')}</span>`;
+}
+function pick(k){SEL=k;renderGrid();renderDay();}
+function renderDay(){
+  const el=document.getElementById('dayp'),lg=LOC[crisLang()],items=dayItems(SEL),ad=allDay(SEL),per=C.inPeriod(SEL),past=SEL<=C.today();
+  const head=cap(C.pd(SEL).toLocaleDateString(lg,{weekday:'long',day:'numeric',month:'long'}));
+  let h=`<h2>${head}</h2>`;
+  ad.forEach(o=>{h+=`<div class="it"><span class="bar" style="background:${COLK.ad}"></span><span class="tx"><span class="nm">${esc(o.name)}</span></span></div>`;});
+  items.forEach(o=>{
+    const edit=o.kind!=='clase';
+    h+=`<${edit?'button':'div'} class="it"${edit?` onclick="openForm('${o.evId}')"`:''}><span class="bar" style="background:${o.color||COLK[o.kind]}"></span><span class="tm">${hm(o.st)}–${hm(o.en)}</span><span class="tx"><span class="nm">${o.e} ${esc(o.name)}</span>${o.l?`<span class="lc">${esc(o.l)}</span>`:''}</span></${edit?'button':'div'}>`;
+  });
+  if(!items.length&&!ad.length)h+=`<p class="empty">${t('nothing')}</p>`;
+  h+=`<div class="row"><button class="btn sec" onclick="openForm(null,SEL)">${t('add_day')}</button>${per?`<button class="btn red" onclick="perDay(false)">${t('per_unmark')}</button>`:past?`<button class="btn red" onclick="perDay(true)">${t('per_mark')}</button>`:''}</div>`;
+  el.innerHTML=h;
+}
+/* Regla: se marca el día que empieza (los demás se colorean solos) o se quita entera */
+function perDay(on){if(on)C.markStart(SEL);else C.removeAt(SEL);vib(30);render();}
+
+/* ── Añadir / cambiar tutoría o cita ── */
+let EDIT=null,TYPE='tut';
+function setType(ty){
+  TYPE=ty;document.getElementById('tyTut').setAttribute('aria-pressed',String(ty==='tut'));document.getElementById('tyCita').setAttribute('aria-pressed',String(ty==='cita'));
+  document.getElementById('fWhat').hidden=ty==='tut';
+  document.getElementById('fWl').textContent=ty==='tut'?t('f_with'):t('f_with2');
+}
+function whoOptions(){
+  // asignaturas y profes del horario, para no tener que escribirlos
+  const set=new Set();
+  if(window.QCLASES){QCLASES.subjects().forEach(s=>set.add(s.short));const now=Date.now();QCLASES.between(now-120*864e5,now+120*864e5).forEach(o=>{if(o.l)o.l.split('/').forEach(x=>{x=x.trim();if(x&&x.length<40)set.add(x);});});}
+  return [...set].slice(0,40);
+}
+function openForm(id,day){
+  const e=id?C.get(id):null;EDIT=e?e.id:null;
+  document.getElementById('fTitle').textContent=e?t('edit_t'):t('new_t');
+  setType(e?e.type:'tut');
+  document.getElementById('fT').value=e&&e.type==='cita'?e.t:'';document.getElementById('fT').placeholder=t('what_ph');
+  document.getElementById('fW').value=e?e.w||'':'';document.getElementById('fW').placeholder=t('with_ph');
+  document.getElementById('fD').value=e?e.date:(day||C.today());
+  document.getElementById('fA').value=e?e.a:'10:00';document.getElementById('fB').value=e?e.b:'10:30';
+  document.getElementById('fL').value=e?e.l||'':'';document.getElementById('fL').placeholder=t('where_ph');
+  const rem=e&&e.rem!=null?+e.rem:15;
+  document.getElementById('fR').innerHTML=[[0,t('no_rem')],[10,t('rem_min',{n:10})],[15,t('rem_min',{n:15})],[30,t('rem_min',{n:30})],[60,t('rem_h')],[1440,t('rem_d')]].map(([v,l])=>`<option value="${v}"${v===rem?' selected':''}>${l}</option>`).join('');
+  document.getElementById('whoList').innerHTML=whoOptions().map(x=>`<option value="${esc(x)}">`).join('');
+  document.getElementById('fDel').hidden=!e;
+  document.getElementById('ov').classList.add('show');
+  setTimeout(()=>{const f=document.getElementById(TYPE==='tut'?'fW':'fT');if(f)f.focus();},50);
+}
+function closeForm(){document.getElementById('ov').classList.remove('show');EDIT=null;}
+function saveForm(){
+  const v=id=>document.getElementById(id).value.trim();
+  const a=v('fA')||'10:00',b=v('fB')||a,date=v('fD')||C.today();
+  if(b<a){toast(t('bad_time'));return;}
+  const e={type:TYPE,t:TYPE==='tut'?t('tut'):(v('fT')||t('ty_cita').replace(/^\S+\s/,'')),w:v('fW'),l:v('fL'),date,a,b,rem:+document.getElementById('fR').value};
+  if(EDIT)e.id=EDIT;
+  C.save(e);vib(25);closeForm();SEL=date;MONTH=date.slice(0,7);render();toast(t('saved'));
+}
+function delForm(){if(!EDIT)return;C.remove(EDIT);closeForm();render();toast(t('deleted'));}
+
+/* ── Ajustes ── */
+function toggleCfg(){const box=document.getElementById('cfgBox'),b=document.getElementById('cfgBtn'),open=box.hidden;box.hidden=!open;b.setAttribute('aria-expanded',String(open));if(open)renderCfg();}
+function renderCfg(){
+  const s=C.stats();document.getElementById('statsNote').textContent=s.known?t('stats',{c:s.cycle,l:s.len}):t('stats0');
+}
+function clearPer(){if(!confirm(t('clear_q')))return;C.clearPeriods();render();renderCfg();}
+
+function render(){renderGrid();renderDay();}
+/* Atrás del móvil: primero se cierra la hoja */
+window.__crisBack=function(){if(document.getElementById('ov').classList.contains('show')){closeForm();return true;}return false;};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('ov').classList.contains('show'))closeForm();});
+/* Datos traídos con un enlace (#setup=…): se guardan aparte hasta aplicarlos bien */
+(function(){
+  const KEY='cris_cal_setup',m=location.hash.match(/^#setup=(.+)$/);
+  if(m){try{localStorage.setItem(KEY,m[1]);}catch(e){}try{history.replaceState(null,'',location.pathname);}catch(e){}}
+  let p=null;try{p=localStorage.getItem(KEY);}catch(e){}if(!p)return;
+  try{const o=JSON.parse(decodeURIComponent(escape(atob(p.replace(/-/g,'+').replace(/_/g,'/')))));
+    if(typeof C.importPeriods!=='function')throw 0;
+    const n=Array.isArray(o.per)?C.importPeriods(o.per):0;localStorage.removeItem(KEY);
+    if(m)setTimeout(()=>toast(t('imported',{n})),300);}catch(e){}
+})();
+// #nuevo (desde el inicio) abre directamente el formulario
+applyStaticI18n();render();
+if(location.hash==='#nuevo'){try{history.replaceState(null,'',location.pathname);}catch(e){}openForm(null,SEL);}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){SEL=SEL||C.today();render();}});
+</script>
+</body>
+</html>

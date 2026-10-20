@@ -256,14 +256,6 @@ body{
 .tp-cl span{flex:1;min-width:0;font-weight:600;overflow-wrap:anywhere;}
 .tp-cl em{font-style:normal;font-size:.66rem;font-weight:800;border-radius:999px;padding:2px 7px;background:var(--mint-mid);color:var(--teal-dark);white-space:nowrap;}
 .tp-cl em.now{background:var(--teal-dark);color:#fff;}
-.tp-next{display:flex;align-items:stretch;gap:10px;width:100%;min-height:56px;border:2px solid var(--mint-mid);background:#fff;border-radius:14px;padding:9px 10px;margin-bottom:10px;font-family:'Outfit',sans-serif;text-align:left;cursor:pointer;color:var(--teal-dark);}
-.tp-next i{width:6px;border-radius:4px;flex-shrink:0;}
-.tp-next span{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
-.tp-next small{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:#5f6b72;}
-.tp-next b{font-size:.95rem;font-weight:800;overflow-wrap:anywhere;}
-.tp-next em{font-style:normal;font-size:.78rem;color:#5f6b72;}
-.tp-next .tp-next-a{flex:0 0 auto;align-self:center;font-size:1.4rem;font-weight:800;color:var(--teal);}
-.tp-clserr{display:block;width:100%;min-height:44px;border:1.5px dashed #f59e0b;background:#fff8e6;color:#7c4a03;border-radius:12px;padding:8px 12px;margin-bottom:10px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;text-align:left;cursor:pointer;}
 .tp-total{font-size:.8rem;font-weight:700;color:var(--teal-dark);margin:-4px 2px 10px;}
 .tp-run{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--teal);border-radius:14px;padding:4px 4px 4px 6px;margin-bottom:10px;}
 .tp-run-open{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:none;background:none;padding:8px 6px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:left;color:var(--teal-dark);}
@@ -476,9 +468,10 @@ body.mod-open #menuBtn{display:none;}
 /* modo «menos texto» */
 .simple .hero-sub,.simple .tp-s,.simple .tp-hint,.simple .ao-desc{display:none}
 </style>
-<script src="shared/alergias.js?v=111"></script>
-<script src="shared/dia.js?v=111"></script>
-<script src="shared/clases.js?v=111"></script>
+<script src="shared/alergias.js?v=112"></script>
+<script src="shared/dia.js?v=112"></script>
+<script src="shared/clases.js?v=112"></script>
+<script src="shared/cal.js?v=112"></script>
 </head>
 <body>
 
@@ -616,7 +609,7 @@ const I18N={
   greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
   mod_trabajo_t:'Trabajo', mod_trabajo_s:'Herramientas anti-bloqueo',
-  mod_clases_t:'Clases', mod_clases_s:'Tu horario y tus asignaturas', cls_now:'AHORA', cls_in:'en {n}', cls_rem:'🎓 En {n} min: {s}', cls_see:'Ver', cls_ready:'Tu horario ya está puesto.', cls_setup:'🎓 Poner mi horario ahora', cls_next:'Próxima clase', cls_today:'hoy', cls_tomorrow:'mañana', cls_err:'No he podido traer tus clases · Ver',
+  mod_clases_t:'Clases', mod_clases_s:'Tu horario y tus asignaturas', mod_calendario_t:'Calendario', mod_calendario_s:'Regla, tutorías y citas', nx_clase:'Próxima clase', nx_tut:'Próxima tutoría', nx_cita:'Próxima cita', per_day:'🩸 Día {n} de la regla', per_soon0:'🩸 La regla puede venir hoy', per_soon1:'🩸 La regla puede venir mañana', per_soonN:'🩸 La regla puede venir en {n} días', ag_rem_min:'{e} En {n} min: {s}', ag_rem_day:'{e} Mañana a las {h}: {s}', cls_now:'AHORA', cls_in:'en {n}', cls_rem:'🎓 En {n} min: {s}', cls_see:'Ver', cls_ready:'Tu horario ya está puesto.', cls_setup:'🎓 Poner mi horario ahora', cls_next:'Próxima clase', cls_today:'hoy', cls_tomorrow:'mañana', cls_err:'No he podido traer tus clases · Ver',
   mod_ejercicios_t:'Ejercicios', mod_ejercicios_s:'Pilates y calistenia: copia a la figura',
   mod_comida_t:'Comer Rico', mod_comida_s:'Menú semanal y compra',
   mod_limpieza_t:'Limpieza', mod_limpieza_s:'Una zona al día · 15 min',
@@ -633,7 +626,7 @@ const I18N={
   notif_finde:'finde tranquilo',
   notifbtn_on:'🔔 Recordatorios activados — toca para apagar', notifbtn_off:'🔕 Activar recordatorios',
   calm_on:'🕯️ Modo calma activo — toca para salir', calm_off:'🕯️ Reducir estímulos',
-  day_trabajo:'Trabajo', day_pilates:'Ejercicio', day_comida:'Comida', day_limpieza:'Limpieza',
+  day_trabajo:'Trabajo', day_clases:'Clases', r_clases_s:'Tu horario', r_clases_none:'Hoy no tienes clase', day_pilates:'Ejercicio', day_comida:'Comida', day_limpieza:'Limpieza',
   day_intereses:'Aprende algo', day_noche:'Rutina nocturna', day_calma:'Momento de calma', day_juego:'Un rato de juego',
   today_eco:'🪫 Hoy, en modo eco', today_prefix:'✨ Hoy, ',
   eco_on_btn:'💪 Volver a normal', eco_off_btn:'🪫 Modo eco',
@@ -677,7 +670,7 @@ const I18N={
   greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
   mod_trabajo_t:'Work', mod_trabajo_s:'Anti-block tools',
-  mod_clases_t:'Classes', mod_clases_s:'Your timetable and subjects', cls_now:'NOW', cls_in:'in {n}', cls_rem:'🎓 In {n} min: {s}', cls_see:'See', cls_ready:'Your timetable is already set.', cls_setup:'🎓 Set my timetable now', cls_next:'Next class', cls_today:'today', cls_tomorrow:'tomorrow', cls_err:'I couldn’t load your classes · See',
+  mod_clases_t:'Classes', mod_clases_s:'Your timetable and subjects', mod_calendario_t:'Calendar', mod_calendario_s:'Period, tutorials and appointments', nx_clase:'Next class', nx_tut:'Next tutorial', nx_cita:'Next appointment', per_day:'🩸 Period day {n}', per_soon0:'🩸 Your period may come today', per_soon1:'🩸 Your period may come tomorrow', per_soonN:'🩸 Your period may come in {n} days', ag_rem_min:'{e} In {n} min: {s}', ag_rem_day:'{e} Tomorrow at {h}: {s}', cls_now:'NOW', cls_in:'in {n}', cls_rem:'🎓 In {n} min: {s}', cls_see:'See', cls_ready:'Your timetable is already set.', cls_setup:'🎓 Set my timetable now', cls_next:'Next class', cls_today:'today', cls_tomorrow:'tomorrow', cls_err:'I couldn’t load your classes · See',
   mod_ejercicios_t:'Exercise', mod_ejercicios_s:'Pilates and calisthenics: copy the figure',
   mod_comida_t:'Eat Well', mod_comida_s:'Weekly menu & shopping',
   mod_limpieza_t:'Cleaning', mod_limpieza_s:'One area a day · 15 min',
@@ -694,7 +687,7 @@ const I18N={
   notif_finde:'a calm weekend',
   notifbtn_on:'🔔 Reminders on — tap to turn off', notifbtn_off:'🔕 Turn on reminders',
   calm_on:'🕯️ Calm mode on — tap to exit', calm_off:'🕯️ Reduce stimulation',
-  day_trabajo:'Work', day_pilates:'Exercise', day_comida:'Food', day_limpieza:'Cleaning',
+  day_trabajo:'Work', day_clases:'Classes', r_clases_s:'Your timetable', r_clases_none:'No classes today', day_pilates:'Exercise', day_comida:'Food', day_limpieza:'Cleaning',
   day_intereses:'Learn something', day_noche:'Night routine', day_calma:'A calm moment', day_juego:'A bit of play',
   today_eco:'🪫 Today, eco mode', today_prefix:'✨ Today, ',
   eco_on_btn:'💪 Back to normal', eco_off_btn:'🪫 Eco mode',
@@ -738,7 +731,7 @@ const I18N={
   greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
   mod_trabajo_t:'Travail', mod_trabajo_s:'Outils anti-blocage',
-  mod_clases_t:'Cours', mod_clases_s:'Ton emploi du temps et tes matières', cls_now:'MAINTENANT', cls_in:'dans {n}', cls_rem:'🎓 Dans {n} min : {s}', cls_see:'Voir', cls_ready:'Ton emploi du temps est déjà là.', cls_setup:'🎓 Mettre mon emploi du temps', cls_next:'Prochain cours', cls_today:'aujourd’hui', cls_tomorrow:'demain', cls_err:'Je n’ai pas pu charger tes cours · Voir',
+  mod_clases_t:'Cours', mod_clases_s:'Ton emploi du temps et tes matières', mod_calendario_t:'Calendrier', mod_calendario_s:'Règles, tutorats et rendez-vous', nx_clase:'Prochain cours', nx_tut:'Prochain tutorat', nx_cita:'Prochain rendez-vous', per_day:'🩸 Jour {n} des règles', per_soon0:'🩸 Tes règles peuvent arriver aujourd’hui', per_soon1:'🩸 Tes règles peuvent arriver demain', per_soonN:'🩸 Tes règles peuvent arriver dans {n} jours', ag_rem_min:'{e} Dans {n} min : {s}', ag_rem_day:'{e} Demain à {h} : {s}', cls_now:'MAINTENANT', cls_in:'dans {n}', cls_rem:'🎓 Dans {n} min : {s}', cls_see:'Voir', cls_ready:'Ton emploi du temps est déjà là.', cls_setup:'🎓 Mettre mon emploi du temps', cls_next:'Prochain cours', cls_today:'aujourd’hui', cls_tomorrow:'demain', cls_err:'Je n’ai pas pu charger tes cours · Voir',
   mod_ejercicios_t:'Exercices', mod_ejercicios_s:'Pilates et callisthénie : copie la figure',
   mod_comida_t:'Bien Manger', mod_comida_s:'Menu de la semaine et courses',
   mod_limpieza_t:'Ménage', mod_limpieza_s:'Une zone par jour · 15 min',
@@ -755,7 +748,7 @@ const I18N={
   notif_finde:'un week-end tranquille',
   notifbtn_on:'🔔 Rappels activés — touche pour couper', notifbtn_off:'🔕 Activer les rappels',
   calm_on:'🕯️ Mode calme actif — touche pour sortir', calm_off:'🕯️ Réduire les stimuli',
-  day_trabajo:'Travail', day_pilates:'Exercice', day_comida:'Repas', day_limpieza:'Ménage',
+  day_trabajo:'Travail', day_clases:'Cours', r_clases_s:'Ton emploi du temps', r_clases_none:'Pas de cours aujourd’hui', day_pilates:'Exercice', day_comida:'Repas', day_limpieza:'Ménage',
   day_intereses:'Apprendre', day_noche:'Routine du soir', day_calma:'Un moment de calme', day_juego:'Un peu de jeu',
   today_eco:'🪫 Aujourd’hui, mode éco', today_prefix:'✨ ',
   eco_on_btn:'💪 Revenir à la normale', eco_off_btn:'🪫 Mode éco',
@@ -829,6 +822,7 @@ function setLang(l){
 const modules = [
   { id:'trabajo',    icon:'💼', file:'modules/rutina-diaria.html' },
   { id:'clases',     icon:'🎓', file:'modules/clases.html' },
+  { id:'calendario', icon:'📅', file:'modules/calendario.html' },
   { id:'ejercicios', icon:'🧘', file:'modules/ejercicios-hiit.html' },
   { id:'comida',     icon:'🍲', file:'modules/comida.html' },
   { id:'limpieza',   icon:'🧹', file:'modules/limpieza.html' },
@@ -846,6 +840,7 @@ const modules = [
 const AREAS=[
   {id:'trabajo',    e:'💼', cat:'trabajo',    need:{es:'¿Te cuesta ponerte con las tareas?',en:'Hard to get started on tasks?',fr:'Du mal à te mettre au travail ?'}},
   {id:'clases',     e:'🎓', cat:'clase',      need:{es:'¿Vas a clase o estudias?',en:'Do you go to classes or study?',fr:'Tu vas en cours ou tu étudies ?'}},
+  {id:'calendario', e:'📅', cat:'cita',       need:{es:'¿Se te olvidan las citas o la regla te pilla por sorpresa?',en:'Do appointments slip your mind, or does your period catch you off guard?',fr:'Tu oublies tes rendez-vous ou tes règles te prennent par surprise ?'}},
   {id:'ejercicios', e:'🧘', cat:'pilates',    need:{es:'¿Te cuesta moverte?',en:'Hard to get moving?',fr:'Du mal à bouger ?'}},
   {id:'comida',     e:'🍽️', cat:'comida',     need:{es:'¿Comer se te hace un mundo?',en:'Does eating feel overwhelming?',fr:'Manger, c’est toute une histoire ?'}},
   {id:'limpieza',   e:'🧹', cat:'limpieza',   need:{es:'¿Te cuesta limpiar?',en:'Hard to clean the house?',fr:'Du mal à faire le ménage ?'}},
@@ -856,7 +851,7 @@ const AREAS=[
 ];
 function needL(a){return (a.need&&(a.need[crisLang()]||a.need.es))||t('mod_'+a.id+'_t');}
 // id del panel «Hoy» (DAY_CATALOG) → id de área
-const CAT2AREA={trabajo:'trabajo',clase:'clases',pilates:'ejercicios',comida:'comida',limpieza:'limpieza',intereses:'intereses',noche:'noche',calma:'botiquin',juego:'juego'};
+const CAT2AREA={trabajo:'trabajo',clases:'clases',clase:'clases',cita:'calendario',pilates:'ejercicios',comida:'comida',limpieza:'limpieza',intereses:'intereses',noche:'noche',calma:'botiquin',juego:'juego'};
 function getAreas(){try{const v=JSON.parse(localStorage.getItem('cris_areas_v1'));return Array.isArray(v)?v:null;}catch(e){return null;}}
 function areasChosen(){return getAreas()!==null;}
 function areaOn(id){const a=getAreas();return a?a.indexOf(id)>=0:true;} // sin elegir → todo visible
@@ -926,7 +921,8 @@ function aL(k){return (AREAS_I18N[crisLang()]||AREAS_I18N.es)[k];}
    recomendado: si vale, basta con «Siguiente». Se vuelve a abrir desde el menú
    (🧭) con lo que ya elegiste. Pasos: 0 = bienvenida, 1..8 = módulos, 9 = resumen. */
 const TOUR_DESC={
- clases:{es:'Tu horario dentro de Quico: la próxima clase en el inicio, las de hoy en tu lista y un aviso antes de cada una. Pega el enlace de tu calendario o importa tu horario en 🎓 Clases.',en:'Your timetable inside Quico: your next class on the home screen, today’s classes in your list and a reminder before each one. Paste your calendar link or import your timetable in 🎓 Classes.',fr:'Ton emploi du temps dans Quico : le prochain cours sur l’accueil, ceux du jour dans ta liste et un rappel avant chacun. Colle le lien de ton calendrier ou importe ton emploi du temps dans 🎓 Cours.'},
+ clases:{es:'Tu horario dentro de Quico, con un aviso antes de cada clase. Lo añades a tu día cuando quieras con «＋ De Quico», como Trabajo.',en:'Your timetable inside Quico, with a reminder before each class. Add it to your day whenever you like with “＋ From Quico”, like Work.',fr:'Ton emploi du temps dans Quico, avec un rappel avant chaque cours. Ajoute-le à ta journée quand tu veux avec « ＋ De Quico », comme Travail.'},
+ calendario:{es:'Tu regla en colores (y la próxima, aproximada) y tus tutorías y citas, con aviso antes. Las de hoy las añades a tu día con «＋ De Quico». Todo se queda en tu móvil.',en:'Your period in colour (and the next one, roughly) and your tutorials and appointments, with a reminder. Add today’s to your day with “＋ From Quico”. Everything stays on your phone.',fr:'Tes règles en couleur (et les prochaines, à peu près) et tes tutorats et rendez-vous, avec un rappel. Ajoute ceux du jour avec « ＋ De Quico ». Tout reste sur ton téléphone.'},
  trabajo:{es:'Para cuando no arrancas: temporizador para concentrarte, trucos para salir del bloqueo y compañía mientras trabajas.',en:'For when you can’t get going: a focus timer, tricks to get unstuck and company while you work.',fr:'Pour quand tu n’arrives pas à démarrer : minuteur de concentration, astuces pour sortir du blocage et compagnie pendant que tu travailles.'},
  ejercicios:{es:'20 minutos al día, sin material, en lo que ocupa una esterilla. Solo copias a la figura: ella lleva el ritmo. El fin de semana, estiramientos.',en:'20 minutes a day, no equipment, in the space of a mat. You just copy the figure: it keeps the pace. Stretching at weekends.',fr:'20 minutes par jour, sans matériel, sur la place d’un tapis. Tu copies juste la figurine : elle donne le rythme. Étirements le week-end.'},
  comida:{es:'Menú de temporada para la semana, recetas de 20 minutos o menos, lista de la compra y recetas con lo que tengas en casa.',en:'A seasonal menu for the week, recipes of 20 minutes or less, a shopping list and recipes with what you have at home.',fr:'Un menu de saison pour la semaine, des recettes de 20 minutes max, la liste de courses et des recettes avec ce que tu as chez toi.'},
@@ -1269,6 +1265,10 @@ function checkNotif(){
 setInterval(checkNotif,30000);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();clsSync();} });
 setTimeout(clsSync,1500);
+/* Enlace con datos para «Calendario» (p. ej. reglas pasadas de otra app): …/#calendario=<datos> */
+(function(){const m=location.hash.match(/^#calendario=(.+)$/);if(!m)return;
+  try{history.replaceState(history.state,'',location.pathname+location.search);}catch(e){}
+  setTimeout(()=>openModule('modules/calendario.html#setup='+m[1]),400);})();
 /* Enlace de configuración de clases de un toque: quico…/#clases=<datos> → abre «Clases» ya configurado */
 (function(){const m=location.hash.match(/^#clases=(.+)$/);if(!m)return;
   try{history.replaceState(history.state,'',location.pathname+location.search);}catch(e){}
@@ -1287,6 +1287,7 @@ const ZONES={1:['🍳','Cocina','cocina'],2:['🛁','Baño','bano'],3:['🛋️'
 // El nombre visible se saca de t('day_<id>') en cada render (según idioma)
 const DAY_CATALOG=[
   {id:'trabajo',  e:'💼', def:true},
+  {id:'clases',   e:'🎓', def:true},
   {id:'pilates',  e:'🧘', def:true},
   {id:'comida',   e:'🍽️', def:true},
   {id:'limpieza', e:'🧹', def:true},
@@ -1302,7 +1303,14 @@ function quicoChips(){
   const list=QDIA.items(),has=id=>list.some(i=>i.mod===id);
   // En modo eco, solo lo mínimo; en un día normal, las áreas activas
   const src=isEco()?ECO_CHIPS:DAY_CATALOG.filter(m=>{const a=CAT2AREA[m.id];return !a||areaOn(a);}).map(m=>[m.id,m.e,'day_'+m.id]);
-  return src.filter(c=>!has(c[0]));
+  // + las tutorías y citas de hoy que aún no están en el día
+  const cit=[];
+  if(window.QCAL&&areaOn('calendario')){
+    const s0=new Date();s0.setHours(0,0,0,0);const lg=crisLang()==='en'?'en-GB':crisLang(),inDay=new Set(list.filter(i=>i.cls).map(i=>i.cls.occ));
+    QCAL.between(s0.getTime(),s0.getTime()+864e5).filter(o=>QCAL.dk(o.st)===QCAL.dk(s0)&&o.en>Date.now()&&!inDay.has(o.id)).forEach(o=>{
+      cit.push(['cita:'+o.id,o.e,null,new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'})+' '+o.name,o]);});
+  }
+  return [...src.filter(c=>!has(c[0])),...cit];
 }
 function dayAdd(){
   const el=document.getElementById('tp-in');if(!el)return;
@@ -1316,7 +1324,9 @@ function dayAddMod(id){
   const c=quicoChips().find(x=>x[0]===id);if(!c)return;
   const all=[...document.querySelectorAll('#tp-chips .tp-chip')],k=all.findIndex(b=>b.getAttribute('data-mod')===id);
   const nid=(all[k+1]||all[k-1]||{}).getAttribute?(all[k+1]||all[k-1]).getAttribute('data-mod'):null;
-  QDIA.add(t(c[2]),c[0],c[1]);if(hapticOK())navigator.vibrate(25);
+  if(c[4]){const o=c[4];QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.e},'cita');}
+  else QDIA.add(t(c[2]),c[0],c[1]);
+  if(hapticOK())navigator.vibrate(25);
   showQuicoChips=true; // siguen abiertos para añadir varias seguidas
   renderToday();
   const f=(nid&&document.querySelector('#tp-chips [data-mod="'+nid+'"]'))||document.querySelector('#today-panel .tp-quico')||document.getElementById('tp-in');
@@ -1331,31 +1341,21 @@ function dayUndoDrop(){QDIA.undoDrop();dropUndoUntil=0;renderToday();}
 function toggleQuicoChips(){showQuicoChips=!showQuicoChips;renderToday();}
 
 /* ── CLASES (calendario publicado, ver shared/clases.js) ── */
-/* Próxima clase en la pantalla principal (también si es otro día). La que está en marcha ya
-   sale en la lista como «AHORA»; aquí va la siguiente. Tocar → «Clases». */
-function clsNext(){
-  if(!window.QCLASES||!areaOn('clases')||!QCLASES.hasData())return '';
-  const n=QCLASES.now().next;if(!n)return '';
-  const lg=crisLang()==='en'?'en-GB':crisLang(),hm=new Date(n.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'});
-  const d0=QCLASES.startOfDay(),k=Math.round((QCLASES.startOfDay(n.st)-d0)/864e5);
-  const when=k===0?t('cls_today'):k===1?t('cls_tomorrow'):new Date(n.st).toLocaleDateString(lg,{weekday:'long',day:'numeric'});
-  const mins=Math.round((n.st-Date.now())/6e4),soon=k===0&&mins<=120?' · '+t('cls_in',{n:mins<60?mins+' min':Math.floor(mins/60)+' h'+(mins%60?' '+mins%60:'')}):'';
-  return `<button class="tp-next" onclick="openModule('modules/clases.html')"><i style="background:${n.color}"></i><span><small>🎓 ${t('cls_next')} · ${when} ${hm}${soon}</small><b>${escH(n.name)}</b>${n.l?`<em>${escH(n.l)}</em>`:''}</span><span class="tp-next-a" aria-hidden="true">›</span></button>`;
-}
 /* Aviso antes de cada clase (una sola vez por clase) */
 let _toastAct=null;
 function checkClassRemind(){
-  if(!window.QCLASES||!QCLASES.hasData())return;
-  const c=QCLASES.cfg();if(!c.remind)return;
-  const n=QCLASES.now().next;if(!n)return;
-  const ms=n.st-Date.now();if(ms<=0||ms>c.remind*60000)return;
-  if(localStorage.getItem('cris_clases_rem')===n.id)return;
-  try{localStorage.setItem('cris_clases_rem',n.id);}catch(e){}
-  const txt=t('cls_rem',{n:Math.max(1,Math.round(ms/6e4)),s:n.name})+(n.l?' · '+n.l:'');
+  if(!window.QCAL)return;
+  const now=Date.now(),list=QCAL.agenda(now,now+26*3600e3).filter(o=>o.st>now&&o.rem>0&&o.st-now<=o.rem*60000);
+  if(!list.length)return;
+  let done=[];try{done=JSON.parse(localStorage.getItem('cris_ag_rem_v1')||'[]');}catch(e){}
+  const n=list.find(o=>done.indexOf(o.id+'@'+o.rem)<0);if(!n)return;
+  done.push(n.id+'@'+n.rem);try{localStorage.setItem('cris_ag_rem_v1',JSON.stringify(done.slice(-40)));}catch(e){}
+  const ms=n.st-now,lg=crisLang()==='en'?'en-GB':crisLang(),emo=n.kind==='clase'?'🎓':(n.e||'📌');
+  const txt=(ms>3*3600e3?t('ag_rem_day',{e:emo,h:new Date(n.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'}),s:n.name}):t('ag_rem_min',{e:emo,n:Math.max(1,Math.round(ms/6e4)),s:n.name}))+(n.l?' · '+n.l:'');
   if(hapticOK())navigator.vibrate([60,60,60]);
   if(document.hidden){const nc=getNotifCfg();if(nc.on&&'Notification' in window&&Notification.permission==='granted')fireNotif(txt,'');return;}
   document.getElementById('tmToastT').textContent=txt;
-  _toastAct=()=>openModule('modules/clases.html');
+  _toastAct=()=>openModule(n.kind==='clase'?'modules/clases.html':'modules/calendario.html');
   document.getElementById('tmToast').classList.add('show');
   setTimeout(()=>document.getElementById('tmToast').classList.remove('show'),20000);
   if(!document.body.classList.contains('mod-open'))renderToday();
@@ -1391,7 +1391,7 @@ function homeTick(){
   checkClassRemind();
   // «en 25 min» de las clases: se repinta una vez por minuto
   const mn=Math.floor(Date.now()/6e4);
-  if(mn!==_clsMin){_clsMin=mn;if(!document.hidden&&!document.body.classList.contains('mod-open')&&window.QCLASES&&QCLASES.hasData())renderToday();}
+  if(mn!==_clsMin){_clsMin=mn;if(!document.hidden&&!document.body.classList.contains('mod-open')&&((window.QCLASES&&QCLASES.hasData())||(window.QCAL&&QCAL.events().length)))renderToday();}
   if(todayLocal()!==_shownDay){renderToday();return;}
   const tm=QDIA.timer(),modOpen=document.body.classList.contains('mod-open');
   if(!tm){if(!modOpen&&document.querySelector('#today-panel .tp-run'))renderToday();return;}
@@ -1464,6 +1464,12 @@ function modBuild(){
   const ek=n=>'cris_eco'+n+'_v1_'+tl;
   return {
     trabajo:()=>{const k='cris_trabajo_v1_'+tl;return {e:'💼',t:t('r_trabajo_t'),s:t('r_trabajo_s'),f:'modules/rutina-diaria.html',done:markDone(k)};},
+    clases:()=>{const k='cris_clasesdia_v1_'+tl;let s=t('r_clases_s');
+      // debajo, las clases de hoy (hora y asignatura)
+      if(window.QCLASES&&QCLASES.hasData()){const l=QCLASES.day(0).filter(o=>!o.ad&&!o.hidden);
+        const lg=crisLang()==='en'?'en-GB':crisLang(),hm=ms=>new Date(ms).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'});
+        s=l.length?l.slice(0,2).map(o=>hm(o.st)+' '+o.name).join(' · ')+(l.length>2?' …':''):t('r_clases_none');}
+      return {e:'🎓',t:t('day_clases'),s:escH(s),f:'modules/clases.html',done:markDone(k)};},
     pilates:()=>{
       const k='cris_hiit_v1_'+tl;
       // El módulo de ejercicio guarda qué toca (pilates: día del reto; calistenia: programa semanal)
@@ -1511,10 +1517,12 @@ function renderToday(){
   const eco=isEco();
   const build=modBuild();
   const tm=QDIA.timer();
-  if(window.QCLASES&&areaOn('clases'))QCLASES.syncDay(); // las clases de hoy entran solas en la lista
+  // El día empieza limpio: clases y citas solo entran si las añades tú (＋ De Quico).
+  // Una sola vez: fuera las que versiones anteriores metían solas.
+  if(localStorage.getItem('cris_dia_noauto')!=='1'){QDIA.syncClasses([],'clase');QDIA.syncClasses([],'cita');try{localStorage.setItem('cris_dia_noauto','1');}catch(e){}}
   const hmc=ms=>new Date(ms).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'});
   const rows=QDIA.view().map(it=>{
-    if(it.cls)return {id:it.id,e:'🎓',t:escH(it.t)+'<span class="tp-min">'+hmc(it.cls.st)+'–'+hmc(it.cls.en)+'</span>',name:it.t,s:escH(it.cls.l||''),f:'modules/clases.html',done:QDIA.isDone(it),cls:it.cls};
+    if(it.cls)return {id:it.id,e:it.e||'🎓',t:escH(it.t)+'<span class="tp-min">'+hmc(it.cls.st)+'–'+hmc(it.cls.en)+'</span>',name:it.t,s:escH(it.cls.l||''),f:it.mod==='cita'?'modules/calendario.html':'modules/clases.html',done:QDIA.isDone(it),cls:it.cls};
     if(it.mod&&build[it.mod]){const b=build[it.mod]();return {...b,id:it.id,done:b.done||QDIA.isDone(it),lock:b.lock||QDIA.locked(it)};}
     const done=QDIA.isDone(it);
     // el tiempo va junto al nombre (se ve también en modo sencillo)
@@ -1565,7 +1573,7 @@ function renderToday(){
     </div>
     ${eco?'<div class="tp-eco-msg">'+t('eco_msg')+'</div>':''}
     ${tot?`<div class="tp-total">${t('tm_total',{x:QDIA.fmtMin(tot),h:QDIA.endAt(tot,crisLang())})}</div>`:''}
-    ${run}${clsNext()}${window.QCLASES&&QCLASES.cfg().url&&!QCLASES.hasData()&&QCLASES.lastError()?`<button class="tp-clserr" onclick="openModule('modules/clases.html')">🎓 ${t('cls_err')}</button>`:''}${pendBar}
+    ${run}${pendBar}
     ${rows.length?[...rows].sort((a,b)=>(a.done?1:0)-(b.done?1:0)).map(r=>{const plain=r.name||String(r.t).replace(/<[^>]*>/g,'');return `
       <div class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-id="${r.id}"${r.lock?' data-lock="1"':''}>
         <button class="tp-open" data-file="${r.f}">
@@ -1576,7 +1584,7 @@ function renderToday(){
       </div>`;}).join(''):`<div class="tp-q">${t('today_q')}</div>`}
     <div class="tp-add"><textarea id="tp-in" rows="1" maxlength="4000" enterkeyhint="done" placeholder="${t('add_ph')}" aria-label="${t('add_ph')}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();dayAdd();}" oninput="autoGrow(this)"></textarea><button onmousedown="event.preventDefault()" onclick="dayAdd()" aria-label="${t('add_btn')}">+</button></div>
     ${chips.length?`<button class="tp-quico" onclick="toggleQuicoChips()" aria-expanded="${chipsOpen}" aria-controls="tp-chips">${t('from_quico')} ${chipsOpen?'▴':'▾'}</button>
-      <div class="tp-chips" id="tp-chips"${chipsOpen?'':' hidden'}>${chips.map(c=>`<button class="tp-chip" data-mod="${c[0]}" onclick="dayAddMod('${c[0]}')">${c[1]} ${t(c[2])}</button>`).join('')}</div>`:''}
+      <div class="tp-chips" id="tp-chips"${chipsOpen?'':' hidden'}>${chips.map(c=>`<button class="tp-chip" data-mod="${escH(c[0])}" onclick="dayAddMod('${escH(c[0])}')">${c[1]} ${c[3]?escH(c[3]):t(c[2])}</button>`).join('')}</div>`:''}
     ${rows.length?`<button class="tp-edit" onclick="openDayEdit()">${t('edit_btn')}</button><div class="tp-hint">${t('hint')}</div>`:''}`;
   const ni=document.getElementById('tp-in');if(ni&&draft){ni.value=draft;autoGrow(ni);}
   focusBack(el,fk);
@@ -1638,7 +1646,7 @@ function toggleItem(id){
 (function pruneOldMarks(){
   try{
     const min=dayKey(-14);
-    const re=/^cris_(trabajo|hiit|comida|limpieza|noche|energia|intereses|calma|juego|eco[1-4])_v1_(\d{4}-\d{2}-\d{2})$/;
+    const re=/^cris_(trabajo|clasesdia|hiit|comida|limpieza|noche|energia|intereses|calma|juego|eco[1-4])_v1_(\d{4}-\d{2}-\d{2})$/;
     for(let i=localStorage.length-1;i>=0;i--){
       const k=localStorage.key(i);
       const m=k&&k.match(re);
