@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Quico - Clases</title>
+<style>
+  :root{--turq:#26a69a;--turq-d:#1a6b64;--lav:#e8e6fb;--lav-s:#f3f1ff;--bg:#f0f9ff;--text:#2d3748;--soft:#5f6b72;}
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Outfit','Segoe UI',system-ui,sans-serif;}
+  body{background:linear-gradient(135deg,var(--bg) 0%,var(--lav-s) 100%);min-height:100vh;padding:16px 16px 100px;color:var(--text);-webkit-tap-highlight-color:transparent;}
+  .card{max-width:480px;margin:0 auto;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(38,166,154,.12);padding:20px;}
+  .header{text-align:center;margin-bottom:14px;}
+  .header img{width:92px;height:auto;display:block;margin:0 auto 4px;filter:drop-shadow(0 4px 10px rgba(93,64,55,.18));}
+  .header h1{color:var(--turq-d);font-size:1.4rem;}
+  button{font-family:inherit;cursor:pointer;}
+  /* Ahora / próxima */
+  .now{border-radius:16px;padding:14px;margin-bottom:12px;color:#fff;background:var(--turq-d);}
+  .now.next{background:#fff;color:var(--text);border:2px solid var(--turq);}
+  .now .k{font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.9;}
+  .now .n{font-size:1.1rem;font-weight:800;margin:2px 0;overflow-wrap:anywhere;}
+  .now .m{font-size:.86rem;font-weight:600;opacity:.95;}
+  .now.next .k{color:var(--turq-d);}
+  .tabs{display:flex;gap:6px;background:var(--lav-s);border-radius:14px;padding:4px;margin-bottom:10px;}
+  .tabs button{flex:1;min-height:44px;border:none;border-radius:10px;background:none;font-weight:700;font-size:.92rem;color:var(--soft);}
+  .tabs button[aria-selected="true"]{background:#fff;color:var(--turq-d);box-shadow:0 2px 6px rgba(0,0,0,.06);}
+  .dayh{font-size:.8rem;font-weight:800;color:var(--turq-d);text-transform:capitalize;margin:12px 4px 6px;}
+  .cl{display:flex;gap:10px;align-items:stretch;background:#fff;border:2px solid var(--lav);border-radius:14px;padding:10px 12px;margin-bottom:7px;}
+  .cl .bar{width:6px;border-radius:4px;flex-shrink:0;}
+  .cl .tm{font-size:.86rem;font-weight:800;color:var(--text);white-space:nowrap;min-width:92px;font-variant-numeric:tabular-nums;}
+  .cl .tx{flex:1;min-width:0;}
+  .cl .nm{font-size:.92rem;font-weight:700;overflow-wrap:anywhere;}
+  .cl .lc{font-size:.78rem;color:var(--soft);margin-top:1px;overflow-wrap:anywhere;}
+  .cl .nm,.cl .lc,.sub .nm,.sub .nx{display:block;}
+  .cl.past{opacity:.6;}
+  .cl.cur{border-color:var(--turq);}
+  .badge{display:inline-block;font-size:.62rem;font-weight:800;border-radius:999px;padding:2px 7px;margin-left:6px;vertical-align:1px;background:var(--turq-d);color:#fff;}
+  .empty{text-align:center;color:var(--soft);font-weight:600;padding:18px 8px;font-size:.92rem;}
+  .sec{margin-top:14px;}
+  .sec>button.h{width:100%;min-height:48px;display:flex;justify-content:space-between;align-items:center;border:none;background:var(--lav-s);border-radius:14px;padding:10px 14px;font-weight:800;font-size:.98rem;color:var(--turq-d);}
+  .sub{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid #eef0f4;}
+  .sub:last-child{border-bottom:none;}
+  .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+  .sub .tx{flex:1;min-width:0;}
+  .sub .nm{font-size:.9rem;font-weight:700;overflow-wrap:anywhere;}
+  .sub .nx{font-size:.76rem;color:var(--soft);}
+  .sub .add{width:44px;height:44px;border:none;border-radius:12px;background:var(--lav-s);color:var(--turq-d);font-size:1.3rem;font-weight:800;flex-shrink:0;}
+  .addrow{display:flex;gap:6px;padding:0 4px 8px 26px;}
+  .addrow input{flex:1;min-width:0;border:2px solid var(--turq);border-radius:12px;padding:10px;font-size:16px;}
+  .addrow button{min-width:64px;border:none;border-radius:12px;background:var(--turq-d);color:#fff;font-weight:800;}
+  label.l{display:block;font-size:.84rem;font-weight:700;color:var(--text);margin:12px 2px 6px;}
+  .in{width:100%;border:2px solid var(--lav);border-radius:12px;padding:11px 12px;font-size:16px;color:var(--text);background:#fff;}
+  .in:focus{outline:none;border-color:var(--turq);}
+  textarea.in{min-height:120px;resize:vertical;line-height:1.4;}
+  .help{font-size:.78rem;color:var(--soft);margin:6px 2px 0;line-height:1.45;}
+  .row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .btn{flex:1;min-height:46px;border:none;border-radius:12px;background:var(--turq-d);color:#fff;font-weight:800;font-size:.92rem;padding:10px 12px;}
+  .btn.sec{background:#fff;color:var(--turq-d);border:2px solid var(--lav);}
+  .btn.del{background:#fff;color:#b91c1c;border:2px solid #fecaca;flex:0 0 auto;}
+  .msg{font-size:.84rem;font-weight:700;margin-top:10px;padding:10px 12px;border-radius:12px;background:#ecfdf5;color:#065f46;}
+  .msg.err{background:#fef2f2;color:#991b1b;}
+  .sync{font-size:.74rem;color:var(--soft);text-align:center;margin-top:10px;}
+  .simple .help.x{display:none;}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--turq-d);color:#fff;font-weight:700;border-radius:14px;padding:10px 16px;display:none;z-index:50;}
+  .toast.show{display:block;}
+  [hidden]{display:none!important;}
+</style>
+<script>
+function __cfg(){try{return JSON.parse(localStorage.getItem('cris_cfg')||'{}');}catch(e){return{};}}
+if(__cfg().explain!==true)document.documentElement.classList.add('simple');
+if(__cfg().calm)document.documentElement.classList.add('calm');
+</script>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <img src="../quico/quico_happy.png" alt="Quico">
+    <h1 data-i18n="h1">🎓 Clases</h1>
+  </div>
+
+  <!-- Primera vez: pegar el enlace del calendario -->
+  <div id="setup" hidden>
+    <label class="l" for="s-url" data-i18n="url_l">Enlace de tu calendario</label>
+    <input class="in" id="s-url" type="url" inputmode="url" autocomplete="off" placeholder="https://outlook.office365.com/…">
+    <p class="help" data-i18n="url_help">Outlook: Configuración → Calendario → Calendarios compartidos → Publicar → copia el enlace (HTML o ICS). También vale Google o iCloud.</p>
+    <label class="l" for="s-subs" data-i18n="subs_l">Mis asignaturas (una por línea)</label>
+    <textarea class="in" id="s-subs" placeholder="Prácticas cinematográficas&#10;Trabajo fin de máster"></textarea>
+    <div class="row"><button class="btn" onclick="saveSetup()" data-i18n="save">Guardar</button></div>
+    <div id="s-msg"></div>
+  </div>
+
+  <div id="main" hidden>
+    <div id="now"></div>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-hoy" aria-selected="true" onclick="setTab('hoy')" data-i18n="t_today">Hoy</button>
+      <button role="tab" id="tab-sem" aria-selected="false" onclick="setTab('sem')" data-i18n="t_week">Semana</button>
+    </div>
+    <div id="list" role="tabpanel"></div>
+
+    <div class="sec">
+      <button class="h" id="subsBtn" aria-expanded="false" aria-controls="subsBox" onclick="toggleSec('subs')"><span data-i18n="my_subs">📚 Mis asignaturas</span><span aria-hidden="true">▾</span></button>
+      <div id="subsBox" hidden></div>
+    </div>
+    <div class="sec">
+      <button class="h" id="cfgBtn" aria-expanded="false" aria-controls="cfgBox" onclick="toggleSec('cfg')"><span data-i18n="settings">⚙️ Ajustes</span><span aria-hidden="true">▾</span></button>
+      <div id="cfgBox" hidden>
+        <label class="l" for="c-url" data-i18n="url_l">Enlace de tu calendario</label>
+        <input class="in" id="c-url" type="url" inputmode="url" autocomplete="off">
+        <label class="l" for="c-subs" data-i18n="subs_l">Mis asignaturas (una por línea)</label>
+        <textarea class="in" id="c-subs"></textarea>
+        <label class="l" for="c-rem" data-i18n="rem_l">Aviso antes de cada clase</label>
+        <select class="in" id="c-rem"></select>
+        <p class="help x" data-i18n="rem_help">Con la app abierta, o con las notificaciones activadas en el menú.</p>
+        <div class="row">
+          <button class="btn" onclick="saveCfg()" data-i18n="save">Guardar</button>
+          <button class="btn sec" onclick="doRefresh(true)" data-i18n="refresh">↻ Actualizar</button>
+        </div>
+        <div class="row">
+          <button class="btn sec" onclick="document.getElementById('c-file').click()" data-i18n="import">📄 Importar archivo .ics</button>
+          <button class="btn del" onclick="forget()" data-i18n="forget">Quitar</button>
+        </div>
+        <input type="file" id="c-file" accept=".ics,text/calendar" hidden onchange="importFile(this)">
+        <div id="c-msg"></div>
+      </div>
+    </div>
+    <div class="sync" id="sync"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="../shared/dia.js"></script>
+<script src="../shared/clases.js"></script>
+<script>
+const UI={
+ es:{h1:'🎓 Clases',url_l:'Enlace de tu calendario',url_help:'Outlook: Configuración → Calendario → Calendarios compartidos → Publicar → copia el enlace (HTML o ICS). También vale Google o iCloud.',subs_l:'Mis asignaturas (una por línea)',save:'Guardar',t_today:'Hoy',t_week:'Semana',my_subs:'📚 Mis asignaturas',settings:'⚙️ Ajustes',rem_l:'Aviso antes de cada clase',rem_help:'Con la app abierta, o con las notificaciones activadas en el menú.',refresh:'↻ Actualizar',import:'📄 Importar archivo .ics',forget:'Quitar',
+   now:'Ahora',next:'Próxima',until:'hasta las {h}',in_min:'en {n} min',in_h:'en {h}',today:'hoy',tomorrow:'mañana',allday:'Todo el día',no_today:'Hoy no tienes clase 🌿',no_week:'Nada esta semana',
+   no_rem:'Sin aviso',min_before:'{n} min antes',add_ph:'¿Qué tienes que hacer?',add:'Añadir',added:'Añadido a tu día',no_next:'sin clases próximas',next_cl:'Próxima: {d}',
+   loading:'Cargando tu calendario…',ok:'¡Listo! {n} clases en el calendario.',err_nourl:'Pega primero el enlace del calendario.',err_fetch:'No he podido leer el calendario. Revisa que el enlace esté publicado o importa el archivo .ics.',err_offline:'Sin conexión: te enseño lo último que guardé.',err_notics:'Eso no parece un calendario (.ics).',
+   synced:'Actualizado {t}',ago_min:'hace {n} min',ago_h:'hace {n} h',just:'ahora mismo',forget_q:'¿Quitar el calendario y las asignaturas de Quico?',saved:'Guardado',subj_task:'{s}: {t}'},
+ en:{h1:'🎓 Classes',url_l:'Your calendar link',url_help:'Outlook: Settings → Calendar → Shared calendars → Publish → copy the link (HTML or ICS). Google or iCloud work too.',subs_l:'My subjects (one per line)',save:'Save',t_today:'Today',t_week:'Week',my_subs:'📚 My subjects',settings:'⚙️ Settings',rem_l:'Reminder before each class',rem_help:'With the app open, or with notifications turned on in the menu.',refresh:'↻ Refresh',import:'📄 Import .ics file',forget:'Remove',
+   now:'Now',next:'Next',until:'until {h}',in_min:'in {n} min',in_h:'in {h}',today:'today',tomorrow:'tomorrow',allday:'All day',no_today:'No classes today 🌿',no_week:'Nothing this week',
+   no_rem:'No reminder',min_before:'{n} min before',add_ph:'What do you need to do?',add:'Add',added:'Added to your day',no_next:'no upcoming classes',next_cl:'Next: {d}',
+   loading:'Loading your calendar…',ok:'Done! {n} classes in the calendar.',err_nourl:'Paste the calendar link first.',err_fetch:'I couldn’t read the calendar. Check it is published, or import the .ics file.',err_offline:'Offline: showing what I saved last.',err_notics:'That doesn’t look like a calendar (.ics).',
+   synced:'Updated {t}',ago_min:'{n} min ago',ago_h:'{n} h ago',just:'just now',forget_q:'Remove the calendar and subjects from Quico?',saved:'Saved',subj_task:'{s}: {t}'},
+ fr:{h1:'🎓 Cours',url_l:'Lien de ton calendrier',url_help:'Outlook : Paramètres → Calendrier → Calendriers partagés → Publier → copie le lien (HTML ou ICS). Google ou iCloud marchent aussi.',subs_l:'Mes matières (une par ligne)',save:'Enregistrer',t_today:'Aujourd’hui',t_week:'Semaine',my_subs:'📚 Mes matières',settings:'⚙️ Réglages',rem_l:'Rappel avant chaque cours',rem_help:'Avec l’appli ouverte, ou avec les notifications activées dans le menu.',refresh:'↻ Actualiser',import:'📄 Importer un fichier .ics',forget:'Retirer',
+   now:'Maintenant',next:'Prochain',until:'jusqu’à {h}',in_min:'dans {n} min',in_h:'dans {h}',today:'aujourd’hui',tomorrow:'demain',allday:'Toute la journée',no_today:'Pas de cours aujourd’hui 🌿',no_week:'Rien cette semaine',
+   no_rem:'Sans rappel',min_before:'{n} min avant',add_ph:'Qu’as-tu à faire ?',add:'Ajouter',added:'Ajouté à ta journée',no_next:'pas de cours à venir',next_cl:'Prochain : {d}',
+   loading:'Je charge ton calendrier…',ok:'C’est prêt ! {n} cours dans le calendrier.',err_nourl:'Colle d’abord le lien du calendrier.',err_fetch:'Je n’ai pas pu lire le calendrier. Vérifie qu’il est publié, ou importe le fichier .ics.',err_offline:'Hors connexion : je montre ce que j’ai gardé.',err_notics:'Ça ne ressemble pas à un calendrier (.ics).',
+   synced:'Mis à jour {t}',ago_min:'il y a {n} min',ago_h:'il y a {n} h',just:'à l’instant',forget_q:'Retirer le calendrier et les matières de Quico ?',saved:'Enregistré',subj_task:'{s} : {t}'}
+};
+function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
+function t(k,v){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(v)Object.keys(v).forEach(x=>{s=s.split('{'+x+'}').join(v[x]);});return s;}
+function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.getAttribute('data-i18n'));});}
+function esc(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const LOC={es:'es-ES',en:'en-GB',fr:'fr-FR'};
+function hm(ms){return new Date(ms).toLocaleTimeString(LOC[crisLang()],{hour:'2-digit',minute:'2-digit'});}
+function dayName(ms){
+  const d0=QCLASES.startOfDay(),d=QCLASES.startOfDay(ms),k=Math.round((d-d0)/864e5);
+  if(k===0)return t('today');if(k===1)return t('tomorrow');
+  return new Date(ms).toLocaleDateString(LOC[crisLang()],{weekday:'long',day:'numeric',month:'short'});
+}
+function inTime(ms){const m=Math.max(0,Math.round((ms-Date.now())/6e4));if(m<60)return t('in_min',{n:m});const h=Math.floor(m/60),r=m%60;return t('in_h',{h:h+' h'+(r?' '+r+' min':'')});}
+function toast(x){const el=document.getElementById('toast');el.textContent=x;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800);}
+
+let TAB='hoy',OPEN_ADD=null;
+function setTab(x){TAB=x;document.getElementById('tab-hoy').setAttribute('aria-selected',String(x==='hoy'));document.getElementById('tab-sem').setAttribute('aria-selected',String(x==='sem'));renderList();}
+function toggleSec(k){
+  const box=document.getElementById(k+'Box'),b=document.getElementById(k+'Btn'),open=box.hasAttribute('hidden');
+  box.toggleAttribute('hidden',!open);b.setAttribute('aria-expanded',String(open));
+  if(open&&k==='cfg')fillCfg();if(open&&k==='subs')renderSubs();
+}
+function row(o){
+  const t0=Date.now(),cur=!o.ad&&o.st<=t0&&o.en>t0,past=o.en<=t0;
+  return `<div class="cl${cur?' cur':''}${past?' past':''}"><span class="bar" style="background:${o.color}"></span>
+    <span class="tm">${o.ad?t('allday'):hm(o.st)+'–'+hm(o.en)}</span>
+    <span class="tx"><span class="nm">${esc(o.name)}${cur?`<span class="badge">${t('now')}</span>`:''}</span>${o.l?`<span class="lc">${esc(o.l)}</span>`:''}</span></div>`;
+}
+function renderNow(){
+  const el=document.getElementById('now'),n=QCLASES.now();
+  if(n.cur){el.innerHTML=`<div class="now"><div class="k">${t('now')}</div><div class="n">${esc(n.cur.name)}</div><div class="m">${t('until',{h:hm(n.cur.en)})}${n.cur.l?' · '+esc(n.cur.l):''}</div></div>`;return;}
+  if(n.next){const same=QCLASES.startOfDay(n.next.st)===QCLASES.startOfDay();
+    el.innerHTML=`<div class="now next"><div class="k">${t('next')} · ${same?inTime(n.next.st):dayName(n.next.st)}</div><div class="n">${esc(n.next.name)}</div><div class="m">${hm(n.next.st)}–${hm(n.next.en)}${n.next.l?' · '+esc(n.next.l):''}</div></div>`;return;}
+  el.innerHTML='';
+}
+function renderList(){
+  const el=document.getElementById('list');
+  if(TAB==='hoy'){const l=QCLASES.day(0);el.innerHTML=l.length?l.map(row).join(''):`<div class="empty">${t('no_today')}</div>`;return;}
+  const l=QCLASES.week(0,7);if(!l.length){el.innerHTML=`<div class="empty">${t('no_week')}</div>`;return;}
+  let h='',last='';l.forEach(o=>{const k=QCLASES.dayKey(o.st);if(k!==last){h+=`<div class="dayh">${dayName(o.st)}</div>`;last=k;}h+=row(o);});el.innerHTML=h;
+}
+function renderSubs(){
+  const box=document.getElementById('subsBox'),subs=QCLASES.subjects();
+  if(!subs.length){box.innerHTML=`<p class="help" style="padding:8px 4px">${t('subs_l')}: ⚙️</p>`;return;}
+  const up=QCLASES.decorate(QCLASES.between(Date.now(),Date.now()+60*864e5));
+  box.innerHTML=subs.map(s=>{const nx=up.find(o=>o.sub&&o.sub.i===s.i);
+    return `<div class="sub"><span class="dot" style="background:${s.color}"></span><span class="tx"><span class="nm">${esc(s.name)}</span><span class="nx">${nx?t('next_cl',{d:dayName(nx.st)+(nx.ad?'':' · '+hm(nx.st))}):t('no_next')}</span></span>
+      <button class="add" onclick="openAdd(${s.i})" aria-label="${esc(t('add'))}: ${esc(s.short)}" aria-expanded="${OPEN_ADD===s.i}">＋</button></div>
+      ${OPEN_ADD===s.i?`<div class="addrow"><input id="addIn" placeholder="${esc(t('add_ph'))}" aria-label="${esc(t('add_ph'))}" onkeydown="if(event.key==='Enter'){event.preventDefault();addTask(${s.i});}"><button onclick="addTask(${s.i})">${t('add')}</button></div>`:''}`;}).join('');
+  const f=document.getElementById('addIn');if(f)f.focus();
+}
+function openAdd(i){OPEN_ADD=OPEN_ADD===i?null:i;renderSubs();}
+/* Tarea de una asignatura → a «Mi día» (la misma lista que el inicio y Trabajo) */
+function addTask(i){
+  const el=document.getElementById('addIn'),v=(el&&el.value||'').trim(),s=QCLASES.subjects().find(x=>x.i===i);if(!v||!s||!window.QDIA)return;
+  QDIA.add(t('subj_task',{s:s.short,t:v}));OPEN_ADD=null;renderSubs();toast(t('added'));
+  try{if(navigator.vibrate&&__cfg().vib!==false&&!__cfg().calm)navigator.vibrate(25);}catch(e){}
+}
+function renderSync(){
+  const at=QCLASES.lastSync(),el=document.getElementById('sync');if(!at){el.textContent='';return;}
+  const m=Math.round((Date.now()-at)/6e4);el.textContent=t('synced',{t:m<1?t('just'):m<60?t('ago_min',{n:m}):t('ago_h',{n:Math.round(m/60)})});
+}
+function render(){
+  const ok=QCLASES.configured();
+  document.getElementById('setup').hidden=ok;document.getElementById('main').hidden=!ok;
+  if(!ok)return;
+  renderNow();renderList();renderSync();
+  if(!document.getElementById('subsBox').hidden&&OPEN_ADD===null)renderSubs(); // sin borrar lo que se está escribiendo
+}
+function msg(id,text,err){document.getElementById(id).innerHTML=text?`<div class="msg${err?' err':''}" role="status">${esc(text)}</div>`:'';}
+function result(id,r){
+  if(r.ok){msg(id,r.cached?'':t('ok',{n:r.n}));}
+  else msg(id,t('err_'+(r.err||'fetch')),true);
+  render();
+}
+function subsFrom(id){return document.getElementById(id).value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);}
+function saveSetup(){
+  const url=document.getElementById('s-url').value.trim();
+  if(!url){msg('s-msg',t('err_nourl'),true);return;}
+  QCLASES.save({url,subjects:subsFrom('s-subs')});msg('s-msg',t('loading'));
+  QCLASES.refresh(true).then(r=>{if(r.ok){render();toast(t('ok',{n:r.n}));}else msg('s-msg',t('err_'+r.err),true);});
+}
+function fillCfg(){
+  const c=QCLASES.cfg();document.getElementById('c-url').value=c.url;document.getElementById('c-subs').value=c.subjects.join('\n');
+  document.getElementById('c-rem').innerHTML=[0,5,10,15,30,60].map(n=>`<option value="${n}"${n===c.remind?' selected':''}>${n?t('min_before',{n}):t('no_rem')}</option>`).join('');
+}
+function saveCfg(){
+  const url=document.getElementById('c-url').value.trim(),changed=url!==QCLASES.cfg().url;
+  QCLASES.save({url,subjects:subsFrom('c-subs'),remind:+document.getElementById('c-rem').value});
+  toast(t('saved'));render();
+  if(changed&&url){msg('c-msg',t('loading'));QCLASES.refresh(true).then(r=>result('c-msg',r));}
+}
+function doRefresh(force){msg('c-msg',t('loading'));QCLASES.refresh(force).then(r=>result('c-msg',r));}
+function importFile(inp){
+  const f=inp.files&&inp.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=()=>{const r=QCLASES.importText(rd.result);result('c-msg',r);inp.value='';};rd.readAsText(f);
+}
+function forget(){
+  if(!confirm(t('forget_q')))return;
+  try{localStorage.removeItem('cris_clases_v1');localStorage.removeItem('cris_clases_cache_v1');}catch(e){}
+  render();
+}
+/* Enlace de configuración de un toque: …/clases.html#setup=<base64 de {"url":…,"subjects":[…]}> */
+(function setupFromHash(){
+  const m=location.hash.match(/^#setup=(.+)$/);if(!m)return;
+  try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+  try{
+    const b=m[1].replace(/-/g,'+').replace(/_/g,'/'),json=decodeURIComponent(escape(atob(b))),o=JSON.parse(json);
+    QCLASES.save({url:String(o.url||''),subjects:Array.isArray(o.subjects)?o.subjects:[],...(o.remind!=null?{remind:+o.remind}:{})});
+  }catch(e){}
+})();
+/* Atrás del móvil: si hay un apartado abierto, se cierra */
+window.__crisBack=function(){
+  for(const k of ['cfg','subs']){const b=document.getElementById(k+'Box');if(b&&!b.hidden){toggleSec(k);return true;}}
+  return false;
+};
+applyStaticI18n();
+render();
+if(QCLASES.cfg().url)QCLASES.refresh(false).then(r=>{if(!r.cached)render();});
+setInterval(render,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();QCLASES.refresh(false).then(r=>{if(!r.cached)render();});}});
+</script>
+</body>
+</html>

@@ -248,6 +248,14 @@ body{
 .tp-pend-i button{width:44px;height:44px;border:none;border-radius:12px;background:var(--mint-bg);color:var(--teal-dark);font-size:1.2rem;font-weight:800;cursor:pointer;flex-shrink:0;}
 /* Tiempo de cada tarea, total del día y temporizador en marcha */
 .tp-min{display:inline-block;font-size:.72rem;font-weight:800;color:var(--teal-dark);background:#fff;border:1.5px solid var(--mint-mid);border-radius:999px;padding:0 7px;margin-left:7px;vertical-align:1px;white-space:nowrap;}
+.tp-cls{display:block;width:100%;border:none;text-align:left;background:#fff;border:1.5px solid var(--mint-mid);border-radius:14px;padding:6px 10px;margin-bottom:10px;cursor:pointer;font-family:'Outfit',sans-serif;}
+.tp-cl{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:.84rem;color:var(--teal-dark);}
+.tp-cl+.tp-cl{border-top:1px solid #eef3f2;}
+.tp-cl i{width:5px;align-self:stretch;border-radius:3px;flex-shrink:0;}
+.tp-cl b{font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.tp-cl span{flex:1;min-width:0;font-weight:600;overflow-wrap:anywhere;}
+.tp-cl em{font-style:normal;font-size:.66rem;font-weight:800;border-radius:999px;padding:2px 7px;background:var(--mint-mid);color:var(--teal-dark);white-space:nowrap;}
+.tp-cl em.now{background:var(--teal-dark);color:#fff;}
 .tp-total{font-size:.8rem;font-weight:700;color:var(--teal-dark);margin:-4px 2px 10px;}
 .tp-run{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--teal);border-radius:14px;padding:4px 4px 4px 6px;margin-bottom:10px;}
 .tp-run-open{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:none;background:none;padding:8px 6px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:left;color:var(--teal-dark);}
@@ -259,7 +267,7 @@ body{
 .tp-run-b{display:flex;gap:6px;}
 .tp-run-b button{flex:1;min-height:44px;border:none;border-radius:12px;padding:8px 4px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:800;cursor:pointer;background:var(--teal-dark);color:#fff;}
 .tp-run-b button.alt{background:#fff;color:#4b5563;border:2px solid #d1d5db;}
-#tmToast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:400;max-width:min(92vw,420px);display:none;align-items:center;gap:10px;background:#7c4a03;color:#fff;border-radius:16px;padding:10px 10px 10px 16px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+#tmToast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:400;width:min(92vw,420px);display:none;align-items:center;gap:10px;background:#7c4a03;color:#fff;border-radius:16px;padding:10px 10px 10px 16px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;box-shadow:0 8px 24px rgba(0,0,0,.25);}
 #tmToast.show{display:flex;}
 #tmToast button{min-height:44px;border:none;border-radius:12px;background:#fff;color:#7c4a03;font-family:inherit;font-weight:800;padding:8px 14px;cursor:pointer;flex-shrink:0;}
 .de-row{display:flex;align-items:center;gap:8px;background:var(--white-card);border:2px solid var(--mint-mid);border-radius:14px;padding:8px 8px 8px 12px;margin-bottom:8px;}
@@ -462,6 +470,7 @@ body.mod-open #menuBtn{display:none;}
 </style>
 <script src="shared/alergias.js"></script>
 <script src="shared/dia.js"></script>
+<script src="shared/clases.js"></script>
 </head>
 <body>
 
@@ -599,6 +608,7 @@ const I18N={
   greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
   mod_trabajo_t:'Trabajo', mod_trabajo_s:'Herramientas anti-bloqueo',
+  mod_clases_t:'Clases', mod_clases_s:'Tu horario y tus asignaturas', cls_now:'AHORA', cls_in:'en {n}', cls_rem:'🎓 En {n} min: {s}', cls_see:'Ver',
   mod_ejercicios_t:'Ejercicios', mod_ejercicios_s:'Calistenia guiada: copia a la figura',
   mod_comida_t:'Comer Rico', mod_comida_s:'Menú semanal y compra',
   mod_limpieza_t:'Limpieza', mod_limpieza_s:'Una zona al día · 15 min',
@@ -659,6 +669,7 @@ const I18N={
   greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
   mod_trabajo_t:'Work', mod_trabajo_s:'Anti-block tools',
+  mod_clases_t:'Classes', mod_clases_s:'Your timetable and subjects', cls_now:'NOW', cls_in:'in {n}', cls_rem:'🎓 In {n} min: {s}', cls_see:'See',
   mod_ejercicios_t:'Exercise', mod_ejercicios_s:'Guided calisthenics: copy the figure',
   mod_comida_t:'Eat Well', mod_comida_s:'Weekly menu & shopping',
   mod_limpieza_t:'Cleaning', mod_limpieza_s:'One area a day · 15 min',
@@ -719,6 +730,7 @@ const I18N={
   greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
   mod_trabajo_t:'Travail', mod_trabajo_s:'Outils anti-blocage',
+  mod_clases_t:'Cours', mod_clases_s:'Ton emploi du temps et tes matières', cls_now:'MAINTENANT', cls_in:'dans {n}', cls_rem:'🎓 Dans {n} min : {s}', cls_see:'Voir',
   mod_ejercicios_t:'Exercices', mod_ejercicios_s:'Callisthénie guidée : copie la figure',
   mod_comida_t:'Bien Manger', mod_comida_s:'Menu de la semaine et courses',
   mod_limpieza_t:'Ménage', mod_limpieza_s:'Une zone par jour · 15 min',
@@ -808,6 +820,7 @@ function setLang(l){
 
 const modules = [
   { id:'trabajo',    icon:'💼', file:'modules/rutina-diaria.html' },
+  { id:'clases',     icon:'🎓', file:'modules/clases.html' },
   { id:'ejercicios', icon:'🧘', file:'modules/ejercicios-hiit.html' },
   { id:'comida',     icon:'🍲', file:'modules/comida.html' },
   { id:'limpieza',   icon:'🧹', file:'modules/limpieza.html' },
@@ -1243,7 +1256,8 @@ function checkNotif(){
   }
 }
 setInterval(checkNotif,30000);
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();} });
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();clsSync();} });
+setTimeout(clsSync,1500);
 // La PWA puede quedarse abierta de un día para otro: al volver, el día empieza en blanco
 window.addEventListener('pageshow',()=>{ if(_shownDay&&todayLocal()!==_shownDay)renderToday(); });
 setInterval(homeTick,1000);
@@ -1301,6 +1315,36 @@ function dayDrop(){dropN=QDIA.pending().length;QDIA.dropPending();showPend=false
 function dayUndoDrop(){QDIA.undoDrop();dropUndoUntil=0;renderToday();}
 function toggleQuicoChips(){showQuicoChips=!showQuicoChips;renderToday();}
 
+/* ── CLASES (calendario publicado, ver shared/clases.js) ── */
+function clsBlock(){
+  if(!window.QCLASES||!QCLASES.hasData())return '';
+  const now=Date.now(),l=QCLASES.day(0).filter(o=>!o.ad&&o.en>now);
+  if(!l.length)return '';
+  const hm=ms=>new Date(ms).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'});
+  return `<button class="tp-cls" onclick="openModule('modules/clases.html')" aria-label="${t('mod_clases_t')}">${l.slice(0,4).map(o=>{
+    const cur=o.st<=now,mins=Math.round((o.st-now)/6e4);
+    return `<div class="tp-cl"><i style="background:${o.color}"></i><b>${hm(o.st)}</b><span>${escH(o.name)}${o.l?' · '+escH(o.l):''}</span>${cur?`<em class="now">${t('cls_now')}</em>`:mins<=120?`<em>${t('cls_in',{n:mins<60?mins+' min':Math.floor(mins/60)+' h'+(mins%60?' '+mins%60:'')})}</em>`:''}</div>`;}).join('')}</button>`;
+}
+/* Aviso antes de cada clase (una sola vez por clase) */
+let _toastAct=null;
+function checkClassRemind(){
+  if(!window.QCLASES||!QCLASES.hasData())return;
+  const c=QCLASES.cfg();if(!c.remind)return;
+  const n=QCLASES.now().next;if(!n)return;
+  const ms=n.st-Date.now();if(ms<=0||ms>c.remind*60000)return;
+  if(localStorage.getItem('cris_clases_rem')===n.id)return;
+  try{localStorage.setItem('cris_clases_rem',n.id);}catch(e){}
+  const txt=t('cls_rem',{n:Math.max(1,Math.round(ms/6e4)),s:n.name})+(n.l?' · '+n.l:'');
+  if(hapticOK())navigator.vibrate([60,60,60]);
+  if(document.hidden){const nc=getNotifCfg();if(nc.on&&'Notification' in window&&Notification.permission==='granted')fireNotif(txt,'');return;}
+  document.getElementById('tmToastT').textContent=txt;
+  _toastAct=()=>openModule('modules/clases.html');
+  document.getElementById('tmToast').classList.add('show');
+  setTimeout(()=>document.getElementById('tmToast').classList.remove('show'),20000);
+  if(!document.body.classList.contains('mod-open'))renderToday();
+}
+function clsSync(){if(window.QCLASES&&QCLASES.cfg().url)QCLASES.refresh(false).then(r=>{if(r.ok&&!r.cached&&!document.body.classList.contains('mod-open'))renderToday();});}
+
 /* ── TEMPORIZADOR DE TAREAS (lo lleva Trabajo; aquí se ve, avisa y se responde) ── */
 function mmss(ms){const s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
 function tmName(tm){const it=tm&&tm.id?QDIA.get(tm.id):null;return it?it.t:t('tm_focus');}
@@ -1319,9 +1363,18 @@ function homeAlarm(){
   }catch(e){}}
   if(hapticOK())navigator.vibrate([160,90,160,90,320]);
 }
-function tmToastGo(){document.getElementById('tmToast').classList.remove('show');if(document.body.classList.contains('mod-open'))document.getElementById('homeBtn').click();}
+function tmToastGo(){
+  document.getElementById('tmToast').classList.remove('show');
+  if(_toastAct){const a=_toastAct;_toastAct=null;a();return;}
+  if(document.body.classList.contains('mod-open'))document.getElementById('homeBtn').click();
+}
 /* Cada segundo: cuenta atrás en el panel y aviso al acabar (solo avisa una pantalla) */
+let _clsMin=-1;
 function homeTick(){
+  checkClassRemind();
+  // «en 25 min» de las clases: se repinta una vez por minuto
+  const mn=Math.floor(Date.now()/6e4);
+  if(mn!==_clsMin){_clsMin=mn;if(!document.hidden&&!document.body.classList.contains('mod-open')&&document.querySelector('#today-panel .tp-cls'))renderToday();}
   if(todayLocal()!==_shownDay){renderToday();return;}
   const tm=QDIA.timer(),modOpen=document.body.classList.contains('mod-open');
   if(!tm){if(!modOpen&&document.querySelector('#today-panel .tp-run'))renderToday();return;}
@@ -1332,7 +1385,7 @@ function homeTick(){
     if(!inWork&&QDIA.claimEnd()){
       homeAlarm();
       if(document.hidden)fireNotif('⏰ '+t('tm_end'),tmName(tm));
-      else if(modOpen){document.getElementById('tmToastT').textContent='⏰ '+t('tm_end')+' '+tmName(tm);document.getElementById('tmToast').classList.add('show');setTimeout(()=>document.getElementById('tmToast').classList.remove('show'),15000);}
+      else if(modOpen){_toastAct=null;document.getElementById('tmToastT').textContent='⏰ '+t('tm_end')+' '+tmName(tm);document.getElementById('tmToast').classList.add('show');setTimeout(()=>document.getElementById('tmToast').classList.remove('show'),15000);}
     }
     if(!modOpen&&!document.querySelector('#today-panel .tp-run.end'))renderToday();
     return;
@@ -1479,7 +1532,7 @@ function renderToday(){
     </div>
     ${eco?'<div class="tp-eco-msg">'+t('eco_msg')+'</div>':''}
     ${tot?`<div class="tp-total">${t('tm_total',{x:QDIA.fmtMin(tot),h:QDIA.endAt(tot,crisLang())})}</div>`:''}
-    ${run}${pendBar}
+    ${run}${clsBlock()}${pendBar}
     ${rows.length?[...rows].sort((a,b)=>(a.done?1:0)-(b.done?1:0)).map(r=>{const plain=r.name||String(r.t).replace(/<[^>]*>/g,'');return `
       <div class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-id="${r.id}"${r.lock?' data-lock="1"':''}>
         <button class="tp-open" data-file="${r.f}">
