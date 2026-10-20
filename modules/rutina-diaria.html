@@ -276,8 +276,9 @@ button.dl-t{cursor:pointer}
 /* modo «menos texto» */
 .simple .wrow i,.simple [data-i18n="sec_hint"]{display:none}
 </style>
-<script src="../shared/dia.js?v=111"></script>
-<script src="../shared/clases.js?v=111"></script>
+<script src="../shared/dia.js?v=112"></script>
+<script src="../shared/clases.js?v=112"></script>
+<script src="../shared/cal.js?v=112"></script>
 </head>
 <body>
 
@@ -342,7 +343,7 @@ if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 /* ── IDIOMAS (es · en · fr) ── */
 const UI={
  es:{h1:'Trabajo',ws:'▶ Empezar',wt:'🤔 No sé qué me pasa',stuck:'🆘 Me atasco',day_h:'📝 Mi día',day_q:'¿Qué tienes que hacer hoy? Escríbelo todo.',day_ph:'Añade una tarea…',day_add:'Añadir',day_pend:'De otros días: {n}',day_bring:'Traer',day_drop:'Descartar',day_go:'Empezar con esta tarea',day_mark:'Marcar como hecha',day_edit:'Editar tarea',day_save:'Guardar',day_del:'Borrar',day_min:'⏱ Tiempo',day_nomin:'Sin tiempo',day_undo:'Deshacer',day_dropped:'Descartadas: {n}',tm_total:'⏱ {x} · acabas ~{h}',tm_end:'¡Tiempo!',tm_more:'+5 min',tm_ok:'Cerrar',tm_now:'✓ Ya está',tm_yes:'✓ Hecha',tm_left:'Tiempo que queda',tm_stop:'Parar el temporizador',tm_focus:'Concentración',close:'Cerrar',
-   m_trabajo:'Trabajo',m_pilates:'Ejercicio',m_comida:'Comida',m_limpieza:'Limpieza',m_intereses:'Aprende algo',m_noche:'Rutina nocturna',m_calma:'Momento de calma',m_juego:'Un rato de juego',m_eco1:'Respira 2 minutos',m_eco2:'Movilidad suave',m_eco3:'Recoge 3 cosas',m_eco4:'Receta salvavidas',foco_now:'Ahora: {t}',foco_done_q:'¿La has terminado?',foco_yes:'✓ Sí, tachar',foco_no:'Aún no',vol_today:'＋ Hoy',vol_added:'Añadido a tu día',
+   m_trabajo:'Trabajo',m_clases:'Clases',m_pilates:'Ejercicio',m_comida:'Comida',m_limpieza:'Limpieza',m_intereses:'Aprende algo',m_noche:'Rutina nocturna',m_calma:'Momento de calma',m_juego:'Un rato de juego',m_eco1:'Respira 2 minutos',m_eco2:'Movilidad suave',m_eco3:'Recoge 3 cosas',m_eco4:'Receta salvavidas',foco_now:'Ahora: {t}',foco_done_q:'¿La has terminado?',foco_yes:'✓ Sí, tachar',foco_no:'Aún no',vol_today:'＋ Hoy',vol_added:'Añadido a tu día',
    sec_hint:'…o si ya sabes qué necesitas, elígelo directo:',
    g1:'🏁 No puedo empezar',g2:'🎯 Quiero mantener el foco',g3:'🧠 Tengo la cabeza llena',g4:'🔄 Cambiar de tarea o planificar',
    w_par_t:'Salir del bloqueo paso a paso',w_par_s:'miras la tarea y no arrancas',
@@ -378,7 +379,7 @@ const UI={
    v_mis:'Misión activada: {t}. Veinte minutos. Al terminar, tu recompensa.',v_mis_end:'¡Tiempo! Misión cumplida. Disfruta tu recompensa, te la has ganado.',
    ctx_s1:'Levántate y estírate. Suelta los hombros y respira hondo.',ctx_s2:'Bebe un poco de agua y mira algo lejano unos segundos.',ctx_s3:'Anota en una palabra qué acabas de terminar y qué empiezas ahora.'},
  en:{h1:'Work',ws:'▶ Start',wt:'🤔 I don’t know what’s wrong',stuck:'🆘 I’m stuck',day_h:'📝 My day',day_q:'What do you need to do today? Write it all down.',day_ph:'Add a task…',day_add:'Add',day_pend:'From other days: {n}',day_bring:'Bring',day_drop:'Dismiss',day_go:'Start with this task',day_mark:'Mark as done',day_edit:'Edit task',day_save:'Save',day_del:'Delete',day_min:'⏱ Time',day_nomin:'No time',day_undo:'Undo',day_dropped:'Dismissed: {n}',tm_total:'⏱ {x} · done by ~{h}',tm_end:'Time’s up!',tm_more:'+5 min',tm_ok:'Close',tm_now:'✓ Done',tm_yes:'✓ Done',tm_left:'Time left',tm_stop:'Stop the timer',tm_focus:'Focus',close:'Close',
-   m_trabajo:'Work',m_pilates:'Exercise',m_comida:'Food',m_limpieza:'Cleaning',m_intereses:'Learn something',m_noche:'Night routine',m_calma:'A calm moment',m_juego:'A bit of play',m_eco1:'Breathe for 2 minutes',m_eco2:'Gentle mobility',m_eco3:'Tidy 3 things',m_eco4:'Lifesaver recipe',foco_now:'Now: {t}',foco_done_q:'Did you finish it?',foco_yes:'✓ Yes, tick it',foco_no:'Not yet',vol_today:'＋ Today',vol_added:'Added to your day',
+   m_trabajo:'Work',m_clases:'Classes',m_pilates:'Exercise',m_comida:'Food',m_limpieza:'Cleaning',m_intereses:'Learn something',m_noche:'Night routine',m_calma:'A calm moment',m_juego:'A bit of play',m_eco1:'Breathe for 2 minutes',m_eco2:'Gentle mobility',m_eco3:'Tidy 3 things',m_eco4:'Lifesaver recipe',foco_now:'Now: {t}',foco_done_q:'Did you finish it?',foco_yes:'✓ Yes, tick it',foco_no:'Not yet',vol_today:'＋ Today',vol_added:'Added to your day',
    sec_hint:'…or if you already know what you need, pick it directly:',
    g1:'🏁 I can’t get started',g2:'🎯 I want to keep focus',g3:'🧠 My head is full',g4:'🔄 Switch tasks or plan',
    w_par_t:'Get unstuck step by step',w_par_s:'you stare at the task and can’t begin',
@@ -414,7 +415,7 @@ const UI={
    v_mis:'Mission activated: {t}. Twenty minutes. When you finish, your reward.',v_mis_end:'Time! Mission accomplished. Enjoy your reward, you’ve earned it.',
    ctx_s1:'Stand up and stretch. Drop your shoulders and breathe deeply.',ctx_s2:'Drink a little water and look at something far away for a few seconds.',ctx_s3:'Note in one word what you just finished and what you’re starting now.'},
  fr:{h1:'Travail',ws:'▶ Commencer',wt:'🤔 Je ne sais pas ce qui m’arrive',stuck:'🆘 Je bloque',day_h:'📝 Ma journée',day_q:'Qu’as-tu à faire aujourd’hui ? Écris tout.',day_ph:'Ajoute une tâche…',day_add:'Ajouter',day_pend:'D’autres jours : {n}',day_bring:'Reprendre',day_drop:'Ignorer',day_go:'Commencer avec cette tâche',day_mark:'Marquer comme faite',day_edit:'Modifier la tâche',day_save:'Enregistrer',day_del:'Supprimer',day_min:'⏱ Durée',day_nomin:'Sans durée',day_undo:'Annuler',day_dropped:'Ignorées : {n}',tm_total:'⏱ {x} · fini vers {h}',tm_end:'C’est l’heure !',tm_more:'+5 min',tm_ok:'Fermer',tm_now:'✓ C’est fait',tm_yes:'✓ Faite',tm_left:'Temps restant',tm_stop:'Arrêter le minuteur',tm_focus:'Concentration',close:'Fermer',
-   m_trabajo:'Travail',m_pilates:'Exercice',m_comida:'Repas',m_limpieza:'Ménage',m_intereses:'Apprendre',m_noche:'Routine du soir',m_calma:'Un moment de calme',m_juego:'Un peu de jeu',m_eco1:'Respire 2 minutes',m_eco2:'Mobilité douce',m_eco3:'Range 3 choses',m_eco4:'Recette de secours',foco_now:'Maintenant : {t}',foco_done_q:'Tu l’as terminée ?',foco_yes:'✓ Oui, cocher',foco_no:'Pas encore',vol_today:'＋ Aujourd’hui',vol_added:'Ajouté à ta journée',
+   m_trabajo:'Travail',m_clases:'Cours',m_pilates:'Exercice',m_comida:'Repas',m_limpieza:'Ménage',m_intereses:'Apprendre',m_noche:'Routine du soir',m_calma:'Un moment de calme',m_juego:'Un peu de jeu',m_eco1:'Respire 2 minutes',m_eco2:'Mobilité douce',m_eco3:'Range 3 choses',m_eco4:'Recette de secours',foco_now:'Maintenant : {t}',foco_done_q:'Tu l’as terminée ?',foco_yes:'✓ Oui, cocher',foco_no:'Pas encore',vol_today:'＋ Aujourd’hui',vol_added:'Ajouté à ta journée',
    sec_hint:'…ou si tu sais déjà ce qu’il te faut, choisis directement :',
    g1:'🏁 Je n’arrive pas à commencer',g2:'🎯 Je veux garder la concentration',g3:'🧠 J’ai la tête pleine',g4:'🔄 Changer de tâche ou planifier',
    w_par_t:'Sortir du blocage pas à pas',w_par_s:'tu fixes la tâche et tu ne démarres pas',
@@ -806,7 +807,7 @@ function applyStaticI18n(){document.documentElement.lang=crisLang();document.que
 })();
 /* ═══ MI DÍA (misma lista que el panel «Hoy» del inicio) ═══ */
 const MODFILE={trabajo:'rutina-diaria.html',pilates:'ejercicios-hiit.html',comida:'comida.html',limpieza:'limpieza.html',intereses:'intereses.html',noche:'rutina-nocturna.html',calma:'rescate-emocional.html',juego:'juegos.html',
-  eco1:'rescate-emocional.html',eco2:'ejercicios-hiit.html#suave',eco3:'limpieza.html#express',eco4:'comida.html#basicos',clase:'clases.html'};
+  eco1:'rescate-emocional.html',eco2:'ejercicios-hiit.html#suave',eco3:'limpieza.html#express',eco4:'comida.html#basicos',clase:'clases.html',clases:'clases.html',cita:'calendario.html'};
 function escD(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 /* Foco tras repintar: se vuelve al mismo control (misma fila por data-id) */
 function focusKey(root){const a=document.activeElement;if(!a||a===document.body||!root||!root.contains(a))return null;const row=a.closest('[data-id]');return {id:row?row.getAttribute('data-id'):null,cls:String(a.className||'').split(' ')[0],elId:a.id||null};}
@@ -824,7 +825,6 @@ function renderDay(){
   const el=document.getElementById('dayList');if(!el||!window.QDIA)return;
   const prevIn=document.getElementById('dl-in'),draft=prevIn?prevIn.value:'',fk=focusKey(el);
   const prevEd=document.getElementById('dl-edit'),edDraft=prevEd?prevEd.value:null,edFocus=prevEd&&document.activeElement===prevEd;
-  if(window.QCLASES)QCLASES.syncDay(); // las clases de hoy, también aquí
   const items=QDIA.view(),pend=QDIA.pending(),tm=QDIA.timer();
   const rows=items.map(it=>{
     const done=QDIA.isDone(it),lock=QDIA.locked(it),name=it.mod?modName(it):it.t,label=(it.e?it.e+' ':'')+(it.cls?new Date(it.cls.st).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'})+' · ':'')+escD(name);

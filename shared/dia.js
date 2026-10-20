@@ -12,7 +12,7 @@
   const KEY='cris_dia_v1';
   const MAX_T=300,MAX_LINES=100,MAX_PEND=100;
   // módulo → prefijo de su marca diaria (la escribe el módulo al terminar)
-  const MODKEY={trabajo:'trabajo',pilates:'hiit',comida:'comida',limpieza:'limpieza',intereses:'intereses',
+  const MODKEY={trabajo:'trabajo',clases:'clasesdia',pilates:'hiit',comida:'comida',limpieza:'limpieza',intereses:'intereses',
     noche:'noche',calma:'calma',juego:'juego',eco1:'eco1',eco2:'eco2',eco3:'eco3',eco4:'eco4'};
   // Limpieza: zona de cada día de la semana (la marca va en lim-w<semana>-<año>)
   const ZONE={1:'cocina',2:'bano',3:'salon',4:'dormitorio',5:'comunes'};
@@ -70,7 +70,7 @@
        Devuelve cuántas se han añadido; lo que no cabe se devuelve en .rest */
     add(text,mod,e){
       const d=load();const lines=String(text||'').split(/\r?\n/).map(s=>clean(s.replace(/^\s*(?:[-*•·]|\d{1,2}[.)])\s+/,''))).filter(Boolean);
-      if(mod){if(mod==='clase'||d.items.some(i=>i.mod===mod))return 0;d.items.push({id:newId(),t:lines[0]||'',mod,e:e||'',done:false,min:0});save(d);return 1;}
+      if(mod){if(mod==='clase'||mod==='cita'||d.items.some(i=>i.mod===mod))return 0;d.items.push({id:newId(),t:lines[0]||'',mod,e:e||'',done:false,min:0});save(d);return 1;}
       const room=Math.max(0,MAX_LINES-d.items.length),take=lines.slice(0,room);
       take.forEach(s=>{const p=parseMin(s);d.items.push({id:newId(),t:p.t.slice(0,MAX_T),mod:null,e:'',done:false,min:p.min});});
       save(d);API.rest=lines.slice(take.length).join('\n');return take.length;
@@ -101,16 +101,18 @@
       if(it&&it.cls){d.clsGone=Array.isArray(d.clsGone)?d.clsGone:[];d.clsGone.push(it.cls.occ);}
       d.items=d.items.filter(x=>x.id!==id);if(d.timer&&d.timer.id===id)d.timer=null;save(d);},
     /* Clases de hoy (del calendario) → elementos del día, en orden de hora. Devuelve si cambió algo */
-    syncClasses(list){
+    syncClasses(list,src){
+      src=src==='cita'?'cita':'clase'; // cada fuente (clases / citas del calendario) se sincroniza por separado
       const d=load(),gone=new Set(d.clsGone||[]);let ch=false;
       const want=(list||[]).filter(c=>c&&c.occ&&!gone.has(c.occ));
       // fuera las que ya no están en el calendario (anuladas o movidas a otro día)
       const ids=new Set(want.map(c=>c.occ));const before=d.items.length;
-      d.items=d.items.filter(i=>!i.cls||ids.has(i.cls.occ));if(d.items.length!==before)ch=true;
+      d.items=d.items.filter(i=>!i.cls||(i.mod||'clase')!==src||ids.has(i.cls.occ));if(d.items.length!==before)ch=true;
       want.forEach(c=>{
         const ex=d.items.find(i=>i.cls&&i.cls.occ===c.occ);
-        if(ex){if(ex.t!==c.name||ex.cls.st!==c.st||ex.cls.en!==c.en||ex.cls.l!==c.l){ex.t=c.name;ex.cls={...ex.cls,st:c.st,en:c.en,l:c.l||''};ch=true;}return;}
-        const it={id:newId(),t:c.name,mod:'clase',e:'🎓',done:false,min:0,cls:{occ:c.occ,st:c.st,en:c.en,l:c.l||''}};
+        if(ex){if(ex.t!==c.name||ex.cls.st!==c.st||ex.cls.en!==c.en||ex.cls.l!==c.l||(c.e&&ex.e!==c.e)){ex.t=c.name;if(c.e)ex.e=c.e;ex.cls={...ex.cls,st:c.st,en:c.en,l:c.l||''};ch=true;}return;}
+        // clases (mod 'clase') y citas del calendario (mod 'cita': tutorías…), con su hora
+        const it={id:newId(),t:c.name,mod:src,e:c.e||'🎓',done:false,min:0,cls:{occ:c.occ,st:c.st,en:c.en,l:c.l||''}};
         // va antes de la primera clase más tardía; si no hay, detrás de la última clase o al principio
         const later=d.items.findIndex(i=>i.cls&&i.cls.st>c.st);
         if(later>=0)d.items.splice(later,0,it);
@@ -118,6 +120,14 @@
         ch=true;
       });
       if(ch)save(d);return ch;
+    },
+    /* Una tutoría o cita de hoy, añadida a mano desde «＋ De Quico» (con su hora) */
+    addTimed(c,src){
+      const d=load();if(!c||!c.occ||d.items.some(i=>i.cls&&i.cls.occ===c.occ))return 0;
+      const it={id:newId(),t:c.name,mod:src==='clase'?'clase':'cita',e:c.e||'📌',done:false,min:0,cls:{occ:c.occ,st:c.st,en:c.en,l:c.l||''}};
+      const later=d.items.findIndex(i=>i.cls&&i.cls.st>c.st);
+      if(later>=0)d.items.splice(later,0,it);else d.items.push(it);
+      save(d);return 1;
     },
     /* Sube o baja entre las de su mismo estado (pendientes con pendientes), como se ve */
     move(id,dir){

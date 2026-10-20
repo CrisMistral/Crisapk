@@ -21,7 +21,10 @@
   const STALE=3*3600e3,DAY=864e5;
   function rd(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v&&typeof v==='object'?v:d;}catch(e){return d;}}
   function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-  function cfg(){const c=rd(CFG,{});return {url:String(c.url||''),subjects:Array.isArray(c.subjects)?c.subjects.filter(Boolean):[],remind:c.remind==null?15:Math.max(0,+c.remind||0)};}
+  function cfg(){const c=rd(CFG,{});return {url:String(c.url||''),subjects:Array.isArray(c.subjects)?c.subjects.filter(Boolean):[],remind:c.remind==null?15:Math.max(0,+c.remind||0),
+    hide:Array.isArray(c.hide)?c.hide:[],skip:Array.isArray(c.skip)?c.skip:[]};}
+  /* Clases que no quieres ver en tu día: asignaturas enteras (hide) o clases sueltas (skip) */
+  function hideKey(o){return o.sub?'s:'+fold(o.sub.name):'t:'+fold(o.s||'');}
 
   /* ── Lectura del .ics ── */
   function lines(txt){return String(txt||'').replace(/\r\n[ \t]/g,'').replace(/\n[ \t]/g,'').split(/\r?\n/);}
@@ -224,13 +227,20 @@
     /* Clases de un día (0 = hoy, 1 = mañana…) con su asignatura y color */
     day(off){const s=startOfDay(Date.now()+(off||0)*DAY),e=startOfDay(s+DAY*1.5);return API.decorate(between(s,e));},
     week(fromOff,days){const s=startOfDay(Date.now()+(fromOff||0)*DAY);return API.decorate(between(s,startOfDay(s+(days||7)*DAY+DAY/2)));},
-    decorate(list){const subs=subjects();return list.map(o=>{const sb=subjectOf(o.s,subs);return {...o,sub:sb,name:sb?sb.short:(pretty(o.s)||'—'),color:sb?sb.color:'#64748b'};});},
+    decorate(list){const subs=subjects(),c=cfg(),H=new Set(c.hide),K=new Set(c.skip);
+      return list.map(o=>{const sb=subjectOf(o.s,subs),d={...o,sub:sb,name:sb?sb.short:(pretty(o.s)||'—'),color:sb?sb.color:'#64748b'};
+        d.hideKey=hideKey(d);d.hiddenSub=H.has(d.hideKey);d.skipped=K.has(o.id);d.hidden=d.hiddenSub||d.skipped;return d;});},
+    /* Ocultar o volver a mostrar una asignatura entera (o todas las clases con ese nombre) */
+    toggleHide(key){const c=cfg(),i=c.hide.indexOf(key);if(i>=0)c.hide.splice(i,1);else c.hide.push(key);API.save({hide:c.hide});return i<0;},
+    /* «A esta no voy»: una clase suelta */
+    toggleSkip(id){const c=cfg(),i=c.skip.indexOf(id);if(i>=0)c.skip.splice(i,1);else c.skip.push(id);API.save({skip:c.skip.slice(-300)});return i<0;},
+    subjectKey(s){return 's:'+fold(s.name);},
     /* Clases de hoy para «Mi día» (sin las de todo el día) y las mete en la lista */
-    syncDay(){if(!window.QDIA||!API.hasData()||!areaOnClases())return false;return QDIA.syncClasses(API.day(0).filter(o=>!o.ad&&API.startOfDay(o.st)===API.startOfDay()).map(o=>({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l})));},
+    syncDay(){if(!window.QDIA||!API.hasData()||!areaOnClases())return false;return QDIA.syncClasses(API.day(0).filter(o=>!o.ad&&!o.hidden&&API.startOfDay(o.st)===API.startOfDay()).map(o=>({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l})));},
     /* La que está en marcha y la siguiente (hoy o próximos días) */
-    now(){const t=Date.now(),l=API.decorate(between(t-12*3600e3,t+8*DAY)).filter(o=>!o.ad);
+    now(){const t=Date.now(),l=API.decorate(between(t-12*3600e3,t+8*DAY)).filter(o=>!o.ad&&!o.hidden);
       let next=l.find(o=>o.st>t)||null;
-      if(!next)next=API.decorate(between(t,t+70*DAY)).filter(o=>!o.ad&&o.st>t)[0]||null; // vacaciones: la siguiente aunque esté lejos
+      if(!next)next=API.decorate(between(t,t+70*DAY)).filter(o=>!o.ad&&!o.hidden&&o.st>t)[0]||null; // vacaciones: la siguiente aunque esté lejos
       return {cur:l.find(o=>o.st<=t&&o.en>t)||null,next};}
   };
   window.QCLASES=API;
