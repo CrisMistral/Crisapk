@@ -2,6 +2,8 @@
    Cada día empieza en blanco. Lo que no se terminó otro día no se pierde: queda
    como «pendiente» y solo vuelve al día si la persona lo trae.
    Elementos: {id, t: texto, mod: módulo de Quico o null, e: emoji, done, min: minutos o 0}
+   Clases (mod 'clase'): llegan solas del calendario de «Clases», con cls:{occ, st, en, l};
+   se dan por hechas al terminar y no pasan a pendientes.
    Los elementos de módulo (ejercicio, comida…) se dan por hechos también cuando
    el propio módulo guarda su marca diaria (cris_<clave>_v1_AAAA-MM-DD).
    Temporizador: uno solo a la vez, guardado con su hora de fin para que siga
@@ -48,14 +50,14 @@
       // Pasan a «pendiente» las tareas propias sin terminar (no las rutinas de módulo, que son de cada día)
       const left=(d.items||[]).filter(i=>!i.done&&!i.mod).map(i=>({id:i.id,t:i.t,mod:null,e:i.e||'',done:false,min:i.min||0}));
       const seen=new Set();const pend=[...(d.pending||[]),...left].filter(i=>{if(seen.has(i.id))return false;seen.add(i.id);return true;}).slice(-MAX_PEND);
-      d={day:today,items:[],pending:pend,timer:null};
+      d={day:today,items:[],pending:pend,timer:null,clsGone:[]};
       write(d);
     }
     if(!Array.isArray(d.items))d.items=[];if(!Array.isArray(d.pending))d.pending=[];
     return d;
   }
   function save(d){write(d);}
-  function isDone(i){return !!i.done||(!!i.mod&&modDone(i.mod))||locked(i);}
+  function isDone(i){return !!i.done||(!!i.mod&&modDone(i.mod))||locked(i)||(!!i.cls&&i.cls.en<=Date.now());}
   /* Orden en pantalla: primero lo pendiente, lo hecho al final (orden estable) */
   function view(a){return [...a.filter(i=>!isDone(i)),...a.filter(i=>isDone(i))];}
   const API={
@@ -68,7 +70,7 @@
        Devuelve cuántas se han añadido; lo que no cabe se devuelve en .rest */
     add(text,mod,e){
       const d=load();const lines=String(text||'').split(/\r?\n/).map(s=>clean(s.replace(/^\s*(?:[-*•·]|\d{1,2}[.)])\s+/,''))).filter(Boolean);
-      if(mod){if(d.items.some(i=>i.mod===mod))return 0;d.items.push({id:newId(),t:lines[0]||'',mod,e:e||'',done:false,min:0});save(d);return 1;}
+      if(mod){if(mod==='clase'||d.items.some(i=>i.mod===mod))return 0;d.items.push({id:newId(),t:lines[0]||'',mod,e:e||'',done:false,min:0});save(d);return 1;}
       const room=Math.max(0,MAX_LINES-d.items.length),take=lines.slice(0,room);
       take.forEach(s=>{const p=parseMin(s);d.items.push({id:newId(),t:p.t.slice(0,MAX_T),mod:null,e:'',done:false,min:p.min});});
       save(d);API.rest=lines.slice(take.length).join('\n');return take.length;
@@ -94,7 +96,29 @@
       const p=parseMin(v);i.t=p.t.slice(0,MAX_T);if(p.min)i.min=p.min;save(d);return true;},
     /* Tiempo previsto de una tarea (0 = sin tiempo) */
     setMin(id,min){const d=load();const i=d.items.find(x=>x.id===id);if(!i)return;i.min=clampMin(min);save(d);},
-    remove(id){const d=load();d.items=d.items.filter(x=>x.id!==id);if(d.timer&&d.timer.id===id)d.timer=null;save(d);},
+    remove(id){const d=load(),it=d.items.find(x=>x.id===id);
+      // una clase quitada a mano no vuelve a aparecer ese día
+      if(it&&it.cls){d.clsGone=Array.isArray(d.clsGone)?d.clsGone:[];d.clsGone.push(it.cls.occ);}
+      d.items=d.items.filter(x=>x.id!==id);if(d.timer&&d.timer.id===id)d.timer=null;save(d);},
+    /* Clases de hoy (del calendario) → elementos del día, en orden de hora. Devuelve si cambió algo */
+    syncClasses(list){
+      const d=load(),gone=new Set(d.clsGone||[]);let ch=false;
+      const want=(list||[]).filter(c=>c&&c.occ&&!gone.has(c.occ));
+      // fuera las que ya no están en el calendario (anuladas o movidas a otro día)
+      const ids=new Set(want.map(c=>c.occ));const before=d.items.length;
+      d.items=d.items.filter(i=>!i.cls||ids.has(i.cls.occ));if(d.items.length!==before)ch=true;
+      want.forEach(c=>{
+        const ex=d.items.find(i=>i.cls&&i.cls.occ===c.occ);
+        if(ex){if(ex.t!==c.name||ex.cls.st!==c.st||ex.cls.en!==c.en||ex.cls.l!==c.l){ex.t=c.name;ex.cls={...ex.cls,st:c.st,en:c.en,l:c.l||''};ch=true;}return;}
+        const it={id:newId(),t:c.name,mod:'clase',e:'🎓',done:false,min:0,cls:{occ:c.occ,st:c.st,en:c.en,l:c.l||''}};
+        // va antes de la primera clase más tardía; si no hay, detrás de la última clase o al principio
+        const later=d.items.findIndex(i=>i.cls&&i.cls.st>c.st);
+        if(later>=0)d.items.splice(later,0,it);
+        else{let last=-1;d.items.forEach((i,k)=>{if(i.cls)last=k;});d.items.splice(last+1,0,it);}
+        ch=true;
+      });
+      if(ch)save(d);return ch;
+    },
     /* Sube o baja entre las de su mismo estado (pendientes con pendientes), como se ve */
     move(id,dir){
       const d=load(),a=d.items,v=view(a),k=v.findIndex(x=>x.id===id);if(k<0)return;

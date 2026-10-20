@@ -201,6 +201,8 @@
     day(off){const s=startOfDay(Date.now()+(off||0)*DAY),e=startOfDay(s+DAY*1.5);return API.decorate(between(s,e));},
     week(fromOff,days){const s=startOfDay(Date.now()+(fromOff||0)*DAY);return API.decorate(between(s,startOfDay(s+(days||7)*DAY+DAY/2)));},
     decorate(list){const subs=subjects();return list.map(o=>{const sb=subjectOf(o.s,subs);return {...o,sub:sb,name:sb?sb.short:(pretty(o.s)||'—'),color:sb?sb.color:'#64748b'};});},
+    /* Clases de hoy para «Mi día» (sin las de todo el día) y las mete en la lista */
+    syncDay(){if(!window.QDIA||!API.hasData())return false;return QDIA.syncClasses(API.day(0).filter(o=>!o.ad&&API.startOfDay(o.st)===API.startOfDay()).map(o=>({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l})));},
     /* La que está en marcha y la siguiente (hoy o próximos días) */
     now(){const t=Date.now(),l=API.decorate(between(t-12*3600e3,t+8*DAY)).filter(o=>!o.ad);return {cur:l.find(o=>o.st<=t&&o.en>t)||null,next:l.find(o=>o.st>t)||null};}
   };

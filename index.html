@@ -1119,7 +1119,7 @@ function renderDayEdit(){
     const done=QDIA.isDone(it),m=modRow(it),name=escH(m?m.plain:it.t);
     const opts=MIN_OPTS.indexOf(it.min||0)<0&&it.min?[...MIN_OPTS,it.min].sort((a,b)=>a-b):MIN_OPTS;
     return `<div class="de-row${it.mod?'':' own'}${done?' done':''}" data-id="${it.id}">
-      ${it.mod?`<span class="de-t">${m?m.e+' '+m.t:escH(it.t)}</span>`
+      ${it.mod?`<span class="de-t">${m?m.e+' '+m.t:(it.e?it.e+' ':'')+(it.cls?new Date(it.cls.st).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'})+' · ':'')+escH(it.t)}</span>`
         :`<input class="de-in" value="${escH(it.t)}" maxlength="300" aria-label="${t('de_edit')}: ${name}" onchange="dayRename('${it.id}',this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
       <select class="de-min" aria-label="${t('de_min')}: ${name}" onchange="daySetMin('${it.id}',this.value)"><option value="0">${t('de_nomin')}</option>${opts.map(n=>`<option value="${n}"${n===it.min?' selected':''}>⏱ ${QDIA.fmtMin(n)}</option>`).join('')}</select>`}
       <button class="de-up" onclick="dayMove('${it.id}',-1)" aria-label="${t('de_up')}: ${name}"${QDIA.canMove(it.id,-1)?'':' disabled'}>↑</button>
@@ -1258,6 +1258,10 @@ function checkNotif(){
 setInterval(checkNotif,30000);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();clsSync();} });
 setTimeout(clsSync,1500);
+/* Enlace de configuración de clases de un toque: quico…/#clases=<datos> → abre «Clases» ya configurado */
+(function(){const m=location.hash.match(/^#clases=(.+)$/);if(!m)return;
+  try{history.replaceState(history.state,'',location.pathname+location.search);}catch(e){}
+  setTimeout(()=>openModule('modules/clases.html#setup='+m[1]),400);})();
 // La PWA puede quedarse abierta de un día para otro: al volver, el día empieza en blanco
 window.addEventListener('pageshow',()=>{ if(_shownDay&&todayLocal()!==_shownDay)renderToday(); });
 setInterval(homeTick,1000);
@@ -1316,15 +1320,6 @@ function dayUndoDrop(){QDIA.undoDrop();dropUndoUntil=0;renderToday();}
 function toggleQuicoChips(){showQuicoChips=!showQuicoChips;renderToday();}
 
 /* ── CLASES (calendario publicado, ver shared/clases.js) ── */
-function clsBlock(){
-  if(!window.QCLASES||!QCLASES.hasData())return '';
-  const now=Date.now(),l=QCLASES.day(0).filter(o=>!o.ad&&o.en>now);
-  if(!l.length)return '';
-  const hm=ms=>new Date(ms).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'});
-  return `<button class="tp-cls" onclick="openModule('modules/clases.html')" aria-label="${t('mod_clases_t')}">${l.slice(0,4).map(o=>{
-    const cur=o.st<=now,mins=Math.round((o.st-now)/6e4);
-    return `<div class="tp-cl"><i style="background:${o.color}"></i><b>${hm(o.st)}</b><span>${escH(o.name)}${o.l?' · '+escH(o.l):''}</span>${cur?`<em class="now">${t('cls_now')}</em>`:mins<=120?`<em>${t('cls_in',{n:mins<60?mins+' min':Math.floor(mins/60)+' h'+(mins%60?' '+mins%60:'')})}</em>`:''}</div>`;}).join('')}</button>`;
-}
 /* Aviso antes de cada clase (una sola vez por clase) */
 let _toastAct=null;
 function checkClassRemind(){
@@ -1374,7 +1369,7 @@ function homeTick(){
   checkClassRemind();
   // «en 25 min» de las clases: se repinta una vez por minuto
   const mn=Math.floor(Date.now()/6e4);
-  if(mn!==_clsMin){_clsMin=mn;if(!document.hidden&&!document.body.classList.contains('mod-open')&&document.querySelector('#today-panel .tp-cls'))renderToday();}
+  if(mn!==_clsMin){_clsMin=mn;if(!document.hidden&&!document.body.classList.contains('mod-open')&&window.QCLASES&&QCLASES.hasData())renderToday();}
   if(todayLocal()!==_shownDay){renderToday();return;}
   const tm=QDIA.timer(),modOpen=document.body.classList.contains('mod-open');
   if(!tm){if(!modOpen&&document.querySelector('#today-panel .tp-run'))renderToday();return;}
@@ -1494,7 +1489,10 @@ function renderToday(){
   const eco=isEco();
   const build=modBuild();
   const tm=QDIA.timer();
+  if(window.QCLASES)QCLASES.syncDay(); // las clases de hoy entran solas en la lista
+  const hmc=ms=>new Date(ms).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'});
   const rows=QDIA.view().map(it=>{
+    if(it.cls)return {id:it.id,e:'🎓',t:escH(it.t)+'<span class="tp-min">'+hmc(it.cls.st)+'–'+hmc(it.cls.en)+'</span>',name:it.t,s:escH(it.cls.l||''),f:'modules/clases.html',done:QDIA.isDone(it),cls:it.cls};
     if(it.mod&&build[it.mod]){const b=build[it.mod]();return {...b,id:it.id,done:b.done||QDIA.isDone(it),lock:b.lock||QDIA.locked(it)};}
     const done=QDIA.isDone(it);
     // el tiempo va junto al nombre (se ve también en modo sencillo)
@@ -1506,9 +1504,13 @@ function renderToday(){
   // si la rutina nocturna está en el día, ella manda (con la nocturna hecha, el día se cierra).
   let nowIdx;
   const nocheIdx=rows.findIndex(r=>r.f&&r.f.indexOf('rutina-nocturna')>=0);
-  if(h>=20&&nocheIdx>=0)nowIdx=rows[nocheIdx].done?-1:nocheIdx;
-  else nowIdx=rows.findIndex(r=>!r.done);
-  const nextIdx=nowIdx<0?-1:rows.findIndex((r,i)=>i>nowIdx&&!r.done);
+  // una clase es «ahora» desde media hora antes hasta que acaba; antes no le quita el sitio a las tareas
+  const tnow=Date.now(),soon=r=>!r.cls||(r.cls.st-30*6e4<=tnow&&r.cls.en>tnow);
+  const clsNow=rows.findIndex(r=>r.cls&&!r.done&&soon(r));
+  if(clsNow>=0)nowIdx=clsNow;
+  else if(h>=20&&nocheIdx>=0)nowIdx=rows[nocheIdx].done?-1:nocheIdx;
+  else nowIdx=rows.findIndex(r=>!r.done&&soon(r));
+  const nextIdx=nowIdx<0?-1:rows.findIndex((r,i)=>i!==nowIdx&&!r.done&&(i>nowIdx||r.cls));
   rows.forEach((r,i)=>{r.badge=i===nowIdx?'now':i===nextIdx?'next':'';});
 
   // Quico cambia de humor: orgulloso con todo tachado, calmado en eco, feliz si no
@@ -1541,7 +1543,7 @@ function renderToday(){
     </div>
     ${eco?'<div class="tp-eco-msg">'+t('eco_msg')+'</div>':''}
     ${tot?`<div class="tp-total">${t('tm_total',{x:QDIA.fmtMin(tot),h:QDIA.endAt(tot,crisLang())})}</div>`:''}
-    ${run}${clsBlock()}${pendBar}
+    ${run}${pendBar}
     ${rows.length?[...rows].sort((a,b)=>(a.done?1:0)-(b.done?1:0)).map(r=>{const plain=r.name||String(r.t).replace(/<[^>]*>/g,'');return `
       <div class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-id="${r.id}"${r.lock?' data-lock="1"':''}>
         <button class="tp-open" data-file="${r.f}">

@@ -277,6 +277,7 @@ button.dl-t{cursor:pointer}
 .simple .wrow i,.simple [data-i18n="sec_hint"]{display:none}
 </style>
 <script src="../shared/dia.js"></script>
+<script src="../shared/clases.js"></script>
 </head>
 <body>
 
@@ -805,7 +806,7 @@ function applyStaticI18n(){document.documentElement.lang=crisLang();document.que
 })();
 /* ═══ MI DÍA (misma lista que el panel «Hoy» del inicio) ═══ */
 const MODFILE={trabajo:'rutina-diaria.html',pilates:'ejercicios-hiit.html',comida:'comida.html',limpieza:'limpieza.html',intereses:'intereses.html',noche:'rutina-nocturna.html',calma:'rescate-emocional.html',juego:'juegos.html',
-  eco1:'rescate-emocional.html',eco2:'ejercicios-hiit.html#suave',eco3:'limpieza.html#express',eco4:'comida.html#basicos'};
+  eco1:'rescate-emocional.html',eco2:'ejercicios-hiit.html#suave',eco3:'limpieza.html#express',eco4:'comida.html#basicos',clase:'clases.html'};
 function escD(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 /* Foco tras repintar: se vuelve al mismo control (misma fila por data-id) */
 function focusKey(root){const a=document.activeElement;if(!a||a===document.body||!root||!root.contains(a))return null;const row=a.closest('[data-id]');return {id:row?row.getAttribute('data-id'):null,cls:String(a.className||'').split(' ')[0],elId:a.id||null};}
@@ -823,9 +824,10 @@ function renderDay(){
   const el=document.getElementById('dayList');if(!el||!window.QDIA)return;
   const prevIn=document.getElementById('dl-in'),draft=prevIn?prevIn.value:'',fk=focusKey(el);
   const prevEd=document.getElementById('dl-edit'),edDraft=prevEd?prevEd.value:null,edFocus=prevEd&&document.activeElement===prevEd;
+  if(window.QCLASES)QCLASES.syncDay(); // las clases de hoy, también aquí
   const items=QDIA.view(),pend=QDIA.pending(),tm=QDIA.timer();
   const rows=items.map(it=>{
-    const done=QDIA.isDone(it),lock=QDIA.locked(it),name=it.mod?modName(it):it.t,label=(it.e?it.e+' ':'')+escD(name);
+    const done=QDIA.isDone(it),lock=QDIA.locked(it),name=it.mod?modName(it):it.t,label=(it.e?it.e+' ':'')+(it.cls?new Date(it.cls.st).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'})+' · ':'')+escD(name);
     const min=!it.mod&&it.min&&!done?`<span class="dl-min">⏱ ${QDIA.fmtMin(it.min)}</span>`:'';
     if(DAY_EDIT===it.id){
       const opts=[0,5,10,15,25,45,60];if(it.min&&opts.indexOf(it.min)<0){opts.push(it.min);opts.sort((a,b)=>a-b);}

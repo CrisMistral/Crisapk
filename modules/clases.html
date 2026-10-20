@@ -214,6 +214,7 @@ function render(){
   const ok=QCLASES.configured();
   document.getElementById('setup').hidden=ok;document.getElementById('main').hidden=!ok;
   if(!ok)return;
+  QCLASES.syncDay(); // las de hoy, también en «Mi día»
   renderNow();renderList();renderSync();
   if(!document.getElementById('subsBox').hidden&&OPEN_ADD===null)renderSubs(); // sin borrar lo que se está escribiendo
 }
