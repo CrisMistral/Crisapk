@@ -86,7 +86,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
     <p class="help" data-i18n="url_help">Outlook: Configuración → Calendario → Calendarios compartidos → Publicar → copia el enlace (HTML o ICS). También vale Google o iCloud.</p>
     <label class="l" for="s-subs" data-i18n="subs_l">Mis asignaturas (una por línea)</label>
     <textarea class="in" id="s-subs" placeholder="Prácticas cinematográficas&#10;Trabajo fin de máster"></textarea>
-    <div class="row"><button class="btn" onclick="saveSetup()" data-i18n="save">Guardar</button></div>
+    <div class="row"><button class="btn" onclick="saveSetup()" data-i18n="save">Guardar</button><button class="btn sec" onclick="document.getElementById('c-file').click()" data-i18n="import">📄 Importar archivo .ics</button></div>
     <div id="s-msg"></div>
   </div>
 
@@ -258,7 +258,7 @@ function importFile(inp){
 }
 function forget(){
   if(!confirm(t('forget_q')))return;
-  try{localStorage.removeItem('cris_clases_v1');localStorage.removeItem('cris_clases_cache_v1');}catch(e){}
+  try{['cris_clases_v1','cris_clases_cache_v1','cris_clases_manual_v1','cris_clases_err_v1'].forEach(k=>localStorage.removeItem(k));}catch(e){}
   render();
 }
 /* Enlace de configuración de un toque: …/clases.html#setup=<base64 de {"url":…,"subjects":[…]}> */
@@ -268,6 +268,12 @@ function forget(){
   try{
     const b=m[1].replace(/-/g,'+').replace(/_/g,'/'),json=decodeURIComponent(escape(atob(b))),o=JSON.parse(json);
     QCLASES.save({url:String(o.url||''),subjects:Array.isArray(o.subjects)?o.subjects:[],...(o.remind!=null?{remind:+o.remind}:{})});
+    // horario incluido en el enlace: [fecha AAAAMMDD, inicio HHMM, fin HHMM, asignatura (código o nombre), profesor/a, nota] · sin horas = todo el día
+    if(Array.isArray(o.ev)){
+      const C=o.codes||{},at=(d,h)=>new Date(+d.slice(0,4),+d.slice(4,6)-1,+d.slice(6,8),h?+h.slice(0,2):0,h?+h.slice(2,4):0).getTime();
+      QCLASES.importEvents(o.ev.map(e=>{const name=(C[e[3]]||e[3]||'')+(e[5]?' · '+e[5]:'');
+        return e[1]?{s:name,l:e[4]||'',st:at(e[0],e[1]),en:at(e[0],e[2])}:{s:name,l:'',st:at(e[0]),en:at(e[0])+864e5,ad:true};}),o.src||'link');
+    }
   }catch(e){}
 })();
 /* Atrás del móvil: si hay un apartado abierto, se cierra */
