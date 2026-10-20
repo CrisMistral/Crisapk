@@ -6,7 +6,7 @@
    Las horas con zona (TZID) se toman como hora local del móvil: el calendario y la
    persona están en el mismo sitio. Las horas en UTC (…Z) se pasan a hora local. */
 (function(){
-  const CFG='cris_clases_v1',CACHE='cris_clases_cache_v1';
+  const CFG='cris_clases_v1',CACHE='cris_clases_cache_v1',ERR='cris_clases_err_v1';
   const STALE=3*3600e3,DAY=864e5;
   function rd(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v&&typeof v==='object'?v:d;}catch(e){return d;}}
   function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
@@ -175,13 +175,19 @@
     const cache=rd(CACHE,{});
     if(!force&&cache.at&&Date.now()-cache.at<STALE&&cache.url===c.url)return Promise.resolve({ok:true,cached:true,n:(cache.ev||[]).length});
     if(busy)return busy;
-    const viaApi=()=>fetch('/api/ical?url='+encodeURIComponent(c.url),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject(r.status));
-    const direct=()=>fetch(c.url.replace(/^webcals?:/i,'https:').replace(/\/calendar\/published\//,'/owa/calendar/').replace(/calendar\.html(\?.*)?$/,'calendar.ics'),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject(r.status));
-    busy=viaApi().catch(direct).then(txt=>{
+    // 1.º nuestro servidor (/api/ical); si no está, directo (casi nunca deja el navegador: CORS)
+    const viaApi=()=>fetch('/api/ical?url='+encodeURIComponent(c.url),{cache:'no-store'}).then(r=>r.ok?r.text():r.text().then(b=>{let j=null;try{j=JSON.parse(b);}catch(e){}throw {api:r.status,info:j};},()=>{throw {api:r.status};}));
+    const direct=()=>fetch(c.url.replace(/^webcals?:/i,'https:').replace(/\/calendar\/published\//,'/owa/calendar/').replace(/calendar\.html(\?.*)?$/,'calendar.ics'),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject({direct:r.status}));
+    busy=viaApi().catch(e1=>direct().catch(()=>{throw e1;})).then(txt=>{
+      if(!/BEGIN:VCALENDAR/i.test(txt))throw {notics:1};
       const ev=parse(txt);
-      if(!/BEGIN:VCALENDAR/i.test(txt))return {ok:false,err:'notics'};
-      wr(CACHE,{at:Date.now(),url:c.url,ev});return {ok:true,n:ev.length};
-    }).catch(()=>({ok:false,err:navigator.onLine===false?'offline':'fetch'})).finally(()=>{busy=null;});
+      wr(CACHE,{at:Date.now(),url:c.url,ev});try{localStorage.removeItem(ERR);}catch(e){}return {ok:true,n:ev.length};
+    }).catch(e=>{
+      const off=navigator.onLine===false,err=off?'offline':(e&&e.notics)?'notics':'fetch';
+      // código corto para saber qué pasó (sin el enlace): «502 · 404/404/302»
+      const code=off?'':(e&&e.api?String(e.api)+(e.info&&Array.isArray(e.info.tried)?' · '+e.info.tried.map(x=>(x.status||'')+(x.why&&x.why!=='http'?' '+x.why:'')).join(' / '):(e.info&&e.info.error?' · '+e.info.error:'')):'net');
+      wr(ERR,{at:Date.now(),err,code});return {ok:false,err,code};
+    }).finally(()=>{busy=null;});
     return busy;
   }
   /* Importar un archivo .ics a mano (si el enlace no funciona) */
@@ -196,6 +202,7 @@
     save(c){const o=cfg();const n={...o,...c};n.subjects=(n.subjects||[]).map(s=>String(s).trim()).filter(Boolean).slice(0,30);wr(CFG,n);if(c.url!==undefined&&c.url!==o.url){try{localStorage.removeItem(CACHE);}catch(e){}}},
     configured(){const c=cfg();return !!(c.url||(rd(CACHE,{}).ev||[]).length);},
     lastSync(){return rd(CACHE,{}).at||0;},
+    lastError(){const e=rd(ERR,null);return e&&e.at>API.lastSync()?e:null;},
     hasData(){return (rd(CACHE,{}).ev||[]).length>0;},
     /* Clases de un día (0 = hoy, 1 = mañana…) con su asignatura y color */
     day(off){const s=startOfDay(Date.now()+(off||0)*DAY),e=startOfDay(s+DAY*1.5);return API.decorate(between(s,e));},
