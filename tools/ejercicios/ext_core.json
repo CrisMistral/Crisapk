@@ -1,0 +1,524 @@
+{
+ "deadbug_easy": {
+  "es": {
+   "d": "Tumbada boca arriba, bajas un talón y luego el otro. Entrena la barriga para que la espalda no se arquee.",
+   "v": "Costillas abajo. Baja un talón y vuelve. Espalda pegada.",
+   "pos": "Túmbate boca arriba en posición de mesa (rodillas encima de la cadera, espinillas paralelas al suelo). Brazos estirados hacia el techo. Pega la espalda baja a la esterilla.",
+   "exe": "1. Aprieta la barriga como un cinturón y baja las costillas · 2. Baja un talón en 2 s, rodilla doblada, hasta rozar el suelo · 3. Vuelve a la mesa en 1 s · 4. Cambia de pierna sin mover la cadera",
+   "resp": "Suelta el aire al bajar el talón y tómalo al volver.",
+   "err": "Espalda arqueada: baja menos el pie · Cadera que gira: ve más despacio y aprieta la barriga · Brazos que caen: mantenlos encima de los hombros",
+   "mus": "Barriga profunda (transverso), barriga (recto abdominal), costados (oblicuos), cadera (psoas ilíaco)"
+  },
+  "en": {
+   "d": "Lying on your back, you lower one heel, then the other. It trains your belly to keep your back from arching.",
+   "v": "Ribs down. Lower one heel and come back. Back flat.",
+   "pos": "Lie on your back in tabletop (knees over hips, shins parallel to the floor). Arms straight up to the ceiling. Press your lower back into the mat.",
+   "exe": "1. Tighten your belly like a belt and drop your ribs · 2. Lower one heel in 2 s, knee bent, to tap the floor · 3. Return to tabletop in 1 s · 4. Switch legs without moving your hips",
+   "resp": "Breathe out as the heel lowers, breathe in as you return.",
+   "err": "Back arching: lower your foot less far · Hips turning: go slower and tighten your belly · Arms dropping: keep them over your shoulders",
+   "mus": "Deep belly (transverse abdominis), belly (rectus abdominis), sides (obliques), hip (iliopsoas)"
+  },
+  "fr": {
+   "d": "Allongée sur le dos, tu descends un talon, puis l’autre. Ça apprend au ventre à empêcher le dos de se creuser.",
+   "v": "Côtes basses. Descends un talon et reviens. Dos plaqué.",
+   "pos": "Allonge-toi sur le dos en position de table (genoux au-dessus des hanches, tibias parallèles au sol). Bras tendus vers le plafond. Plaque le bas du dos au tapis.",
+   "exe": "1. Serre le ventre comme une ceinture et baisse les côtes · 2. Descends un talon en 2 s, genou plié, jusqu’à effleurer le sol · 3. Reviens en table en 1 s · 4. Change de jambe sans bouger les hanches",
+   "resp": "Souffle en descendant le talon, inspire en revenant.",
+   "err": "Dos qui se creuse : descends moins le pied · Hanches qui tournent : va plus lentement et serre le ventre · Bras qui tombent : garde-les au-dessus des épaules",
+   "mus": "Ventre profond (transverse), ventre (grand droit), côtés (obliques), hanche (ilio-psoas)"
+  }
+ },
+ "deadbug": {
+  "es": {
+   "d": "Tumbada boca arriba, estiras a la vez un brazo y la pierna contraria. Entrena la barriga para no arquear ni girar.",
+   "v": "Brazo y pierna contraria lejos. Costillas abajo. Vuelve.",
+   "pos": "Túmbate boca arriba en posición de mesa (rodillas encima de la cadera, espinillas paralelas al suelo). Brazos estirados hacia el techo. Pega la espalda baja a la esterilla.",
+   "exe": "1. Aprieta la barriga como un cinturón y baja las costillas · 2. Estira un brazo atrás y la pierna contraria en 2 s · 3. Para antes de tocar el suelo. Vuelve a la mesa en 1 s · 4. Cambia de lado",
+   "resp": "Suelta el aire al estirar y tómalo al volver al centro.",
+   "err": "Espalda que se despega: estira menos brazo y pierna · Costillas que se abren: suelta más aire y bájalas · Prisa: sigue el ritmo, 2 segundos y 1 segundo",
+   "mus": "Barriga profunda (transverso), barriga (recto abdominal), costados (oblicuos), cadera (psoas ilíaco), costillas (serrato anterior)"
+  },
+  "en": {
+   "d": "Lying on your back, you stretch one arm and the opposite leg together. It trains your belly not to arch or twist.",
+   "v": "Opposite arm and leg long. Ribs down. Come back.",
+   "pos": "Lie on your back in tabletop (knees over hips, shins parallel to the floor). Arms straight up to the ceiling. Press your lower back into the mat.",
+   "exe": "1. Tighten your belly like a belt and drop your ribs · 2. Reach one arm back and the opposite leg out in 2 s · 3. Stop before touching the floor. Return to tabletop in 1 s · 4. Switch sides",
+   "resp": "Breathe out as you stretch, breathe in as you come back.",
+   "err": "Back lifting off: stretch your arm and leg less far · Ribs flaring: breathe out more and lower them · Rushing: keep the rhythm, 2 seconds then 1 second",
+   "mus": "Deep belly (transverse abdominis), belly (rectus abdominis), sides (obliques), hip (iliopsoas), ribs (serratus anterior)"
+  },
+  "fr": {
+   "d": "Allongée sur le dos, tu tends ensemble un bras et la jambe opposée. Ça apprend au ventre à ne pas creuser ni tourner.",
+   "v": "Bras et jambe opposée loin. Côtes basses. Reviens.",
+   "pos": "Allonge-toi sur le dos en position de table (genoux au-dessus des hanches, tibias parallèles au sol). Bras tendus vers le plafond. Plaque le bas du dos au tapis.",
+   "exe": "1. Serre le ventre comme une ceinture et baisse les côtes · 2. Tends un bras en arrière et la jambe opposée en 2 s · 3. Arrête avant le sol. Reviens en table en 1 s · 4. Change de côté",
+   "resp": "Souffle en tendant, inspire en revenant au centre.",
+   "err": "Bas du dos qui décolle : tends moins loin · Côtes qui s’ouvrent : souffle plus et baisse-les · Précipitation : garde le rythme, 2 secondes puis 1 seconde",
+   "mus": "Ventre profond (transverse), ventre (grand droit), côtés (obliques), hanche (ilio-psoas), côtes (dentelé antérieur)"
+  }
+ },
+ "deadbug_slow": {
+  "es": {
+   "d": "Bicho muerto a cámara lenta. Estiras en 3 s y aguantas 1 s, con la espalda baja pegada al suelo.",
+   "v": "Estira en 3, aguanta 1, vuelve despacio.",
+   "pos": "Túmbate boca arriba en posición de mesa (rodillas encima de la cadera, espinillas paralelas al suelo). Brazos estirados hacia el techo. Pega la espalda baja a la esterilla.",
+   "exe": "1. Desde la mesa, aprieta la barriga como un cinturón · 2. Estira un brazo y la pierna contraria en 3 s · 3. Pausa 1 s con la espalda baja pegada · 4. Vuelve en 2 s y cambia de lado",
+   "resp": "Suelta el aire despacio al estirar y en la pausa, y tómalo al volver.",
+   "err": "Aguantar el aire: suéltalo poco a poco todo el rato · Perder el ritmo: cuenta 3, 1 y 2 · Espalda arqueada en la pausa: no alejes tanto la pierna",
+   "mus": "Barriga profunda (transverso), barriga (recto abdominal), costados (oblicuos), cadera (psoas ilíaco), costillas (serrato anterior)"
+  },
+  "en": {
+   "d": "Dead bug in slow motion. You stretch in 3 s and hold 1 s, with your lower back flat on the floor.",
+   "v": "Stretch for 3, hold for 1, come back slowly.",
+   "pos": "Lie on your back in tabletop (knees over hips, shins parallel to the floor). Arms straight up to the ceiling. Press your lower back into the mat.",
+   "exe": "1. From tabletop, tighten your belly like a belt · 2. Reach one arm and the opposite leg in 3 s · 3. Pause 1 s with your lower back flat · 4. Return in 2 s and switch sides",
+   "resp": "Breathe out slowly as you stretch and pause, then breathe in as you return.",
+   "err": "Holding your breath: breathe out steadily the whole time · Losing the rhythm: count 3, 1 and 2 · Back arching in the pause: don’t reach your leg so far",
+   "mus": "Deep belly (transverse abdominis), belly (rectus abdominis), sides (obliques), hip (iliopsoas), ribs (serratus anterior)"
+  },
+  "fr": {
+   "d": "Dead bug au ralenti. Tu tends en 3 s et tu tiens 1 s, le bas du dos plaqué au sol.",
+   "v": "Tends en 3, tiens 1, reviens doucement.",
+   "pos": "Allonge-toi sur le dos en position de table (genoux au-dessus des hanches, tibias parallèles au sol). Bras tendus vers le plafond. Plaque le bas du dos au tapis.",
+   "exe": "1. Depuis la table, serre le ventre comme une ceinture · 2. Tends un bras et la jambe opposée en 3 s · 3. Pause 1 s, bas du dos plaqué · 4. Reviens en 2 s et change de côté",
+   "resp": "Souffle lentement en tendant et pendant la pause, inspire en revenant.",
+   "err": "Bloquer l’air : souffle en continu · Perdre le rythme : compte 3, 1 et 2 · Dos qui se creuse pendant la pause : tends la jambe moins loin",
+   "mus": "Ventre profond (transverse), ventre (grand droit), côtés (obliques), hanche (ilio-psoas), côtes (dentelé antérieur)"
+  }
+ },
+ "crunch": {
+  "es": {
+   "d": "Encogimiento corto. Subes solo la cabeza y los hombros. Trabaja la barriga sin forzar el cuello.",
+   "v": "Costillas hacia la cadera. Sube los hombros. Baja lenta.",
+   "pos": "Túmbate boca arriba con las rodillas dobladas. Pies apoyados, separados como tu cadera. Dedos en las sienes o brazos cruzados. Deja un puño entre barbilla y pecho.",
+   "exe": "1. Aprieta la barriga y acerca las costillas a la cadera · 2. Sube cabeza y hombros en 1 s, hasta despegar los omóplatos · 3. Pausa 1 s · 4. Baja en 2-3 s sin soltar del todo",
+   "resp": "Suelta el aire al subir y tómalo al bajar.",
+   "err": "Tirar del cuello: apoya solo los dedos y mira a las rodillas · Subir con impulso: haz la pausa arriba · Barriga que se hincha: suelta el aire y mete el ombligo",
+   "mus": "Barriga (recto abdominal), costados (oblicuos interno y externo), barriga profunda (transverso)"
+  },
+  "en": {
+   "d": "A short crunch. You lift only your head and shoulders. It works your belly without straining your neck.",
+   "v": "Ribs toward hips. Lift your shoulders. Lower slowly.",
+   "pos": "Lie on your back with knees bent. Feet flat, hip-width apart. Fingers at your temples or arms crossed on your chest. Keep a fist between chin and chest.",
+   "exe": "1. Tighten your belly and draw your ribs toward your hips · 2. Lift head and shoulders in 1 s, shoulder blades off the mat · 3. Pause 1 s · 4. Lower in 2-3 s without fully relaxing",
+   "resp": "Breathe out as you lift, breathe in as you lower.",
+   "err": "Pulling your neck: use only your fingertips and look at your knees · Using momentum: pause at the top · Belly puffing out: breathe out and pull your navel in",
+   "mus": "Belly (rectus abdominis), sides (internal and external obliques), deep belly (transverse abdominis)"
+  },
+  "fr": {
+   "d": "Un crunch court. Tu montes seulement la tête et les épaules. Ça travaille le ventre sans forcer la nuque.",
+   "v": "Côtes vers les hanches. Monte les épaules. Redescends lentement.",
+   "pos": "Allonge-toi sur le dos, genoux pliés. Pieds au sol, écartés comme tes hanches. Doigts sur les tempes ou bras croisés. Garde un poing entre menton et poitrine.",
+   "exe": "1. Serre le ventre et rapproche les côtes des hanches · 2. Monte tête et épaules en 1 s, omoplates décollées · 3. Pause 1 s · 4. Redescends en 2-3 s sans tout relâcher",
+   "resp": "Souffle en montant, inspire en descendant.",
+   "err": "Tirer sur la nuque : pose juste les doigts et regarde tes genoux · Prendre de l’élan : fais la pause en haut · Ventre qui gonfle : souffle et rentre le nombril",
+   "mus": "Ventre (grand droit), côtés (obliques interne et externe), ventre profond (transverse)"
+  }
+ },
+ "crunch_tt": {
+  "es": {
+   "d": "Encogimiento con las piernas en el aire, en posición de mesa. Las piernas no dan impulso y la barriga trabaja más.",
+   "v": "Piernas quietas. Sube los hombros. Baja lenta.",
+   "pos": "Túmbate boca arriba en posición de mesa (rodillas encima de la cadera, espinillas paralelas al suelo). Dedos en las sienes. Pega la espalda baja a la esterilla.",
+   "exe": "1. Deja las piernas quietas en mesa y aprieta la barriga · 2. Sube cabeza y hombros en 1 s, hasta despegar los omóplatos · 3. Pausa 1 s · 4. Baja en 2-3 s sin mover las piernas",
+   "resp": "Suelta el aire al subir y tómalo al bajar.",
+   "err": "Piernas que se balancean: rodillas quietas encima de la cadera · Espalda arqueada: mete un poco el culo y pega la espalda baja · Tirar del cuello: mira en diagonal a las rodillas",
+   "mus": "Barriga (recto abdominal), costados (oblicuos), barriga profunda (transverso), cadera, que trabaja quieta (psoas ilíaco)"
+  },
+  "en": {
+   "d": "A crunch with your legs up in tabletop. Your legs can’t swing to help, so your belly works harder.",
+   "v": "Legs still. Lift your shoulders. Lower slowly.",
+   "pos": "Lie on your back in tabletop (knees over hips, shins parallel to the floor). Fingers at your temples. Press your lower back into the mat.",
+   "exe": "1. Keep your legs still in tabletop and tighten your belly · 2. Lift head and shoulders in 1 s, shoulder blades off the mat · 3. Pause 1 s · 4. Lower in 2-3 s without moving your legs",
+   "resp": "Breathe out as you lift, breathe in as you lower.",
+   "err": "Legs swinging: keep your knees still over your hips · Back arching: tuck your tailbone a little and press your lower back down · Pulling your neck: look diagonally at your knees",
+   "mus": "Belly (rectus abdominis), sides (obliques), deep belly (transverse abdominis), hip, working without moving (iliopsoas)"
+  },
+  "fr": {
+   "d": "Un crunch avec les jambes en l’air, en position de table. Les jambes ne donnent pas d’élan, donc le ventre travaille plus.",
+   "v": "Jambes immobiles. Monte les épaules. Redescends lentement.",
+   "pos": "Allonge-toi sur le dos en position de table (genoux au-dessus des hanches, tibias parallèles au sol). Doigts sur les tempes. Plaque le bas du dos au tapis.",
+   "exe": "1. Garde les jambes immobiles en table et serre le ventre · 2. Monte tête et épaules en 1 s, omoplates décollées · 3. Pause 1 s · 4. Redescends en 2-3 s sans bouger les jambes",
+   "resp": "Souffle en montant, inspire en descendant.",
+   "err": "Jambes qui se balancent : genoux immobiles au-dessus des hanches · Dos qui se creuse : rentre un peu les fesses et plaque le bas du dos · Tirer sur la nuque : regarde vers tes genoux",
+   "mus": "Ventre (grand droit), côtés (obliques), ventre profond (transverse), hanche, qui travaille sans bouger (ilio-psoas)"
+  }
+ },
+ "situp": {
+  "es": {
+   "d": "Abdominal completo: pasas de tumbada a sentada y vuelves despacio. Trabaja la barriga y la parte delantera de la cadera.",
+   "v": "Enróllate hasta sentarte. Desenróllate hueso a hueso.",
+   "pos": "Túmbate boca arriba con las rodillas dobladas. Pies apoyados, separados como tu cadera. Brazos estirados al frente o cruzados en el pecho.",
+   "exe": "1. Despega cabeza y omóplatos, como en un encogimiento · 2. Sigue enrollándote hasta sentarte en 2 s · 3. Baja en 3 s, apoyando la espalda vértebra a vértebra · 4. Apoya los hombros y repite",
+   "resp": "Suelta el aire al subir y tómalo al bajar.",
+   "err": "Tirar del cuello: lleva los brazos al frente · Pies que se levantan: usa los brazos como contrapeso y sube más despacio · Caer de golpe: baja en 3 segundos",
+   "mus": "Barriga (recto abdominal), costados (oblicuos), parte delantera de la cadera (psoas ilíaco), muslo (recto femoral)"
+  },
+  "en": {
+   "d": "A full sit-up: you go from lying to sitting and back down slowly. It works your belly and the front of your hips.",
+   "v": "Curl up to sitting. Roll down one bone at a time.",
+   "pos": "Lie on your back with knees bent. Feet flat, hip-width apart. Arms straight in front or crossed on your chest.",
+   "exe": "1. Lift head and shoulder blades, like a crunch · 2. Keep curling up to sitting in 2 s · 3. Roll down one vertebra at a time in 3 s · 4. Touch your shoulders down and repeat",
+   "resp": "Breathe out as you lift, breathe in as you lower.",
+   "err": "Pulling your neck: reach your arms forward · Feet lifting: use your arms as a counterweight and go slower · Dropping fast: lower in 3 seconds",
+   "mus": "Belly (rectus abdominis), sides (obliques), front of hip (iliopsoas), front of thigh (rectus femoris)"
+  },
+  "fr": {
+   "d": "Un relevé de buste complet : tu passes d’allongée à assise, puis tu redescends lentement. Ça travaille le ventre et l’avant des hanches.",
+   "v": "Enroule-toi jusqu’à t’asseoir. Déroule-toi doucement.",
+   "pos": "Allonge-toi sur le dos, genoux pliés. Pieds au sol, écartés comme tes hanches. Bras tendus devant toi ou croisés sur la poitrine.",
+   "exe": "1. Décolle tête et omoplates, comme pour un crunch · 2. Continue d’enrouler jusqu’à être assise en 2 s · 3. Déroule-toi vertèbre par vertèbre en 3 s · 4. Repose les épaules et recommence",
+   "resp": "Souffle en montant, inspire en descendant.",
+   "err": "Tirer sur la nuque : tends les bras devant toi · Pieds qui décollent : sers-toi des bras comme contrepoids et monte plus lentement · Tomber d’un coup : redescends en 3 secondes",
+   "mus": "Ventre (grand droit), côtés (obliques), avant de la hanche (ilio-psoas), avant de la cuisse (droit fémoral)"
+  }
+ },
+ "sideplank_knee": {
+  "es": {
+   "d": "Plancha de lado apoyando el antebrazo y la rodilla. Trabaja los costados para mantener el cuerpo recto.",
+   "v": "Codo bajo el hombro. Cadera arriba. Línea recta.",
+   "pos": "Túmbate de lado. Apoya el antebrazo con el codo justo bajo el hombro. Rodillas dobladas en ángulo recto, una encima de la otra. Hombros, cadera y rodillas en línea.",
+   "exe": "1. Aprieta la barriga y empuja el suelo con el antebrazo · 2. Sube la cadera en 1 s: hombro, cadera y rodilla en línea · 3. Aguanta el tiempo indicado · 4. Baja con control y cambia de lado",
+   "resp": "Respira tranquila todo el rato y suelta el aire al subir la cadera.",
+   "err": "Cadera que cae: empuja el suelo y súbela · Hombro hundido: aléjalo de la oreja · Cadera hacia atrás: llévala hacia delante hasta la línea",
+   "mus": "Costados (oblicuos), zona lumbar (cuadrado lumbar), lado del glúteo (glúteo medio), barriga profunda (transverso), costillas (serrato anterior)"
+  },
+  "en": {
+   "d": "A side plank on your forearm and knee. It works the sides of your waist to keep your body straight.",
+   "v": "Elbow under shoulder. Hips up. Straight line.",
+   "pos": "Lie on your side. Put your forearm down, elbow right under your shoulder. Knees bent at a right angle, one on top of the other. Shoulders, hips and knees in line.",
+   "exe": "1. Tighten your belly and push the floor with your forearm · 2. Lift your hips in 1 s: shoulder, hip and knee in line · 3. Hold for the set time · 4. Lower with control and switch sides",
+   "resp": "Breathe calmly all the time and breathe out as your hips lift.",
+   "err": "Hips dropping: push the floor and lift them · Shoulder sinking: move it away from your ear · Hips sticking back: bring them forward into line",
+   "mus": "Sides (obliques), lower back (quadratus lumborum), side of bottom (gluteus medius), deep belly (transverse abdominis), ribs (serratus anterior)"
+  },
+  "fr": {
+   "d": "Une planche sur le côté, sur l’avant-bras et le genou. Ça travaille les côtés de la taille pour garder le corps droit.",
+   "v": "Coude sous l’épaule. Bassin haut. Ligne droite.",
+   "pos": "Allonge-toi sur le côté. Pose l’avant-bras, coude juste sous l’épaule. Genoux pliés à angle droit, l’un sur l’autre. Épaules, hanches et genoux alignés.",
+   "exe": "1. Serre le ventre et repousse le sol avec l’avant-bras · 2. Monte le bassin en 1 s, épaule, hanche et genou alignés · 3. Tiens le temps indiqué · 4. Redescends avec contrôle et change de côté",
+   "resp": "Respire calmement tout le temps et souffle en montant le bassin.",
+   "err": "Bassin qui tombe : repousse le sol et remonte-le · Épaule qui s’écrase : éloigne-la de l’oreille · Bassin en arrière : avance-le jusqu’à la ligne",
+   "mus": "Côtés (obliques), bas du dos (carré des lombes), côté des fesses (moyen fessier), ventre profond (transverse), côtes (dentelé antérieur)"
+  }
+ },
+ "sideplank": {
+  "es": {
+   "d": "Plancha de lado sobre el antebrazo y el borde del pie. Trabaja los costados para mantener el cuerpo recto, sin girar.",
+   "v": "Cuerpo recto como una tabla. Cadera arriba. Aguanta.",
+   "pos": "Túmbate de lado con las piernas estiradas. Apoya el antebrazo con el codo bajo el hombro. Pies uno encima del otro, o el de arriba delante. Cuerpo en línea.",
+   "exe": "1. Empuja el suelo con el antebrazo y aprieta la barriga · 2. Sube la cadera en 1 s: línea recta de cabeza a pies · 3. Aguanta sin girar el tronco · 4. Baja con control y cambia de lado",
+   "resp": "Respira tranquila todo el rato y suelta el aire al subir la cadera.",
+   "err": "Cadera que cae: empuja el suelo o apoya la rodilla de abajo · Tronco que gira: hombros y cadera uno encima del otro · Hombro hundido: aléjalo de la oreja",
+   "mus": "Costados (oblicuos), zona lumbar (cuadrado lumbar), lado del glúteo (glúteo medio), faja interna (transverso), costillas (serrato), ingles (aductores)"
+  },
+  "en": {
+   "d": "A side plank on your forearm and the edge of your foot. It works the sides of your waist to keep you straight, without twisting.",
+   "v": "Body straight like a board. Hips up. Hold.",
+   "pos": "Lie on your side, legs straight. Put your forearm down, elbow under your shoulder. Feet stacked, or top foot in front. Whole body in one line.",
+   "exe": "1. Push the floor with your forearm and tighten your belly · 2. Lift your hips in 1 s: straight line from head to feet · 3. Hold without twisting your trunk · 4. Lower with control and switch sides",
+   "resp": "Breathe calmly all the time and breathe out as your hips lift.",
+   "err": "Hips dropping: push the floor or put your bottom knee down · Trunk twisting: stack shoulders and hips · Shoulder sinking: move it away from your ear",
+   "mus": "Sides (obliques), lower back (quadratus lumborum), side of bottom (gluteus medius), deep belly (transverse), ribs (serratus), inner thigh (adductors)"
+  },
+  "fr": {
+   "d": "Une planche sur le côté, sur l’avant-bras et le bord du pied. Ça travaille les côtés de la taille pour rester droite, sans tourner.",
+   "v": "Corps droit comme une planche. Bassin haut. Tiens.",
+   "pos": "Allonge-toi sur le côté, jambes tendues. Pose l’avant-bras, coude sous l’épaule. Pieds l’un sur l’autre, ou celui du dessus devant. Tout le corps aligné.",
+   "exe": "1. Repousse le sol avec l’avant-bras et serre le ventre · 2. Monte le bassin en 1 s, droite de la tête aux pieds · 3. Tiens sans tourner le buste · 4. Redescends avec contrôle et change de côté",
+   "resp": "Respire calmement tout le temps et souffle en montant le bassin.",
+   "err": "Bassin qui tombe : repousse le sol ou pose le genou du dessous · Buste qui tourne : épaules et hanches l’une sur l’autre · Épaule qui s’écrase : éloigne-la de l’oreille",
+   "mus": "Côtés (obliques), bas du dos (carré des lombes), côté des fesses (moyen fessier), ventre profond (transverse), côtes (dentelé), cuisses (adducteurs)"
+  }
+ },
+ "sideplank_dip": {
+  "es": {
+   "d": "Plancha de lado en movimiento. Bajas y subes la cadera despacio, sin girar el cuerpo.",
+   "v": "Baja la cadera en 2, sube en 1.",
+   "pos": "Ponte en plancha de lado sobre el antebrazo y el borde del pie. Codo bajo el hombro. Cuerpo recto de cabeza a pies y barriga apretada.",
+   "exe": "1. Empieza en plancha de lado con la cadera en línea · 2. Baja la cadera en 2 s, casi hasta el suelo · 3. Súbela en 1 s, un poco por encima de la línea · 4. Termina las repeticiones y cambia de lado",
+   "resp": "Toma aire al bajar la cadera y suéltalo al subirla.",
+   "err": "Tirones: baja despacio, en 2 segundos · Tronco que gira: hombros y cadera uno encima del otro · Hombro hundido: empuja el suelo con el antebrazo",
+   "mus": "Costados (oblicuos), zona lumbar (cuadrado lumbar), lado del glúteo (glúteo medio), barriga profunda (transverso), costillas (serrato anterior)"
+  },
+  "en": {
+   "d": "A moving side plank. You lower and lift your hips slowly, without twisting your body.",
+   "v": "Lower your hips for 2, lift for 1.",
+   "pos": "Get into a side plank on your forearm and the edge of your foot. Elbow under your shoulder. Body straight from head to feet, belly tight.",
+   "exe": "1. Start in a side plank with hips in line · 2. Lower your hips in 2 s, almost to the floor · 3. Lift them in 1 s, a little above the line · 4. Finish the reps and switch sides",
+   "resp": "Breathe in as your hips lower, breathe out as they lift.",
+   "err": "Jerky moves: lower slowly, over 2 seconds · Trunk twisting: stack shoulders and hips · Shoulder sinking: push the floor with your forearm",
+   "mus": "Sides (obliques), lower back (quadratus lumborum), side of bottom (gluteus medius), deep belly (transverse abdominis), ribs (serratus anterior)"
+  },
+  "fr": {
+   "d": "Une planche sur le côté en mouvement. Tu descends et remontes le bassin lentement, sans tourner le corps.",
+   "v": "Descends le bassin en 2, remonte en 1.",
+   "pos": "Mets-toi en planche sur le côté, sur l’avant-bras et le bord du pied. Coude sous l’épaule. Corps droit de la tête aux pieds, ventre serré.",
+   "exe": "1. Pars en planche sur le côté, bassin aligné · 2. Descends le bassin en 2 s, presque jusqu’au sol · 3. Remonte en 1 s, un peu au-dessus de la ligne · 4. Termine la série et change de côté",
+   "resp": "Inspire en descendant le bassin, souffle en le remontant.",
+   "err": "À-coups : descends lentement, en 2 secondes · Buste qui tourne : épaules et hanches l’une sur l’autre · Épaule qui s’écrase : repousse le sol avec l’avant-bras",
+   "mus": "Côtés (obliques), bas du dos (carré des lombes), côté des fesses (moyen fessier), ventre profond (transverse), côtes (dentelé antérieur)"
+  }
+ },
+ "legraise_single": {
+  "es": {
+   "d": "Tumbada boca arriba, subes una pierna estirada y luego la otra. Es más fácil que subir las dos juntas.",
+   "v": "Espalda pegada. Sube una pierna y baja lenta.",
+   "pos": "Túmbate boca arriba con las piernas estiradas. Brazos a los lados con las palmas abajo, o manos bajo los glúteos. Pega la espalda baja a la esterilla.",
+   "exe": "1. Aprieta la barriga y deja la cadera quieta · 2. Sube una pierna estirada en 2 s, hasta apuntar al techo · 3. Bájala en 3 s sin tocar el suelo · 4. Cambia de pierna",
+   "resp": "Suelta el aire al subir la pierna y tómalo al bajarla.",
+   "err": "Espalda arqueada: dobla la otra pierna o pon las manos bajo los glúteos · Bajar de golpe: cuenta 3 segundos · Cadera que gira: deja quietos los dos lados",
+   "mus": "Barriga (recto abdominal), barriga profunda (transverso), parte delantera de la cadera (psoas ilíaco), muslo (recto femoral)"
+  },
+  "en": {
+   "d": "Lying on your back, you lift one straight leg, then the other. It’s easier than lifting both together.",
+   "v": "Back flat. Lift one leg and lower slowly.",
+   "pos": "Lie on your back, legs straight. Arms by your sides, palms down, or hands under your bottom. Press your lower back into the mat.",
+   "exe": "1. Tighten your belly and keep your hips still · 2. Raise one straight leg in 2 s, pointing to the ceiling · 3. Lower it in 3 s without touching the floor · 4. Switch legs",
+   "resp": "Breathe out as the leg lifts, breathe in as it lowers.",
+   "err": "Back arching: bend the other leg or put your hands under your bottom · Dropping fast: count 3 seconds · Hips turning: keep both sides still",
+   "mus": "Belly (rectus abdominis), deep belly (transverse abdominis), front of hip (iliopsoas), front of thigh (rectus femoris)"
+  },
+  "fr": {
+   "d": "Allongée sur le dos, tu montes une jambe tendue, puis l’autre. C’est plus facile que de monter les deux ensemble.",
+   "v": "Dos plaqué. Monte une jambe et redescends lentement.",
+   "pos": "Allonge-toi sur le dos, jambes tendues. Bras le long du corps, paumes au sol, ou mains sous les fesses. Plaque le bas du dos au tapis.",
+   "exe": "1. Serre le ventre et garde le bassin immobile · 2. Monte une jambe tendue en 2 s, vers le plafond · 3. Redescends-la en 3 s sans toucher le sol · 4. Change de jambe",
+   "resp": "Souffle en montant la jambe, inspire en la descendant.",
+   "err": "Dos qui se creuse : plie l’autre jambe ou mets les mains sous les fesses · Descendre d’un coup : compte 3 secondes · Bassin qui tourne : garde les deux côtés immobiles",
+   "mus": "Ventre (grand droit), ventre profond (transverse), avant de la hanche (ilio-psoas), avant de la cuisse (droit fémoral)"
+  }
+ },
+ "reversecrunch": {
+  "es": {
+   "d": "Encogimiento inverso: llevas las rodillas al pecho enrollando la pelvis. Movimiento corto y sin impulso.",
+   "v": "Enrolla la pelvis, rodillas al pecho, baja lenta.",
+   "pos": "Túmbate boca arriba en posición de mesa (rodillas encima de la cadera, espinillas paralelas al suelo). Brazos a los lados, palmas abajo. Espalda baja pegada.",
+   "exe": "1. Aprieta la barriga y baja las costillas · 2. Enrolla la pelvis en 1 s, rodillas al pecho, glúteos algo despegados · 3. Pausa 1 s · 4. Baja en 3 s hasta la mesa",
+   "resp": "Suelta el aire al enrollar la pelvis y tómalo al bajar.",
+   "err": "Piernas que se balancean: sube menos y haz la pausa · Empujar con los brazos: apoya las palmas sin apretar · Bajar de golpe: tómate los 3 segundos",
+   "mus": "Barriga (recto abdominal), costados (oblicuos), barriga profunda (transverso), parte delantera de la cadera (psoas ilíaco)"
+  },
+  "en": {
+   "d": "A reverse crunch: you curl your pelvis to bring your knees to your chest. Short range, no swinging.",
+   "v": "Curl your pelvis, knees to chest, lower slowly.",
+   "pos": "Lie on your back in tabletop (knees over hips, shins parallel to the floor). Arms by your sides, palms down. Lower back on the mat.",
+   "exe": "1. Tighten your belly and drop your ribs · 2. Curl your pelvis in 1 s, knees to chest, bottom slightly up · 3. Pause 1 s · 4. Lower in 3 s back to tabletop",
+   "resp": "Breathe out as you curl your pelvis, breathe in as you lower.",
+   "err": "Legs swinging: move less and pause · Pushing with your arms: rest your palms without pressing · Dropping fast: take the full 3 seconds",
+   "mus": "Belly (rectus abdominis), sides (obliques), deep belly (transverse abdominis), front of hip (iliopsoas)"
+  },
+  "fr": {
+   "d": "Un crunch inversé : tu enroules le bassin pour amener les genoux vers la poitrine. Mouvement court, sans élan.",
+   "v": "Enroule le bassin, genoux à la poitrine, redescends lentement.",
+   "pos": "Allonge-toi sur le dos en position de table (genoux au-dessus des hanches, tibias parallèles au sol). Bras le long du corps, paumes au sol. Bas du dos plaqué.",
+   "exe": "1. Serre le ventre et baisse les côtes · 2. Enroule le bassin en 1 s, genoux à la poitrine, fesses décollées · 3. Pause 1 s · 4. Redescends en 3 s jusqu’à la table",
+   "resp": "Souffle en enroulant le bassin, inspire en redescendant.",
+   "err": "Jambes qui se balancent : bouge moins et fais la pause · Pousser avec les bras : pose les paumes sans appuyer · Descendre d’un coup : prends bien les 3 secondes",
+   "mus": "Ventre (grand droit), côtés (obliques), ventre profond (transverse), avant de la hanche (ilio-psoas)"
+  }
+ },
+ "legraise": {
+  "es": {
+   "d": "Tumbada boca arriba, subes las dos piernas estiradas y las bajas despacio. Es exigente: la espalda no debe arquearse.",
+   "v": "Espalda pegada, piernas juntas, baja en 3.",
+   "pos": "Túmbate boca arriba con las piernas juntas y estiradas. Brazos a los lados con las palmas abajo, o manos bajo los glúteos. Espalda baja pegada y costillas abajo.",
+   "exe": "1. Aprieta la barriga y pega la espalda baja a la esterilla · 2. Sube las piernas en 2 s, hasta apuntar al techo · 3. Baja en 3 s solo mientras la espalda siga pegada · 4. Repite sin tocar el suelo",
+   "resp": "Suelta el aire al subir y tómalo mientras bajas despacio.",
+   "err": "Espalda arqueada al bajar: para más arriba o dobla las rodillas · Impulso: haz una pausa arriba · Cuello tenso: apoya la cabeza relajada",
+   "mus": "Barriga (recto abdominal), barriga profunda (transverso), costados (oblicuos), cadera (psoas ilíaco), muslo (recto femoral)"
+  },
+  "en": {
+   "d": "Lying on your back, you lift both straight legs and lower them slowly. It’s hard work: your back must not arch.",
+   "v": "Back flat, legs together, lower for 3.",
+   "pos": "Lie on your back, legs together and straight. Arms by your sides, palms down, or hands under your bottom. Lower back flat, ribs down.",
+   "exe": "1. Tighten your belly and press your lower back into the mat · 2. Raise your legs in 2 s, pointing to the ceiling · 3. Lower in 3 s only while your back stays flat · 4. Repeat without touching the floor",
+   "resp": "Breathe out as you lift, breathe in as you lower slowly.",
+   "err": "Back arching on the way down: stop higher or bend your knees · Using momentum: pause at the top · Tense neck: rest your head and relax",
+   "mus": "Belly (rectus abdominis), deep belly (transverse abdominis), sides (obliques), hip (iliopsoas), thigh (rectus femoris)"
+  },
+  "fr": {
+   "d": "Allongée sur le dos, tu montes les deux jambes tendues et tu les descends lentement. C’est exigeant : le dos ne doit pas se creuser.",
+   "v": "Dos plaqué, jambes serrées, descends en 3.",
+   "pos": "Allonge-toi sur le dos, jambes serrées et tendues. Bras le long du corps, paumes au sol, ou mains sous les fesses. Bas du dos plaqué, côtes basses.",
+   "exe": "1. Serre le ventre et plaque le bas du dos au tapis · 2. Monte les jambes en 2 s, vers le plafond · 3. Descends en 3 s tant que le dos reste plaqué · 4. Recommence sans toucher le sol",
+   "resp": "Souffle en montant, inspire pendant la descente lente.",
+   "err": "Dos qui se creuse en descendant : arrête plus haut ou plie les genoux · Élan : fais une pause en haut · Nuque tendue : pose la tête, détendue",
+   "mus": "Ventre (grand droit), ventre profond (transverse), côtés (obliques), hanche (ilio-psoas), cuisse (droit fémoral)"
+  }
+ },
+ "birddog_easy": {
+  "es": {
+   "d": "A cuatro patas, estiras solo un brazo o solo una pierna. Aprendes a mantener la espalda quieta, sin girar.",
+   "v": "Espalda recta. Brazo largo y vuelve. Luego la pierna.",
+   "pos": "Ponte a cuatro patas. Manos bajo los hombros y rodillas bajo la cadera. Espalda recta, sin hundirla ni redondearla. Mirada al suelo y barriga apretada.",
+   "exe": "1. Estira un brazo al frente en 2 s, a la altura del hombro · 2. Vuelve y estira la pierna contraria atrás en 2 s · 3. Súbela solo hasta la altura de la cadera y vuelve · 4. Cambia de lado sin mover la cadera",
+   "resp": "Suelta el aire al estirar y tómalo al volver.",
+   "err": "Espalda que se hunde: no subas la pierna más alta que la cadera · Cadera que gira: cadera paralela al suelo · Hombros hundidos: empuja el suelo con la mano",
+   "mus": "Espalda (erectores y multífidos), glúteo (glúteo mayor), barriga profunda (transverso), costados (oblicuos), hombro (deltoides)"
+  },
+  "en": {
+   "d": "On all fours, you stretch just one arm or just one leg. You learn to keep your back still, without twisting.",
+   "v": "Back straight. Arm long and back. Then the leg.",
+   "pos": "Get on all fours. Hands under shoulders, knees under hips. Back straight, not sagging or rounded. Eyes on the floor, belly tight.",
+   "exe": "1. Reach one arm forward in 2 s, at shoulder height · 2. Come back and stretch the opposite leg back in 2 s · 3. Lift it only to hip height, then return · 4. Switch sides without moving your hips",
+   "resp": "Breathe out as you stretch, breathe in as you come back.",
+   "err": "Back sagging: don’t lift your leg above hip height · Hips turning: keep them level with the floor · Shoulders sinking: push the floor with your hand",
+   "mus": "Back (erector spinae and multifidus), bottom (gluteus maximus), deep belly (transverse abdominis), sides (obliques), shoulder (deltoid)"
+  },
+  "fr": {
+   "d": "À quatre pattes, tu tends seulement un bras ou seulement une jambe. Tu apprends à garder le dos immobile, sans tourner.",
+   "v": "Dos droit. Bras long et reviens. Puis la jambe.",
+   "pos": "Mets-toi à quatre pattes. Mains sous les épaules, genoux sous les hanches. Dos droit, ni creusé ni arrondi. Regard au sol, ventre serré.",
+   "exe": "1. Tends un bras devant en 2 s, à hauteur d’épaule · 2. Reviens et tends la jambe opposée derrière en 2 s · 3. Monte-la seulement à hauteur de hanche, puis reviens · 4. Change de côté sans bouger le bassin",
+   "resp": "Souffle en tendant, inspire en revenant.",
+   "err": "Dos qui se creuse : ne monte pas la jambe plus haut que la hanche · Bassin qui tourne : garde-le parallèle au sol · Épaules qui s’écrasent : repousse le sol avec la main",
+   "mus": "Dos (érecteurs et multifides), fesses (grand fessier), ventre profond (transverse), côtés (obliques), épaule (deltoïde)"
+  }
+ },
+ "birddog": {
+  "es": {
+   "d": "Perro de caza: a cuatro patas, estiras a la vez un brazo y la pierna contraria. Entrena la espalda para no girar ni hundirse.",
+   "v": "Brazo y pierna contraria largos. Cadera quieta.",
+   "pos": "Ponte a cuatro patas. Manos bajo los hombros y rodillas bajo la cadera. Espalda recta, sin hundirla ni redondearla. Mirada al suelo y barriga apretada.",
+   "exe": "1. Aprieta la barriga como un cinturón · 2. Estira un brazo y la pierna contraria a la vez en 2 s · 3. Pausa 1 s en línea recta · 4. Vuelve en 2 s y cambia de lado",
+   "resp": "Suelta el aire al estirar y tómalo al volver.",
+   "err": "Espalda que se hunde: pierna solo a la altura de la cadera · Cadera que gira: cadera paralela al suelo · Prisa: sigue el ritmo, 2, 1 y 2 segundos",
+   "mus": "Espalda (erectores y multífidos), glúteo (glúteo mayor), barriga profunda (transverso), costados (oblicuos), hombro (deltoides)"
+  },
+  "en": {
+   "d": "Bird dog: on all fours, you stretch one arm and the opposite leg together. It trains your back not to twist or sag.",
+   "v": "Opposite arm and leg long. Hips still.",
+   "pos": "Get on all fours. Hands under shoulders, knees under hips. Back straight, not sagging or rounded. Eyes on the floor, belly tight.",
+   "exe": "1. Tighten your belly like a belt · 2. Reach one arm and the opposite leg together in 2 s · 3. Pause 1 s in a straight line · 4. Return in 2 s and switch sides",
+   "resp": "Breathe out as you stretch, breathe in as you come back.",
+   "err": "Back sagging: leg only to hip height · Hips turning: keep them level with the floor · Rushing: keep the rhythm, 2, 1 and 2 seconds",
+   "mus": "Back (erector spinae and multifidus), bottom (gluteus maximus), deep belly (transverse abdominis), sides (obliques), shoulder (deltoid)"
+  },
+  "fr": {
+   "d": "Bird dog : à quatre pattes, tu tends ensemble un bras et la jambe opposée. Ça apprend au dos à ne pas tourner ni se creuser.",
+   "v": "Bras et jambe opposée longs. Bassin immobile.",
+   "pos": "Mets-toi à quatre pattes. Mains sous les épaules, genoux sous les hanches. Dos droit, ni creusé ni arrondi. Regard au sol, ventre serré.",
+   "exe": "1. Serre le ventre comme une ceinture · 2. Tends ensemble un bras et la jambe opposée en 2 s · 3. Pause 1 s, bien alignée · 4. Reviens en 2 s et change de côté",
+   "resp": "Souffle en tendant, inspire en revenant.",
+   "err": "Dos qui se creuse : jambe seulement à hauteur de hanche · Bassin qui tourne : garde-le parallèle au sol · Précipitation : garde le rythme, 2, 1 et 2 secondes",
+   "mus": "Dos (érecteurs et multifides), fesses (grand fessier), ventre profond (transverse), côtés (obliques), épaule (deltoïde)"
+  }
+ },
+ "birddog_crunch": {
+  "es": {
+   "d": "Perro de caza con encogimiento: estiras brazo y pierna contraria y luego juntas codo y rodilla bajo el cuerpo.",
+   "v": "Estira largo. Codo a rodilla bajo el cuerpo.",
+   "pos": "Ponte a cuatro patas. Manos bajo los hombros y rodillas bajo la cadera. Espalda recta, sin hundirla ni redondearla. Mirada al suelo y barriga apretada.",
+   "exe": "1. Estira un brazo y la pierna contraria en 2 s · 2. Pausa 1 s en línea recta · 3. Junta codo y rodilla bajo el cuerpo en 2 s, espalda redonda · 4. Haz la mitad de repeticiones y cambia de lado",
+   "resp": "Toma aire al estirar y suéltalo al juntar codo y rodilla.",
+   "err": "Perder el equilibrio: ve más lenta y apoya firme la mano · Espalda hundida al estirar: pierna a la altura de la cadera · Cadera que gira: cadera paralela al suelo",
+   "mus": "Barriga (recto abdominal), costados (oblicuos), espalda (erectores), glúteo (glúteo mayor), barriga profunda (transverso)"
+  },
+  "en": {
+   "d": "Bird dog with a crunch: you stretch your arm and opposite leg, then bring elbow and knee together under you.",
+   "v": "Stretch long. Elbow to knee under your body.",
+   "pos": "Get on all fours. Hands under shoulders, knees under hips. Back straight, not sagging or rounded. Eyes on the floor, belly tight.",
+   "exe": "1. Reach one arm and the opposite leg in 2 s · 2. Pause 1 s in a straight line · 3. Bring elbow and knee together under you in 2 s, back rounded · 4. Do half the reps and switch sides",
+   "resp": "Breathe in as you stretch, breathe out as elbow meets knee.",
+   "err": "Losing balance: go slower and press your hand firmly down · Back sagging as you stretch: leg only to hip height · Hips turning: keep them level with the floor",
+   "mus": "Belly (rectus abdominis), sides (obliques), back (erector spinae), bottom (gluteus maximus), deep belly (transverse abdominis)"
+  },
+  "fr": {
+   "d": "Bird dog avec crunch : tu tends le bras et la jambe opposée, puis tu rapproches coude et genou sous le corps.",
+   "v": "Tends loin. Coude au genou sous le corps.",
+   "pos": "Mets-toi à quatre pattes. Mains sous les épaules, genoux sous les hanches. Dos droit, ni creusé ni arrondi. Regard au sol, ventre serré.",
+   "exe": "1. Tends un bras et la jambe opposée en 2 s · 2. Pause 1 s, bien alignée · 3. Ramène coude et genou sous le corps en 2 s, dos rond · 4. Fais la moitié des répétitions puis change de côté",
+   "resp": "Inspire en tendant, souffle en rapprochant coude et genou.",
+   "err": "Perdre l’équilibre : va plus lentement et plante bien la main · Dos qui se creuse en tendant : jambe à hauteur de hanche · Bassin qui tourne : garde-le parallèle au sol",
+   "mus": "Ventre (grand droit), côtés (obliques), dos (érecteurs), fesses (grand fessier), ventre profond (transverse)"
+  }
+ },
+ "hollow_tuck": {
+  "es": {
+   "d": "Barquito con las rodillas recogidas. Es la versión fácil: aguantas quieta con la espalda baja pegada al suelo.",
+   "v": "Espalda pegada, costillas abajo. Respira y aguanta.",
+   "pos": "Túmbate boca arriba con las rodillas dobladas encima de la cadera. Cabeza y omóplatos despegados. Brazos estirados junto a los muslos. Espalda baja pegada.",
+   "exe": "1. Mete un poco el culo y pega la espalda baja al suelo · 2. Despega cabeza y omóplatos con las costillas abajo · 3. Recoge las rodillas encima de la cadera · 4. Aguanta el tiempo indicado, respirando",
+   "resp": "Respira corto y sin parar, soltando bien el aire para bajar las costillas.",
+   "err": "Espalda que se despega: acerca las rodillas al pecho · Cuello tenso: mira a las rodillas, barbilla un poco metida · Aguantar el aire: respira con ritmo",
+   "mus": "Barriga (recto abdominal), barriga profunda (transverso), costados (oblicuos), parte delantera de la cadera (psoas ilíaco)"
+  },
+  "en": {
+   "d": "Hollow hold (a curved boat shape) with knees tucked. It’s the easy version: you hold still with your lower back on the floor.",
+   "v": "Back flat, ribs down. Breathe and hold.",
+   "pos": "Lie on your back, knees bent over your hips. Head and shoulder blades lifted. Arms straight beside your thighs. Lower back flat.",
+   "exe": "1. Tuck your tailbone slightly and press your lower back down · 2. Lift head and shoulder blades, ribs down · 3. Bring your knees over your hips · 4. Hold for the set time, breathing",
+   "resp": "Take short, steady breaths and breathe out fully to lower your ribs.",
+   "err": "Back lifting off: bring your knees closer to your chest · Tense neck: look at your knees, chin slightly tucked · Holding your breath: breathe in a steady rhythm",
+   "mus": "Belly (rectus abdominis), deep belly (transverse abdominis), sides (obliques), front of hip (iliopsoas)"
+  },
+  "fr": {
+   "d": "La barque avec les genoux repliés. C’est la version facile : tu tiens immobile, le bas du dos plaqué au sol.",
+   "v": "Dos plaqué, côtes basses. Respire et tiens.",
+   "pos": "Allonge-toi sur le dos, genoux pliés au-dessus des hanches. Tête et omoplates décollées. Bras tendus le long des cuisses. Bas du dos plaqué.",
+   "exe": "1. Rentre un peu les fesses et plaque le bas du dos · 2. Décolle tête et omoplates, côtes basses · 3. Ramène les genoux au-dessus des hanches · 4. Tiens le temps indiqué en respirant",
+   "resp": "Respire court et sans t’arrêter, souffle à fond pour baisser les côtes.",
+   "err": "Bas du dos qui décolle : rapproche les genoux de la poitrine · Nuque tendue : regarde tes genoux, menton un peu rentré · Bloquer l’air : respire en rythme",
+   "mus": "Ventre (grand droit), ventre profond (transverse), côtés (obliques), avant de la hanche (ilio-psoas)"
+  }
+ },
+ "hollow": {
+  "es": {
+   "d": "Barquito: tumbada, despegas del suelo brazos y piernas estirados y aguantas. La espalda baja se queda pegada.",
+   "v": "Cuerpo en barca, espalda pegada, costillas abajo. Aguanta.",
+   "pos": "Túmbate boca arriba con los brazos estirados por encima de la cabeza. Piernas juntas y estiradas. Cabeza, omóplatos, brazos y piernas despegados unos centímetros.",
+   "exe": "1. Mete un poco el culo y pega la espalda baja al suelo · 2. Despega cabeza y omóplatos, brazos junto a las orejas · 3. Sube las piernas estiradas hasta donde la espalda siga pegada · 4. Aguanta respirando",
+   "resp": "Respira corto y sin parar, soltando bien el aire para bajar las costillas.",
+   "err": "Espalda arqueada: sube más las piernas o lleva los brazos hacia los muslos · Costillas abiertas: suelta el aire y bájalas · Cuello tenso: barbilla un poco metida",
+   "mus": "Barriga (recto abdominal), barriga profunda (transverso), costados (oblicuos), cadera (psoas ilíaco), muslo (recto femoral)"
+  },
+  "en": {
+   "d": "Hollow hold (a curved boat shape): lying down, you lift straight arms and legs and hold. Your lower back stays on the floor.",
+   "v": "Boat shape, back flat, ribs down. Hold.",
+   "pos": "Lie on your back, arms straight above your head. Legs together and straight. Head, shoulder blades, arms and legs lifted a few centimetres.",
+   "exe": "1. Tuck your tailbone slightly and press your lower back down · 2. Lift head and shoulder blades, arms by your ears · 3. Lift your straight legs to where your back stays flat · 4. Hold while breathing",
+   "resp": "Take short, steady breaths and breathe out fully to lower your ribs.",
+   "err": "Back arching: lift your legs higher or move your arms toward your thighs · Ribs flaring: breathe out and lower them · Tense neck: chin slightly tucked",
+   "mus": "Belly (rectus abdominis), deep belly (transverse abdominis), sides (obliques), hip (iliopsoas), thigh (rectus femoris)"
+  },
+  "fr": {
+   "d": "La barque : allongée, tu décolles bras et jambes tendus et tu tiens. Le bas du dos reste plaqué au sol.",
+   "v": "Corps en barque, dos plaqué, côtes basses. Tiens.",
+   "pos": "Allonge-toi sur le dos, bras tendus au-dessus de la tête. Jambes serrées et tendues. Tête, omoplates, bras et jambes décollés de quelques centimètres.",
+   "exe": "1. Rentre un peu les fesses et plaque le bas du dos · 2. Décolle tête et omoplates, bras près des oreilles · 3. Monte les jambes tendues tant que le dos reste plaqué · 4. Tiens en respirant",
+   "resp": "Respire court et sans t’arrêter, souffle à fond pour baisser les côtes.",
+   "err": "Dos qui se creuse : monte plus les jambes ou ramène les bras vers les cuisses · Côtes qui s’ouvrent : souffle et baisse-les · Nuque tendue : menton un peu rentré",
+   "mus": "Ventre (grand droit), ventre profond (transverse), côtés (obliques), hanche (ilio-psoas), cuisse (droit fémoral)"
+  }
+ },
+ "hollowrock": {
+  "es": {
+   "d": "Balanceo en barquito. Mantienes el cuerpo rígido y te meces en bloque, sin doblar la cadera ni despegar la espalda baja.",
+   "v": "Barca rígida. Balancéate sin perder la forma.",
+   "pos": "Ponte en barquito: espalda baja pegada al suelo y costillas abajo. Brazos junto a las orejas. Piernas estiradas y despegadas del suelo.",
+   "exe": "1. Haz el barquito con la espalda baja pegada · 2. Balancéate hacia la cabeza en 1 s sin cambiar la forma · 3. Balancéate hacia los pies en 1 s · 4. Sigue con ritmo constante. Si pierdes la forma, aguanta quieta",
+   "resp": "Respira corto y con ritmo, siguiendo el balanceo, sin aguantar el aire.",
+   "err": "Doblar la cadera: brazos y piernas fijos · Espalda que se despega: balancéate menos o haz el barquito quieta · Impulso con brazos o piernas: mueve el cuerpo en bloque",
+   "mus": "Barriga (recto abdominal), barriga profunda (transverso), costados (oblicuos), cadera (psoas ilíaco), muslo (recto femoral)"
+  },
+  "en": {
+   "d": "Hollow rock: you hold the boat shape stiff and rock as one piece, without bending your hips or lifting your lower back.",
+   "v": "Stiff boat. Rock without losing the shape.",
+   "pos": "Get into the hollow boat shape: lower back flat, ribs down. Arms by your ears. Legs straight and off the floor.",
+   "exe": "1. Set the boat shape with your lower back flat · 2. Rock toward your head in 1 s without changing shape · 3. Rock toward your feet in 1 s · 4. Keep a steady rhythm. If the shape breaks, hold still",
+   "resp": "Take short breaths in rhythm with the rocking, never holding your breath.",
+   "err": "Bending at the hips: keep arms and legs fixed · Back lifting off: rock less or do the still hold · Swinging arms or legs: move your body as one piece",
+   "mus": "Belly (rectus abdominis), deep belly (transverse abdominis), sides (obliques), hip (iliopsoas), thigh (rectus femoris)"
+  },
+  "fr": {
+   "d": "Balancier en barque : tu gardes le corps rigide et tu te balances d’un bloc, sans plier les hanches ni décoller le bas du dos.",
+   "v": "Barque rigide. Balance-toi sans perdre la forme.",
+   "pos": "Mets-toi en barque : bas du dos plaqué au sol, côtes basses. Bras près des oreilles. Jambes tendues et décollées du sol.",
+   "exe": "1. Installe la barque, bas du dos plaqué · 2. Bascule vers la tête en 1 s sans changer la forme · 3. Bascule vers les pieds en 1 s · 4. Garde un rythme régulier. Si la forme casse, tiens immobile",
+   "resp": "Respire court et en rythme avec le balancier, sans bloquer l’air.",
+   "err": "Plier les hanches : bras et jambes fixes · Bas du dos qui décolle : balance-toi moins ou tiens la barque immobile · Élan des bras ou des jambes : bouge le corps d’un bloc",
+   "mus": "Ventre (grand droit), ventre profond (transverse), côtés (obliques), hanche (ilio-psoas), cuisse (droit fémoral)"
+  }
+ }
+}
