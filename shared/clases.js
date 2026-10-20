@@ -6,7 +6,15 @@
    Las horas con zona (TZID) se toman como hora local del móvil: el calendario y la
    persona están en el mismo sitio. Las horas en UTC (…Z) se pasan a hora local. */
 (function(){
-  const CFG='cris_clases_v1',CACHE='cris_clases_cache_v1',ERR='cris_clases_err_v1';
+  const CFG='cris_clases_v1',CACHE='cris_clases_cache_v1',ERR='cris_clases_err_v1',MANUAL='cris_clases_manual_v1';
+  /* Horario metido a mano (p. ej. pasado de un PDF) + calendario leído. Si coinciden a la misma
+     hora, manda el de a mano (tiene los nombres buenos); el leído añade lo que falte. */
+  function occurrences(from,to){
+    const man=rd(MANUAL,{}).ev||[],got=rd(CACHE,{}).ev||[];
+    const a=expandAll(man,from,to);if(!man.length)return expandAll(got,from,to);
+    const taken=new Set(a.map(o=>Math.round(o.st/6e4)));
+    return [...a,...expandAll(got,from,to).filter(o=>!taken.has(Math.round(o.st/6e4)))].sort((x,y)=>x.st-y.st||x.en-y.en);
+  }
   const STALE=3*3600e3,DAY=864e5;
   function rd(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v&&typeof v==='object'?v:d;}catch(e){return d;}}
   function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
@@ -113,8 +121,8 @@
     return res;
   }
   /* Todas las clases entre dos fechas (ms), ya ordenadas: {id,s,l,st,en,ad} */
-  function between(from,to,evs){
-    evs=evs||(rd(CACHE,{}).ev||[]);
+  function between(from,to,evs){return evs?expandAll(evs,from,to):occurrences(from,to);}
+  function expandAll(evs,from,to){
     const moved={};evs.forEach(e=>{if(e.rid!=null&&e.uid){(moved[e.uid]=moved[e.uid]||new Set()).add(Math.round(e.rid/6e4));}});
     const out=[];
     evs.forEach(e=>{
@@ -200,10 +208,14 @@
   const API={
     cfg,parse,between,subjects,subjectOf,pretty,short,dayKey,startOfDay,refresh,importText,
     save(c){const o=cfg();const n={...o,...c};n.subjects=(n.subjects||[]).map(s=>String(s).trim()).filter(Boolean).slice(0,30);wr(CFG,n);if(c.url!==undefined&&c.url!==o.url){try{localStorage.removeItem(CACHE);}catch(e){}}},
-    configured(){const c=cfg();return !!(c.url||(rd(CACHE,{}).ev||[]).length);},
+    configured(){const c=cfg();return !!(c.url||(rd(CACHE,{}).ev||[]).length||(rd(MANUAL,{}).ev||[]).length);},
+    hasManual(){return (rd(MANUAL,{}).ev||[]).length>0;},
+    /* Horario a mano: [{s, l, st, en, ad}] (fechas en ms) */
+    importEvents(list,src){const ev=(list||[]).filter(e=>e&&e.st!=null&&e.en!=null).map((e,i)=>({uid:e.uid||('man-'+i+'-'+e.st),s:String(e.s||''),l:String(e.l||''),st:e.st,en:e.en,ad:!!e.ad,ex:[]}));wr(MANUAL,{at:Date.now(),src:src||'',ev});return ev.length;},
     lastSync(){return rd(CACHE,{}).at||0;},
-    lastError(){const e=rd(ERR,null);return e&&e.at>API.lastSync()?e:null;},
-    hasData(){return (rd(CACHE,{}).ev||[]).length>0;},
+    lastError(){const e=rd(ERR,null);if(API.hasManual&&API.hasManual())return null; // con el horario puesto a mano no hace falta avisar
+      return e&&e.at>API.lastSync()?e:null;},
+    hasData(){return (rd(CACHE,{}).ev||[]).length>0||(rd(MANUAL,{}).ev||[]).length>0;},
     /* Clases de un día (0 = hoy, 1 = mañana…) con su asignatura y color */
     day(off){const s=startOfDay(Date.now()+(off||0)*DAY),e=startOfDay(s+DAY*1.5);return API.decorate(between(s,e));},
     week(fromOff,days){const s=startOfDay(Date.now()+(fromOff||0)*DAY);return API.decorate(between(s,startOfDay(s+(days||7)*DAY+DAY/2)));},
