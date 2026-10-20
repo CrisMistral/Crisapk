@@ -7,6 +7,9 @@
    persona están en el mismo sitio. Las horas en UTC (…Z) se pasan a hora local. */
 (function(){
   const CFG='cris_clases_v1',CACHE='cris_clases_cache_v1',ERR='cris_clases_err_v1',MANUAL='cris_clases_manual_v1';
+  try{const ar=JSON.parse(localStorage.getItem('cris_areas_v1'));
+    if(Array.isArray(ar)&&localStorage.getItem('cris_areas_mig_clases')!=='1'){if(ar.indexOf('clases')<0)ar.push('clases');localStorage.setItem('cris_areas_v1',JSON.stringify(ar));localStorage.setItem('cris_areas_mig_clases','1');}}catch(e){}
+  function areaOnClases(){try{const ar=JSON.parse(localStorage.getItem('cris_areas_v1'));return !Array.isArray(ar)||ar.indexOf('clases')>=0;}catch(e){return true;}}
   /* Horario metido a mano (p. ej. pasado de un PDF) + calendario leído. Si coinciden a la misma
      hora, manda el de a mano (tiene los nombres buenos); el leído añade lo que falte. */
   function occurrences(from,to){
@@ -186,12 +189,14 @@
     // 1.º nuestro servidor (/api/ical); si no está, directo (casi nunca deja el navegador: CORS)
     const viaApi=()=>fetch('/api/ical?url='+encodeURIComponent(c.url),{cache:'no-store'}).then(r=>r.ok?r.text():r.text().then(b=>{let j=null;try{j=JSON.parse(b);}catch(e){}throw {api:r.status,info:j};},()=>{throw {api:r.status};}));
     const direct=()=>fetch(c.url.replace(/^webcals?:/i,'https:').replace(/\/calendar\/published\//,'/owa/calendar/').replace(/calendar\.html(\?.*)?$/,'calendar.ics'),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject({direct:r.status}));
-    busy=viaApi().catch(e1=>direct().catch(()=>{throw e1;})).then(txt=>{
+    // Sin servidor propio (p. ej. GitHub Pages) no hay /api: solo se puede probar directo
+    const noServer=/\.github\.io$/i.test(location.hostname);
+    busy=(noServer?direct().catch(()=>{throw {noserver:1};}):viaApi().catch(e1=>direct().catch(()=>{throw e1;}))).then(txt=>{
       if(!/BEGIN:VCALENDAR/i.test(txt))throw {notics:1};
       const ev=parse(txt);
       wr(CACHE,{at:Date.now(),url:c.url,ev});try{localStorage.removeItem(ERR);}catch(e){}return {ok:true,n:ev.length};
     }).catch(e=>{
-      const off=navigator.onLine===false,err=off?'offline':(e&&e.notics)?'notics':'fetch';
+      const off=navigator.onLine===false,err=off?'offline':(e&&e.notics)?'notics':(e&&e.noserver)?'noserver':'fetch';
       // código corto para saber qué pasó (sin el enlace): «502 · 404/404/302»
       const code=off?'':(e&&e.api?String(e.api)+(e.info&&Array.isArray(e.info.tried)?' · '+e.info.tried.map(x=>(x.status||'')+(x.why&&x.why!=='http'?' '+x.why:'')).join(' / '):(e.info&&e.info.error?' · '+e.info.error:'')):'net');
       wr(ERR,{at:Date.now(),err,code});return {ok:false,err,code};
@@ -221,9 +226,12 @@
     week(fromOff,days){const s=startOfDay(Date.now()+(fromOff||0)*DAY);return API.decorate(between(s,startOfDay(s+(days||7)*DAY+DAY/2)));},
     decorate(list){const subs=subjects();return list.map(o=>{const sb=subjectOf(o.s,subs);return {...o,sub:sb,name:sb?sb.short:(pretty(o.s)||'—'),color:sb?sb.color:'#64748b'};});},
     /* Clases de hoy para «Mi día» (sin las de todo el día) y las mete en la lista */
-    syncDay(){if(!window.QDIA||!API.hasData())return false;return QDIA.syncClasses(API.day(0).filter(o=>!o.ad&&API.startOfDay(o.st)===API.startOfDay()).map(o=>({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l})));},
+    syncDay(){if(!window.QDIA||!API.hasData()||!areaOnClases())return false;return QDIA.syncClasses(API.day(0).filter(o=>!o.ad&&API.startOfDay(o.st)===API.startOfDay()).map(o=>({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l})));},
     /* La que está en marcha y la siguiente (hoy o próximos días) */
-    now(){const t=Date.now(),l=API.decorate(between(t-12*3600e3,t+8*DAY)).filter(o=>!o.ad);return {cur:l.find(o=>o.st<=t&&o.en>t)||null,next:l.find(o=>o.st>t)||null};}
+    now(){const t=Date.now(),l=API.decorate(between(t-12*3600e3,t+8*DAY)).filter(o=>!o.ad);
+      let next=l.find(o=>o.st>t)||null;
+      if(!next)next=API.decorate(between(t,t+70*DAY)).filter(o=>!o.ad&&o.st>t)[0]||null; // vacaciones: la siguiente aunque esté lejos
+      return {cur:l.find(o=>o.st<=t&&o.en>t)||null,next};}
   };
   window.QCLASES=API;
 })();
