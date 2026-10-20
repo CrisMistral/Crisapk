@@ -276,9 +276,9 @@ button.dl-t{cursor:pointer}
 /* modo «menos texto» */
 .simple .wrow i,.simple [data-i18n="sec_hint"]{display:none}
 </style>
-<script src="../shared/dia.js?v=112"></script>
-<script src="../shared/clases.js?v=112"></script>
-<script src="../shared/cal.js?v=112"></script>
+<script src="../shared/dia.js?v=113"></script>
+<script src="../shared/clases.js?v=113"></script>
+<script src="../shared/cal.js?v=113"></script>
 </head>
 <body>
 
@@ -825,6 +825,7 @@ function renderDay(){
   const el=document.getElementById('dayList');if(!el||!window.QDIA)return;
   const prevIn=document.getElementById('dl-in'),draft=prevIn?prevIn.value:'',fk=focusKey(el);
   const prevEd=document.getElementById('dl-edit'),edDraft=prevEd?prevEd.value:null,edFocus=prevEd&&document.activeElement===prevEd;
+  if(window.QCAL)QCAL.syncDay(); // las citas marcadas «Ponerla en mi día»
   const items=QDIA.view(),pend=QDIA.pending(),tm=QDIA.timer();
   const rows=items.map(it=>{
     const done=QDIA.isDone(it),lock=QDIA.locked(it),name=it.mod?modName(it):it.t,label=(it.e?it.e+' ':'')+(it.cls?new Date(it.cls.st).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'})+' · ':'')+escD(name);

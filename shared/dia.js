@@ -122,13 +122,17 @@
       if(ch)save(d);return ch;
     },
     /* Una tutoría o cita de hoy, añadida a mano desde «＋ De Quico» (con su hora) */
-    addTimed(c,src){
+    addTimed(c,src,auto){
       const d=load();if(!c||!c.occ||d.items.some(i=>i.cls&&i.cls.occ===c.occ))return 0;
+      if(auto&&(d.clsGone||[]).indexOf(c.occ)>=0)return 0; // la quitaste tú de hoy: no vuelve sola
       const it={id:newId(),t:c.name,mod:src==='clase'?'clase':'cita',e:c.e||'📌',done:false,min:0,cls:{occ:c.occ,st:c.st,en:c.en,l:c.l||''}};
       const later=d.items.findIndex(i=>i.cls&&i.cls.st>c.st);
       if(later>=0)d.items.splice(later,0,it);else d.items.push(it);
       save(d);return 1;
     },
+    hasOcc(occ){return load().items.some(i=>i.cls&&i.cls.occ===occ);},
+    /* Si la cita cambia o se borra en el calendario, el día también */
+    updateOcc(occ,c){const d=load(),i=d.items.find(x=>x.cls&&x.cls.occ===occ);if(!i)return;if(c){i.t=c.name;i.cls={...i.cls,st:c.st,en:c.en,l:c.l||''};}else d.items=d.items.filter(x=>x!==i);save(d);},
     /* Sube o baja entre las de su mismo estado (pendientes con pendientes), como se ve */
     move(id,dir){
       const d=load(),a=d.items,v=view(a),k=v.findIndex(x=>x.id===id);if(k<0)return;
