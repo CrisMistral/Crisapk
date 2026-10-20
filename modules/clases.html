@@ -91,6 +91,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
   </div>
 
   <div id="main" hidden>
+    <div id="err"></div>
     <div id="now"></div>
     <div class="tabs" role="tablist">
       <button role="tab" id="tab-hoy" aria-selected="true" onclick="setTab('hoy')" data-i18n="t_today">Hoy</button>
@@ -133,17 +134,17 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
 <script src="../shared/clases.js"></script>
 <script>
 const UI={
- es:{h1:'🎓 Clases',url_l:'Enlace de tu calendario',url_help:'Outlook: Configuración → Calendario → Calendarios compartidos → Publicar → copia el enlace (HTML o ICS). También vale Google o iCloud.',subs_l:'Mis asignaturas (una por línea)',save:'Guardar',t_today:'Hoy',t_week:'Semana',my_subs:'📚 Mis asignaturas',settings:'⚙️ Ajustes',rem_l:'Aviso antes de cada clase',rem_help:'Con la app abierta, o con las notificaciones activadas en el menú.',refresh:'↻ Actualizar',import:'📄 Importar archivo .ics',forget:'Quitar',
+ es:{h1:'🎓 Clases',url_l:'Enlace de tu calendario',url_help:'Outlook: Configuración → Calendario → Calendarios compartidos → Publicar → copia el enlace (HTML o ICS). También vale Google o iCloud.',subs_l:'Mis asignaturas (una por línea)',save:'Guardar',t_today:'Hoy',t_week:'Semana',my_subs:'📚 Mis asignaturas',settings:'⚙️ Ajustes',rem_l:'Aviso antes de cada clase',rem_help:'Con la app abierta, o con las notificaciones activadas en el menú.',refresh:'↻ Actualizar',import:'📄 Importar archivo .ics',forget:'Quitar',retry:'↻ Reintentar',code:'Código',err_stale:'No he podido actualizar el calendario: te enseño lo último que guardé.',
    now:'Ahora',next:'Próxima',until:'hasta las {h}',in_min:'en {n} min',in_h:'en {h}',today:'hoy',tomorrow:'mañana',allday:'Todo el día',no_today:'Hoy no tienes clase 🌿',no_week:'Nada esta semana',
    no_rem:'Sin aviso',min_before:'{n} min antes',add_ph:'¿Qué tienes que hacer?',add:'Añadir',added:'Añadido a tu día',no_next:'sin clases próximas',next_cl:'Próxima: {d}',
    loading:'Cargando tu calendario…',ok:'¡Listo! {n} clases en el calendario.',err_nourl:'Pega primero el enlace del calendario.',err_fetch:'No he podido leer el calendario. Revisa que el enlace esté publicado o importa el archivo .ics.',err_offline:'Sin conexión: te enseño lo último que guardé.',err_notics:'Eso no parece un calendario (.ics).',
    synced:'Actualizado {t}',ago_min:'hace {n} min',ago_h:'hace {n} h',just:'ahora mismo',forget_q:'¿Quitar el calendario y las asignaturas de Quico?',saved:'Guardado',subj_task:'{s}: {t}'},
- en:{h1:'🎓 Classes',url_l:'Your calendar link',url_help:'Outlook: Settings → Calendar → Shared calendars → Publish → copy the link (HTML or ICS). Google or iCloud work too.',subs_l:'My subjects (one per line)',save:'Save',t_today:'Today',t_week:'Week',my_subs:'📚 My subjects',settings:'⚙️ Settings',rem_l:'Reminder before each class',rem_help:'With the app open, or with notifications turned on in the menu.',refresh:'↻ Refresh',import:'📄 Import .ics file',forget:'Remove',
+ en:{h1:'🎓 Classes',url_l:'Your calendar link',url_help:'Outlook: Settings → Calendar → Shared calendars → Publish → copy the link (HTML or ICS). Google or iCloud work too.',subs_l:'My subjects (one per line)',save:'Save',t_today:'Today',t_week:'Week',my_subs:'📚 My subjects',settings:'⚙️ Settings',rem_l:'Reminder before each class',rem_help:'With the app open, or with notifications turned on in the menu.',refresh:'↻ Refresh',import:'📄 Import .ics file',forget:'Remove',retry:'↻ Try again',code:'Code',err_stale:'I couldn’t update the calendar: showing what I saved last.',
    now:'Now',next:'Next',until:'until {h}',in_min:'in {n} min',in_h:'in {h}',today:'today',tomorrow:'tomorrow',allday:'All day',no_today:'No classes today 🌿',no_week:'Nothing this week',
    no_rem:'No reminder',min_before:'{n} min before',add_ph:'What do you need to do?',add:'Add',added:'Added to your day',no_next:'no upcoming classes',next_cl:'Next: {d}',
    loading:'Loading your calendar…',ok:'Done! {n} classes in the calendar.',err_nourl:'Paste the calendar link first.',err_fetch:'I couldn’t read the calendar. Check it is published, or import the .ics file.',err_offline:'Offline: showing what I saved last.',err_notics:'That doesn’t look like a calendar (.ics).',
    synced:'Updated {t}',ago_min:'{n} min ago',ago_h:'{n} h ago',just:'just now',forget_q:'Remove the calendar and subjects from Quico?',saved:'Saved',subj_task:'{s}: {t}'},
- fr:{h1:'🎓 Cours',url_l:'Lien de ton calendrier',url_help:'Outlook : Paramètres → Calendrier → Calendriers partagés → Publier → copie le lien (HTML ou ICS). Google ou iCloud marchent aussi.',subs_l:'Mes matières (une par ligne)',save:'Enregistrer',t_today:'Aujourd’hui',t_week:'Semaine',my_subs:'📚 Mes matières',settings:'⚙️ Réglages',rem_l:'Rappel avant chaque cours',rem_help:'Avec l’appli ouverte, ou avec les notifications activées dans le menu.',refresh:'↻ Actualiser',import:'📄 Importer un fichier .ics',forget:'Retirer',
+ fr:{h1:'🎓 Cours',url_l:'Lien de ton calendrier',url_help:'Outlook : Paramètres → Calendrier → Calendriers partagés → Publier → copie le lien (HTML ou ICS). Google ou iCloud marchent aussi.',subs_l:'Mes matières (une par ligne)',save:'Enregistrer',t_today:'Aujourd’hui',t_week:'Semaine',my_subs:'📚 Mes matières',settings:'⚙️ Réglages',rem_l:'Rappel avant chaque cours',rem_help:'Avec l’appli ouverte, ou avec les notifications activées dans le menu.',refresh:'↻ Actualiser',import:'📄 Importer un fichier .ics',forget:'Retirer',retry:'↻ Réessayer',code:'Code',err_stale:'Je n’ai pas pu mettre à jour le calendrier : je montre ce que j’ai gardé.',
    now:'Maintenant',next:'Prochain',until:'jusqu’à {h}',in_min:'dans {n} min',in_h:'dans {h}',today:'aujourd’hui',tomorrow:'demain',allday:'Toute la journée',no_today:'Pas de cours aujourd’hui 🌿',no_week:'Rien cette semaine',
    no_rem:'Sans rappel',min_before:'{n} min avant',add_ph:'Qu’as-tu à faire ?',add:'Ajouter',added:'Ajouté à ta journée',no_next:'pas de cours à venir',next_cl:'Prochain : {d}',
    loading:'Je charge ton calendrier…',ok:'C’est prêt ! {n} cours dans le calendrier.',err_nourl:'Colle d’abord le lien du calendrier.',err_fetch:'Je n’ai pas pu lire le calendrier. Vérifie qu’il est publié, ou importe le fichier .ics.',err_offline:'Hors connexion : je montre ce que j’ai gardé.',err_notics:'Ça ne ressemble pas à un calendrier (.ics).',
@@ -185,6 +186,7 @@ function renderNow(){
 }
 function renderList(){
   const el=document.getElementById('list');
+  if(!QCLASES.hasData()){el.innerHTML=QCLASES.lastError()?'':`<div class="empty">${t('loading')}</div>`;return;}
   if(TAB==='hoy'){const l=QCLASES.day(0);el.innerHTML=l.length?l.map(row).join(''):`<div class="empty">${t('no_today')}</div>`;return;}
   const l=QCLASES.week(0,7);if(!l.length){el.innerHTML=`<div class="empty">${t('no_week')}</div>`;return;}
   let h='',last='';l.forEach(o=>{const k=QCLASES.dayKey(o.st);if(k!==last){h+=`<div class="dayh">${dayName(o.st)}</div>`;last=k;}h+=row(o);});el.innerHTML=h;
@@ -206,6 +208,14 @@ function addTask(i){
   QDIA.add(t('subj_task',{s:s.short,t:v}));OPEN_ADD=null;renderSubs();toast(t('added'));
   try{if(navigator.vibrate&&__cfg().vib!==false&&!__cfg().calm)navigator.vibrate(25);}catch(e){}
 }
+/* Si el calendario no se pudo leer, se dice (con un código para poder arreglarlo) y se puede reintentar */
+function renderErr(){
+  const el=document.getElementById('err'),e=QCLASES.lastError();
+  if(!e){el.innerHTML='';return;}
+  const has=QCLASES.hasData();
+  el.innerHTML=`<div class="msg err" role="alert">${esc(t(has?'err_stale':'err_'+(e.err||'fetch')))}${e.code?`<br><small>${t('code')}: ${esc(e.code)}</small>`:''}
+    <div class="row"><button class="btn" onclick="doRefresh(true)">${t('retry')}</button><button class="btn sec" onclick="document.getElementById('c-file').click()">${t('import')}</button></div></div>`;
+}
 function renderSync(){
   const at=QCLASES.lastSync(),el=document.getElementById('sync');if(!at){el.textContent='';return;}
   const m=Math.round((Date.now()-at)/6e4);el.textContent=t('synced',{t:m<1?t('just'):m<60?t('ago_min',{n:m}):t('ago_h',{n:Math.round(m/60)})});
@@ -215,7 +225,7 @@ function render(){
   document.getElementById('setup').hidden=ok;document.getElementById('main').hidden=!ok;
   if(!ok)return;
   QCLASES.syncDay(); // las de hoy, también en «Mi día»
-  renderNow();renderList();renderSync();
+  renderErr();renderNow();renderList();renderSync();
   if(!document.getElementById('subsBox').hidden&&OPEN_ADD===null)renderSubs(); // sin borrar lo que se está escribiendo
 }
 function msg(id,text,err){document.getElementById(id).innerHTML=text?`<div class="msg${err?' err':''}" role="status">${esc(text)}</div>`:'';}
@@ -241,7 +251,7 @@ function saveCfg(){
   toast(t('saved'));render();
   if(changed&&url){msg('c-msg',t('loading'));QCLASES.refresh(true).then(r=>result('c-msg',r));}
 }
-function doRefresh(force){msg('c-msg',t('loading'));QCLASES.refresh(force).then(r=>result('c-msg',r));}
+function doRefresh(force){msg('c-msg',t('loading'));const el=document.getElementById('err');if(el&&el.innerHTML)el.innerHTML=`<div class="msg" role="status">${esc(t('loading'))}</div>`;QCLASES.refresh(force).then(r=>result('c-msg',r));}
 function importFile(inp){
   const f=inp.files&&inp.files[0];if(!f)return;const rd=new FileReader();
   rd.onload=()=>{const r=QCLASES.importText(rd.result);result('c-msg',r);inp.value='';};rd.readAsText(f);

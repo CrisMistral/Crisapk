@@ -256,6 +256,7 @@ body{
 .tp-cl span{flex:1;min-width:0;font-weight:600;overflow-wrap:anywhere;}
 .tp-cl em{font-style:normal;font-size:.66rem;font-weight:800;border-radius:999px;padding:2px 7px;background:var(--mint-mid);color:var(--teal-dark);white-space:nowrap;}
 .tp-cl em.now{background:var(--teal-dark);color:#fff;}
+.tp-clserr{display:block;width:100%;min-height:44px;border:1.5px dashed #f59e0b;background:#fff8e6;color:#7c4a03;border-radius:12px;padding:8px 12px;margin-bottom:10px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;text-align:left;cursor:pointer;}
 .tp-total{font-size:.8rem;font-weight:700;color:var(--teal-dark);margin:-4px 2px 10px;}
 .tp-run{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--teal);border-radius:14px;padding:4px 4px 4px 6px;margin-bottom:10px;}
 .tp-run-open{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:none;background:none;padding:8px 6px;font-family:'Outfit',sans-serif;cursor:pointer;text-align:left;color:var(--teal-dark);}
@@ -608,7 +609,7 @@ const I18N={
   greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
   mod_trabajo_t:'Trabajo', mod_trabajo_s:'Herramientas anti-bloqueo',
-  mod_clases_t:'Clases', mod_clases_s:'Tu horario y tus asignaturas', cls_now:'AHORA', cls_in:'en {n}', cls_rem:'🎓 En {n} min: {s}', cls_see:'Ver',
+  mod_clases_t:'Clases', mod_clases_s:'Tu horario y tus asignaturas', cls_now:'AHORA', cls_in:'en {n}', cls_rem:'🎓 En {n} min: {s}', cls_see:'Ver', cls_err:'No he podido traer tus clases · Ver',
   mod_ejercicios_t:'Ejercicios', mod_ejercicios_s:'Pilates y calistenia: copia a la figura',
   mod_comida_t:'Comer Rico', mod_comida_s:'Menú semanal y compra',
   mod_limpieza_t:'Limpieza', mod_limpieza_s:'Una zona al día · 15 min',
@@ -669,7 +670,7 @@ const I18N={
   greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
   mod_trabajo_t:'Work', mod_trabajo_s:'Anti-block tools',
-  mod_clases_t:'Classes', mod_clases_s:'Your timetable and subjects', cls_now:'NOW', cls_in:'in {n}', cls_rem:'🎓 In {n} min: {s}', cls_see:'See',
+  mod_clases_t:'Classes', mod_clases_s:'Your timetable and subjects', cls_now:'NOW', cls_in:'in {n}', cls_rem:'🎓 In {n} min: {s}', cls_see:'See', cls_err:'I couldn’t load your classes · See',
   mod_ejercicios_t:'Exercise', mod_ejercicios_s:'Pilates and calisthenics: copy the figure',
   mod_comida_t:'Eat Well', mod_comida_s:'Weekly menu & shopping',
   mod_limpieza_t:'Cleaning', mod_limpieza_s:'One area a day · 15 min',
@@ -730,7 +731,7 @@ const I18N={
   greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
   mod_trabajo_t:'Travail', mod_trabajo_s:'Outils anti-blocage',
-  mod_clases_t:'Cours', mod_clases_s:'Ton emploi du temps et tes matières', cls_now:'MAINTENANT', cls_in:'dans {n}', cls_rem:'🎓 Dans {n} min : {s}', cls_see:'Voir',
+  mod_clases_t:'Cours', mod_clases_s:'Ton emploi du temps et tes matières', cls_now:'MAINTENANT', cls_in:'dans {n}', cls_rem:'🎓 Dans {n} min : {s}', cls_see:'Voir', cls_err:'Je n’ai pas pu charger tes cours · Voir',
   mod_ejercicios_t:'Exercices', mod_ejercicios_s:'Pilates et callisthénie : copie la figure',
   mod_comida_t:'Bien Manger', mod_comida_s:'Menu de la semaine et courses',
   mod_limpieza_t:'Ménage', mod_limpieza_s:'Une zone par jour · 15 min',
@@ -1338,7 +1339,7 @@ function checkClassRemind(){
   setTimeout(()=>document.getElementById('tmToast').classList.remove('show'),20000);
   if(!document.body.classList.contains('mod-open'))renderToday();
 }
-function clsSync(){if(window.QCLASES&&QCLASES.cfg().url)QCLASES.refresh(false).then(r=>{if(r.ok&&!r.cached&&!document.body.classList.contains('mod-open'))renderToday();});}
+function clsSync(){if(window.QCLASES&&QCLASES.cfg().url)QCLASES.refresh(false).then(r=>{if(!r.cached&&!document.body.classList.contains('mod-open'))renderToday();});}
 
 /* ── TEMPORIZADOR DE TAREAS (lo lleva Trabajo; aquí se ve, avisa y se responde) ── */
 function mmss(ms){const s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
@@ -1522,7 +1523,7 @@ function renderToday(){
 
   const pend=QDIA.pending();
   const chips=quicoChips();
-  const chipsOpen=showQuicoChips;
+  const chipsOpen=showQuicoChips||!rows.length; // con el día vacío, las ideas de Quico a la vista
   const dias=t('dias');
   const tot=QDIA.totalMin();
   let run='';
@@ -1543,7 +1544,7 @@ function renderToday(){
     </div>
     ${eco?'<div class="tp-eco-msg">'+t('eco_msg')+'</div>':''}
     ${tot?`<div class="tp-total">${t('tm_total',{x:QDIA.fmtMin(tot),h:QDIA.endAt(tot,crisLang())})}</div>`:''}
-    ${run}${pendBar}
+    ${run}${window.QCLASES&&QCLASES.cfg().url&&!QCLASES.hasData()&&QCLASES.lastError()?`<button class="tp-clserr" onclick="openModule('modules/clases.html')">🎓 ${t('cls_err')}</button>`:''}${pendBar}
     ${rows.length?[...rows].sort((a,b)=>(a.done?1:0)-(b.done?1:0)).map(r=>{const plain=r.name||String(r.t).replace(/<[^>]*>/g,'');return `
       <div class="tp-row${r.done?' done':''}${r.badge==='now'?' is-now':''}" data-id="${r.id}"${r.lock?' data-lock="1"':''}>
         <button class="tp-open" data-file="${r.f}">
