@@ -67,8 +67,13 @@
     /* tutorías y citas */
     events(){return rd().ev.slice().sort((a,b)=>(a.date+a.a)<(b.date+b.a)?-1:1);},
     get(id){return rd().ev.find(e=>e.id===id)||null;},
-    save(e){const d=rd();if(e.id){const i=d.ev.findIndex(x=>x.id===e.id);if(i>=0)d.ev[i]={...d.ev[i],...e};else d.ev.push(e);}else{e.id=newId();d.ev.push(e);}wr(d);return e.id;},
-    remove(id){const d=rd();d.ev=d.ev.filter(e=>e.id!==id);wr(d);},
+    save(e){const d=rd();if(e.id){const i=d.ev.findIndex(x=>x.id===e.id);if(i>=0)d.ev[i]={...d.ev[i],...e};else d.ev.push(e);}else{e.id=newId();d.ev.push(e);}wr(d);
+      // si ya estaba en «Mi día», se actualiza (hora, nombre…)
+      if(window.QDIA){const o=occ(d.ev.find(x=>x.id===e.id));window.QDIA.updateOcc(o.id,{name:o.name,st:o.st,en:o.en,l:o.l});}
+      return e.id;},
+    remove(id){const d=rd();d.ev=d.ev.filter(e=>e.id!==id);wr(d);if(window.QDIA)window.QDIA.updateOcc('cal:'+id,null);},
+    /* Añadir a «Mi día» de hoy (una cita del calendario o una clase) */
+    toDay(o){return window.QDIA?window.QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.kind==='clase'?'🎓':o.e},o.kind==='clase'?'clase':'cita'):0;},
     between,
     /* regla */
     periods,stats,ongoing,inPeriod,predicted,predict,
@@ -122,11 +127,12 @@
     },
     /* Lo próximo que toca (clase, tutoría o cita), aunque sea dentro de semanas */
     next(){const t=Date.now();return API.agenda(t,t+70*DAY).find(o=>o.st>t)||null;},
-    /* Tutorías y citas de hoy → «Mi día» (las clases van aparte, en QCLASES.syncDay) */
+    /* Las citas marcadas «Ponerla en mi día» entran solas ese día (las demás, solo si las añades tú) */
     syncDay(){
-      if(!window.QDIA)return false;
-      const s=new Date();s.setHours(0,0,0,0);const list=areaOn('calendario')?between(s.getTime(),s.getTime()+DAY).filter(o=>dk(o.st)===dk(s)):[];
-      return window.QDIA.syncClasses(list.map(o=>({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.e})),'cita');
+      if(!window.QDIA||!areaOn('calendario'))return 0;
+      const s=new Date();s.setHours(0,0,0,0);let n=0;
+      rd().ev.filter(e=>e.day&&e.date===dk(s)).map(occ).forEach(o=>{n+=window.QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.e},'cita',true);});
+      return n;
     }
   };
   window.QCAL=API;

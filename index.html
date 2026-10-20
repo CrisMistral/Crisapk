@@ -468,10 +468,10 @@ body.mod-open #menuBtn{display:none;}
 /* modo «menos texto» */
 .simple .hero-sub,.simple .tp-s,.simple .tp-hint,.simple .ao-desc{display:none}
 </style>
-<script src="shared/alergias.js?v=112"></script>
-<script src="shared/dia.js?v=112"></script>
-<script src="shared/clases.js?v=112"></script>
-<script src="shared/cal.js?v=112"></script>
+<script src="shared/alergias.js?v=113"></script>
+<script src="shared/dia.js?v=113"></script>
+<script src="shared/clases.js?v=113"></script>
+<script src="shared/cal.js?v=113"></script>
 </head>
 <body>
 
@@ -1228,9 +1228,10 @@ function renderNotif(){
 function fireNotif(title,body){
   try{
     if(navigator.serviceWorker&&navigator.serviceWorker.controller){
-      navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,{body,icon:'icons/icon-192.png',badge:'icons/icon-192.png'}));
+      // icon: la cara de Quico · badge: su silueta (Android pinta la insignia de un color; con un PNG opaco sale un cuadrado)
+      navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,{body,icon:'icons/notif-192.png',badge:'icons/badge-96.png'}));
     }else{
-      new Notification(title,{body,icon:'icons/icon-192.png'});
+      new Notification(title,{body,icon:'icons/notif-192.png',badge:'icons/badge-96.png'});
     }
   }catch(e){try{new Notification(title,{body});}catch(_){}}
 }
@@ -1520,6 +1521,7 @@ function renderToday(){
   // El día empieza limpio: clases y citas solo entran si las añades tú (＋ De Quico).
   // Una sola vez: fuera las que versiones anteriores metían solas.
   if(localStorage.getItem('cris_dia_noauto')!=='1'){QDIA.syncClasses([],'clase');QDIA.syncClasses([],'cita');try{localStorage.setItem('cris_dia_noauto','1');}catch(e){}}
+  if(window.QCAL)QCAL.syncDay(); // solo las citas que marcaste «Ponerla en mi día»
   const hmc=ms=>new Date(ms).toLocaleTimeString(crisLang()==='en'?'en-GB':crisLang(),{hour:'2-digit',minute:'2-digit'});
   const rows=QDIA.view().map(it=>{
     if(it.cls)return {id:it.id,e:it.e||'🎓',t:escH(it.t)+'<span class="tp-min">'+hmc(it.cls.st)+'–'+hmc(it.cls.en)+'</span>',name:it.t,s:escH(it.cls.l||''),f:it.mod==='cita'?'modules/calendario.html':'modules/clases.html',done:QDIA.isDone(it),cls:it.cls};

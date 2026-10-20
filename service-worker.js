@@ -1,7 +1,7 @@
 // Service Worker - Cris App
 // Cachea todos los módulos para que la app funcione sin conexión.
 
-const CACHE_NAME = 'cris-app-v112';
+const CACHE_NAME = 'cris-app-v113';
 
 const ASSETS = [
   './',
@@ -25,7 +25,9 @@ const ASSETS = [
   './quico/quico_head_happy.png',
   './quico/quico_head_calm.png',
   './quico/quico_head_proud.png',
-  './quico/quico_happy.png'
+  './quico/quico_happy.png',
+  './icons/notif-192.png',
+  './icons/badge-96.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -105,6 +107,17 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       }).catch(() => cached);
+    })
+  );
+});
+
+// Al tocar un aviso de Quico se abre (o se trae al frente) la app
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+      for (const c of list) { if ('focus' in c) return c.focus(); }
+      return self.clients.openWindow ? self.clients.openWindow('./') : null;
     })
   );
 });
