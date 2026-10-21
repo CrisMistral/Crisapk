@@ -472,11 +472,11 @@ body.mod-open #menuBtn{display:none;}
 /* modo «menos texto» */
 .simple .hero-sub,.simple .tp-s,.simple .tp-hint,.simple .ao-desc{display:none}
 </style>
-<script src="shared/alergias.js?v=114"></script>
-<script src="shared/dia.js?v=114"></script>
-<script src="shared/clases.js?v=114"></script>
-<script src="shared/cal.js?v=114"></script>
-<script src="shared/sync.js?v=114"></script>
+<script src="shared/alergias.js?v=115"></script>
+<script src="shared/dia.js?v=115"></script>
+<script src="shared/clases.js?v=115"></script>
+<script src="shared/cal.js?v=115"></script>
+<script src="shared/sync.js?v=115"></script>
 </head>
 <body>
 
@@ -1311,10 +1311,14 @@ function quicoChips(){
   const list=QDIA.items(),has=id=>list.some(i=>i.mod===id);
   // En modo eco, solo lo mínimo; en un día normal, las áreas activas
   const src=isEco()?ECO_CHIPS:DAY_CATALOG.filter(m=>{const a=CAT2AREA[m.id];return !a||areaOn(a);}).map(m=>[m.id,m.e,'day_'+m.id]);
-  // + las tutorías y citas de hoy que aún no están en el día
-  const cit=[];
+  // + cada clase de hoy (con su hora) y las tutorías y citas de hoy que aún no están en el día
+  const cit=[],s0=new Date();s0.setHours(0,0,0,0);
+  const lg=crisLang()==='en'?'en-GB':crisLang(),inDay=new Set(list.filter(i=>i.cls).map(i=>i.cls.occ));
+  if(window.QCLASES&&areaOn('clases')&&QCLASES.hasData()){
+    QCLASES.day(0).filter(o=>!o.ad&&!o.hidden&&o.en>Date.now()&&!inDay.has(o.id)).forEach(o=>{
+      cit.push(['clase:'+o.id,'🎓',null,new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'})+' '+o.name,{...o,e:'🎓'},'clase']);});
+  }
   if(window.QCAL&&areaOn('calendario')){
-    const s0=new Date();s0.setHours(0,0,0,0);const lg=crisLang()==='en'?'en-GB':crisLang(),inDay=new Set(list.filter(i=>i.cls).map(i=>i.cls.occ));
     QCAL.between(s0.getTime(),s0.getTime()+864e5).filter(o=>QCAL.dk(o.st)===QCAL.dk(s0)&&o.en>Date.now()&&!inDay.has(o.id)).forEach(o=>{
       cit.push(['cita:'+o.id,o.e,null,new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'})+' '+o.name,o]);});
   }
@@ -1332,7 +1336,7 @@ function dayAddMod(id){
   const c=quicoChips().find(x=>x[0]===id);if(!c)return;
   const all=[...document.querySelectorAll('#tp-chips .tp-chip')],k=all.findIndex(b=>b.getAttribute('data-mod')===id);
   const nid=(all[k+1]||all[k-1]||{}).getAttribute?(all[k+1]||all[k-1]).getAttribute('data-mod'):null;
-  if(c[4]){const o=c[4];QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.e},'cita');}
+  if(c[4]){const o=c[4];QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.e},c[5]||'cita');}
   else QDIA.add(t(c[2]),c[0],c[1]);
   if(hapticOK())navigator.vibrate(25);
   showQuicoChips=true; // siguen abiertos para añadir varias seguidas
