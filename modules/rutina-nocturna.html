@@ -149,30 +149,30 @@ body {
   transition: width 0.3s ease;
 }
 
-.stretch-item {
+/* Estiramiento activo: uno a la vez con su cuenta atrás */
+.sx-card {
   background: rgba(255,255,255,0.08);
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  border-left: 3px solid var(--accent);
+  padding: 14px 16px;
+  border-radius: 12px;
+  border-left: 4px solid var(--accent2);
+  text-align: center;
 }
-
-.stretch-name {
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.stretch-desc {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  margin-bottom: 6px;
-}
-
-.stretch-time {
-  font-size: 0.8rem;
-  color: var(--accent);
-  font-weight: 500;
-}
+.sx-card.sx-work { border-left-color: var(--accent); }
+.sx-card.sx-switch { border-left-color: var(--accent3); }
+.sx-card.sx-done { border-left-color: var(--accent); }
+.sx-top { display:flex; justify-content:space-between; font-size:.8rem; color:var(--text-soft); }
+.sx-kind { font-weight:700; color:var(--accent2); }
+.sx-work .sx-kind { color:var(--accent); }
+.sx-switch .sx-kind { color:var(--accent3); }
+.sx-done .sx-kind { color:var(--accent); }
+.sx-name { font-weight:700; font-size:1.15rem; margin:8px 0 2px; }
+.sx-side { display:inline-block; margin-top:4px; padding:3px 10px; border-radius:20px; background:rgba(255,255,255,.1); font-size:.85rem; font-weight:600; }
+.sx-count { font-size:3.2rem; font-weight:800; line-height:1.1; margin:8px 0 4px; font-variant-numeric:tabular-nums; color:var(--accent2); }
+.sx-work .sx-count, .sx-done .sx-count { color:var(--accent); }
+.sx-switch .sx-count { color:var(--accent3); }
+.sx-desc { font-size:.95rem; color:var(--text-dim); line-height:1.5; }
+.sx-foot { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:12px; font-size:.8rem; color:var(--text-soft); text-align:left; }
+.sx-skip { background:rgba(255,255,255,.1); color:var(--text); border:0; border-radius:16px; padding:6px 12px; font-size:.8rem; cursor:pointer; flex-shrink:0; }
 
 .check-item {
   display: flex;
@@ -424,6 +424,10 @@ const UI={
    pause:'⏸️ Pausar',resume:'▶️ Reanudar',next:'⏭️ Siguiente',step_word:'Paso',desc_word:'Descripción',
    checklist_h:'✅ Lista de verificación:',stretch_h:'🧘‍♀️ Secuencia de estiramientos:',
    stretch_tip:'<strong>💡 Consejos:</strong> Respira profundamente durante cada estiramiento. No fuerces, solo llega hasta donde te sientas cómodo. Si sientes dolor, para inmediatamente.',
+   sx_prep:'⏳ Prepárate',sx_hold:'🧘 Estira',sx_switch:'🔄 Cambia de lado',sx_done:'✅ ¡Hecho!',sx_after:'Ahora viene la meditación 🕯️',
+   sx_next:'Después: {n}',sx_last:'Es el último',sx_skip:'⏭️ Saltar este',
+   v_first:'{title}. Primero: {n}. {d}',v_next:'Siguiente: {n}. {d}',v_startside:'Empieza por: {s}.',v_go:'¡Ya! {s} segundos.',
+   v_switch:'Cambia de lado: {s}.',v_sx_done:'¡Muy bien! Estiramientos terminados.',
    phrase_h:'🌙 Frase de liberación',phrase_text:'"Con amor dejo atrás el día y me sumerjo en un sueño tranquilo, en la seguridad de que el mañana cuidará de sí mismo"',
    disc_title:'🌙 Último paso: el móvil a dormir',disc_text:'Lleva el móvil a <strong>otra habitación</strong> y déjalo cargando allí.<br>Es un regalo que le haces a tu yo de mañana. 💚',
    fomo_lead:'💭 Si a medianoche te tienta mirarlo, recuerda:',fomo_quote:'"Nada de lo que pase en el móvil entre las 22:00 y las 7:00 es más importante que tu descanso."',fomo_tail:'El mundo puede esperar 8 horas. Tú necesitas dormir 🫂',
@@ -441,6 +445,10 @@ const UI={
    pause:'⏸️ Pause',resume:'▶️ Resume',next:'⏭️ Next',step_word:'Step',desc_word:'Description',
    checklist_h:'✅ Checklist:',stretch_h:'🧘‍♀️ Stretching sequence:',
    stretch_tip:'<strong>💡 Tips:</strong> Breathe deeply during each stretch. Don’t force it, only go as far as feels comfortable. If you feel pain, stop right away.',
+   sx_prep:'⏳ Get ready',sx_hold:'🧘 Stretch',sx_switch:'🔄 Switch sides',sx_done:'✅ Done!',sx_after:'Meditation comes next 🕯️',
+   sx_next:'Next: {n}',sx_last:'Last one',sx_skip:'⏭️ Skip this one',
+   v_first:'{title}. First: {n}. {d}',v_next:'Next: {n}. {d}',v_startside:'Start with: {s}.',v_go:'Go! {s} seconds.',
+   v_switch:'Switch sides: {s}.',v_sx_done:'Well done! Stretches finished.',
    phrase_h:'🌙 Letting-go phrase',phrase_text:'"With love I leave the day behind and sink into calm sleep, trusting that tomorrow will take care of itself."',
    disc_title:'🌙 Last step: put the phone to bed',disc_text:'Take the phone to <strong>another room</strong> and leave it charging there.<br>It’s a gift to your tomorrow self. 💚',
    fomo_lead:'💭 If at midnight you’re tempted to check it, remember:',fomo_quote:'"Nothing that happens on the phone between 10pm and 7am matters more than your rest."',fomo_tail:'The world can wait 8 hours. You need to sleep 🫂',
@@ -458,6 +466,10 @@ const UI={
    pause:'⏸️ Pause',resume:'▶️ Reprendre',next:'⏭️ Suivant',step_word:'Étape',desc_word:'Description',
    checklist_h:'✅ Liste de vérification :',stretch_h:'🧘‍♀️ Séquence d’étirements :',
    stretch_tip:'<strong>💡 Conseils :</strong> Respire profondément pendant chaque étirement. Ne force pas, va seulement jusqu’où tu es à l’aise. Si tu ressens une douleur, arrête tout de suite.',
+   sx_prep:'⏳ Prépare-toi',sx_hold:'🧘 Étire-toi',sx_switch:'🔄 Change de côté',sx_done:'✅ Terminé !',sx_after:'Ensuite, la méditation 🕯️',
+   sx_next:'Ensuite : {n}',sx_last:'C’est le dernier',sx_skip:'⏭️ Passer celui-ci',
+   v_first:'{title}. D’abord : {n}. {d}',v_next:'Suivant : {n}. {d}',v_startside:'Commence par : {s}.',v_go:'C’est parti ! {s} secondes.',
+   v_switch:'Change de côté : {s}.',v_sx_done:'Très bien ! Étirements terminés.',
    phrase_h:'🌙 Phrase de lâcher-prise',phrase_text:'« Avec amour je laisse la journée derrière moi et je plonge dans un sommeil paisible, sûre que demain prendra soin de lui-même. »',
    disc_title:'🌙 Dernière étape : le téléphone au lit',disc_text:'Emporte le téléphone dans <strong>une autre pièce</strong> et laisse-le charger là-bas.<br>C’est un cadeau à ton toi de demain. 💚',
    fomo_lead:'💭 Si à minuit tu es tentée de le regarder, rappelle-toi :',fomo_quote:'« Rien de ce qui se passe sur le téléphone entre 22h et 7h n’est plus important que ton repos. »',fomo_tail:'Le monde peut attendre 8 heures. Toi, tu as besoin de dormir 🫂',
@@ -479,12 +491,12 @@ const STEPS_L={
   {title:'🏠 Light tidy',desc:'Pick up visible items in your rest area'},
   {title:'🧴 Hygiene & skincare',desc:'Dental care, face and getting ready for bed',checklist:['Brush teeth','Remove makeup / cleanse face','Apply moisturiser','Eye contour cream','Put on comfy pyjamas']},
   {title:'🧘‍♀️ Gentle stretches',desc:'A stretching sequence to release the day’s tension',stretches:[
-    {name:'Neck & shoulders',desc:'Turn your head slowly to both sides. Raise your shoulders and let them drop.',time:'30-45 sec'},
-    {name:'Arms & wrists',desc:'Extend one arm, pull gently with the other hand. Rotate your wrists.',time:'30 sec each arm'},
-    {name:'Upper back',desc:'Interlace fingers, stretch arms upward. Lean gently to each side.',time:'30 sec each side'},
-    {name:'Spine',desc:'Seated, turn your torso slowly to the right and then to the left.',time:'30 sec each side'},
-    {name:'Hips & legs',desc:'Standing, bring one knee toward your chest. Switch legs.',time:'20 sec each leg'},
-    {name:'Ankles',desc:'Seated or standing, rotate your ankles in circles. Flex and point your feet.',time:'20 sec each foot'}]},
+    {name:'Neck & shoulders',desc:'Turn your head slowly to both sides. Raise your shoulders and let them drop.'},
+    {name:'Arms & wrists',desc:'Extend one arm, pull gently with the other hand. Rotate your wrists.',sides:['Right arm','Left arm']},
+    {name:'Upper back',desc:'Interlace fingers, stretch arms upward. Lean gently to each side.',sides:['To the right','To the left']},
+    {name:'Spine',desc:'Seated, turn your torso slowly to the right and then to the left.',sides:['Turn to the right','Turn to the left']},
+    {name:'Hips & legs',desc:'Standing, bring one knee toward your chest. Switch legs.',sides:['Right knee to chest','Left knee to chest']},
+    {name:'Ankles',desc:'Seated or standing, rotate your ankles in circles. Flex and point your feet.',sides:['Right foot','Left foot']}]},
   {title:'🕯️ Shiné meditation',desc:'Meditation for mental calm and mindful breathing',meditation:{
     intro:'Shiné means “abiding in calm.” It’s a basic Buddhist mindfulness practice.',
     steps:[
@@ -500,12 +512,12 @@ const STEPS_L={
   {title:'🏠 Rangement léger',desc:'Ramasse les objets visibles de ton espace de repos'},
   {title:'🧴 Hygiène et soins',desc:'Soins dentaires, visage et préparation au coucher',checklist:['Se brosser les dents','Démaquiller / nettoyer le visage','Appliquer une crème hydratante','Crème contour des yeux','Mettre un pyjama confortable']},
   {title:'🧘‍♀️ Étirements doux',desc:'Une séquence d’étirements pour relâcher la tension de la journée',stretches:[
-    {name:'Cou et épaules',desc:'Tourne la tête lentement des deux côtés. Monte les épaules et relâche-les.',time:'30-45 sec'},
-    {name:'Bras et poignets',desc:'Étends un bras, tire doucement avec l’autre main. Fais tourner les poignets.',time:'30 sec par bras'},
-    {name:'Haut du dos',desc:'Entrelace les doigts, étire les bras vers le haut. Penche-toi doucement de chaque côté.',time:'30 sec par côté'},
-    {name:'Colonne vertébrale',desc:'Assise, tourne le torse lentement à droite puis à gauche.',time:'30 sec par côté'},
-    {name:'Hanches et jambes',desc:'Debout, ramène un genou vers la poitrine. Change de jambe.',time:'20 sec par jambe'},
-    {name:'Chevilles',desc:'Assise ou debout, fais tourner les chevilles en cercles. Fléchis et pointe les pieds.',time:'20 sec par pied'}]},
+    {name:'Cou et épaules',desc:'Tourne la tête lentement des deux côtés. Monte les épaules et relâche-les.'},
+    {name:'Bras et poignets',desc:'Étends un bras, tire doucement avec l’autre main. Fais tourner les poignets.',sides:['Bras droit','Bras gauche']},
+    {name:'Haut du dos',desc:'Entrelace les doigts, étire les bras vers le haut. Penche-toi doucement de chaque côté.',sides:['Vers la droite','Vers la gauche']},
+    {name:'Colonne vertébrale',desc:'Assise, tourne le torse lentement à droite puis à gauche.',sides:['Tourne à droite','Tourne à gauche']},
+    {name:'Hanches et jambes',desc:'Debout, ramène un genou vers la poitrine. Change de jambe.',sides:['Genou droit vers la poitrine','Genou gauche vers la poitrine']},
+    {name:'Chevilles',desc:'Assise ou debout, fais tourner les chevilles en cercles. Fléchis et pointe les pieds.',sides:['Pied droit','Pied gauche']}]},
   {title:'🕯️ Méditation Shiné',desc:'Méditation de calme mental et respiration consciente',meditation:{
     intro:'Shiné signifie « demeurer dans le calme ». C’est une pratique bouddhiste de base de pleine conscience.',
     steps:[
@@ -546,38 +558,19 @@ const steps = [
   {
     title: '🧘‍♀️ Estiramientos suaves',
     desc: 'Secuencia de estiramientos para liberar tensión del día',
-    duration: 300,
     stretches: [
-      {
-        name: 'Cuello y hombros',
-        desc: 'Gira la cabeza lentamente hacia ambos lados. Eleva los hombros y suéltalos.',
-        time: '30-45 seg'
-      },
-      {
-        name: 'Brazos y muñecas', 
-        desc: 'Extiende un brazo, tira suavemente con la otra mano. Rota las muñecas.',
-        time: '30 seg cada brazo'
-      },
-      {
-        name: 'Espalda alta',
-        desc: 'Entrelaza dedos, estira brazos hacia arriba. Inclínate suavemente a cada lado.',
-        time: '30 seg cada lado'
-      },
-      {
-        name: 'Columna vertebral',
-        desc: 'Sentado, gira el torso lentamente a la derecha y luego a la izquierda.',
-        time: '30 seg cada lado'
-      },
-      {
-        name: 'Caderas y piernas',
-        desc: 'De pie, dobla una rodilla hacia el pecho. Cambia de pierna.',
-        time: '20 seg cada pierna'
-      },
-      {
-        name: 'Tobillos',
-        desc: 'Sentado o de pie, rota los tobillos en círculos. Flexiona y extiende los pies.',
-        time: '20 seg cada pie'
-      }
+      { name: 'Cuello y hombros', secs: 40,
+        desc: 'Gira la cabeza lentamente hacia ambos lados. Eleva los hombros y suéltalos.' },
+      { name: 'Brazos y muñecas', secs: 30, sides: ['Brazo derecho', 'Brazo izquierdo'],
+        desc: 'Extiende un brazo, tira suavemente con la otra mano. Rota las muñecas.' },
+      { name: 'Espalda alta', secs: 30, sides: ['Hacia la derecha', 'Hacia la izquierda'],
+        desc: 'Entrelaza dedos, estira brazos hacia arriba. Inclínate suavemente a cada lado.' },
+      { name: 'Columna vertebral', secs: 30, sides: ['Gira a la derecha', 'Gira a la izquierda'],
+        desc: 'Sentada, gira el torso lentamente a la derecha y luego a la izquierda.' },
+      { name: 'Caderas y piernas', secs: 20, sides: ['Rodilla derecha al pecho', 'Rodilla izquierda al pecho'],
+        desc: 'De pie, dobla una rodilla hacia el pecho. Cambia de pierna.' },
+      { name: 'Tobillos', secs: 20, sides: ['Pie derecho', 'Pie izquierdo'],
+        desc: 'Sentada o de pie, rota los tobillos en círculos. Flexiona y extiende los pies.' }
     ]
   },
   {
@@ -625,6 +618,21 @@ const steps = [
   }
 ];
 
+/* Estiramientos guiados: cada uno se prepara (la voz dice qué hacer), se estira con su cuenta atrás
+   y, si es de dos lados, avisa del cambio. La duración del paso es la suma de todo. */
+const SX_PREP1 = 10, SX_PREP = 8, SX_SWITCH = 5, SX_DONE = 5;
+function stretchPlan(list) {
+  const seg = []; let at = 0;
+  const add = (k, len, j, side) => { seg.push({ k, len, j, side, at }); at += len; };
+  list.forEach((s, j) => {
+    add('prep', j ? SX_PREP : SX_PREP1, j, 0);
+    (s.sides || [0]).forEach((_, i) => { if (i) add('switch', SX_SWITCH, j, i); add('work', s.secs, j, i); });
+  });
+  add('done', SX_DONE, list.length - 1, 0);
+  return { seg, total: at };
+}
+steps.forEach(s => { if (s.stretches) s.duration = stretchPlan(s.stretches).total; });
+
 let currentStep = 0;
 let timeRemaining = 0;
 let timer = null;
@@ -645,6 +653,7 @@ function showView(viewId) {
 
 function showHome() {
   stopTimer();
+  try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
   currentStep = 0;
   isRunning = false;
   document.getElementById('pauseBtn').textContent = t('pause');
@@ -656,10 +665,12 @@ function showInfo() {
 }
 
 let _utt = null;
-function speak(t) {
+const plain = x => String(x).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '').trim();
+// queue = true: espera a que termine lo que se está diciendo (no lo corta)
+function speak(t, queue) {
   try {if(!__allow('voice'))return;
     if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
+    if (!queue) window.speechSynthesis.cancel();
     if (window.speechSynthesis.paused) window.speechSynthesis.resume();
     _utt = new SpeechSynthesisUtterance(t);
     _utt.lang = VOICE_LANG[crisLang()]; _utt.rate = .82; _utt.pitch = .95;
@@ -669,7 +680,23 @@ function speak(t) {
   } catch (e) {}
 }
 
+let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
+function beep(freq,dur){
+  try{if(!__allow('sound'))return;
+    const ctx=__getCtx();if(!ctx)return;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.type='sine';o.frequency.value=freq||660;
+    g.gain.setValueAtTime(0,ctx.currentTime);
+    g.gain.linearRampToValueAtTime(.18,ctx.currentTime+.02);
+    g.gain.linearRampToValueAtTime(0,ctx.currentTime+(dur||.3));
+    o.start();o.stop(ctx.currentTime+(dur||.3)+.05);
+  }catch(e){}
+}
+function vibrate(p){try{if(!__allow('vib'))return;if(navigator.vibrate)navigator.vibrate(p||60);}catch(e){}}
+
 function startRoutine() {
+  __getCtx();
   currentStep = 0;
   showView('routine');
   loadStep(0);
@@ -679,7 +706,7 @@ function startRoutine() {
 function loadStep(stepIndex) {
   const step = stepL(stepIndex);
   timeRemaining = step.duration;
-  speak(step.title.replace(/[^\wáéíóúñÁÉÍÓÚÑ\s]/g, '') + '. ' + step.desc);
+  if (!step.stretches) speak(plain(step.title) + '. ' + step.desc);
 
   document.getElementById('stepTitle').textContent = step.title;
   document.getElementById('stepDesc').textContent = step.desc;
@@ -705,28 +732,25 @@ function loadStep(stepIndex) {
   }
   
   if (step.stretches) {
-    const div = document.createElement('div');
-    div.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent)">'+t('stretch_h')+'</div>';
-    
-    step.stretches.forEach((stretch, i) => {
-      const stretchEl = document.createElement('div');
-      stretchEl.className = 'stretch-item';
-      stretchEl.innerHTML = `
-        <div class="stretch-name">${i + 1}. ${stretch.name}</div>
-        <div class="stretch-desc">${stretch.desc}</div>
-        <div class="stretch-time">⏱️ ${stretch.time}</div>
-      `;
-      div.appendChild(stretchEl);
-    });
-    
+    // Un estiramiento a la vez: avanza solo, con voz y pitidos en cada cambio
+    const dots = document.createElement('div');
+    dots.id = 'sxDots';
+    dots.style.cssText = 'display:flex;gap:6px;justify-content:center;margin:4px 0 12px;';
+    content.appendChild(dots);
+
+    const box = document.createElement('div');
+    box.id = 'sxBox';
+    content.appendChild(box);
+
     const tip = document.createElement('div');
     tip.className = 'note';
     tip.innerHTML = t('stretch_tip');
-    div.appendChild(tip);
-    
-    content.appendChild(div);
+    content.appendChild(tip);
+
+    sxSeg = -1; sxLast = -1;
+    updateStretch(0);
   }
-  
+
   if (step.meditation) {
     // Una fase a la vez: avanza sola con el temporizador y la voz guía
     const med = step.meditation;
@@ -779,6 +803,66 @@ function loadStep(stepIndex) {
   }
 }
 
+let sxSeg = -1, sxLast = -1;
+function updateStretch(elapsed) {
+  const step = stepL(currentStep);
+  if (!step || !step.stretches || elapsed === sxLast) return;
+  sxLast = elapsed;
+  const list = step.stretches, plan = stretchPlan(list);
+  let idx = plan.seg.length - 1;
+  for (let i = 0; i < plan.seg.length; i++) {
+    if (elapsed < plan.seg[i].at + plan.seg[i].len) { idx = i; break; }
+  }
+  const g = plan.seg[idx], s = list[g.j], left = Math.max(0, g.at + g.len - elapsed);
+  if (idx !== sxSeg) {
+    sxSeg = idx;
+    const done = g.k === 'done', nx = list[g.j + 1];
+    const kind = { prep: t('sx_prep'), work: t('sx_hold'), switch: t('sx_switch'), done: t('sx_done') }[g.k];
+    const box = document.getElementById('sxBox');
+    if (box) box.innerHTML = `
+      <div class="sx-card sx-${g.k}">
+        <div class="sx-top"><span>${done ? '' : (g.j + 1) + '/' + list.length}</span><span class="sx-kind">${kind}</span></div>
+        <div class="sx-name">${done ? t('sx_after') : s.name}</div>
+        ${s.sides && !done ? `<div class="sx-side">${s.sides[g.side]} · ${g.side + 1}/${s.sides.length}</div>` : ''}
+        <div class="sx-count" id="sxCount">${left}</div>
+        ${done ? '' : `<div class="sx-desc">${s.desc}</div>
+        <div class="sx-foot"><span>${nx ? t('sx_next', { n: nx.name }) : t('sx_last')}</span><button class="sx-skip" onclick="skipStretch()">${t('sx_skip')}</button></div>`}
+      </div>`;
+    const dots = document.getElementById('sxDots');
+    if (dots) dots.innerHTML = list.map((_, i) =>
+      `<span style="width:9px;height:9px;border-radius:50%;background:${i < g.j || done ? 'var(--accent)' : i === g.j ? 'var(--accent2)' : 'rgba(255,255,255,.18)'}"></span>`).join('');
+    // Avisos: qué hacer, cuándo empezar, cuándo cambiar de lado y el final
+    if (g.k === 'prep') {
+      speak((g.j ? t('v_next', { n: s.name, d: s.desc }) : t('v_first', { title: plain(step.title), n: s.name, d: s.desc }))
+        + (s.sides ? ' ' + t('v_startside', { s: s.sides[0] }) : ''));
+      beep(523, .25); vibrate(60);
+    } else if (g.k === 'work') {
+      speak(t('v_go', { s: s.secs }), true);
+      beep(880, .35); vibrate(150);
+    } else if (g.k === 'switch') {
+      speak(t('v_switch', { s: s.sides[g.side] }));
+      beep(660, .15); setTimeout(() => beep(660, .15), 220); vibrate([60, 80, 60]);
+    } else {
+      speak(t('v_sx_done'));
+      beep(660, .2); setTimeout(() => beep(880, .45), 250); vibrate([80, 60, 160]);
+    }
+  } else if (g.k === 'work' && left > 0 && left <= 3) beep(440, .1); // 3, 2, 1
+  const c = document.getElementById('sxCount');
+  if (c) c.textContent = left;
+}
+// Saltar al siguiente estiramiento (o al final si es el último)
+function skipStretch() {
+  const st = steps[currentStep];
+  if (!st || !st.stretches) return;
+  const plan = stretchPlan(st.stretches), cur = plan.seg[Math.max(0, sxSeg)];
+  const to = plan.seg.find(g => (g.k === 'prep' && g.j > cur.j) || g.k === 'done');
+  if (!to || to === cur) return;
+  timeRemaining = st.duration - to.at;
+  document.getElementById('timer').textContent = formatTime(timeRemaining);
+  __ringN(timeRemaining / st.duration);
+  updateStretch(to.at);
+}
+
 let medPhaseIdx = -1;
 function updateMedPhase(elapsed) {
   const step = stepL(currentStep);
@@ -801,7 +885,7 @@ function updateMedPhase(elapsed) {
   const dots = document.getElementById('medDots');
   if (dots) dots.innerHTML = med.steps.map((_, i) =>
     `<span style="width:9px;height:9px;border-radius:50%;background:${i < idx ? 'var(--accent)' : i === idx ? 'var(--accent2)' : 'rgba(255,255,255,.18)'}"></span>`).join('');
-  speak(ph.instruction);
+  speak(ph.instruction, idx === 0); // la 1.ª fase espera a que se diga el título
 }
 
 function __ringN(f){const r=document.getElementById('n-ring');if(r)r.style.background='conic-gradient(#4fd1c7 '+(Math.max(0,Math.min(1,f))*360)+'deg,rgba(255,255,255,.12) 0)';}
@@ -814,6 +898,7 @@ function startTimer() {
       const _st=steps[currentStep];if(_st&&_st.duration)__ringN(timeRemaining/_st.duration);
       const st = steps[currentStep];
       if (st && st.meditation) updateMedPhase(st.duration - timeRemaining);
+      if (st && st.stretches) updateStretch(st.duration - timeRemaining);
     } else {
       nextStep();
     }
