@@ -8,34 +8,36 @@
 // los dispositivos vinculados): aquí no se pueden leer. «k» es un resumen (hash) de
 // esa clave, sirve para encontrar el paquete. La clave solo pasa por aquí al
 // vincular, y el código se borra al usarse o caduca a los 10 minutos.
-// Persistencia: Netlify Blobs.
+// Persistencia: Netlify Blobs con consistencia FUERTE. Con la normal (eventual), un
+// código recién creado podía leerse como «no existe» durante hasta un minuto y el
+// otro móvil no conseguía vincularse. Por eso es una función moderna (export default):
+// las antiguas (exports.handler) no pueden pedir lecturas fuertes.
 // ─────────────────────────────────────────────────────────────────────────────
-const crypto = require('crypto');
-let blobs = null;
-try { blobs = require('@netlify/blobs'); } catch (e) { blobs = null; }
+import crypto from 'node:crypto';
+import { getStore } from '@netlify/blobs';
 
 const CODE_TTL = 10 * 60 * 1000;
 const MAX_CT = 4 * 1024 * 1024; // ~4 MB de datos cifrados
 const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sin 0/O ni 1/I para no confundir
+const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' };
 
-const json = (code, o) => ({
-  statusCode: code,
-  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*' },
-  body: JSON.stringify(o),
+const json = (code, o) => new Response(JSON.stringify(o), {
+  status: code,
+  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...CORS },
 });
 const isKey = (k) => typeof k === 'string' && /^[0-9a-f]{64}$/.test(k);
 const isSecret = (s) => typeof s === 'string' && /^[A-Za-z0-9_-]{43}$/.test(s);
 const isCode = (c) => typeof c === 'string' && /^[A-Z2-9]{6}$/.test(c);
 function newCode() { const b = crypto.randomBytes(6); let c = ''; for (const x of b) c += ALPHA[x % ALPHA.length]; return c; }
 
-exports.handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' }, body: '' };
-  if (event.httpMethod !== 'POST') return json(405, { error: 'method' });
-  if (!blobs || !blobs.getStore) return json(503, { error: 'no_store' });
-  try { if (blobs.connectLambda) blobs.connectLambda(event); } catch (e) {}
+export default async (req) => {
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+  if (req.method !== 'POST') return json(405, { error: 'method' });
   let b;
-  try { b = JSON.parse(event.body || '{}'); } catch (e) { return json(400, { error: 'bad_json' }); }
-  const pairs = blobs.getStore('quico-pair'), data = blobs.getStore('quico-sync');
+  try { b = await req.json(); } catch (e) { return json(400, { error: 'bad_json' }); }
+  if (!b || typeof b !== 'object') return json(400, { error: 'bad_json' });
+  const pairs = getStore({ name: 'quico-pair', consistency: 'strong' });
+  const data = getStore({ name: 'quico-sync', consistency: 'strong' });
   const now = Date.now();
 
   if (b.a === 'code') {
