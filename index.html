@@ -465,6 +465,7 @@ body.mod-open #menuBtn{display:none;}
 .sync-code{font-size:2rem;font-weight:800;letter-spacing:.18em;text-align:center;color:var(--teal-dark);background:var(--mint-bg);border-radius:14px;padding:12px;margin:8px 0;user-select:all;}
 .sync-in{width:100%;border:2px solid var(--mint-mid);border-radius:12px;padding:11px;font-size:1.3rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;text-align:center;font-family:'Outfit',sans-serif;margin:6px 0;}
 .sync-ok{font-weight:800;color:#065f46;margin:4px 0 6px;}
+.acc-in{width:100%;border:2px solid var(--mint-mid);border-radius:12px;padding:11px 12px;font-size:1rem;font-family:'Outfit',sans-serif;margin:5px 0;box-sizing:border-box;}
 .sync-err{font-weight:700;color:#b91c1c;margin:6px 0;}
 .backup-row{display:flex;gap:8px;margin-top:8px}
 .backup-row button{flex:1;border:none;background:var(--mint-mid);color:var(--teal-dark);border-radius:12px;padding:10px 6px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer}
@@ -476,7 +477,7 @@ body.mod-open #menuBtn{display:none;}
 <script src="shared/dia.js?v=115"></script>
 <script src="shared/clases.js?v=115"></script>
 <script src="shared/cal.js?v=115"></script>
-<script src="shared/sync.js?v=115"></script>
+<script src="shared/sync.js?v=117"></script>
 </head>
 <body>
 
@@ -611,7 +612,7 @@ const I18N={
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
   drawer_footer:'Quico · tu compañero cada día 💚',
-  sync_btn:'🔗 Vincular dispositivos',sync_hint:'Para tener Quico igual en dos móviles (o móvil y tablet). Los datos viajan cifrados.',sync_start:'📱 Vincular con otro',sync_have:'⌨️ Tengo un código',sync_code_hint:'En el otro dispositivo: ☰ Menú → 🔗 Vincular dispositivos → Tengo un código, y escribe:',sync_code_exp:'Sirve durante 10 minutos.',sync_enter_hint:'Escribe el código que sale en el otro dispositivo. Este se quedará con los datos de aquel (y aportará lo que solo tenga este).',sync_link:'Vincular',cancel:'Cancelar',sync_linked:'Vinculado',sync_last:'Última sincronización: {t}',sync_never:'aún no',sync_just:'ahora mismo',sync_min:'hace {n} min',sync_h:'hace {n} h',sync_now:'↻ Sincronizar ahora',sync_add:'📱 Añadir otro dispositivo',sync_unlink:'Desvincular este dispositivo',sync_unlink_q:'¿Desvincular este dispositivo? Tus datos se quedan aquí, pero dejarán de pasar a los otros.',sync_unlinked:'Desvinculado.',sync_wait:'Un momento…',sync_fail:'No he podido conectar. Revisa internet y prueba otra vez.',sync_bad:'Ese código no vale o ha caducado. Pide uno nuevo en el otro dispositivo.',sync_done:'¡Vinculado! Quico se va a recargar con tus datos.',sync_relink_q:'Este dispositivo ya está vinculado a otro grupo. ¿Cambiarlo a este?',sync_got:'Han llegado {n} cambios.',sync_same:'Todo está al día.',sync_noserver:'Para vincular dispositivos hace falta la versión de Quico en Netlify.',backup_btn:'💾 Copia de seguridad',backup_export:'⬇️ Guardar copia',backup_import:'⬆️ Recuperar copia',backup_hint:'Guarda un archivo con tus datos para pasarlos a otro móvil o no perderlos.',backup_ok:'Copia recuperada. La app se va a recargar.',backup_confirm:'Esto sustituirá tus datos actuales por los de la copia. ¿Seguir?',backup_bad:'Ese archivo no parece una copia de Quico.',privacy_btn:'🔒 Privacidad y aviso de salud',kindle_btn:'📖 Versión para Kindle',kindle_hint:'En el Kindle, abre el navegador (Menú → Navegador experimental) y escribe esta dirección:',kindle_note:'Versión sencilla: ejercicio del día, comida, limpieza, rutina de noche y calma. Sin sonido ni animaciones.',
+  sync_btn:'👤 Tu cuenta',acc_hint:'Entra con tu email en cada móvil (o tablet) y Quico será el mismo en todos. Tus datos van cifrados con tu contraseña.',acc_email:'Tu email',acc_pw:'Contraseña (mínimo 8)',acc_enter:'Entrar',acc_first:'¿Primera vez? Tu cuenta se crea al entrar.',acc_short:'La contraseña necesita al menos 8 caracteres.',acc_bad_email:'Revisa el email.',acc_new_q:'No hay ninguna cuenta con {e} y esa contraseña. ¿Crear una nueva con los datos de este dispositivo?\n\nSi ya tenías cuenta, cancela y revisa la contraseña.',acc_created:'¡Cuenta creada! En tu otro móvil, entra con el mismo email y la misma contraseña.',acc_in_done:'¡Dentro! Quico se va a recargar con tus datos.',acc_old_pw:'Esa contraseña ya no vale porque la cambiaste. Usa la nueva.',acc_relogin:'Tu contraseña cambió en otro dispositivo. Vuelve a entrar con la nueva.',acc_as:'Dentro como {e}',acc_change:'Cambiar contraseña',acc_new_pw:'Contraseña nueva (mínimo 8)',acc_save:'Guardar',acc_changed:'Contraseña cambiada. En tus otros dispositivos, vuelve a entrar con la nueva.',acc_exists:'Ya hay datos con esa contraseña. Elige otra.',acc_out:'Salir en este dispositivo',acc_out_q:'¿Salir en este dispositivo? Tus datos se quedan aquí, pero dejarán de pasar a los demás.',acc_outed:'Has salido.',acc_forgot:'¿Olvidaste la contraseña? Cámbiala desde un dispositivo donde sigas dentro. Si no tienes ninguno, tus datos siguen en tu móvil: crea la cuenta otra vez.',acc_wait:'Un momento… (comprobando la contraseña)',sync_wait:'Un momento…',cancel:'Cancelar',sync_last:'Última sincronización: {t}',sync_never:'aún no',sync_just:'ahora mismo',sync_min:'hace {n} min',sync_h:'hace {n} h',sync_now:'↻ Sincronizar ahora',sync_fail:'No he podido conectar. Revisa internet y prueba otra vez.',sync_got:'Han llegado {n} cambios.',sync_same:'Todo está al día.',sync_noserver:'No puedo conectar con el servidor de Quico. Revisa internet y prueba otra vez.',backup_btn:'💾 Copia de seguridad',backup_export:'⬇️ Guardar copia',backup_import:'⬆️ Recuperar copia',backup_hint:'Guarda un archivo con tus datos para pasarlos a otro móvil o no perderlos.',backup_ok:'Copia recuperada. La app se va a recargar.',backup_confirm:'Esto sustituirá tus datos actuales por los de la copia. ¿Seguir?',backup_bad:'Ese archivo no parece una copia de Quico.',privacy_btn:'🔒 Privacidad y aviso de salud',kindle_btn:'📖 Versión para Kindle',kindle_hint:'En el Kindle, abre el navegador (Menú → Navegador experimental) y escribe esta dirección:',kindle_note:'Versión sencilla: ejercicio del día, comida, limpieza, rutina de noche y calma. Sin sonido ni animaciones.',
   day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia', drop:' Soltar', drop_title:'Soltar el móvil y cambiar de tarea', drop_menu:'📴 Soltar el móvil',
   greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
@@ -672,7 +673,7 @@ const I18N={
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
   drawer_footer:'Quico · your everyday companion 💚',
-  sync_btn:'🔗 Link devices',sync_hint:'Keep Quico the same on two phones (or phone and tablet). Your data travels encrypted.',sync_start:'📱 Link another device',sync_have:'⌨️ I have a code',sync_code_hint:'On the other device: ☰ Menu → 🔗 Link devices → I have a code, and type:',sync_code_exp:'Valid for 10 minutes.',sync_enter_hint:'Type the code shown on the other device. This one will take that device’s data (and add anything only this one has).',sync_link:'Link',cancel:'Cancel',sync_linked:'Linked',sync_last:'Last sync: {t}',sync_never:'not yet',sync_just:'just now',sync_min:'{n} min ago',sync_h:'{n} h ago',sync_now:'↻ Sync now',sync_add:'📱 Add another device',sync_unlink:'Unlink this device',sync_unlink_q:'Unlink this device? Your data stays here but will stop syncing with the others.',sync_unlinked:'Unlinked.',sync_wait:'One moment…',sync_fail:'I couldn’t connect. Check your internet and try again.',sync_bad:'That code isn’t valid or has expired. Get a new one on the other device.',sync_done:'Linked! Quico will reload with your data.',sync_relink_q:'This device is already linked to another group. Switch to this one?',sync_got:'{n} changes arrived.',sync_same:'Everything is up to date.',sync_noserver:'Linking devices needs the Netlify version of Quico.',backup_btn:'💾 Backup',backup_export:'⬇️ Save a copy',backup_import:'⬆️ Restore a copy',backup_hint:'Save a file with your data to move it to another phone or keep it safe.',backup_ok:'Copy restored. The app will reload.',backup_confirm:'This will replace your current data with the copy. Continue?',backup_bad:'That file doesn’t look like a Quico backup.',privacy_btn:'🔒 Privacy and health notice',kindle_btn:'📖 Kindle version',kindle_hint:'On your Kindle, open the browser (Menu → Experimental browser) and type this address:',kindle_note:'Simple version: today’s exercise, food, cleaning, night routine and calm. No sound or animations.',
+  sync_btn:'👤 Your account',acc_hint:'Sign in with your email on each phone (or tablet) and Quico will be the same on all of them. Your data is encrypted with your password.',acc_email:'Your email',acc_pw:'Password (8+ characters)',acc_enter:'Sign in',acc_first:'First time? Your account is created when you sign in.',acc_short:'The password needs at least 8 characters.',acc_bad_email:'Check the email.',acc_new_q:'There’s no account with {e} and that password. Create a new one with this device’s data?\n\nIf you already had an account, cancel and check the password.',acc_created:'Account created! On your other phone, sign in with the same email and password.',acc_in_done:'You’re in! Quico will reload with your data.',acc_old_pw:'That password no longer works because you changed it. Use the new one.',acc_relogin:'Your password changed on another device. Sign in again with the new one.',acc_as:'Signed in as {e}',acc_change:'Change password',acc_new_pw:'New password (8+ characters)',acc_save:'Save',acc_changed:'Password changed. On your other devices, sign in again with the new one.',acc_exists:'There’s already data with that password. Choose another one.',acc_out:'Sign out on this device',acc_out_q:'Sign out on this device? Your data stays here but will stop syncing with the others.',acc_outed:'Signed out.',acc_forgot:'Forgot your password? Change it from a device where you’re still signed in. If there isn’t one, your data is still on your phone: create the account again.',acc_wait:'One moment… (checking the password)',sync_wait:'One moment…',cancel:'Cancel',sync_last:'Last sync: {t}',sync_never:'not yet',sync_just:'just now',sync_min:'{n} min ago',sync_h:'{n} h ago',sync_now:'↻ Sync now',sync_fail:'I couldn’t connect. Check your internet and try again.',sync_got:'{n} changes arrived.',sync_same:'Everything is up to date.',sync_noserver:'I can’t reach Quico’s server. Check your internet and try again.',backup_btn:'💾 Backup',backup_export:'⬇️ Save a copy',backup_import:'⬆️ Restore a copy',backup_hint:'Save a file with your data to move it to another phone or keep it safe.',backup_ok:'Copy restored. The app will reload.',backup_confirm:'This will replace your current data with the copy. Continue?',backup_bad:'That file doesn’t look like a Quico backup.',privacy_btn:'🔒 Privacy and health notice',kindle_btn:'📖 Kindle version',kindle_hint:'On your Kindle, open the browser (Menu → Experimental browser) and type this address:',kindle_note:'Simple version: today’s exercise, food, cleaning, night routine and calm. No sound or animations.',
   day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit', drop:' Drop it', drop_title:'Put the phone down and switch tasks', drop_menu:'📴 Put the phone down',
   greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
@@ -733,7 +734,7 @@ const I18N={
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
   drawer_footer:'Quico · ton compagnon de chaque jour 💚',
-  sync_btn:'🔗 Relier des appareils',sync_hint:'Pour avoir le même Quico sur deux téléphones (ou téléphone et tablette). Tes données voyagent chiffrées.',sync_start:'📱 Relier un autre appareil',sync_have:'⌨️ J’ai un code',sync_code_hint:'Sur l’autre appareil : ☰ Menu → 🔗 Relier des appareils → J’ai un code, et tape :',sync_code_exp:'Valable 10 minutes.',sync_enter_hint:'Tape le code affiché sur l’autre appareil. Celui-ci prendra ses données (et ajoutera ce que lui seul a).',sync_link:'Relier',cancel:'Annuler',sync_linked:'Relié',sync_last:'Dernière synchro : {t}',sync_never:'pas encore',sync_just:'à l’instant',sync_min:'il y a {n} min',sync_h:'il y a {n} h',sync_now:'↻ Synchroniser',sync_add:'📱 Ajouter un appareil',sync_unlink:'Délier cet appareil',sync_unlink_q:'Délier cet appareil ? Tes données restent ici mais ne passeront plus aux autres.',sync_unlinked:'Délié.',sync_wait:'Un instant…',sync_fail:'Je n’ai pas pu me connecter. Vérifie internet et réessaie.',sync_bad:'Ce code n’est pas valable ou a expiré. Demande-en un nouveau sur l’autre appareil.',sync_done:'Relié ! Quico va se recharger avec tes données.',sync_relink_q:'Cet appareil est déjà relié à un autre groupe. Passer à celui-ci ?',sync_got:'{n} changements sont arrivés.',sync_same:'Tout est à jour.',sync_noserver:'Pour relier des appareils, il faut la version Netlify de Quico.',backup_btn:'💾 Sauvegarde',backup_export:'⬇️ Enregistrer une copie',backup_import:'⬆️ Restaurer une copie',backup_hint:'Enregistre un fichier avec tes données pour les passer sur un autre téléphone ou ne pas les perdre.',backup_ok:'Copie restaurée. L’app va se recharger.',backup_confirm:'Cela remplacera tes données actuelles par celles de la copie. Continuer ?',backup_bad:'Ce fichier ne ressemble pas à une sauvegarde de Quico.',privacy_btn:'🔒 Confidentialité et avertissement santé',kindle_btn:'📖 Version Kindle',kindle_hint:'Sur ta Kindle, ouvre le navigateur (Menu → Navigateur expérimental) et tape cette adresse :',kindle_note:'Version simple : exercice du jour, repas, ménage, routine du soir et calme. Sans son ni animations.',
+  sync_btn:'👤 Ton compte',acc_hint:'Connecte-toi avec ton e-mail sur chaque téléphone (ou tablette) et Quico sera le même partout. Tes données sont chiffrées avec ton mot de passe.',acc_email:'Ton e-mail',acc_pw:'Mot de passe (8 caractères min.)',acc_enter:'Se connecter',acc_first:'Première fois ? Ton compte est créé en te connectant.',acc_short:'Le mot de passe doit avoir au moins 8 caractères.',acc_bad_email:'Vérifie l’e-mail.',acc_new_q:'Il n’y a aucun compte avec {e} et ce mot de passe. En créer un avec les données de cet appareil ?\n\nSi tu avais déjà un compte, annule et vérifie le mot de passe.',acc_created:'Compte créé ! Sur ton autre téléphone, connecte-toi avec le même e-mail et le même mot de passe.',acc_in_done:'C’est bon ! Quico va se recharger avec tes données.',acc_old_pw:'Ce mot de passe ne marche plus car tu l’as changé. Utilise le nouveau.',acc_relogin:'Ton mot de passe a changé sur un autre appareil. Reconnecte-toi avec le nouveau.',acc_as:'Compte : {e}',acc_change:'Changer le mot de passe',acc_new_pw:'Nouveau mot de passe (8 caractères min.)',acc_save:'Enregistrer',acc_changed:'Mot de passe changé. Sur tes autres appareils, reconnecte-toi avec le nouveau.',acc_exists:'Il y a déjà des données avec ce mot de passe. Choisis-en un autre.',acc_out:'Se déconnecter sur cet appareil',acc_out_q:'Se déconnecter sur cet appareil ? Tes données restent ici mais ne passeront plus aux autres.',acc_outed:'Déconnexion faite.',acc_forgot:'Mot de passe oublié ? Change-le depuis un appareil où tu es encore connectée. S’il n’y en a aucun, tes données sont toujours sur ton téléphone : recrée le compte.',acc_wait:'Un instant… (vérification du mot de passe)',sync_wait:'Un instant…',cancel:'Annuler',sync_last:'Dernière synchro : {t}',sync_never:'pas encore',sync_just:'à l’instant',sync_min:'il y a {n} min',sync_h:'il y a {n} h',sync_now:'↻ Synchroniser',sync_fail:'Je n’ai pas pu me connecter. Vérifie internet et réessaie.',sync_got:'{n} changements sont arrivés.',sync_same:'Tout est à jour.',sync_noserver:'Je n’arrive pas à joindre le serveur de Quico. Vérifie internet et réessaie.',backup_btn:'💾 Sauvegarde',backup_export:'⬇️ Enregistrer une copie',backup_import:'⬆️ Restaurer une copie',backup_hint:'Enregistre un fichier avec tes données pour les passer sur un autre téléphone ou ne pas les perdre.',backup_ok:'Copie restaurée. L’app va se recharger.',backup_confirm:'Cela remplacera tes données actuelles par celles de la copie. Continuer ?',backup_bad:'Ce fichier ne ressemble pas à une sauvegarde de Quico.',privacy_btn:'🔒 Confidentialité et avertissement santé',kindle_btn:'📖 Version Kindle',kindle_hint:'Sur ta Kindle, ouvre le navigateur (Menu → Navigateur expérimental) et tape cette adresse :',kindle_note:'Version simple : exercice du jour, repas, ménage, routine du soir et calme. Sans son ni animations.',
   day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence', drop:' Lâcher', drop_title:'Lâcher le téléphone et changer de tâche', drop_menu:'📴 Lâcher le téléphone',
   greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
@@ -1694,42 +1695,64 @@ function exportData(){
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='quico-copia-'+dayKey(0)+'.json';document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
 }
-/* ── VINCULAR DISPOSITIVOS (shared/sync.js): código de 6 letras y sincronización cifrada ── */
-let _syncView='',_syncCode=null,_syncAvail=null;
+/* ── TU CUENTA (shared/sync.js): email + contraseña, sincronización cifrada ── */
+let _syncView='',_syncAvail=null;
 async function toggleSyncBox(){
   const box=document.getElementById('syncBox');box.classList.toggle('open');
   if(!box.classList.contains('open'))return;
-  if(_syncAvail===null&&window.QSYNC){box.innerHTML='<div class="cfg-note">…</div>';_syncAvail=await QSYNC.available();}
+  if(!_syncAvail&&window.QSYNC){box.innerHTML='<div class="cfg-note">…</div>';_syncAvail=await QSYNC.available();}
   renderSync();
 }
 function syncAgo(){const at=QSYNC.lastSync();if(!at)return t('sync_never');const m=Math.round((Date.now()-at)/6e4);return m<1?t('sync_just'):m<60?t('sync_min',{n:m}):t('sync_h',{n:Math.round(m/60)});}
 function renderSync(msg,err){
   const box=document.getElementById('syncBox');if(!box)return;
-  if(!window.QSYNC||!_syncAvail){box.innerHTML=`<div class="cfg-note">${t('sync_noserver')}</div>`;return;}
-  const m=msg?`<div class="${err?'sync-err':'cfg-note'}">${escH(msg)}</div>`:'';
-  if(_syncView==='code'&&_syncCode){box.innerHTML=`<div class="cfg-note">${t('sync_code_hint')}</div><div class="sync-code">${_syncCode.slice(0,3)} ${_syncCode.slice(3)}</div><div class="cfg-note">${t('sync_code_exp')}</div><div class="backup-row"><button onclick="_syncView='';renderSync()">${t('done')}</button></div>`+m;return;}
-  if(_syncView==='enter'){box.innerHTML=`<div class="cfg-note">${t('sync_enter_hint')}</div><input class="sync-in" id="syncIn" maxlength="7" autocomplete="one-time-code" inputmode="text" placeholder="ABC 123"><div class="backup-row"><button onclick="syncPair()">${t('sync_link')}</button><button onclick="_syncView='';renderSync()">${t('cancel')}</button></div>`+m;
-    setTimeout(()=>{const i=document.getElementById('syncIn');if(i)i.focus();},50);return;}
-  if(QSYNC.linked()){box.innerHTML=`<div class="sync-ok">✓ ${t('sync_linked')}</div><div class="cfg-note">${t('sync_last',{t:syncAgo()})}</div>
-    <div class="backup-row"><button onclick="syncNow()">${t('sync_now')}</button><button onclick="syncNewCode()">${t('sync_add')}</button></div>
-    <div class="backup-row"><button onclick="syncUnlink()">${t('sync_unlink')}</button></div>`+m;return;}
-  box.innerHTML=`<div class="cfg-note">${t('sync_hint')}</div><div class="backup-row"><button onclick="syncNewCode()">${t('sync_start')}</button><button onclick="_syncView='enter';renderSync()">${t('sync_have')}</button></div>`+m;
+  if(!window.QSYNC||!_syncAvail){box.innerHTML=`<div class="sync-err">${t('sync_noserver')}</div>`;_syncAvail=null;return;}
+  const m=`<div id="accMsg" class="${err?'sync-err':'cfg-note'}">${msg?escH(msg):''}</div>`;
+  if(QSYNC.linked()){
+    const e=escH(QSYNC.email());
+    if(_syncView==='pw'){box.innerHTML=`<div class="cfg-note">${t('acc_as',{e})}</div><form onsubmit="accChange();return false"><input class="acc-in" id="accPw" type="password" autocomplete="new-password" placeholder="${t('acc_new_pw')}"><div class="backup-row"><button type="submit" class="acc-go">${t('acc_save')}</button><button type="button" onclick="_syncView='';renderSync()">${t('cancel')}</button></div></form>`+m;
+      setTimeout(()=>{const i=document.getElementById('accPw');if(i)i.focus();},50);return;}
+    box.innerHTML=`<div class="sync-ok">✓ ${e?t('acc_as',{e}):'✓'}</div><div class="cfg-note">${t('sync_last',{t:syncAgo()})}</div>
+    <div class="backup-row"><button onclick="syncNow()">${t('sync_now')}</button>${e?`<button onclick="_syncView='pw';renderSync()">${t('acc_change')}</button>`:''}</div>
+    <div class="backup-row"><button onclick="syncUnlink()">${t('acc_out')}</button></div>`+m;return;
+  }
+  _syncView='';
+  box.innerHTML=`<div class="${QSYNC.needsRelogin()?'sync-err':'cfg-note'}">${t(QSYNC.needsRelogin()?'acc_relogin':'acc_hint')}</div>
+  <form onsubmit="accLogin();return false"><input class="acc-in" id="accEmail" type="email" autocomplete="username" inputmode="email" placeholder="${t('acc_email')}" value="${escH(QSYNC.email())}">
+  <input class="acc-in" id="accPw" type="password" autocomplete="current-password" placeholder="${t('acc_pw')}">
+  <div class="backup-row"><button type="submit" class="acc-go">${t('acc_enter')}</button></div></form>
+  <div class="cfg-note">${t('acc_first')}</div><div class="cfg-note">${t('acc_forgot')}</div>`+m;
 }
-async function syncNewCode(){
-  renderSync(t('sync_wait'));
-  try{const r=await QSYNC.code();_syncCode=r.code;_syncView='code';renderSync();}catch(e){_syncView='';renderSync(t('sync_fail'),true);}
+function accMsg(msg,err){const el=document.getElementById('accMsg');if(el){el.className=err?'sync-err':'cfg-note';el.textContent=msg||'';}}
+function accBusy(on){document.querySelectorAll('#syncBox button,#syncBox input').forEach(b=>{b.disabled=on;});}
+async function accLogin(){
+  const em=((document.getElementById('accEmail')||{}).value||'').trim(),pw=(document.getElementById('accPw')||{}).value||'';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){accMsg(t('acc_bad_email'),true);return;}
+  if(pw.length<8){accMsg(t('acc_short'),true);return;}
+  accBusy(true);accMsg(t('acc_wait'));
+  let r=await QSYNC.login(em,pw,false);
+  if(!r.ok&&r.err==='no_account'){
+    accBusy(false);accMsg('');
+    if(!confirm(t('acc_new_q',{e:em})))return;
+    accBusy(true);accMsg(t('acc_wait'));
+    r=await QSYNC.login(em,pw,true);
+  }
+  accBusy(false);
+  if(!r.ok){if(QSYNC.linked())renderSync(t('sync_fail'),true);else accMsg(r.err==='old_password'?t('acc_old_pw'):t('sync_fail'),true);return;}
+  if(r.created){renderSync(t('acc_created'));return;}
+  alert(t('acc_in_done'));location.reload();
 }
-async function syncPair(){
-  const v=(document.getElementById('syncIn')||{}).value||'';
-  if(v.replace(/[^A-Za-z0-9]/g,'').length!==6){renderSync(t('sync_bad'),true);return;}
-  if(QSYNC.linked()&&!confirm(t('sync_relink_q')))return;
-  renderSync(t('sync_wait'));
-  const r=await QSYNC.pair(v);
-  if(!r.ok){_syncView='enter';renderSync(r.err==='bad_code'?t('sync_bad'):t('sync_fail'),true);return;}
-  _syncView='';alert(t('sync_done'));location.reload();
+async function accChange(){
+  const pw=(document.getElementById('accPw')||{}).value||'';
+  if(pw.length<8){accMsg(t('acc_short'),true);return;}
+  accBusy(true);accMsg(t('acc_wait'));
+  const r=await QSYNC.changePassword(pw);
+  accBusy(false);
+  if(!r.ok){accMsg(r.err==='exists'?t('acc_exists'):t('sync_fail'),true);return;}
+  _syncView='';renderSync(t('acc_changed'));
 }
-async function syncNow(){renderSync(t('sync_wait'));const r=await QSYNC.sync();renderSync(r.ok?(r.changed?t('sync_got',{n:r.changed}):t('sync_same')):t('sync_fail'),!r.ok);}
-function syncUnlink(){if(!confirm(t('sync_unlink_q')))return;QSYNC.unlink();_syncView='';renderSync(t('sync_unlinked'));}
+async function syncNow(){renderSync(t('sync_wait'));const r=await QSYNC.sync();renderSync(r.ok?(r.changed?t('sync_got',{n:r.changed}):t('sync_same')):(r.err==='relogin'?'':t('sync_fail')),!r.ok);}
+function syncUnlink(){if(!confirm(t('acc_out_q')))return;QSYNC.unlink();_syncView='';renderSync(t('acc_outed'));}
 /* Sincronizar sola: al abrir, al volver a la app, al salir de un módulo, al irse y cada 2 min */
 function syncSoon(keep){if(window.QSYNC&&QSYNC.linked()&&navigator.onLine!==false)QSYNC.sync(keep?{keepalive:true}:undefined);}
 window.addEventListener('quico-sync',()=>{ // llegaron cambios del otro móvil
