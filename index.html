@@ -474,9 +474,9 @@ body.mod-open #menuBtn{display:none;}
 .simple .hero-sub,.simple .tp-s,.simple .tp-hint,.simple .ao-desc{display:none}
 </style>
 <script src="shared/alergias.js?v=115"></script>
-<script src="shared/dia.js?v=118"></script>
+<script src="shared/dia.js?v=119"></script>
 <script src="shared/clases.js?v=118"></script>
-<script src="shared/cal.js?v=115"></script>
+<script src="shared/cal.js?v=119"></script>
 <script src="shared/sync.js?v=117"></script>
 <script src="shared/avisos.js?v=118"></script>
 </head>
@@ -1363,7 +1363,7 @@ function quicoChips(){
   // + las tareas que apuntaste en las clases de hoy (en Clases → ＋ en cada clase)
   if(window.QCLASES&&areaOn('clases')&&QCLASES.todayTasks)QCLASES.todayTasks().forEach(k=>{cit.push(['ct:'+k.id,'📝',null,t('subj_task',{s:k.n,t:k.t}),null,'ctask',k]);});
   if(window.QCAL&&areaOn('calendario')){
-    QCAL.between(s0.getTime(),s0.getTime()+864e5).filter(o=>QCAL.dk(o.st)===QCAL.dk(s0)&&o.en>Date.now()&&!inDay.has(o.id)).forEach(o=>{
+    QCAL.between(s0.getTime(),QCAL.pd(QCAL.add(QCAL.dk(s0),1)).getTime()).filter(o=>QCAL.dk(o.st)===QCAL.dk(s0)&&o.en>Date.now()&&!inDay.has(o.id)).forEach(o=>{
       cit.push(['cita:'+o.id,o.e,null,new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'})+' '+o.name,o]);});
   }
   return [...src.filter(c=>!has(c[0])),...cit];

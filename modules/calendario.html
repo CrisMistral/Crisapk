@@ -70,6 +70,10 @@
   .in{width:100%;border:2px solid var(--lav);border-radius:12px;padding:10px 12px;font-size:16px;color:var(--text);background:#fff;min-height:46px;}
   .in:focus{outline:none;border-color:var(--turq);}
   .two{display:flex;gap:8px;}.two>div{flex:1;min-width:0;}
+  .wdays{display:flex;gap:5px;}
+  .wdays button{flex:1;min-width:0;min-height:44px;border:2px solid var(--lav);background:#fff;border-radius:10px;font-weight:800;font-size:.9rem;color:var(--soft);padding:0;}
+  .wdays button[aria-pressed="true"]{border-color:var(--turq-d);background:var(--turq-d);color:#fff;}
+  .rhint{font-size:.76rem;color:var(--soft);margin:4px 2px 0;}
   .optd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 2px 0;font-size:.9rem;font-weight:700;}
   .itw{margin-bottom:7px;}.itw .it{margin-bottom:0;}
   .todaybtn{display:block;width:100%;min-height:40px;margin-top:4px;border:2px dashed var(--turq);background:#fff;color:var(--turq-d);border-radius:12px;font-weight:800;font-size:.86rem;}
@@ -108,23 +112,27 @@ if(__cfg().explain!==true)document.documentElement.classList.add('simple');
     <div class="chips" role="group"><button id="tyTut" onclick="setType('tut')" data-i18n="ty_tut">👩‍🏫 Tutoría</button><button id="tyCita" onclick="setType('cita')" data-i18n="ty_cita">📌 Otra cita</button></div>
     <div id="fWhat"><label class="l" for="fT" data-i18n="f_what">¿Qué es?</label><input class="in" id="fT" maxlength="80"></div>
     <label class="l" for="fW" id="fWl" data-i18n="f_with">¿Con quién o de qué asignatura?</label><input class="in" id="fW" maxlength="80" list="whoList"><datalist id="whoList"></datalist>
-    <label class="l" for="fD" data-i18n="f_day">Día</label><input class="in" id="fD" type="date">
+    <label class="l" for="fD" id="fDl" data-i18n="f_day">Día</label><input class="in" id="fD" type="date">
+    <label class="l" id="fRepL" data-i18n="f_rep">🔁 Se repite cada semana</label>
+    <div class="wdays" id="fRep" role="group" aria-labelledby="fRepL"></div><div class="rhint" data-i18n="rep_hint">Ninguno = una sola vez</div>
+    <div id="fUw" hidden><label class="l" for="fU" data-i18n="f_until">Hasta (opcional)</label><input class="in" id="fU" type="date"></div>
     <div class="two"><div><label class="l" for="fA" data-i18n="f_from">De</label><input class="in" id="fA" type="time" value="10:00"></div><div><label class="l" for="fB" data-i18n="f_to">A</label><input class="in" id="fB" type="time" value="10:30"></div></div>
     <label class="l" for="fL" data-i18n="f_where">¿Dónde? (opcional)</label><input class="in" id="fL" maxlength="80">
     <label class="l" for="fR" data-i18n="f_rem">Aviso</label><select class="in" id="fR"></select>
     <div class="optd"><span data-i18n="f_day_opt">📋 Ponerla en mi día</span><button class="sw" id="fDay" onclick="this.setAttribute('aria-pressed',String(this.getAttribute('aria-pressed')!=='true'));swTxt(this)" aria-pressed="false"></button></div>
-    <div class="row" style="margin-top:14px"><button class="btn" onclick="saveForm()" data-i18n="save">Guardar</button><button class="btn red" id="fDel" onclick="delForm()" data-i18n="del">🗑️ Borrar</button></div>
+    <div class="row" style="margin-top:14px"><button class="btn" onclick="saveForm()" data-i18n="save">Guardar</button><button class="btn red" id="fDel" onclick="delForm()">🗑️ Borrar</button></div>
+    <div class="row" id="fOneW" hidden style="margin-top:8px"><button class="btn red" onclick="delOne()" data-i18n="del_one">🗑️ Solo este día</button></div>
   </div>
 </div>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="../shared/dia.js?v=118"></script>
+<script src="../shared/dia.js?v=119"></script>
 <script src="../shared/clases.js?v=118"></script>
-<script src="../shared/cal.js?v=114"></script>
+<script src="../shared/cal.js?v=119"></script>
 <script>
 const UI={
  es:{h1:'📅 Calendario',add:'＋ Tutoría o cita',settings:'⚙️ Ajustes',o_home:'Ver la regla en el inicio',o_clear:'Borrar los datos de la regla',privacy:'Todo se guarda solo en este móvil. Las fechas de la regla son aproximadas: si te importa evitar o buscar un embarazo, no te fíes solo de ellas.',
-   ty_tut:'👩‍🏫 Tutoría',ty_cita:'📌 Otra cita',f_what:'¿Qué es?',f_with:'¿Con quién o de qué asignatura?',f_with2:'¿Con quién? (opcional)',f_day:'Día',f_from:'De',f_to:'A',f_where:'¿Dónde? (opcional)',f_rem:'Aviso',save:'Guardar',del:'🗑️ Borrar',
+   f_rep:'🔁 Se repite cada semana',rep_hint:'Ninguno = una sola vez',f_since:'Desde',f_until:'Hasta (opcional)',del_one:'🗑️ Solo este día',del_all:'🗑️ Borrar todas',skipped:'Quitada ese día',bad_until:'La fecha final va después de la de inicio.',no_days:'Ninguno de los días marcados cae entre esas fechas.',ty_tut:'👩‍🏫 Tutoría',ty_cita:'📌 Otra cita',f_what:'¿Qué es?',f_with:'¿Con quién o de qué asignatura?',f_with2:'¿Con quién? (opcional)',f_day:'Día',f_from:'De',f_to:'A',f_where:'¿Dónde? (opcional)',f_rem:'Aviso',save:'Guardar',del:'🗑️ Borrar',
    new_t:'Nueva cita',edit_t:'Cambiar cita',tut:'Tutoría',what_ph:'Médico, reunión, entrega…',with_ph:'Profe o asignatura',where_ph:'Despacho, Teams…',
    per_start:'🩸 Me ha venido la regla',per_end:'🩸 Se me ha ido',per_day:'🩸 Día {n} de la regla',per_next:'🩸 Próxima regla: ~{d} · en {n} días (aprox.)',per_soon:'🩸 La regla puede venir hoy o mañana (aprox.)',per_none:'🩸 Marca el día que te venga la regla y te diré cuándo toca la próxima.',
    per_this:'🩸 Regla este día',per_yes:'Sí',per_no:'No',per_mark:'🩸 Aquí empieza la regla',per_unmark:'🩸 Quitar esta regla',
@@ -133,7 +141,7 @@ const UI={
    stats:'Tu ciclo medio: {c} días · regla de unos {l} días.',stats0:'Con dos reglas apuntadas calcularé tu ciclo (ahora uso 28 días).',
    clear_q:'¿Borrar todos los días de regla apuntados?',saved:'Guardado',deleted:'Borrado',on:'Sí',off:'No',bad_time:'La hora de fin va después de la de inicio.',future:'Ese día aún no ha llegado.',imported:'Reglas añadidas: {n}',f_day_opt:'📋 Ponerla en mi día',to_day:'＋ A mi día',in_day:'✓ En tu día',added_day:'Añadida a tu día'},
  en:{h1:'📅 Calendar',add:'＋ Tutorial or appointment',settings:'⚙️ Settings',o_home:'Show my period on the home screen',o_clear:'Delete period data',privacy:'Everything stays on this phone only. Period dates are approximate: don’t rely on them alone to avoid or plan a pregnancy.',
-   ty_tut:'👩‍🏫 Tutorial',ty_cita:'📌 Other',f_what:'What is it?',f_with:'With whom, or which subject?',f_with2:'With whom? (optional)',f_day:'Day',f_from:'From',f_to:'To',f_where:'Where? (optional)',f_rem:'Reminder',save:'Save',del:'🗑️ Delete',
+   f_rep:'🔁 Repeats every week',rep_hint:'None = just once',f_since:'From',f_until:'Until (optional)',del_one:'🗑️ Just this day',del_all:'🗑️ Delete all',skipped:'Removed that day',bad_until:'The end date must be after the start date.',no_days:'None of the chosen days falls between those dates.',ty_tut:'👩‍🏫 Tutorial',ty_cita:'📌 Other',f_what:'What is it?',f_with:'With whom, or which subject?',f_with2:'With whom? (optional)',f_day:'Day',f_from:'From',f_to:'To',f_where:'Where? (optional)',f_rem:'Reminder',save:'Save',del:'🗑️ Delete',
    new_t:'New appointment',edit_t:'Change appointment',tut:'Tutorial',what_ph:'Doctor, meeting, deadline…',with_ph:'Teacher or subject',where_ph:'Office, Teams…',
    per_start:'🩸 My period started',per_end:'🩸 My period ended',per_day:'🩸 Period day {n}',per_next:'🩸 Next period: ~{d} · in {n} days (approx.)',per_soon:'🩸 Your period may come today or tomorrow (approx.)',per_none:'🩸 Mark the day your period starts and I’ll tell you when the next one is due.',
    per_this:'🩸 Period this day',per_yes:'Yes',per_no:'No',per_mark:'🩸 My period starts here',per_unmark:'🩸 Remove this period',
@@ -142,7 +150,7 @@ const UI={
    stats:'Your average cycle: {c} days · period of about {l} days.',stats0:'Once two periods are marked I’ll work out your cycle (for now I use 28 days).',
    clear_q:'Delete all marked period days?',saved:'Saved',deleted:'Deleted',on:'On',off:'Off',bad_time:'The end time must be after the start time.',future:'That day hasn’t come yet.',imported:'Periods added: {n}',f_day_opt:'📋 Put it in my day',to_day:'＋ To my day',in_day:'✓ In your day',added_day:'Added to your day'},
  fr:{h1:'📅 Calendrier',add:'＋ Tutorat ou rendez-vous',settings:'⚙️ Réglages',o_home:'Voir mes règles sur l’accueil',o_clear:'Effacer les données des règles',privacy:'Tout reste uniquement sur ce téléphone. Les dates des règles sont approximatives : ne t’y fie pas seule pour éviter ou chercher une grossesse.',
-   ty_tut:'👩‍🏫 Tutorat',ty_cita:'📌 Autre',f_what:'C’est quoi ?',f_with:'Avec qui, ou quelle matière ?',f_with2:'Avec qui ? (facultatif)',f_day:'Jour',f_from:'De',f_to:'À',f_where:'Où ? (facultatif)',f_rem:'Rappel',save:'Enregistrer',del:'🗑️ Supprimer',
+   f_rep:'🔁 Se répète chaque semaine',rep_hint:'Aucun = une seule fois',f_since:'À partir du',f_until:'Jusqu’au (facultatif)',del_one:'🗑️ Seulement ce jour',del_all:'🗑️ Tout supprimer',skipped:'Retirée ce jour-là',bad_until:'La date de fin doit être après celle du début.',no_days:'Aucun des jours choisis ne tombe entre ces dates.',ty_tut:'👩‍🏫 Tutorat',ty_cita:'📌 Autre',f_what:'C’est quoi ?',f_with:'Avec qui, ou quelle matière ?',f_with2:'Avec qui ? (facultatif)',f_day:'Jour',f_from:'De',f_to:'À',f_where:'Où ? (facultatif)',f_rem:'Rappel',save:'Enregistrer',del:'🗑️ Supprimer',
    new_t:'Nouveau rendez-vous',edit_t:'Modifier le rendez-vous',tut:'Tutorat',what_ph:'Médecin, réunion, rendu…',with_ph:'Prof ou matière',where_ph:'Bureau, Teams…',
    per_start:'🩸 Mes règles ont commencé',per_end:'🩸 Mes règles sont finies',per_day:'🩸 Jour {n} des règles',per_next:'🩸 Prochaines règles : ~{d} · dans {n} jours (approx.)',per_soon:'🩸 Tes règles peuvent arriver aujourd’hui ou demain (approx.)',per_none:'🩸 Note le jour où tes règles arrivent et je te dirai quand viendront les prochaines.',
    per_this:'🩸 Règles ce jour',per_yes:'Oui',per_no:'Non',per_mark:'🩸 Mes règles commencent ici',per_unmark:'🩸 Enlever ces règles',
@@ -168,7 +176,7 @@ let SEL=C.today(),MONTH=SEL.slice(0,7);
 /* ── Mes ── */
 function moveMonth(d){const [y,m]=MONTH.split('-').map(Number);const n=new Date(y,m-1+d,1);MONTH=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0');renderGrid();}
 function dayItems(dkey){
-  const s=C.pd(dkey).getTime(),e=s+864e5;
+  const s=C.pd(dkey).getTime(),e=C.pd(C.add(dkey,1)).getTime(); // medianoche siguiente (los días de cambio de hora no duran 24 h)
   return C.agenda(s,e).filter(o=>C.dk(o.st)===dkey);
 }
 function allDay(dkey){
@@ -207,7 +215,7 @@ function renderDay(){
     // hoy: «＋ A mi día» (o «✓ En tu día» si ya está)
     const inDay=isToday&&window.QDIA&&QDIA.hasOcc(o.id);
     const dayBtn=isToday&&o.en>Date.now()?`<button class="todaybtn${inDay?' on':''}" onclick="event.stopPropagation();toDay('${esc(o.id)}')"${inDay?' disabled':''}>${inDay?t('in_day'):t('to_day')}</button>`:'';
-    h+=`<div class="itw"><${edit?'button':'div'} class="it"${edit?` onclick="openForm('${o.evId}')"`:''}><span class="bar" style="background:${o.color||COLK[o.kind]}"></span><span class="tm">${hm(o.st)}–${hm(o.en)}</span><span class="tx"><span class="nm">${o.e} ${esc(o.name)}${edit&&(C.get(o.evId)||{}).day?' 📋':''}</span>${o.l?`<span class="lc">${esc(o.l)}</span>`:''}</span></${edit?'button':'div'}>${dayBtn}</div>`;
+    h+=`<div class="itw"><${edit?'button':'div'} class="it"${edit?` onclick="openForm('${o.evId}','${o.date||''}')"`:''}><span class="bar" style="background:${o.color||COLK[o.kind]}"></span><span class="tm">${hm(o.st)}–${hm(o.en)}</span><span class="tx"><span class="nm">${o.e} ${esc(o.name)}${o.rep?' 🔁':''}${edit&&(C.get(o.evId)||{}).day?' 📋':''}</span>${o.l?`<span class="lc">${esc(o.l)}</span>`:''}</span></${edit?'button':'div'}>${dayBtn}</div>`;
   });
   if(!items.length&&!ad.length)h+=`<p class="empty">${t('nothing')}</p>`;
   h+=`<div class="row"><button class="btn sec" onclick="openForm(null,SEL)">${t('add_day')}</button>${per?`<button class="btn red" onclick="perDay(false)">${t('per_unmark')}</button>`:past?`<button class="btn red" onclick="perDay(true)">${t('per_mark')}</button>`:''}</div>`;
@@ -219,7 +227,16 @@ function toDay(id){const o=dayItems(SEL).find(x=>x.id===id);if(o&&C.toDay(o)){vi
 function perDay(on){if(on)C.markStart(SEL);else C.removeAt(SEL);vib(30);render();}
 
 /* ── Añadir / cambiar tutoría o cita ── */
-let EDIT=null,TYPE='tut';
+let EDIT=null,TYPE='tut',REP=new Set(),OCC=null;
+/* Días de la semana para repetir (lunes primero); getDay: 0 = domingo */
+function renderRep(){
+  const lg=LOC[crisLang()],box=document.getElementById('fRep');
+  box.innerHTML=[1,2,3,4,5,6,0].map(d=>{const dt=new Date(2024,0,d===0?7:d);// 1 ene 2024 fue lunes
+    return `<button type="button" aria-pressed="${REP.has(d)}" aria-label="${esc(dt.toLocaleDateString(lg,{weekday:'long'}))}" onclick="toggleRep(${d})">${esc(dt.toLocaleDateString(lg,{weekday:'narrow'}))}</button>`;}).join('');
+  document.getElementById('fUw').hidden=!REP.size;
+  document.getElementById('fDl').textContent=REP.size?t('f_since'):t('f_day');
+}
+function toggleRep(d){if(REP.has(d))REP.delete(d);else REP.add(d);renderRep();}
 function setType(ty){
   TYPE=ty;document.getElementById('tyTut').setAttribute('aria-pressed',String(ty==='tut'));document.getElementById('tyCita').setAttribute('aria-pressed',String(ty==='cita'));
   document.getElementById('fWhat').hidden=ty==='tut';
@@ -233,6 +250,8 @@ function whoOptions(){
 }
 function openForm(id,day){
   const e=id?C.get(id):null;EDIT=e?e.id:null;
+  const rp=e&&C.isRep(e);REP=new Set(rp?e.rep.days.map(Number):[]);OCC=rp&&day?day:null;
+  document.getElementById('fU').value=rp&&e.rep.until||'';renderRep();
   document.getElementById('fTitle').textContent=e?t('edit_t'):t('new_t');
   setType(e?e.type:'tut');
   document.getElementById('fT').value=e&&e.type==='cita'?e.t:'';document.getElementById('fT').placeholder=t('what_ph');
@@ -244,7 +263,8 @@ function openForm(id,day){
   document.getElementById('fR').innerHTML=[[0,t('no_rem')],[10,t('rem_min',{n:10})],[15,t('rem_min',{n:15})],[30,t('rem_min',{n:30})],[60,t('rem_h')],[1440,t('rem_d')]].map(([v,l])=>`<option value="${v}"${v===rem?' selected':''}>${l}</option>`).join('');
   document.getElementById('whoList').innerHTML=whoOptions().map(x=>`<option value="${esc(x)}">`).join('');
   const sd=document.getElementById('fDay');sd.setAttribute('aria-pressed',String(!!(e&&e.day)));swTxt(sd);
-  document.getElementById('fDel').hidden=!e;
+  document.getElementById('fDel').hidden=!e;document.getElementById('fDel').textContent=rp?t('del_all'):t('del');
+  document.getElementById('fOneW').hidden=!OCC;
   document.getElementById('ov').classList.add('show');
   setTimeout(()=>{const f=document.getElementById(TYPE==='tut'?'fW':'fT');if(f)f.focus();},50);
 }
@@ -253,11 +273,17 @@ function saveForm(){
   const v=id=>document.getElementById(id).value.trim();
   const a=v('fA')||'10:00',b=v('fB')||a,date=v('fD')||C.today();
   if(b<a){toast(t('bad_time'));return;}
-  const e={type:TYPE,t:TYPE==='tut'?t('tut'):(v('fT')||t('ty_cita').replace(/^\S+\s/,'')),w:v('fW'),l:v('fL'),date,a,b,rem:+document.getElementById('fR').value,day:document.getElementById('fDay').getAttribute('aria-pressed')==='true'};
+  const until=REP.size?v('fU'):'';if(until&&until<date){toast(t('bad_until'));return;}
+  // una serie que no cae en ningún día no se vería en ningún sitio (ni se podría borrar)
+  if(until){let ok=false;for(let k=date;k<=until&&C.diff(date,k)<7;k=C.add(k,1))if(REP.has(C.pd(k).getDay())){ok=true;break;}if(!ok){toast(t('no_days'));return;}}
+  const e={type:TYPE,t:TYPE==='tut'?t('tut'):(v('fT')||t('ty_cita').replace(/^\S+\s/,'')),w:v('fW'),l:v('fL'),date,a,b,rem:+document.getElementById('fR').value,day:document.getElementById('fDay').getAttribute('aria-pressed')==='true',
+    rep:REP.size?{days:[...REP].sort(),...(until?{until}:{})}:null};
   if(EDIT)e.id=EDIT;
   C.save(e);if(e.day)C.syncDay();vib(25);closeForm();SEL=date;MONTH=date.slice(0,7);render();toast(t('saved'));
 }
 function delForm(){if(!EDIT)return;C.remove(EDIT);closeForm();render();toast(t('deleted'));}
+/* Una que se repite: quitar solo el día desde el que se abrió */
+function delOne(){if(!EDIT||!OCC)return;C.skip(EDIT,OCC);closeForm();render();toast(t('skipped'));}
 
 /* ── Ajustes ── */
 function toggleCfg(){const box=document.getElementById('cfgBox'),b=document.getElementById('cfgBtn'),open=box.hidden;box.hidden=!open;b.setAttribute('aria-expanded',String(open));if(open)renderCfg();}
