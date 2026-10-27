@@ -478,6 +478,7 @@ body.mod-open #menuBtn{display:none;}
 <script src="shared/clases.js?v=115"></script>
 <script src="shared/cal.js?v=115"></script>
 <script src="shared/sync.js?v=117"></script>
+<script src="shared/avisos.js?v=118"></script>
 </head>
 <body>
 
@@ -542,7 +543,7 @@ body.mod-open #menuBtn{display:none;}
     <div id="notifTimes" style="display:none;">
       <div class="nt-row"><span data-i18n="notif_morning">☀️ Empezar el día</span><input type="time" id="nt-m" value="09:30" onchange="saveNotifTimes()"></div>
       <div class="nt-row"><span data-i18n="notif_night">🌙 Rutina nocturna</span><input type="time" id="nt-n" value="21:30" onchange="saveNotifTimes()"></div>
-      <div class="cfg-note" data-i18n="notif_hint">Suenan con la app abierta o instalada en la pantalla de inicio</div>
+      <div class="cfg-note" data-i18n="notif_hint">Suenan aunque Quico esté cerrado. En iPhone, añade Quico a la pantalla de inicio.</div>
     </div>
     <div class="nt-row" style="margin-bottom:12px"><span data-i18n="cfg_name">🙂 Tu nombre</span><input type="text" id="nameInput" maxlength="18" placeholder="…" oninput="saveName(this.value)" style="width:130px;border:2px solid var(--mint-mid);border-radius:10px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark);background:#fff"></div>
     <button id="calmBtn" onclick="toggleCalm()">🕯️ Reducir estímulos</button>
@@ -608,7 +609,7 @@ const I18N={
   hero_sub:'¿en qué te ayudo hoy?',
   lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes', ob_replay:'🦘 Ver el recorrido',
   notif_morning:'☀️ Empezar el día', notif_night:'🌙 Rutina nocturna',
-  notif_hint:'Suenan con la app abierta o instalada en la pantalla de inicio',
+  notif_hint:'Suenan aunque Quico esté cerrado. En iPhone, añade Quico a la pantalla de inicio.',
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
   drawer_footer:'Quico · tu compañero cada día 💚',
@@ -669,7 +670,7 @@ const I18N={
   hero_sub:'how can I help you today?',
   lang_label:'Language', modules_label:'Modules', settings_label:'Settings', ob_replay:'🦘 Watch the tour',
   notif_morning:'☀️ Start the day', notif_night:'🌙 Night routine',
-  notif_hint:'They sound with the app open or installed on your home screen',
+  notif_hint:'They ring even when Quico is closed. On iPhone, add Quico to your home screen.',
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
   drawer_footer:'Quico · your everyday companion 💚',
@@ -730,7 +731,7 @@ const I18N={
   hero_sub:'comment puis-je t’aider aujourd’hui ?',
   lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages', ob_replay:'🦘 Revoir la visite',
   notif_morning:'☀️ Commencer la journée', notif_night:'🌙 Routine du soir',
-  notif_hint:'Elles sonnent avec l’appli ouverte ou installée sur l’écran d’accueil',
+  notif_hint:'Elles sonnent même quand Quico est fermé. Sur iPhone, ajoute Quico à l’écran d’accueil.',
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
   drawer_footer:'Quico · ton compagnon de chaque jour 💚',
@@ -1198,7 +1199,7 @@ function getNotifCfg(){try{return JSON.parse(localStorage.getItem('cris_notif')|
 function setNotifCfg(n){try{localStorage.setItem('cris_notif',JSON.stringify(n));}catch(e){}}
 function toggleNotif(){
   const n=getNotifCfg();
-  if(n.on){n.on=false;setNotifCfg(n);renderNotif();return;}
+  if(n.on){n.on=false;setNotifCfg(n);renderNotif();if(window.QPUSH)QPUSH.off();return;}
   if(!('Notification' in window)){
     document.getElementById('bubble-msg').textContent=t('notif_unsupported');
     return;
@@ -1212,6 +1213,7 @@ function toggleNotif(){
       n2.lastM=todayLocal();n2.lastN=todayLocal();
       setNotifCfg(n2);
       fireNotif(t('notif_on_title'),t('notif_on_body'));
+      pushSync(true);
     }else{
       document.getElementById('bubble-msg').textContent=t('notif_denied');
     }
@@ -1223,6 +1225,7 @@ function saveNotifTimes(){
   n.m=document.getElementById('nt-m').value;
   n.n=document.getElementById('nt-n').value;
   setNotifCfg(n);
+  pushSync(true);
 }
 function renderNotif(){
   const n=getNotifCfg();
@@ -1233,13 +1236,15 @@ function renderNotif(){
   if(n.m)document.getElementById('nt-m').value=n.m;
   if(n.n)document.getElementById('nt-n').value=n.n;
 }
-function fireNotif(title,body){
+function fireNotif(title,body,tag){
+  // tag: el mismo que lleva el aviso push de esa hora; si los dos llegan, el segundo sustituye al primero sin repetir
+  const o={body,icon:'icons/notif-192.png',badge:'icons/badge-96.png'};if(tag)o.tag=tag;
   try{
     if(navigator.serviceWorker&&navigator.serviceWorker.controller){
       // icon: la cara de Quico · badge: su silueta (Android pinta la insignia de un color; con un PNG opaco sale un cuadrado)
-      navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,{body,icon:'icons/notif-192.png',badge:'icons/badge-96.png'}));
+      navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,o));
     }else{
-      new Notification(title,{body,icon:'icons/notif-192.png',badge:'icons/badge-96.png'});
+      new Notification(title,o);
     }
   }catch(e){try{new Notification(title,{body});}catch(_){}}
 }
@@ -1256,23 +1261,48 @@ function checkNotif(){
     n.lastM=today;setNotifCfg(n);
     const day=now.getDay();
     const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');
-    fireNotif(t('notif_m_title',{name:cfgName()}),t('notif_m_body',{p:t('pil')[day],z:zona}));
+    fireNotif(t('notif_m_title',{name:cfgName()}),t('notif_m_body',{p:t('pil')[day],z:zona}),'q-m-'+today);
   }
   if(n.n&&n.lastN!==today&&nowMin>=minsOf(n.n)){
     n.lastN=today;setNotifCfg(n);
-    fireNotif(t('notif_n_title'),t('notif_n_body'));
+    fireNotif(t('notif_n_title'),t('notif_n_body'),'q-n-'+today);
   }
   // Pre-aviso suave (transición, no alarma): solo dentro de los 10 min previos
   if(n.n&&n.lastPreN!==today&&n.lastN!==today){
     const tgt=minsOf(n.n);
     if(nowMin>=tgt-10&&nowMin<tgt){
       n.lastPreN=today;setNotifCfg(n);
-      fireNotif(t('notif_pre_title'),t('notif_pre_body'));
+      fireNotif(t('notif_pre_title'),t('notif_pre_body'),'q-pre-'+today);
     }
   }
 }
 setInterval(checkNotif,30000);
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();clsSync();} });
+/* Avisos push (shared/avisos.js): la lista de los próximos 7 días, con el mismo texto y la misma
+   etiqueta que los avisos de cuando la app está abierta. Se sube al abrir, al volver a la app,
+   al salir de un módulo (por si cambió el calendario) y al tocar los ajustes. */
+const agTag=o=>'q-ag-'+o.id+'@'+o.rem;
+function agText(o,ms){const lg=crisLang()==='en'?'en-GB':crisLang(),emo=o.kind==='clase'?'🎓':(o.e||'📌');
+  return (ms>3*3600e3?t('ag_rem_day',{e:emo,h:new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'}),s:o.name}):t('ag_rem_min',{e:emo,n:Math.max(1,Math.round(ms/6e4)),s:o.name}))+(o.l?' · '+o.l:'');}
+function pushItems(){
+  const n=getNotifCfg(),now=Date.now(),out=[];if(!n.on)return out;
+  const at=(d,hhmm,off)=>{const m=minsOf(hhmm);if(!(m>=0))return 0;const x=new Date(d);x.setHours(0,0,0,0);return x.getTime()+(m-(off||0))*6e4;};
+  for(let i=0;i<7;i++){
+    const d=new Date(now);d.setDate(d.getDate()+i);const day=d.getDay(),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(n.m){const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');out.push({at:at(d,n.m),t:t('notif_m_title',{name:cfgName()}),b:t('notif_m_body',{p:t('pil')[day],z:zona}),g:'q-m-'+key});}
+    if(n.n){out.push({at:at(d,n.n,10),t:t('notif_pre_title'),b:t('notif_pre_body'),g:'q-pre-'+key});
+      out.push({at:at(d,n.n),t:t('notif_n_title'),b:t('notif_n_body'),g:'q-n-'+key});}
+  }
+  if(window.QCAL)QCAL.agenda(now,now+7*864e5).forEach(o=>{if(o.rem>0)out.push({at:o.st-o.rem*6e4,t:agText(o,o.rem*6e4),b:'',g:agTag(o)});});
+  return out.filter(x=>x.at>now+60e3).sort((a,b)=>a.at-b.at).slice(0,150);
+}
+function pushSync(force){
+  const n=getNotifCfg();
+  if(!n.on||!window.QPUSH||!QPUSH.supported()||!('Notification' in window)||Notification.permission!=='granted'||navigator.onLine===false)return;
+  QPUSH.schedule(pushItems(),force);
+}
+setTimeout(()=>pushSync(),4000);
+setInterval(()=>{if(!document.hidden)pushSync();},15*60e3);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();clsSync();pushSync();} });
 setTimeout(clsSync,1500);
 /* Enlace con datos para «Calendario» (p. ej. reglas pasadas de otra app): …/#calendario=<datos> */
 (function(){const m=location.hash.match(/^#calendario=(.+)$/);if(!m)return;
@@ -1366,7 +1396,7 @@ function checkClassRemind(){
   const ms=n.st-now,lg=crisLang()==='en'?'en-GB':crisLang(),emo=n.kind==='clase'?'🎓':(n.e||'📌');
   const txt=(ms>3*3600e3?t('ag_rem_day',{e:emo,h:new Date(n.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'}),s:n.name}):t('ag_rem_min',{e:emo,n:Math.max(1,Math.round(ms/6e4)),s:n.name}))+(n.l?' · '+n.l:'');
   if(hapticOK())navigator.vibrate([60,60,60]);
-  if(document.hidden){const nc=getNotifCfg();if(nc.on&&'Notification' in window&&Notification.permission==='granted')fireNotif(txt,'');return;}
+  if(document.hidden){const nc=getNotifCfg();if(nc.on&&'Notification' in window&&Notification.permission==='granted')fireNotif(txt,'',agTag(n));return;}
   document.getElementById('tmToastT').textContent=txt;
   _toastAct=()=>openModule(n.kind==='clase'?'modules/clases.html':'modules/calendario.html');
   document.getElementById('tmToast').classList.add('show');
@@ -1891,6 +1921,7 @@ function closeViewer(){
   clearTimeout(legacyBackTimer);legacyBackTimer=null;
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
   syncSoon();    // y se lo lleva a los otros dispositivos vinculados
+  pushSync();    // por si cambió el calendario: los avisos push, al día
 }
 
 document.getElementById('homeBtn').addEventListener('click', () => {
