@@ -491,16 +491,19 @@ function onSteps(){const o=offIds();return steps.map((_,i)=>i).filter(i=>!o.incl
 function toggleStep(id){
   const o=offIds(),k=o.indexOf(id);
   if(k>=0)o.splice(k,1);else{if(steps.length-o.length<=1)return;o.push(id);}
-  try{localStorage.setItem('cris_noche_cfg',JSON.stringify({off:o}));}catch(e){}
+  try{localStorage.setItem('cris_noche_cfg',JSON.stringify({off:o,min:planMinutes(o)}));}catch(e){}
   renderHome();
 }
+/* Minutos del plan; se guardan con la personalización para que la portada de Quico y el aviso de la noche digan lo mismo */
+function planMinutes(o){return Math.max(1,Math.round(steps.reduce((a,s)=>a+(o.includes(s.id)?0:s.duration),0)/60));}
 const emo = s => String(s).split(' ')[0];
 function renderHome(){
   const o=offIds();
   document.getElementById('stepRow').innerHTML=steps.map((s,i)=>{const on=!o.includes(s.id),n=plain(stepL(i).title);
     return `<button class="stp${on?'':' off'}" aria-pressed="${on}" aria-label="${n}" title="${n}" onclick="toggleStep('${s.id}')">${emo(s.title)}</button>`;}).join('');
-  const m=Math.max(1,Math.round(steps.reduce((a,s)=>a+(o.includes(s.id)?0:s.duration),0)/60));
+  const m=planMinutes(o);
   document.getElementById('planH').textContent=m===1?t('plan_h1'):t('plan_h',{m});
+  try{const c=JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}');if(c.min!==m){c.off=o;c.min=m;localStorage.setItem('cris_noche_cfg',JSON.stringify(c));}}catch(e){}
 }
 
 let ON = [];          // índices de los pasos activos en esta noche

@@ -630,7 +630,7 @@ const I18N={
   notif_denied:'Sin permiso no puedo avisarte 🥺 — actívalo en ajustes del navegador',
   notif_unsupported:'Este navegador no soporta notificaciones 😔',
   notif_m_title:'🦘 ¡Buenos días, {name}!', notif_m_body:'Hoy toca: {p} y {z}. Un pasito y ya está 💚',
-  notif_n_title:'🌙 Hora de cerrar el día', notif_n_body:'Tu rutina nocturna te espera: 25 min y a dormir de lujo 💜',
+  notif_n_title:'🌙 Hora de cerrar el día', notif_n_body:'Tu rutina nocturna te espera: {m} min y a dormir de lujo 💜',
   notif_pre_title:'🌙 En 10 minutos, rutina nocturna', notif_pre_body:'Ve cerrando lo que tengas entre manos, sin prisa 💜',
   notif_finde:'finde tranquilo',
   notifbtn_on:'🔔 Recordatorios activados — toca para apagar', notifbtn_off:'🔕 Activar recordatorios',
@@ -658,7 +658,7 @@ const I18N={
   r_limpieza_pre:'Limpieza: ', r_limpieza_done:'¡Ya está hecha!', r_limpieza_pending:'~18 min · 6 pasos',
   r_finde_t:'Finde: limpieza libre', r_finde_s:'¿Un express de 15 min?',
   r_intereses_t:'Aprende algo hoy', r_intereses_s:'Un interés · 10-15 min',
-  r_noche_t:'Rutina nocturna', r_noche_s_night:'25 min · cierre del día', r_noche_s_eve:'Para esta noche · 25 min',
+  r_noche_t:'Rutina nocturna', r_noche_s_night:'{m} min · cierre del día', r_noche_s_eve:'Para esta noche · {m} min',
   r_calma_t:'Momento de calma', r_calma_s:'Respira o medita un poco',
   r_juego_t:'Un rato de juego', r_juego_s:'Un misterio de lógica',
   dias:['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
@@ -691,7 +691,7 @@ const I18N={
   notif_denied:'Without permission I can’t remind you 🥺 — enable it in browser settings',
   notif_unsupported:'This browser doesn’t support notifications 😔',
   notif_m_title:'🦘 Good morning, {name}!', notif_m_body:'Today: {p} and {z}. One little step and you’re off 💚',
-  notif_n_title:'🌙 Time to wind down', notif_n_body:'Your night routine awaits: 25 min and off to lovely sleep 💜',
+  notif_n_title:'🌙 Time to wind down', notif_n_body:'Your night routine awaits: {m} min and off to lovely sleep 💜',
   notif_pre_title:'🌙 Night routine in 10 minutes', notif_pre_body:'Start wrapping up what you’re doing, no rush 💜',
   notif_finde:'a calm weekend',
   notifbtn_on:'🔔 Reminders on — tap to turn off', notifbtn_off:'🔕 Turn on reminders',
@@ -719,7 +719,7 @@ const I18N={
   r_limpieza_pre:'Cleaning: ', r_limpieza_done:'Already done!', r_limpieza_pending:'~18 min · 6 steps',
   r_finde_t:'Weekend: free cleaning', r_finde_s:'A quick 15-min round?',
   r_intereses_t:'Learn something today', r_intereses_s:'One interest · 10-15 min',
-  r_noche_t:'Night routine', r_noche_s_night:'25 min · closing the day', r_noche_s_eve:'For tonight · 25 min',
+  r_noche_t:'Night routine', r_noche_s_night:'{m} min · closing the day', r_noche_s_eve:'For tonight · {m} min',
   r_calma_t:'A calm moment', r_calma_s:'Breathe or meditate a little',
   r_juego_t:'A bit of play', r_juego_s:'A logic mystery',
   dias:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
@@ -752,7 +752,7 @@ const I18N={
   notif_denied:'Sans autorisation je ne peux pas te prévenir 🥺 — active-la dans les réglages du navigateur',
   notif_unsupported:'Ce navigateur ne gère pas les notifications 😔',
   notif_m_title:'🦘 Bonjour, {name} !', notif_m_body:'Aujourd’hui : {p} et {z}. Un petit pas et c’est parti 💚',
-  notif_n_title:'🌙 Il est temps de clore la journée', notif_n_body:'Ta routine du soir t’attend : 25 min et au dodo 💜',
+  notif_n_title:'🌙 Il est temps de clore la journée', notif_n_body:'Ta routine du soir t’attend : {m} min et au dodo 💜',
   notif_pre_title:'🌙 Routine du soir dans 10 minutes', notif_pre_body:'Commence à finir ce que tu fais, sans hâte 💜',
   notif_finde:'un week-end tranquille',
   notifbtn_on:'🔔 Rappels activés — touche pour couper', notifbtn_off:'🔕 Activer les rappels',
@@ -780,7 +780,7 @@ const I18N={
   r_limpieza_pre:'Ménage : ', r_limpieza_done:'Déjà fait !', r_limpieza_pending:'~18 min · 6 étapes',
   r_finde_t:'Week-end : ménage libre', r_finde_s:'Un express de 15 min ?',
   r_intereses_t:'Apprends quelque chose aujourd’hui', r_intereses_s:'Un intérêt · 10-15 min',
-  r_noche_t:'Routine du soir', r_noche_s_night:'25 min · clore la journée', r_noche_s_eve:'Pour ce soir · 25 min',
+  r_noche_t:'Routine du soir', r_noche_s_night:'{m} min · clore la journée', r_noche_s_eve:'Pour ce soir · {m} min',
   r_calma_t:'Un moment de calme', r_calma_s:'Respire ou médite un peu',
   r_juego_t:'Un peu de jeu', r_juego_s:'Un mystère de logique',
   dias:['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],
@@ -1265,7 +1265,7 @@ function checkNotif(){
   }
   if(n.n&&n.lastN!==today&&nowMin>=minsOf(n.n)){
     n.lastN=today;setNotifCfg(n);
-    fireNotif(t('notif_n_title'),t('notif_n_body'),'q-n-'+today);
+    fireNotif(t('notif_n_title'),t('notif_n_body',{m:nocheMin()}),'q-n-'+today);
   }
   // Pre-aviso suave (transición, no alarma): solo dentro de los 10 min previos
   if(n.n&&n.lastPreN!==today&&n.lastN!==today){
@@ -1281,6 +1281,8 @@ setInterval(checkNotif,30000);
    etiqueta que los avisos de cuando la app está abierta. Se sube al abrir, al volver a la app,
    al salir de un módulo (por si cambió el calendario) y al tocar los ajustes. */
 const agTag=o=>'q-ag-'+o.id+'@'+o.rem;
+// minutos de la rutina nocturna (los guarda el módulo con su personalización)
+function nocheMin(){try{const m=+JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}').min;return m>0?m:23;}catch(e){return 23;}}
 function agText(o,ms){const lg=crisLang()==='en'?'en-GB':crisLang(),emo=o.kind==='clase'?'🎓':(o.e||'📌');
   return (ms>3*3600e3?t('ag_rem_day',{e:emo,h:new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'}),s:o.name}):t('ag_rem_min',{e:emo,n:Math.max(1,Math.round(ms/6e4)),s:o.name}))+(o.l?' · '+o.l:'');}
 function pushItems(){
@@ -1290,7 +1292,7 @@ function pushItems(){
     const d=new Date(now);d.setDate(d.getDate()+i);const day=d.getDay(),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
     if(n.m){const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');out.push({at:at(d,n.m),t:t('notif_m_title',{name:cfgName()}),b:t('notif_m_body',{p:t('pil')[day],z:zona}),g:'q-m-'+key});}
     if(n.n){out.push({at:at(d,n.n,10),t:t('notif_pre_title'),b:t('notif_pre_body'),g:'q-pre-'+key});
-      out.push({at:at(d,n.n),t:t('notif_n_title'),b:t('notif_n_body'),g:'q-n-'+key});}
+      out.push({at:at(d,n.n),t:t('notif_n_title'),b:t('notif_n_body',{m:nocheMin()}),g:'q-n-'+key});}
   }
   if(window.QCAL)QCAL.agenda(now,now+7*864e5).forEach(o=>{if(o.rem>0)out.push({at:o.st-o.rem*6e4,t:agText(o,o.rem*6e4),b:'',g:agTag(o)});});
   return out.filter(x=>x.at>now+60e3).sort((a,b)=>a.at-b.at).slice(0,150);
@@ -1538,7 +1540,7 @@ function modBuild(){
       return {e:'⚡',t:t('r_finde_t'),s:t('r_finde_s'),f:'modules/limpieza.html#express',done:markDone(k)};
     },
     intereses:()=>{const k='cris_intereses_v1_'+tl;return {e:'🎨',t:t('r_intereses_t'),s:t('r_intereses_s'),f:'modules/intereses.html',done:markDone(k)};},
-    noche:()=>{const k='cris_noche_v1_'+tl;return {e:'🌙',t:t('r_noche_t'),s:h>=20?t('r_noche_s_night'):t('r_noche_s_eve'),f:'modules/rutina-nocturna.html',done:markDone(k)};},
+    noche:()=>{const k='cris_noche_v1_'+tl;return {e:'🌙',t:t('r_noche_t'),s:h>=20?t('r_noche_s_night',{m:nocheMin()}):t('r_noche_s_eve',{m:nocheMin()}),f:'modules/rutina-nocturna.html',done:markDone(k)};},
     calma:()=>{const k='cris_calma_v1_'+tl;return {e:'🫀',t:t('r_calma_t'),s:t('r_calma_s'),f:'modules/rescate-emocional.html',done:markDone(k)};},
     juego:()=>{const k='cris_juego_v1_'+tl;return {e:'🔍',t:t('r_juego_t'),s:t('r_juego_s'),f:'modules/juegos.html',done:markDone(k)};},
     eco1:()=>({e:'🫁',t:t('r_respira_t'),s:t('r_respira_s'),f:'modules/rescate-emocional.html',done:markDone(ek(1))}),
