@@ -243,5 +243,28 @@
       if(!next)next=API.decorate(between(t,t+70*DAY)).filter(o=>!o.ad&&!o.hidden&&o.st>t)[0]||null; // vacaciones: la siguiente aunque esté lejos
       return {cur:l.find(o=>o.st<=t&&o.en>t)||null,next};}
   };
+  /* ── Tareas de UNA clase concreta (la de ese día, no la asignatura en general) ──
+     cris_clases_tareas_v1 = {occ: {d:'AAAA-MM-DD', n:'asignatura', l:[{id, t, done, qid}]}}
+     qid = la misma tarea en «Mi día» (solo el día de la clase): lo hecho allí manda. */
+  const TASKS='cris_clases_tareas_v1';
+  function tRd(){const o=rd(TASKS,{});return o&&typeof o==='object'?o:{};}
+  function tWr(o){const lim=dayKey(Date.now()-60*DAY);Object.keys(o).forEach(k=>{const e=o[k];if(!e||!Array.isArray(e.l)||!e.l.length||e.d<lim)delete o[k];});wr(TASKS,o);}
+  const tid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  function qItem(q){try{return q&&window.QDIA?QDIA.get(q):null;}catch(e){return null;}}
+  Object.assign(API,{
+    tasks(occ){const o=tRd(),e=o[occ];if(!e)return [];let ch=false;
+      e.l.forEach(k=>{const it=qItem(k.qid);if(it){const dn=QDIA.isDone(it);if(dn!==!!k.done){k.done=dn;ch=true;}}});
+      if(ch)tWr(o);return e.l.slice();},
+    addTask(c,text){const v=String(text||'').replace(/\s+/g,' ').trim().slice(0,120);if(!v||!c||!c.id)return null;
+      const o=tRd(),e=o[c.id]||(o[c.id]={d:dayKey(c.st),n:c.name||'',l:[]}),k={id:tid(),t:v,done:false};e.l.push(k);tWr(o);return k;},
+    setTaskDone(occ,id,v){const o=tRd(),k=o[occ]&&o[occ].l.find(x=>x.id===id);if(!k)return;k.done=!!v;tWr(o);
+      const it=qItem(k.qid);if(it&&QDIA.isDone(it)!==!!v)QDIA.setDone(k.qid,!!v);},
+    removeTask(occ,id){const o=tRd(),e=o[occ];if(!e)return;const k=e.l.find(x=>x.id===id);e.l=e.l.filter(x=>x.id!==id);tWr(o);if(k&&qItem(k.qid))QDIA.remove(k.qid);},
+    linkTask(occ,id,qid){const o=tRd(),k=o[occ]&&o[occ].l.find(x=>x.id===id);if(!k)return;k.qid=qid||null;tWr(o);},
+    /* Tareas de las clases de hoy que aún no están en «Mi día» (para ofrecerlas en «＋ De Quico») */
+    todayTasks(){const o=tRd(),today=dayKey(Date.now()),out=[];
+      Object.keys(o).forEach(occ=>{const e=o[occ];if(e.d!==today)return;e.l.forEach(k=>{if(!k.done&&!qItem(k.qid))out.push({occ,id:k.id,t:k.t,n:e.n});});});
+      return out;}
+  });
   window.QCLASES=API;
 })();

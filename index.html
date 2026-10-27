@@ -474,10 +474,11 @@ body.mod-open #menuBtn{display:none;}
 .simple .hero-sub,.simple .tp-s,.simple .tp-hint,.simple .ao-desc{display:none}
 </style>
 <script src="shared/alergias.js?v=115"></script>
-<script src="shared/dia.js?v=115"></script>
-<script src="shared/clases.js?v=115"></script>
+<script src="shared/dia.js?v=118"></script>
+<script src="shared/clases.js?v=118"></script>
 <script src="shared/cal.js?v=115"></script>
 <script src="shared/sync.js?v=117"></script>
+<script src="shared/avisos.js?v=118"></script>
 </head>
 <body>
 
@@ -542,7 +543,7 @@ body.mod-open #menuBtn{display:none;}
     <div id="notifTimes" style="display:none;">
       <div class="nt-row"><span data-i18n="notif_morning">☀️ Empezar el día</span><input type="time" id="nt-m" value="09:30" onchange="saveNotifTimes()"></div>
       <div class="nt-row"><span data-i18n="notif_night">🌙 Rutina nocturna</span><input type="time" id="nt-n" value="21:30" onchange="saveNotifTimes()"></div>
-      <div class="cfg-note" data-i18n="notif_hint">Suenan con la app abierta o instalada en la pantalla de inicio</div>
+      <div class="cfg-note" data-i18n="notif_hint">Suenan aunque Quico esté cerrado. En iPhone, añade Quico a la pantalla de inicio.</div>
     </div>
     <div class="nt-row" style="margin-bottom:12px"><span data-i18n="cfg_name">🙂 Tu nombre</span><input type="text" id="nameInput" maxlength="18" placeholder="…" oninput="saveName(this.value)" style="width:130px;border:2px solid var(--mint-mid);border-radius:10px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark);background:#fff"></div>
     <button id="calmBtn" onclick="toggleCalm()">🕯️ Reducir estímulos</button>
@@ -608,11 +609,11 @@ const I18N={
   hero_sub:'¿en qué te ayudo hoy?',
   lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes', ob_replay:'🦘 Ver el recorrido',
   notif_morning:'☀️ Empezar el día', notif_night:'🌙 Rutina nocturna',
-  notif_hint:'Suenan con la app abierta o instalada en la pantalla de inicio',
+  notif_hint:'Suenan aunque Quico esté cerrado. En iPhone, añade Quico a la pantalla de inicio.',
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
   drawer_footer:'Quico · tu compañero cada día 💚',
-  sync_btn:'👤 Tu cuenta',acc_hint:'Entra con tu email en cada móvil (o tablet) y Quico será el mismo en todos. Tus datos van cifrados con tu contraseña.',acc_email:'Tu email',acc_pw:'Contraseña (mínimo 8)',acc_enter:'Entrar',acc_first:'¿Primera vez? Tu cuenta se crea al entrar.',acc_short:'La contraseña necesita al menos 8 caracteres.',acc_bad_email:'Revisa el email.',acc_new_q:'No hay ninguna cuenta con {e} y esa contraseña. ¿Crear una nueva con los datos de este dispositivo?\n\nSi ya tenías cuenta, cancela y revisa la contraseña.',acc_created:'¡Cuenta creada! En tu otro móvil, entra con el mismo email y la misma contraseña.',acc_in_done:'¡Dentro! Quico se va a recargar con tus datos.',acc_old_pw:'Esa contraseña ya no vale porque la cambiaste. Usa la nueva.',acc_relogin:'Tu contraseña cambió en otro dispositivo. Vuelve a entrar con la nueva.',acc_as:'Dentro como {e}',acc_change:'Cambiar contraseña',acc_new_pw:'Contraseña nueva (mínimo 8)',acc_save:'Guardar',acc_changed:'Contraseña cambiada. En tus otros dispositivos, vuelve a entrar con la nueva.',acc_exists:'Ya hay datos con esa contraseña. Elige otra.',acc_out:'Salir en este dispositivo',acc_out_q:'¿Salir en este dispositivo? Tus datos se quedan aquí, pero dejarán de pasar a los demás.',acc_outed:'Has salido.',acc_forgot:'¿Olvidaste la contraseña? Cámbiala desde un dispositivo donde sigas dentro. Si no tienes ninguno, tus datos siguen en tu móvil: crea la cuenta otra vez.',acc_wait:'Un momento… (comprobando la contraseña)',sync_wait:'Un momento…',cancel:'Cancelar',sync_last:'Última sincronización: {t}',sync_never:'aún no',sync_just:'ahora mismo',sync_min:'hace {n} min',sync_h:'hace {n} h',sync_now:'↻ Sincronizar ahora',sync_fail:'No he podido conectar. Revisa internet y prueba otra vez.',sync_got:'Han llegado {n} cambios.',sync_same:'Todo está al día.',sync_noserver:'No puedo conectar con el servidor de Quico. Revisa internet y prueba otra vez.',backup_btn:'💾 Copia de seguridad',backup_export:'⬇️ Guardar copia',backup_import:'⬆️ Recuperar copia',backup_hint:'Guarda un archivo con tus datos para pasarlos a otro móvil o no perderlos.',backup_ok:'Copia recuperada. La app se va a recargar.',backup_confirm:'Esto sustituirá tus datos actuales por los de la copia. ¿Seguir?',backup_bad:'Ese archivo no parece una copia de Quico.',privacy_btn:'🔒 Privacidad y aviso de salud',kindle_btn:'📖 Versión para Kindle',kindle_hint:'En el Kindle, abre el navegador (Menú → Navegador experimental) y escribe esta dirección:',kindle_note:'Versión sencilla: ejercicio del día, comida, limpieza, rutina de noche y calma. Sin sonido ni animaciones.',
+  sync_btn:'👤 Tu cuenta',acc_hint:'Entra con tu email en cada móvil (o tablet) y Quico será el mismo en todos. Tus datos van cifrados con tu contraseña.',acc_email:'Tu email',acc_pw:'Contraseña (mínimo 8)',acc_enter:'Entrar',acc_first:'¿Primera vez? Tu cuenta se crea al entrar.',acc_short:'La contraseña necesita al menos 8 caracteres.',acc_bad_email:'Revisa el email.',acc_new_q:'No hay ninguna cuenta con {e} y esa contraseña. ¿Crear una nueva con los datos de este dispositivo?\n\nSi ya tenías cuenta, cancela y revisa la contraseña.',acc_created:'¡Cuenta creada! En tu otro móvil, entra con el mismo email y la misma contraseña.',acc_in_done:'¡Dentro! Quico se va a recargar con tus datos.',acc_old_pw:'Esa contraseña ya no vale porque la cambiaste. Usa la nueva.',acc_relogin:'Tu contraseña cambió en otro dispositivo. Vuelve a entrar con la nueva.',acc_as:'Dentro como {e}',acc_change:'Cambiar contraseña',acc_new_pw:'Contraseña nueva (mínimo 8)',acc_save:'Guardar',acc_changed:'Contraseña cambiada. En tus otros dispositivos, vuelve a entrar con la nueva.',acc_exists:'Ya hay datos con esa contraseña. Elige otra.',acc_out:'Salir en este dispositivo',acc_out_q:'¿Salir en este dispositivo? Tus datos se quedan aquí, pero dejarán de pasar a los demás.',acc_outed:'Has salido.',acc_forgot:'¿Olvidaste la contraseña? Cámbiala desde un dispositivo donde sigas dentro. Si no tienes ninguno, tus datos siguen en tu móvil: crea la cuenta otra vez.',acc_wait:'Un momento… (comprobando la contraseña)',subj_task:'{s}: {t}',sync_wait:'Un momento…',cancel:'Cancelar',sync_last:'Última sincronización: {t}',sync_never:'aún no',sync_just:'ahora mismo',sync_min:'hace {n} min',sync_h:'hace {n} h',sync_now:'↻ Sincronizar ahora',sync_fail:'No he podido conectar. Revisa internet y prueba otra vez.',sync_got:'Han llegado {n} cambios.',sync_same:'Todo está al día.',sync_noserver:'No puedo conectar con el servidor de Quico. Revisa internet y prueba otra vez.',backup_btn:'💾 Copia de seguridad',backup_export:'⬇️ Guardar copia',backup_import:'⬆️ Recuperar copia',backup_hint:'Guarda un archivo con tus datos para pasarlos a otro móvil o no perderlos.',backup_ok:'Copia recuperada. La app se va a recargar.',backup_confirm:'Esto sustituirá tus datos actuales por los de la copia. ¿Seguir?',backup_bad:'Ese archivo no parece una copia de Quico.',privacy_btn:'🔒 Privacidad y aviso de salud',kindle_btn:'📖 Versión para Kindle',kindle_hint:'En el Kindle, abre el navegador (Menú → Navegador experimental) y escribe esta dirección:',kindle_note:'Versión sencilla: ejercicio del día, comida, limpieza, rutina de noche y calma. Sin sonido ni animaciones.',
   day_title:'✏️ Tu día', done:'Listo', sos:' SOS', home_title:'Volver al inicio', sos_title:'Botiquín de emergencia', drop:' Soltar', drop_title:'Soltar el móvil y cambiar de tarea', drop_menu:'📴 Soltar el móvil',
   greet_morning:'¡Buenos días, {name}!', greet_afternoon:'¡Buenas tardes, {name}!', greet_evening:'¡Buenas noches, {name}!', cfg_name:'🙂 Tu nombre',
   bubbles:['¡Aquí estoy! Elige un módulo 🌿','¿Cómo estás hoy? 🫶','¡Tú puedes con esto! 💚','Un paso a la vez, sin prisa 🐾','¡Estoy contigo! Elige algo 🌱','Respira. Vamos juntos 🌬️'],
@@ -629,7 +630,7 @@ const I18N={
   notif_denied:'Sin permiso no puedo avisarte 🥺 — actívalo en ajustes del navegador',
   notif_unsupported:'Este navegador no soporta notificaciones 😔',
   notif_m_title:'🦘 ¡Buenos días, {name}!', notif_m_body:'Hoy toca: {p} y {z}. Un pasito y ya está 💚',
-  notif_n_title:'🌙 Hora de cerrar el día', notif_n_body:'Tu rutina nocturna te espera: 25 min y a dormir de lujo 💜',
+  notif_n_title:'🌙 Hora de cerrar el día', notif_n_body:'Tu rutina nocturna te espera: {m} min y a dormir de lujo 💜',
   notif_pre_title:'🌙 En 10 minutos, rutina nocturna', notif_pre_body:'Ve cerrando lo que tengas entre manos, sin prisa 💜',
   notif_finde:'finde tranquilo',
   notifbtn_on:'🔔 Recordatorios activados — toca para apagar', notifbtn_off:'🔕 Activar recordatorios',
@@ -657,7 +658,7 @@ const I18N={
   r_limpieza_pre:'Limpieza: ', r_limpieza_done:'¡Ya está hecha!', r_limpieza_pending:'~18 min · 6 pasos',
   r_finde_t:'Finde: limpieza libre', r_finde_s:'¿Un express de 15 min?',
   r_intereses_t:'Aprende algo hoy', r_intereses_s:'Un interés · 10-15 min',
-  r_noche_t:'Rutina nocturna', r_noche_s_night:'25 min · cierre del día', r_noche_s_eve:'Para esta noche · 25 min',
+  r_noche_t:'Rutina nocturna', r_noche_s_night:'{m} min · cierre del día', r_noche_s_eve:'Para esta noche · {m} min',
   r_calma_t:'Momento de calma', r_calma_s:'Respira o medita un poco',
   r_juego_t:'Un rato de juego', r_juego_s:'Un misterio de lógica',
   dias:['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
@@ -669,11 +670,11 @@ const I18N={
   hero_sub:'how can I help you today?',
   lang_label:'Language', modules_label:'Modules', settings_label:'Settings', ob_replay:'🦘 Watch the tour',
   notif_morning:'☀️ Start the day', notif_night:'🌙 Night routine',
-  notif_hint:'They sound with the app open or installed on your home screen',
+  notif_hint:'They ring even when Quico is closed. On iPhone, add Quico to your home screen.',
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
   drawer_footer:'Quico · your everyday companion 💚',
-  sync_btn:'👤 Your account',acc_hint:'Sign in with your email on each phone (or tablet) and Quico will be the same on all of them. Your data is encrypted with your password.',acc_email:'Your email',acc_pw:'Password (8+ characters)',acc_enter:'Sign in',acc_first:'First time? Your account is created when you sign in.',acc_short:'The password needs at least 8 characters.',acc_bad_email:'Check the email.',acc_new_q:'There’s no account with {e} and that password. Create a new one with this device’s data?\n\nIf you already had an account, cancel and check the password.',acc_created:'Account created! On your other phone, sign in with the same email and password.',acc_in_done:'You’re in! Quico will reload with your data.',acc_old_pw:'That password no longer works because you changed it. Use the new one.',acc_relogin:'Your password changed on another device. Sign in again with the new one.',acc_as:'Signed in as {e}',acc_change:'Change password',acc_new_pw:'New password (8+ characters)',acc_save:'Save',acc_changed:'Password changed. On your other devices, sign in again with the new one.',acc_exists:'There’s already data with that password. Choose another one.',acc_out:'Sign out on this device',acc_out_q:'Sign out on this device? Your data stays here but will stop syncing with the others.',acc_outed:'Signed out.',acc_forgot:'Forgot your password? Change it from a device where you’re still signed in. If there isn’t one, your data is still on your phone: create the account again.',acc_wait:'One moment… (checking the password)',sync_wait:'One moment…',cancel:'Cancel',sync_last:'Last sync: {t}',sync_never:'not yet',sync_just:'just now',sync_min:'{n} min ago',sync_h:'{n} h ago',sync_now:'↻ Sync now',sync_fail:'I couldn’t connect. Check your internet and try again.',sync_got:'{n} changes arrived.',sync_same:'Everything is up to date.',sync_noserver:'I can’t reach Quico’s server. Check your internet and try again.',backup_btn:'💾 Backup',backup_export:'⬇️ Save a copy',backup_import:'⬆️ Restore a copy',backup_hint:'Save a file with your data to move it to another phone or keep it safe.',backup_ok:'Copy restored. The app will reload.',backup_confirm:'This will replace your current data with the copy. Continue?',backup_bad:'That file doesn’t look like a Quico backup.',privacy_btn:'🔒 Privacy and health notice',kindle_btn:'📖 Kindle version',kindle_hint:'On your Kindle, open the browser (Menu → Experimental browser) and type this address:',kindle_note:'Simple version: today’s exercise, food, cleaning, night routine and calm. No sound or animations.',
+  sync_btn:'👤 Your account',acc_hint:'Sign in with your email on each phone (or tablet) and Quico will be the same on all of them. Your data is encrypted with your password.',acc_email:'Your email',acc_pw:'Password (8+ characters)',acc_enter:'Sign in',acc_first:'First time? Your account is created when you sign in.',acc_short:'The password needs at least 8 characters.',acc_bad_email:'Check the email.',acc_new_q:'There’s no account with {e} and that password. Create a new one with this device’s data?\n\nIf you already had an account, cancel and check the password.',acc_created:'Account created! On your other phone, sign in with the same email and password.',acc_in_done:'You’re in! Quico will reload with your data.',acc_old_pw:'That password no longer works because you changed it. Use the new one.',acc_relogin:'Your password changed on another device. Sign in again with the new one.',acc_as:'Signed in as {e}',acc_change:'Change password',acc_new_pw:'New password (8+ characters)',acc_save:'Save',acc_changed:'Password changed. On your other devices, sign in again with the new one.',acc_exists:'There’s already data with that password. Choose another one.',acc_out:'Sign out on this device',acc_out_q:'Sign out on this device? Your data stays here but will stop syncing with the others.',acc_outed:'Signed out.',acc_forgot:'Forgot your password? Change it from a device where you’re still signed in. If there isn’t one, your data is still on your phone: create the account again.',acc_wait:'One moment… (checking the password)',subj_task:'{s}: {t}',sync_wait:'One moment…',cancel:'Cancel',sync_last:'Last sync: {t}',sync_never:'not yet',sync_just:'just now',sync_min:'{n} min ago',sync_h:'{n} h ago',sync_now:'↻ Sync now',sync_fail:'I couldn’t connect. Check your internet and try again.',sync_got:'{n} changes arrived.',sync_same:'Everything is up to date.',sync_noserver:'I can’t reach Quico’s server. Check your internet and try again.',backup_btn:'💾 Backup',backup_export:'⬇️ Save a copy',backup_import:'⬆️ Restore a copy',backup_hint:'Save a file with your data to move it to another phone or keep it safe.',backup_ok:'Copy restored. The app will reload.',backup_confirm:'This will replace your current data with the copy. Continue?',backup_bad:'That file doesn’t look like a Quico backup.',privacy_btn:'🔒 Privacy and health notice',kindle_btn:'📖 Kindle version',kindle_hint:'On your Kindle, open the browser (Menu → Experimental browser) and type this address:',kindle_note:'Simple version: today’s exercise, food, cleaning, night routine and calm. No sound or animations.',
   day_title:'✏️ Your day', done:'Done', sos:' SOS', home_title:'Back to start', sos_title:'Emergency kit', drop:' Drop it', drop_title:'Put the phone down and switch tasks', drop_menu:'📴 Put the phone down',
   greet_morning:'Good morning, {name}!', greet_afternoon:'Good afternoon, {name}!', greet_evening:'Good evening, {name}!', cfg_name:'🙂 Your name',
   bubbles:['Here I am! Pick a module 🌿','How are you today? 🫶','You’ve got this! 💚','One step at a time, no rush 🐾','I’m with you! Pick something 🌱','Breathe. We go together 🌬️'],
@@ -690,7 +691,7 @@ const I18N={
   notif_denied:'Without permission I can’t remind you 🥺 — enable it in browser settings',
   notif_unsupported:'This browser doesn’t support notifications 😔',
   notif_m_title:'🦘 Good morning, {name}!', notif_m_body:'Today: {p} and {z}. One little step and you’re off 💚',
-  notif_n_title:'🌙 Time to wind down', notif_n_body:'Your night routine awaits: 25 min and off to lovely sleep 💜',
+  notif_n_title:'🌙 Time to wind down', notif_n_body:'Your night routine awaits: {m} min and off to lovely sleep 💜',
   notif_pre_title:'🌙 Night routine in 10 minutes', notif_pre_body:'Start wrapping up what you’re doing, no rush 💜',
   notif_finde:'a calm weekend',
   notifbtn_on:'🔔 Reminders on — tap to turn off', notifbtn_off:'🔕 Turn on reminders',
@@ -718,7 +719,7 @@ const I18N={
   r_limpieza_pre:'Cleaning: ', r_limpieza_done:'Already done!', r_limpieza_pending:'~18 min · 6 steps',
   r_finde_t:'Weekend: free cleaning', r_finde_s:'A quick 15-min round?',
   r_intereses_t:'Learn something today', r_intereses_s:'One interest · 10-15 min',
-  r_noche_t:'Night routine', r_noche_s_night:'25 min · closing the day', r_noche_s_eve:'For tonight · 25 min',
+  r_noche_t:'Night routine', r_noche_s_night:'{m} min · closing the day', r_noche_s_eve:'For tonight · {m} min',
   r_calma_t:'A calm moment', r_calma_s:'Breathe or meditate a little',
   r_juego_t:'A bit of play', r_juego_s:'A logic mystery',
   dias:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
@@ -730,11 +731,11 @@ const I18N={
   hero_sub:'comment puis-je t’aider aujourd’hui ?',
   lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages', ob_replay:'🦘 Revoir la visite',
   notif_morning:'☀️ Commencer la journée', notif_night:'🌙 Routine du soir',
-  notif_hint:'Elles sonnent avec l’appli ouverte ou installée sur l’écran d’accueil',
+  notif_hint:'Elles sonnent même quand Quico est fermé. Sur iPhone, ajoute Quico à l’écran d’accueil.',
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
   drawer_footer:'Quico · ton compagnon de chaque jour 💚',
-  sync_btn:'👤 Ton compte',acc_hint:'Connecte-toi avec ton e-mail sur chaque téléphone (ou tablette) et Quico sera le même partout. Tes données sont chiffrées avec ton mot de passe.',acc_email:'Ton e-mail',acc_pw:'Mot de passe (8 caractères min.)',acc_enter:'Se connecter',acc_first:'Première fois ? Ton compte est créé en te connectant.',acc_short:'Le mot de passe doit avoir au moins 8 caractères.',acc_bad_email:'Vérifie l’e-mail.',acc_new_q:'Il n’y a aucun compte avec {e} et ce mot de passe. En créer un avec les données de cet appareil ?\n\nSi tu avais déjà un compte, annule et vérifie le mot de passe.',acc_created:'Compte créé ! Sur ton autre téléphone, connecte-toi avec le même e-mail et le même mot de passe.',acc_in_done:'C’est bon ! Quico va se recharger avec tes données.',acc_old_pw:'Ce mot de passe ne marche plus car tu l’as changé. Utilise le nouveau.',acc_relogin:'Ton mot de passe a changé sur un autre appareil. Reconnecte-toi avec le nouveau.',acc_as:'Compte : {e}',acc_change:'Changer le mot de passe',acc_new_pw:'Nouveau mot de passe (8 caractères min.)',acc_save:'Enregistrer',acc_changed:'Mot de passe changé. Sur tes autres appareils, reconnecte-toi avec le nouveau.',acc_exists:'Il y a déjà des données avec ce mot de passe. Choisis-en un autre.',acc_out:'Se déconnecter sur cet appareil',acc_out_q:'Se déconnecter sur cet appareil ? Tes données restent ici mais ne passeront plus aux autres.',acc_outed:'Déconnexion faite.',acc_forgot:'Mot de passe oublié ? Change-le depuis un appareil où tu es encore connectée. S’il n’y en a aucun, tes données sont toujours sur ton téléphone : recrée le compte.',acc_wait:'Un instant… (vérification du mot de passe)',sync_wait:'Un instant…',cancel:'Annuler',sync_last:'Dernière synchro : {t}',sync_never:'pas encore',sync_just:'à l’instant',sync_min:'il y a {n} min',sync_h:'il y a {n} h',sync_now:'↻ Synchroniser',sync_fail:'Je n’ai pas pu me connecter. Vérifie internet et réessaie.',sync_got:'{n} changements sont arrivés.',sync_same:'Tout est à jour.',sync_noserver:'Je n’arrive pas à joindre le serveur de Quico. Vérifie internet et réessaie.',backup_btn:'💾 Sauvegarde',backup_export:'⬇️ Enregistrer une copie',backup_import:'⬆️ Restaurer une copie',backup_hint:'Enregistre un fichier avec tes données pour les passer sur un autre téléphone ou ne pas les perdre.',backup_ok:'Copie restaurée. L’app va se recharger.',backup_confirm:'Cela remplacera tes données actuelles par celles de la copie. Continuer ?',backup_bad:'Ce fichier ne ressemble pas à une sauvegarde de Quico.',privacy_btn:'🔒 Confidentialité et avertissement santé',kindle_btn:'📖 Version Kindle',kindle_hint:'Sur ta Kindle, ouvre le navigateur (Menu → Navigateur expérimental) et tape cette adresse :',kindle_note:'Version simple : exercice du jour, repas, ménage, routine du soir et calme. Sans son ni animations.',
+  sync_btn:'👤 Ton compte',acc_hint:'Connecte-toi avec ton e-mail sur chaque téléphone (ou tablette) et Quico sera le même partout. Tes données sont chiffrées avec ton mot de passe.',acc_email:'Ton e-mail',acc_pw:'Mot de passe (8 caractères min.)',acc_enter:'Se connecter',acc_first:'Première fois ? Ton compte est créé en te connectant.',acc_short:'Le mot de passe doit avoir au moins 8 caractères.',acc_bad_email:'Vérifie l’e-mail.',acc_new_q:'Il n’y a aucun compte avec {e} et ce mot de passe. En créer un avec les données de cet appareil ?\n\nSi tu avais déjà un compte, annule et vérifie le mot de passe.',acc_created:'Compte créé ! Sur ton autre téléphone, connecte-toi avec le même e-mail et le même mot de passe.',acc_in_done:'C’est bon ! Quico va se recharger avec tes données.',acc_old_pw:'Ce mot de passe ne marche plus car tu l’as changé. Utilise le nouveau.',acc_relogin:'Ton mot de passe a changé sur un autre appareil. Reconnecte-toi avec le nouveau.',acc_as:'Compte : {e}',acc_change:'Changer le mot de passe',acc_new_pw:'Nouveau mot de passe (8 caractères min.)',acc_save:'Enregistrer',acc_changed:'Mot de passe changé. Sur tes autres appareils, reconnecte-toi avec le nouveau.',acc_exists:'Il y a déjà des données avec ce mot de passe. Choisis-en un autre.',acc_out:'Se déconnecter sur cet appareil',acc_out_q:'Se déconnecter sur cet appareil ? Tes données restent ici mais ne passeront plus aux autres.',acc_outed:'Déconnexion faite.',acc_forgot:'Mot de passe oublié ? Change-le depuis un appareil où tu es encore connectée. S’il n’y en a aucun, tes données sont toujours sur ton téléphone : recrée le compte.',acc_wait:'Un instant… (vérification du mot de passe)',subj_task:'{s} : {t}',sync_wait:'Un instant…',cancel:'Annuler',sync_last:'Dernière synchro : {t}',sync_never:'pas encore',sync_just:'à l’instant',sync_min:'il y a {n} min',sync_h:'il y a {n} h',sync_now:'↻ Synchroniser',sync_fail:'Je n’ai pas pu me connecter. Vérifie internet et réessaie.',sync_got:'{n} changements sont arrivés.',sync_same:'Tout est à jour.',sync_noserver:'Je n’arrive pas à joindre le serveur de Quico. Vérifie internet et réessaie.',backup_btn:'💾 Sauvegarde',backup_export:'⬇️ Enregistrer une copie',backup_import:'⬆️ Restaurer une copie',backup_hint:'Enregistre un fichier avec tes données pour les passer sur un autre téléphone ou ne pas les perdre.',backup_ok:'Copie restaurée. L’app va se recharger.',backup_confirm:'Cela remplacera tes données actuelles par celles de la copie. Continuer ?',backup_bad:'Ce fichier ne ressemble pas à une sauvegarde de Quico.',privacy_btn:'🔒 Confidentialité et avertissement santé',kindle_btn:'📖 Version Kindle',kindle_hint:'Sur ta Kindle, ouvre le navigateur (Menu → Navigateur expérimental) et tape cette adresse :',kindle_note:'Version simple : exercice du jour, repas, ménage, routine du soir et calme. Sans son ni animations.',
   day_title:'✏️ Ta journée', done:'OK', sos:' SOS', home_title:'Retour à l’accueil', sos_title:'Trousse d’urgence', drop:' Lâcher', drop_title:'Lâcher le téléphone et changer de tâche', drop_menu:'📴 Lâcher le téléphone',
   greet_morning:'Bonjour, {name} !', greet_afternoon:'Bon après-midi, {name} !', greet_evening:'Bonsoir, {name} !', cfg_name:'🙂 Ton prénom',
   bubbles:['Je suis là ! Choisis un module 🌿','Comment vas-tu aujourd’hui ? 🫶','Tu vas y arriver ! 💚','Un pas à la fois, sans hâte 🐾','Je suis avec toi ! Choisis quelque chose 🌱','Respire. On y va ensemble 🌬️'],
@@ -751,7 +752,7 @@ const I18N={
   notif_denied:'Sans autorisation je ne peux pas te prévenir 🥺 — active-la dans les réglages du navigateur',
   notif_unsupported:'Ce navigateur ne gère pas les notifications 😔',
   notif_m_title:'🦘 Bonjour, {name} !', notif_m_body:'Aujourd’hui : {p} et {z}. Un petit pas et c’est parti 💚',
-  notif_n_title:'🌙 Il est temps de clore la journée', notif_n_body:'Ta routine du soir t’attend : 25 min et au dodo 💜',
+  notif_n_title:'🌙 Il est temps de clore la journée', notif_n_body:'Ta routine du soir t’attend : {m} min et au dodo 💜',
   notif_pre_title:'🌙 Routine du soir dans 10 minutes', notif_pre_body:'Commence à finir ce que tu fais, sans hâte 💜',
   notif_finde:'un week-end tranquille',
   notifbtn_on:'🔔 Rappels activés — touche pour couper', notifbtn_off:'🔕 Activer les rappels',
@@ -779,7 +780,7 @@ const I18N={
   r_limpieza_pre:'Ménage : ', r_limpieza_done:'Déjà fait !', r_limpieza_pending:'~18 min · 6 étapes',
   r_finde_t:'Week-end : ménage libre', r_finde_s:'Un express de 15 min ?',
   r_intereses_t:'Apprends quelque chose aujourd’hui', r_intereses_s:'Un intérêt · 10-15 min',
-  r_noche_t:'Routine du soir', r_noche_s_night:'25 min · clore la journée', r_noche_s_eve:'Pour ce soir · 25 min',
+  r_noche_t:'Routine du soir', r_noche_s_night:'{m} min · clore la journée', r_noche_s_eve:'Pour ce soir · {m} min',
   r_calma_t:'Un moment de calme', r_calma_s:'Respire ou médite un peu',
   r_juego_t:'Un peu de jeu', r_juego_s:'Un mystère de logique',
   dias:['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],
@@ -820,7 +821,7 @@ function setLang(l){
   applyStaticI18n();
   buildModuleList();
   setGreeting();
-  renderToday();renderCfg();renderNotif();
+  renderToday();renderCfg();renderNotif();pushSync(); // los avisos push, en el idioma nuevo
   if(document.getElementById('daySheet').classList.contains('open')){
     renderDayEdit();
     document.getElementById('ds-sub').textContent=t('ds_sub_list');
@@ -1171,7 +1172,7 @@ function setCfgStore(c){try{localStorage.setItem('cris_cfg',JSON.stringify(c));}
 /* Nombre configurable: la app deja de estar «pegada» a una persona (sin nombre: saluda sin nombre) */
 function cfgName(){return (getCfg().name||'').trim();}
 let _nameSaveT=null;
-function saveName(v){const c=getCfg();c.name=(v||'').slice(0,18);setCfgStore(c);clearTimeout(_nameSaveT);_nameSaveT=setTimeout(()=>{applyStaticI18n();setGreeting();renderNotif();},350);}
+function saveName(v){const c=getCfg();c.name=(v||'').slice(0,18);setCfgStore(c);clearTimeout(_nameSaveT);_nameSaveT=setTimeout(()=>{applyStaticI18n();setGreeting();renderNotif();pushSync();},350);}
 function toggleExplain(){const c=getCfg();c.explain=c.explain!==true;setCfgStore(c);document.documentElement.classList.toggle('simple',c.explain!==true);renderCfg();}
 function toggleCfg(k){const c=getCfg();c[k]=c[k]===false;setCfgStore(c);renderCfg();}
 function toggleCalm(){
@@ -1198,7 +1199,7 @@ function getNotifCfg(){try{return JSON.parse(localStorage.getItem('cris_notif')|
 function setNotifCfg(n){try{localStorage.setItem('cris_notif',JSON.stringify(n));}catch(e){}}
 function toggleNotif(){
   const n=getNotifCfg();
-  if(n.on){n.on=false;setNotifCfg(n);renderNotif();return;}
+  if(n.on){n.on=false;setNotifCfg(n);renderNotif();if(window.QPUSH)QPUSH.off();return;}
   if(!('Notification' in window)){
     document.getElementById('bubble-msg').textContent=t('notif_unsupported');
     return;
@@ -1212,6 +1213,7 @@ function toggleNotif(){
       n2.lastM=todayLocal();n2.lastN=todayLocal();
       setNotifCfg(n2);
       fireNotif(t('notif_on_title'),t('notif_on_body'));
+      pushSync(true);
     }else{
       document.getElementById('bubble-msg').textContent=t('notif_denied');
     }
@@ -1223,6 +1225,7 @@ function saveNotifTimes(){
   n.m=document.getElementById('nt-m').value;
   n.n=document.getElementById('nt-n').value;
   setNotifCfg(n);
+  pushSync(true);
 }
 function renderNotif(){
   const n=getNotifCfg();
@@ -1233,16 +1236,22 @@ function renderNotif(){
   if(n.m)document.getElementById('nt-m').value=n.m;
   if(n.n)document.getElementById('nt-n').value=n.n;
 }
-function fireNotif(title,body){
+function fireNotif(title,body,tag){
+  // tag: el mismo que lleva el aviso push de esa hora; si los dos llegan, el segundo sustituye al primero sin repetir
+  const o={body,icon:'icons/notif-192.png',badge:'icons/badge-96.png'};if(tag)o.tag=tag;
   try{
     if(navigator.serviceWorker&&navigator.serviceWorker.controller){
       // icon: la cara de Quico · badge: su silueta (Android pinta la insignia de un color; con un PNG opaco sale un cuadrado)
-      navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,{body,icon:'icons/notif-192.png',badge:'icons/badge-96.png'}));
+      navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,o));
     }else{
-      new Notification(title,{body,icon:'icons/notif-192.png',badge:'icons/badge-96.png'});
+      new Notification(title,o);
     }
   }catch(e){try{new Notification(title,{body});}catch(_){}}
 }
+/* Aviso local, salvo que el push ya lo enseñara (el service worker apunta sus etiquetas) */
+function fireNotifOnce(title,body,tag){(window.QPUSH?QPUSH.shown():Promise.resolve([])).catch(()=>[]).then(s=>{if(s.indexOf(tag)<0)fireNotif(title,body,tag);});}
+/* ¿Está hecha la rutina de la noche a la que pertenece este momento? (misma clave y desfase de 5 h que el módulo) */
+function nightDoneAt(ms){const d=new Date(ms-5*3600e3),p=x=>String(x).padStart(2,'0');try{return localStorage.getItem('cris_noche_v1_'+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()))==='1';}catch(e){return false;}}
 function minsOf(hhmm){const p=(hhmm||'').split(':');return (+p[0])*60+(+p[1]);}
 function checkNotif(){
   const n=getNotifCfg();
@@ -1256,23 +1265,55 @@ function checkNotif(){
     n.lastM=today;setNotifCfg(n);
     const day=now.getDay();
     const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');
-    fireNotif(t('notif_m_title',{name:cfgName()}),t('notif_m_body',{p:t('pil')[day],z:zona}));
+    fireNotifOnce(t('notif_m_title',{name:cfgName()}),t('notif_m_body',{p:t('pil')[day],z:zona}),'q-m-'+today);
   }
   if(n.n&&n.lastN!==today&&nowMin>=minsOf(n.n)){
     n.lastN=today;setNotifCfg(n);
-    fireNotif(t('notif_n_title'),t('notif_n_body'));
+    if(!nightDoneAt(Date.now()))fireNotifOnce(t('notif_n_title'),t('notif_n_body',{m:nocheMin()}),'q-n-'+today);
   }
   // Pre-aviso suave (transición, no alarma): solo dentro de los 10 min previos
   if(n.n&&n.lastPreN!==today&&n.lastN!==today){
     const tgt=minsOf(n.n);
     if(nowMin>=tgt-10&&nowMin<tgt){
       n.lastPreN=today;setNotifCfg(n);
-      fireNotif(t('notif_pre_title'),t('notif_pre_body'));
+      if(!nightDoneAt(Date.now()))fireNotifOnce(t('notif_pre_title'),t('notif_pre_body'),'q-pre-'+today);
     }
   }
 }
 setInterval(checkNotif,30000);
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();clsSync();} });
+/* Avisos push (shared/avisos.js): la lista de los próximos 7 días, con el mismo texto y la misma
+   etiqueta que los avisos de cuando la app está abierta. Se sube al abrir, al volver a la app,
+   al salir de un módulo (por si cambió el calendario) y al tocar los ajustes. */
+const agTag=o=>'q-ag-'+o.id+'@'+o.rem;
+// minutos de la rutina nocturna (los guarda el módulo con su personalización)
+function nocheMin(){try{const m=+JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}').min;return m>0?m:23;}catch(e){return 23;}}
+function agText(o,ms){const lg=crisLang()==='en'?'en-GB':crisLang(),emo=o.kind==='clase'?'🎓':(o.e||'📌');
+  return (ms>3*3600e3?t('ag_rem_day',{e:emo,h:new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'}),s:o.name}):t('ag_rem_min',{e:emo,n:Math.max(1,Math.round(ms/6e4)),s:o.name}))+(o.l?' · '+o.l:'');}
+function pushItems(){
+  const n=getNotifCfg(),now=Date.now(),out=[];if(!n.on)return out;
+  const at=(d,hhmm,off)=>{const m=minsOf(hhmm);if(!(m>=0))return 0;const x=new Date(d);x.setHours(0,m-(off||0),0,0);return x.getTime();};
+  for(let i=0;i<7;i++){
+    const d=new Date(now);d.setDate(d.getDate()+i);const day=d.getDay(),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(n.m){const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');out.push({at:at(d,n.m),t:t('notif_m_title',{name:cfgName()}),b:t('notif_m_body',{p:t('pil')[day],z:zona}),g:'q-m-'+key});}
+    if(n.n&&!nightDoneAt(at(d,n.n))){out.push({at:at(d,n.n,10),t:t('notif_pre_title'),b:t('notif_pre_body'),g:'q-pre-'+key});
+      out.push({at:at(d,n.n),t:t('notif_n_title'),b:t('notif_n_body',{m:nocheMin()}),g:'q-n-'+key});}
+  }
+  if(window.QCAL)QCAL.agenda(now,now+7*864e5).forEach(o=>{if(o.rem>0)out.push({at:o.st-o.rem*6e4,t:agText(o,o.rem*6e4),b:'',g:agTag(o)});});
+  return out.filter(x=>x.at>now+60e3).sort((a,b)=>a.at-b.at).slice(0,150);
+}
+function pushSync(force,keepalive){
+  const n=getNotifCfg();
+  if(!window.QPUSH||!QPUSH.supported()||navigator.onLine===false)return;
+  if(!n.on){QPUSH.off();return;} // apagados aquí o en otro dispositivo (sincronizado): este también deja de sonar
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+  QPUSH.schedule(pushItems(),force,keepalive);
+}
+// lo que guardan los módulos (calendario, clases, rutina…) llega aquí como evento «storage»: lista al día enseguida
+let _pushT=null;
+window.addEventListener('storage',()=>{clearTimeout(_pushT);_pushT=setTimeout(()=>pushSync(),1500);});
+setTimeout(()=>pushSync(),4000);
+setInterval(()=>{if(!document.hidden)pushSync();},15*60e3);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();clsSync();pushSync();} });
 setTimeout(clsSync,1500);
 /* Enlace con datos para «Calendario» (p. ej. reglas pasadas de otra app): …/#calendario=<datos> */
 (function(){const m=location.hash.match(/^#calendario=(.+)$/);if(!m)return;
@@ -1319,6 +1360,8 @@ function quicoChips(){
     QCLASES.day(0).filter(o=>!o.ad&&!o.hidden&&o.en>Date.now()&&!inDay.has(o.id)).forEach(o=>{
       cit.push(['clase:'+o.id,'🎓',null,new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'})+' '+o.name,{...o,e:'🎓'},'clase']);});
   }
+  // + las tareas que apuntaste en las clases de hoy (en Clases → ＋ en cada clase)
+  if(window.QCLASES&&areaOn('clases')&&QCLASES.todayTasks)QCLASES.todayTasks().forEach(k=>{cit.push(['ct:'+k.id,'📝',null,t('subj_task',{s:k.n,t:k.t}),null,'ctask',k]);});
   if(window.QCAL&&areaOn('calendario')){
     QCAL.between(s0.getTime(),s0.getTime()+864e5).filter(o=>QCAL.dk(o.st)===QCAL.dk(s0)&&o.en>Date.now()&&!inDay.has(o.id)).forEach(o=>{
       cit.push(['cita:'+o.id,o.e,null,new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'})+' '+o.name,o]);});
@@ -1337,7 +1380,8 @@ function dayAddMod(id){
   const c=quicoChips().find(x=>x[0]===id);if(!c)return;
   const all=[...document.querySelectorAll('#tp-chips .tp-chip')],k=all.findIndex(b=>b.getAttribute('data-mod')===id);
   const nid=(all[k+1]||all[k-1]||{}).getAttribute?(all[k+1]||all[k-1]).getAttribute('data-mod'):null;
-  if(c[4]){const o=c[4];QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.e},c[5]||'cita');}
+  if(c[5]==='ctask'){const k=c[6],q=QDIA.addLinked(t('subj_task',{s:k.n,t:k.t}),{occ:k.occ,id:k.id});if(q)QCLASES.linkTask(k.occ,k.id,q);}
+  else if(c[4]){const o=c[4];QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.e},c[5]||'cita');}
   else QDIA.add(t(c[2]),c[0],c[1]);
   if(hapticOK())navigator.vibrate(25);
   showQuicoChips=true; // siguen abiertos para añadir varias seguidas
@@ -1363,10 +1407,14 @@ function checkClassRemind(){
   let done=[];try{done=JSON.parse(localStorage.getItem('cris_ag_rem_v1')||'[]');}catch(e){}
   const n=list.find(o=>done.indexOf(o.id+'@'+o.rem)<0);if(!n)return;
   done.push(n.id+'@'+n.rem);try{localStorage.setItem('cris_ag_rem_v1',JSON.stringify(done.slice(-40)));}catch(e){}
+  // si el push ya lo enseñó (Quico estaba cerrado), no se repite al abrir
+  (window.QPUSH?QPUSH.shown():Promise.resolve([])).catch(()=>[]).then(s=>{if(s.indexOf(agTag(n))<0)clsRemindShow(n,now);});
+}
+function clsRemindShow(n,now){
   const ms=n.st-now,lg=crisLang()==='en'?'en-GB':crisLang(),emo=n.kind==='clase'?'🎓':(n.e||'📌');
   const txt=(ms>3*3600e3?t('ag_rem_day',{e:emo,h:new Date(n.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'}),s:n.name}):t('ag_rem_min',{e:emo,n:Math.max(1,Math.round(ms/6e4)),s:n.name}))+(n.l?' · '+n.l:'');
   if(hapticOK())navigator.vibrate([60,60,60]);
-  if(document.hidden){const nc=getNotifCfg();if(nc.on&&'Notification' in window&&Notification.permission==='granted')fireNotif(txt,'');return;}
+  if(document.hidden){const nc=getNotifCfg();if(nc.on&&'Notification' in window&&Notification.permission==='granted')fireNotif(txt,'',agTag(n));return;}
   document.getElementById('tmToastT').textContent=txt;
   _toastAct=()=>openModule(n.kind==='clase'?'modules/clases.html':'modules/calendario.html');
   document.getElementById('tmToast').classList.add('show');
@@ -1508,7 +1556,7 @@ function modBuild(){
       return {e:'⚡',t:t('r_finde_t'),s:t('r_finde_s'),f:'modules/limpieza.html#express',done:markDone(k)};
     },
     intereses:()=>{const k='cris_intereses_v1_'+tl;return {e:'🎨',t:t('r_intereses_t'),s:t('r_intereses_s'),f:'modules/intereses.html',done:markDone(k)};},
-    noche:()=>{const k='cris_noche_v1_'+tl;return {e:'🌙',t:t('r_noche_t'),s:h>=20?t('r_noche_s_night'):t('r_noche_s_eve'),f:'modules/rutina-nocturna.html',done:markDone(k)};},
+    noche:()=>{const k='cris_noche_v1_'+tl;return {e:'🌙',t:t('r_noche_t'),s:h>=20?t('r_noche_s_night',{m:nocheMin()}):t('r_noche_s_eve',{m:nocheMin()}),f:'modules/rutina-nocturna.html',done:markDone(k)};},
     calma:()=>{const k='cris_calma_v1_'+tl;return {e:'🫀',t:t('r_calma_t'),s:t('r_calma_s'),f:'modules/rescate-emocional.html',done:markDone(k)};},
     juego:()=>{const k='cris_juego_v1_'+tl;return {e:'🔍',t:t('r_juego_t'),s:t('r_juego_s'),f:'modules/juegos.html',done:markDone(k)};},
     eco1:()=>({e:'🫁',t:t('r_respira_t'),s:t('r_respira_s'),f:'modules/rescate-emocional.html',done:markDone(ek(1))}),
@@ -1757,8 +1805,9 @@ function syncUnlink(){if(!confirm(t('acc_out_q')))return;QSYNC.unlink();_syncVie
 function syncSoon(keep){if(window.QSYNC&&QSYNC.linked()&&navigator.onLine!==false)QSYNC.sync(keep?{keepalive:true}:undefined);}
 window.addEventListener('quico-sync',()=>{ // llegaron cambios del otro móvil
   if(!document.body.classList.contains('mod-open')){renderToday();setGreeting();}
+  pushSync(); // p. ej. citas nuevas o avisos apagados en el otro dispositivo
 });
-document.addEventListener('visibilitychange',()=>{syncSoon(document.hidden);});
+document.addEventListener('visibilitychange',()=>{syncSoon(document.hidden);if(document.hidden)pushSync(false,true);});
 setInterval(()=>{if(!document.hidden)syncSoon();},120000);
 setTimeout(syncSoon,2500);
 function importData(file){
@@ -1891,6 +1940,7 @@ function closeViewer(){
   clearTimeout(legacyBackTimer);legacyBackTimer=null;
   renderToday(); // refresca el panel: lo hecho dentro del módulo se ve al volver
   syncSoon();    // y se lo lleva a los otros dispositivos vinculados
+  pushSync();    // por si cambió el calendario: los avisos push, al día
 }
 
 document.getElementById('homeBtn').addEventListener('click', () => {

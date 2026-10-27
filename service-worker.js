@@ -1,7 +1,7 @@
 // Service Worker - Cris App
 // Cachea todos los módulos para que la app funcione sin conexión.
 
-const CACHE_NAME = 'cris-app-v117';
+const CACHE_NAME = 'cris-app-v118';
 
 const ASSETS = [
   './',
@@ -13,6 +13,7 @@ const ASSETS = [
   './shared/clases.js',
   './shared/cal.js',
   './shared/sync.js',
+  './shared/avisos.js',
   './modules/clases.html',
   './modules/calendario.html',
   './modules/rutina-diaria.html',
@@ -110,6 +111,52 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => cached);
     })
   );
+});
+
+// Recordatorio push (shared/avisos.js + netlify/functions/push-tick.mjs): llega cifrado;
+// se descifra con la clave que el móvil guardó en IndexedDB y se enseña.
+function pushDb() {
+  return new Promise((res) => {
+    try {
+      const r = indexedDB.open('quico-push', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('kv');
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => res(null);
+    } catch (e) { res(null); }
+  });
+}
+async function pushKey() {
+  const db = await pushDb(); if (!db) return null;
+  return new Promise((res) => { const q = db.transaction('kv', 'readonly').objectStore('kv').get('key'); q.onsuccess = () => res(q.result || null); q.onerror = () => res(null); });
+}
+// apunta la etiqueta: si luego se abre Quico, no vuelve a avisar de lo mismo
+async function pushShown(tag) {
+  const db = await pushDb(); if (!db || !tag) return;
+  await new Promise((res) => {
+    const st = db.transaction('kv', 'readwrite').objectStore('kv'), q = st.get('shown');
+    q.onsuccess = () => { const l = Array.isArray(q.result) ? q.result : []; if (l.indexOf(tag) < 0) l.push(tag); st.put(l.slice(-60), 'shown'); };
+    q.transaction.oncomplete = () => res(); q.transaction.onerror = () => res();
+  });
+}
+self.addEventListener('push', (event) => {
+  event.waitUntil((async () => {
+    let d = null; try { d = event.data ? event.data.json() : null; } catch (e) {}
+    let title = 'Quico', body = '', tag;
+    if (d && d.iv && d.ct) {
+      const key = await pushKey();
+      if (key) {
+        try {
+          const b = (x) => Uint8Array.from(atob(x), (c) => c.charCodeAt(0));
+          const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b(d.iv) }, key, b(d.ct));
+          const o = JSON.parse(new TextDecoder().decode(pt));
+          title = o.t || title; body = o.b || ''; tag = o.g;
+        } catch (e) {}
+      }
+    }
+    await pushShown(tag);
+    // misma etiqueta que el aviso local: si Quico estaba abierto y ya avisó, se sustituye sin repetir
+    return self.registration.showNotification(title, { body, tag, icon: 'icons/notif-192.png', badge: 'icons/badge-96.png' });
+  })());
 });
 
 // Al tocar un aviso de Quico se abre (o se trae al frente) la app

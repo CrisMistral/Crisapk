@@ -6,21 +6,23 @@
 
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Quico — Rutina Nocturna</title>
+<title>Quico — Rutina nocturna</title>
 <style>
 :root{
   --bg1:#0f0f23;--bg2:#1a1a3a;--bg3:#2d1b69;
-  --accent:#4fd1c7;--accent2:#7c3aed;--accent3:#f59e0b;
+  --accent:#4fd1c7;--accent2:#7c3aed;--accent2-text:#c4b5fd;--accent3:#f59e0b;
   --card:rgba(255,255,255,0.08);
   --text:#f8fafc;--text-dim:#cbd5e1;--text-soft:#94a3b8;
 }
 
 * { box-sizing: border-box; }
+button { font-family: inherit; }
 
 body {
   margin: 0;
   font-family: 'Outfit', -apple-system, 'Segoe UI', Roboto, sans-serif;
   background: radial-gradient(ellipse at top, var(--bg3) 0%, var(--bg2) 50%, var(--bg1) 100%);
+  background-color: var(--bg1);
   color: var(--text);
   min-height: 100vh;
   padding: 20px 20px 100px;
@@ -40,23 +42,7 @@ body {
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-}
+.header { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
 
 .title {
   font-size: 1.2rem;
@@ -67,11 +53,7 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-.subtitle {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  margin: 2px 0 0 0;
-}
+.subtitle { font-size:0.85rem; color:var(--text-dim); margin:2px 0 0 0; }
 
 .card {
   background: var(--card);
@@ -86,6 +68,7 @@ body {
   color: white;
   border: none;
   padding: 12px 16px;
+  min-height: 44px;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
@@ -94,31 +77,13 @@ body {
   width: 100%;
   margin-bottom: 8px;
 }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(79,209,199,0.4); }
+.btn.sec { background: rgba(255,255,255,0.1); color: var(--text); border: 1px solid rgba(255,255,255,0.2); }
+.btn:disabled { opacity:.45; cursor:default; transform:none; box-shadow:none; }
 
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(79,209,199,0.4);
-}
+.controls { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
 
-.btn.sec {
-  background: rgba(255,255,255,0.1);
-  color: var(--text);
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-.controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.step-visual {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
+.step-visual { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; }
 
 .timer {
   font-size: 2.2rem;
@@ -128,28 +93,22 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.timer.emo { background:none; -webkit-text-fill-color:currentColor; }
 
-.step-counter {
-  font-size: 0.8rem;
-  color: var(--text-soft);
-  margin-top: 2px;
-}
+.step-counter { font-size:0.8rem; color:var(--text-soft); margin-top:2px; }
 
-.progress {
-  height: 6px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 6px;
-  overflow: hidden;
-  margin: 16px 0;
-}
+/* Plan de la noche: los 6 pasos como botones que se quitan o se ponen */
+.steprow { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:3px; margin:0 0 12px; }
+.stp { min-height:48px; padding:0; font-size:1.5rem; line-height:1; border-radius:12px; cursor:pointer;
+  color:var(--text); background:rgba(79,209,199,.14); border:2px solid rgba(79,209,199,.6); }
+.stp.off { opacity:.4; background:transparent; border-style:dashed; border-color:rgba(255,255,255,.4); filter:grayscale(1); }
+.xinfo { font-size:.8rem; color:var(--text-soft); text-align:center; margin:0 0 12px; }
 
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  transition: width 0.3s ease;
-}
-
-/* Estiramiento activo: uno a la vez con su cuenta atrás */
+/* Lo que toca ahora: una cosa a la vez con su cuenta atrás */
+.dots { display:flex; gap:6px; justify-content:center; margin:4px 0 12px; }
+.dots i { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.18); }
+.dots i.ok { background:var(--accent); }
+.dots i.on { background:var(--accent2-text); }
 .sx-card {
   background: rgba(255,255,255,0.08);
   padding: 14px 16px;
@@ -157,33 +116,26 @@ body {
   border-left: 4px solid var(--accent2);
   text-align: center;
 }
-.sx-card.sx-work { border-left-color: var(--accent); }
-.sx-card.sx-switch { border-left-color: var(--accent3); }
-.sx-card.sx-done { border-left-color: var(--accent); }
+.sx-card.sx-work, .sx-card.sx-done, .sx-card.sx-task { border-left-color: var(--accent); }
+.sx-card.sx-switch, .sx-card.sx-wait { border-left-color: var(--accent3); }
+.sx-card.sx-med, .sx-card.sx-close { border-left-color: var(--accent2-text); }
 .sx-top { display:flex; justify-content:space-between; font-size:.8rem; color:var(--text-soft); }
-.sx-kind { font-weight:700; color:var(--accent2); }
-.sx-work .sx-kind { color:var(--accent); }
+.sx-kind { font-weight:700; color:var(--accent2-text); }
+.sx-work .sx-kind, .sx-done .sx-kind { color:var(--accent); }
 .sx-switch .sx-kind { color:var(--accent3); }
-.sx-done .sx-kind { color:var(--accent); }
-.sx-name { font-weight:700; font-size:1.15rem; margin:8px 0 2px; }
+.sx-name { font-weight:700; font-size:1.15rem; margin:8px 0 2px; overflow-wrap:anywhere; }
 .sx-side { display:inline-block; margin-top:4px; padding:3px 10px; border-radius:20px; background:rgba(255,255,255,.1); font-size:.85rem; font-weight:600; }
-.sx-count { font-size:3.2rem; font-weight:800; line-height:1.1; margin:8px 0 4px; font-variant-numeric:tabular-nums; color:var(--accent2); }
-.sx-work .sx-count, .sx-done .sx-count { color:var(--accent); }
+.sx-count { font-size:3.2rem; font-weight:800; line-height:1.1; margin:8px 0 4px; font-variant-numeric:tabular-nums; color:var(--accent); }
+.sx-prep .sx-count, .sx-med .sx-count, .sx-close .sx-count { color:var(--accent2-text); }
 .sx-switch .sx-count { color:var(--accent3); }
 .sx-desc { font-size:.95rem; color:var(--text-dim); line-height:1.5; }
+.sx-med .sx-desc { font-size:1rem; line-height:1.65; }
+.sx-phrase { font-style:italic; font-size:1rem; line-height:1.5; color:var(--accent3); }
 .sx-foot { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:12px; font-size:.8rem; color:var(--text-soft); text-align:left; }
-.sx-skip { background:rgba(255,255,255,.1); color:var(--text); border:0; border-radius:16px; padding:6px 12px; font-size:.8rem; cursor:pointer; flex-shrink:0; }
-
-.check-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 6px;
-  margin-bottom: 6px;
-  font-size: 0.85rem;
-}
+.sx-skip { background:rgba(255,255,255,.1); color:var(--text); border:0; border-radius:16px; min-height:44px; padding:6px 14px; font-size:.85rem; font-weight:600; cursor:pointer; flex-shrink:0; }
+.sx-wait .sx-name { font-size:1.4rem; }
+.bed { margin:16px 0 4px; min-height:60px; font-size:1.1rem; }
+.sx-close .sx-name { font-size:1.2rem; }
 
 .note {
   background: rgba(79,209,199,0.1);
@@ -205,126 +157,38 @@ body {
   text-align: center;
 }
 
-.meditation-step {
-  background: rgba(255,255,255,0.08);
-  padding: 14px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  border-left: 3px solid var(--accent2);
-}
+/* «Siguiente» late suave cuando toca ir a la cama */
+.pulse { animation: npulse 1.6s ease-in-out infinite; }
+@keyframes npulse { 0%,100% { box-shadow:0 0 0 0 rgba(79,209,199,.55); } 50% { box-shadow:0 0 0 9px rgba(79,209,199,0); } }
 
-.meditation-phase {
-  font-weight: 600;
-  color: var(--accent2);
-  margin-bottom: 6px;
-  font-size: 0.95rem;
-}
+.hidden { display: none !important; }
 
-.meditation-instruction {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  line-height: 1.5;
-}
-
-.meditation-closing {
-  background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(124,58,237,0.1));
-  border: 1px solid rgba(245,158,11,0.3);
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 12px;
-  font-size: 0.9rem;
-  text-align: center;
-  font-weight: 500;
-}
-
-.phrase {
-  background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(79,209,199,0.1));
-  border: 1px solid rgba(245,158,11,0.3);
-  padding: 16px;
-  border-radius: 10px;
-  margin-top: 12px;
-  text-align: center;
-}
-
-.phrase em {
-  font-style: italic;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: var(--accent3);
-  display: block;
-  margin-top: 8px;
-}
-
-.disconnection-warning {
-  background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(245,158,11,0.15));
-  border: 2px solid rgba(239,68,68,0.4);
-  padding: 20px;
-  border-radius: 12px;
-  margin-top: 16px;
-  text-align: center;
-}
-
-.disconnection-title {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #fca5a5;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.disconnection-text {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--text);
-  margin-bottom: 12px;
-}
-
-.fomo-reminder {
-  background: rgba(124,58,237,0.2);
-  border: 1px solid rgba(124,58,237,0.4);
-  padding: 16px;
-  border-radius: 10px;
-  margin-top: 12px;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  font-style: italic;
-}
-
-.fomo-quote {
-  font-weight: 600;
-  color: var(--accent2);
-  font-size: 1.05rem;
-  display: block;
-  margin-top: 8px;
-}
-
-.hidden { display: none; }
-
+/* La pantalla se apaga y se vuelve cálida a medida que avanza la noche */
 .dim {
   position: fixed;
   inset: 0;
-  background: #000;
+  background: #120800;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1s;
+  transition: opacity 1.5s ease;
   z-index: 100;
 }
 
 .calm *,.calm *::before,.calm *::after{animation:none !important;transition:none !important}
+.calm #dim{transition:opacity 1.5s ease !important}
 
 .tring{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(#4fd1c7 360deg,rgba(255,255,255,.12) 0);flex-shrink:0;}
 .tring-in{width:96px;height:96px;border-radius:50%;background:#161632;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .tring .timer{font-size:1.4rem;}
 
-/* Quico con manitas (mascota) */
-.quico-mascot{position:relative;display:inline-block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));}
-.quico-mascot .qm-head{display:block;margin:0;filter:none;}
-.qm-paws{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);width:66%;line-height:0;}
-.qm-paws svg{display:block;width:100%;}
+@media (max-width:400px){
+  body{padding:12px 12px 96px}
+  .app{padding:16px 14px}
+  .card{padding:14px 12px}
+}
 
 /* modo «menos texto» */
-.simple .subtitle{display:none}
+.simple .subtitle,.simple .meditation-intro,.simple #stepDesc,.simple .xinfo,.simple #infoBtn{display:none}
 </style>
 </head>
 <body>
@@ -335,72 +199,53 @@ body {
     <div class="header" style="flex-direction:column">
       <img src="../quico/quico_happy.png" alt="Quico" style="width:96px;height:auto;display:block;margin:0 auto 8px;filter:drop-shadow(0 3px 10px rgba(0,0,0,.45))">
       <div style="text-align:center">
-        <h1 class="title" data-i18n="title">Quico — Rutina Nocturna</h1>
+        <h1 class="title" data-i18n="title">Quico — Rutina nocturna</h1>
         <p class="subtitle" data-i18n="subtitle">Ritual diario para un sueño reparador</p>
       </div>
     </div>
-    
+
     <div class="card">
-      <h3 style="margin:0 0 8px 0" data-i18n="plan_h">Plan de 25 minutos</h3>
-      <p style="margin:0;color:var(--text-dim);font-size:0.9rem">
-        <span data-i18n="plan_seq">Orden → Higiene + Skincare → Estiramientos → Meditación Shiné → Desconexión</span>
-      </p>
+      <h3 id="planH" style="margin:0 0 12px;text-align:center">Plan</h3>
+      <div class="steprow" id="stepRow"></div>
+      <p class="xinfo" data-i18n="plan_hint">Toca un paso para quitarlo o volver a ponerlo</p>
       <button class="btn" onclick="startRoutine()" data-i18n="start_btn">▶️ Comenzar rutina</button>
-      <div style="font-size:0.8rem;color:var(--text-soft);margin-top:8px;text-align:center">
-        <span data-i18n="ideal_time">💡 Horario ideal: 21:30-22:00</span>
-      </div>
     </div>
-    
-    <button class="btn sec" onclick="showInfo()" data-i18n="info_btn">ℹ️ Ver información</button>
+
+    <button class="btn sec" id="infoBtn" onclick="showInfo()" data-i18n="info_btn">ℹ️ Ver información</button>
   </div>
 
   <!-- Pantalla de rutina -->
   <div id="routine" class="hidden">
     <div class="step-visual">
-      <div>
-        <h3 id="stepTitle" style="margin:0 0 4px 0">Paso</h3>
-        <p id="stepDesc" style="margin:0;color:var(--text-dim);font-size:0.9rem">Descripción</p>
+      <div style="min-width:0">
+        <h3 id="stepTitle" style="margin:0 0 4px 0"></h3>
+        <p id="stepDesc" style="margin:0;color:var(--text-dim);font-size:0.9rem"></p>
       </div>
       <div class="tring" id="n-ring"><div class="tring-in">
-        <div class="timer" id="timer">05:00</div>
-        <div class="step-counter" id="counter">1/5</div>
+        <div class="timer" id="timer"></div>
+        <div class="step-counter" id="counter"></div>
       </div></div>
     </div>
-    
-    <div class="progress">
-      <div class="progress-fill" id="progressFill" style="width:0%"></div>
-    </div>
-    
+
     <div id="stepContent"></div>
-    
+
     <div class="controls">
-      <button class="btn sec" id="pauseBtn" onclick="pauseRoutine()" data-i18n="pause">⏸️ Pausar</button>
-      <button class="btn" onclick="nextStep()" data-i18n="next">⏭️ Siguiente</button>
+      <button class="btn sec" id="pauseBtn" onclick="pauseRoutine()">⏸️ Pausar</button>
+      <button class="btn" id="nextBtn" onclick="nextStep()">⏭️</button>
+      <button class="btn hidden" id="endBtn" onclick="endRoutine()" style="grid-column:1/-1" data-i18n="finish_home_btn">🏠 Volver al inicio</button>
     </div>
   </div>
 
   <!-- Pantalla de información -->
   <div id="info" class="hidden">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px">
       <h2 style="margin:0;font-size:1.2rem" data-i18n="info_h">ℹ️ Información</h2>
-      <button class="btn sec" onclick="showHome()" style="padding:6px 12px;font-size:0.8rem" data-i18n="info_back">← Volver</button>
+      <button class="btn sec" onclick="showHome()" style="width:auto;margin:0;flex-shrink:0;min-height:44px;padding:8px 14px;font-size:.85rem" data-i18n="info_back">← Volver</button>
     </div>
-    
+
     <div class="card">
       <h4 style="margin:0 0 12px 0" data-i18n="info_ben_h">🌙 Beneficios de la rutina</h4>
-      <p style="font-size:0.9rem;line-height:1.5;color:var(--text-dim);margin:0">
-        <span data-i18n="info_ben_p">Esta rutina de 25 minutos prepara tu mente y cuerpo para un sueño reparador. Incluye meditación Shiné (budista) para calmar la mente antes de dormir.</span>
-      </p>
-    </div>
-    
-    <div class="card">
-      <h4 style="margin:0 0 12px 0" data-i18n="info_time_h">⏰ Horario recomendado</h4>
-      <div style="font-size:0.9rem;color:var(--text-dim)">
-        <div style="margin-bottom:8px">🌅 <span data-i18n="info_t1"><strong>21:30</strong> - Inicio de la rutina</span></div>
-        <div style="margin-bottom:8px">🧴 <span data-i18n="info_t2"><strong>21:35</strong> - Higiene y skincare</span></div>
-        <div style="margin-bottom:8px">🧘‍♀️ <span data-i18n="info_t3"><strong>21:45</strong> - Estiramientos y meditación Shiné</span></div>
-        <div>📱 <span data-i18n="info_t4"><strong>21:55</strong> - Desconexión digital</span></div>
-      </div>
+      <p style="font-size:0.9rem;line-height:1.5;color:var(--text-dim);margin:0" data-i18n="info_ben_p"></p>
     </div>
   </div>
 </div>
@@ -418,246 +263,290 @@ if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 
 /* ── IDIOMAS (es · en · fr) ── */
 const UI={
- es:{title:'Quico — Rutina Nocturna',subtitle:'Ritual diario para un sueño reparador',
-   plan_h:'Plan de 25 minutos',plan_seq:'Orden → Higiene + Skincare → Estiramientos → Meditación Shiné → Desconexión',
-   start_btn:'▶️ Comenzar rutina',ideal_time:'💡 Horario ideal: 21:30-22:00',info_btn:'ℹ️ Ver información',
-   pause:'⏸️ Pausar',resume:'▶️ Reanudar',next:'⏭️ Siguiente',step_word:'Paso',desc_word:'Descripción',
-   checklist_h:'✅ Lista de verificación:',stretch_h:'🧘‍♀️ Secuencia de estiramientos:',
-   stretch_tip:'<strong>💡 Consejos:</strong> Respira profundamente durante cada estiramiento. No fuerces, solo llega hasta donde te sientas cómodo. Si sientes dolor, para inmediatamente.',
-   sx_prep:'⏳ Prepárate',sx_hold:'🧘 Estira',sx_switch:'🔄 Cambia de lado',sx_done:'✅ ¡Hecho!',sx_after:'Ahora viene la meditación 🕯️',
-   sx_next:'Después: {n}',sx_last:'Es el último',sx_skip:'⏭️ Saltar este',
-   v_first:'{title}. Primero: {n}. {d}',v_next:'Siguiente: {n}. {d}',v_startside:'Empieza por: {s}.',v_go:'¡Ya! {s} segundos.',
+ es:{title:'Quico — Rutina nocturna',subtitle:'Ritual diario para un sueño reparador',
+   plan_h:'Plan de {m} minutos',plan_h1:'Plan de 1 minuto',plan_hint:'Toca un paso para quitarlo o volver a ponerlo',
+   start_btn:'▶️ Comenzar rutina',info_btn:'ℹ️ Ver información',
+   pause:'⏸️ Pausar',resume:'▶️ Reanudar',next:'⏭️ Siguiente: {e}',finish_btn:'✅ Terminar',
+   stretch_tip:'💡 Sin forzar. Si duele, para.',
+   sx_prep:'⏳ Prepárate',sx_hold:'🧘 Estira',sx_switch:'🔄 Cambia de lado',sx_done:'✅ ¡Hecho!',
+   sx_next:'Después: {n}',sx_last:'Es el último',sx_skip:'⏩ Saltar este',task_done:'✓ Hecho',
+   v_first:'{title}. Primero: {n}. {d}',v_next:'{n}. {d}',v_startside:'Empieza por: {s}.',v_go:'¡Ya! {s} segundos.',
    v_switch:'Cambia de lado: {s}.',v_sx_done:'¡Muy bien! Estiramientos terminados.',
-   phrase_h:'🌙 Frase de liberación',phrase_text:'"Con amor dejo atrás el día y me sumerjo en un sueño tranquilo, en la seguridad de que el mañana cuidará de sí mismo"',
-   disc_title:'🌙 Último paso: el móvil a dormir',disc_text:'Lleva el móvil a <strong>otra habitación</strong> y déjalo cargando allí.<br>Es un regalo que le haces a tu yo de mañana. 💚',
-   fomo_lead:'💭 Si a medianoche te tienta mirarlo, recuerda:',fomo_quote:'"Nada de lo que pase en el móvil entre las 22:00 y las 7:00 es más importante que tu descanso."',fomo_tail:'El mundo puede esperar 8 horas. Tú necesitas dormir 🫂',
-   med_phase:'🧘 Fase {i} de {n}: {p} · {d}',min_word:'min',sec_word:'seg',
-   finish_title:'🎉 ¡Rutina completada!',finish_desc:'Preparado para un sueño reparador',
-   finish_strong:'🌙 Ya está. Lo has hecho genial.',finish_em:'Guarda el móvil en otra habitación 📱→🚪<br>y déjate caer en la cama 😴',finish_sweet:'Dulces sueños, {u} 💜',
-   finish_home_btn:'🏠 Volver al inicio',v_finish:'Rutina completada. Guarda el móvil en otra habitación y a dormir. Dulces sueños.',
+   v_min:'{n} minutos',v_min1:'1 minuto',v_sec:'{n} segundos',
+   wait_h:'🛏️ A la cama',wait_p:'Cuando estés en la cama, toca aquí',wait_btn:'🛏️ Ya estoy en la cama',
+   v_wait:'Ahora, a la cama. Cuando estés, toca el botón.',
+   phrase_text:'"Con amor dejo atrás el día y me sumerjo en un sueño tranquilo, en la seguridad de que el mañana cuidará de sí mismo"',
+   finish_title:'🎉 ¡Rutina completada!',finish_desc:'Lista para dormir',
+   finish_strong:'🌙 Ya está. Lo has hecho genial.',finish_sweet:'Dulces sueños, {u} 💜',
+   finish_home_btn:'🏠 Volver al inicio',v_finish:'Rutina completada. Ya puedes dormir. Dulces sueños.',
    info_h:'ℹ️ Información',info_back:'← Volver',info_ben_h:'🌙 Beneficios de la rutina',
-   info_ben_p:'Esta rutina de 25 minutos prepara tu mente y cuerpo para un sueño reparador. Incluye meditación Shiné (budista) para calmar la mente antes de dormir.',
-   info_time_h:'⏰ Horario recomendado',
-   info_t1:'<strong>21:30</strong> - Inicio de la rutina',info_t2:'<strong>21:35</strong> - Higiene y skincare',info_t3:'<strong>21:45</strong> - Estiramientos y meditación Shiné',info_t4:'<strong>21:55</strong> - Desconexión digital'},
- en:{title:'Quico — Night Routine',subtitle:'A daily ritual for restful sleep',
-   plan_h:'25-minute plan',plan_seq:'Tidy → Hygiene + Skincare → Stretches → Shiné meditation → Disconnection',
-   start_btn:'▶️ Start routine',ideal_time:'💡 Ideal time: 21:30-22:00',info_btn:'ℹ️ See info',
-   pause:'⏸️ Pause',resume:'▶️ Resume',next:'⏭️ Next',step_word:'Step',desc_word:'Description',
-   checklist_h:'✅ Checklist:',stretch_h:'🧘‍♀️ Stretching sequence:',
-   stretch_tip:'<strong>💡 Tips:</strong> Breathe deeply during each stretch. Don’t force it, only go as far as feels comfortable. If you feel pain, stop right away.',
-   sx_prep:'⏳ Get ready',sx_hold:'🧘 Stretch',sx_switch:'🔄 Switch sides',sx_done:'✅ Done!',sx_after:'Meditation comes next 🕯️',
-   sx_next:'Next: {n}',sx_last:'Last one',sx_skip:'⏭️ Skip this one',
-   v_first:'{title}. First: {n}. {d}',v_next:'Next: {n}. {d}',v_startside:'Start with: {s}.',v_go:'Go! {s} seconds.',
+   info_ben_p:'Cada noche lo mismo y a la misma hora: así el cuerpo aprende que toca dormir. La rutina baja la luz poco a poco, pasa al papel lo que te ronda la cabeza, suelta el cuerpo y calma la mente. Un cuarto fresco ayuda: al dormir, el cuerpo se enfría un poco.'},
+ en:{title:'Quico — Night routine',subtitle:'A daily ritual for restful sleep',
+   plan_h:'{m}-minute plan',plan_h1:'1-minute plan',plan_hint:'Tap a step to remove it or add it back',
+   start_btn:'▶️ Start routine',info_btn:'ℹ️ See info',
+   pause:'⏸️ Pause',resume:'▶️ Resume',next:'⏭️ Next: {e}',finish_btn:'✅ Finish',
+   stretch_tip:'💡 Don’t force it. If it hurts, stop.',
+   sx_prep:'⏳ Get ready',sx_hold:'🧘 Stretch',sx_switch:'🔄 Switch sides',sx_done:'✅ Done!',
+   sx_next:'Next: {n}',sx_last:'Last one',sx_skip:'⏩ Skip this one',task_done:'✓ Done',
+   v_first:'{title}. First: {n}. {d}',v_next:'{n}. {d}',v_startside:'Start with: {s}.',v_go:'Go! {s} seconds.',
    v_switch:'Switch sides: {s}.',v_sx_done:'Well done! Stretches finished.',
-   phrase_h:'🌙 Letting-go phrase',phrase_text:'"With love I leave the day behind and sink into calm sleep, trusting that tomorrow will take care of itself."',
-   disc_title:'🌙 Last step: put the phone to bed',disc_text:'Take the phone to <strong>another room</strong> and leave it charging there.<br>It’s a gift to your tomorrow self. 💚',
-   fomo_lead:'💭 If at midnight you’re tempted to check it, remember:',fomo_quote:'"Nothing that happens on the phone between 10pm and 7am matters more than your rest."',fomo_tail:'The world can wait 8 hours. You need to sleep 🫂',
-   med_phase:'🧘 Phase {i} of {n}: {p} · {d}',min_word:'min',sec_word:'sec',
-   finish_title:'🎉 Routine complete!',finish_desc:'Ready for restful sleep',
-   finish_strong:'🌙 That’s it. You did great.',finish_em:'Leave the phone in another room 📱→🚪<br>and let yourself fall into bed 😴',finish_sweet:'Sweet dreams, {u} 💜',
-   finish_home_btn:'🏠 Back to start',v_finish:'Routine complete. Leave the phone in another room and off to sleep. Sweet dreams.',
+   v_min:'{n} minutes',v_min1:'1 minute',v_sec:'{n} seconds',
+   wait_h:'🛏️ Off to bed',wait_p:'When you’re in bed, tap here',wait_btn:'🛏️ I’m in bed',
+   v_wait:'Now, off to bed. When you’re there, tap the button.',
+   phrase_text:'"With love I leave the day behind and sink into calm sleep, trusting that tomorrow will take care of itself."',
+   finish_title:'🎉 Routine complete!',finish_desc:'Ready for sleep',
+   finish_strong:'🌙 That’s it. You did great.',finish_sweet:'Sweet dreams, {u} 💜',
+   finish_home_btn:'🏠 Back to start',v_finish:'Routine complete. You can sleep now. Sweet dreams.',
    info_h:'ℹ️ Info',info_back:'← Back',info_ben_h:'🌙 Benefits of the routine',
-   info_ben_p:'This 25-minute routine prepares your mind and body for restful sleep. It includes Shiné (Buddhist) meditation to calm the mind before bed.',
-   info_time_h:'⏰ Recommended schedule',
-   info_t1:'<strong>21:30</strong> - Routine start',info_t2:'<strong>21:35</strong> - Hygiene and skincare',info_t3:'<strong>21:45</strong> - Stretches and Shiné meditation',info_t4:'<strong>21:55</strong> - Digital disconnection'},
- fr:{title:'Quico — Routine du Soir',subtitle:'Un rituel quotidien pour un sommeil réparateur',
-   plan_h:'Plan de 25 minutes',plan_seq:'Rangement → Hygiène + Soins → Étirements → Méditation Shiné → Déconnexion',
-   start_btn:'▶️ Commencer la routine',ideal_time:'💡 Horaire idéal : 21h30-22h00',info_btn:'ℹ️ Voir les infos',
-   pause:'⏸️ Pause',resume:'▶️ Reprendre',next:'⏭️ Suivant',step_word:'Étape',desc_word:'Description',
-   checklist_h:'✅ Liste de vérification :',stretch_h:'🧘‍♀️ Séquence d’étirements :',
-   stretch_tip:'<strong>💡 Conseils :</strong> Respire profondément pendant chaque étirement. Ne force pas, va seulement jusqu’où tu es à l’aise. Si tu ressens une douleur, arrête tout de suite.',
-   sx_prep:'⏳ Prépare-toi',sx_hold:'🧘 Étire-toi',sx_switch:'🔄 Change de côté',sx_done:'✅ Terminé !',sx_after:'Ensuite, la méditation 🕯️',
-   sx_next:'Ensuite : {n}',sx_last:'C’est le dernier',sx_skip:'⏭️ Passer celui-ci',
-   v_first:'{title}. D’abord : {n}. {d}',v_next:'Suivant : {n}. {d}',v_startside:'Commence par : {s}.',v_go:'C’est parti ! {s} secondes.',
+   info_ben_p:'The same thing every night, at the same time: that’s how your body learns it’s time to sleep. The routine lowers the light little by little, puts what’s on your mind onto paper, loosens your body and calms your mind. A cool room helps: as you sleep, your body cools down a little.'},
+ fr:{title:'Quico — Routine du soir',subtitle:'Un rituel quotidien pour un sommeil réparateur',
+   plan_h:'Plan de {m} minutes',plan_h1:'Plan d’1 minute',plan_hint:'Touche une étape pour l’enlever ou la remettre',
+   start_btn:'▶️ Commencer la routine',info_btn:'ℹ️ Voir les infos',
+   pause:'⏸️ Pause',resume:'▶️ Reprendre',next:'⏭️ Suivant : {e}',finish_btn:'✅ Terminer',
+   stretch_tip:'💡 Sans forcer. Si ça fait mal, arrête.',
+   sx_prep:'⏳ Prépare-toi',sx_hold:'🧘 Étire-toi',sx_switch:'🔄 Change de côté',sx_done:'✅ Terminé !',
+   sx_next:'Ensuite : {n}',sx_last:'C’est le dernier',sx_skip:'⏩ Passer celui-ci',task_done:'✓ Fait',
+   v_first:'{title}. D’abord : {n}. {d}',v_next:'{n}. {d}',v_startside:'Commence par : {s}.',v_go:'C’est parti ! {s} secondes.',
    v_switch:'Change de côté : {s}.',v_sx_done:'Très bien ! Étirements terminés.',
-   phrase_h:'🌙 Phrase de lâcher-prise',phrase_text:'« Avec amour je laisse la journée derrière moi et je plonge dans un sommeil paisible, sûre que demain prendra soin de lui-même. »',
-   disc_title:'🌙 Dernière étape : le téléphone au lit',disc_text:'Emporte le téléphone dans <strong>une autre pièce</strong> et laisse-le charger là-bas.<br>C’est un cadeau à ton toi de demain. 💚',
-   fomo_lead:'💭 Si à minuit tu es tentée de le regarder, rappelle-toi :',fomo_quote:'« Rien de ce qui se passe sur le téléphone entre 22h et 7h n’est plus important que ton repos. »',fomo_tail:'Le monde peut attendre 8 heures. Toi, tu as besoin de dormir 🫂',
-   med_phase:'🧘 Phase {i} sur {n} : {p} · {d}',min_word:'min',sec_word:'sec',
-   finish_title:'🎉 Routine terminée !',finish_desc:'Prête pour un sommeil réparateur',
-   finish_strong:'🌙 Voilà. Tu as super bien fait.',finish_em:'Laisse le téléphone dans une autre pièce 📱→🚪<br>et laisse-toi tomber dans le lit 😴',finish_sweet:'Doux rêves, {u} 💜',
-   finish_home_btn:'🏠 Retour à l’accueil',v_finish:'Routine terminée. Laisse le téléphone dans une autre pièce et au lit. Doux rêves.',
+   v_min:'{n} minutes',v_min1:'1 minute',v_sec:'{n} secondes',
+   wait_h:'🛏️ Au lit',wait_p:'Quand tu es au lit, touche ici',wait_btn:'🛏️ Je suis au lit',
+   v_wait:'Maintenant, au lit. Quand tu y es, touche le bouton.',
+   phrase_text:'« Avec amour je laisse la journée derrière moi et je plonge dans un sommeil paisible, sûre que demain prendra soin de lui-même. »',
+   finish_title:'🎉 Routine terminée !',finish_desc:'Prête à dormir',
+   finish_strong:'🌙 Voilà. Tu as super bien fait.',finish_sweet:'Doux rêves, {u} 💜',
+   finish_home_btn:'🏠 Retour à l’accueil',v_finish:'Routine terminée. Tu peux dormir. Doux rêves.',
    info_h:'ℹ️ Informations',info_back:'← Retour',info_ben_h:'🌙 Bienfaits de la routine',
-   info_ben_p:'Cette routine de 25 minutes prépare ton esprit et ton corps à un sommeil réparateur. Elle inclut la méditation Shiné (bouddhiste) pour apaiser l’esprit avant de dormir.',
-   info_time_h:'⏰ Horaire recommandé',
-   info_t1:'<strong>21h30</strong> - Début de la routine',info_t2:'<strong>21h35</strong> - Hygiène et soins',info_t3:'<strong>21h45</strong> - Étirements et méditation Shiné',info_t4:'<strong>21h55</strong> - Déconnexion numérique'}
+   info_ben_p:'Chaque soir la même chose, à la même heure : c’est ainsi que le corps apprend qu’il est l’heure de dormir. La routine baisse la lumière peu à peu, met sur papier ce qui te trotte dans la tête, détend le corps et apaise l’esprit. Une chambre fraîche aide : en dormant, le corps se refroidit un peu.'}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
 function t(k,vars){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(vars){Object.keys(vars).forEach(x=>{if(vars[x]===''){s=s.split(', {'+x+'}').join('').split(' {'+x+'}').join('').split('{'+x+'} · ').join('');}});Object.keys(vars).forEach(x=>{s=s.split('{'+x+'}').join(vars[x]);});}return s;}
 const VOICE_LANG={es:'es-ES',en:'en-US',fr:'fr-FR'};
-/* Traducción de los 5 pasos (texto; las duraciones vienen del dato ES) */
+
+/* Los 6 pasos (dato ES: textos y segundos). Se recoge y se lava fuera; todo lo demás, ya en la cama.
+   dim = cuánto se oscurece (y calienta) la pantalla en ese paso */
+const steps = [
+  { id:'orden', title:'🏠 Recoger', desc:'Luz baja y el cuarto listo', dim:0, tasks:[
+    { name:'💡 Baja las luces', secs:15, say:'Baja las luces de casa: menos luz ayuda a dormir.' },
+    { name:'👕 Ropa y cosas a su sitio', secs:60 },
+    { name:'🥤 Vasos y platos a la cocina', secs:40 },
+    { name:'📝 Papel y boli a la mesita', secs:20, say:'Deja papel y boli en la mesita de noche: los usarás luego, en la cama.' },
+    { name:'🪟 Ventila y abre la cama', secs:45, say:'Abre la ventana un rato, que el cuarto quede fresquito, y abre la cama.' }]},
+  { id:'higiene', title:'🧴 Higiene y skincare', desc:'Dientes, cara y pijama', dim:.08, wait:true, tasks:[
+    { name:'🪥 Lávate los dientes', secs:120 },
+    { name:'🧼 Desmaquíllate y lava la cara', secs:60 },
+    { name:'🧴 Crema hidratante', secs:30 },
+    { name:'👁️ Contorno de ojos', secs:20 },
+    { name:'👚 Ponte el pijama', secs:70 }]},
+  { id:'mente', title:'📝 Vaciar la cabeza', desc:'En la cama, con papel y boli', dim:.15, tasks:[
+    { name:'✍️ Lo que te ronda la cabeza', secs:60, say:'Coge el papel y el boli. Apunta lo que te ronda la cabeza, sin pensarlo mucho.' },
+    { name:'📅 Lo primero de mañana', secs:45, say:'Ahora apunta lo primero que harás mañana.' },
+    { name:'🌙 A la mesita', secs:15, say:'Deja el papel en la mesita. Ya está a salvo: mañana sigue ahí.' }]},
+  { id:'estiramientos', title:'🧘‍♀️ Estiramientos en la cama', desc:'Sentada y luego tumbada', dim:.22, stretches:[
+    { name:'Cuello y hombros', secs:40,
+      desc:'Sentada en la cama, gira la cabeza despacio a un lado y al otro. Sube los hombros y suéltalos.' },
+    { name:'Brazos y muñecas', secs:30, sides:['Brazo derecho','Brazo izquierdo'],
+      desc:'Estira el brazo al frente y tira suave de los dedos con la otra mano. Gira la muñeca.' },
+    { name:'Espalda y costados', secs:30, sides:['Hacia la derecha','Hacia la izquierda'],
+      desc:'Entrelaza los dedos, brazos arriba, e inclínate despacio hacia un lado.' },
+    { name:'Rodilla al pecho', secs:30, sides:['Rodilla derecha','Rodilla izquierda'],
+      desc:'Túmbate boca arriba. Abraza una rodilla contra el pecho; la otra pierna, estirada.' },
+    { name:'Giro tumbada', secs:30, sides:['Rodillas a la derecha','Rodillas a la izquierda'],
+      desc:'Tumbada, rodillas dobladas: déjalas caer a un lado y mira hacia el otro. Hombros pegados a la cama.' },
+    { name:'Tobillos', secs:20, sides:['Pie derecho','Pie izquierdo'],
+      desc:'Tumbada, dibuja círculos con el pie. Luego estíralo y flexiónalo.' }]},
+  { id:'movil', title:'📱 El móvil a dormir', desc:'Alarma, modo avión y boca abajo', dim:.3, tasks:[
+    { name:'⏰ Alarma a la hora de siempre', secs:15, say:'Mira que la alarma de mañana esté puesta, a la hora de siempre.' },
+    { name:'✈️ Modo avión y volumen bajito', secs:20, say:'Pon el móvil en modo avión y baja el volumen. Yo seguiré sonando.' },
+    { name:'🙃 Boca abajo, lejos de la mano', secs:15, say:'Déjalo boca abajo y lejos de la mano. Lo ideal es fuera del cuarto; si se queda contigo, así está bien.' },
+    { name:'🌙 Suelta el día', secs:20, phrase:true }]},
+  { id:'meditacion', title:'🕯️ Meditación Shiné', desc:'Tumbada y con los ojos cerrados', dim:.55, meditation:{
+    intro:'Shiné significa «morar en calma». Es una práctica budista básica de atención plena.',
+    steps:[
+      { secs:30, phase:'Postura', instruction:'Túmbate boca arriba, cómoda. Brazos a los lados y ojos cerrados. Deja que la cama te sostenga.' },
+      { secs:60, phase:'Respiración natural', instruction:'Observa tu respiración sin cambiarla. Nota el aire que entra y sale. Si la mente se va, vuelve con suavidad a la respiración.' },
+      { secs:120, phase:'Cuenta atrás', instruction:'En cada exhalación, cuenta hacia atrás desde 10. Al llegar a 1, o si te pierdes, vuelve a 10 tranquila. No hay que terminar: te aviso yo.' },
+      { secs:60, phase:'Respiración libre', instruction:'Deja de contar. Solo observa tu respiración. Los pensamientos van y vienen como nubes. Tú eres el cielo.' },
+      { secs:30, phase:'Masaje del entrecejo', instruction:'Con el dedo índice o medio, masajea suavemente el entrecejo en círculos.' }],
+    closing:'Muy bien. Quédate así, en calma. Dulces sueños.' }}
+];
+
+/* Traducción de los pasos (solo texto; los segundos vienen del dato ES y se fusionan por índice) */
 const STEPS_L={
  en:[
-  {title:'🏠 Light tidy',desc:'Pick up visible items in your rest area'},
-  {title:'🧴 Hygiene & skincare',desc:'Dental care, face and getting ready for bed',checklist:['Brush teeth','Remove makeup / cleanse face','Apply moisturiser','Eye contour cream','Put on comfy pyjamas']},
-  {title:'🧘‍♀️ Gentle stretches',desc:'A stretching sequence to release the day’s tension',stretches:[
-    {name:'Neck & shoulders',desc:'Turn your head slowly to both sides. Raise your shoulders and let them drop.'},
-    {name:'Arms & wrists',desc:'Extend one arm, pull gently with the other hand. Rotate your wrists.',sides:['Right arm','Left arm']},
-    {name:'Upper back',desc:'Interlace fingers, stretch arms upward. Lean gently to each side.',sides:['To the right','To the left']},
-    {name:'Spine',desc:'Seated, turn your torso slowly to the right and then to the left.',sides:['Turn to the right','Turn to the left']},
-    {name:'Hips & legs',desc:'Standing, bring one knee toward your chest. Switch legs.',sides:['Right knee to chest','Left knee to chest']},
-    {name:'Ankles',desc:'Seated or standing, rotate your ankles in circles. Flex and point your feet.',sides:['Right foot','Left foot']}]},
-  {title:'🕯️ Shiné meditation',desc:'Meditation for mental calm and mindful breathing',meditation:{
-    intro:'Shiné means “abiding in calm.” It’s a basic Buddhist mindfulness practice.',
+  {title:'🏠 Tidy up',desc:'Low light and the room ready',tasks:[
+    {name:'💡 Dim the lights',say:'Dim the lights at home: less light helps you sleep.'},
+    {name:'👕 Clothes and things away'},
+    {name:'🥤 Glasses and plates to the kitchen'},
+    {name:'📝 Paper and pen on the nightstand',say:'Put a paper and pen on your nightstand: you’ll use them later, in bed.'},
+    {name:'🪟 Air the room, open the bed',say:'Open the window for a while so the room gets nice and cool, and turn down the bed.'}]},
+  {title:'🧴 Hygiene & skincare',desc:'Teeth, face and pyjamas',tasks:[
+    {name:'🪥 Brush your teeth'},{name:'🧼 Remove makeup, wash your face'},{name:'🧴 Moisturiser'},
+    {name:'👁️ Eye cream'},{name:'👚 Put on your pyjamas'}]},
+  {title:'📝 Empty your head',desc:'In bed, with paper and pen',tasks:[
+    {name:'✍️ What’s on your mind',say:'Take the paper and pen. Write down what’s on your mind, without thinking too much.'},
+    {name:'📅 First thing tomorrow',say:'Now write down the first thing you’ll do tomorrow.'},
+    {name:'🌙 On the nightstand',say:'Leave the paper on the nightstand. It’s safe now: it’ll still be there tomorrow.'}]},
+  {title:'🧘‍♀️ Stretches in bed',desc:'Sitting up, then lying down',stretches:[
+    {name:'Neck and shoulders',desc:'Sitting on the bed, slowly turn your head to one side and then the other. Lift your shoulders and let them drop.'},
+    {name:'Arms and wrists',sides:['Right arm','Left arm'],desc:'Stretch your arm out in front and gently pull your fingers back with the other hand. Roll your wrist.'},
+    {name:'Back and sides',sides:['To the right','To the left'],desc:'Interlace your fingers, arms up, and slowly lean to one side.'},
+    {name:'Knee to chest',sides:['Right knee','Left knee'],desc:'Lie on your back. Hug one knee to your chest; keep the other leg straight.'},
+    {name:'Lying twist',sides:['Knees to the right','Knees to the left'],desc:'Lying down, knees bent: let them fall to one side and look the other way. Keep your shoulders on the bed.'},
+    {name:'Ankles',sides:['Right foot','Left foot'],desc:'Lying down, draw circles with your foot. Then point it and flex it.'}]},
+  {title:'📱 Phone to bed',desc:'Alarm, airplane mode and face down',tasks:[
+    {name:'⏰ Alarm at the usual time',say:'Check that tomorrow’s alarm is set, at the usual time.'},
+    {name:'✈️ Airplane mode, volume low',say:'Put your phone in airplane mode and turn the volume down. You’ll still hear me.'},
+    {name:'🙃 Face down, out of reach',say:'Leave it face down and out of reach. Outside the bedroom is best; if it stays with you, that’s fine.'},
+    {name:'🌙 Let go of the day'}]},
+  {title:'🕯️ Shiné meditation',desc:'Lying down, eyes closed',meditation:{
+    intro:'Shiné means “abiding in calm”. It’s a basic Buddhist mindfulness practice.',
     steps:[
-     {phase:'Posture',instruction:'Sit comfortably with a straight but relaxed back. Hands on your thighs or in your lap. Eyes softly closed or gazing down.'},
-     {phase:'Natural breathing',instruction:'Watch your breath without changing it. Notice the air coming in and out. If your mind wanders, gently return to the breath.'},
-     {phase:'Countdown',instruction:'Count 21 breaths backwards. On each exhale: 21… 20… 19… If you lose count, start again from 21.'},
-     {phase:'Free breathing',instruction:'Stop counting. Just watch your breath naturally. Thoughts come and go like clouds. You are the sky.'},
-     {phase:'Brow massage',instruction:'With your index or middle finger, gently massage the space between your brows in clockwise circles for 30-60 seconds.'}],
-    closing:'Open your eyes slowly. You’ve cultivated shiné: the calm mind.'}},
-  {title:'📱 Digital disconnection',desc:'A letting-go phrase and putting devices away'}
+     {phase:'Posture',instruction:'Lie on your back, comfortably. Arms by your sides and eyes closed. Let the bed hold you.'},
+     {phase:'Natural breathing',instruction:'Watch your breath without changing it. Notice the air coming in and going out. If your mind wanders, gently come back to the breath.'},
+     {phase:'Countdown',instruction:'On each out-breath, count down from 10. When you reach 1, or if you lose count, calmly go back to 10. You don’t need to finish: I’ll let you know.'},
+     {phase:'Free breathing',instruction:'Stop counting. Just watch your breath. Thoughts come and go like clouds. You are the sky.'},
+     {phase:'Brow massage',instruction:'With your index or middle finger, gently massage the space between your eyebrows in small circles.'}],
+    closing:'Well done. Stay just like this, calm. Sweet dreams.'}}
  ],
  fr:[
-  {title:'🏠 Rangement léger',desc:'Ramasse les objets visibles de ton espace de repos'},
-  {title:'🧴 Hygiène et soins',desc:'Soins dentaires, visage et préparation au coucher',checklist:['Se brosser les dents','Démaquiller / nettoyer le visage','Appliquer une crème hydratante','Crème contour des yeux','Mettre un pyjama confortable']},
-  {title:'🧘‍♀️ Étirements doux',desc:'Une séquence d’étirements pour relâcher la tension de la journée',stretches:[
-    {name:'Cou et épaules',desc:'Tourne la tête lentement des deux côtés. Monte les épaules et relâche-les.'},
-    {name:'Bras et poignets',desc:'Étends un bras, tire doucement avec l’autre main. Fais tourner les poignets.',sides:['Bras droit','Bras gauche']},
-    {name:'Haut du dos',desc:'Entrelace les doigts, étire les bras vers le haut. Penche-toi doucement de chaque côté.',sides:['Vers la droite','Vers la gauche']},
-    {name:'Colonne vertébrale',desc:'Assise, tourne le torse lentement à droite puis à gauche.',sides:['Tourne à droite','Tourne à gauche']},
-    {name:'Hanches et jambes',desc:'Debout, ramène un genou vers la poitrine. Change de jambe.',sides:['Genou droit vers la poitrine','Genou gauche vers la poitrine']},
-    {name:'Chevilles',desc:'Assise ou debout, fais tourner les chevilles en cercles. Fléchis et pointe les pieds.',sides:['Pied droit','Pied gauche']}]},
-  {title:'🕯️ Méditation Shiné',desc:'Méditation de calme mental et respiration consciente',meditation:{
+  {title:'🏠 Ranger',desc:'Lumière douce et chambre prête',tasks:[
+    {name:'💡 Baisse les lumières',say:'Baisse les lumières de la maison : moins de lumière aide à dormir.'},
+    {name:'👕 Vêtements et affaires à leur place'},
+    {name:'🥤 Verres et assiettes à la cuisine'},
+    {name:'📝 Papier et stylo sur la table de nuit',say:'Pose un papier et un stylo sur la table de nuit : tu t’en serviras plus tard, au lit.'},
+    {name:'🪟 Aère et ouvre le lit',say:'Ouvre la fenêtre un moment, pour que la chambre soit bien fraîche, et ouvre le lit.'}]},
+  {title:'🧴 Hygiène et soins',desc:'Dents, visage et pyjama',tasks:[
+    {name:'🪥 Brosse-toi les dents'},{name:'🧼 Démaquille-toi et lave ton visage'},{name:'🧴 Crème hydratante'},
+    {name:'👁️ Contour des yeux'},{name:'👚 Mets ton pyjama'}]},
+  {title:'📝 Vider la tête',desc:'Au lit, avec papier et stylo',tasks:[
+    {name:'✍️ Ce qui te trotte dans la tête',say:'Prends le papier et le stylo. Note ce qui te trotte dans la tête, sans trop réfléchir.'},
+    {name:'📅 La première chose de demain',say:'Maintenant, note la première chose que tu feras demain.'},
+    {name:'🌙 Sur la table de nuit',say:'Pose le papier sur la table de nuit. Il est en sécurité : demain, il sera toujours là.'}]},
+  {title:'🧘‍♀️ Étirements au lit',desc:'Assise, puis allongée',stretches:[
+    {name:'Cou et épaules',desc:'Assise sur le lit, tourne la tête lentement d’un côté puis de l’autre. Monte les épaules et relâche-les.'},
+    {name:'Bras et poignets',sides:['Bras droit','Bras gauche'],desc:'Tends le bras devant toi et tire doucement les doigts avec l’autre main. Fais tourner le poignet.'},
+    {name:'Dos et côtés',sides:['Vers la droite','Vers la gauche'],desc:'Entrelace les doigts, bras en l’air, et penche-toi lentement d’un côté.'},
+    {name:'Genou à la poitrine',sides:['Genou droit','Genou gauche'],desc:'Allonge-toi sur le dos. Serre un genou contre la poitrine ; l’autre jambe reste tendue.'},
+    {name:'Torsion allongée',sides:['Genoux à droite','Genoux à gauche'],desc:'Allongée, genoux pliés : laisse-les tomber d’un côté et regarde de l’autre. Les épaules collées au lit.'},
+    {name:'Chevilles',sides:['Pied droit','Pied gauche'],desc:'Allongée, dessine des cercles avec le pied. Puis tends-le et fléchis-le.'}]},
+  {title:'📱 Le téléphone au lit',desc:'Réveil, mode avion et écran retourné',tasks:[
+    {name:'⏰ Réveil à l’heure habituelle',say:'Vérifie que le réveil de demain est bien mis, à l’heure habituelle.'},
+    {name:'✈️ Mode avion et volume bas',say:'Mets le téléphone en mode avion et baisse le volume. Tu m’entendras quand même.'},
+    {name:'🙃 Retourné, loin de la main',say:'Pose-le écran vers le bas, loin de ta main. L’idéal, c’est hors de la chambre ; s’il reste avec toi, c’est bien comme ça.'},
+    {name:'🌙 Lâche la journée'}]},
+  {title:'🕯️ Méditation Shiné',desc:'Allongée, les yeux fermés',meditation:{
     intro:'Shiné signifie « demeurer dans le calme ». C’est une pratique bouddhiste de base de pleine conscience.',
     steps:[
-     {phase:'Posture',instruction:'Assieds-toi confortablement, le dos droit mais détendu. Mains sur les cuisses ou sur les genoux. Yeux doucement fermés ou regard baissé.'},
-     {phase:'Respiration naturelle',instruction:'Observe ta respiration sans la changer. Remarque l’air qui entre et sort. Si ton esprit s’égare, reviens doucement à la respiration.'},
-     {phase:'Compte à rebours',instruction:'Compte 21 respirations à l’envers. À chaque expiration : 21… 20… 19… Si tu perds le compte, recommence à 21.'},
+     {phase:'Posture',instruction:'Allonge-toi sur le dos, confortablement. Les bras le long du corps et les yeux fermés. Laisse le lit te porter.'},
+     {phase:'Respiration naturelle',instruction:'Observe ta respiration sans la changer. Sens l’air qui entre et qui sort. Si l’esprit s’en va, reviens doucement à la respiration.'},
+     {phase:'Compte à rebours',instruction:'À chaque expiration, compte à rebours depuis 10. Arrivée à 1, ou si tu te perds, reviens calmement à 10. Pas besoin de finir : je te préviens.'},
      {phase:'Respiration libre',instruction:'Arrête de compter. Observe simplement ta respiration. Les pensées vont et viennent comme des nuages. Tu es le ciel.'},
-     {phase:'Massage de l’entre-sourcils',instruction:'Avec l’index ou le majeur, masse doucement l’entre-sourcils en cercles horaires pendant 30 à 60 secondes.'}],
-    closing:'Ouvre les yeux lentement. Tu as cultivé shiné : l’esprit calme.'}},
-  {title:'📱 Déconnexion numérique',desc:'Une phrase de lâcher-prise et ranger les appareils'}
+     {phase:'Massage de l’entre-sourcils',instruction:'Avec l’index ou le majeur, masse doucement l’entre-sourcils en petits cercles.'}],
+    closing:'Très bien. Reste comme ça, dans le calme. Doux rêves.'}}
  ]
 };
 // Devuelve el paso i con el texto en el idioma actual (fusiona con el dato ES)
 function stepL(i){
-  const lang=crisLang();const es=steps[i];
+  const lang=crisLang(),es=steps[i];
   if(lang==='es'||!STEPS_L[lang]||!STEPS_L[lang][i])return es;
-  const tr=STEPS_L[lang][i];
+  const tr=STEPS_L[lang][i],mix=(a,b)=>a.map((x,j)=>({...x,...(b&&b[j])}));
   const out={...es,title:tr.title,desc:tr.desc};
-  if(es.checklist&&tr.checklist)out.checklist=tr.checklist;
-  if(es.stretches&&tr.stretches)out.stretches=es.stretches.map((s,j)=>({...s,...tr.stretches[j]}));
-  if(es.meditation&&tr.meditation)out.meditation={...es.meditation,intro:tr.meditation.intro,closing:tr.meditation.closing,steps:es.meditation.steps.map((s,j)=>({...s,...tr.meditation.steps[j]}))};
+  if(es.tasks)out.tasks=mix(es.tasks,tr.tasks);
+  if(es.stretches)out.stretches=mix(es.stretches,tr.stretches);
+  if(es.meditation&&tr.meditation)out.meditation={...es.meditation,intro:tr.meditation.intro,closing:tr.meditation.closing,steps:mix(es.meditation.steps,tr.meditation.steps)};
   return out;
 }
 function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
 
-const steps = [
-  {
-    title: '🏠 Orden ligero',
-    desc: 'Recoge objetos visibles del área de descanso',
-    duration: 180
-  },
-  {
-    title: '🧴 Higiene y skincare',  
-    desc: 'Cuidado dental, facial y preparación para dormir',
-    duration: 300,
-    checklist: ['Cepillar dientes', 'Desmaquillar/limpiar cara', 'Aplicar crema hidratante', 'Crema contorno de ojos', 'Poner pijama cómodo']
-  },
-  {
-    title: '🧘‍♀️ Estiramientos suaves',
-    desc: 'Secuencia de estiramientos para liberar tensión del día',
-    stretches: [
-      { name: 'Cuello y hombros', secs: 40,
-        desc: 'Gira la cabeza lentamente hacia ambos lados. Eleva los hombros y suéltalos.' },
-      { name: 'Brazos y muñecas', secs: 30, sides: ['Brazo derecho', 'Brazo izquierdo'],
-        desc: 'Extiende un brazo, tira suavemente con la otra mano. Rota las muñecas.' },
-      { name: 'Espalda alta', secs: 30, sides: ['Hacia la derecha', 'Hacia la izquierda'],
-        desc: 'Entrelaza dedos, estira brazos hacia arriba. Inclínate suavemente a cada lado.' },
-      { name: 'Columna vertebral', secs: 30, sides: ['Gira a la derecha', 'Gira a la izquierda'],
-        desc: 'Sentada, gira el torso lentamente a la derecha y luego a la izquierda.' },
-      { name: 'Caderas y piernas', secs: 20, sides: ['Rodilla derecha al pecho', 'Rodilla izquierda al pecho'],
-        desc: 'De pie, dobla una rodilla hacia el pecho. Cambia de pierna.' },
-      { name: 'Tobillos', secs: 20, sides: ['Pie derecho', 'Pie izquierdo'],
-        desc: 'Sentada o de pie, rota los tobillos en círculos. Flexiona y extiende los pies.' }
-    ]
-  },
-  {
-    title: '🕯️ Meditación Shiné',
-    desc: 'Meditación de calma mental y respiración consciente',
-    duration: 300,
-    meditation: {
-      intro: 'Shiné significa "morar en calma". Es una práctica budista básica de atención plena.',
-      steps: [
-        {
-          secs: 30,
-          phase: 'Postura',
-          instruction: 'Siéntate cómodamente con la espalda recta pero relajada. Manos sobre los muslos o en tu regazo. Ojos suavemente cerrados o con mirada baja.'
-        },
-        {
-          secs: 60,
-          phase: 'Respiración natural',
-          instruction: 'Observa tu respiración sin cambiarla. Nota cómo el aire entra y sale. Si tu mente divaga, gentilmente regresa a la respiración.'
-        },
-        {
-          secs: 120,
-          phase: 'Cuenta regresiva',
-          instruction: 'Cuenta 21 respiraciones hacia atrás. En cada exhalación: 21... 20... 19... Si pierdes la cuenta, vuelve a empezar desde 21.'
-        },
-        {
-          secs: 60,
-          phase: 'Respiración libre',
-          instruction: 'Deja de contar. Solo observa tu respiración naturalmente. Pensamientos van y vienen como nubes. Tú eres el cielo.'
-        },
-        {
-          secs: 30,
-          phase: 'Masaje del entrecejo',
-          instruction: 'Con el dedo índice o medio, masajea suavemente el entrecejo en círculos horarios durante 30-60 segundos.'
-        }
-      ],
-      closing: 'Abre los ojos lentamente. Has cultivado shiné: la mente en calma.'
-    }
-  },
-  {
-    title: '📱 Desconexión Digital',
-    desc: 'Frase de liberación y guardar dispositivos',
-    duration: 180,
-    phrase: true,
-    disconnection: true
-  }
-];
-
-/* Estiramientos guiados: cada uno se prepara (la voz dice qué hacer), se estira con su cuenta atrás
-   y, si es de dos lados, avisa del cambio. La duración del paso es la suma de todo. */
-const SX_PREP1 = 10, SX_PREP = 8, SX_SWITCH = 5, SX_DONE = 5;
-function stretchPlan(list) {
-  const seg = []; let at = 0;
+/* Plan de cada paso: lista de tramos con su segundo de inicio. Un solo motor para todo:
+   tareas (task), estiramientos (prep → work [→ switch → work] … → done) y meditación (med … → close).
+   La duración del paso es la suma de sus tramos. */
+const SX_PREP1 = 14, SX_PREP = 12, SX_SWITCH = 5, SX_DONE = 5, MED_CLOSE = 8;
+const _plans = {};
+function plan(i) {
+  if (_plans[i]) return _plans[i];
+  const st = steps[i], seg = []; let at = 0;
   const add = (k, len, j, side) => { seg.push({ k, len, j, side, at }); at += len; };
-  list.forEach((s, j) => {
-    add('prep', j ? SX_PREP : SX_PREP1, j, 0);
-    (s.sides || [0]).forEach((_, i) => { if (i) add('switch', SX_SWITCH, j, i); add('work', s.secs, j, i); });
-  });
-  add('done', SX_DONE, list.length - 1, 0);
-  return { seg, total: at };
+  if (st.tasks) st.tasks.forEach((x, j) => add('task', x.secs, j, 0));
+  else if (st.stretches) {
+    st.stretches.forEach((s, j) => {
+      add('prep', j ? SX_PREP : SX_PREP1, j, 0);
+      (s.sides || [0]).forEach((_, k) => { if (k) add('switch', SX_SWITCH, j, k); add('work', s.secs, j, k); });
+    });
+    add('done', SX_DONE, st.stretches.length - 1, 0);
+  } else if (st.meditation) {
+    st.meditation.steps.forEach((p, j) => add('med', p.secs, j, 0));
+    add('close', MED_CLOSE, st.meditation.steps.length - 1, 0);
+  }
+  return _plans[i] = { seg, total: at };
 }
-steps.forEach(s => { if (s.stretches) s.duration = stretchPlan(s.stretches).total; });
+steps.forEach((s, i) => { s.duration = plan(i).total; });
 
-let currentStep = 0;
-let timeRemaining = 0;
+/* Pasos activos (personalización en la portada): {off:[ids]} — nunca 0 pasos */
+function offIds(){
+  let o=[];try{o=(JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}').off||[]).filter(id=>steps.some(s=>s.id===id));}catch(e){}
+  return o.length>=steps.length?[]:o;
+}
+function onSteps(){const o=offIds();return steps.map((_,i)=>i).filter(i=>!o.includes(steps[i].id));}
+function toggleStep(id){
+  const o=offIds(),k=o.indexOf(id);
+  if(k>=0)o.splice(k,1);else{if(steps.length-o.length<=1)return;o.push(id);}
+  try{localStorage.setItem('cris_noche_cfg',JSON.stringify({off:o,min:planMinutes(o)}));}catch(e){}
+  renderHome();
+  const b=$('stepRow').children[steps.findIndex(s=>s.id===id)];if(b)b.focus(); // el foco sigue en el mismo paso
+}
+/* Minutos del plan; se guardan con la personalización para que la portada de Quico y el aviso de la noche digan lo mismo */
+function planMinutes(o){return Math.max(1,Math.round(steps.reduce((a,s)=>a+(o.includes(s.id)?0:s.duration),0)/60));}
+const emo = s => String(s).split(' ')[0];
+function renderHome(){
+  const o=offIds();
+  document.getElementById('stepRow').innerHTML=steps.map((s,i)=>{const on=!o.includes(s.id),n=plain(stepL(i).title);
+    return `<button class="stp${on?'':' off'}" aria-pressed="${on}" aria-label="${n}" title="${n}" onclick="toggleStep('${s.id}')">${emo(s.title)}</button>`;}).join('');
+  const m=planMinutes(o);
+  document.getElementById('planH').textContent=m===1?t('plan_h1'):t('plan_h',{m});
+  try{const c=JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}');if(c.min!==m){c.off=o;c.min=m;localStorage.setItem('cris_noche_cfg',JSON.stringify(c));}}catch(e){}
+}
+
+let ON = [];          // índices de los pasos activos en esta noche
+let cur = 0;          // paso actual (índice en steps)
+let el = 0;           // segundos transcurridos en el paso
+let base = 0;         // Date.now() del segundo 0 del paso (se recalcula al reanudar)
 let timer = null;
 let isRunning = false;
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-}
+let waiting = false;  // «A la cama»: el paso terminó y espera un toque
+let finished = false;
+let segIdx = -1, lastEl = -1;
+let medClosed = false; // la meditación ya dio las buenas noches
+let nightKey = '';
+let dimT1 = null, dimT2 = null, darkOn = false;
 
 function showView(viewId) {
-  document.getElementById('home').classList.add('hidden');
-  document.getElementById('routine').classList.add('hidden');
-  document.getElementById('info').classList.add('hidden');
+  ['home','routine','info'].forEach(v => document.getElementById(v).classList.add('hidden'));
   document.getElementById(viewId).classList.remove('hidden');
+}
+const $ = id => document.getElementById(id);
+function setDim(v){$('dim').style.opacity=v;}
+function nextOn(i){const k=ON.indexOf(i);return k>=0&&k<ON.length-1?ON[k+1]:-1;}
+function syncPause(){const b=$('pauseBtn');b.textContent=t(isRunning?'pause':'resume');b.disabled=waiting&&isRunning;}
+function markNight(){try{if(nightKey)localStorage.setItem(nightKey,'1');}catch(e){}
+  // noche hecha: que Quico quite de los avisos push el de la rutina de esta noche
+  try{if(window.parent!==window&&parent.pushSync)parent.pushSync(true);}catch(e){}}
+// la noche cuenta para la tarde anterior hasta las 5:00
+function nightKeyNow(){const d=new Date(Date.now()-5*3600e3),p=n=>String(n).padStart(2,'0');return 'cris_noche_v1_'+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
+
+// Todo a cero: así una segunda rutina en la misma sesión empieza limpia
+function resetRun(){
+  clearTick(); isRunning=false; waiting=false; finished=false; medClosed=false;
+  segIdx=-1; lastEl=-1; el=0; cur=0;
+  clearTimeout(dimT1); clearTimeout(dimT2); dimT1=dimT2=null; darkOn=false; setDim(0);
+  $('endBtn').classList.add('hidden'); $('pauseBtn').classList.remove('hidden');
+  $('nextBtn').classList.remove('hidden','pulse'); $('timer').classList.remove('emo');
+  syncPause();
 }
 
 function showHome() {
-  stopTimer();
-  releaseAwake();
-  try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
-  currentStep = 0;
-  isRunning = false;
-  document.getElementById('pauseBtn').textContent = t('pause');
+  releaseAwake(); hush(); resetRun();
+  renderHome();
   showView('home');
 }
 
@@ -665,321 +554,300 @@ function showInfo() {
   showView('info');
 }
 
-let _utt = null;
-const plain = x => String(x).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '').trim();
+/* ── VOZ ── */
+let _utt = null, _vc = null, _vcLang = '';
+const plain = x => String(x).replace(/[\u{1F000}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}\u{20E3}]/gu, '').replace(/\s+/g, ' ').trim();
+try{window.speechSynthesis&&speechSynthesis.addEventListener('voiceschanged',()=>{_vc=null;});}catch(e){}
+// La voz del idioma exacto (es-ES, en-US, fr-FR), mejor si es del propio móvil
+function pickVoice(){
+  try{
+    const l=crisLang();if(_vc&&_vcLang===l)return _vc;
+    const w=VOICE_LANG[l].toLowerCase(),n=x=>(x.lang||'').replace('_','-').toLowerCase(),v=speechSynthesis.getVoices();
+    _vcLang=l;return _vc=v.find(x=>n(x)===w&&x.localService)||v.find(x=>n(x)===w)||v.find(x=>n(x).startsWith(l+'-'))||v.find(x=>n(x)===l)||null;
+  }catch(e){return null;}
+}
+/* Safari pierde frases si se llama a cancel() sin nada sonando: solo se corta si hay algo */
+function hush(){try{const ss=window.speechSynthesis;if(ss&&(ss.speaking||ss.pending))ss.cancel();}catch(e){}}
 // queue = true: espera a que termine lo que se está diciendo (no lo corta)
-function speak(t, queue) {
-  try {if(!__allow('voice'))return;
-    if (!window.speechSynthesis) return;
-    if (!queue) window.speechSynthesis.cancel();
-    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
-    _utt = new SpeechSynthesisUtterance(t);
+function speak(tx, queue) {
+  try {if(!__allow('voice')||!window.speechSynthesis)return;
+    const ss = window.speechSynthesis;
+    if (!queue) hush();
+    if (ss.paused) ss.resume();
+    _utt = new SpeechSynthesisUtterance(tx);
     _utt.lang = VOICE_LANG[crisLang()]; _utt.rate = .82; _utt.pitch = .95;
-    const v = window.speechSynthesis.getVoices().find(v => v.lang.startsWith(crisLang()));
-    if (v) _utt.voice = v;
-    window.speechSynthesis.speak(_utt);
+    const v = pickVoice(); if (v) _utt.voice = v;
+    ss.speak(_utt);
   } catch (e) {}
 }
+try{window.speechSynthesis&&speechSynthesis.getVoices();}catch(e){} // las voces cargan tarde: se piden ya
 
-let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state==='suspended')__beepCtx.resume();return __beepCtx;}catch(e){return null;}}
-function beep(freq,dur){
+/* ── SONIDOS: campanitas suaves (seno con caída exponencial) ── */
+let __beepCtx=null;function __getCtx(){try{if(!__beepCtx)__beepCtx=new(window.AudioContext||window.webkitAudioContext)();if(__beepCtx.state!=='running'){const r=__beepCtx.resume();if(r&&r.catch)r.catch(()=>{});}return __beepCtx;}catch(e){return null;}}
+/* iOS solo deja sonar el audio que empieza en un toque: se «despierta» al pulsar Comenzar */
+function __unlockAudio(){try{const c=__getCtx();if(!c)return;const b=c.createBuffer(1,1,22050),src=c.createBufferSource();src.buffer=b;src.connect(c.destination);src.start(0);}catch(e){}}
+function beep(freq,dur,vol){
   try{if(!__allow('sound'))return;
-    const ctx=__getCtx();if(!ctx)return;
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.connect(g);g.connect(ctx.destination);
-    o.type='sine';o.frequency.value=freq||660;
-    g.gain.setValueAtTime(0,ctx.currentTime);
-    g.gain.linearRampToValueAtTime(.18,ctx.currentTime+.02);
-    g.gain.linearRampToValueAtTime(0,ctx.currentTime+(dur||.3));
-    o.start();o.stop(ctx.currentTime+(dur||.3)+.05);
+    const c=__getCtx();if(!c)return;
+    const t0=c.currentTime,d=dur||.5,v=vol||.12;
+    [[1,v],[2,v*.2]].forEach(([m,a])=>{ // tono + un armónico flojito: suena a campana
+      const o=c.createOscillator(),g=c.createGain();
+      o.type='sine';o.frequency.value=(freq||587)*m;o.connect(g);g.connect(c.destination);
+      g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(a,t0+.015);g.gain.exponentialRampToValueAtTime(.0001,t0+d);
+      o.start(t0);o.stop(t0+d+.05);
+    });
   }catch(e){}
 }
 function vibrate(p){try{if(!__allow('vib'))return;if(navigator.vibrate)navigator.vibrate(p||60);}catch(e){}}
+function chime(){beep(523,.4);setTimeout(()=>beep(784,.8),300);}
+
+/* ── TEXTOS DEL TRAMO ── */
+const fmt = s => s >= 60 ? Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') : String(s);
+function durWords(s){if(s<60)return t('v_sec',{n:s});const m=Math.round(s/60);return m===1?t('v_min1'):t('v_min',{n:m});}
+const phraseVoice = () => plain(t('phrase_text').replace(/["«»“”]/g, ''));
+// Lo que toca ahora, en pocas palabras (al reanudar o al volver con la pantalla apagada)
+function nowName(){
+  const g=plan(cur).seg[segIdx],st=stepL(cur);if(!g)return '';
+  if(g.k==='task')return plain(st.tasks[g.j].name);
+  if(g.k==='med')return plain(st.meditation.steps[g.j].phase);
+  if(g.k==='close')return st.meditation.closing;
+  if(g.k==='done')return plain(t('sx_done'));
+  const s=st.stretches[g.j];return s.name+(s.sides?'. '+s.sides[g.side]:'');
+}
+// «Después: …» = el siguiente elemento del paso o, tras el último, el siguiente paso
+function afterTxt(g){
+  const st=stepL(cur);let n='';
+  if(g.k==='task'){const x=st.tasks[g.j+1];if(x)n=x.name;}
+  else if(g.k==='med'){const x=st.meditation.steps[g.j+1];if(x)n=x.phase;}
+  else if(g.k!=='done'&&g.k!=='close'){const x=st.stretches[g.j+1];if(x)n=x.name;}
+  if(!n){const k=nextOn(cur);if(k>=0)n=stepL(k).title;}
+  return n?t('sx_next',{n}):t('sx_last');
+}
+function dotsHtml(n,j,all){let h='';for(let i=0;i<n;i++)h+=`<i class="${all||i<j?'ok':i===j?'on':''}"></i>`;return h;}
+
+function renderCard(g,left){
+  const st=stepL(cur),box=$('box');if(!box)return;
+  let h='',btn='',n=0;
+  if(g.k==='task'){
+    const x=st.tasks[g.j];n=st.tasks.length;
+    h=`<div class="sx-name">${x.name}</div><div class="sx-count" id="sxCount">${fmt(left)}</div>`
+      +(x.phrase?`<div class="sx-phrase">${t('phrase_text')}</div>`:x.say?`<div class="sx-desc">${x.say}</div>`:'');
+    btn=`<button class="sx-skip" onclick="taskDone()">${t('task_done')}</button>`;
+  }else if(g.k==='med'||g.k==='close'){
+    const m=st.meditation,ph=m.steps[g.j];n=m.steps.length;
+    h=g.k==='med'?`<div class="sx-name">${ph.phase}</div><div class="sx-count" id="sxCount">${fmt(left)}</div><div class="sx-desc">${ph.instruction}</div>`
+      :`<div class="sx-name">🌙</div><div class="sx-count" id="sxCount">${left}</div><div class="sx-desc">${m.closing}</div>`;
+  }else{
+    const list=st.stretches,s=list[g.j],done=g.k==='done';n=list.length;
+    const kind={prep:t('sx_prep'),work:t('sx_hold'),switch:t('sx_switch'),done:''}[g.k];
+    h=`<div class="sx-top"><span>${done?'':(g.j+1)+'/'+n}</span><span class="sx-kind">${kind}</span></div>
+      <div class="sx-name">${done?t('sx_done'):s.name}</div>
+      ${s.sides&&!done?`<div class="sx-side">${s.sides[g.side]} · ${g.side+1}/${s.sides.length}</div>`:''}
+      <div class="sx-count" id="sxCount">${left}</div>${done?'':`<div class="sx-desc">${s.desc}</div>`}`;
+    if(!done)btn=`<button class="sx-skip" onclick="skipStretch()">${t('sx_skip')}</button>`;
+  }
+  box.innerHTML=`<div class="sx-card sx-${g.k}">${h}<div class="sx-foot"><span>${afterTxt(g)}</span>${btn}</div></div>`;
+  $('dots').innerHTML=dotsHtml(n,g.j,g.k==='done'||g.k==='close');
+}
+
+/* Avisos de cada tramo (voz, campanita, vibración; todo respeta los ajustes y el modo calma).
+   first: primer aviso del paso (lleva el título delante) · quiet: ya sonó la campanita del paso */
+function announce(g,first,quiet,jump){
+  const st=stepL(cur),pre=first?plain(st.title)+'. ':'';
+  if(g.k==='task'){
+    const x=st.tasks[g.j];
+    speak(pre+(x.phrase?phraseVoice():x.say||plain(x.name)+'. '+durWords(x.secs)+'.'));
+    if(!quiet)beep(587,.5);vibrate(60);
+  }else if(g.k==='med'){
+    if(g.j)beep(392,1.2,.1); // ojos cerrados: campana grave y la siguiente indicación
+    speak(pre+st.meditation.steps[g.j].instruction);
+  }else if(g.k==='close'){
+    beep(392,1.2,.1);speak(st.meditation.closing);medClosed=true;
+  }else if(jump&&(g.k==='work'||g.k==='switch')){
+    speak(pre+nowName()); // vuelve tras apagar la pantalla: solo qué toca ahora
+  }else{
+    const s=st.stretches[g.j];
+    if(g.k==='prep'){
+      speak((g.j?pre+t('v_next',{n:s.name,d:s.desc}):t('v_first',{title:plain(st.title),n:s.name,d:s.desc}))
+        +(s.sides?' '+t('v_startside',{s:s.sides[0]}):''));
+      if(!quiet)beep(440,.6);vibrate(60);
+    }else if(g.k==='work'){
+      speak(t('v_go',{s:s.secs}),true);beep(659,.8);vibrate(150);
+    }else if(g.k==='switch'){
+      speak(t('v_switch',{s:s.sides[g.side]}));beep(523,.4);setTimeout(()=>beep(523,.4),450);vibrate([60,80,60]);
+    }else{
+      speak(t('v_sx_done'));chime();vibrate([80,60,160]);
+    }
+  }
+}
+
+/* Motor: busca el tramo del segundo e; si cambió, pinta la tarjeta y avisa; si no, solo la cuenta */
+function updateGuided(e,jump,quiet){
+  const p=plan(cur);
+  if(e>=p.total){stepEnd();return;}
+  let i=0;while(e>=p.seg[i].at+p.seg[i].len)i++;
+  const g=p.seg[i],left=g.at+g.len-e;
+  if(i!==segIdx){const first=segIdx<0;segIdx=i;renderCard(g,left);announce(g,first,quiet,jump);}
+  else{
+    if(!jump&&g.k==='work'&&left<=3)beep(440,.15,.06); // 3, 2, 1
+    const c=$('sxCount');if(c)c.textContent=g.k==='task'||g.k==='med'?fmt(left):left;
+  }
+  setRing((p.total-e)/p.total,Math.ceil((p.total-e)/60)+' min');
+}
+function setRing(f,txt,isEmo){
+  const r=$('n-ring');if(r)r.style.background='conic-gradient(#4fd1c7 '+(Math.max(0,Math.min(1,f))*360)+'deg,rgba(255,255,255,.12) 0)';
+  const tm=$('timer');tm.textContent=txt;tm.classList.toggle('emo',!!isEmo);
+}
+
+/* Tiempo por marcas de reloj: el móvil frena o congela los temporizadores con la pantalla apagada,
+   así que cada 250 ms se mira cuánto ha pasado de verdad desde el inicio del paso */
+function tick(){
+  if(!isRunning||waiting)return;
+  const n=Math.floor((Date.now()-base)/1000);
+  if(n<lastEl){base=Date.now()-lastEl*1000;return;} // el reloj del sistema fue hacia atrás
+  if(n===lastEl)return;
+  // más de 10 min sin poder contar (pantalla bloqueada, móvil dormido): no seguir sonando a deshoras;
+  // se queda en pausa donde estaba y «Reanudar» sigue desde ahí
+  if(n-lastEl>600){stopTimer();hush();releaseAwake();syncPause();return;}
+  const jump=n>lastEl+2;lastEl=el=n;
+  updateGuided(n,jump);
+}
+function clearTick(){if(timer)clearInterval(timer);timer=null;}
+function startTimer(){
+  clearTick();base=Date.now()-el*1000;timer=setInterval(tick,250);
+  isRunning=true;keepAwake();syncPause();
+}
+function stopTimer(){clearTick();isRunning=false;}
+
+function loadStep(i,cue){
+  const st=stepL(i);
+  cur=i;el=0;lastEl=0;segIdx=-1;waiting=false;base=Date.now();
+  $('stepTitle').textContent=st.title;
+  $('stepDesc').textContent=st.desc;
+  $('counter').textContent=(ON.indexOf(i)+1)+'/'+ON.length;
+  $('stepContent').innerHTML=(st.meditation?`<div class="meditation-intro">${st.meditation.intro}</div>`:'')
+    +'<div class="dots" id="dots"></div><div id="box"></div>'
+    +(st.stretches?`<div class="note">${t('stretch_tip')}</div>`:'');
+  const nb=$('nextBtn'),n=nextOn(i);
+  nb.textContent=n<0?t('finish_btn'):t('next',{e:emo(steps[n].title)});
+  nb.className='btn'+(st.stretches||st.meditation?' sec':'');
+  setDim(steps[i].dim||0);
+  if(cue){chime();vibrate([60,60,60]);}
+  if(i===ON[ON.length-1])markNight();
+  updateGuided(0,false,cue);
+}
 
 function startRoutine() {
-  __getCtx();
-  currentStep = 0;
+  __unlockAudio();
+  hush(); resetRun();
+  ON=onSteps(); nightKey=nightKeyNow();
   showView('routine');
-  loadStep(0);
+  loadStep(ON[0],false);
   startTimer();
 }
 
-function loadStep(stepIndex) {
-  const step = stepL(stepIndex);
-  timeRemaining = step.duration;
-  if (!step.stretches) speak(plain(step.title) + '. ' + step.desc);
-
-  document.getElementById('stepTitle').textContent = step.title;
-  document.getElementById('stepDesc').textContent = step.desc;
-  document.getElementById('counter').textContent = `${stepIndex + 1}/${steps.length}`;
-  document.getElementById('timer').textContent = formatTime(timeRemaining);
-  
-  const progress = (stepIndex / steps.length) * 100;
-  document.getElementById('progressFill').style.width = progress + '%';
-  
-  const content = document.getElementById('stepContent');
-  content.innerHTML = '';
-  
-  if (step.checklist) {
-    const div = document.createElement('div');
-    div.innerHTML = '<div style="font-weight:600;margin-bottom:12px;color:var(--accent)">'+t('checklist_h')+'</div>';
-    step.checklist.forEach(item => {
-      const checkItem = document.createElement('label');
-      checkItem.className = 'check-item';
-      checkItem.innerHTML = `<input type="checkbox"> <span>${item}</span>`;
-      div.appendChild(checkItem);
-    });
-    content.appendChild(div);
-  }
-  
-  if (step.stretches) {
-    // Un estiramiento a la vez: avanza solo, con voz y pitidos en cada cambio
-    const dots = document.createElement('div');
-    dots.id = 'sxDots';
-    dots.style.cssText = 'display:flex;gap:6px;justify-content:center;margin:4px 0 12px;';
-    content.appendChild(dots);
-
-    const box = document.createElement('div');
-    box.id = 'sxBox';
-    content.appendChild(box);
-
-    const tip = document.createElement('div');
-    tip.className = 'note';
-    tip.innerHTML = t('stretch_tip');
-    content.appendChild(tip);
-
-    sxSeg = -1; sxLast = -1;
-    updateStretch(0);
-  }
-
-  if (step.meditation) {
-    // Una fase a la vez: avanza sola con el temporizador y la voz guía
-    const med = step.meditation;
-
-    const intro = document.createElement('div');
-    intro.className = 'meditation-intro';
-    intro.textContent = med.intro;
-    content.appendChild(intro);
-
-    const dots = document.createElement('div');
-    dots.id = 'medDots';
-    dots.style.cssText = 'display:flex;gap:6px;justify-content:center;margin:12px 0;';
-    content.appendChild(dots);
-
-    const box = document.createElement('div');
-    box.id = 'medPhaseBox';
-    content.appendChild(box);
-
-    medPhaseIdx = -1;
-    updateMedPhase(0);
-  }
-  
-  if (step.phrase) {
-    const phrase = document.createElement('div');
-    phrase.className = 'phrase';
-    phrase.innerHTML = `
-      <strong>${t('phrase_h')}</strong>
-      <em>${t('phrase_text')}</em>
-    `;
-    content.appendChild(phrase);
-  }
-  
-  if (step.disconnection) {
-    const warning = document.createElement('div');
-    warning.className = 'disconnection-warning';
-    warning.innerHTML = `
-      <div class="disconnection-title">${t('disc_title')}</div>
-      <div class="disconnection-text">${t('disc_text')}</div>
-    `;
-    content.appendChild(warning);
-
-    const fomo = document.createElement('div');
-    fomo.className = 'fomo-reminder';
-    fomo.innerHTML = `
-      ${t('fomo_lead')}<br>
-      <span class="fomo-quote">${t('fomo_quote')}</span><br><br>
-      ${t('fomo_tail')}
-    `;
-    content.appendChild(fomo);
-  }
+// Se acabó el tiempo del paso (o se tocó «✓ Hecho» en la última tarea)
+function stepEnd(){
+  if(steps[cur].wait&&nextOn(cur)>=0){enterWait();return;}
+  nextStep();
+}
+function enterWait(){
+  clearTick();waiting=true;isRunning=true;segIdx=-1;
+  releaseAwake(); // esperando el toque: la pantalla se puede apagar sola (si no, quedaría encendida toda la noche)
+  const n=(stepL(cur).tasks||[]).length;
+  $('dots').innerHTML=dotsHtml(n,n,true);
+  $('box').innerHTML=`<div class="sx-card sx-wait"><div class="sx-name">${t('wait_h')}</div><div class="sx-desc">${t('wait_p')}</div>
+    <button class="btn bed" onclick="nextStep()">${t('wait_btn')}</button></div>`;
+  setRing(0,'🛏️',true);
+  $('nextBtn').classList.add('pulse');
+  speak(t('v_wait'));beep(523,.4);vibrate([80,60,160]);
+  syncPause();
 }
 
-let sxSeg = -1, sxLast = -1;
-function updateStretch(elapsed) {
-  const step = stepL(currentStep);
-  if (!step || !step.stretches || elapsed === sxLast) return;
-  sxLast = elapsed;
-  const list = step.stretches, plan = stretchPlan(list);
-  let idx = plan.seg.length - 1;
-  for (let i = 0; i < plan.seg.length; i++) {
-    if (elapsed < plan.seg[i].at + plan.seg[i].len) { idx = i; break; }
-  }
-  const g = plan.seg[idx], s = list[g.j], left = Math.max(0, g.at + g.len - elapsed);
-  if (idx !== sxSeg) {
-    sxSeg = idx;
-    const done = g.k === 'done', nx = list[g.j + 1];
-    const kind = { prep: t('sx_prep'), work: t('sx_hold'), switch: t('sx_switch'), done: t('sx_done') }[g.k];
-    const box = document.getElementById('sxBox');
-    if (box) box.innerHTML = `
-      <div class="sx-card sx-${g.k}">
-        <div class="sx-top"><span>${done ? '' : (g.j + 1) + '/' + list.length}</span><span class="sx-kind">${kind}</span></div>
-        <div class="sx-name">${done ? t('sx_after') : s.name}</div>
-        ${s.sides && !done ? `<div class="sx-side">${s.sides[g.side]} · ${g.side + 1}/${s.sides.length}</div>` : ''}
-        <div class="sx-count" id="sxCount">${left}</div>
-        ${done ? '' : `<div class="sx-desc">${s.desc}</div>
-        <div class="sx-foot"><span>${nx ? t('sx_next', { n: nx.name }) : t('sx_last')}</span><button class="sx-skip" onclick="skipStretch()">${t('sx_skip')}</button></div>`}
-      </div>`;
-    const dots = document.getElementById('sxDots');
-    if (dots) dots.innerHTML = list.map((_, i) =>
-      `<span style="width:9px;height:9px;border-radius:50%;background:${i < g.j || done ? 'var(--accent)' : i === g.j ? 'var(--accent2)' : 'rgba(255,255,255,.18)'}"></span>`).join('');
-    // Avisos: qué hacer, cuándo empezar, cuándo cambiar de lado y el final
-    if (g.k === 'prep') {
-      speak((g.j ? t('v_next', { n: s.name, d: s.desc }) : t('v_first', { title: plain(step.title), n: s.name, d: s.desc }))
-        + (s.sides ? ' ' + t('v_startside', { s: s.sides[0] }) : ''));
-      beep(523, .25); vibrate(60);
-    } else if (g.k === 'work') {
-      speak(t('v_go', { s: s.secs }), true);
-      beep(880, .35); vibrate(150);
-    } else if (g.k === 'switch') {
-      speak(t('v_switch', { s: s.sides[g.side] }));
-      beep(660, .15); setTimeout(() => beep(660, .15), 220); vibrate([60, 80, 60]);
-    } else {
-      speak(t('v_sx_done'));
-      beep(660, .2); setTimeout(() => beep(880, .45), 250); vibrate([80, 60, 160]);
-    }
-  } else if (g.k === 'work' && left > 0 && left <= 3) beep(440, .1); // 3, 2, 1
-  const c = document.getElementById('sxCount');
-  if (c) c.textContent = left;
+// ✓ Hecho: a la siguiente tarea; en la última, se acaba el paso
+function taskDone(){
+  const p=plan(cur),nx=p.seg[segIdx+1];
+  if(nx&&nx.k==='task')go(nx.at);else stepEnd();
 }
-// Saltar al siguiente estiramiento (o al final si es el último)
-function skipStretch() {
-  const st = steps[currentStep];
-  if (!st || !st.stretches) return;
-  const plan = stretchPlan(st.stretches), cur = plan.seg[Math.max(0, sxSeg)];
-  const to = plan.seg.find(g => (g.k === 'prep' && g.j > cur.j) || g.k === 'done');
-  if (!to || to === cur) return;
-  timeRemaining = st.duration - to.at;
-  document.getElementById('timer').textContent = formatTime(timeRemaining);
-  __ringN(timeRemaining / st.duration);
-  updateStretch(to.at);
+// ⏩ Saltar este: al siguiente estiramiento (o al final si es el último)
+function skipStretch(){
+  const p=plan(cur),g=p.seg[segIdx];if(!g)return;
+  const to=p.seg.find(x=>(x.k==='prep'&&x.j>g.j)||x.k==='done');
+  if(to&&to!==g)go(to.at);
 }
-
-let medPhaseIdx = -1;
-function updateMedPhase(elapsed) {
-  const step = stepL(currentStep);
-  if (!step || !step.meditation) return;
-  const med = step.meditation;
-  let acc = 0, idx = med.steps.length - 1;
-  for (let i = 0; i < med.steps.length; i++) {
-    if (elapsed < acc + med.steps[i].secs) { idx = i; break; }
-    acc += med.steps[i].secs;
-  }
-  if (idx === medPhaseIdx) return;
-  medPhaseIdx = idx;
-  const ph = med.steps[idx];
-  const box = document.getElementById('medPhaseBox');
-  if (box) box.innerHTML = `
-    <div class="meditation-step" style="border-left-color:var(--accent)">
-      <div class="meditation-phase">${t('med_phase',{i:idx+1,n:med.steps.length,p:ph.phase,d:ph.secs>=60?Math.round(ph.secs/60)+' '+t('min_word'):ph.secs+' '+t('sec_word')})}</div>
-      <div class="meditation-instruction" style="font-size:1rem;line-height:1.7">${ph.instruction}</div>
-    </div>`;
-  const dots = document.getElementById('medDots');
-  if (dots) dots.innerHTML = med.steps.map((_, i) =>
-    `<span style="width:9px;height:9px;border-radius:50%;background:${i < idx ? 'var(--accent)' : i === idx ? 'var(--accent2)' : 'rgba(255,255,255,.18)'}"></span>`).join('');
-  speak(ph.instruction, idx === 0); // la 1.ª fase espera a que se diga el título
-}
-
-function __ringN(f){const r=document.getElementById('n-ring');if(r)r.style.background='conic-gradient(#4fd1c7 '+(Math.max(0,Math.min(1,f))*360)+'deg,rgba(255,255,255,.12) 0)';}
-/* Pantalla encendida mientras la rutina corre: si se apaga, el móvil congela el temporizador y la voz */
-let wakeLock = null, _wlp = null;
-async function keepAwake() {
-  if (wakeLock || _wlp || !('wakeLock' in navigator)) return;
-  try { _wlp = navigator.wakeLock.request('screen'); wakeLock = await _wlp; wakeLock.addEventListener('release', () => { wakeLock = null; }); }
-  catch (e) {} finally { _wlp = null; }
-}
-function releaseAwake() { try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {} }
-// el móvil suelta el bloqueo al salir de la app: se recupera al volver
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && isRunning) keepAwake(); });
-
-function startTimer() {
-  if (timer) clearInterval(timer);
-  timer = setInterval(() => {
-    if (timeRemaining > 0) {
-      timeRemaining--;
-      document.getElementById('timer').textContent = formatTime(timeRemaining);
-      const _st=steps[currentStep];if(_st&&_st.duration)__ringN(timeRemaining/_st.duration);
-      const st = steps[currentStep];
-      if (st && st.meditation) updateMedPhase(st.duration - timeRemaining);
-      if (st && st.stretches) updateStretch(st.duration - timeRemaining);
-    } else {
-      nextStep();
-    }
-  }, 1000);
-  isRunning = true;
-  keepAwake();
-}
-
-function stopTimer() {
-  if (timer) clearInterval(timer);
-  timer = null;
-  isRunning = false;
-}
+function go(at){el=lastEl=at;if(isRunning)base=Date.now()-at*1000;else startTimer();updateGuided(at);}
 
 function pauseRoutine() {
-  const btn = document.getElementById('pauseBtn');
-  if (isRunning) {
-    stopTimer();
-    releaseAwake();
-    btn.textContent = t('resume');
-  } else {
-    startTimer();
-    btn.textContent = t('pause');
+  if (finished) return;
+  if (waiting) { // esperando «A la cama»: pausar no hace nada (solo se reanuda si el atrás lo paró)
+    if (!isRunning) { isRunning = true; speak(t('v_wait')); syncPause(); }
+    return;
   }
+  if (isRunning) { stopTimer(); hush(); releaseAwake(); }
+  else { startTimer(); speak(nowName()); }
+  syncPause();
 }
 
 function nextStep() {
-  stopTimer();
-  currentStep++;
-  if (currentStep < steps.length) {
-    loadStep(currentStep);
-    startTimer();
-  } else {
-    finishRoutine();
-  }
+  if (finished) return;
+  const n = nextOn(cur);
+  if (n < 0) { finishRoutine(); return; }
+  loadStep(n, true);
+  if (!timer) startTimer();
+  syncPause();
 }
 
 function finishRoutine() {
-  try{var _n=new Date();localStorage.setItem('cris_noche_v1_'+_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0'),'1');}catch(e){}
-  stopTimer();
-  releaseAwake();
-  document.getElementById('timer').textContent = '00:00';
-  document.getElementById('progressFill').style.width = '100%';
-  document.getElementById('stepTitle').textContent = t('finish_title');
-  document.getElementById('stepDesc').textContent = t('finish_desc');
-  document.getElementById('stepContent').innerHTML = '';
-  
-  document.getElementById('stepContent').innerHTML = `
-    <div class="phrase" style="text-align:center">
-      <strong>${t('finish_strong')}</strong><br><br>
-      <em>${t('finish_em')}</em><br><br>
-      ${t('finish_sweet',{u:__uname()})}
-    </div>`;
-
-  const controlsDiv = document.querySelector('.controls');
-  controlsDiv.innerHTML = '<button class="btn" onclick="showHome()">'+t('finish_home_btn')+'</button>';
-
-  speak(t('v_finish'));
-  setTimeout(() => {
-    document.getElementById('dim').style.opacity = '0.8';
-    setTimeout(() => { document.getElementById('dim').style.opacity = '0'; }, 4000);
-  }, 1500);
+  stopTimer(); waiting = false; finished = true;
+  releaseAwake(); markNight();
+  $('stepTitle').textContent = t('finish_title');
+  $('stepDesc').textContent = t('finish_desc');
+  $('counter').textContent = '';
+  setRing(1, '🌙', true);
+  $('stepContent').innerHTML = `<div class="sx-card sx-close" style="padding:22px 16px">
+      <div class="sx-name">${t('finish_strong')}</div>
+      <div class="sx-desc" style="margin-top:10px">${t('finish_sweet',{u:__uname()})}</div></div>`;
+  $('pauseBtn').classList.add('hidden'); $('nextBtn').classList.add('hidden'); $('endBtn').classList.remove('hidden');
+  if (!medClosed) speak(t('v_finish')); // si la meditación ya dio las buenas noches, silencio
+  dimT1 = setTimeout(() => { darkOn = true; setDim(.9); }, 4000);
 }
-/* Botón atrás del móvil: desde rutina o info se vuelve a la portada del módulo */
-/* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió */
+// Con la pantalla ya oscura, un toque la aclara un poco durante 8 s
+// (si estaba oscura del todo, ese toque solo aclara: no pulsa lo que haya debajo)
+document.addEventListener('click', e => {
+  if (!finished || !darkOn) return;
+  const wasDark = parseFloat($('dim').style.opacity) > .5;
+  setDim(.3); clearTimeout(dimT2); dimT2 = setTimeout(() => setDim(.9), 8000);
+  if (wasDark) { e.stopPropagation(); e.preventDefault(); }
+}, true);
+// 🏠 Volver al inicio: dentro de Quico vuelve a la portada de la app
+function endRoutine() {
+  showHome();
+  if (window.parent !== window) { try { const b = parent.document.getElementById('homeBtn'); if (b) b.click(); } catch (e) {} }
+}
+
+/* Pantalla encendida mientras la rutina corre: si se apaga, el móvil congela el temporizador y la voz */
+let wakeLock = null, _wlp = null, wantAwake = false;
+async function keepAwake() {
+  wantAwake = true;
+  if (wakeLock || _wlp || !('wakeLock' in navigator)) return;
+  try { _wlp = navigator.wakeLock.request('screen'); wakeLock = await _wlp; wakeLock.addEventListener('release', () => { wakeLock = null; });
+    if (!wantAwake) releaseAwake(); } // se pidió soltarla mientras llegaba
+  catch (e) {} finally { _wlp = null; }
+}
+function releaseAwake() { wantAwake = false; try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {} }
+// el móvil suelta el bloqueo al salir de la app: se recupera al volver (y se pone al día el tiempo)
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && isRunning && !waiting) { tick(); if (isRunning) keepAwake(); } });
+
+/* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió.
+   Corriendo → pausa · en pausa (o en info / al terminar) → portada del módulo · en la portada → false */
 window.__crisBack=function(){
-  var home=document.getElementById('home');
-  if(home&&home.classList.contains('hidden')){showHome();return true;}
-  return false;
+  if(!$('home').classList.contains('hidden'))return false;
+  if(!$('routine').classList.contains('hidden')&&isRunning){
+    if(waiting){isRunning=false;hush();releaseAwake();syncPause();}
+    else pauseRoutine();
+    return true;
+  }
+  showHome();return true;
 };
 /* Puente para versiones mezcladas: si el index viejo aún manda postMessage */
 window.addEventListener('message',function(e){
@@ -988,6 +856,8 @@ window.addEventListener('message',function(e){
   }
 });
 applyStaticI18n();
+renderHome();
+syncPause();
 </script>
 
 </body>

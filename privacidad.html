@@ -30,7 +30,7 @@ a{color:var(--teal-dark)}
 <script>
 /* Email de contacto PROVISIONAL: cambiarlo cuando haya dominio o email definitivo */
 const CONTACT='contacto@tudominio.com';
-const UPDATED='2026-09-24';
+const UPDATED='2026-10-27';
 const DOC={
 es:`<h1>Privacidad y aviso de salud</h1><div class="upd">Última actualización: ${UPDATED}</div>
 <div class="card"><h2>En resumen</h2><ul>
@@ -42,9 +42,10 @@ es:`<h1>Privacidad y aviso de salud</h1><div class="upd">Última actualización:
 <p>La app guarda en el almacenamiento local de tu navegador o dispositivo: tus preferencias (idioma, nombre opcional, sonido, voz), tus áreas elegidas, tu progreso diario, tus intereses personalizados y tus notas. Estos datos no salen de tu dispositivo y no llegan a ningún servidor nuestro.</p>
 <p>Puedes hacer una copia desde el menú (Copia de seguridad) y borrarlo todo borrando los datos de la app o desinstalándola.</p></div>
 <div class="card"><h2>Servicios de terceros</h2>
-<p>Para mostrar las tipografías, la app puede descargarlas de Google Fonts. Como cualquier web, Google recibe entonces la dirección IP de tu dispositivo. La voz usa el motor de voz de tu propio dispositivo. Los recordatorios son locales.</p>
+<p>Para mostrar las tipografías, la app puede descargarlas de Google Fonts. Como cualquier web, Google recibe entonces la dirección IP de tu dispositivo. La voz usa el motor de voz de tu propio dispositivo.</p>
+<p>Si activas los recordatorios, para que suenen aunque Quico esté cerrado tu móvil envía al servidor de la app (Netlify) las horas de los avisos de los próximos 7 días. El texto de cada aviso va cifrado con una clave que solo tiene tu móvil: el servidor sabe a qué hora despertarlo, no qué dice. El aviso llega a través del servicio push de tu navegador (Google, Apple o Mozilla). Al apagar los recordatorios, esa lista se borra.</p>
 <p>Si añades el enlace de tu calendario en «Clases», la app lo pide a través de nuestro servidor (Netlify) solo para traer tus clases a tu dispositivo: el servidor no guarda ni el enlace ni el calendario. Puedes quitarlo cuando quieras en Clases → Ajustes.</p>
-<p>Los días de regla, tutorías y citas que apuntes en «Calendario» se guardan solo en tu dispositivo: no salen de él.</p>
+<p>Los días de regla, tutorías y citas que apuntes en «Calendario» se guardan en tu dispositivo. Solo salen de él cifrados: con «Tu cuenta», o como la hora de un aviso si activas los recordatorios.</p>
 <p>Si entras con «Tu cuenta» (email y contraseña), una copia de tus datos se guarda en el servidor de la app (Netlify) para pasarla entre tus dispositivos. Va cifrada en tu móvil con una clave que sale de tu contraseña, así que en el servidor no se puede leer. Tu contraseña no sale del móvil y no se guarda en ningún sitio; tampoco tu email (solo se usa, en el móvil, para crear la clave). Por eso, si olvidas la contraseña y no tienes ningún dispositivo dentro, la copia del servidor no se puede recuperar; tus datos siguen en tu móvil. Al salir, ese dispositivo deja de enviar datos.</p></div>
 <div class="card"><h2>Permisos</h2>
 <p>Notificaciones (solo si activas recordatorios), vibración y mantener la pantalla encendida durante los ejercicios. Puedes desactivarlos cuando quieras.</p></div>
@@ -64,9 +65,10 @@ en:`<h1>Privacy and health notice</h1><div class="upd">Last updated: ${UPDATED}<
 <p>The app stores in your browser’s or device’s local storage: your preferences (language, optional name, sound, voice), your chosen areas, your daily progress, your custom interests and your notes. This data never leaves your device and never reaches any server of ours.</p>
 <p>You can make a copy from the menu (Backup) and delete everything by clearing the app’s data or uninstalling it.</p></div>
 <div class="card"><h2>Third-party services</h2>
-<p>To show its fonts, the app may download them from Google Fonts. As with any website, Google then receives your device’s IP address. The voice uses your device’s own speech engine. Reminders are local.</p>
+<p>To show its fonts, the app may download them from Google Fonts. As with any website, Google then receives your device’s IP address. The voice uses your device’s own speech engine.</p>
+<p>If you turn on reminders, so they ring even when Quico is closed, your phone sends the app’s server (Netlify) the times of the next 7 days of reminders. Each reminder’s text is encrypted with a key only your phone has: the server knows when to wake it, not what it says. The reminder arrives through your browser’s push service (Google, Apple or Mozilla). Turning reminders off deletes that list.</p>
 <p>If you add your calendar link in “Classes”, the app requests it through our server (Netlify) only to bring your classes to your device: the server stores neither the link nor the calendar. You can remove it anytime in Classes → Settings.</p>
-<p>The period days, tutorials and appointments you note in “Calendar” are stored only on your device: they never leave it.</p>
+<p>The period days, tutorials and appointments you note in “Calendar” are stored only on your device. They only leave it encrypted: with “Your account”, or as the time of a reminder if you turn reminders on.</p>
 <p>If you sign in with “Your account” (email and password), a copy of your data is stored on the app’s server (Netlify) to pass it between your devices. It is encrypted on your phone with a key made from your password, so it can’t be read on the server. Your password never leaves your phone and isn’t stored anywhere; neither is your email (it’s only used, on the phone, to make the key). That’s why, if you forget your password and no device is still signed in, the server copy can’t be recovered; your data stays on your phone. When you sign out, that device stops sending data.</p></div>
 <div class="card"><h2>Permissions</h2>
 <p>Notifications (only if you turn on reminders), vibration and keeping the screen on during exercises. You can turn them off at any time.</p></div>
@@ -86,9 +88,10 @@ fr:`<h1>Confidentialité et avertissement santé</h1><div class="upd">Dernière 
 <p>L’app enregistre dans le stockage local de ton navigateur ou appareil : tes préférences (langue, prénom facultatif, son, voix), tes domaines choisis, ta progression, tes centres d’intérêt personnalisés et tes notes. Ces données ne quittent pas ton appareil et n’arrivent sur aucun de nos serveurs.</p>
 <p>Tu peux faire une copie depuis le menu (Sauvegarde) et tout effacer en supprimant les données de l’app ou en la désinstallant.</p></div>
 <div class="card"><h2>Services tiers</h2>
-<p>Pour afficher ses polices, l’app peut les télécharger depuis Google Fonts. Comme pour tout site web, Google reçoit alors l’adresse IP de ton appareil. La voix utilise le moteur vocal de ton appareil. Les rappels sont locaux.</p>
+<p>Pour afficher ses polices, l’app peut les télécharger depuis Google Fonts. Comme pour tout site web, Google reçoit alors l’adresse IP de ton appareil. La voix utilise le moteur vocal de ton appareil.</p>
+<p>Si tu actives les rappels, pour qu’ils sonnent même quand Quico est fermé, ton téléphone envoie au serveur de l’appli (Netlify) les heures des rappels des 7 prochains jours. Le texte de chaque rappel est chiffré avec une clé que seul ton téléphone possède : le serveur sait quand le réveiller, pas ce qu’il dit. Le rappel arrive par le service push de ton navigateur (Google, Apple ou Mozilla). Si tu désactives les rappels, cette liste est supprimée.</p>
 <p>Si tu ajoutes le lien de ton calendrier dans « Cours », l’app le demande via notre serveur (Netlify) uniquement pour apporter tes cours sur ton appareil : le serveur ne garde ni le lien ni le calendrier. Tu peux le retirer quand tu veux dans Cours → Réglages.</p>
-<p>Les jours de règles, tutorats et rendez-vous notés dans « Calendrier » restent uniquement sur ton appareil.</p>
+<p>Les jours de règles, tutorats et rendez-vous notés dans « Calendrier » sont gardés sur ton appareil. Ils n’en sortent que chiffrés : avec « Ton compte », ou comme l’heure d’un rappel si tu actives les rappels.</p>
 <p>Si tu te connectes avec « Ton compte » (e-mail et mot de passe), une copie de tes données est gardée sur le serveur de l’appli (Netlify) pour la passer entre tes appareils. Elle est chiffrée sur ton téléphone avec une clé tirée de ton mot de passe : sur le serveur, elle est illisible. Ton mot de passe ne quitte jamais ton téléphone et n’est gardé nulle part ; ton e-mail non plus (il sert seulement, sur le téléphone, à fabriquer la clé). C’est pourquoi, si tu oublies ton mot de passe et qu’aucun appareil n’est encore connecté, la copie du serveur ne peut pas être récupérée ; tes données restent sur ton téléphone. Quand tu te déconnectes, cet appareil n’envoie plus de données.</p></div>
 <div class="card"><h2>Autorisations</h2>
 <p>Notifications (seulement si tu actives les rappels), vibration et écran allumé pendant les exercices. Tu peux les désactiver quand tu veux.</p></div>
