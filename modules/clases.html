@@ -28,7 +28,7 @@
   .dayh{font-size:.8rem;font-weight:800;color:var(--turq-d);text-transform:capitalize;margin:12px 4px 6px;}
   .cl{display:flex;gap:10px;align-items:stretch;background:#fff;border:2px solid var(--lav);border-radius:14px;padding:10px 12px;margin-bottom:7px;}
   .cl .bar{width:6px;border-radius:4px;flex-shrink:0;}
-  .cl .tm{font-size:.86rem;font-weight:800;color:var(--text);white-space:nowrap;min-width:92px;font-variant-numeric:tabular-nums;}
+  .cl .tm{display:block;font-size:.8rem;font-weight:800;color:var(--soft);white-space:nowrap;font-variant-numeric:tabular-nums;}
   .cl .tx{flex:1;min-width:0;}
   .cl .nm{font-size:.92rem;font-weight:700;overflow-wrap:anywhere;}
   .cl .lc{font-size:.78rem;color:var(--soft);margin-top:1px;overflow-wrap:anywhere;}
@@ -54,6 +54,15 @@
   .sub .nm{font-size:.9rem;font-weight:700;overflow-wrap:anywhere;}
   .sub .nx{font-size:.76rem;color:var(--soft);}
   .sub .add{width:44px;height:44px;border:none;border-radius:12px;background:var(--lav-s);color:var(--turq-d);font-size:1.3rem;font-weight:800;flex-shrink:0;}
+  .cl .add{width:44px;height:44px;align-self:center;border:none;border-radius:12px;background:var(--lav-s);color:var(--turq-d);font-size:1.3rem;font-weight:800;flex-shrink:0;}
+  .ctl{margin:-3px 0 9px 18px;}
+  .ct{display:flex;align-items:center;gap:8px;min-height:44px;padding:2px 0;}
+  .ct .ck{width:30px;height:30px;border:2px solid var(--turq);border-radius:9px;background:#fff;color:#fff;font-weight:900;flex-shrink:0;padding:0;}
+  .ct.done .ck{background:var(--turq);}
+  .ct .ctt{flex:1;min-width:0;font-size:.9rem;overflow-wrap:anywhere;}
+  .ct.done .ctt{text-decoration:line-through;color:var(--soft);}
+  .ct .cx{width:40px;height:40px;border:none;background:none;color:var(--soft);font-size:1rem;flex-shrink:0;}
+  .ctl .addrow{padding:2px 0 6px;}
   .addrow{display:flex;gap:6px;padding:0 4px 8px 26px;}
   .addrow input{flex:1;min-width:0;border:2px solid var(--turq);border-radius:12px;padding:10px;font-size:16px;}
   .addrow button{min-width:64px;border:none;border-radius:12px;background:var(--turq-d);color:#fff;font-weight:800;}
@@ -138,25 +147,25 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
 </div>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="../shared/dia.js?v=114"></script>
-<script src="../shared/clases.js?v=114"></script>
+<script src="../shared/dia.js?v=118"></script>
+<script src="../shared/clases.js?v=118"></script>
 <script>
 const UI={
  es:{h1:'🎓 Clases',url_l:'Enlace de tu calendario',url_help:'Outlook: Configuración → Calendario → Calendarios compartidos → Publicar → copia el enlace (HTML o ICS). También vale Google o iCloud.',subs_l:'Mis asignaturas (una por línea)',save:'Guardar',t_today:'Hoy',t_week:'Semana',my_subs:'📚 Mis asignaturas',settings:'⚙️ Ajustes',rem_l:'Aviso antes de cada clase',rem_help:'Con la app abierta, o con las notificaciones activadas en el menú.',refresh:'↻ Actualizar',import:'📄 Importar archivo .ics',forget:'Quitar',hidden:'oculta',skip_one:'No voy a esta clase',show_one:'Volver a mostrar esta clase',skipped:'Esta clase ya no sale en tu día',shown:'Vuelve a salir en tu día',hid_sub:'Asignatura oculta',hide_sub:'Quitar de mi día',show_sub:'Volver a mostrar',sub_hidden:'Esa asignatura ya no sale en tu día',sub_off:'No sale en tu día',on_home:'Ver mis clases en la pantalla principal',yes:'Sí',no:'No',retry:'↻ Reintentar',code:'Código',err_stale:'No he podido actualizar el calendario: te enseño lo último que guardé.',
    now:'Ahora',next:'Próxima',until:'hasta las {h}',in_min:'en {n} min',in_h:'en {h}',today:'hoy',tomorrow:'mañana',allday:'Todo el día',no_today:'Hoy no tienes clase 🌿',no_week:'Nada esta semana',
    no_rem:'Sin aviso',min_before:'{n} min antes',add_ph:'¿Qué tienes que hacer?',add:'Añadir',added:'Añadido a tu día',no_next:'sin clases próximas',next_cl:'Próxima: {d}',
    loading:'Cargando tu calendario…',ok:'¡Listo! {n} clases en el calendario.',err_nourl:'Pega primero el enlace del calendario.',err_fetch:'No he podido leer el calendario. Revisa que el enlace esté publicado o importa el archivo .ics.',err_offline:'Sin conexión: te enseño lo último que guardé.',err_notics:'Eso no parece un calendario (.ics).',err_noserver:'Desde esta versión de la app no puedo leer calendarios de Outlook o Google. Importa tu horario en un archivo .ics.',
-   synced:'Actualizado {t}',ago_min:'hace {n} min',ago_h:'hace {n} h',just:'ahora mismo',forget_q:'¿Quitar el calendario y las asignaturas de Quico?',saved:'Guardado',subj_task:'{s}: {t}'},
+   synced:'Actualizado {t}',ago_min:'hace {n} min',ago_h:'hace {n} h',just:'ahora mismo',forget_q:'¿Quitar el calendario y las asignaturas de Quico?',saved:'Guardado',subj_task:'{s}: {t}',add_cls:'Añadir tarea a {s}',del:'Quitar',saved_for:'Guardada para {d}'},
  en:{h1:'🎓 Classes',url_l:'Your calendar link',url_help:'Outlook: Settings → Calendar → Shared calendars → Publish → copy the link (HTML or ICS). Google or iCloud work too.',subs_l:'My subjects (one per line)',save:'Save',t_today:'Today',t_week:'Week',my_subs:'📚 My subjects',settings:'⚙️ Settings',rem_l:'Reminder before each class',rem_help:'With the app open, or with notifications turned on in the menu.',refresh:'↻ Refresh',import:'📄 Import .ics file',forget:'Remove',hidden:'hidden',skip_one:'I’m not going to this class',show_one:'Show this class again',skipped:'This class no longer shows in your day',shown:'Back in your day',hid_sub:'Subject hidden',hide_sub:'Remove from my day',show_sub:'Show again',sub_hidden:'That subject no longer shows in your day',sub_off:'Not shown in your day',on_home:'Show my classes on the home screen',yes:'On',no:'Off',retry:'↻ Try again',code:'Code',err_stale:'I couldn’t update the calendar: showing what I saved last.',
    now:'Now',next:'Next',until:'until {h}',in_min:'in {n} min',in_h:'in {h}',today:'today',tomorrow:'tomorrow',allday:'All day',no_today:'No classes today 🌿',no_week:'Nothing this week',
    no_rem:'No reminder',min_before:'{n} min before',add_ph:'What do you need to do?',add:'Add',added:'Added to your day',no_next:'no upcoming classes',next_cl:'Next: {d}',
    loading:'Loading your calendar…',ok:'Done! {n} classes in the calendar.',err_nourl:'Paste the calendar link first.',err_fetch:'I couldn’t read the calendar. Check it is published, or import the .ics file.',err_offline:'Offline: showing what I saved last.',err_notics:'That doesn’t look like a calendar (.ics).',err_noserver:'This version of the app can’t read Outlook or Google calendars. Import your timetable as an .ics file.',
-   synced:'Updated {t}',ago_min:'{n} min ago',ago_h:'{n} h ago',just:'just now',forget_q:'Remove the calendar and subjects from Quico?',saved:'Saved',subj_task:'{s}: {t}'},
+   synced:'Updated {t}',ago_min:'{n} min ago',ago_h:'{n} h ago',just:'just now',forget_q:'Remove the calendar and subjects from Quico?',saved:'Saved',subj_task:'{s}: {t}',add_cls:'Add a task to {s}',del:'Remove',saved_for:'Saved for {d}'},
  fr:{h1:'🎓 Cours',url_l:'Lien de ton calendrier',url_help:'Outlook : Paramètres → Calendrier → Calendriers partagés → Publier → copie le lien (HTML ou ICS). Google ou iCloud marchent aussi.',subs_l:'Mes matières (une par ligne)',save:'Enregistrer',t_today:'Aujourd’hui',t_week:'Semaine',my_subs:'📚 Mes matières',settings:'⚙️ Réglages',rem_l:'Rappel avant chaque cours',rem_help:'Avec l’appli ouverte, ou avec les notifications activées dans le menu.',refresh:'↻ Actualiser',import:'📄 Importer un fichier .ics',forget:'Retirer',hidden:'masqué',skip_one:'Je ne vais pas à ce cours',show_one:'Remontrer ce cours',skipped:'Ce cours n’apparaît plus dans ta journée',shown:'De retour dans ta journée',hid_sub:'Matière masquée',hide_sub:'Retirer de ma journée',show_sub:'Remontrer',sub_hidden:'Cette matière n’apparaît plus dans ta journée',sub_off:'N’apparaît pas dans ta journée',on_home:'Voir mes cours sur l’accueil',yes:'Oui',no:'Non',retry:'↻ Réessayer',code:'Code',err_stale:'Je n’ai pas pu mettre à jour le calendrier : je montre ce que j’ai gardé.',
    now:'Maintenant',next:'Prochain',until:'jusqu’à {h}',in_min:'dans {n} min',in_h:'dans {h}',today:'aujourd’hui',tomorrow:'demain',allday:'Toute la journée',no_today:'Pas de cours aujourd’hui 🌿',no_week:'Rien cette semaine',
    no_rem:'Sans rappel',min_before:'{n} min avant',add_ph:'Qu’as-tu à faire ?',add:'Ajouter',added:'Ajouté à ta journée',no_next:'pas de cours à venir',next_cl:'Prochain : {d}',
    loading:'Je charge ton calendrier…',ok:'C’est prêt ! {n} cours dans le calendrier.',err_nourl:'Colle d’abord le lien du calendrier.',err_fetch:'Je n’ai pas pu lire le calendrier. Vérifie qu’il est publié, ou importe le fichier .ics.',err_offline:'Hors connexion : je montre ce que j’ai gardé.',err_notics:'Ça ne ressemble pas à un calendrier (.ics).',err_noserver:'Cette version de l’appli ne peut pas lire les calendriers Outlook ou Google. Importe ton emploi du temps dans un fichier .ics.',
-   synced:'Mis à jour {t}',ago_min:'il y a {n} min',ago_h:'il y a {n} h',just:'à l’instant',forget_q:'Retirer le calendrier et les matières de Quico ?',saved:'Enregistré',subj_task:'{s} : {t}'}
+   synced:'Mis à jour {t}',ago_min:'il y a {n} min',ago_h:'il y a {n} h',just:'à l’instant',forget_q:'Retirer le calendrier et les matières de Quico ?',saved:'Enregistré',subj_task:'{s} : {t}',add_cls:'Ajouter une tâche à {s}',del:'Retirer',saved_for:'Enregistrée pour {d}'}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
 function t(k,v){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(v)Object.keys(v).forEach(x=>{s=s.split('{'+x+'}').join(v[x]);});return s;}
@@ -172,18 +181,20 @@ function dayName(ms){
 function inTime(ms){const m=Math.max(0,Math.round((ms-Date.now())/6e4));if(m<60)return t('in_min',{n:m});const h=Math.floor(m/60),r=m%60;return t('in_h',{h:h+' h'+(r?' '+r+' min':'')});}
 function toast(x){const el=document.getElementById('toast');el.textContent=x;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800);}
 
-let TAB='hoy',OPEN_ADD=null;
+let TAB='hoy',OPEN_ADD=null,ROWS=[];
 function setTab(x){TAB=x;document.getElementById('tab-hoy').setAttribute('aria-selected',String(x==='hoy'));document.getElementById('tab-sem').setAttribute('aria-selected',String(x==='sem'));renderList();}
 function toggleSec(k){
   const box=document.getElementById(k+'Box'),b=document.getElementById(k+'Btn'),open=box.hasAttribute('hidden');
   box.toggleAttribute('hidden',!open);b.setAttribute('aria-expanded',String(open));
   if(open&&k==='cfg')fillCfg();if(open&&k==='subs')renderSubs();
 }
+/* Cada clase de cada día: su ＋ y debajo sus tareas (solo de esa clase, no de la asignatura entera) */
 function row(o){
-  const t0=Date.now(),cur=!o.ad&&o.st<=t0&&o.en>t0,past=o.en<=t0;
+  const t0=Date.now(),cur=!o.ad&&o.st<=t0&&o.en>t0,past=o.en<=t0,i=ROWS.push(o)-1,open=OPEN_ADD===o.id,tk=QCLASES.tasks(o.id);
   return `<div class="cl${cur?' cur':''}${past?' past':''}"><span class="bar" style="background:${o.color}"></span>
-    <span class="tm">${o.ad?t('allday'):hm(o.st)+'–'+hm(o.en)}</span>
-    <span class="tx"><span class="nm">${esc(o.name)}${cur?`<span class="badge">${t('now')}</span>`:''}</span>${o.l?`<span class="lc">${esc(o.l)}</span>`:''}</span></div>`;
+    <span class="tx"><span class="tm">${o.ad?t('allday'):hm(o.st)+'–'+hm(o.en)}</span><span class="nm">${esc(o.name)}${cur?`<span class="badge">${t('now')}</span>`:''}</span>${o.l?`<span class="lc">${esc(o.l)}</span>`:''}</span>
+    <button class="add" onclick="openAdd(${i})" aria-label="${esc(t('add_cls',{s:o.name}))}" aria-expanded="${open}">＋</button></div>`+
+    (tk.length||open?`<div class="ctl">${tk.map(k=>`<div class="ct${k.done?' done':''}"><button class="ck" role="checkbox" aria-checked="${!!k.done}" aria-label="${esc(k.t)}" onclick="ctToggle(${i},'${k.id}')">${k.done?'✓':''}</button><span class="ctt">${esc(k.t)}</span><button class="cx" aria-label="${esc(t('del'))}: ${esc(k.t)}" onclick="ctDel(${i},'${k.id}')">✕</button></div>`).join('')}${open?`<div class="addrow"><input id="addIn" placeholder="${esc(t('add_ph'))}" aria-label="${esc(t('add_cls',{s:o.name}))}" onkeydown="if(event.key==='Enter'){event.preventDefault();addTask(${i});}"><button onclick="addTask(${i})">${t('add')}</button></div>`:''}</div>`:'');
 }
 function renderNow(){
   const el=document.getElementById('now'),n=QCLASES.now();
@@ -193,29 +204,33 @@ function renderNow(){
   el.innerHTML='';
 }
 function renderList(){
-  const el=document.getElementById('list');
+  const el=document.getElementById('list');ROWS=[];
   if(!QCLASES.hasData()){el.innerHTML=QCLASES.lastError()?'':`<div class="empty">${t('loading')}</div>`;return;}
-  if(TAB==='hoy'){const l=QCLASES.day(0);el.innerHTML=l.length?l.map(row).join(''):`<div class="empty">${t('no_today')}</div>`;return;}
+  if(TAB==='hoy'){const l=QCLASES.day(0);el.innerHTML=l.length?l.map(row).join(''):`<div class="empty">${t('no_today')}</div>`;focusAdd();return;}
   const l=QCLASES.week(0,7);if(!l.length){el.innerHTML=`<div class="empty">${t('no_week')}</div>`;return;}
-  let h='',last='';l.forEach(o=>{const k=QCLASES.dayKey(o.st);if(k!==last){h+=`<div class="dayh">${dayName(o.st)}</div>`;last=k;}h+=row(o);});el.innerHTML=h;
+  let h='',last='';l.forEach(o=>{const k=QCLASES.dayKey(o.st);if(k!==last){h+=`<div class="dayh">${dayName(o.st)}</div>`;last=k;}h+=row(o);});el.innerHTML=h;focusAdd();
 }
+function focusAdd(){const f=document.getElementById('addIn');if(f)f.focus();}
 function renderSubs(){
   const box=document.getElementById('subsBox'),subs=QCLASES.subjects();
   if(!subs.length){box.innerHTML=`<p class="help" style="padding:8px 4px">${t('subs_l')}: ⚙️</p>`;return;}
   const up=QCLASES.decorate(QCLASES.between(Date.now(),Date.now()+60*864e5));
   box.innerHTML=subs.map(s=>{const nx=up.find(o=>o.sub&&o.sub.i===s.i);
-    return `<div class="sub"><span class="dot" style="background:${s.color}"></span><span class="tx"><span class="nm">${esc(s.name)}</span><span class="nx">${nx?t('next_cl',{d:dayName(nx.st)+(nx.ad?'':' · '+hm(nx.st))}):t('no_next')}</span></span>
-      <button class="add" onclick="openAdd(${s.i})" aria-label="${esc(t('add'))}: ${esc(s.short)}" aria-expanded="${OPEN_ADD===s.i}">＋</button></div>
-      ${OPEN_ADD===s.i?`<div class="addrow"><input id="addIn" placeholder="${esc(t('add_ph'))}" aria-label="${esc(t('add_ph'))}" onkeydown="if(event.key==='Enter'){event.preventDefault();addTask(${s.i});}"><button onclick="addTask(${s.i})">${t('add')}</button></div>`:''}`;}).join('');
-  const f=document.getElementById('addIn');if(f)f.focus();
+    return `<div class="sub"><span class="dot" style="background:${s.color}"></span><span class="tx"><span class="nm">${esc(s.name)}</span><span class="nx">${nx?t('next_cl',{d:dayName(nx.st)+(nx.ad?'':' · '+hm(nx.st))}):t('no_next')}</span></span></div>`;}).join('');
 }
-function openAdd(i){OPEN_ADD=OPEN_ADD===i?null:i;renderSubs();}
-/* Tarea de una asignatura → a «Mi día» (la misma lista que el inicio y Trabajo) */
+function openAdd(i){const o=ROWS[i];if(!o)return;OPEN_ADD=OPEN_ADD===o.id?null:o.id;renderList();}
+/* Tarea de una clase concreta. Si la clase es hoy, también va a «Mi día» (enlazada: lo hecho allí se marca aquí);
+   si es otro día, se queda en su clase y ese día se ofrece en «＋ De Quico» (nada entra solo en el día) */
 function addTask(i){
-  const el=document.getElementById('addIn'),v=(el&&el.value||'').trim(),s=QCLASES.subjects().find(x=>x.i===i);if(!v||!s||!window.QDIA)return;
-  QDIA.add(t('subj_task',{s:s.short,t:v}));OPEN_ADD=null;renderSubs();toast(t('added'));
+  const o=ROWS[i],el=document.getElementById('addIn'),v=(el&&el.value||'').trim();if(!o||!v)return;
+  const k=QCLASES.addTask(o,v);if(!k)return;
+  const today=QCLASES.startOfDay(o.st)===QCLASES.startOfDay();
+  if(today&&window.QDIA&&QDIA.addLinked){const q=QDIA.addLinked(t('subj_task',{s:o.name,t:k.t}),{occ:o.id,id:k.id});if(q)QCLASES.linkTask(o.id,k.id,q);}
+  OPEN_ADD=null;renderList();toast(today?t('added'):t('saved_for',{d:dayName(o.st)}));
   try{if(navigator.vibrate&&__cfg().vib!==false&&!__cfg().calm)navigator.vibrate(25);}catch(e){}
 }
+function ctToggle(i,id){const o=ROWS[i];if(!o)return;const k=QCLASES.tasks(o.id).find(x=>x.id===id);if(!k)return;QCLASES.setTaskDone(o.id,id,!k.done);renderList();}
+function ctDel(i,id){const o=ROWS[i];if(!o)return;QCLASES.removeTask(o.id,id);renderList();}
 /* Si el calendario no se pudo leer, se dice (con un código para poder arreglarlo) y se puede reintentar */
 function renderErr(){
   const el=document.getElementById('err'),e=QCLASES.lastError();
@@ -232,8 +247,8 @@ function render(){
   const ok=QCLASES.configured();
   document.getElementById('setup').hidden=ok;document.getElementById('main').hidden=!ok;
   if(!ok)return;
-  renderErr();renderNow();renderList();renderSync();
-  if(!document.getElementById('subsBox').hidden&&OPEN_ADD===null)renderSubs(); // sin borrar lo que se está escribiendo
+  renderErr();renderNow();if(OPEN_ADD===null)renderList();renderSync(); // sin borrar lo que se está escribiendo
+  if(!document.getElementById('subsBox').hidden)renderSubs();
 }
 function msg(id,text,err){document.getElementById(id).innerHTML=text?`<div class="msg${err?' err':''}" role="status">${esc(text)}</div>`:'';}
 function result(id,r){
@@ -293,6 +308,7 @@ function applySetup(b64){
 })();
 /* Atrás del móvil: si hay un apartado abierto, se cierra */
 window.__crisBack=function(){
+  if(OPEN_ADD!==null){OPEN_ADD=null;renderList();return true;}
   for(const k of ['cfg','subs']){const b=document.getElementById(k+'Box');if(b&&!b.hidden){toggleSec(k);return true;}}
   return false;
 };

@@ -59,6 +59,8 @@
   function save(d){write(d);}
   function isDone(i){return !!i.done||(!!i.mod&&modDone(i.mod))||locked(i)||(!!i.cls&&i.cls.en<=Date.now());}
   /* Orden en pantalla: primero lo pendiente, lo hecho al final (orden estable) */
+  /* Lo hecho en «Mi día» también se marca en la clase de la que vino la tarea */
+  function linkDone(i,v){if(i&&i.ct&&window.QCLASES&&QCLASES.setTaskDone)try{QCLASES.setTaskDone(i.ct.occ,i.ct.id,v);}catch(e){}}
   function view(a){return [...a.filter(i=>!isDone(i)),...a.filter(i=>isDone(i))];}
   const API={
     day,modKey,isDone,locked,parseMin,
@@ -76,6 +78,9 @@
       save(d);API.rest=lines.slice(take.length).join('\n');return take.length;
     },
     rest:'',
+    /* Una tarea que viene de una clase concreta (ct = {occ, id}): devuelve su id */
+    addLinked(text,ct){const d=load();const p=parseMin(clean(text));if(!p.t||d.items.length>=MAX_LINES)return null;
+      const it={id:newId(),t:p.t.slice(0,MAX_T),mod:null,e:'',done:false,min:p.min,ct};d.items.push(it);save(d);return it.id;},
     toggle(id){
       const d=load();const i=d.items.find(x=>x.id===id);
       if(!i){
@@ -88,9 +93,9 @@
       // En las rutinas de módulo se mantiene la marca del módulo en sintonía
       const k=i.mod&&modKey(i.mod);if(k){try{if(now)localStorage.setItem(k,'1');else localStorage.removeItem(k);}catch(e){}}
       if(now&&d.timer&&d.timer.id===id)d.timer=null;
-      save(d);return now;
+      save(d);linkDone(i,now);return now;
     },
-    setDone(id,v){const d=load();const i=d.items.find(x=>x.id===id);if(!i)return;i.done=!!v;if(v&&d.timer&&d.timer.id===id)d.timer=null;save(d);},
+    setDone(id,v){const d=load();const i=d.items.find(x=>x.id===id);if(!i)return;i.done=!!v;if(v&&d.timer&&d.timer.id===id)d.timer=null;save(d);linkDone(i,!!v);},
     /* Cambiar el texto de una tarea propia (vacío = no se cambia) */
     rename(id,text){const v=clean(text);const d=load();const i=d.items.find(x=>x.id===id);if(!i||i.mod||!v)return false;
       const p=parseMin(v);i.t=p.t.slice(0,MAX_T);if(p.min)i.min=p.min;save(d);return true;},
@@ -99,6 +104,8 @@
     remove(id){const d=load(),it=d.items.find(x=>x.id===id);
       // una clase quitada a mano no vuelve a aparecer ese día
       if(it&&it.cls){d.clsGone=Array.isArray(d.clsGone)?d.clsGone:[];d.clsGone.push(it.cls.occ);}
+      // tarea de una clase: sigue guardada en su clase y se puede volver a traer
+      if(it&&it.ct&&window.QCLASES&&QCLASES.linkTask)try{QCLASES.linkTask(it.ct.occ,it.ct.id,null);}catch(e){}
       d.items=d.items.filter(x=>x.id!==id);if(d.timer&&d.timer.id===id)d.timer=null;save(d);},
     /* Clases de hoy (del calendario) → elementos del día, en orden de hora. Devuelve si cambió algo */
     syncClasses(list,src){
