@@ -115,14 +115,27 @@ self.addEventListener('fetch', (event) => {
 
 // Recordatorio push (shared/avisos.js + netlify/functions/push-tick.mjs): llega cifrado;
 // se descifra con la clave que el móvil guardó en IndexedDB y se enseña.
-function pushKey() {
+function pushDb() {
   return new Promise((res) => {
     try {
       const r = indexedDB.open('quico-push', 1);
       r.onupgradeneeded = () => r.result.createObjectStore('kv');
-      r.onsuccess = () => { const q = r.result.transaction('kv', 'readonly').objectStore('kv').get('key'); q.onsuccess = () => res(q.result || null); q.onerror = () => res(null); };
+      r.onsuccess = () => res(r.result);
       r.onerror = () => res(null);
     } catch (e) { res(null); }
+  });
+}
+async function pushKey() {
+  const db = await pushDb(); if (!db) return null;
+  return new Promise((res) => { const q = db.transaction('kv', 'readonly').objectStore('kv').get('key'); q.onsuccess = () => res(q.result || null); q.onerror = () => res(null); });
+}
+// apunta la etiqueta: si luego se abre Quico, no vuelve a avisar de lo mismo
+async function pushShown(tag) {
+  const db = await pushDb(); if (!db || !tag) return;
+  await new Promise((res) => {
+    const st = db.transaction('kv', 'readwrite').objectStore('kv'), q = st.get('shown');
+    q.onsuccess = () => { const l = Array.isArray(q.result) ? q.result : []; if (l.indexOf(tag) < 0) l.push(tag); st.put(l.slice(-60), 'shown'); };
+    q.transaction.oncomplete = () => res(); q.transaction.onerror = () => res();
   });
 }
 self.addEventListener('push', (event) => {
@@ -140,6 +153,7 @@ self.addEventListener('push', (event) => {
         } catch (e) {}
       }
     }
+    await pushShown(tag);
     // misma etiqueta que el aviso local: si Quico estaba abierto y ya avisó, se sustituye sin repetir
     return self.registration.showNotification(title, { body, tag, icon: 'icons/notif-192.png', badge: 'icons/badge-96.png' });
   })());

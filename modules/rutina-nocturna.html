@@ -493,6 +493,7 @@ function toggleStep(id){
   if(k>=0)o.splice(k,1);else{if(steps.length-o.length<=1)return;o.push(id);}
   try{localStorage.setItem('cris_noche_cfg',JSON.stringify({off:o,min:planMinutes(o)}));}catch(e){}
   renderHome();
+  const b=$('stepRow').children[steps.findIndex(s=>s.id===id)];if(b)b.focus(); // el foco sigue en el mismo paso
 }
 /* Minutos del plan; se guardan con la personalización para que la portada de Quico y el aviso de la noche digan lo mismo */
 function planMinutes(o){return Math.max(1,Math.round(steps.reduce((a,s)=>a+(o.includes(s.id)?0:s.duration),0)/60));}
@@ -527,7 +528,9 @@ const $ = id => document.getElementById(id);
 function setDim(v){$('dim').style.opacity=v;}
 function nextOn(i){const k=ON.indexOf(i);return k>=0&&k<ON.length-1?ON[k+1]:-1;}
 function syncPause(){const b=$('pauseBtn');b.textContent=t(isRunning?'pause':'resume');b.disabled=waiting&&isRunning;}
-function markNight(){try{if(nightKey)localStorage.setItem(nightKey,'1');}catch(e){}}
+function markNight(){try{if(nightKey)localStorage.setItem(nightKey,'1');}catch(e){}
+  // noche hecha: que Quico quite de los avisos push el de la rutina de esta noche
+  try{if(window.parent!==window&&parent.pushSync)parent.pushSync(true);}catch(e){}}
 // la noche cuenta para la tarde anterior hasta las 5:00
 function nightKeyNow(){const d=new Date(Date.now()-5*3600e3),p=n=>String(n).padStart(2,'0');return 'cris_noche_v1_'+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
 
@@ -703,6 +706,9 @@ function tick(){
   const n=Math.floor((Date.now()-base)/1000);
   if(n<lastEl){base=Date.now()-lastEl*1000;return;} // el reloj del sistema fue hacia atrás
   if(n===lastEl)return;
+  // más de 10 min sin poder contar (pantalla bloqueada, móvil dormido): no seguir sonando a deshoras;
+  // se queda en pausa donde estaba y «Reanudar» sigue desde ahí
+  if(n-lastEl>600){stopTimer();hush();releaseAwake();syncPause();return;}
   const jump=n>lastEl+2;lastEl=el=n;
   updateGuided(n,jump);
 }
@@ -747,6 +753,7 @@ function stepEnd(){
 }
 function enterWait(){
   clearTick();waiting=true;isRunning=true;segIdx=-1;
+  releaseAwake(); // esperando el toque: la pantalla se puede apagar sola (si no, quedaría encendida toda la noche)
   const n=(stepL(cur).tasks||[]).length;
   $('dots').innerHTML=dotsHtml(n,n,true);
   $('box').innerHTML=`<div class="sx-card sx-wait"><div class="sx-name">${t('wait_h')}</div><div class="sx-desc">${t('wait_p')}</div>
@@ -773,7 +780,7 @@ function go(at){el=lastEl=at;if(isRunning)base=Date.now()-at*1000;else startTime
 function pauseRoutine() {
   if (finished) return;
   if (waiting) { // esperando «A la cama»: pausar no hace nada (solo se reanuda si el atrás lo paró)
-    if (!isRunning) { isRunning = true; keepAwake(); speak(t('v_wait')); syncPause(); }
+    if (!isRunning) { isRunning = true; speak(t('v_wait')); syncPause(); }
     return;
   }
   if (isRunning) { stopTimer(); hush(); releaseAwake(); }
@@ -805,10 +812,13 @@ function finishRoutine() {
   dimT1 = setTimeout(() => { darkOn = true; setDim(.9); }, 4000);
 }
 // Con la pantalla ya oscura, un toque la aclara un poco durante 8 s
-document.addEventListener('click', () => {
+// (si estaba oscura del todo, ese toque solo aclara: no pulsa lo que haya debajo)
+document.addEventListener('click', e => {
   if (!finished || !darkOn) return;
+  const wasDark = parseFloat($('dim').style.opacity) > .5;
   setDim(.3); clearTimeout(dimT2); dimT2 = setTimeout(() => setDim(.9), 8000);
-});
+  if (wasDark) { e.stopPropagation(); e.preventDefault(); }
+}, true);
 // 🏠 Volver al inicio: dentro de Quico vuelve a la portada de la app
 function endRoutine() {
   showHome();
@@ -816,15 +826,17 @@ function endRoutine() {
 }
 
 /* Pantalla encendida mientras la rutina corre: si se apaga, el móvil congela el temporizador y la voz */
-let wakeLock = null, _wlp = null;
+let wakeLock = null, _wlp = null, wantAwake = false;
 async function keepAwake() {
+  wantAwake = true;
   if (wakeLock || _wlp || !('wakeLock' in navigator)) return;
-  try { _wlp = navigator.wakeLock.request('screen'); wakeLock = await _wlp; wakeLock.addEventListener('release', () => { wakeLock = null; }); }
+  try { _wlp = navigator.wakeLock.request('screen'); wakeLock = await _wlp; wakeLock.addEventListener('release', () => { wakeLock = null; });
+    if (!wantAwake) releaseAwake(); } // se pidió soltarla mientras llegaba
   catch (e) {} finally { _wlp = null; }
 }
-function releaseAwake() { try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {} }
+function releaseAwake() { wantAwake = false; try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {} }
 // el móvil suelta el bloqueo al salir de la app: se recupera al volver (y se pone al día el tiempo)
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && isRunning) { keepAwake(); tick(); } });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && isRunning && !waiting) { tick(); if (isRunning) keepAwake(); } });
 
 /* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió.
    Corriendo → pausa · en pausa (o en info / al terminar) → portada del módulo · en la portada → false */

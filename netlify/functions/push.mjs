@@ -17,8 +17,12 @@ const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods
 const json = (code, o) => new Response(JSON.stringify(o), { status: code, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...CORS } });
 const subKey = (endpoint) => crypto.createHash('sha256').update(String(endpoint)).digest('hex').slice(0, 40);
 const isB64 = (s, max) => typeof s === 'string' && s.length > 0 && s.length <= max && /^[A-Za-z0-9+/=_-]+$/.test(s);
+// solo servicios push de verdad (Chrome/Android, Apple, Firefox, Edge): nadie puede usar esto para enviar a otra parte
+const PUSH_HOSTS = /(^|\.)(fcm\.googleapis\.com|android\.googleapis\.com|push\.apple\.com|push\.services\.mozilla\.com|notify\.windows\.com)$/;
 function cleanSub(s) {
   if (!s || typeof s !== 'object' || typeof s.endpoint !== 'string' || s.endpoint.length > 1000 || !/^https:\/\//.test(s.endpoint)) return null;
+  let host; try { host = new URL(s.endpoint).hostname; } catch (e) { return null; }
+  if (!PUSH_HOSTS.test(host)) return null;
   const k = s.keys || {};
   if (!isB64(k.p256dh, 200) || !isB64(k.auth, 100)) return null;
   return { endpoint: s.endpoint, keys: { p256dh: k.p256dh, auth: k.auth } };

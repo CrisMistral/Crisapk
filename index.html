@@ -821,7 +821,7 @@ function setLang(l){
   applyStaticI18n();
   buildModuleList();
   setGreeting();
-  renderToday();renderCfg();renderNotif();
+  renderToday();renderCfg();renderNotif();pushSync(); // los avisos push, en el idioma nuevo
   if(document.getElementById('daySheet').classList.contains('open')){
     renderDayEdit();
     document.getElementById('ds-sub').textContent=t('ds_sub_list');
@@ -1172,7 +1172,7 @@ function setCfgStore(c){try{localStorage.setItem('cris_cfg',JSON.stringify(c));}
 /* Nombre configurable: la app deja de estar «pegada» a una persona (sin nombre: saluda sin nombre) */
 function cfgName(){return (getCfg().name||'').trim();}
 let _nameSaveT=null;
-function saveName(v){const c=getCfg();c.name=(v||'').slice(0,18);setCfgStore(c);clearTimeout(_nameSaveT);_nameSaveT=setTimeout(()=>{applyStaticI18n();setGreeting();renderNotif();},350);}
+function saveName(v){const c=getCfg();c.name=(v||'').slice(0,18);setCfgStore(c);clearTimeout(_nameSaveT);_nameSaveT=setTimeout(()=>{applyStaticI18n();setGreeting();renderNotif();pushSync();},350);}
 function toggleExplain(){const c=getCfg();c.explain=c.explain!==true;setCfgStore(c);document.documentElement.classList.toggle('simple',c.explain!==true);renderCfg();}
 function toggleCfg(k){const c=getCfg();c[k]=c[k]===false;setCfgStore(c);renderCfg();}
 function toggleCalm(){
@@ -1248,6 +1248,10 @@ function fireNotif(title,body,tag){
     }
   }catch(e){try{new Notification(title,{body});}catch(_){}}
 }
+/* Aviso local, salvo que el push ya lo enseñara (el service worker apunta sus etiquetas) */
+function fireNotifOnce(title,body,tag){(window.QPUSH?QPUSH.shown():Promise.resolve([])).catch(()=>[]).then(s=>{if(s.indexOf(tag)<0)fireNotif(title,body,tag);});}
+/* ¿Está hecha la rutina de la noche a la que pertenece este momento? (misma clave y desfase de 5 h que el módulo) */
+function nightDoneAt(ms){const d=new Date(ms-5*3600e3),p=x=>String(x).padStart(2,'0');try{return localStorage.getItem('cris_noche_v1_'+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()))==='1';}catch(e){return false;}}
 function minsOf(hhmm){const p=(hhmm||'').split(':');return (+p[0])*60+(+p[1]);}
 function checkNotif(){
   const n=getNotifCfg();
@@ -1261,18 +1265,18 @@ function checkNotif(){
     n.lastM=today;setNotifCfg(n);
     const day=now.getDay();
     const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');
-    fireNotif(t('notif_m_title',{name:cfgName()}),t('notif_m_body',{p:t('pil')[day],z:zona}),'q-m-'+today);
+    fireNotifOnce(t('notif_m_title',{name:cfgName()}),t('notif_m_body',{p:t('pil')[day],z:zona}),'q-m-'+today);
   }
   if(n.n&&n.lastN!==today&&nowMin>=minsOf(n.n)){
     n.lastN=today;setNotifCfg(n);
-    fireNotif(t('notif_n_title'),t('notif_n_body',{m:nocheMin()}),'q-n-'+today);
+    if(!nightDoneAt(Date.now()))fireNotifOnce(t('notif_n_title'),t('notif_n_body',{m:nocheMin()}),'q-n-'+today);
   }
   // Pre-aviso suave (transición, no alarma): solo dentro de los 10 min previos
   if(n.n&&n.lastPreN!==today&&n.lastN!==today){
     const tgt=minsOf(n.n);
     if(nowMin>=tgt-10&&nowMin<tgt){
       n.lastPreN=today;setNotifCfg(n);
-      fireNotif(t('notif_pre_title'),t('notif_pre_body'),'q-pre-'+today);
+      if(!nightDoneAt(Date.now()))fireNotifOnce(t('notif_pre_title'),t('notif_pre_body'),'q-pre-'+today);
     }
   }
 }
@@ -1287,21 +1291,26 @@ function agText(o,ms){const lg=crisLang()==='en'?'en-GB':crisLang(),emo=o.kind==
   return (ms>3*3600e3?t('ag_rem_day',{e:emo,h:new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'}),s:o.name}):t('ag_rem_min',{e:emo,n:Math.max(1,Math.round(ms/6e4)),s:o.name}))+(o.l?' · '+o.l:'');}
 function pushItems(){
   const n=getNotifCfg(),now=Date.now(),out=[];if(!n.on)return out;
-  const at=(d,hhmm,off)=>{const m=minsOf(hhmm);if(!(m>=0))return 0;const x=new Date(d);x.setHours(0,0,0,0);return x.getTime()+(m-(off||0))*6e4;};
+  const at=(d,hhmm,off)=>{const m=minsOf(hhmm);if(!(m>=0))return 0;const x=new Date(d);x.setHours(0,m-(off||0),0,0);return x.getTime();};
   for(let i=0;i<7;i++){
     const d=new Date(now);d.setDate(d.getDate()+i);const day=d.getDay(),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
     if(n.m){const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');out.push({at:at(d,n.m),t:t('notif_m_title',{name:cfgName()}),b:t('notif_m_body',{p:t('pil')[day],z:zona}),g:'q-m-'+key});}
-    if(n.n){out.push({at:at(d,n.n,10),t:t('notif_pre_title'),b:t('notif_pre_body'),g:'q-pre-'+key});
+    if(n.n&&!nightDoneAt(at(d,n.n))){out.push({at:at(d,n.n,10),t:t('notif_pre_title'),b:t('notif_pre_body'),g:'q-pre-'+key});
       out.push({at:at(d,n.n),t:t('notif_n_title'),b:t('notif_n_body',{m:nocheMin()}),g:'q-n-'+key});}
   }
   if(window.QCAL)QCAL.agenda(now,now+7*864e5).forEach(o=>{if(o.rem>0)out.push({at:o.st-o.rem*6e4,t:agText(o,o.rem*6e4),b:'',g:agTag(o)});});
   return out.filter(x=>x.at>now+60e3).sort((a,b)=>a.at-b.at).slice(0,150);
 }
-function pushSync(force){
+function pushSync(force,keepalive){
   const n=getNotifCfg();
-  if(!n.on||!window.QPUSH||!QPUSH.supported()||!('Notification' in window)||Notification.permission!=='granted'||navigator.onLine===false)return;
-  QPUSH.schedule(pushItems(),force);
+  if(!window.QPUSH||!QPUSH.supported()||navigator.onLine===false)return;
+  if(!n.on){QPUSH.off();return;} // apagados aquí o en otro dispositivo (sincronizado): este también deja de sonar
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+  QPUSH.schedule(pushItems(),force,keepalive);
 }
+// lo que guardan los módulos (calendario, clases, rutina…) llega aquí como evento «storage»: lista al día enseguida
+let _pushT=null;
+window.addEventListener('storage',()=>{clearTimeout(_pushT);_pushT=setTimeout(()=>pushSync(),1500);});
 setTimeout(()=>pushSync(),4000);
 setInterval(()=>{if(!document.hidden)pushSync();},15*60e3);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();clsSync();pushSync();} });
@@ -1398,6 +1407,10 @@ function checkClassRemind(){
   let done=[];try{done=JSON.parse(localStorage.getItem('cris_ag_rem_v1')||'[]');}catch(e){}
   const n=list.find(o=>done.indexOf(o.id+'@'+o.rem)<0);if(!n)return;
   done.push(n.id+'@'+n.rem);try{localStorage.setItem('cris_ag_rem_v1',JSON.stringify(done.slice(-40)));}catch(e){}
+  // si el push ya lo enseñó (Quico estaba cerrado), no se repite al abrir
+  (window.QPUSH?QPUSH.shown():Promise.resolve([])).catch(()=>[]).then(s=>{if(s.indexOf(agTag(n))<0)clsRemindShow(n,now);});
+}
+function clsRemindShow(n,now){
   const ms=n.st-now,lg=crisLang()==='en'?'en-GB':crisLang(),emo=n.kind==='clase'?'🎓':(n.e||'📌');
   const txt=(ms>3*3600e3?t('ag_rem_day',{e:emo,h:new Date(n.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'}),s:n.name}):t('ag_rem_min',{e:emo,n:Math.max(1,Math.round(ms/6e4)),s:n.name}))+(n.l?' · '+n.l:'');
   if(hapticOK())navigator.vibrate([60,60,60]);
@@ -1792,8 +1805,9 @@ function syncUnlink(){if(!confirm(t('acc_out_q')))return;QSYNC.unlink();_syncVie
 function syncSoon(keep){if(window.QSYNC&&QSYNC.linked()&&navigator.onLine!==false)QSYNC.sync(keep?{keepalive:true}:undefined);}
 window.addEventListener('quico-sync',()=>{ // llegaron cambios del otro móvil
   if(!document.body.classList.contains('mod-open')){renderToday();setGreeting();}
+  pushSync(); // p. ej. citas nuevas o avisos apagados en el otro dispositivo
 });
-document.addEventListener('visibilitychange',()=>{syncSoon(document.hidden);});
+document.addEventListener('visibilitychange',()=>{syncSoon(document.hidden);if(document.hidden)pushSync(false,true);});
 setInterval(()=>{if(!document.hidden)syncSoon();},120000);
 setTimeout(syncSoon,2500);
 function importData(file){
