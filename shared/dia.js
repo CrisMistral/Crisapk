@@ -139,7 +139,10 @@
     },
     hasOcc(occ){return load().items.some(i=>i.cls&&i.cls.occ===occ);},
     /* Si la cita cambia o se borra en el calendario, el día también */
-    updateOcc(occ,c){const d=load(),i=d.items.find(x=>x.cls&&x.cls.occ===occ);if(!i)return;if(c){i.t=c.name;i.cls={...i.cls,st:c.st,en:c.en,l:c.l||''};}else d.items=d.items.filter(x=>x!==i);save(d);},
+    updateOcc(occ,c){const d=load(),i=d.items.find(x=>x.cls&&x.cls.occ===occ);if(!i)return;
+      if(c){i.t=c.name;i.cls={...i.cls,occ:c.occ||i.cls.occ,st:c.st,en:c.en,l:c.l||''}; // c.occ: la misma cita con id nuevo
+        if(c.occ&&c.occ!==occ&&Array.isArray(d.clsGone))d.clsGone=d.clsGone.map(g=>g===occ?c.occ:g);}
+      else d.items=d.items.filter(x=>x!==i);save(d);},
     /* Sube o baja entre las de su mismo estado (pendientes con pendientes), como se ve */
     move(id,dir){
       const d=load(),a=d.items,v=view(a),k=v.findIndex(x=>x.id===id);if(k<0)return;

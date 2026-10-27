@@ -39,7 +39,8 @@
     const out=[];
     rd().ev.forEach(e=>{
       if(!isRep(e)){const o=occ(e);if(o.st<to&&o.en>from)out.push(o);return;}
-      const ex=new Set(e.ex||[]),days=e.rep.days.map(Number),end=e.rep.until?at(e.rep.until)+DAY:Infinity;
+      // fin = medianoche del día siguiente a «Hasta» (no +24 h: los días de cambio de hora duran 23 o 25)
+      const ex=new Set(e.ex||[]),days=e.rep.days.map(Number),end=e.rep.until?at(add(e.rep.until,1)):Infinity;
       const d=pd(dk(Math.max(at(e.date),from-DAY)));   // un día antes por si una cita cruza la medianoche
       for(let n=0;d.getTime()<Math.min(to,end)&&n<400;n++,d.setDate(d.getDate()+1)){
         const k=dk(d);if(k<e.date||ex.has(k)||days.indexOf(d.getDay())<0)continue;
@@ -48,11 +49,15 @@
     });
     return out.sort((a,b)=>a.st-b.st||a.en-b.en);
   }
-  /* «Mi día» de hoy: lo que tenga de esa cita se pone al día (o se quita si ya no toca hoy) */
+  /* «Mi día» de hoy: lo que tenga de esa cita se pone al día (o se quita si ya no toca hoy).
+     Si pasa de suelta a semanal (o al revés) cambia su id, pero sigue siendo la misma cosa del día */
   function dayRefresh(id){
-    if(!window.QDIA)return;const s=new Date();s.setHours(0,0,0,0);const t0=s.getTime(),k=dk(s);
-    const now=between(t0,t0+DAY).filter(o=>o.evId===id&&dk(o.st)===k);
-    ['cal:'+id,'cal:'+id+'@'+k].forEach(oid=>{const o=now.find(x=>x.id===oid);window.QDIA.updateOcc(oid,o?{name:o.name,st:o.st,en:o.en,l:o.l}:null);});
+    if(!window.QDIA)return;const k=today(),o=between(at(k),at(add(k,1))).find(x=>x.evId===id&&dk(x.st)===k)||null;
+    ['cal:'+id,'cal:'+id+'@'+k].forEach(oid=>{
+      if(!window.QDIA.hasOcc(oid))return;
+      if(o&&oid!==o.id&&window.QDIA.hasOcc(o.id)){window.QDIA.updateOcc(oid,null);return;} // ya está con el id nuevo
+      window.QDIA.updateOcc(oid,o?{occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l}:null);
+    });
   }
 
   /* ── Regla ── */
@@ -98,7 +103,9 @@
     remove(id){const d=rd();d.ev=d.ev.filter(e=>e.id!==id);wr(d);dayRefresh(id);},
     isRep,
     /* Una que se repite: quitar solo ese día (festivo, vacaciones…) */
-    skip(id,date){const d=rd(),e=d.ev.find(x=>x.id===id);if(!e)return;e.ex=[...new Set([...(e.ex||[]),date])].filter(x=>x>=add(today(),-60)).sort();wr(d);dayRefresh(id);},
+    skip(id,date){const d=rd(),e=d.ev.find(x=>x.id===id);if(!e)return;
+      // solo se olvidan los días que ya no pueden salir (antes del inicio o después de «Hasta»)
+      e.ex=[...new Set([...(e.ex||[]),date])].filter(x=>x>=e.date&&!(e.rep&&e.rep.until&&x>e.rep.until)).sort();wr(d);dayRefresh(id);},
     /* Añadir a «Mi día» de hoy (una cita del calendario o una clase) */
     toDay(o){return window.QDIA?window.QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.kind==='clase'?'🎓':o.e},o.kind==='clase'?'clase':'cita'):0;},
     between,
@@ -157,9 +164,8 @@
     /* Las citas marcadas «Ponerla en mi día» entran solas ese día (las demás, solo si las añades tú) */
     syncDay(){
       if(!window.QDIA||!areaOn('calendario'))return 0;
-      const s=new Date();s.setHours(0,0,0,0);let n=0;
-      const day=new Set(rd().ev.filter(e=>e.day).map(e=>e.id)),k=dk(s);
-      between(s.getTime(),s.getTime()+DAY).filter(o=>day.has(o.evId)&&dk(o.st)===k).forEach(o=>{n+=window.QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.e},'cita',true);});
+      let n=0;const k=today(),day=new Set(rd().ev.filter(e=>e.day).map(e=>e.id));
+      between(at(k),at(add(k,1))).filter(o=>day.has(o.evId)&&dk(o.st)===k).forEach(o=>{n+=window.QDIA.addTimed({occ:o.id,name:o.name,st:o.st,en:o.en,l:o.l,e:o.e},'cita',true);});
       return n;
     }
   };
