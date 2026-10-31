@@ -100,6 +100,8 @@ if(__cfg().explain!==true)document.documentElement.classList.add('simple');
     <button class="h" id="cfgBtn" aria-expanded="false" aria-controls="cfgBox" onclick="toggleCfg()"><span data-i18n="settings">⚙️ Ajustes</span><span aria-hidden="true">▾</span></button>
     <div id="cfgBox" hidden>
       <p class="note" id="statsNote"></p>
+      <label class="l" for="pLink" data-i18n="paste_l">¿Tienes un enlace de Quico con citas? Pégalo aquí</label>
+      <div class="row"><input class="in" id="pLink" type="url" inputmode="url" autocomplete="off" spellcheck="false" style="flex:3"><button class="btn" id="pGo" style="flex:1" onclick="pasteLink()" data-i18n="paste_go">Añadir</button></div>
       <div class="row"><button class="btn red" onclick="clearPer()" data-i18n="o_clear">Borrar los datos de la regla</button></div>
       <p class="note" data-i18n="privacy">Todo se guarda solo en este móvil. Las fechas de la regla son aproximadas: si te importa evitar o buscar un embarazo, no te fíes solo de ellas.</p>
     </div>
@@ -128,7 +130,7 @@ if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 
 <script src="../shared/dia.js?v=119"></script>
 <script src="../shared/clases.js?v=118"></script>
-<script src="../shared/cal.js?v=119"></script>
+<script src="../shared/cal.js?v=120"></script>
 <script>
 const UI={
  es:{h1:'📅 Calendario',add:'＋ Tutoría o cita',settings:'⚙️ Ajustes',o_home:'Ver la regla en el inicio',o_clear:'Borrar los datos de la regla',privacy:'Todo se guarda solo en este móvil. Las fechas de la regla son aproximadas: si te importa evitar o buscar un embarazo, no te fíes solo de ellas.',
@@ -139,7 +141,7 @@ const UI={
    no_rem:'Sin aviso',rem_min:'{n} min antes',rem_h:'1 hora antes',rem_d:'1 día antes',nothing:'Nada este día.',add_day:'＋ Añadir este día',
    l_class:'clase',l_tut:'tutoría',l_cita:'cita',l_per:'regla',l_pred:'prevista',
    stats:'Tu ciclo medio: {c} días · regla de unos {l} días.',stats0:'Con dos reglas apuntadas calcularé tu ciclo (ahora uso 28 días).',
-   clear_q:'¿Borrar todos los días de regla apuntados?',saved:'Guardado',deleted:'Borrado',on:'Sí',off:'No',bad_time:'La hora de fin va después de la de inicio.',future:'Ese día aún no ha llegado.',imported:'Reglas añadidas: {n}',f_day_opt:'📋 Ponerla en mi día',to_day:'＋ A mi día',in_day:'✓ En tu día',added_day:'Añadida a tu día'},
+   clear_q:'¿Borrar todos los días de regla apuntados?',saved:'Guardado',deleted:'Borrado',on:'Sí',off:'No',bad_time:'La hora de fin va después de la de inicio.',future:'Ese día aún no ha llegado.',imported:'Reglas añadidas: {n}',imported_ev:'Citas añadidas: {n}',imported_ev0:'Esas citas ya estaban en tu calendario',paste_l:'¿Tienes un enlace de Quico con citas? Pégalo aquí',paste_go:'Añadir',paste_bad:'Ese enlace no trae citas de Quico.',f_day_opt:'📋 Ponerla en mi día',to_day:'＋ A mi día',in_day:'✓ En tu día',added_day:'Añadida a tu día'},
  en:{h1:'📅 Calendar',add:'＋ Tutorial or appointment',settings:'⚙️ Settings',o_home:'Show my period on the home screen',o_clear:'Delete period data',privacy:'Everything stays on this phone only. Period dates are approximate: don’t rely on them alone to avoid or plan a pregnancy.',
    f_rep:'🔁 Repeats every week',rep_hint:'None = just once',f_since:'From',f_until:'Until (optional)',del_one:'🗑️ Just this day',del_all:'🗑️ Delete all',skipped:'Removed that day',bad_until:'The end date must be after the start date.',no_days:'None of the chosen days falls between those dates.',ty_tut:'👩‍🏫 Tutorial',ty_cita:'📌 Other',f_what:'What is it?',f_with:'With whom, or which subject?',f_with2:'With whom? (optional)',f_day:'Day',f_from:'From',f_to:'To',f_where:'Where? (optional)',f_rem:'Reminder',save:'Save',del:'🗑️ Delete',
    new_t:'New appointment',edit_t:'Change appointment',tut:'Tutorial',what_ph:'Doctor, meeting, deadline…',with_ph:'Teacher or subject',where_ph:'Office, Teams…',
@@ -148,7 +150,7 @@ const UI={
    no_rem:'No reminder',rem_min:'{n} min before',rem_h:'1 hour before',rem_d:'1 day before',nothing:'Nothing this day.',add_day:'＋ Add on this day',
    l_class:'class',l_tut:'tutorial',l_cita:'appointment',l_per:'period',l_pred:'expected',
    stats:'Your average cycle: {c} days · period of about {l} days.',stats0:'Once two periods are marked I’ll work out your cycle (for now I use 28 days).',
-   clear_q:'Delete all marked period days?',saved:'Saved',deleted:'Deleted',on:'On',off:'Off',bad_time:'The end time must be after the start time.',future:'That day hasn’t come yet.',imported:'Periods added: {n}',f_day_opt:'📋 Put it in my day',to_day:'＋ To my day',in_day:'✓ In your day',added_day:'Added to your day'},
+   clear_q:'Delete all marked period days?',saved:'Saved',deleted:'Deleted',on:'On',off:'Off',bad_time:'The end time must be after the start time.',future:'That day hasn’t come yet.',imported:'Periods added: {n}',imported_ev:'Appointments added: {n}',imported_ev0:'Those appointments were already in your calendar',paste_l:'Got a Quico link with appointments? Paste it here',paste_go:'Add',paste_bad:'That link has no Quico appointments.',f_day_opt:'📋 Put it in my day',to_day:'＋ To my day',in_day:'✓ In your day',added_day:'Added to your day'},
  fr:{h1:'📅 Calendrier',add:'＋ Tutorat ou rendez-vous',settings:'⚙️ Réglages',o_home:'Voir mes règles sur l’accueil',o_clear:'Effacer les données des règles',privacy:'Tout reste uniquement sur ce téléphone. Les dates des règles sont approximatives : ne t’y fie pas seule pour éviter ou chercher une grossesse.',
    f_rep:'🔁 Se répète chaque semaine',rep_hint:'Aucun = une seule fois',f_since:'À partir du',f_until:'Jusqu’au (facultatif)',del_one:'🗑️ Seulement ce jour',del_all:'🗑️ Tout supprimer',skipped:'Retirée ce jour-là',bad_until:'La date de fin doit être après celle du début.',no_days:'Aucun des jours choisis ne tombe entre ces dates.',ty_tut:'👩‍🏫 Tutorat',ty_cita:'📌 Autre',f_what:'C’est quoi ?',f_with:'Avec qui, ou quelle matière ?',f_with2:'Avec qui ? (facultatif)',f_day:'Jour',f_from:'De',f_to:'À',f_where:'Où ? (facultatif)',f_rem:'Rappel',save:'Enregistrer',del:'🗑️ Supprimer',
    new_t:'Nouveau rendez-vous',edit_t:'Modifier le rendez-vous',tut:'Tutorat',what_ph:'Médecin, réunion, rendu…',with_ph:'Prof ou matière',where_ph:'Bureau, Teams…',
@@ -157,7 +159,7 @@ const UI={
    no_rem:'Sans rappel',rem_min:'{n} min avant',rem_h:'1 heure avant',rem_d:'1 jour avant',nothing:'Rien ce jour.',add_day:'＋ Ajouter ce jour',
    l_class:'cours',l_tut:'tutorat',l_cita:'rendez-vous',l_per:'règles',l_pred:'prévues',
    stats:'Ton cycle moyen : {c} jours · règles d’environ {l} jours.',stats0:'Avec deux règles notées je calculerai ton cycle (pour l’instant 28 jours).',
-   clear_q:'Effacer tous les jours de règles notés ?',saved:'Enregistré',deleted:'Supprimé',on:'Oui',off:'Non',bad_time:'L’heure de fin doit être après celle du début.',future:'Ce jour n’est pas encore arrivé.',imported:'Règles ajoutées : {n}',f_day_opt:'📋 La mettre dans ma journée',to_day:'＋ Dans ma journée',in_day:'✓ Dans ta journée',added_day:'Ajoutée à ta journée'}
+   clear_q:'Effacer tous les jours de règles notés ?',saved:'Enregistré',deleted:'Supprimé',on:'Oui',off:'Non',bad_time:'L’heure de fin doit être après celle du début.',future:'Ce jour n’est pas encore arrivé.',imported:'Règles ajoutées : {n}',imported_ev:'Rendez-vous ajoutés : {n}',imported_ev0:'Ces rendez-vous étaient déjà dans ton calendrier',paste_l:'Tu as un lien Quico avec des rendez-vous ? Colle-le ici',paste_go:'Ajouter',paste_bad:'Ce lien n’apporte pas de rendez-vous Quico.',f_day_opt:'📋 La mettre dans ma journée',to_day:'＋ Dans ma journée',in_day:'✓ Dans ta journée',added_day:'Ajoutée à ta journée'}
 };
 function crisLang(){const l=localStorage.getItem('cris_lang');return UI[l]?l:'es';}
 function t(k,v){let s=UI[crisLang()][k];if(s===undefined)s=UI.es[k];if(s===undefined)return k;if(v)Object.keys(v).forEach(x=>{s=s.split('{'+x+'}').join(v[x]);});return s;}
@@ -296,15 +298,31 @@ function render(){renderGrid();renderDay();}
 /* Atrás del móvil: primero se cierra la hoja */
 window.__crisBack=function(){if(document.getElementById('ov').classList.contains('show')){closeForm();return true;}return false;};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('ov').classList.contains('show'))closeForm();});
-/* Datos traídos con un enlace (#setup=…): se guardan aparte hasta aplicarlos bien */
-(function(){
-  const KEY='cris_cal_setup',m=location.hash.match(/^#setup=(.+)$/);
-  if(m){try{localStorage.setItem(KEY,m[1]);}catch(e){}try{history.replaceState(null,'',location.pathname);}catch(e){}}
-  let p=null;try{p=localStorage.getItem(KEY);}catch(e){}if(!p)return;
+/* Datos traídos con un enlace (#setup=…, o pegado en Ajustes): se guardan aparte hasta aplicarlos bien */
+const SETUP_KEY='cris_cal_setup';
+function applySetup(announce){
+  let p=null;try{p=localStorage.getItem(SETUP_KEY);}catch(e){}if(!p)return false;
   try{const o=JSON.parse(decodeURIComponent(escape(atob(p.replace(/-/g,'+').replace(/_/g,'/')))));
-    if(typeof C.importPeriods!=='function')throw 0;
-    const n=Array.isArray(o.per)?C.importPeriods(o.per):0;localStorage.removeItem(KEY);
-    if(m)setTimeout(()=>toast(t('imported',{n})),300);}catch(e){}
+    // con un cal.js antiguo en caché se deja guardado y se aplica la próxima vez
+    if(typeof C.importPeriods!=='function'||(Array.isArray(o.ev)&&typeof C.importEvents!=='function'))return false;
+    const n=Array.isArray(o.per)?C.importPeriods(o.per):0,ev=Array.isArray(o.ev)?C.importEvents(o.ev):[];localStorage.removeItem(SETUP_KEY);
+    // se abre en el mes de la primera cita nueva, para verla nada más llegar
+    if(ev.length){SEL=ev[0]<C.today()?C.today():ev[0];MONTH=SEL.slice(0,7);C.syncDay();}
+    const msg=[n||!Array.isArray(o.ev)?t('imported',{n}):'',Array.isArray(o.ev)?t(ev.length?'imported_ev':'imported_ev0',{n:ev.length}):''].filter(Boolean).join(' · ');
+    if(announce)setTimeout(()=>toast(msg),300);return true;
+  }catch(e){try{localStorage.removeItem(SETUP_KEY);}catch(_){}return false;} // datos rotos: no se reintenta cada vez
+}
+/* La app instalada en el iPhone no abre enlaces (se abren en Safari): el mismo enlace se puede pegar aquí */
+function pasteLink(){
+  const el=document.getElementById('pLink'),m=String(el.value||'').trim().match(/#(?:calendario|setup)=([A-Za-z0-9_\-+\/=%]+)/);
+  if(m){try{localStorage.setItem(SETUP_KEY,decodeURIComponent(m[1]));}catch(e){}}
+  if(!m||!applySetup(true)){toast(t('paste_bad'));return;}
+  el.value='';vib(25);render();
+}
+(function(){
+  const m=location.hash.match(/^#setup=(.+)$/);
+  if(m){try{localStorage.setItem(SETUP_KEY,m[1]);}catch(e){}try{history.replaceState(null,'',location.pathname);}catch(e){}}
+  applySetup(!!m);
 })();
 // #nuevo (desde el inicio) abre directamente el formulario
 applyStaticI18n();render();
