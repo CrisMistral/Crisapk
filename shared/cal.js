@@ -145,6 +145,20 @@
         d.per.push({s,e});have.add(s);n++;});
       d.per.sort((a,b)=>a.s<b.s?-1:1);wr(d);return n;
     },
+    /* Citas traídas con un enlace (p. ej. un horario en foto): [{t, date, a, b?, l?, w?, rem?, day?, type?}].
+       La que ya está (mismo día, horas y nombre) no se repite: abrir el enlace dos veces no duplica nada */
+    importEvents(list){
+      const d=rd(),hm=/^([01]\d|2[0-3]):[0-5]\d$/,key=e=>[e.date,e.a,e.b||'',String(e.t||'').trim().toLowerCase()].join('|');
+      const have=new Set(d.ev.map(key)),added=[];
+      (Array.isArray(list)?list:[]).slice(0,200).forEach(x=>{
+        if(!x||!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||!hm.test(x.a)||(x.b&&(!hm.test(x.b)||x.b<=x.a)))return;
+        const e={id:newId(),type:x.type==='tut'?'tut':'cita',t:String(x.t||'').slice(0,80),w:String(x.w||'').slice(0,80),l:String(x.l||'').slice(0,120),
+          date:x.date,a:x.a,b:x.b||'',rem:[0,10,15,30,60,1440].indexOf(+x.rem)>=0?+x.rem:15,day:!!x.day};
+        if(have.has(key(e)))return;
+        d.ev.push(e);have.add(key(e));added.push(e.date);});
+      if(added.length)wr(d);
+      return added.sort();
+    },
     home(v){const d=rd();if(v===undefined)return d.home!==false;d.home=!!v;wr(d);},
     /* Cómo va hoy: {day: día de regla (1, 2…) | null, nextIn: días para la próxima | null, next: fecha, late} */
     status(){
