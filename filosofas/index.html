@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Todas las filósofas</title>
 <meta name="description" content="300 filósofas de todos los tiempos y continentes en un mapa de todas las épocas: cada nombre está colocado según sus temas y coloreado según su época.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Todas las filósofas">
+<meta property="og:description" content="300 filósofas de todos los tiempos y continentes en un mapa. ¿Qué filósofa eres?">
+<meta property="og:image" content="/filosofas/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Todas las filósofas">
+<meta name="twitter:description" content="300 filósofas de todos los tiempos y continentes en un mapa. ¿Qué filósofa eres?">
+<meta name="twitter:image" content="/filosofas/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -73,6 +82,29 @@ aside .nb button{border:0;background:none;padding:0;cursor:pointer;font:15px Fra
 aside .nb button:hover{text-decoration:underline}
 aside a{color:inherit}
 .links{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;margin-top:6px}
+.quizbtn{background:var(--fg);color:var(--bg);border:0;border-radius:10px;padding:9px 14px;font:500 15px Inter,sans-serif;cursor:pointer}
+.share{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.share button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:99px;padding:6px 14px;font:14px Inter,sans-serif;cursor:pointer}
+.share button.main{background:hsl(var(--h) var(--S) var(--L));color:var(--bg);border-color:transparent}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:99px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:30}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+#quiz{position:fixed;inset:0;z-index:20;background:rgb(0 0 0 / .45);display:none;align-items:center;justify-content:center;padding:16px}
+#quiz.open{display:flex}
+#quiz .box{background:var(--panel);color:var(--fg);border-radius:18px;box-shadow:var(--shadow);width:min(520px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:22px 20px 20px;position:relative}
+#quiz .x{position:absolute;right:10px;top:10px;border:0;background:none;color:var(--muted);font-size:22px;cursor:pointer;padding:4px 8px}
+#quiz .step{font:500 11px Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+#quiz .bar2{height:4px;background:var(--line);border-radius:4px;margin:8px 0 16px;overflow:hidden}
+#quiz .bar2 i{display:block;height:100%;background:var(--fg);transition:width .3s}
+#quiz h2{font:600 22px/1.2 Fraunces,Georgia,serif;margin:0 30px 14px 0}
+#quiz .opts{display:grid;gap:8px}
+#quiz .opts button{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:12px;padding:12px 14px;font:15px/1.35 Inter,sans-serif;cursor:pointer}
+#quiz .opts button:hover,#quiz .opts button:focus-visible{border-color:var(--fg);outline:none}
+#quiz .res h2{font-size:30px;margin-bottom:4px;color:hsl(var(--h) var(--S) var(--L))}
+#quiz .res .pre{color:var(--muted);font-size:14px;margin-bottom:6px}
+#quiz .res p{margin:10px 0}
+#quiz .why{color:var(--muted);font-size:14px}
+#quiz .also{font-size:14px;color:var(--muted);margin-top:10px}
+#quiz .also button{border:0;background:none;padding:0;cursor:pointer;font:15px Fraunces,Georgia,serif;color:hsl(var(--h) var(--S) var(--L));text-decoration:underline}
 footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:0 16px 30px}
 .count{color:var(--muted);font-size:13px}
 </style>
@@ -88,6 +120,7 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
       <button id="mTime" aria-pressed="false">Línea del tiempo</button>
       <button id="mWorld" aria-pressed="false">Por continentes</button>
     </div>
+    <button class="quizbtn" id="quizbtn">¿Qué filósofa eres?</button>
     <button class="ghost" id="rnd">Sorpréndeme</button>
     <button class="ghost" id="theme" aria-label="Cambiar tema">◐</button>
   </div>
@@ -100,6 +133,8 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
   <div class="frame" id="frame"><div class="map" id="map"></div></div>
 </div>
 <aside id="card" aria-live="polite"></aside>
+<div id="quiz" role="dialog" aria-modal="true" aria-label="¿Qué filósofa eres?"><div class="box" id="qbox"></div></div>
+<div class="toast" id="toast"></div>
 <footer>Fichas breves escritas como puerta de entrada; las fechas antiguas son aproximadas. ¿Falta alguien? Hay muchísimas más.</footer>
 
 <script>
@@ -563,7 +598,7 @@ const card=document.getElementById('card');
 function select(p){
   sel=p;
   P.forEach(q=>q.el.classList.remove('sel','near'));
-  if(!p){card.classList.remove('open');return}
+  if(!p){card.classList.remove('open');if(!quizOpen)setHash('');return}
   p.el.classList.add('sel');
   const nb=neighbours(p); nb.forEach(q=>q.el.classList.add('near'));
   const dates= p.d===null?('n. '+yr(p.b,p.a)) : p.d==="?"?(yr(p.b,p.a)+(p.b<1000?' (activa)':'')) : (yr(p.b,p.a)+' – '+yr(p.d,p.a));
@@ -578,7 +613,11 @@ function select(p){
    <h3>Seguir leyendo</h3>
    <div class="links"><a target="_blank" rel="noopener" href="https://es.wikipedia.org/w/index.php?search=${wq}">Wikipedia</a>
    <a target="_blank" rel="noopener" href="https://plato.stanford.edu/search/searcher.py?query=${wq}">Stanford Encyclopedia</a>
-   <a target="_blank" rel="noopener" href="https://www.google.com/search?tbm=bks&q=${wq}">Libros</a></div>`;
+   <a target="_blank" rel="noopener" href="https://www.google.com/search?tbm=bks&q=${wq}">Libros</a></div>
+   <div class="share"><button class="main" id="shp">Compartir</button><button id="cpl">Copiar enlace</button></div>`;
+  card.querySelector('#shp').onclick=()=>share({title:p.n+' · Todas las filósofas',text:p.n+': '+p.s,url:linkTo(p)});
+  card.querySelector('#cpl').onclick=()=>copy(linkTo(p));
+  setHash('#'+encodeURIComponent(p.n));
   card.querySelector('.x').onclick=()=>select(null);
   card.querySelectorAll('.nb button').forEach(b=>b.onclick=()=>{const q=P[+b.dataset.i];select(q);goTo(q)});
   card.querySelectorAll('.tags .chip').forEach(b=>b.onclick=()=>setTag(b.dataset.t));
@@ -659,15 +698,160 @@ document.getElementById('theme').onclick=()=>{
   r.dataset.theme=dark?'light':'dark'; try{localStorage.setItem('filosofas-theme',r.dataset.theme)}catch(e){}
 };
 try{const t=localStorage.getItem('filosofas-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
-document.addEventListener('click',e=>{if(sel&&!card.contains(e.target)&&!e.target.classList.contains('n'))select(null)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')select(null)});
+document.addEventListener('click',e=>{if(sel&&!quizOpen&&!card.contains(e.target)&&!e.target.classList.contains('n')&&!e.target.closest('#quiz'))select(null)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(quizOpen)closeQuiz();else select(null)}});
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,200)});
+
+/* ---------- compartir ---------- */
+const BASE=location.origin+location.pathname;
+const linkTo=p=>BASE+'#'+encodeURIComponent(p.n);
+function setHash(h){try{history.replaceState(null,'',h||location.pathname+location.search)}catch(e){}}
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2200)}
+async function copy(t){
+  try{await navigator.clipboard.writeText(t);toast('Enlace copiado')}
+  catch(e){prompt('Copia este enlace:',t)}
+}
+async function share(d){
+  if(navigator.share){try{await navigator.share(d);return}catch(e){if(e.name==='AbortError')return}}
+  copy(d.url);
+}
+
+/* ---------- test: ¿Qué filósofa eres? ---------- */
+const QS=[
+ {q:"Tienes un domingo entero para ti. ¿Qué haces?",o:[
+  ["Me pierdo en un problema de lógica o de matemáticas",{logica:2,ciencia:1}],
+  ["Voy a una manifestación o a una asamblea",{politica:2,feminismo:1}],
+  ["Silencio, paseo largo, quizá meditar",{mistica:2,existencia:1}],
+  ["Museo, poesía o escribir en mi cuaderno",{estetica:2,lenguaje:1}]]},
+ {q:"¿Qué te enfada más?",o:[
+  ["Un argumento mal construido",{logica:1,conocimiento:2}],
+  ["Una injusticia que todo el mundo ve normal",{politica:1,raza:1,decolonial:1}],
+  ["Que se destruya la naturaleza",{ecologia:2,cuerpo:1}],
+  ["Que nadie valore a quien cuida",{cuidado:2,feminismo:1}]]},
+ {q:"La pregunta que no te deja dormir:",o:[
+  ["¿Qué es realmente real?",{metafisica:2,mistica:1}],
+  ["¿Cómo sabemos lo que creemos saber?",{conocimiento:2,ciencia:1}],
+  ["¿Cómo hay que vivir?",{etica:2,existencia:1}],
+  ["¿Quién manda, y por qué?",{politica:2,economia:1}]]},
+ {q:"Tu herramienta favorita para pensar:",o:[
+  ["Las fórmulas y los datos",{ciencia:2,logica:1}],
+  ["El cuerpo: lo que siento y lo que me pasa",{cuerpo:2,existencia:1}],
+  ["Las palabras y lo que callan",{lenguaje:2,psique:1}],
+  ["La conversación con otras",{politica:1,cuidado:1,educacion:1}]]},
+ {q:"Si pudieras fundar algo, sería…",o:[
+  ["Una escuela",{educacion:2,cuidado:1}],
+  ["Un laboratorio",{ciencia:2,mente:1}],
+  ["Una comunidad retirada del mundo",{mistica:2,etica:1}],
+  ["Un colectivo feminista",{feminismo:2,politica:1}]]},
+ {q:"El deseo, los sueños, el inconsciente…",o:[
+  ["Me fascinan: ahí está todo",{psique:2,cuerpo:1}],
+  ["Prefiero lo que se puede demostrar",{logica:1,mente:2}],
+  ["El deseo también es político",{feminismo:1,cuerpo:1,politica:1}],
+  ["Hay que ir más allá del deseo",{mistica:2,etica:1}]]},
+ {q:"¿Desde dónde miras el mundo?",o:[
+  ["Desde mi tierra y mis raíces, contra lo colonial",{decolonial:2,raza:1}],
+  ["Desde quién trabaja y quién se queda con el dinero",{economia:2,politica:1}],
+  ["Desde la Tierra: somos naturaleza",{ecologia:2,metafisica:1}],
+  ["Desde dentro de la mente",{mente:2,lenguaje:1}]]},
+ {q:"¿En qué época te sentirías en casa?",o:[
+  ["En la Grecia o la India antiguas",{_era:[-9999,500]}],
+  ["Entre monasterios, beguinas y místicas",{_era:[500,1700]}],
+  ["En los salones de la Ilustración y el siglo XIX",{_era:[1700,1880]}],
+  ["En el siglo XX o ahora mismo",{_era:[1880,9999]}]]}
+];
+let quizOpen=false, qn=0, qsc={}, qera=null;
+const qbox=document.getElementById('qbox'), qwrap=document.getElementById('quiz');
+function openQuiz(){quizOpen=true;qn=0;qsc={};qera=null;select(null);qwrap.classList.add('open');setHash('#test');renderQ()}
+function closeQuiz(){quizOpen=false;qwrap.classList.remove('open');if(!sel)setHash('')}
+qwrap.addEventListener('click',e=>{if(e.target===qwrap)closeQuiz()});
+document.getElementById('quizbtn').onclick=e=>{e.stopPropagation();openQuiz()};
+function renderQ(){
+  const Q=QS[qn];
+  qbox.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
+   <div class="step">Pregunta ${qn+1} de ${QS.length}</div><div class="bar2"><i style="width:${qn/QS.length*100}%"></i></div>
+   <h2>${Q.q}</h2><div class="opts">${Q.o.map((o,k)=>`<button data-k="${k}">${o[0]}</button>`).join('')}</div>`;
+  qbox.querySelector('.x').onclick=closeQuiz;
+  qbox.querySelectorAll('.opts button').forEach(b=>b.onclick=()=>{
+    const w=Q.o[+b.dataset.k][1];
+    for(const k in w){ if(k==='_era')qera=w[k]; else qsc[k]=(qsc[k]||0)+w[k]; }
+    qn++; qn<QS.length?renderQ():result();
+  });
+  qbox.querySelector('.opts button').focus({preventScroll:true});
+}
+function rank(){
+  return P.map(p=>{
+    let s=0; p.tags.forEach((t,k)=>s+=(qsc[t]||0)*(k===0?1.5:1));
+    s/=Math.sqrt(p.tags.length+.5);
+    if(qera&&p.b>=qera[0]&&p.b<qera[1])s+=2.2;
+    s+=hash(p.n+JSON.stringify(qsc))*.4;   /* desempate */
+    return {p,s};
+  }).sort((a,b)=>b.s-a.s);
+}
+function result(){
+  const r=rank(), p=r[0].p, also=r.slice(1,4).map(o=>o.p);
+  const top=Object.entries(qsc).sort((a,b)=>b[1]-a[1]).map(([t])=>t);
+  const shared=top.filter(t=>p.tags.includes(t)).slice(0,3).map(t=>TAGS[t][0]);
+  qbox.style.setProperty('--h',p.h);
+  const dates=p.d===null?('n. '+yr(p.b,p.a)):p.d==="?"?yr(p.b,p.a):(yr(p.b,p.a)+' – '+yr(p.d,p.a));
+  qbox.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
+   <div class="res"><div class="pre">Tu filósofa es…</div><h2>${p.n}</h2>
+   <div class="why">${dates} · ${p.pl} · ${p.tr}</div>
+   <p>${p.s}</p>
+   ${shared.length?`<div class="why">Compartís: ${shared.join(', ')}.</div>`:''}
+   <div class="share"><button class="main" id="qsh">Compartir resultado</button><button id="qimg">Imagen para redes</button><button id="qmap">Verla en el mapa</button><button id="qre">Repetir</button></div>
+   <div class="also">También te pareces a: ${also.map(q=>`<button data-i="${q.i}" style="--h:${q.h}">${q.n}</button>`).join(' · ')}</div></div>`;
+  qbox.querySelector('.x').onclick=closeQuiz;
+  const text=`Me ha salido ${p.n} en «¿Qué filósofa eres?». ¿Y a ti?`;
+  qbox.querySelector('#qsh').onclick=()=>share({title:'¿Qué filósofa eres?',text,url:BASE+'#test'});
+  qbox.querySelector('#qimg').onclick=()=>shareImage(p,text);
+  qbox.querySelector('#qmap').onclick=()=>{closeQuiz();select(p);goTo(p)};
+  qbox.querySelector('#qre').onclick=openQuiz;
+  qbox.querySelectorAll('.also button').forEach(b=>b.onclick=()=>{const q=P[+b.dataset.i];closeQuiz();select(q);goTo(q)});
+}
+
+/* imagen vertical para historias (1080×1350) */
+function wrap(ctx,t,maxW){const w=t.split(' '),out=[];let l='';
+  for(const x of w){const tt=l?l+' '+x:x; if(ctx.measureText(tt).width>maxW&&l){out.push(l);l=x}else l=tt} if(l)out.push(l); return out}
+async function shareImage(p,text){
+  const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  try{await document.fonts.load('600 40px Fraunces');await document.fonts.load('400 40px Inter')}catch(e){}
+  x.fillStyle='#121110';x.fillRect(0,0,W,H);
+  /* nube de nombres de fondo */
+  x.textBaseline='top';
+  let sd=7;const rnd=()=>{sd=(sd*16807)%2147483647;return sd/2147483647};
+  P.forEach((q,k)=>{const px=rnd()*W*1.1-80,py=rnd()*H;if(q===p)return;
+    x.font=(18+q.w*6)+'px Fraunces, Georgia, serif';x.fillStyle=`hsla(${q.h},60%,70%,.10)`;x.fillText(q.n,px,py)});
+  const col=`hsl(${p.h},65%,70%)`;
+  x.fillStyle='#9a948a';x.font='500 34px Inter, sans-serif';x.fillText('¿QUÉ FILÓSOFA ERES?',80,110);
+  x.fillStyle='#ece8e1';x.font='400 44px Inter, sans-serif';x.fillText('Me ha salido…',80,330);
+  x.fillStyle=col;let fs=118;x.font=`600 ${fs}px Fraunces, Georgia, serif`;
+  let lines=wrap(x,p.n,W-160);while(lines.length>3&&fs>70){fs-=8;x.font=`600 ${fs}px Fraunces, Georgia, serif`;lines=wrap(x,p.n,W-160)}
+  let y=400;lines.forEach(l=>{x.fillText(l,80,y);y+=fs*1.05});
+  const dates=p.d===null?('n. '+yr(p.b,p.a)):p.d==="?"?yr(p.b,p.a):(yr(p.b,p.a)+' – '+yr(p.d,p.a));
+  x.fillStyle='#9a948a';x.font='400 34px Inter, sans-serif';y+=20;x.fillText(dates+' · '+p.pl,80,y);
+  x.fillStyle='#ece8e1';x.font='400 46px Fraunces, Georgia, serif';y+=90;
+  wrap(x,p.s,W-160).slice(0,6).forEach(l=>{x.fillText(l,80,y);y+=62});
+  x.fillStyle=col;x.fillRect(80,H-170,90,6);
+  x.fillStyle='#ece8e1';x.font='600 40px Fraunces, Georgia, serif';x.fillText('Todas las filósofas',80,H-140);
+  x.fillStyle='#9a948a';x.font='400 30px Inter, sans-serif';x.fillText('300 pensadoras · ¿y tú cuál eres?',80,H-88);
+  const blob=await new Promise(r=>c.toBlob(r,'image/png'));
+  const file=new File([blob],'mi-filosofa.png',{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],text:text+' '+BASE+'#test'});return}catch(e){if(e.name==='AbortError')return}}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mi-filosofa.png';document.body.appendChild(a);a.click();a.remove();
+  toast('Imagen descargada');
+}
 
 filter();
 (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{layout();
   frame.scrollLeft=(map.offsetWidth-frame.clientWidth)/2;
-  const h=decodeURIComponent(location.hash.slice(1)); const p=P.find(q=>q.n===h); if(p){select(p);goTo(p)}
+  fromHash();
 });
+function fromHash(){
+  const h=decodeURIComponent(location.hash.slice(1));
+  if(h==='test'){openQuiz();return}
+  const p=P.find(q=>q.n===h); if(p&&p!==sel){select(p);goTo(p)}
+}
+addEventListener('hashchange',fromHash);
 </script>
 </body>
 </html>
