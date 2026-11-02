@@ -52,6 +52,9 @@ h1{font:600 clamp(26px,5vw,40px)/1.05 Fraunces,Georgia,serif;margin:0 0 6px;lett
 .n:hover,.n:focus-visible{outline:none;background:hsl(var(--h) var(--S) var(--L) / .14)}
 .n.off{opacity:var(--dim)}
 .n.sel{background:hsl(var(--h) var(--S) var(--L));color:var(--bg)}
+.n.hit{outline:2px solid hsl(var(--h) var(--S) var(--L));outline-offset:1px}
+.hitb{border:0;background:none;padding:0;cursor:pointer;font:500 14px Fraunces,Georgia,serif;color:hsl(var(--h) var(--S) var(--L));text-decoration:underline;text-underline-offset:2px}
+.count{min-height:20px;margin:4px 0}
 .n.near{text-decoration:underline;text-underline-offset:3px}
 aside{position:fixed;right:16px;top:16px;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;
   background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 18px 16px;
@@ -77,17 +80,19 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
 <body>
 <header>
   <h1>Todas las filósofas</h1>
-  <p class="sub">Un mapa de pensadoras de todas las épocas. <b>Arriba</b>: más mística, poética, existencial. <b>Abajo</b>: más lógica y científica. <b>Izquierda</b>: más abstracta. <b>Derecha</b>: más política y encarnada. El color indica la época. Toca un nombre para ver su ficha y sus vecinas.</p>
+  <p class="sub">Un mapa de pensadoras de todas las épocas. <b>Arriba</b>: más mística, poética, existencial. <b>Abajo</b>: más lógica y científica. <b>Izquierda</b>: más abstracta. <b>Derecha</b>: más política y encarnada. El color indica la época. Cambia a «Línea del tiempo» o «Por continentes» para reordenarlas. Toca un nombre para ver su ficha y sus vecinas.</p>
   <div class="bar">
     <input id="q" type="search" placeholder="Buscar nombre, lugar o idea…" autocomplete="off">
     <div class="seg" role="group" aria-label="Disposición">
       <button id="mIdeas" aria-pressed="true">Mapa de ideas</button>
       <button id="mTime" aria-pressed="false">Línea del tiempo</button>
+      <button id="mWorld" aria-pressed="false">Por continentes</button>
     </div>
     <button class="ghost" id="rnd">Sorpréndeme</button>
     <button class="ghost" id="theme" aria-label="Cambiar tema">◐</button>
   </div>
   <div class="chips" id="chips"></div>
+  <div class="chips" id="conts"></div>
   <div class="legend" id="legend"></div>
 </header>
 <div class="wrap">
@@ -314,6 +319,17 @@ const ERAS=[
  {n:"Ilustración",to:1800,h:255},{n:"Siglo XIX",to:1880,h:215},{n:"Siglo XX",to:1940,h:178},{n:"Contemporánea",to:9999,h:130}
 ];
 const eraOf=b=>ERAS.find(e=>b<e.to);
+/* continentes: se deducen del primer lugar (origen o lugar principal de su obra) */
+const CONTS=["América del Norte","América Latina y el Caribe","Europa","África","Asia","Oceanía"];
+const CONT_RX=[
+ [1,/México|Nueva España|Buenos Aires|Argentina|La Paz|Chile|Guatemala|Brasil|São Paulo|Santos|República Dominicana|Jamaica|Panamá/],
+ [3,/Alejandría|Cirene|Fez|Egipto|Nigeria|Orán/],
+ [4,/India|Mesopotamia|China|Tokio|Cachemira|Bengala|Basora|Pérgamo|Capadocia|Mileto|Pakistán|Baréin|Calcuta|Bombay|Dehradun|Karnataka|Rajastán|Maharashtra/],
+ [5,/Australia|Nueva Zelanda|Sídney/],
+ [0,/Estados Unidos|EE\. UU\.|Nueva York|Connecticut|Chicago|Canadá|Minnesota|Texas|Pensilvania|Ottawa|Ohio|Nueva Jersey|Milwaukee|Massachusetts|Kentucky|Filadelfia|Denver|Cleveland|Carolina|Boston|Baltimore|California|Alabama/]];
+const CONT_FIX={"Dorothy Wrinch":2,"Francesca Gargallo":1};
+function contOf(n,pl){ if(n in CONT_FIX)return CONT_FIX[n]; const f=pl.split(" / ")[0];
+  for(const [c,rx] of CONT_RX) if(rx.test(f)) return c; return 2; }
 
 function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)/4294967295}
 const yr=(y,a)=>(a?"c. ":"")+(y<0?(-y)+" a.C.":y);
@@ -325,10 +341,11 @@ const P=D.map((r,i)=>{
   x/=wt;y/=wt;
   x+= (hash(n)-.5)*.35; y+=(hash(n+"y")-.5)*.35;
   const e=eraOf(b);
-  return {i,n,b,d,a,pl,tr,tags,s,w,ix:x,iy:y,era:e,h:e.h};
+  return {i,n,b,d,a,pl,tr,tags,s,w,ix:x,iy:y,era:e,h:e.h,c:contOf(n,pl)};
 });
 /* orden cronológico para la línea del tiempo */
 [...P].sort((p,q)=>p.b-q.b||p.n.localeCompare(q.n)).forEach((p,k)=>p.rank=k);
+CONTS.forEach((_,c)=>P.filter(p=>p.c===c).sort((a,b)=>a.rank-b.rank).forEach((p,k,arr)=>{p.crank=(k+.5)/arr.length}));
 
 const map=document.getElementById('map'), frame=document.getElementById('frame');
 let mode='ideas', sel=null, activeTag=null, query='';
@@ -343,10 +360,23 @@ P.forEach(p=>{
 });
 
 function dims(){
-  const W=Math.max(frame.clientWidth||innerWidth-32, mode==='time'?1500:1160);
-  const H=mode==='time'?Math.max(900,innerHeight*.9):Math.max(1150,Math.min(1350,W*1.1));
+  const W=Math.max(frame.clientWidth||innerWidth-32, mode==='time'?1500:mode==='world'?1500:1160);
+  if(mode!=='world'){
+    const H=mode==='time'?Math.max(900,innerHeight*.9):Math.max(1150,Math.min(1350,W*1.1));
+    return {W,H};
+  }
+  /* cada continente ocupa un ancho proporcional a lo que ocupan sus nombres */
+  const area=CONTS.map((_,c)=>P.filter(p=>p.c===c).reduce((t,p)=>t+p.el.offsetWidth*(p.el.offsetHeight+6),0));
+  const minW=CONTS.map((_,c)=>Math.max(130,...P.filter(p=>p.c===c).map(p=>p.el.offsetWidth+16)));
+  const tot=area.reduce((a,b)=>a+b,0);
+  /* primero el mínimo para que quepa el nombre más largo; el resto, según su área */
+  const rest=Math.max(0,W-16-minW.reduce((a,b)=>a+b,0));
+  const cw=minW.map((m,c)=>m+area[c]/tot*rest); cols=[];let x=8;
+  cw.forEach(w=>{cols.push([x,x+w]);x+=w});
+  const H=Math.max(900,...area.map((a,c)=>a*1.9/(cols[c][1]-cols[c][0])+140));
   return {W,H};
 }
+let cols=[];
 
 function layout(){
   const {W,H}=dims();
@@ -360,8 +390,13 @@ function layout(){
     p.w0=p.el.offsetWidth; p.h0=p.el.offsetHeight;
     let nx,ny;
     if(mode==='ideas'){ nx=p.ixn; ny=1-p.iyn; }
-    else { nx=(p.rank+.5)/N; ny=1-p.iyn; }
-    p.x=pad+nx*(W-2*pad)-p.w0/2; p.y=pad+ny*(H-2*pad)-p.h0/2;
+    else if(mode==='time'){ nx=(p.rank+.5)/N; ny=1-p.iyn; }
+    p.lo=4; p.hi=W-4;
+    if(mode==='world'){
+      const [a,b]=cols[p.c]; p.lo=a+6; p.hi=b-6;
+      const cx=p.lo+p.w0/2+p.ixn*(p.hi-p.lo-p.w0);
+      p.x=cx-p.w0/2; p.y=80+p.crank*(H-120)-p.h0/2;
+    } else { p.x=pad+nx*(W-2*pad)-p.w0/2; p.y=pad+ny*(H-2*pad)-p.h0/2; }
     p.tx=p.x; p.ty=p.y;
   });
   relax(W,H);
@@ -371,6 +406,13 @@ function layout(){
     axis('↓ lógica · científica',W/2,H-22,'c');
     axis('← abstracta',8,H/2,'l');
     axis('política · encarnada →',W-8,H/2,'r');
+  } else if(mode==='world'){
+    CONTS.forEach((c,k)=>{
+      const t=document.createElement('div'); t.className='tick'; t.style.left=cols[k][0]+'px';
+      if(k===0)t.style.borderLeft='0';
+      t.innerHTML='<b style="top:8px;white-space:normal;max-width:'+(cols[k][1]-cols[k][0]-10)+'px">'+c+' · '+P.filter(p=>p.c===k).length+'</b>'; map.appendChild(t);
+    });
+    axis('↓ de las más antiguas a las más recientes',W-8,H-22,'r');
   } else {
     axis('↑ mística · poética',8,8,'l'); axis('↓ lógica · científica',8,H-22,'l');
     ERAS.forEach((e,k)=>{
@@ -405,7 +447,7 @@ function relax(W,H){
     }
     P.forEach(p=>{
       if(it<200){p.x+=(p.tx-p.x)*.02; p.y+=(p.ty-p.y)*.02;}
-      p.x=Math.max(4,Math.min(W-p.w0-4,p.x)); p.y=Math.max(mode==='time'?64:26,Math.min(H-p.h0-26,p.y));
+      p.x=Math.max(p.lo,Math.min(p.hi-p.w0,p.x)); p.y=Math.max(mode==='time'?64:mode==='world'?40:26,Math.min(H-p.h0-26,p.y));
     });
     if(!moved)break;
   }
@@ -427,7 +469,7 @@ function select(p){
   card.style.setProperty('--h',p.h);
   card.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
    <h2>${p.n}</h2>
-   <div class="meta">${dates} · ${p.pl}<br>${p.tr} · ${p.era.n}</div>
+   <div class="meta">${dates} · ${p.pl}<br>${p.tr} · ${p.era.n} · ${CONTS[p.c]}</div>
    <p>${p.s}</p>
    <h3>Temas</h3><div class="tags">${p.tags.map(t=>`<button class="chip" data-t="${t}">${TAGS[t][0]}</button>`).join('')}</div>
    <h3>Vecinas en el mapa</h3><div class="nb">${nb.map(q=>`<button data-i="${q.i}" style="--h:${q.h}">${q.n}</button>`).join(' · ')}</div>
@@ -436,44 +478,80 @@ function select(p){
    <a target="_blank" rel="noopener" href="https://plato.stanford.edu/search/searcher.py?query=${wq}">Stanford Encyclopedia</a>
    <a target="_blank" rel="noopener" href="https://www.google.com/search?tbm=bks&q=${wq}">Libros</a></div>`;
   card.querySelector('.x').onclick=()=>select(null);
-  card.querySelectorAll('.nb button').forEach(b=>b.onclick=()=>{const q=P[+b.dataset.i];select(q);scrollTo(q)});
+  card.querySelectorAll('.nb button').forEach(b=>b.onclick=()=>{const q=P[+b.dataset.i];select(q);goTo(q)});
   card.querySelectorAll('.tags .chip').forEach(b=>b.onclick=()=>setTag(b.dataset.t));
   card.classList.add('open');
 }
-function scrollTo(p){
+function goTo(p){
   frame.scrollTo({left:p.x-frame.clientWidth/2,behavior:'smooth'});
   const r=frame.getBoundingClientRect();
-  window.scrollTo({top:scrollY+r.top+p.y-innerHeight/2,behavior:'smooth'});
+  window.scrollTo({top:scrollY+r.top+p.y-(innerWidth<=640?innerHeight*.18:innerHeight/2),behavior:'smooth'});
 }
 
 function norm(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()}
+function lev(a,b){const m=a.length,n=b.length;if(Math.abs(m-n)>2)return 9;let r=[...Array(n+1).keys()];
+  for(let i=1;i<=m;i++){let pr=r[0];r[0]=i;for(let j=1;j<=n;j++){const t=r[j];r[j]=Math.min(r[j]+1,r[j-1]+1,pr+(a[i-1]===b[j-1]?0:1));pr=t}}return r[n]}
+/* ¿el nombre se parece a lo buscado? tolera erratas (Braidoitti → Braidotti) */
+function nameScore(p,q){
+  const n=norm(p.n); if(n.includes(q))return n.startsWith(q)?3:2;
+  const words=n.split(/[\s-]+/), qs=q.split(/\s+/).filter(Boolean);
+  return qs.every(w=>words.some(x=>x.startsWith(w)||(w.length>=4&&lev(w,x.slice(0,w.length+1))<=(w.length>6?2:1))||(w.length>=4&&lev(w,x)<=(w.length>6?2:1))))?1:0;
+}
+let hits=[];
 function filter(){
-  const q=norm(query.trim()); let c=0;
+  const q=norm(query.trim()); let c=0; hits=[];
   P.forEach(p=>{
-    const hay=norm([p.n,p.pl,p.tr,p.s,p.era.n,p.tags.map(t=>TAGS[t][0]).join(' ')].join(' '));
-    const ok=(!q||hay.includes(q))&&(!activeTag||p.tags.includes(activeTag));
-    p.el.classList.toggle('off',!ok); if(ok)c++;
+    const hay=norm([p.n,p.pl,p.tr,p.s,p.era.n,CONTS[p.c],p.tags.map(t=>TAGS[t][0]).join(' ')].join(' '));
+    const ns=q?nameScore(p,q):0;
+    const ok=(!q||ns>0||hay.includes(q))&&(!activeTag||p.tags.includes(activeTag))&&(activeCont===null||p.c===activeCont);
+    p.el.classList.toggle('off',!ok); p.el.classList.toggle('hit',!!(q&&ok&&ns));
+    if(ok){c++; if(q)hits.push({p,s:ns})}
   });
-  document.getElementById('count').textContent=(q||activeTag)?`${c} de ${P.length} filósofas`:`${P.length} filósofas`;
+  hits.sort((a,b)=>b.s-a.s||b.p.w-a.p.w);
+  const cnt=document.getElementById('count');
+  cnt.textContent=(q||activeTag||activeCont!==null)?`${c} de ${P.length} filósofas`:`${P.length} filósofas`;
+  if(q){
+    if(!c) cnt.textContent='Ninguna coincidencia para «'+query.trim()+'»';
+    else { cnt.append(': ');
+      hits.slice(0,12).forEach((h,k)=>{const b=document.createElement('button');b.className='hitb';b.textContent=h.p.n;
+        b.style.setProperty('--h',h.p.h);b.onclick=e=>{e.stopPropagation();select(h.p);goTo(h.p)};
+        if(k)cnt.append(' · '); cnt.append(b)});
+      if(hits.length>12)cnt.append(' …'); }
+  }
   document.querySelectorAll('#chips .chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===activeTag));
+  document.querySelectorAll('#conts .chip').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.c===activeCont));
 }
 function setTag(t){activeTag=activeTag===t?null:t;filter()}
+let activeCont=null;
+function setCont(c){activeCont=activeCont===c?null:c;filter()}
 
+const conts=document.getElementById('conts');
+CONTS.forEach((n,c)=>{
+  const b=document.createElement('button');b.className='chip';b.dataset.c=c;b.textContent=n+' ('+P.filter(p=>p.c===c).length+')';
+  b.setAttribute('aria-pressed','false');b.onclick=()=>setCont(c);conts.appendChild(b);
+});
 const chips=document.getElementById('chips');
 Object.entries(TAGS).forEach(([k,v])=>{
   const b=document.createElement('button');b.className='chip';b.dataset.t=k;b.textContent=v[0];
   b.setAttribute('aria-pressed','false');b.onclick=()=>setTag(k);chips.appendChild(b);
 });
 document.getElementById('legend').innerHTML=ERAS.map(e=>`<span style="--h:${e.h}">${e.n}</span>`).join('');
-document.getElementById('q').addEventListener('input',e=>{query=e.target.value;filter()});
+let qt;
+const qi=document.getElementById('q');
+qi.addEventListener('input',e=>{query=e.target.value;filter();
+  clearTimeout(qt);qt=setTimeout(()=>{const nm=hits.filter(h=>h.s>0);
+    if(nm.length===1)select(nm[0].p); if(nm.length){goTo(nm[0].p)} },500)});
+qi.addEventListener('keydown',e=>{if(e.key==='Enter'&&hits.length){clearTimeout(qt);select(hits[0].p);goTo(hits[0].p);qi.blur()}});
 function setMode(m){mode=m;
   document.getElementById('mIdeas').setAttribute('aria-pressed',m==='ideas');
   document.getElementById('mTime').setAttribute('aria-pressed',m==='time');
-  layout(); if(sel)scrollTo(sel); else frame.scrollTo({left:m==='time'?0:(map.offsetWidth-frame.clientWidth)/2});
+  document.getElementById('mWorld').setAttribute('aria-pressed',m==='world');
+  layout(); if(sel)goTo(sel); else frame.scrollTo({left:m!=='ideas'?0:(map.offsetWidth-frame.clientWidth)/2});
 }
 document.getElementById('mIdeas').onclick=()=>setMode('ideas');
 document.getElementById('mTime').onclick=()=>setMode('time');
-document.getElementById('rnd').onclick=()=>{const vis=P.filter(p=>!p.el.classList.contains('off'));const p=vis[Math.floor(Math.random()*vis.length)];if(p){select(p);scrollTo(p)}};
+document.getElementById('mWorld').onclick=()=>setMode('world');
+document.getElementById('rnd').onclick=()=>{const vis=P.filter(p=>!p.el.classList.contains('off'));const p=vis[Math.floor(Math.random()*vis.length)];if(p){select(p);goTo(p)}};
 document.getElementById('theme').onclick=()=>{
   const r=document.documentElement, dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
   r.dataset.theme=dark?'light':'dark'; try{localStorage.setItem('filosofas-theme',r.dataset.theme)}catch(e){}
@@ -486,7 +564,7 @@ let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,200)
 filter();
 (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{layout();
   frame.scrollLeft=(map.offsetWidth-frame.clientWidth)/2;
-  const h=decodeURIComponent(location.hash.slice(1)); const p=P.find(q=>q.n===h); if(p){select(p);scrollTo(p)}
+  const h=decodeURIComponent(location.hash.slice(1)); const p=P.find(q=>q.n===h); if(p){select(p);goTo(p)}
 });
 </script>
 </body>
