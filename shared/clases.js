@@ -28,6 +28,16 @@
     hide:Array.isArray(c.hide)?c.hide:[],skip:Array.isArray(c.skip)?c.skip:[],mine:!!c.mine};}
   /* Clases que no quieres ver en tu día: asignaturas enteras (hide) o clases sueltas (skip) */
   function hideKey(o){return o.sub?'s:'+fold(o.sub.name):'t:'+fold(o.s||'');}
+  /* Quién da la clase, si el título lo trae detrás de un punto: «Seminarios I. Ana Ruiz» → «Ana Ruiz»
+     (sin cortar en abreviaturas como «Dra.» ni dentro de un paréntesis) */
+  function who(title){
+    const s=String(title||''),re=/\.\s+/g;let m;
+    while((m=re.exec(s))){const head=s.slice(0,m.index);
+      if(/\b(dr|dra|prof|profa|sr|sra|srta|dña|da|d)$/i.test(head))continue;
+      if((head.match(/\(/g)||[]).length!==(head.match(/\)/g)||[]).length)continue;
+      return s.slice(m.index+m[0].length).replace(/\.\s*$/,'').trim();}
+    return '';
+  }
 
   /* ── Lectura del .ics ── */
   function lines(txt){return String(txt||'').replace(/\r\n[ \t]/g,'').replace(/\n[ \t]/g,'').split(/\r?\n/);}
@@ -190,7 +200,8 @@
     subs.forEach(s=>{
       if(s.tok.filter(w=>ROMAN.test(w)).join()!==hr)return;
       const sw=s.tok.filter(w=>!ROMAN.test(w));if(!sw.length||!hw.every(w=>sw.indexOf(w)>=0))return;
-      const sc=hw.length/sw.length;if(sc>bs){bs=sc;best=s;}
+      const sc=hw.length/sw.length;if(!hr&&(hw.length<2||sc<.5))return; // sin I/II, una palabra suelta («Arte. Juan») no basta
+      if(sc>bs){bs=sc;best=s;}
     });
     return best;
   }
@@ -199,7 +210,9 @@
   let busy=null;
   function refresh(force){
     const c=cfg();if(!c.url)return Promise.resolve({ok:false,err:'nourl'});
-    const cache=rd(CACHE,{});if(rd(REMAP,null))force=true; // recién dejado el horario a mano: hay que leer el calendario ya
+    const cache=rd(CACHE,{});
+    // recién pedido dejar el horario a mano: hay que leer el calendario ya (sin insistir más de una vez cada 10 min si falla)
+    if(rd(REMAP,null)){const e=rd(ERR,null);if(!(e&&Date.now()-e.at<10*60e3))force=true;}
     if(!force&&cache.at&&Date.now()-cache.at<STALE&&cache.url===c.url)return Promise.resolve({ok:true,cached:true,n:(cache.ev||[]).length});
     if(busy)return busy;
     // 1.º nuestro servidor (/api/ical); si no está, directo (casi nunca deja el navegador: CORS)
@@ -230,10 +243,11 @@
     configured(){const c=cfg();return !!(c.url||(rd(CACHE,{}).ev||[]).length||(rd(MANUAL,{}).ev||[]).length);},
     hasManual(){return (rd(MANUAL,{}).ev||[]).length>0;},
     /* Dejar el horario a mano y seguir solo el calendario (p. ej. cuando cambian los horarios).
-       Las tareas puestas en esas clases pasan a las del calendario en cuanto se lea */
+       El horario a mano se quita cuando el calendario se ha leído bien (si falla, no te quedas sin clases),
+       y entonces las tareas y los «no voy» de esas clases pasan a las del calendario */
     clearManual(){const m=rd(MANUAL,{}).ev||[];if(!m.length)return 0;
       wr(REMAP,{at:Date.now(),occ:expandAll(m,Date.now()-60*DAY,Date.now()+400*DAY).map(o=>({id:o.id,st:o.st,s:o.s}))});
-      try{localStorage.removeItem(MANUAL);}catch(e){}return m.length;},
+      return m.length;},
     /* Horario a mano: [{s, l, st, en, ad}] (fechas en ms) */
     importEvents(list,src){const ev=(list||[]).filter(e=>e&&e.st!=null&&e.en!=null).map((e,i)=>({uid:e.uid||('man-'+i+'-'+e.st),s:String(e.s||''),l:String(e.l||''),st:e.st,en:e.en,ad:!!e.ad,ex:[]}));wr(MANUAL,{at:Date.now(),src:src||'',ev});return ev.length;},
     lastSync(){return rd(CACHE,{}).at||0;},
@@ -246,7 +260,7 @@
     decorate(list){const subs=subjects(),c=cfg(),H=new Set(c.hide),K=new Set(c.skip),mine=c.mine&&subs.length>0;
       return list.map(o=>{const sb=subjectOf(o.s,subs),d={...o,sub:sb,name:sb?sb.short:(pretty(o.s)||'—'),color:sb?sb.color:'#64748b'};
         // «Poéticas sonoras. Montserrat de Pablo»: sin lugar, se enseña quién la da
-        if(sb&&!d.l)d.l=String(o.s||'').split(/\.\s+/).slice(1).join('. ').replace(/\.\s*$/,'').trim();
+        if(sb&&!d.l)d.l=who(o.s);
         d.hideKey=hideKey(d);d.hiddenSub=H.has(d.hideKey);d.skipped=K.has(o.id);d.hidden=d.hiddenSub||d.skipped;return d;})
         .filter(d=>!mine||d.sub||d.ad);}, // con «solo mis asignaturas», las de otras no salen (los días festivos sí)
     /* Ocultar o volver a mostrar una asignatura entera (o todas las clases con ese nombre) */
@@ -270,21 +284,27 @@
   function tWr(o){const lim=dayKey(Date.now()-60*DAY);Object.keys(o).forEach(k=>{const e=o[k];if(!e||!Array.isArray(e.l)||!e.l.length||e.d<lim)delete o[k];});wr(TASKS,o);}
   const tid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
   function qItem(q){try{return q&&window.QDIA?QDIA.get(q):null;}catch(e){return null;}}
-  /* Al pasar del horario a mano al calendario, cada tarea va a la misma clase del calendario:
-     a la misma hora o, si la clase se movió, a la siguiente de esa asignatura en los 14 días siguientes */
+  /* Al pasar del horario a mano al calendario (ya leído y con clases) se quita el horario a mano, y cada tarea
+     y cada «no voy» pasa a la misma clase del calendario: misma hora y misma asignatura o, si la clase se movió,
+     la siguiente de esa asignatura en los 14 días siguientes. Si no está claro cuál es, se queda como estaba */
   function remapTasks(){
     const old=rd(REMAP,null);if(!old)return;
-    try{const o=tRd(),occ=Array.isArray(old.occ)?old.occ:[],keys=Object.keys(o).filter(k=>occ.some(x=>x.id===k));
-      if(keys.length){
-        const subs=subjects(),cal=expandAll(rd(CACHE,{}).ev||[],Date.now()-60*DAY,Date.now()+400*DAY),sub=x=>subjectOf(x,subs);
-        keys.forEach(k=>{const was=occ.find(x=>x.id===k),sw=sub(was.s);
-          const to=cal.find(c=>c.st===was.st&&!c.ad&&(!sw||sub(c.s)===sw))||(sw?cal.find(c=>!c.ad&&c.st>was.st&&c.st-was.st<14*DAY&&sub(c.s)===sw):null);
-          if(!to||to.id===k)return; // si no hay a dónde llevarla, se queda donde estaba
-          const e=o[k];delete o[k];if(o[to.id])o[to.id].l=o[to.id].l.concat(e.l);else o[to.id]={...e,d:dayKey(to.st)};});
-        tWr(o);
-      }
+    const ev=rd(CACHE,{}).ev||[];if(!ev.length)return; // sin calendario no se quita nada
+    try{
+      const occ=Array.isArray(old.occ)?old.occ:[],subs=subjects(),sub=x=>subjectOf(x,subs),head=x=>tokens(String(x||'').split(/\.\s|\s[–-]\s/)[0]).join(' ');
+      const cal=expandAll(ev,Date.now()-60*DAY,Date.now()+400*DAY).filter(c=>!c.ad),map={};
+      occ.forEach(was=>{const sw=sub(was.s);
+        let c=cal.filter(x=>x.st===was.st&&(sw?sub(x.s)===sw:head(x.s)===head(was.s)));
+        if(!c.length&&sw)c=cal.filter(x=>x.st>was.st&&x.st-was.st<14*DAY&&sub(x.s)===sw).slice(0,1);
+        if(c.length===1&&c[0].id!==was.id)map[was.id]=c[0];});
+      const o=tRd();let ch=false;
+      Object.keys(o).forEach(k=>{const to=map[k];if(!to)return;const e=o[k];delete o[k];ch=true;
+        if(o[to.id])o[to.id].l=o[to.id].l.concat(e.l);else o[to.id]={...e,d:dayKey(to.st)};});
+      if(ch)tWr(o);
+      const c=cfg(),sk=c.skip.map(id=>map[id]?map[id].id:id);
+      if(sk.some((x,i)=>x!==c.skip[i]))API.save({skip:[...new Set(sk)]});
     }catch(e){}
-    try{localStorage.removeItem(REMAP);}catch(e){}
+    try{localStorage.removeItem(MANUAL);localStorage.removeItem(REMAP);}catch(e){}
   }
   Object.assign(API,{
     tasks(occ){const o=tRd(),e=o[occ];if(!e)return [];let ch=false;

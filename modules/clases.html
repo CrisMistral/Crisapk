@@ -150,7 +150,7 @@ if(__cfg().calm)document.documentElement.classList.add('calm');
 <div class="toast" id="toast" role="status"></div>
 
 <script src="../shared/dia.js?v=119"></script>
-<script src="../shared/clases.js?v=121"></script>
+<script src="../shared/clases.js?v=122"></script>
 <script>
 const UI={
  es:{h1:'🎓 Clases',url_l:'Enlace de tu calendario',url_help:'Outlook: Configuración → Calendario → Calendarios compartidos → Publicar → copia el enlace (HTML o ICS). También vale Google o iCloud.',subs_l:'Mis asignaturas (una por línea)',save:'Guardar',t_today:'Hoy',t_week:'Semana',my_subs:'📚 Mis asignaturas',settings:'⚙️ Ajustes',rem_l:'Aviso antes de cada clase',rem_help:'Con la app abierta, o con las notificaciones activadas en el menú.',refresh:'↻ Actualizar',import:'📄 Importar archivo .ics',forget:'Quitar',hidden:'oculta',skip_one:'No voy a esta clase',show_one:'Volver a mostrar esta clase',skipped:'Esta clase ya no sale en tu día',shown:'Vuelve a salir en tu día',hid_sub:'Asignatura oculta',hide_sub:'Quitar de mi día',show_sub:'Volver a mostrar',sub_hidden:'Esa asignatura ya no sale en tu día',sub_off:'No sale en tu día',on_home:'Ver mis clases en la pantalla principal',mine_l:'Qué clases ver',mine_on:'Solo las de mis asignaturas',mine_off:'Todas las del calendario',yes:'Sí',no:'No',retry:'↻ Reintentar',code:'Código',err_stale:'No he podido actualizar el calendario: te enseño lo último que guardé.',
@@ -283,7 +283,7 @@ function importFile(inp){
 }
 function forget(){
   if(!confirm(t('forget_q')))return;
-  try{['cris_clases_v1','cris_clases_cache_v1','cris_clases_manual_v1','cris_clases_err_v1'].forEach(k=>localStorage.removeItem(k));}catch(e){}
+  try{['cris_clases_v1','cris_clases_cache_v1','cris_clases_manual_v1','cris_clases_err_v1','cris_clases_remap_v1'].forEach(k=>localStorage.removeItem(k));}catch(e){}
   render();
 }
 /* Enlace de configuración de un toque: …/clases.html#setup=<base64 de {"url":…,"subjects":[…],"ev":[…], "mine":true, "manual":false}>
