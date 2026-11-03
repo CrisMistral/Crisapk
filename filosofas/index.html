@@ -442,7 +442,17 @@ const D=[
 ["Maria Montessori",1870,1952,0,"Italia","Pedagogía","educacion cuerpo","La niña y el niño se educan a sí mismos en un entorno preparado.",2],
 ["Grace de Laguna",1878,1978,0,"Estados Unidos","Pragmatismo","lenguaje mente","El habla nace de su función social.",1],
 ["Rachel Carson",1907,1964,0,"Pensilvania","Ecología","ecologia ciencia","«Primavera silenciosa».",2],
-["Yuriko Saito",1953,null,1,"Japón / EE. UU.","Estética cotidiana","estetica ecologia etica","«Estética cotidiana»: lo bello y lo feo en lo que hacemos cada día —lavar, ordenar, reparar— tiene consecuencias éticas y ecológicas.",2]
+["Yuriko Saito",1953,null,1,"Japón / EE. UU.","Estética cotidiana","estetica ecologia etica","«Estética cotidiana»: lo bello y lo feo en lo que hacemos cada día —lavar, ordenar, reparar— tiene consecuencias éticas y ecológicas.",2],
+["Sei Shōnagon",966,1025,1,"Kioto, Japón","Literatura de corte Heian","estetica existencia","«El libro de la almohada»: listas de cosas que agradan, que irritan o que conmueven; una estética de lo cotidiano mil años antes de que tuviera nombre.",2],
+["Murasaki Shikibu",973,1014,1,"Kioto, Japón","Literatura de corte Heian","estetica existencia psique","«La historia de Genji»: la sensibilidad ante lo efímero (mono no aware) como forma de conocer.",2],
+["Vernon Lee",1856,1935,0,"Francia / Florencia","Estética","estetica psique mente","«Belleza y fealdad»: la empatía estética, sentir las formas con el propio cuerpo.",1],
+["Anni Albers",1899,1994,0,"Berlín / EE. UU.","Bauhaus","estetica cuerpo","«Sobre el tejer»: pensar con las manos y la materia en los oficios.",1],
+["Mary Mothersill",1923,2008,0,"Nueva York","Estética analítica","estetica conocimiento","«La belleza recuperada»: defendió que la belleza merece volver al centro de la filosofía.",1],
+["Susan Sontag",1933,2004,0,"Nueva York","Ensayo","estetica politica","«Contra la interpretación» y «Notas sobre lo camp»: una erótica del arte en lugar de una hermenéutica.",2],
+["Ellen Dissanayake",1935,null,0,"Estados Unidos","Estética evolutiva","estetica cuerpo ciencia","«Homo aestheticus»: el arte como «hacer especial» lo cotidiano, una necesidad humana.",1],
+["Elaine Scarry",1946,null,0,"Estados Unidos","Estética","estetica etica cuerpo","«Sobre la belleza y ser justos»: la belleza nos entrena para la justicia.",1],
+["Carolyn Korsmeyer",1950,null,0,"Estados Unidos","Estética","estetica cuerpo","«El sentido del gusto»: la comida y el gusto como asuntos filosóficos.",1],
+["Sianne Ngai",1971,null,0,"Estados Unidos","Teoría estética","estetica economia","«Nuestras categorías estéticas»: lo mono, lo chiflado y lo interesante en el capitalismo tardío.",1]
 ];
 
 /* temas → dirección en el mapa: [x: abstracta(-) / política(+), y: lógica(-) / mística(+)] */
@@ -464,7 +474,7 @@ const CONTS=["América del Norte","América Latina y el Caribe","Europa","Áfric
 const CONT_RX=[
  [1,/Lima|Colombia|Uruguay|Ecuador|Bolivia|Cuba|Caracas|Oaxaca|México|Nueva España|Buenos Aires|Argentina|La Paz|Chile|Guatemala|Brasil|São Paulo|Santos|República Dominicana|Jamaica|Panamá/],
  [3,/Cartago|Etiopía|Congo|Sokoto|Sudáfrica|Sierra Leona|Kenia|Senegal|Uganda|Alejandría|Cirene|Fez|Egipto|Nigeria|Orán/],
- [4,/Tíbet|Corea|Japón|Irán|Persia|Líbano|Nazaret|Java|Siria|India|Mesopotamia|China|Tokio|Cachemira|Bengala|Basora|Pérgamo|Capadocia|Mileto|Pakistán|Baréin|Calcuta|Bombay|Dehradun|Karnataka|Rajastán|Maharashtra/],
+ [4,/Kioto|Tíbet|Corea|Japón|Irán|Persia|Líbano|Nazaret|Java|Siria|India|Mesopotamia|China|Tokio|Cachemira|Bengala|Basora|Pérgamo|Capadocia|Mileto|Pakistán|Baréin|Calcuta|Bombay|Dehradun|Karnataka|Rajastán|Maharashtra/],
  [5,/Aotearoa|Hawái|Fiyi|Australia|Nueva Zelanda|Sídney/],
  [0,/Estados Unidos|EE\. UU\.|Nueva York|Connecticut|Chicago|Canadá|Minnesota|Texas|Pensilvania|Ottawa|Ohio|Nueva Jersey|Milwaukee|Massachusetts|Kentucky|Filadelfia|Denver|Cleveland|Carolina|Boston|Baltimore|California|Alabama/]];
 const CONT_FIX={"Dorothy Wrinch":2,"Francesca Gargallo":1,"Nelly Richard":1};
@@ -593,9 +603,15 @@ function relax(W,H){
   }
 }
 
+/* «vecinas»: comparten temas (sobre todo el principal), están cerca en el mapa y, a igualdad, en el tiempo */
 function neighbours(p,k=7){
-  return P.filter(q=>q!==p).map(q=>({q,d:Math.hypot(q.ix-p.ix,q.iy-p.iy)+Math.abs(q.b-p.b)/4000}))
-    .sort((a,b)=>a.d-b.d).slice(0,k).map(o=>o.q);
+  return P.filter(q=>q!==p).map(q=>{
+    const sh=q.tags.filter(t=>p.tags.includes(t)).length;
+    const jac=sh/(new Set([...p.tags,...q.tags]).size);
+    const main=(q.tags[0]===p.tags[0]?.35:0)+(q.tags.includes(p.tags[0])?.15:0);
+    const d=-(jac*1.4+main)+Math.hypot(q.ix-p.ix,q.iy-p.iy)*.5+Math.abs(q.b-p.b)/5000;
+    return {q,d};
+  }).sort((a,b)=>a.d-b.d).slice(0,k).map(o=>o.q);
 }
 const card=document.getElementById('card');
 function select(p){
