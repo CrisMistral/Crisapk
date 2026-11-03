@@ -140,7 +140,7 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
 <footer>Fichas breves escritas como puerta de entrada; las fechas antiguas son aproximadas. ¿Falta alguien? Hay muchísimas más. · <a href="acerca.html" style="color:inherit">Acerca de y privacidad</a></footer>
 
 <script>
-/* [nombre, nacimiento, muerte (null = vive, "?" = desconocida), aproximada, lugar, corriente, temas, idea, peso] */
+/* [nombre, nacimiento, muerte (null = vive, "?" = desconocida), aproximada (1) — o 2: no se sabe el nacimiento y el año es el de su obra clave —, lugar, corriente, temas, idea, peso] */
 const D=[
 ["Enheduana",-2285,-2250,1,"Ur, Mesopotamia","Poesía sacerdotal sumeria","mistica estetica","Suma sacerdotisa de Ur y primera autora conocida con nombre propio: sus himnos a Inanna piensan lo divino, el poder y el yo.",2],
 ["Gargi Vachaknavi",-700,"?",1,"Videha, India","Upanishads","metafisica conocimiento","Interroga a Yajñavalkya sobre aquello en lo que todo el universo está «tejido» en la Brihadaranyaka Upanishad.",2],
@@ -452,7 +452,22 @@ const D=[
 ["Ellen Dissanayake",1935,null,0,"Estados Unidos","Estética evolutiva","estetica cuerpo ciencia","«Homo aestheticus»: el arte como «hacer especial» lo cotidiano, una necesidad humana.",1],
 ["Elaine Scarry",1946,null,0,"Estados Unidos","Estética","estetica etica cuerpo","«Sobre la belleza y ser justos»: la belleza nos entrena para la justicia.",1],
 ["Carolyn Korsmeyer",1950,null,0,"Estados Unidos","Estética","estetica cuerpo","«El sentido del gusto»: la comida y el gusto como asuntos filosóficos.",1],
-["Sianne Ngai",1971,null,0,"Estados Unidos","Teoría estética","estetica economia","«Nuestras categorías estéticas»: lo mono, lo chiflado y lo interesante en el capitalismo tardío.",1]
+["Sianne Ngai",1971,null,0,"Estados Unidos","Teoría estética","estetica economia","«Nuestras categorías estéticas»: lo mono, lo chiflado y lo interesante en el capitalismo tardío.",1],
+["Peggy Zeglin Brand",1995,null,2,"Estados Unidos","Estética feminista","estetica feminismo","Con Carolyn Korsmeyer editó «Feminismo y tradición en estética» y después «La belleza importa»: el canon estético revisado desde las mujeres.",1],
+["Emily Brady",2003,null,2,"Reino Unido / EE. UU.","Estética ambiental","estetica ecologia etica","«Estética del entorno natural»: apreciar la naturaleza con imaginación y respeto, no como un cuadro.",1],
+["Bonnie Mann",2006,null,2,"Estados Unidos","Fenomenología feminista","estetica feminismo ecologia","«La liberación de las mujeres y lo sublime»: lo sublime repensado desde el feminismo y la tierra; después, «Masculinidad soberana».",1],
+["Katya Mandoki",2007,null,2,"México","Estética de lo cotidiano","estetica lenguaje politica","«Prosaica»: la estética de la vida diaria, de la cultura y las identidades sociales.",1],
+["Linda Nochlin",1931,2017,0,"Nueva York","Historia del arte feminista","estetica feminismo","«¿Por qué no ha habido grandes artistas mujeres?»: la pregunta estaba mal planteada; el problema son las instituciones.",2],
+["Lucy Lippard",1937,null,0,"Nueva York","Crítica de arte","estetica politica feminismo","La desmaterialización del objeto artístico y el arte feminista y comprometido.",1],
+["Rosalind Krauss",1941,null,0,"Estados Unidos","Teoría del arte","estetica lenguaje","La escultura en el campo expandido y la originalidad de la vanguardia.",1],
+["Laura Mulvey",1941,null,0,"Oxford / Londres","Teoría fílmica feminista","estetica psique feminismo","«Placer visual y cine narrativo»: la mirada masculina.",2],
+["Janet Wolff",1943,null,0,"Mánchester","Sociología del arte","estetica feminismo politica","«La producción social del arte» y la flâneuse invisible de la modernidad.",1],
+["Mieke Bal",1946,null,0,"Países Bajos","Teoría cultural","estetica lenguaje","Narratología y conceptos viajeros entre el arte y las humanidades.",1],
+["Griselda Pollock",1949,null,0,"Sudáfrica / Leeds","Historia del arte feminista","estetica feminismo psique","«Visión y diferencia»: feminismo, psicoanálisis y las historias del arte.",1],
+["Estrella de Diego",1958,null,0,"Madrid","Teoría del arte","estetica feminismo","Arte, género e identidad: «El andrógino sexuado» y «Travesías por la incertidumbre».",1],
+["Amelia Jones",1961,null,0,"Estados Unidos","Teoría de la performance","estetica cuerpo feminismo","«Body Art: la representación del sujeto»: el cuerpo del artista como lugar del significado.",1],
+["Marina Núñez",1966,null,0,"Palencia","Arte y pensamiento feminista","estetica cuerpo ciencia","Artista que piensa con imágenes: monstruas, cíborgs y cuerpos que desbordan la norma.",1],
+["Koyo Kouoh",1967,2025,0,"Duala, Camerún / Dakar","Comisariado","estetica decolonial","Comisaria que puso el arte africano en el centro: fundó RAW Material Company y dirigió el Zeitz MOCAA.",2]
 ];
 
 /* temas → dirección en el mapa: [x: abstracta(-) / política(+), y: lógica(-) / mística(+)] */
@@ -473,25 +488,27 @@ const eraOf=b=>ERAS.find(e=>b<e.to);
 const CONTS=["América del Norte","América Latina y el Caribe","Europa","África","Asia","Oceanía"];
 const CONT_RX=[
  [1,/Lima|Colombia|Uruguay|Ecuador|Bolivia|Cuba|Caracas|Oaxaca|México|Nueva España|Buenos Aires|Argentina|La Paz|Chile|Guatemala|Brasil|São Paulo|Santos|República Dominicana|Jamaica|Panamá/],
- [3,/Cartago|Etiopía|Congo|Sokoto|Sudáfrica|Sierra Leona|Kenia|Senegal|Uganda|Alejandría|Cirene|Fez|Egipto|Nigeria|Orán/],
+ [3,/Camerún|Cartago|Etiopía|Congo|Sokoto|Sudáfrica|Sierra Leona|Kenia|Senegal|Uganda|Alejandría|Cirene|Fez|Egipto|Nigeria|Orán/],
  [4,/Kioto|Tíbet|Corea|Japón|Irán|Persia|Líbano|Nazaret|Java|Siria|India|Mesopotamia|China|Tokio|Cachemira|Bengala|Basora|Pérgamo|Capadocia|Mileto|Pakistán|Baréin|Calcuta|Bombay|Dehradun|Karnataka|Rajastán|Maharashtra/],
  [5,/Aotearoa|Hawái|Fiyi|Australia|Nueva Zelanda|Sídney/],
  [0,/Estados Unidos|EE\. UU\.|Nueva York|Connecticut|Chicago|Canadá|Minnesota|Texas|Pensilvania|Ottawa|Ohio|Nueva Jersey|Milwaukee|Massachusetts|Kentucky|Filadelfia|Denver|Cleveland|Carolina|Boston|Baltimore|California|Alabama/]];
-const CONT_FIX={"Dorothy Wrinch":2,"Francesca Gargallo":1,"Nelly Richard":1};
+const CONT_FIX={"Dorothy Wrinch":2,"Francesca Gargallo":1,"Nelly Richard":1,"Griselda Pollock":2};
 function contOf(n,pl){ if(n in CONT_FIX)return CONT_FIX[n]; const f=pl.split(" / ")[0];
   for(const [c,rx] of CONT_RX) if(rx.test(f)) return c; return 2; }
 
 function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)/4294967295}
 const yr=(y,a)=>(a?"c. ":"")+(y<0?(-y)+" a.C.":y);
+const datesOf=p=>p.ob?('obra clave: '+p.ob):p.d===null?('n. '+yr(p.b,p.a)):p.d==="?"?(yr(p.b,p.a)+(p.b<1000?' (activa)':'')):(yr(p.b,p.a)+' – '+yr(p.d,p.a));
 
 const P=D.map((r,i)=>{
-  const [n,b,d,a,pl,tr,tg,s,w]=r, tags=tg.split(" ");
+  let [n,b,d,a,pl,tr,tg,s,w]=r, tags=tg.split(" "), ob=null;
+  if(a===2){ob=b;b=b-45;}  /* se coloca como si hubiera nacido ~45 años antes de su obra clave */
   let x=0,y=0,wt=0;
   tags.forEach((t,k)=>{const f=k===0?2:1;x+=TAGS[t][1]*f;y+=TAGS[t][2]*f;wt+=f});
   x/=wt;y/=wt;
   x+= (hash(n)-.5)*.35; y+=(hash(n+"y")-.5)*.35;
   const e=eraOf(b);
-  return {i,n,b,d,a,pl,tr,tags,s,w,ix:x,iy:y,era:e,h:e.h,c:contOf(n,pl)};
+  return {i,n,b,d,a,ob,pl,tr,tags,s,w,ix:x,iy:y,era:e,h:e.h,c:contOf(n,pl)};
 });
 /* orden cronológico para la línea del tiempo */
 [...P].sort((p,q)=>p.b-q.b||p.n.localeCompare(q.n)).forEach((p,k)=>p.rank=k);
@@ -620,7 +637,7 @@ function select(p){
   if(!p){card.classList.remove('open');if(!quizOpen)setHash('');return}
   p.el.classList.add('sel');
   const nb=neighbours(p); nb.forEach(q=>q.el.classList.add('near'));
-  const dates= p.d===null?('n. '+yr(p.b,p.a)) : p.d==="?"?(yr(p.b,p.a)+(p.b<1000?' (activa)':'')) : (yr(p.b,p.a)+' – '+yr(p.d,p.a));
+  const dates=datesOf(p);
   const wq=encodeURIComponent(p.n);
   card.style.setProperty('--h',p.h);
   card.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
@@ -811,7 +828,7 @@ function result(){
   const top=Object.entries(qsc).sort((a,b)=>b[1]-a[1]).map(([t])=>t);
   const shared=top.filter(t=>p.tags.includes(t)).slice(0,3).map(t=>TAGS[t][0]);
   qbox.style.setProperty('--h',p.h);
-  const dates=p.d===null?('n. '+yr(p.b,p.a)):p.d==="?"?yr(p.b,p.a):(yr(p.b,p.a)+' – '+yr(p.d,p.a));
+  const dates=datesOf(p);
   qbox.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
    <div class="res"><div class="pre">Tu filósofa es…</div><h2>${p.n}</h2>
    <div class="why">${dates} · ${p.pl} · ${p.tr}</div>
@@ -846,7 +863,7 @@ async function shareImage(p,text){
   x.fillStyle=col;let fs=118;x.font=`600 ${fs}px Fraunces, Georgia, serif`;
   let lines=wrap(x,p.n,W-160);while(lines.length>3&&fs>70){fs-=8;x.font=`600 ${fs}px Fraunces, Georgia, serif`;lines=wrap(x,p.n,W-160)}
   let y=400;lines.forEach(l=>{x.fillText(l,80,y);y+=fs*1.05});
-  const dates=p.d===null?('n. '+yr(p.b,p.a)):p.d==="?"?yr(p.b,p.a):(yr(p.b,p.a)+' – '+yr(p.d,p.a));
+  const dates=datesOf(p);
   x.fillStyle='#9a948a';x.font='400 34px Inter, sans-serif';y+=20;x.fillText(dates+' · '+p.pl,80,y);
   x.fillStyle='#ece8e1';x.font='400 46px Fraunces, Georgia, serif';y+=90;
   wrap(x,p.s,W-160).slice(0,6).forEach(l=>{x.fillText(l,80,y);y+=62});
