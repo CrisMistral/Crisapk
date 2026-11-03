@@ -66,6 +66,11 @@ h1{font:600 clamp(26px,5vw,40px)/1.05 Fraunces,Georgia,serif;margin:0 0 6px;lett
 .n.hit{outline:2px solid hsl(var(--h) var(--S) var(--L));outline-offset:1px}
 .hitb{border:0;background:none;padding:0;cursor:pointer;font:500 14px Fraunces,Georgia,serif;color:hsl(var(--h) var(--S) var(--L));text-decoration:underline;text-underline-offset:2px}
 .count{min-height:20px;margin:4px 0}
+.hom{margin:8px 0 2px;padding:10px 14px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font-size:15px;line-height:1.5}
+.hom b{font-family:Fraunces,Georgia,serif;font-weight:600}
+.hom .hitb{font-size:16px}
+aside .homl{font-size:14px;color:var(--muted);border-left:3px solid hsl(var(--h) var(--S) var(--L));padding-left:10px}
+aside .homl b{color:var(--fg);font-weight:500}
 .n.near{text-decoration:underline;text-underline-offset:3px}
 aside{position:fixed;right:16px;top:16px;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;
   background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 18px 16px;
@@ -116,7 +121,7 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
   <h1>Todas las filósofas</h1>
   <p class="sub">Un mapa de pensadoras de todas las épocas. <b>Arriba</b>: más mística, poética, existencial. <b>Abajo</b>: más lógica y científica. <b>Izquierda</b>: más abstracta. <b>Derecha</b>: más política y encarnada. El color indica la época. Cambia a «Línea del tiempo» o «Por continentes» para reordenarlas. Toca un nombre para ver su ficha y sus vecinas.</p>
   <div class="bar">
-    <input id="q" type="search" placeholder="Buscar nombre, lugar o idea…" autocomplete="off">
+    <input id="q" type="search" placeholder="Busca una filósofa, una idea… o un filósofo para ver su homóloga" autocomplete="off">
     <div class="seg" role="group" aria-label="Disposición">
       <button id="mIdeas" aria-pressed="true">Mapa de ideas</button>
       <button id="mTime" aria-pressed="false">Línea del tiempo</button>
@@ -131,6 +136,7 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
   <div class="legend" id="legend"></div>
 </header>
 <div class="wrap">
+  <div class="hom" id="hom" hidden></div>
   <div class="count" id="count"></div>
   <div class="frame" id="frame"><div class="map" id="map"></div></div>
 </div>
@@ -305,7 +311,7 @@ const D=[
 ["Seyla Benhabib",1950,null,0,"Estambul","Teoría crítica","politica etica","Universalismo interactivo y derechos de los otros.",1],
 ["Amelia Valcárcel",1950,null,0,"Madrid","Feminismo ilustrado","feminismo politica","El derecho al mal y la herencia ilustrada del feminismo.",2],
 ["Sueli Carneiro",1950,null,0,"São Paulo","Feminismo negro","raza decolonial conocimiento","El epistemicidio: matar formas de saber.",1],
-["Rita Segato",1951,null,0,"Buenos Aires","Antropología feminista","feminismo decolonial politica","Violencia, cuerpos y el mandato de masculinidad.",2],
+["Rita Segato",1951,null,0,"Buenos Aires","Antropología feminista","feminismo decolonial politica","«Las estructuras elementales de la violencia» y «La guerra contra las mujeres»: la violación como mandato de masculinidad, un acto dirigido a los otros hombres; los cuerpos de las mujeres como territorio de la guerra y la colonialidad.",2],
 ["bell hooks",1952,2021,0,"Kentucky","Feminismo negro","raza feminismo educacion","Pedagogía transgresora y el amor como práctica política.",3],
 ["Christine Korsgaard",1952,null,0,"Chicago","Kantismo","etica","Las fuentes de la normatividad y nuestras obligaciones con los animales.",1],
 ["Joan Tronto",1952,null,0,"Estados Unidos","Ética del cuidado","cuidado politica","El cuidado como cuestión democrática.",1],
@@ -533,7 +539,7 @@ P.forEach(p=>{
 function dims(){
   const W=Math.max(frame.clientWidth||innerWidth-32, mode==='time'?2200:mode==='world'?1700:1400);
   if(mode!=='world'){
-    const H=mode==='time'?Math.max(1000,innerHeight*.95):Math.max(1650,Math.min(1850,W*1.25));
+    const H=mode==='time'?Math.max(1000,innerHeight*.95):Math.max(1750,Math.min(1950,W*1.32));
     return {W,H};
   }
   /* cada continente ocupa un ancho proporcional a lo que ocupan sus nombres */
@@ -624,13 +630,13 @@ function relax(W,H){
   }
 }
 
-/* «vecinas»: comparten temas (sobre todo el principal), están cerca en el mapa y, a igualdad, en el tiempo */
+/* «vecinas»: comparten temas (sobre todo el principal), continente, cercanía en el mapa y, a igualdad, en el tiempo */
 function neighbours(p,k=7){
   return P.filter(q=>q!==p).map(q=>{
     const sh=q.tags.filter(t=>p.tags.includes(t)).length;
     const jac=sh/(new Set([...p.tags,...q.tags]).size);
     const main=(q.tags[0]===p.tags[0]?.35:0)+(q.tags.includes(p.tags[0])?.15:0);
-    const d=-(jac*1.4+main)+Math.hypot(q.ix-p.ix,q.iy-p.iy)*.5+Math.abs(q.b-p.b)/5000;
+    const d=-(jac*1.4+main+(q.c===p.c?.2:0))+Math.hypot(q.ix-p.ix,q.iy-p.iy)*.5+Math.abs(q.b-p.b)/5000;
     return {q,d};
   }).sort((a,b)=>a.d-b.d).slice(0,k).map(o=>o.q);
 }
@@ -647,7 +653,7 @@ function select(p){
   card.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
    <h2>${p.n}</h2>
    <div class="meta">${dates} · ${p.pl}<br>${p.tr} · ${p.era.n} · ${CONTS[p.c]}</div>
-   <p>${p.s}</p>
+   <p>${p.s}</p>${homLine(p)}
    <h3>Temas</h3><div class="tags">${p.tags.map(t=>`<button class="chip" data-t="${t}">${TAGS[t][0]}</button>`).join('')}</div>
    <h3>Vecinas en el mapa</h3><div class="nb">${nb.map(q=>`<button data-i="${q.i}" style="--h:${q.h}">${q.n}</button>`).join(' · ')}</div>
    <h3>Seguir leyendo</h3>
@@ -678,17 +684,164 @@ function nameScore(p,q){
   const words=n.split(/[\s-]+/), qs=q.split(/\s+/).filter(Boolean);
   return qs.every(w=>words.some(x=>x.startsWith(w)||(w.length>=4&&lev(w,x.slice(0,w.length+1))<=(w.length>6?2:1))||(w.length>=4&&lev(w,x)<=(w.length>6?2:1))))?1:0;
 }
-let hits=[];
+/* ---------- homólogas: si buscas a un filósofo, te propone a una filósofa ---------- */
+/* "Nombre|alias": [[filósofa, motivo], …] */
+const HOM={
+ "Pitágoras|Pitagoras":[["Teano","pitagórica, a quien se atribuyen escritos sobre el número y la virtud"],["Temistoclea","según Diógenes Laercio, le enseñó ética"]],
+ "Sócrates|Socrates":[["Diotima de Mantinea","en el Banquete es ella quien enseña a Sócrates"],["Aspasia de Mileto","Platón dice que Sócrates aprendió retórica con ella"]],
+ "Platón|Platon":[["Diotima de Mantinea","la voz que da la teoría del amor en el Banquete"],["Lastenia de Mantinea","alumna de su Academia"]],
+ "Aristóteles|Aristoteles":[["Philippa Foot","renovó la ética de la virtud aristotélica"],["Elizabeth Anscombe","reabrió la ética de la virtud en el siglo XX"]],
+ "Diógenes|Diogenes":[["Hiparquia de Maronea","cínica, vivió la filosofía en la calle como él"]],
+ "Epicuro":[["Leontion","epicúrea de su Jardín"]],
+ "Aristipo":[["Arete de Cirene","su hija heredó y dirigió la escuela cirenaica"]],
+ "Crates":[["Hiparquia de Maronea","su compañera en la vida cínica"]],
+ "Plotino|Proclo|Porfirio":[["Hipatia de Alejandría","la gran maestra neoplatónica"],["Sosípatra","neoplatónica y teúrga"]],
+ "Agustín de Hipona|San Agustín|Agustin":[["Macrina la Joven","pensó el alma y la resurrección en la misma época"]],
+ "Gregorio de Nisa":[["Macrina la Joven","su hermana y maestra en «Sobre el alma y la resurrección»"]],
+ "Yajñavalkya|Yajnavalkya":[["Gargi Vachaknavi","lo interroga sobre el fundamento del universo"],["Maitreyi","su diálogo sobre la inmortalidad"]],
+ "Buda|Siddhartha":[["Mahapajapati Gotami","su madre adoptiva y primera monja"],["Kisa Gotami","la parábola del grano de mostaza"]],
+ "Confucio|Mencio":[["Ban Zhao","pensadora confuciana de la dinastía Han"],["Im Yunjidang","neoconfuciana coreana"]],
+ "Laozi|Lao Tse|Zhuangzi":[["Xie Daoyun","poeta de la escuela del Misterio (xuanxue)"]],
+ "Shankara":[["Gargi Vachaknavi","la metafísica de las Upanishads"]],
+ "Rumi|Al-Ghazali|Ibn Arabi":[["Rabia al-Adawiyya","la gran mística sufí del amor divino"],["Fátima de Nishapur","mística sufí, maestra de Dhu l-Nun"]],
+ "Averroes|Avicena":[["Fátima al-Fihri","fundó al-Qarawiyyin, una de las instituciones de saber más antiguas"]],
+ "Abelardo|Pedro Abelardo":[["Eloísa","su interlocutora: la ética de la intención y del amor"]],
+ "Tomás de Aquino|Tomas de Aquino|Santo Tomás":[["Hildegarda de Bingen","la gran pensadora medieval de la naturaleza y lo divino"]],
+ "Maestro Eckhart|Eckhart":[["Margarita Porete","la aniquilación del alma, antes que él"],["Hadewijch de Amberes","mística beguina del amor"]],
+ "Juan de la Cruz|San Juan de la Cruz":[["Teresa de Ávila","su compañera de reforma y de mística"]],
+ "Erasmo|Petrarca":[["Christine de Pizan","humanista que discutió con los sabios de su tiempo"]],
+ "Montaigne":[["Marie de Gournay","su hija adoptiva y editora de los Ensayos"]],
+ "Descartes":[["Isabel de Bohemia","le planteó el problema mente-cuerpo"]],
+ "Hobbes|Bacon":[["Margaret Cavendish","debatió la filosofía natural de su tiempo"]],
+ "Spinoza":[["Anne Conway","otra metafísica de la sustancia única y viva"],["Moira Gatens","lee a Spinoza desde el feminismo"]],
+ "Leibniz":[["Anne Conway","le inspiró la palabra «mónada»"],["Émilie du Châtelet","sintetizó a Leibniz y Newton"]],
+ "Newton":[["Émilie du Châtelet","tradujo y comentó los Principia"],["Laura Bassi","defendió la física newtoniana"]],
+ "Galileo":[["Laura Bassi","física experimental en la Italia del siglo XVIII"]],
+ "Locke":[["Mary Astell","le preguntó por qué las mujeres nacen esclavas"],["Damaris Masham","su amiga y anfitriona"],["Catharine Trotter Cockburn","lo defendió por escrito"]],
+ "Hume":[["Mary Shepherd","rebatió su teoría de la causalidad"],["Annette Baier","su gran lectora del siglo XX"]],
+ "Rousseau":[["Mary Wollstonecraft","le contestó en la «Vindicación»"],["Olympe de Gouges","los derechos de la ciudadana"]],
+ "Voltaire":[["Émilie du Châtelet","su compañera intelectual"]],
+ "Adam Smith":[["Sophie de Grouchy","tradujo su teoría de los sentimientos y la corrigió"]],
+ "Condorcet":[["Sophie de Grouchy","su compañera y filósofa de la simpatía"]],
+ "Kant":[["Christine Korsgaard","la gran kantiana actual"],["Onora O'Neill","ética kantiana aplicada"]],
+ "Hegel":[["Carla Lonzi","«Escupamos sobre Hegel»"],["Gillian Rose","hegeliana del siglo XX"]],
+ "Goethe|Schiller":[["Germaine de Staël","llevó el romanticismo alemán a Francia"]],
+ "John Stuart Mill|Stuart Mill":[["Harriet Taylor Mill","coautora de sus ideas sobre la libertad y las mujeres"]],
+ "Comte":[["Harriet Martineau","tradujo y condensó su obra"]],
+ "Marx|Engels":[["Rosa Luxemburgo","la gran marxista revolucionaria"],["Silvia Federici","el trabajo reproductivo que Marx no vio"]],
+ "Bakunin|Kropotkin|Proudhon":[["Emma Goldman","la anarquista más influyente"],["He-Yin Zhen","anarcofeminismo chino"]],
+ "Lenin|Trotsky":[["Alexandra Kollontai","revolucionaria que repensó el amor y la familia"]],
+ "Gramsci|Lukács|Lukacs":[["Agnes Heller","alumna de Lukács, Escuela de Budapest"],["Raya Dunayevskaya","humanismo marxista"]],
+ "Kierkegaard":[["Simone Weil","fe, angustia y absoluto"]],
+ "Nietzsche":[["Lou Andreas-Salomé","su interlocutora (y a quien propuso matrimonio)"],["Sarah Kofman","una de sus mejores lectoras"]],
+ "Freud":[["Lou Andreas-Salomé","psicoanalista de su círculo"],["Julia Kristeva","psicoanálisis y lenguaje"]],
+ "Lacan":[["Luce Irigaray","la expulsaron de su escuela por criticarle"],["Julia Kristeva","lo semiótico frente a lo simbólico"]],
+ "Jung":[["Lou Andreas-Salomé","psique y erotismo"]],
+ "Peirce|Charles Peirce":[["Victoria Welby","su correspondencia sobre el significado"],["Christine Ladd-Franklin","fue su alumna de lógica"]],
+ "William James":[["Mary Whiton Calkins","fue su alumna; psicología del yo"]],
+ "Dewey|John Dewey":[["Jane Addams","la otra cara del pragmatismo"],["Yuriko Saito","la estética de la experiencia cotidiana"]],
+ "Husserl":[["Edith Stein","su asistente y fenomenóloga"],["Hedwig Conrad-Martius","fenomenología realista"]],
+ "Heidegger":[["Hannah Arendt","su alumna, y pensadora de la acción frente a él"]],
+ "Jaspers":[["Hannah Arendt","dirigió su tesis"],["Jeanne Hersch","fue su alumna"]],
+ "Sartre":[["Simone de Beauvoir","su compañera, y la existencialista más leída"]],
+ "Camus":[["Simone Weil","él publicó su obra póstuma"]],
+ "Merleau-Ponty":[["Iris Marion Young","«Lanzar como una chica»: fenomenología del cuerpo femenino"],["Sara Ahmed","fenomenología queer"]],
+ "Levinas":[["Adriana Cavarero","ética de la relación y la unicidad"]],
+ "Ortega y Gasset|Ortega":[["María Zambrano","su discípula, de la razón vital a la razón poética"]],
+ "Unamuno":[["María Zambrano","la agonía y la palabra poética"]],
+ "Wittgenstein":[["Elizabeth Anscombe","su alumna y traductora"],["Cora Diamond","una de sus grandes lectoras"]],
+ "Russell|Bertrand Russell":[["Susan Stebbing","lógica y pensamiento crítico"],["Dorothy Wrinch","trabajó con él en lógica"]],
+ "Frege|Carnap|Gödel|Godel":[["Ruth Barcan Marcus","lógica modal"],["Rózsa Péter","funciones recursivas"]],
+ "Quine|Kripke":[["Ruth Barcan Marcus","anticipó la necesidad de la identidad"]],
+ "Turing":[["Ada Lovelace","imaginó la computación un siglo antes"]],
+ "Popper":[["Susan Haack","epistemología y ciencia"]],
+ "Kuhn":[["Margaret Masterman","analizó sus 21 sentidos de «paradigma»"]],
+ "Feyerabend|Latour|Bruno Latour":[["Isabelle Stengers","cosmopolíticas"],["Donna Haraway","conocimientos situados"]],
+ "Darwin|Lovelock":[["Lynn Margulis","simbiogénesis y Gaia"]],
+ "Dennett|Searle|Fodor":[["Patricia Churchland","neurofilosofía"],["Ruth Millikan","teleosemántica"],["Margaret Boden","mente y creatividad"]],
+ "Peter Singer|Singer":[["Mary Midgley","animales y ética"],["Christine Korsgaard","nuestras obligaciones con los animales"]],
+ "MacIntyre":[["Philippa Foot","ética de la virtud"]],
+ "Rawls":[["Susan Moller Okin","justicia, género y familia"],["Martha Nussbaum","el enfoque de las capacidades"]],
+ "Nozick":[["Elizabeth Anderson","igualdad democrática"]],
+ "Habermas|Apel":[["Seyla Benhabib","universalismo interactivo"],["Adela Cortina","ética discursiva"]],
+ "Adorno|Horkheimer":[["Gillian Rose","«La ciencia melancólica», sobre Adorno"]],
+ "Marcuse":[["Angela Davis","fue su alumna"]],
+ "Honneth|Axel Honneth":[["Nancy Fraser","debatieron redistribución y reconocimiento"],["Rahel Jaeggi","teoría crítica actual"]],
+ "Rorty":[["Nancy Fraser","pragmatismo y teoría crítica"]],
+ "Laclau":[["Chantal Mouffe","su compañera y coautora"]],
+ "Foucault":[["Judith Butler","el poder y la producción del sujeto"]],
+ "Derrida":[["Hélène Cixous","su amiga y la escritura femenina"],["Sarah Kofman","deconstrucción"]],
+ "Deleuze|Guattari":[["Rosi Braidotti","sujetos nómades"],["Suely Rolnik","coautora con Guattari"]],
+ "Agamben|Esposito":[["Adriana Cavarero","la vida y la vulnerabilidad"]],
+ "Byung-Chul Han|Han":[["Marina Garcés","pensar el presente en común"]],
+ "Barthes|Roland Barthes|Saussure":[["Julia Kristeva","semiótica"]],
+ "Bourdieu":[["Janet Wolff","sociología del arte"]],
+ "Fanon|Frantz Fanon":[["Sylvia Wynter","desmontar el «Hombre» colonial"]],
+ "Said|Edward Said":[["Gayatri Spivak","poscolonialismo"]],
+ "Dussel|Mignolo|Quijano":[["María Lugones","colonialidad del género"],["Silvia Rivera Cusicanqui","lo ch'ixi"]],
+ "Paulo Freire|Freire":[["bell hooks","pedagogía transgresora"]],
+ "Du Bois|W. E. B. Du Bois":[["Anna Julia Cooper","«Una voz del Sur»"]],
+ "Fred Moten|Moten":[["Sylvia Wynter","estética y ser negro"],["Audre Lorde","poesía y teoría negra"]],
+ "Lawrence Weiner|Weiner|Sol LeWitt|Kosuth":[["Lucy Lippard","la desmaterialización del objeto artístico"]],
+ "Greenberg|Clement Greenberg":[["Rosalind Krauss","fue su discípula y su crítica"]],
+ "John Berger|Berger":[["Laura Mulvey","la mirada masculina"]],
+ "Gombrich|Panofsky":[["Linda Nochlin","la historia del arte feminista"],["Griselda Pollock","visión y diferencia"]],
+ "Berleant|Arnold Berleant|Allen Carlson":[["Yuriko Saito","estética cotidiana"],["Emily Brady","estética ambiental"]],
+ "Tanizaki|Okakura":[["Sei Shōnagon","la estética japonesa de lo cotidiano"],["Yuriko Saito","estética japonesa"]],
+ "Timothy Morton|Morton":[["Val Plumwood","ecofeminismo"],["Donna Haraway","pensar con otras especies"]],
+ "Duchamp|Hélio Oiticica|Oiticica":[["Lygia Clark","el arte como experiencia del cuerpo"]],
+ "Lévi-Strauss|Levi-Strauss|Malinowski":[["Marilyn Strathern","«El género del don»"]],
+ "Simmel|Benjamin|Walter Benjamin":[["Janet Wolff","la flâneuse invisible"]]
+};
+const HOMK=Object.entries(HOM).map(([k,v])=>({alias:k.split('|'),name:k.split('|')[0],list:v}));
+/* ¿lo buscado es un filósofo? Coincide con un alias (o con su apellido), tolerando erratas */
+function homologa(q){
+  if(q.length<3)return null;
+  let best=null;
+  for(const h of HOMK){
+    for(const a of h.alias){
+      const n=norm(a), last=n.split(' ').pop();
+      let sc=0;
+      if(n===q)sc=3; else if(n.startsWith(q)&&q.length>=4)sc=2.5; else if(q.length>=4&&(q===last||lev(q,n)<=(n.length>6?2:1)||lev(q,last)<=(last.length>6?2:1)))sc=2;
+      else if(q.includes(n)&&n.length>=4)sc=1.5;
+      if(sc&&(!best||sc>best.sc))best={h,sc};
+    }
+  }
+  if(!best)return null;
+  return {name:best.h.name,list:best.h.list.map(([n,m])=>({p:P.find(x=>x.n===n),m})).filter(o=>o.p)};
+}
+
+/* línea «Homóloga de…» en la ficha: si llegas buscando a un filósofo, su motivo; si no, a quiénes corresponde */
+function homLine(p){
+  const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  if(homNow){const o=homNow.list.find(o=>o.p===p); if(o)return `<p class="homl">Homóloga de <b>${esc(homNow.name)}</b>: ${esc(o.m)}.</p>`;}
+  const of=HOMK.filter(h=>h.list.some(([n])=>n===p.n)).map(h=>h.name);
+  return of.length?`<p class="homl">Homóloga de ${of.map(n=>'<b>'+esc(n)+'</b>').join(', ').replace(/, ([^,]*)$/,' y $1')}.</p>`:'';
+}
+let hits=[], homNow=null;
 function filter(){
   const q=norm(query.trim()); let c=0; hits=[];
+  /* si no coincide con ninguna filósofa pero sí con un filósofo, mostramos sus homólogas */
+  homNow=(q&&!P.some(p=>nameScore(p,q)>=2))?homologa(q):null;
+  if(homNow&&!homNow.list.length)homNow=null;
+  const homSet=new Map((homNow?homNow.list:[]).map((o,k)=>[o.p,2.5-k*.01]));
   P.forEach(p=>{
     const hay=norm([p.n,p.pl,p.tr,p.s,p.era.n,CONTS[p.c],p.tags.map(t=>TAGS[t][0]).join(' ')].join(' '));
-    const ns=q?nameScore(p,q):0;
+    const ns=Math.max(q?nameScore(p,q):0,homSet.get(p)||0);
     const ok=(!q||ns>0||hay.includes(q))&&(!activeTag||p.tags.includes(activeTag))&&(activeCont===null||p.c===activeCont);
     p.el.classList.toggle('off',!ok); p.el.classList.toggle('hit',!!(q&&ok&&ns));
     if(ok){c++; if(q)hits.push({p,s:ns})}
   });
   hits.sort((a,b)=>b.s-a.s||b.p.w-a.p.w);
+  const hb=document.getElementById('hom');
+  if(homNow){
+    hb.innerHTML='¿Buscas a <b></b>? '+(homNow.list.length>1?'Sus homólogas':'Su homóloga')+': ';
+    hb.querySelector('b').textContent=homNow.name;
+    homNow.list.forEach((o,k)=>{const b=document.createElement('button');b.className='hitb';b.textContent=o.p.n;b.style.setProperty('--h',o.p.h);
+      b.onclick=e=>{e.stopPropagation();select(o.p);goTo(o.p)};
+      if(k)hb.append(' · '); hb.append(b,' ('+o.m+')')});
+    hb.hidden=false;
+  } else hb.hidden=true;
   const cnt=document.getElementById('count');
   cnt.textContent=(q||activeTag||activeCont!==null)?`${c} de ${P.length} filósofas`:`${P.length} filósofas`;
   if(q){
@@ -721,7 +874,7 @@ let qt;
 const qi=document.getElementById('q');
 qi.addEventListener('input',e=>{query=e.target.value;filter();
   clearTimeout(qt);qt=setTimeout(()=>{const nm=hits.filter(h=>h.s>0);
-    if(nm.length===1)select(nm[0].p); if(nm.length){goTo(nm[0].p)} },500)});
+    if(nm.length===1||homNow)select(nm[0].p); if(nm.length){goTo(nm[0].p)} },500)});
 qi.addEventListener('keydown',e=>{if(e.key==='Enter'&&hits.length){clearTimeout(qt);select(hits[0].p);goTo(hits[0].p);qi.blur()}});
 function setMode(m){mode=m;
   document.getElementById('mIdeas').setAttribute('aria-pressed',m==='ideas');
