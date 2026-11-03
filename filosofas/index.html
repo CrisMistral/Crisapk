@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Todas las filósofas</title>
-<meta name="description" content="300 filósofas de todos los tiempos y continentes en un mapa de todas las épocas: cada nombre está colocado según sus temas y coloreado según su época.">
+<meta name="description" content="Más de 300 filósofas de todos los tiempos y continentes en un mapa de todas las épocas: cada nombre está colocado según sus temas y coloreado según su época.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
 <meta property="og:url" content="https://todaslasfilosofas.netlify.app/">
 <link rel="canonical" href="https://todaslasfilosofas.netlify.app/">
 <meta property="og:title" content="Todas las filósofas">
-<meta property="og:description" content="300 filósofas de todos los tiempos y continentes en un mapa. ¿Qué filósofa eres?">
+<meta property="og:description" content="Más de 300 filósofas de todos los tiempos y continentes en un mapa. ¿Qué filósofa eres?">
 <meta property="og:image" content="https://todaslasfilosofas.netlify.app/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Todas las filósofas">
-<meta name="twitter:description" content="300 filósofas de todos los tiempos y continentes en un mapa. ¿Qué filósofa eres?">
+<meta name="twitter:description" content="Más de 300 filósofas de todos los tiempos y continentes en un mapa. ¿Qué filósofa eres?">
 <meta name="twitter:image" content="https://todaslasfilosofas.netlify.app/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -441,7 +441,8 @@ const D=[
 ["Mary Parker Follett",1868,1933,0,"Massachusetts","Pragmatismo","politica etica","El «poder con» frente al «poder sobre».",1],
 ["Maria Montessori",1870,1952,0,"Italia","Pedagogía","educacion cuerpo","La niña y el niño se educan a sí mismos en un entorno preparado.",2],
 ["Grace de Laguna",1878,1978,0,"Estados Unidos","Pragmatismo","lenguaje mente","El habla nace de su función social.",1],
-["Rachel Carson",1907,1964,0,"Pensilvania","Ecología","ecologia ciencia","«Primavera silenciosa».",2]
+["Rachel Carson",1907,1964,0,"Pensilvania","Ecología","ecologia ciencia","«Primavera silenciosa».",2],
+["Yuriko Saito",1953,null,1,"Japón / EE. UU.","Estética cotidiana","estetica ecologia etica","«Estética cotidiana»: lo bello y lo feo en lo que hacemos cada día —lavar, ordenar, reparar— tiene consecuencias éticas y ecológicas.",2]
 ];
 
 /* temas → dirección en el mapa: [x: abstracta(-) / política(+), y: lógica(-) / mística(+)] */
@@ -835,7 +836,7 @@ async function shareImage(p,text){
   wrap(x,p.s,W-160).slice(0,6).forEach(l=>{x.fillText(l,80,y);y+=62});
   x.fillStyle=col;x.fillRect(80,H-170,90,6);
   x.fillStyle='#ece8e1';x.font='600 40px Fraunces, Georgia, serif';x.fillText('Todas las filósofas',80,H-140);
-  x.fillStyle='#9a948a';x.font='400 30px Inter, sans-serif';x.fillText('300 pensadoras · ¿y tú cuál eres?',80,H-88);
+  x.fillStyle='#9a948a';x.font='400 30px Inter, sans-serif';x.fillText('Más de 300 pensadoras · ¿y tú cuál eres?',80,H-88);
   const blob=await new Promise(r=>c.toBlob(r,'image/png'));
   const file=new File([blob],'mi-filosofa.png',{type:'image/png'});
   if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],text:text+' '+BASE+'#test'});return}catch(e){if(e.name==='AbortError')return}}
