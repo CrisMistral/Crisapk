@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propón una filósofa · Todas las filósofas</title>
+<meta name="description" content="¿Falta alguna filósofa en el mapa? Propónla y la añadiremos.">
+<link rel="canonical" href="https://todaslasfilosofas.netlify.app/sugerir.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Todas las filósofas">
+<meta property="og:title" content="Propón una filósofa · Todas las filósofas">
+<meta property="og:description" content="¿Falta alguna filósofa en el mapa? Propónla y la añadiremos.">
+<meta property="og:url" content="https://todaslasfilosofas.netlify.app/sugerir.html">
+<meta property="og:image" content="https://todaslasfilosofas.netlify.app/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nube de nombres de filósofas con el título Todas las filósofas">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#121110">
+<link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fuentes.css">
+<link rel="stylesheet" href="comun.css">
+<script>try{const t=localStorage.getItem('filosofas-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<script src="analitica.js" defer></script>
+</head>
+<body>
+<main>
+<a class="back" href="./">← Volver al mapa</a>
+
+<h1>¿Falta alguna filósofa?</h1>
+<p>Cuéntanos a quién echas en falta (o qué error has visto) y lo revisamos. Solo es obligatorio el nombre.</p>
+<form name="sugerencia" method="POST" action="gracias.html" data-netlify="true" netlify-honeypot="web" novalidate id="f">
+<input type="hidden" name="form-name" value="sugerencia">
+<p class="hp" aria-hidden="true"><label>No rellenes este campo: <input name="web" tabindex="-1" autocomplete="off"></label></p>
+
+<div class="f">
+<label for="filosofa">Nombre de la filósofa <span class="count-c" id="c1"></span></label>
+<input type="text" id="filosofa" name="filosofa" required minlength="2" maxlength="120" autocomplete="off" aria-describedby="e-filosofa">
+<div class="err" id="e-filosofa" aria-live="polite"></div>
+</div>
+
+<div class="f">
+<label for="comentario">¿Por qué debería estar? <span class="hint">(opcional: obra, enlace, de dónde es…)</span> <span class="count-c" id="c2"></span></label>
+<textarea id="comentario" name="comentario" maxlength="1000" aria-describedby="e-comentario"></textarea>
+<div class="err" id="e-comentario" aria-live="polite"></div>
+</div>
+
+<div class="f">
+<label for="nombre">Tu nombre <span class="hint">(opcional)</span></label>
+<input type="text" id="nombre" name="nombre" maxlength="80" autocomplete="name">
+</div>
+
+<div class="f">
+<label for="email">Tu correo <span class="hint">(opcional, solo para responderte)</span></label>
+<input type="email" id="email" name="email" maxlength="160" autocomplete="email" aria-describedby="e-email">
+<div class="err" id="e-email" aria-live="polite"></div>
+</div>
+
+<div class="f">
+<label class="check"><input type="checkbox" id="acepto" name="acepto" value="si" required aria-describedby="e-acepto">
+<span>He leído la <a href="privacidad.html">Política de privacidad</a> y acepto que se traten estos datos para valorar mi propuesta.</span></label>
+<div class="err" id="e-acepto" aria-live="polite"></div>
+</div>
+
+<button class="cta" type="submit">Enviar propuesta</button>
+</form>
+<script>
+(function(){
+  var f=document.getElementById('f'), t0=Date.now();
+  var campos={
+    filosofa:function(v){v=v.trim(); if(!v)return 'Escribe el nombre de la filósofa.'; if(v.length<2)return 'El nombre es demasiado corto.'; if(/https?:|www\./i.test(v))return 'Pon solo el nombre; los enlaces van en el comentario.'; return ''},
+    comentario:function(v){return (v.match(/https?:\/\//g)||[]).length>3?'Incluye como mucho tres enlaces.':''},
+    email:function(v){v=v.trim(); return v&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?'Revisa el correo: parece incompleto.':''},
+    acepto:function(v,el){return el.checked?'':'Necesitamos tu permiso para tratar la propuesta.'}
+  };
+  function check(id){var el=document.getElementById(id),m=campos[id](el.value,el);document.getElementById('e-'+id).textContent=m;el.setAttribute('aria-invalid',m?'true':'false');return !m}
+  Object.keys(campos).forEach(function(id){var el=document.getElementById(id);el.addEventListener('blur',function(){check(id)});el.addEventListener('change',function(){check(id)})});
+  function cnt(id,out,max){var el=document.getElementById(id),o=document.getElementById(out);function u(){o.textContent=el.value.length+'/'+max}el.addEventListener('input',u);u()}
+  cnt('filosofa','c1',120); cnt('comentario','c2',1000);
+  f.addEventListener('submit',function(e){
+    var ok=Object.keys(campos).map(check).every(Boolean);
+    if(!ok){e.preventDefault();var first=f.querySelector('[aria-invalid="true"]');if(first)first.focus();return}
+    if(f.web.value||Date.now()-t0<3000){e.preventDefault();location.href='gracias.html'} /* bots: campo trampa o envío instantáneo */
+  });
+})();
+</script>
+</main>
+<footer class="legal">
+<a href="./">Mapa</a><a href="acerca.html">Acerca de</a><a href="sugerir.html">Proponer una filósofa</a>
+<a href="privacidad.html">Privacidad y cookies</a><a href="terminos.html">Términos</a>
+<a href="#" onclick="preferenciasCookies();return false">Preferencias de cookies</a>
+<a href="mailto:artdeque@gmail.com">artdeque@gmail.com</a>
+</footer>
+</body>
+</html>

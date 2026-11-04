@@ -1,0 +1,46 @@
+# Configuración del sitio «Todas las filósofas» (se publica esta carpeta tal cual)
+[build]
+  publish = "."
+  command = ""
+
+# HTTPS: Netlify sirve siempre con certificado y redirige http → https.
+# HSTS obliga al navegador a usar solo HTTPS en las visitas siguientes.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# La dirección antigua de la imagen para compartir sigue funcionando
+[[redirects]]
+  from = "/og.png"
+  to = "/og.jpg"
+  status = 301

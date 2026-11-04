@@ -3,25 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Todas las filósofas</title>
-<meta name="description" content="Más de 300 filósofas de todos los tiempos y continentes en un mapa de todas las épocas: cada nombre está colocado según sus temas y coloreado según su época.">
+<title>Todas las filósofas · Mapa de más de 300 pensadoras de la historia</title>
+<meta name="description" content="Mapa interactivo de más de 300 filósofas de todas las épocas y continentes. Descubre qué filósofa eres y la homóloga de cada filósofo.">
+<link rel="canonical" href="https://todaslasfilosofas.netlify.app/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Todas las filósofas">
 <meta property="og:url" content="https://todaslasfilosofas.netlify.app/">
-<link rel="canonical" href="https://todaslasfilosofas.netlify.app/">
 <meta property="og:title" content="Todas las filósofas">
 <meta property="og:description" content="Más de 300 filósofas de todos los tiempos y continentes en un mapa. ¿Qué filósofa eres?">
-<meta property="og:image" content="https://todaslasfilosofas.netlify.app/og.png">
+<meta property="og:image" content="https://todaslasfilosofas.netlify.app/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nube de nombres de filósofas con el título Todas las filósofas">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Todas las filósofas">
 <meta name="twitter:description" content="Más de 300 filósofas de todos los tiempos y continentes en un mapa. ¿Qué filósofa eres?">
-<meta name="twitter:image" content="https://todaslasfilosofas.netlify.app/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<meta name="twitter:image" content="https://todaslasfilosofas.netlify.app/og.jpg">
+<meta name="twitter:image:alt" content="Nube de nombres de filósofas con el título Todas las filósofas">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fuentes.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Todas las filósofas","url":"https://todaslasfilosofas.netlify.app/","inLanguage":"es","description":"Mapa interactivo de más de 300 filósofas de todos los tiempos y continentes."}</script>
+<script src="analitica.js" defer></script>
 <style>
 :root{
   --bg:#fbfaf7; --fg:#1d1b18; --muted:#6f6a62; --line:#e4e0d8; --panel:#ffffff;
-  --L:36%; --S:72%; --dim:.13; --shadow:0 10px 40px rgba(0,0,0,.12);
+  --L:29%; --S:72%; --dim:.13; --shadow:0 10px 40px rgba(0,0,0,.12);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -43,7 +57,7 @@ h1{font:600 clamp(26px,5vw,40px)/1.05 Fraunces,Georgia,serif;margin:0 0 6px;lett
 .bar input{flex:1 1 200px;min-width:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:inherit}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .seg button,.ghost{background:var(--panel);color:var(--fg);border:0;padding:9px 12px;font:inherit;cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.seg button[aria-pressed="true"]{box-shadow:inset 0 -3px 0 var(--fg);font-weight:500}
 .ghost{border:1px solid var(--line);border-radius:10px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .chip{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:99px;padding:3px 10px;font:13px Inter,sans-serif;cursor:pointer}
@@ -112,6 +126,8 @@ aside a{color:inherit}
 #quiz .why{color:var(--muted);font-size:14px}
 #quiz .also{font-size:14px;color:var(--muted);margin-top:10px}
 #quiz .also button{border:0;background:none;padding:0;cursor:pointer;font:15px Fraunces,Georgia,serif;color:hsl(var(--h) var(--S) var(--L));text-decoration:underline}
+footer a{color:inherit}
+footer .legal{display:flex;flex-wrap:wrap;gap:6px 14px}
 footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:0 16px 30px}
 .count{color:var(--muted);font-size:13px}
 </style>
@@ -121,7 +137,7 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
   <h1>Todas las filósofas</h1>
   <p class="sub">Un mapa de pensadoras de todas las épocas. <b>Arriba</b>: más mística, poética, existencial. <b>Abajo</b>: más lógica y científica. <b>Izquierda</b>: más abstracta. <b>Derecha</b>: más política y encarnada. El color indica la época. Cambia a «Línea del tiempo» o «Por continentes» para reordenarlas. Toca un nombre para ver su ficha y sus vecinas.</p>
   <div class="bar">
-    <input id="q" type="search" placeholder="Busca una filósofa, una idea… o un filósofo para ver su homóloga" autocomplete="off">
+    <input id="q" type="search" placeholder="Busca filósofa, idea… o un filósofo" aria-label="Buscar una filósofa, una idea o un filósofo para ver su homóloga" autocomplete="off">
     <div class="seg" role="group" aria-label="Disposición">
       <button id="mIdeas" aria-pressed="true">Mapa de ideas</button>
       <button id="mTime" aria-pressed="false">Línea del tiempo</button>
@@ -143,7 +159,10 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
 <aside id="card" aria-live="polite"></aside>
 <div id="quiz" role="dialog" aria-modal="true" aria-label="¿Qué filósofa eres?"><div class="box" id="qbox"></div></div>
 <div class="toast" id="toast"></div>
-<footer>Fichas breves escritas como puerta de entrada; las fechas antiguas son aproximadas. ¿Falta alguien? Hay muchísimas más. · <a href="acerca.html" style="color:inherit">Acerca de y privacidad</a></footer>
+<footer>
+  <p>Fichas breves escritas como puerta de entrada; las fechas antiguas son aproximadas. ¿Falta alguien? <a href="sugerir.html">Propón una filósofa</a>.</p>
+  <nav class="legal" aria-label="Información legal"><a href="acerca.html">Acerca de</a><a href="privacidad.html">Privacidad y cookies</a><a href="terminos.html">Términos</a><a href="#" onclick="preferenciasCookies();return false">Preferencias de cookies</a><a href="mailto:artdeque@gmail.com">artdeque@gmail.com</a></nav>
+</footer>
 
 <script>
 /* [nombre, nacimiento, muerte (null = vive, "?" = desconocida), aproximada (1) — o 2: no se sabe el nacimiento y el año es el de su obra clave —, lugar, corriente, temas, idea, peso] */
@@ -609,24 +628,30 @@ function axis(t,x,y,al){
 }
 /* separa rectángulos que se solapan, tirando suavemente hacia su sitio */
 function relax(W,H){
-  const g=3;
+  /* barrido por x: solo se comparan nombres que se tocan en horizontal (rápido incluso en móvil) */
+  const g=3, S=P.slice(), ymin=mode==='time'?64:mode==='world'?40:26;
+  let best=1e9,bestIt=0;
   for(let it=0;it<1500;it++){
-    let moved=false;
-    for(let i=0;i<P.length;i++){const a=P[i];
-      for(let j=i+1;j<P.length;j++){const b=P[j];
+    let moved=false,n=0;
+    for(let i=1;i<S.length;i++){const t=S[i];let j=i-1;while(j>=0&&S[j].x>t.x){S[j+1]=S[j];j--}S[j+1]=t}
+    for(let i=0;i<S.length;i++){const a=S[i];
+      for(let j=i+1;j<S.length;j++){const b=S[j];
+        if(b.x>=a.x+a.w0+g)break;
         const ox=Math.min(a.x+a.w0,b.x+b.w0)-Math.max(a.x,b.x)+g;
         const oy=Math.min(a.y+a.h0,b.y+b.h0)-Math.max(a.y,b.y)+g;
-        if(ox>0&&oy>0){moved=true;
+        if(ox>0&&oy>0){moved=true;n++;
           if(oy<ox||mode==='time'){const s=(a.y+a.h0/2<b.y+b.h0/2?-1:1)*oy/2;a.y+=s;b.y-=s}
           else{const s=(a.x+a.w0/2<b.x+b.w0/2?-1:1)*ox/2;a.x+=s;b.x-=s}
         }
       }
     }
-    P.forEach(p=>{
+    for(const p of P){
       if(it<200){p.x+=(p.tx-p.x)*.02; p.y+=(p.ty-p.y)*.02;}
-      p.x=Math.max(p.lo,Math.min(p.hi-p.w0,p.x)); p.y=Math.max(mode==='time'?64:mode==='world'?40:26,Math.min(H-p.h0-26,p.y));
-    });
+      p.x=Math.max(p.lo,Math.min(p.hi-p.w0,p.x)); p.y=Math.max(ymin,Math.min(H-p.h0-26,p.y));
+    }
     if(!moved)break;
+    /* si en 120 vueltas ya no mejora, paramos: lo que queda son roces mínimos */
+    if(n<best){best=n;bestIt=it}else if(it>500&&it-bestIt>300)break;
   }
 }
 
