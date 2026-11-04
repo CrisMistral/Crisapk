@@ -100,6 +100,8 @@ if(__cfg().explain!==true)document.documentElement.classList.add('simple');
     <button class="h" id="cfgBtn" aria-expanded="false" aria-controls="cfgBox" onclick="toggleCfg()"><span data-i18n="settings">⚙️ Ajustes</span><span aria-hidden="true">▾</span></button>
     <div id="cfgBox" hidden>
       <p class="note" id="statsNote"></p>
+      <label class="l" for="pLen" data-i18n="len_l">Mi regla suele durar</label>
+      <select class="in" id="pLen" onchange="setLen(this.value)"></select>
       <label class="l" for="pLink" data-i18n="paste_l">¿Tienes un enlace de Quico con citas? Pégalo aquí</label>
       <div class="row"><input class="in" id="pLink" type="url" inputmode="url" autocomplete="off" spellcheck="false" style="flex:3"><button class="btn" id="pGo" style="flex:1" onclick="pasteLink()" data-i18n="paste_go">Añadir</button></div>
       <div class="row"><button class="btn red" onclick="clearPer()" data-i18n="o_clear">Borrar los datos de la regla</button></div>
@@ -130,14 +132,14 @@ if(__cfg().explain!==true)document.documentElement.classList.add('simple');
 
 <script src="../shared/dia.js?v=119"></script>
 <script src="../shared/clases.js?v=122"></script>
-<script src="../shared/cal.js?v=120"></script>
+<script src="../shared/cal.js?v=123"></script>
 <script>
 const UI={
  es:{h1:'📅 Calendario',add:'＋ Tutoría o cita',settings:'⚙️ Ajustes',o_home:'Ver la regla en el inicio',o_clear:'Borrar los datos de la regla',privacy:'Todo se guarda solo en este móvil. Las fechas de la regla son aproximadas: si te importa evitar o buscar un embarazo, no te fíes solo de ellas.',
    f_rep:'🔁 Se repite cada semana',rep_hint:'Ninguno = una sola vez',f_since:'Desde',f_until:'Hasta (opcional)',del_one:'🗑️ Solo este día',del_all:'🗑️ Borrar todas',skipped:'Quitada ese día',bad_until:'La fecha final va después de la de inicio.',no_days:'Ninguno de los días marcados cae entre esas fechas.',ty_tut:'👩‍🏫 Tutoría',ty_cita:'📌 Otra cita',f_what:'¿Qué es?',f_with:'¿Con quién o de qué asignatura?',f_with2:'¿Con quién? (opcional)',f_day:'Día',f_from:'De',f_to:'A',f_where:'¿Dónde? (opcional)',f_rem:'Aviso',save:'Guardar',del:'🗑️ Borrar',
    new_t:'Nueva cita',edit_t:'Cambiar cita',tut:'Tutoría',what_ph:'Médico, reunión, entrega…',with_ph:'Profe o asignatura',where_ph:'Despacho, Teams…',
    per_start:'🩸 Me ha venido la regla',per_end:'🩸 Se me ha ido',per_day:'🩸 Día {n} de la regla',per_next:'🩸 Próxima regla: ~{d} · en {n} días (aprox.)',per_soon:'🩸 La regla puede venir hoy o mañana (aprox.)',per_none:'🩸 Marca el día que te venga la regla y te diré cuándo toca la próxima.',
-   per_this:'🩸 Regla este día',per_yes:'Sí',per_no:'No',per_mark:'🩸 Aquí empieza la regla',per_unmark:'🩸 Quitar esta regla',
+   per_this:'🩸 Regla este día',per_yes:'Sí',per_no:'No',per_mark:'🩸 Aquí empieza la regla',per_unmark:'🩸 Quitar esta regla',per_endhere:'🩸 Aquí termina la regla',per_len:'Regla de {n} días',len_l:'Mi regla suele durar',len_auto:'Calcularlo con lo que apunte',len_n:'{n} días',
    no_rem:'Sin aviso',rem_min:'{n} min antes',rem_h:'1 hora antes',rem_d:'1 día antes',nothing:'Nada este día.',add_day:'＋ Añadir este día',
    l_class:'clase',l_tut:'tutoría',l_cita:'cita',l_per:'regla',l_pred:'prevista',
    stats:'Tu ciclo medio: {c} días · regla de unos {l} días.',stats0:'Con dos reglas apuntadas calcularé tu ciclo (ahora uso 28 días).',
@@ -146,7 +148,7 @@ const UI={
    f_rep:'🔁 Repeats every week',rep_hint:'None = just once',f_since:'From',f_until:'Until (optional)',del_one:'🗑️ Just this day',del_all:'🗑️ Delete all',skipped:'Removed that day',bad_until:'The end date must be after the start date.',no_days:'None of the chosen days falls between those dates.',ty_tut:'👩‍🏫 Tutorial',ty_cita:'📌 Other',f_what:'What is it?',f_with:'With whom, or which subject?',f_with2:'With whom? (optional)',f_day:'Day',f_from:'From',f_to:'To',f_where:'Where? (optional)',f_rem:'Reminder',save:'Save',del:'🗑️ Delete',
    new_t:'New appointment',edit_t:'Change appointment',tut:'Tutorial',what_ph:'Doctor, meeting, deadline…',with_ph:'Teacher or subject',where_ph:'Office, Teams…',
    per_start:'🩸 My period started',per_end:'🩸 My period ended',per_day:'🩸 Period day {n}',per_next:'🩸 Next period: ~{d} · in {n} days (approx.)',per_soon:'🩸 Your period may come today or tomorrow (approx.)',per_none:'🩸 Mark the day your period starts and I’ll tell you when the next one is due.',
-   per_this:'🩸 Period this day',per_yes:'Yes',per_no:'No',per_mark:'🩸 My period starts here',per_unmark:'🩸 Remove this period',
+   per_this:'🩸 Period this day',per_yes:'Yes',per_no:'No',per_mark:'🩸 My period starts here',per_unmark:'🩸 Remove this period',per_endhere:'🩸 My period ends here',per_len:'Period of {n} days',len_l:'My period usually lasts',len_auto:'Work it out from what I mark',len_n:'{n} days',
    no_rem:'No reminder',rem_min:'{n} min before',rem_h:'1 hour before',rem_d:'1 day before',nothing:'Nothing this day.',add_day:'＋ Add on this day',
    l_class:'class',l_tut:'tutorial',l_cita:'appointment',l_per:'period',l_pred:'expected',
    stats:'Your average cycle: {c} days · period of about {l} days.',stats0:'Once two periods are marked I’ll work out your cycle (for now I use 28 days).',
@@ -155,7 +157,7 @@ const UI={
    f_rep:'🔁 Se répète chaque semaine',rep_hint:'Aucun = une seule fois',f_since:'À partir du',f_until:'Jusqu’au (facultatif)',del_one:'🗑️ Seulement ce jour',del_all:'🗑️ Tout supprimer',skipped:'Retirée ce jour-là',bad_until:'La date de fin doit être après celle du début.',no_days:'Aucun des jours choisis ne tombe entre ces dates.',ty_tut:'👩‍🏫 Tutorat',ty_cita:'📌 Autre',f_what:'C’est quoi ?',f_with:'Avec qui, ou quelle matière ?',f_with2:'Avec qui ? (facultatif)',f_day:'Jour',f_from:'De',f_to:'À',f_where:'Où ? (facultatif)',f_rem:'Rappel',save:'Enregistrer',del:'🗑️ Supprimer',
    new_t:'Nouveau rendez-vous',edit_t:'Modifier le rendez-vous',tut:'Tutorat',what_ph:'Médecin, réunion, rendu…',with_ph:'Prof ou matière',where_ph:'Bureau, Teams…',
    per_start:'🩸 Mes règles ont commencé',per_end:'🩸 Mes règles sont finies',per_day:'🩸 Jour {n} des règles',per_next:'🩸 Prochaines règles : ~{d} · dans {n} jours (approx.)',per_soon:'🩸 Tes règles peuvent arriver aujourd’hui ou demain (approx.)',per_none:'🩸 Note le jour où tes règles arrivent et je te dirai quand viendront les prochaines.',
-   per_this:'🩸 Règles ce jour',per_yes:'Oui',per_no:'Non',per_mark:'🩸 Mes règles commencent ici',per_unmark:'🩸 Enlever ces règles',
+   per_this:'🩸 Règles ce jour',per_yes:'Oui',per_no:'Non',per_mark:'🩸 Mes règles commencent ici',per_unmark:'🩸 Enlever ces règles',per_endhere:'🩸 Mes règles finissent ici',per_len:'Règles de {n} jours',len_l:'Mes règles durent d’habitude',len_auto:'Le calculer avec ce que je note',len_n:'{n} jours',
    no_rem:'Sans rappel',rem_min:'{n} min avant',rem_h:'1 heure avant',rem_d:'1 jour avant',nothing:'Rien ce jour.',add_day:'＋ Ajouter ce jour',
    l_class:'cours',l_tut:'tutorat',l_cita:'rendez-vous',l_per:'règles',l_pred:'prévues',
    stats:'Ton cycle moyen : {c} jours · règles d’environ {l} jours.',stats0:'Avec deux règles notées je calculerai ton cycle (pour l’instant 28 jours).',
@@ -220,13 +222,22 @@ function renderDay(){
     h+=`<div class="itw"><${edit?'button':'div'} class="it"${edit?` onclick="openForm('${o.evId}','${o.date||''}')"`:''}><span class="bar" style="background:${o.color||COLK[o.kind]}"></span><span class="tm">${hm(o.st)}–${hm(o.en)}</span><span class="tx"><span class="nm">${o.e} ${esc(o.name)}${o.rep?' 🔁':''}${edit&&(C.get(o.evId)||{}).day?' 📋':''}</span>${o.l?`<span class="lc">${esc(o.l)}</span>`:''}</span></${edit?'button':'div'}>${dayBtn}</div>`;
   });
   if(!items.length&&!ad.length)h+=`<p class="empty">${t('nothing')}</p>`;
-  h+=`<div class="row"><button class="btn sec" onclick="openForm(null,SEL)">${t('add_day')}</button>${per?`<button class="btn red" onclick="perDay(false)">${t('per_unmark')}</button>`:past?`<button class="btn red" onclick="perDay(true)">${t('per_mark')}</button>`:''}</div>`;
+  h+=`<div class="row"><button class="btn sec" onclick="openForm(null,SEL)">${t('add_day')}</button></div>`;
+  // regla: empezar, terminar (o alargar hasta aquí si acaba de terminar) y quitar
+  const pp=C.periods(),cur=pp.find(p=>p.s<=SEL&&SEL<=(p.e||C.today())),after=!cur&&past&&pp.some(p=>p.e&&p.e<SEL&&C.diff(p.e,SEL)<=10);
+  const pb=[];
+  if(!cur&&past)pb.push(`<button class="btn red" onclick="perDay(true)">${t('per_mark')}</button>`);
+  if((cur&&SEL!==cur.e&&past)||after)pb.push(`<button class="btn red" onclick="perEnd()">${t('per_endhere')}</button>`);
+  if(cur)pb.push(`<button class="btn red" onclick="perDay(false)">${t('per_unmark')}</button>`);
+  if(pb.length)h+=`<div class="row">${pb.join('')}</div>`;
   el.innerHTML=h;
 }
 function swTxt(b){b.textContent=b.getAttribute('aria-pressed')==='true'?t('on'):t('off');}
 function toDay(id){const o=dayItems(SEL).find(x=>x.id===id);if(o&&C.toDay(o)){vib(25);toast(t('added_day'));}renderDay();}
 /* Regla: se marca el día que empieza (los demás se colorean solos) o se quita entera */
 function perDay(on){if(on)C.markStart(SEL);else C.removeAt(SEL);vib(30);render();}
+/* «Aquí termina la regla»: acaba ese día (o se alarga hasta él) */
+function perEnd(){const n=C.endAt(SEL);if(!n)return;vib(30);render();toast(t('per_len',{n}));}
 
 /* ── Añadir / cambiar tutoría o cita ── */
 let EDIT=null,TYPE='tut',REP=new Set(),OCC=null;
@@ -291,7 +302,10 @@ function delOne(){if(!EDIT||!OCC)return;C.skip(EDIT,OCC);closeForm();render();to
 function toggleCfg(){const box=document.getElementById('cfgBox'),b=document.getElementById('cfgBtn'),open=box.hidden;box.hidden=!open;b.setAttribute('aria-expanded',String(open));if(open)renderCfg();}
 function renderCfg(){
   const s=C.stats();document.getElementById('statsNote').textContent=s.known?t('stats',{c:s.cycle,l:s.len}):t('stats0');
+  const own=C.usualLen();
+  document.getElementById('pLen').innerHTML=[0,2,3,4,5,6,7,8,9].map(n=>`<option value="${n}"${n===(own||0)?' selected':''}>${n?t('len_n',{n}):t('len_auto')}</option>`).join('');
 }
+function setLen(v){C.usualLen(+v||null);vib(25);renderCfg();render();toast(t('saved'));}
 function clearPer(){if(!confirm(t('clear_q')))return;C.clearPeriods();render();renderCfg();}
 
 function render(){renderGrid();renderDay();}
