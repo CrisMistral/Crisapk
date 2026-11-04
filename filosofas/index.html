@@ -27,63 +27,86 @@
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
-<link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/atkinson-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fuentes.css">
+<link rel="stylesheet" href="ajustes.css">
+<script src="ajustes.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Todas las filósofas","url":"https://todaslasfilosofas.netlify.app/","inLanguage":"es","description":"Mapa interactivo de más de 300 filósofas de todos los tiempos y continentes."}</script>
 <script src="analitica.js" defer></script>
 <style>
 :root{
   --bg:#fbfaf7; --fg:#1d1b18; --muted:#6f6a62; --line:#e4e0d8; --panel:#ffffff;
-  --L:29%; --S:72%; --dim:.13; --shadow:0 10px 40px rgba(0,0,0,.12);
+  --e0:#805010;--e1:#7b2f0c;--e2:#55233b;--e3:#2a537d;--e4:#194161;--e5:#2a7c60;--e6:#6c7410;
+  --dim:.13; --shadow:0 10px 40px rgba(0,0,0,.12);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#121110; --fg:#ece8e1; --muted:#9a948a; --line:#2b2926; --panel:#1b1a18;
-    --L:70%; --S:65%; --dim:.16; --shadow:0 10px 40px rgba(0,0,0,.5);
+    --e0:#e9c16e;--e1:#ef6e27;--e2:#e58baa;--e3:#3a9ce2;--e4:#84d7fe;--e5:#a5f9cc;--e6:#efe97f;
+    --dim:.16; --shadow:0 10px 40px rgba(0,0,0,.5);
   }
 }
 :root[data-theme="dark"]{
   --bg:#121110; --fg:#ece8e1; --muted:#9a948a; --line:#2b2926; --panel:#1b1a18;
-  --L:70%; --S:65%; --dim:.16; --shadow:0 10px 40px rgba(0,0,0,.5);
+  --e0:#e9c16e;--e1:#ef6e27;--e2:#e58baa;--e3:#3a9ce2;--e4:#84d7fe;--e5:#a5f9cc;--e6:#efe97f;
+  --dim:.16; --shadow:0 10px 40px rgba(0,0,0,.5);
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--fg);font:15px/1.45 Inter,system-ui,sans-serif;overflow-x:hidden}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--font);overflow-x:hidden;letter-spacing:.012em}
 header{padding:18px 16px 10px;max-width:1200px;margin:0 auto}
-h1{font:600 clamp(26px,5vw,40px)/1.05 Fraunces,Georgia,serif;margin:0 0 6px;letter-spacing:-.01em}
+h1{font:700 clamp(28px,5vw,40px)/1.15 var(--font);margin:0 0 8px}
 .sub{color:var(--muted);margin:0;max-width:62ch}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
 .bar input{flex:1 1 200px;min-width:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:inherit}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg{display:inline-flex;flex-wrap:wrap;max-width:100%;border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .seg button,.ghost{background:var(--panel);color:var(--fg);border:0;padding:9px 12px;font:inherit;cursor:pointer}
 .seg button[aria-pressed="true"]{box-shadow:inset 0 -3px 0 var(--fg);font-weight:500}
 .ghost{border:1px solid var(--line);border-radius:10px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.chip{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:99px;padding:3px 10px;font:13px Inter,sans-serif;cursor:pointer}
+.chip{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:99px;padding:5px 12px;font:15px var(--font);cursor:pointer}
 .chip[aria-pressed="true"]{color:var(--bg);background:var(--fg);border-color:var(--fg)}
-.legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:10px;font-size:13px;color:var(--muted)}
-.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;background:hsl(var(--h) var(--S) var(--L))}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:15px;color:var(--muted)}
+.legend button{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:99px;padding:5px 12px;font:15px var(--font);cursor:pointer}
+.legend button[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg);font-weight:700}
+.legend span{color:var(--fg)}
 .wrap{max-width:1200px;margin:0 auto;padding:0 16px 40px}
 .frame{position:relative;border-top:1px solid var(--line);overflow:auto;-webkit-overflow-scrolling:touch}
 .map{position:relative;margin:0 auto}
-.axis{position:absolute;font:12px Inter,sans-serif;color:var(--muted);pointer-events:none;letter-spacing:.02em;white-space:nowrap}
+.axis{position:absolute;font:14px var(--font);color:var(--muted);pointer-events:none;white-space:nowrap}
 .tick{position:absolute;top:0;bottom:0;border-left:1px dashed var(--line);pointer-events:none}
-.tick b{position:absolute;top:6px;left:4px;font:500 11px Inter,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.n{position:absolute;white-space:nowrap;cursor:pointer;color:hsl(var(--h) var(--S) var(--L));
-   font-family:Fraunces,Georgia,serif;line-height:1.1;padding:1px 2px;border-radius:3px;
+.tick b{position:absolute;top:6px;left:4px;font:700 14px var(--font);color:var(--muted);white-space:nowrap}
+.n{position:absolute;white-space:nowrap;cursor:pointer;color:var(--ec);font-size:calc(var(--nf) * var(--zoom) * 1px);
+   font-family:var(--font);line-height:1.15;padding:1px 2px;border-radius:3px;
    transition:left .9s cubic-bezier(.2,.7,.2,1),top .9s cubic-bezier(.2,.7,.2,1),opacity .3s;
    background:none;border:0;text-align:left}
-.n:hover,.n:focus-visible{outline:none;background:hsl(var(--h) var(--S) var(--L) / .14)}
+.n:hover,.n:focus-visible{outline:none;background:color-mix(in srgb, var(--ec) 16%, transparent)}
 .n.off{opacity:var(--dim)}
-.n.sel{background:hsl(var(--h) var(--S) var(--L));color:var(--bg)}
-.n.hit{outline:2px solid hsl(var(--h) var(--S) var(--L));outline-offset:1px}
-.hitb{border:0;background:none;padding:0;cursor:pointer;font:500 14px Fraunces,Georgia,serif;color:hsl(var(--h) var(--S) var(--L));text-decoration:underline;text-underline-offset:2px}
+html[data-simbolos="si"] .n::before,.sym{content:attr(data-sym);font-size:.7em;margin-right:.3em;vertical-align:.08em}
+.sym{display:inline-block;color:var(--ec)}
+/* zoom de la interfaz según «Tamaño del texto» (el mapa escala sus nombres por su cuenta) */
+header,aside,#quiz .box,footer,.wrap>.count,.wrap>.hom,#lista{zoom:var(--zoom)}
+.sub{max-width:62ch}
+aside p{max-width:62ch}
+aside,#quiz .box,.hom,.count{overflow-wrap:anywhere}
+:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+/* vista de lista */
+#lista{max-width:900px;margin:8px 0 0}
+#lista h2{font:700 20px/1.3 var(--font);margin:22px 0 8px;color:var(--ec)}
+#lista ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 16px}
+#lista button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--fg);font:17px/1.4 var(--font);padding:7px 6px;border-radius:8px;cursor:pointer}
+#lista button:hover{background:color-mix(in srgb, var(--ec) 12%, transparent)}
+#lista button .nm{color:var(--ec);font-weight:700}
+#lista button small{display:block;color:var(--muted);font-size:15px}
+#lista li[hidden],#lista section[hidden]{display:none}
+.n.sel{background:var(--ec);color:var(--bg)}
+.n.hit{outline:2px solid var(--ec);outline-offset:1px}
+.hitb{border:0;background:none;padding:0;cursor:pointer;font:600 16px var(--font);color:var(--ec);text-decoration:underline;text-underline-offset:2px}
 .count{min-height:20px;margin:4px 0}
 .hom{margin:8px 0 2px;padding:10px 14px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font-size:15px;line-height:1.5}
-.hom b{font-family:Fraunces,Georgia,serif;font-weight:600}
+.hom b{font-weight:700}
 .hom .hitb{font-size:16px}
-aside .homl{font-size:14px;color:var(--muted);border-left:3px solid hsl(var(--h) var(--S) var(--L));padding-left:10px}
+aside .homl{font-size:16px;color:var(--muted);border-left:3px solid var(--ec);padding-left:10px}
 aside .homl b{color:var(--fg);font-weight:500}
 .n.near{text-decoration:underline;text-underline-offset:3px}
 aside{position:fixed;right:16px;top:16px;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;
@@ -93,59 +116,62 @@ aside.open{transform:none;opacity:1;pointer-events:auto}
 @media (max-width:640px){
   aside{left:0;right:0;top:auto;bottom:0;width:auto;max-height:62vh;border-radius:16px 16px 0 0}
 }
-aside h2{font:600 24px/1.1 Fraunces,Georgia,serif;margin:0 30px 4px 0;color:hsl(var(--h) var(--S) var(--L))}
-aside .meta{color:var(--muted);font-size:13px;margin-bottom:10px}
+aside h2{font:700 26px/1.2 var(--font);margin:0 30px 4px 0;color:var(--ec)}
+aside .meta{color:var(--muted);font-size:16px;margin-bottom:10px}
 aside p{margin:0 0 12px}
 aside .x{position:absolute;right:10px;top:10px;border:0;background:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:4px 8px}
-aside h3{font:500 11px Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:14px 0 6px}
+aside h3{font:700 15px var(--font);color:var(--muted);margin:16px 0 6px}
 aside .tags,aside .nb{display:flex;flex-wrap:wrap;gap:6px}
-aside .nb button{border:0;background:none;padding:0;cursor:pointer;font:15px Fraunces,Georgia,serif;color:hsl(var(--h) var(--S) var(--L))}
+aside .nb button{border:0;background:none;padding:2px 0;cursor:pointer;font:600 17px var(--font);color:var(--ec)}
 aside .nb button:hover{text-decoration:underline}
 aside a{color:inherit}
-.links{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;margin-top:6px}
-.quizbtn{background:var(--fg);color:var(--bg);border:0;border-radius:10px;padding:9px 14px;font:500 15px Inter,sans-serif;cursor:pointer}
+.links{display:flex;gap:16px;flex-wrap:wrap;font-size:16px;margin-top:6px}
+.quizbtn{background:var(--fg);color:var(--bg);border:0;border-radius:10px;padding:10px 16px;font:700 17px var(--font);cursor:pointer}
 .share{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.share button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:99px;padding:6px 14px;font:14px Inter,sans-serif;cursor:pointer}
-.share button.main{background:hsl(var(--h) var(--S) var(--L));color:var(--bg);border-color:transparent}
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:99px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:30}
+.share button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:99px;padding:6px 14px;font:600 16px var(--font);cursor:pointer}
+.share button.main{background:var(--ec);color:var(--bg);border-color:transparent}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:99px;font-size:16px;opacity:0;transition:.25s;pointer-events:none;z-index:30}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 #quiz{position:fixed;inset:0;z-index:20;background:rgb(0 0 0 / .45);display:none;align-items:center;justify-content:center;padding:16px}
 #quiz.open{display:flex}
 #quiz .box{background:var(--panel);color:var(--fg);border-radius:18px;box-shadow:var(--shadow);width:min(520px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:22px 20px 20px;position:relative}
 #quiz .x{position:absolute;right:10px;top:10px;border:0;background:none;color:var(--muted);font-size:22px;cursor:pointer;padding:4px 8px}
-#quiz .step{font:500 11px Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+#quiz .step{font:700 15px var(--font);color:var(--muted)}
 #quiz .bar2{height:4px;background:var(--line);border-radius:4px;margin:8px 0 16px;overflow:hidden}
 #quiz .bar2 i{display:block;height:100%;background:var(--fg);transition:width .3s}
-#quiz h2{font:600 22px/1.2 Fraunces,Georgia,serif;margin:0 30px 14px 0}
+#quiz h2{font:700 23px/1.3 var(--font);margin:0 30px 14px 0}
 #quiz .opts{display:grid;gap:8px}
-#quiz .opts button{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:12px;padding:12px 14px;font:15px/1.35 Inter,sans-serif;cursor:pointer}
+#quiz .opts button{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:12px;padding:12px 14px;font:15px/1.35 var(--font);cursor:pointer}
 #quiz .opts button:hover,#quiz .opts button:focus-visible{border-color:var(--fg);outline:none}
-#quiz .res h2{font-size:30px;margin-bottom:4px;color:hsl(var(--h) var(--S) var(--L))}
-#quiz .res .pre{color:var(--muted);font-size:14px;margin-bottom:6px}
+#quiz .res h2{font-size:30px;margin-bottom:4px;color:var(--ec)}
+#quiz .res .pre{color:var(--muted);font-size:16px;margin-bottom:6px}
 #quiz .res p{margin:10px 0}
-#quiz .why{color:var(--muted);font-size:14px}
-#quiz .also{font-size:14px;color:var(--muted);margin-top:10px}
-#quiz .also button{border:0;background:none;padding:0;cursor:pointer;font:15px Fraunces,Georgia,serif;color:hsl(var(--h) var(--S) var(--L));text-decoration:underline}
+#quiz .why{color:var(--muted);font-size:16px}
+#quiz .also{font-size:16px;color:var(--muted);margin-top:10px}
+#quiz .also button{border:0;background:none;padding:0;cursor:pointer;font:600 17px var(--font);color:var(--ec);text-decoration:underline}
 footer a{color:inherit}
 footer .legal{display:flex;flex-wrap:wrap;gap:6px 14px}
-footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:0 16px 30px}
-.count{color:var(--muted);font-size:13px}
+footer{color:var(--muted);font-size:15px;max-width:1200px;margin:0 auto;padding:0 16px 30px}
+.count{color:var(--muted);font-size:15px}
 </style>
 </head>
 <body>
+<a class="skip" href="#q">Saltar al buscador</a>
 <header>
   <h1>Todas las filósofas</h1>
-  <p class="sub"><b>Escribe una idea —el amor, el trabajo, la muerte— o el nombre de un filósofo, y te recomendamos una filósofa.</b> Un mapa de pensadoras de todas las épocas. <b>Arriba</b>: más mística, poética, existencial. <b>Abajo</b>: más lógica y científica. <b>Izquierda</b>: más abstracta. <b>Derecha</b>: más política y encarnada. El color indica la época. Cambia a «Línea del tiempo» o «Por continentes» para reordenarlas. Toca un nombre para ver su ficha y sus vecinas.</p>
+  <p class="sub"><b>Escribe una idea (el amor, el trabajo, la muerte) o el nombre de un filósofo. Te recomendamos una filósofa.</b></p>
+  <p class="sub">En el mapa, arriba está lo místico y abajo lo lógico; a la izquierda lo abstracto y a la derecha lo político. El color y el símbolo indican la época. Si el mapa te agobia, usa la vista <b>Lista</b>.</p>
   <div class="bar">
     <input id="q" type="search" placeholder="Una idea, una filósofa… o un filósofo" aria-label="Escribe una idea, una filósofa o un filósofo y te recomendamos a una filósofa" autocomplete="off">
     <div class="seg" role="group" aria-label="Disposición">
       <button id="mIdeas" aria-pressed="true">Mapa de ideas</button>
       <button id="mTime" aria-pressed="false">Línea del tiempo</button>
       <button id="mWorld" aria-pressed="false">Por continentes</button>
+      <button id="mList" aria-pressed="false">Lista</button>
     </div>
     <button class="quizbtn" id="quizbtn">¿Qué filósofa eres?</button>
     <button class="ghost" id="rnd">Sorpréndeme</button>
-    <button class="ghost" id="theme" aria-label="Cambiar tema">◐</button>
+    <button class="ajbtn" type="button" data-ajustes aria-haspopup="dialog"><b aria-hidden="true">Aa</b> Ajustes de lectura</button>
   </div>
   <div class="chips" id="chips"></div>
   <div class="chips" id="conts"></div>
@@ -155,6 +181,7 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
   <div class="hom" id="hom" hidden></div>
   <div class="count" id="count"></div>
   <div class="frame" id="frame"><div class="map" id="map"></div></div>
+  <div id="lista" hidden></div>
 </div>
 <aside id="card" aria-live="polite"></aside>
 <div id="quiz" role="dialog" aria-modal="true" aria-label="¿Qué filósofa eres?"><div class="box" id="qbox"></div></div>
@@ -512,6 +539,9 @@ const ERAS=[
  {n:"Antigüedad",to:500,h:32},{n:"Medieval",to:1450,h:352},{n:"Renacimiento y Barroco",to:1700,h:300},
  {n:"Ilustración",to:1800,h:255},{n:"Siglo XIX",to:1880,h:215},{n:"Siglo XX",to:1940,h:178},{n:"Contemporánea",to:9999,h:130}
 ];
+const SIMBOLOS=['▲','■','◆','●','▼','★','✱'];
+const OSCURO=["#e9c16e", "#ef6e27", "#e58baa", "#3a9ce2", "#84d7fe", "#a5f9cc", "#efe97f"]; /* colores para las imágenes generadas (fondo oscuro) */
+ERAS.forEach((e,k)=>{e.k=k;e.h='var(--e'+k+')';e.sym=SIMBOLOS[k];e.hex=OSCURO[k]});
 const eraOf=b=>ERAS.find(e=>b<e.to);
 /* continentes: se deducen del primer lugar (origen o lugar principal de su obra) */
 const CONTS=["América del Norte","América Latina y el Caribe","Europa","África","Asia","Oceanía"];
@@ -548,17 +578,20 @@ let mode='ideas', sel=null, activeTag=null, query='';
 
 P.forEach(p=>{
   const el=document.createElement('button');
-  el.className='n'; el.textContent=p.n; el.style.setProperty('--h',p.h);
-  el.style.fontSize=(p.w===3?19:p.w===2?15.5:13)+'px';
-  if(p.w===3) el.style.fontWeight=600;
+  el.className='n'; el.textContent=p.n; el.style.setProperty('--ec',p.h); el.dataset.sym=p.era.sym;
+  el.setAttribute('aria-label',p.n+', '+p.era.n);
+  el.style.setProperty('--nf',p.w===3?20:p.w===2?16.5:14);
+  if(p.w===3) el.style.fontWeight=700;
   el.onclick=e=>{e.stopPropagation();select(p)};
   p.el=el; map.appendChild(el);
 });
 
 function dims(){
-  const W=Math.max(frame.clientWidth||innerWidth-32, mode==='time'?2200:mode==='world'?1700:1400);
+  const dd=document.documentElement.dataset;
+  const Z=(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--zoom'))||1)*(dd.letra==='od'?1.2:1)*(dd.esp==='amplio'?1.12:1); /* letra más grande o más ancha → mapa más grande */
+  const W=Math.max(frame.clientWidth||innerWidth-32, (mode==='time'?2400:mode==='world'?1850:1550)*Z);
   if(mode!=='world'){
-    const H=mode==='time'?Math.max(1000,innerHeight*.95):Math.max(1750,Math.min(1950,W*1.32));
+    const H=mode==='time'?Math.max(1050*Z,innerHeight*.95):Math.max(1950*Z,Math.min(2200*Z,W*1.32));
     return {W,H};
   }
   /* cada continente ocupa un ancho proporcional a lo que ocupan sus nombres */
@@ -674,13 +707,13 @@ function select(p){
   const nb=neighbours(p); nb.forEach(q=>q.el.classList.add('near'));
   const dates=datesOf(p);
   const wq=encodeURIComponent(p.n);
-  card.style.setProperty('--h',p.h);
+  card.style.setProperty('--ec',p.h);
   card.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
    <h2>${p.n}</h2>
    <div class="meta">${dates} · ${p.pl}<br>${p.tr} · ${p.era.n} · ${CONTS[p.c]}</div>
    <p>${p.s}</p>${homLine(p)}
    <h3>Temas</h3><div class="tags">${p.tags.map(t=>`<button class="chip" data-t="${t}">${TAGS[t][0]}</button>`).join('')}</div>
-   <h3>Vecinas en el mapa</h3><div class="nb">${nb.map(q=>`<button data-i="${q.i}" style="--h:${q.h}">${q.n}</button>`).join(' · ')}</div>
+   <h3>Vecinas en el mapa</h3><div class="nb">${nb.map(q=>`<button data-i="${q.i}" style="--ec:${q.h}">${q.n}</button>`).join(' · ')}</div>
    <h3>Seguir leyendo</h3>
    <div class="links"><a target="_blank" rel="noopener" href="https://es.wikipedia.org/w/index.php?search=${wq}">Wikipedia</a>
    <a target="_blank" rel="noopener" href="https://plato.stanford.edu/search/searcher.py?query=${wq}">Stanford Encyclopedia</a>
@@ -695,9 +728,11 @@ function select(p){
   card.classList.add('open');
 }
 function goTo(p){
-  frame.scrollTo({left:p.x-frame.clientWidth/2,behavior:'smooth'});
+  const bh=movimientoReducido()?'auto':'smooth';
+  if(mode==='lista'){if(p.li)p.li.scrollIntoView({block:'center',behavior:bh});return}
+  frame.scrollTo({left:p.x-frame.clientWidth/2,behavior:bh});
   const r=frame.getBoundingClientRect();
-  window.scrollTo({top:scrollY+r.top+p.y-(innerWidth<=640?innerHeight*.18:innerHeight/2),behavior:'smooth'});
+  window.scrollTo({top:scrollY+r.top+p.y-(innerWidth<=640?innerHeight*.18:innerHeight/2),behavior:bh});
 }
 
 function norm(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()}
@@ -977,7 +1012,7 @@ function filter(){
   P.forEach(p=>{
     const hay=norm([p.n,p.pl,p.tr,p.s,p.era.n,CONTS[p.c],p.tags.map(t=>TAGS[t][0]).join(' ')].join(' '));
     const ns=Math.max(q?nameScore(p,q):0,homSet.get(p)||0);
-    const ok=(!q||ns>0||hay.includes(q))&&(!activeTag||p.tags.includes(activeTag))&&(activeCont===null||p.c===activeCont);
+    const ok=(!q||ns>0||hay.includes(q))&&(!activeTag||p.tags.includes(activeTag))&&(activeCont===null||p.c===activeCont)&&(activeEra===null||p.era.k===activeEra);
     p.el.classList.toggle('off',!ok); p.el.classList.toggle('hit',!!(q&&ok&&ns));
     if(ok){c++; if(q)hits.push({p,s:ns})}
   });
@@ -986,24 +1021,27 @@ function filter(){
   if(homNow){
     hb.innerHTML=homNow.kind==='hom'?'¿Buscas a <b></b>? Sobre lo mismo, desde su lugar: ':'Para «<b></b>», te recomendamos a ';
     hb.querySelector('b').textContent=homNow.name;
-    homNow.list.forEach((o,k)=>{const b=document.createElement('button');b.className='hitb';b.textContent=o.p.n;b.style.setProperty('--h',o.p.h);
+    homNow.list.forEach((o,k)=>{const b=document.createElement('button');b.className='hitb';b.textContent=o.p.n;b.style.setProperty('--ec',o.p.h);
       b.onclick=e=>{e.stopPropagation();select(o.p);goTo(o.p)};
       if(k===1)hb.append(homNow.kind==='hom'?' · ':'. También: '); else if(k)hb.append(' · ');
       hb.append(b,' — '+o.m)});
     hb.hidden=false;
   } else hb.hidden=true;
   const cnt=document.getElementById('count');
-  cnt.textContent=(q||activeTag||activeCont!==null)?`${c} de ${P.length} filósofas`:`${P.length} filósofas`;
+  cnt.textContent=(q||activeTag||activeCont!==null||activeEra!==null)?`${c} de ${P.length} filósofas`:`${P.length} filósofas`;
   if(q){
     if(!c) cnt.textContent='Ninguna coincidencia para «'+query.trim()+'». Prueba con una idea (amor, trabajo, muerte, naturaleza…) o con un filósofo (Kant, Sartre, Foucault…).';
     else { cnt.append(': ');
       hits.slice(0,12).forEach((h,k)=>{const b=document.createElement('button');b.className='hitb';b.textContent=h.p.n;
-        b.style.setProperty('--h',h.p.h);b.onclick=e=>{e.stopPropagation();select(h.p);goTo(h.p)};
+        b.style.setProperty('--ec',h.p.h);b.onclick=e=>{e.stopPropagation();select(h.p);goTo(h.p)};
         if(k)cnt.append(' · '); cnt.append(b)});
       if(hits.length>12)cnt.append(' …'); }
   }
   document.querySelectorAll('#chips .chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===activeTag));
   document.querySelectorAll('#conts .chip').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.c===activeCont));
+  document.querySelectorAll('#legend button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.k===activeEra));
+  P.forEach(p=>{if(p.li)p.li.hidden=p.el.classList.contains('off')});
+  document.querySelectorAll('#lista section').forEach(sc=>sc.hidden=!sc.querySelector('li:not([hidden])'));
 }
 function setTag(t){activeTag=activeTag===t?null:t;filter()}
 let activeCont=null;
@@ -1019,14 +1057,35 @@ Object.entries(TAGS).forEach(([k,v])=>{
   const b=document.createElement('button');b.className='chip';b.dataset.t=k;b.textContent=v[0];
   b.setAttribute('aria-pressed','false');b.onclick=()=>setTag(k);chips.appendChild(b);
 });
-document.getElementById('legend').innerHTML=ERAS.map(e=>`<span style="--h:${e.h}">${e.n}</span>`).join('');
+let activeEra=null;
+const legend=document.getElementById('legend');
+legend.innerHTML='<span>Épocas:</span>'+ERAS.map(e=>`<button type="button" aria-pressed="false" data-k="${e.k}" style="--ec:${e.h}"><span class="sym" aria-hidden="true">${e.sym}</span>${e.n}</button>`).join('');
+legend.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;activeEra=activeEra===k?null:k;filter()});
 let qt;
 const qi=document.getElementById('q');
 qi.addEventListener('input',e=>{query=e.target.value;filter();
-  clearTimeout(qt);qt=setTimeout(()=>{const nm=hits.filter(h=>h.s>0);
+  clearTimeout(qt);if(movimientoReducido())return; /* con movimiento reducido no saltamos solos: se usa Intro o se toca el nombre */
+  qt=setTimeout(()=>{const nm=hits.filter(h=>h.s>0);
     if(nm.length===1||homNow)select(nm[0].p); if(nm.length){goTo(nm[0].p)} },500)});
 qi.addEventListener('keydown',e=>{if(e.key==='Enter'&&hits.length){clearTimeout(qt);select(hits[0].p);goTo(hits[0].p);qi.blur()}});
+function buildList(){
+  const L=document.getElementById('lista');
+  L.innerHTML=ERAS.map(e=>`<section style="--ec:${e.h}" aria-labelledby="era-${e.k}"><h2 id="era-${e.k}"><span class="sym" aria-hidden="true">${e.sym}</span>${e.n}</h2><ul></ul></section>`).join('');
+  const uls=L.querySelectorAll('ul');
+  [...P].sort((a,b)=>a.rank-b.rank).forEach(p=>{
+    const li=document.createElement('li'), b=document.createElement('button');
+    b.type='button';b.style.setProperty('--ec',p.h);
+    b.innerHTML='<span class="nm"></span><small></small>';
+    b.querySelector('.nm').textContent=p.n;b.querySelector('small').textContent=datesOf(p)+' · '+p.pl;
+    b.onclick=e=>{e.stopPropagation();select(p)};
+    li.appendChild(b);uls[p.era.k].appendChild(li);p.li=li;
+  });
+}
 function setMode(m){mode=m;
+  document.getElementById('mList').setAttribute('aria-pressed',m==='lista');
+  const isL=m==='lista'; frame.hidden=isL; document.getElementById('lista').hidden=!isL;
+  if(isL){if(!P[0].li)buildList();filter();
+    ['mIdeas','mTime','mWorld'].forEach(id=>document.getElementById(id).setAttribute('aria-pressed','false'));return}
   document.getElementById('mIdeas').setAttribute('aria-pressed',m==='ideas');
   document.getElementById('mTime').setAttribute('aria-pressed',m==='time');
   document.getElementById('mWorld').setAttribute('aria-pressed',m==='world');
@@ -1035,15 +1094,13 @@ function setMode(m){mode=m;
 document.getElementById('mIdeas').onclick=()=>setMode('ideas');
 document.getElementById('mTime').onclick=()=>setMode('time');
 document.getElementById('mWorld').onclick=()=>setMode('world');
+document.getElementById('mList').onclick=()=>setMode('lista');
 document.getElementById('rnd').onclick=()=>{const vis=P.filter(p=>!p.el.classList.contains('off'));const p=vis[Math.floor(Math.random()*vis.length)];if(p){select(p);goTo(p)}};
-document.getElementById('theme').onclick=()=>{
-  const r=document.documentElement, dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
-  r.dataset.theme=dark?'light':'dark'; try{localStorage.setItem('filosofas-theme',r.dataset.theme)}catch(e){}
-};
-try{const t=localStorage.getItem('filosofas-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
-document.addEventListener('click',e=>{if(sel&&!quizOpen&&!card.contains(e.target)&&!e.target.classList.contains('n')&&!e.target.closest('#quiz'))select(null)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(quizOpen)closeQuiz();else select(null)}});
-let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,200)});
+/* al cambiar los ajustes de lectura, recolocamos el mapa (cambian los tamaños de los nombres) */
+document.addEventListener('ajustes',()=>{(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{if(mode!=='lista')layout()})});
+document.addEventListener('click',e=>{if(sel&&!quizOpen&&!card.contains(e.target)&&!e.target.classList.contains('n')&&!e.target.closest('#quiz,#aj,#lista'))select(null)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.querySelector('#aj.open')){if(quizOpen)closeQuiz();else select(null)}});
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(mode!=='lista')layout()},200)});
 
 /* ---------- compartir ---------- */
 const BASE=location.origin+location.pathname;
@@ -1134,7 +1191,7 @@ function result(){
   const r=rank(), p=r[0].p, also=r.slice(1,4).map(o=>o.p);
   const top=Object.entries(qsc).sort((a,b)=>b[1]-a[1]).map(([t])=>t);
   const shared=top.filter(t=>p.tags.includes(t)).slice(0,3).map(t=>TAGS[t][0]);
-  qbox.style.setProperty('--h',p.h);
+  qbox.style.setProperty('--ec',p.h);
   const dates=datesOf(p);
   qbox.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
    <div class="res"><div class="pre">Tu filósofa es…</div><h2>${p.n}</h2>
@@ -1142,7 +1199,7 @@ function result(){
    <p>${p.s}</p>
    ${shared.length?`<div class="why">Compartís: ${shared.join(', ')}.</div>`:''}
    <div class="share"><button class="main" id="qsh">Compartir resultado</button><button id="qimg">Imagen para redes</button><button id="qmap">Verla en el mapa</button><button id="qre">Repetir</button></div>
-   <div class="also">También te pareces a: ${also.map(q=>`<button data-i="${q.i}" style="--h:${q.h}">${q.n}</button>`).join(' · ')}</div></div>`;
+   <div class="also">También te pareces a: ${also.map(q=>`<button data-i="${q.i}" style="--ec:${q.h}">${q.n}</button>`).join(' · ')}</div></div>`;
   qbox.querySelector('.x').onclick=closeQuiz;
   const text=`Me ha salido ${p.n} en «¿Qué filósofa eres?». ¿Y a ti?`;
   qbox.querySelector('#qsh').onclick=()=>share({title:'¿Qué filósofa eres?',text,url:BASE+'#test'});
@@ -1157,26 +1214,27 @@ function wrap(ctx,t,maxW){const w=t.split(' '),out=[];let l='';
   for(const x of w){const tt=l?l+' '+x:x; if(ctx.measureText(tt).width>maxW&&l){out.push(l);l=x}else l=tt} if(l)out.push(l); return out}
 async function shareImage(p,text){
   const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
-  try{await document.fonts.load('600 40px Fraunces');await document.fonts.load('400 40px Inter')}catch(e){}
+  const FF="'Atkinson Hyperlegible Next', sans-serif";
+  try{await document.fonts.load('700 40px "Atkinson Hyperlegible Next"');await document.fonts.load('400 40px "Atkinson Hyperlegible Next"')}catch(e){}
   x.fillStyle='#121110';x.fillRect(0,0,W,H);
   /* nube de nombres de fondo */
   x.textBaseline='top';
   let sd=7;const rnd=()=>{sd=(sd*16807)%2147483647;return sd/2147483647};
   P.forEach((q,k)=>{const px=rnd()*W*1.1-80,py=rnd()*H;if(q===p)return;
-    x.font=(18+q.w*6)+'px Fraunces, Georgia, serif';x.fillStyle=`hsla(${q.h},60%,70%,.10)`;x.fillText(q.n,px,py)});
-  const col=`hsl(${p.h},65%,70%)`;
-  x.fillStyle='#9a948a';x.font='500 34px Inter, sans-serif';x.fillText('¿QUÉ FILÓSOFA ERES?',80,110);
-  x.fillStyle='#ece8e1';x.font='400 44px Inter, sans-serif';x.fillText('Me ha salido…',80,330);
-  x.fillStyle=col;let fs=118;x.font=`600 ${fs}px Fraunces, Georgia, serif`;
-  let lines=wrap(x,p.n,W-160);while(lines.length>3&&fs>70){fs-=8;x.font=`600 ${fs}px Fraunces, Georgia, serif`;lines=wrap(x,p.n,W-160)}
+    x.font=(18+q.w*6)+'px '+FF;x.fillStyle=q.era.hex+'0d';x.fillText(q.n,px,py)});
+  const col=p.era.hex;
+  x.fillStyle='#9a948a';x.font='700 36px '+FF;x.fillText('¿Qué filósofa eres?',80,110);
+  x.fillStyle='#ece8e1';x.font='400 44px '+FF;x.fillText('Me ha salido…',80,330);
+  x.fillStyle=col;let fs=112;x.font=`700 ${fs}px ${FF}`;
+  let lines=wrap(x,p.n,W-160);while(lines.length>3&&fs>70){fs-=8;x.font=`700 ${fs}px ${FF}`;lines=wrap(x,p.n,W-160)}
   let y=400;lines.forEach(l=>{x.fillText(l,80,y);y+=fs*1.05});
   const dates=datesOf(p);
-  x.fillStyle='#9a948a';x.font='400 34px Inter, sans-serif';y+=20;x.fillText(dates+' · '+p.pl,80,y);
-  x.fillStyle='#ece8e1';x.font='400 46px Fraunces, Georgia, serif';y+=90;
+  x.fillStyle='#9a948a';x.font='400 34px '+FF;y+=20;x.fillText(dates+' · '+p.pl,80,y);
+  x.fillStyle='#ece8e1';x.font='400 44px '+FF;y+=90;
   wrap(x,p.s,W-160).slice(0,6).forEach(l=>{x.fillText(l,80,y);y+=62});
   x.fillStyle=col;x.fillRect(80,H-170,90,6);
-  x.fillStyle='#ece8e1';x.font='600 40px Fraunces, Georgia, serif';x.fillText('Todas las filósofas',80,H-140);
-  x.fillStyle='#9a948a';x.font='400 30px Inter, sans-serif';x.fillText('Más de 300 pensadoras · ¿y tú cuál eres?',80,H-88);
+  x.fillStyle='#ece8e1';x.font='700 40px '+FF;x.fillText('Todas las filósofas',80,H-140);
+  x.fillStyle='#9a948a';x.font='400 30px '+FF;x.fillText('Más de 300 pensadoras · ¿y tú cuál eres?',80,H-88);
   const blob=await new Promise(r=>c.toBlob(r,'image/png'));
   const file=new File([blob],'mi-filosofa.png',{type:'image/png'});
   if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],text:text+' '+BASE+'#test'});return}catch(e){if(e.name==='AbortError')return}}

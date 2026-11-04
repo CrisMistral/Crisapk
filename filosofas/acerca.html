@@ -22,15 +22,17 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#121110">
-<link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/atkinson-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fuentes.css">
 <link rel="stylesheet" href="comun.css">
-<script>try{const t=localStorage.getItem('filosofas-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="ajustes.css">
+<script src="ajustes.js"></script>
 <script src="analitica.js" defer></script>
 </head>
 <body>
-<main>
-<a class="back" href="./">← Volver al mapa</a>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<main id="contenido">
+<p style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;max-width:none"><a class="back" href="./">← Volver al mapa</a><button class="ajbtn" type="button" data-ajustes aria-haspopup="dialog"><b aria-hidden="true">Aa</b> Ajustes de lectura</button></p>
 
 <h1>Acerca de Todas las filósofas</h1>
 <p>«Todas las filósofas» es un mapa de más de 300 pensadoras de todos los tiempos y continentes, desde Enheduana, en la antigua Mesopotamia, hasta filósofas que escriben hoy. Nace para hacer visible una historia de la filosofía que casi siempre se ha contado sin ellas.</p>
@@ -41,13 +43,13 @@
 <h2>Enlaces a libros</h2>
 <p>Algunos enlaces a tiendas de libros pueden ser enlaces de afiliado: si compras un libro a través de ellos, esta web puede recibir una pequeña comisión, sin que a ti te cueste más. Ayuda a mantener el proyecto.</p>
 <h2>Créditos</h2>
-<p>Tipografías Fraunces e Inter, con licencia SIL Open Font License, servidas desde esta misma web.</p>
+<p>Tipografías Atkinson Hyperlegible Next (Braille Institute, licencia SIL Open Font License) y, como opción, OpenDyslexic (licencia libre), servidas desde esta misma web. Colores basados en la paleta Okabe-Ito, pensada para personas con daltonismo.</p>
 <p class="muted">Última actualización: 4 de noviembre de 2026.</p>
 </main>
 <footer class="legal">
 <a href="./">Mapa</a><a href="acerca.html">Acerca de</a><a href="sugerir.html">Proponer una filósofa</a>
 <a href="privacidad.html">Privacidad y cookies</a><a href="terminos.html">Términos</a>
-<a href="#" onclick="preferenciasCookies();return false">Preferencias de cookies</a>
+<a href="#" onclick="preferenciasCookies();return false">Preferencias de cookies</a><a href="#" data-ajustes>Ajustes de lectura</a>
 <a href="mailto:artdeque@gmail.com">artdeque@gmail.com</a>
 </footer>
 </body>

@@ -39,7 +39,7 @@
   }
   /* enlace «Preferencias de cookies» del pie */
   window.preferenciasCookies=function(){
-    if(ANALITICA.proveedor!=='ga4'){ alert('Esta web no usa cookies de analítica ni de publicidad. Solo guarda en tu navegador si prefieres el tema claro u oscuro.'); return; }
+    if(ANALITICA.proveedor!=='ga4'){ alert('Esta web no usa cookies de analítica ni de publicidad. Solo guarda en tu navegador tus ajustes de lectura.'); return; }
     guardar(''); banner();
   };
 

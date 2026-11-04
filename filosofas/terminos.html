@@ -22,15 +22,17 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#121110">
-<link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/atkinson-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fuentes.css">
 <link rel="stylesheet" href="comun.css">
-<script>try{const t=localStorage.getItem('filosofas-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="ajustes.css">
+<script src="ajustes.js"></script>
 <script src="analitica.js" defer></script>
 </head>
 <body>
-<main>
-<a class="back" href="./">← Volver al mapa</a>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<main id="contenido">
+<p style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;max-width:none"><a class="back" href="./">← Volver al mapa</a><button class="ajbtn" type="button" data-ajustes aria-haspopup="dialog"><b aria-hidden="true">Aa</b> Ajustes de lectura</button></p>
 
 <h1>Términos y condiciones</h1>
 <p class="muted">Última actualización: 4 de noviembre de 2026.</p>
@@ -45,7 +47,7 @@
 <p>Las fichas son textos breves de divulgación. Ponemos cuidado en que sean exactas, pero pueden contener errores u omisiones, y algunas fechas antiguas son aproximadas. La posición de cada filósofa en el mapa, sus «vecinas» y las «homólogas» son interpretaciones del proyecto, no clasificaciones académicas. Si encuentras un error, <a href="sugerir.html">avísanos</a>.</p>
 
 <h2>4. Propiedad intelectual</h2>
-<p>El diseño, el código y los textos de las fichas pertenecen a Todas las filósofas. Puedes citar fragmentos breves y compartir enlaces y las imágenes generadas por el test, siempre que menciones la fuente. Para cualquier otro uso, escríbenos. Los nombres y obras citados pertenecen a sus autoras y titulares. Las tipografías Fraunces e Inter se usan bajo licencia SIL Open Font License.</p>
+<p>El diseño, el código y los textos de las fichas pertenecen a Todas las filósofas. Puedes citar fragmentos breves y compartir enlaces y las imágenes generadas por el test, siempre que menciones la fuente. Para cualquier otro uso, escríbenos. Los nombres y obras citados pertenecen a sus autoras y titulares. La tipografía Atkinson Hyperlegible Next se usa bajo licencia SIL Open Font License y OpenDyslexic bajo su licencia libre.</p>
 
 <h2>5. Propuestas que nos envías</h2>
 <p>Al proponer una filósofa nos autorizas a usar la información que envías para valorar si la añadimos y redactar su ficha. No publicaremos tu nombre ni tu correo.</p>
@@ -65,7 +67,7 @@
 <footer class="legal">
 <a href="./">Mapa</a><a href="acerca.html">Acerca de</a><a href="sugerir.html">Proponer una filósofa</a>
 <a href="privacidad.html">Privacidad y cookies</a><a href="terminos.html">Términos</a>
-<a href="#" onclick="preferenciasCookies();return false">Preferencias de cookies</a>
+<a href="#" onclick="preferenciasCookies();return false">Preferencias de cookies</a><a href="#" data-ajustes>Ajustes de lectura</a>
 <a href="mailto:artdeque@gmail.com">artdeque@gmail.com</a>
 </footer>
 </body>
