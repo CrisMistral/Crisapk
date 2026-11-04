@@ -6,6 +6,7 @@
             rep?: {days:[0-6 (0 = domingo)], until?:'AAAA-MM-DD'}  se repite cada semana esos días desde «date»,
             ex?: ['AAAA-MM-DD']  días sueltos que no hay (p. ej. un festivo)}],
      per: [{s:'AAAA-MM-DD', e:'AAAA-MM-DD'|null}]   días de regla (e = null mientras dura),
+     len: días que suele durar la regla, si lo ha dicho ella (si no, la media de las apuntadas),
      home: true   mostrar la regla en el inicio }
    Todo se queda en el dispositivo. Las previsiones de la regla son aproximadas
    (media de tus ciclos; 28 días y 5 de regla mientras no haya datos). */
@@ -67,7 +68,8 @@
     const lens=closed.slice(-6).map(p=>diff(p.s,p.e)+1).filter(n=>n>=1&&n<=12);
     const cyc=[];for(let i=1;i<P.length;i++){const n=diff(P[i-1].s,P[i].s);if(n>=15&&n<=60)cyc.push(n);}
     const avg=a=>a.reduce((s,x)=>s+x,0)/a.length;
-    return {len:lens.length?Math.round(avg(lens)):5,cycle:cyc.length?Math.round(avg(cyc.slice(-6))):28,known:cyc.length};
+    const own=+rd().len||0; // lo que ella dice que dura manda sobre la media
+    return {len:own||(lens.length?Math.round(avg(lens)):5),cycle:cyc.length?Math.round(avg(cyc.slice(-6))):28,known:cyc.length};
   }
   /* La regla que está en curso (sin fin y empezada hace poco); las que se quedaron abiertas se cierran solas */
   function ongoing(){
@@ -132,7 +134,19 @@
     },
     clearPeriods(){const d=rd();d.per=[];wr(d);},
     /* «Aquí empieza la regla»: se colorean los días que suele durar */
-    markStart(date){const d=rd(),st=stats(),e=add(date,st.len-1);if(d.per.some(p=>p.s<=e&&date<=(p.e||today())))return false;d.per.push({s:date,e});d.per.sort((a,b)=>a.s<b.s?-1:1);wr(d);return true;},
+    markStart(date){const d=rd(),st=stats(),e=add(date,st.len-1);if(d.per.some(p=>p.s<=e&&date<=(p.e||today())))return false;
+      // si aún no habría terminado, se queda abierta (en curso) hasta que digas «Aquí termina la regla»
+      d.per.push({s:date,e:e>=today()?null:e});d.per.sort((a,b)=>a.s<b.s?-1:1);wr(d);return true;},
+    /* «Aquí termina la regla»: la regla de ese día acaba ahí; si el día va justo después de una
+       (hasta 10 días), la alarga hasta él. Devuelve cuántos días ha durado (0 si no se puede) */
+    endAt(date){
+      const d=rd(),t=today();if(date>t)return 0;d.per.sort((a,b)=>a.s<b.s?-1:1);
+      let p=d.per.find(x=>x.s<=date&&date<=(x.e||t));
+      if(!p){p=d.per.filter(x=>x.e&&x.e<date&&diff(x.e,date)<=10).pop();if(!p)return 0;}
+      p.e=date;wr(d);return diff(p.s,date)+1;
+    },
+    /* Cuánto suele durar, dicho por ella (null = calcularlo con lo apuntado) */
+    usualLen(v){const d=rd();if(v===undefined)return +d.len||null;if(+v)d.len=Math.max(1,Math.min(12,Math.round(+v)));else delete d.len;wr(d);},
     /* Quitar la regla que incluye ese día */
     removeAt(date){const d=rd(),t=today(),n=d.per.length;d.per=d.per.filter(p=>!(p.s<=date&&date<=(p.e||t)));wr(d);return d.per.length<n;},
     /* Reglas traídas de otra app: [[AAAAMMDD o AAAA-MM-DD, días], …]. Se juntan con las que ya hay (sin repetir) */
