@@ -135,9 +135,9 @@ footer{color:var(--muted);font-size:13px;max-width:1200px;margin:0 auto;padding:
 <body>
 <header>
   <h1>Todas las filósofas</h1>
-  <p class="sub">Un mapa de pensadoras de todas las épocas. <b>Arriba</b>: más mística, poética, existencial. <b>Abajo</b>: más lógica y científica. <b>Izquierda</b>: más abstracta. <b>Derecha</b>: más política y encarnada. El color indica la época. Cambia a «Línea del tiempo» o «Por continentes» para reordenarlas. Toca un nombre para ver su ficha y sus vecinas.</p>
+  <p class="sub"><b>Escribe una idea —el amor, el trabajo, la muerte— o el nombre de un filósofo, y te recomendamos una filósofa.</b> Un mapa de pensadoras de todas las épocas. <b>Arriba</b>: más mística, poética, existencial. <b>Abajo</b>: más lógica y científica. <b>Izquierda</b>: más abstracta. <b>Derecha</b>: más política y encarnada. El color indica la época. Cambia a «Línea del tiempo» o «Por continentes» para reordenarlas. Toca un nombre para ver su ficha y sus vecinas.</p>
   <div class="bar">
-    <input id="q" type="search" placeholder="Busca filósofa, idea… o un filósofo" aria-label="Buscar una filósofa, una idea o un filósofo para ver su homóloga" autocomplete="off">
+    <input id="q" type="search" placeholder="Una idea, una filósofa… o un filósofo" aria-label="Escribe una idea, una filósofa o un filósofo y te recomendamos a una filósofa" autocomplete="off">
     <div class="seg" role="group" aria-label="Disposición">
       <button id="mIdeas" aria-pressed="true">Mapa de ideas</button>
       <button id="mTime" aria-pressed="false">Línea del tiempo</button>
@@ -830,18 +830,149 @@ function homologa(q){
   return {name:best.h.name,list:best.h.list.map(([n,m])=>({p:P.find(x=>x.n===n),m})).filter(o=>o.p)};
 }
 
-/* en la ficha, solo si llegas buscando a un filósofo: de qué habla ella sobre lo mismo */
+/* ---------- conceptos: busca una idea y te recomendamos a una filósofa ---------- */
+/* "raíces separadas por |": [[filósofa, por qué leerla sobre esto], …]  (la raíz casa con el comienzo de una palabra) */
+const CONCEPTOS={
+ "amor|amar|enamor|romant":[["Diotima de Mantinea","el amor como camino hacia lo bello y lo verdadero"],["bell hooks","el amor como práctica ética y política"],["Alexandra Kollontai","el amor libre de la propiedad y la familia burguesa"]],
+ "deseo|sexo|sexual|erotis":[["Amia Srinivasan","quién desea a quién, y por qué eso también es político"],["Audre Lorde","lo erótico como poder"],["Lou Andreas-Salomé","el erotismo como fuerza de la vida"]],
+ "muerte|morir|mortal|finitud":[["Kisa Gotami","no hay casa donde no haya entrado la muerte"],["Hannah Arendt","frente a la muerte, la natalidad"]],
+ "duelo|perdida|pérdida|luto":[["Gillian Rose","el duelo como trabajo filosófico y político"],["Kisa Gotami","aceptar la pérdida"]],
+ "nacer|nacimiento|natalidad":[["Hannah Arendt","nacer es poder empezar algo nuevo"],["Adriana Cavarero","cada quien es único desde que nace"]],
+ "libertad|libre":[["Simone de Beauvoir","la libertad situada"],["Rosa Luxemburgo","la libertad es la de quien piensa diferente"]],
+ "justicia|injusticia":[["Iris Marion Young","las cinco caras de la opresión"],["Martha Nussbaum","lo que cada persona necesita poder hacer y ser"]],
+ "igualdad|desigualdad":[["Mary Wollstonecraft","la razón no tiene sexo"],["Elizabeth Anderson","la igualdad democrática"]],
+ "trabajo|empleo|explotac|precari":[["Silvia Federici","el trabajo doméstico que sostiene todo lo demás"],["Simone Weil","la condición obrera vivida desde dentro"],["Remedios Zafra","la precariedad del trabajo creativo"]],
+ "dinero|capital|economi|mercado|neoliberal":[["Silvia Federici","capitalismo, cuerpos y caza de brujas"],["Nancy Fraser","el capitalismo devora sus propias condiciones"],["Wendy Brown","cómo el neoliberalismo deshace la democracia"]],
+ "cuidad|cuidar|cuidados|dependencia":[["Joan Tronto","el cuidado como cuestión democrática"],["Eva Feder Kittay","todos dependemos de alguien"],["Carol Gilligan","la ética del cuidado"]],
+ "madre|maternidad|maternal|crianza":[["Sara Ruddick","el pensamiento maternal"],["Luisa Muraro","el orden simbólico de la madre"]],
+ "cuerpo|cuerpos|corporal|encarn":[["Elizabeth Grosz","cuerpos volátiles"],["Iris Marion Young","cómo nos enseñan a mover el cuerpo"],["Judith Butler","los cuerpos que importan"]],
+ "genero|género|mujer|mujeres|femenin":[["Simone de Beauvoir","no se nace mujer: se llega a serlo"],["Judith Butler","el género como performatividad"]],
+ "queer|lesbiana|gay|homosex|disidencia":[["Sara Ahmed","fenomenología queer"],["Monique Wittig","las lesbianas no son mujeres"]],
+ "trans|travesti|transgénero|transgenero":[["Lohana Berkins","la identidad travesti como lucha política"],["Judith Butler","deshacer el género"]],
+ "feminis":[["Simone de Beauvoir","el punto de partida"],["bell hooks","el feminismo es para todo el mundo"]],
+ "violencia|violacion|violación|feminicid|maltrato":[["Rita Segato","la violencia como mandato de masculinidad"],["Marcela Lagarde","el concepto de feminicidio"]],
+ "guerra|paz|militar":[["Simone Weil","la Ilíada o el poema de la fuerza"],["Sara Ruddick","pensamiento maternal para la paz"]],
+ "mal|maldad|holocausto|totalitar":[["Hannah Arendt","la banalidad del mal"]],
+ "poder|dominacion|dominación|opresion|opresión":[["Judith Butler","el poder que nos hace sujetos"],["Marilyn Frye","la opresión como jaula de pájaro"]],
+ "democracia|ciudadan|participac":[["Jane Addams","la democracia como forma de vida"],["Chantal Mouffe","el conflicto en el corazón de la democracia"]],
+ "politica|política":[["Hannah Arendt","la acción entre iguales"],["Chantal Mouffe","lo político como antagonismo"]],
+ "raza|racismo|racial|negr|blanquitud":[["Angela Davis","mujeres, raza y clase"],["Kimberlé Crenshaw","la interseccionalidad"],["Audre Lorde","las herramientas del amo"]],
+ "interseccional":[["Kimberlé Crenshaw","acuñó la palabra"],["Patricia Hill Collins","la matriz de dominación"]],
+ "colonial|colonia|descoloni|decoloni":[["María Lugones","la colonialidad del género"],["Gayatri Spivak","¿puede hablar el subalterno?"],["Silvia Rivera Cusicanqui","lo ch'ixi"]],
+ "indigena|indígena|originari|ancestral":[["Silvia Rivera Cusicanqui","pensamiento aymara y lo ch'ixi"],["Linda Tuhiwai Smith","descolonizar la investigación"],["Lorena Cabnal","cuerpo-territorio"]],
+ "territorio|tierra|extractiv|mineria|minería":[["Lorena Cabnal","defender la tierra es defender el cuerpo"],["Maristella Svampa","el extractivismo"]],
+ "frontera|migra|exilio|mestiz":[["Gloria Anzaldúa","la conciencia mestiza de la frontera"],["María Zambrano","el exilio como lugar de pensamiento"]],
+ "carcel|cárcel|prision|prisión|castigo|delito":[["Angela Davis","abolir las prisiones"],["Concepción Arenal","odia el delito y compadece al delincuente"]],
+ "esclav":[["Sojourner Truth","¿acaso no soy una mujer?"],["Anna Julia Cooper","una voz del Sur"]],
+ "pobreza|pobre|aporofob":[["Adela Cortina","la aporofobia, el rechazo al pobre"]],
+ "naturaleza|ecolog|medio ambiente|ambiental|clima":[["Val Plumwood","el dualismo que nos separa de la naturaleza"],["Donna Haraway","seguir con el problema"],["Rachel Carson","primavera silenciosa"]],
+ "animal|animales|especie|veganism":[["Mary Midgley","somos animales"],["Christine Korsgaard","nuestras obligaciones con los animales"],["Donna Haraway","especies de compañía"]],
+ "planta|semilla|agricultur|bosque|arbol|árbol":[["Vandana Shiva","las semillas y la biodiversidad"],["Wangari Maathai","plantar árboles como democracia"]],
+ "evolucion|evolución|biolog|vida|simbiosis|celula|célula":[["Lynn Margulis","la vida evoluciona por simbiosis"]],
+ "ciencia|cientific|científic|objetividad":[["Donna Haraway","los conocimientos situados"],["Sandra Harding","la objetividad fuerte"]],
+ "matematic|matemátic|numero|número|geometr":[["Hipatia de Alejandría","matemáticas y filosofía en Alejandría"],["Émilie du Châtelet","física y metafísica"]],
+ "fisica|física|cuantic|cuántic|gravedad":[["Émilie du Châtelet","tradujo y comentó a Newton"],["Karen Barad","física cuántica y realismo agencial"]],
+ "logica|lógica|argument|razonam":[["Ruth Barcan Marcus","lógica modal"],["Susan Stebbing","pensar con propósito frente a la propaganda"]],
+ "inteligencia artificial|ia|algoritm|maquina|máquina|ordenador|computa|robot":[["Margaret Boden","creatividad e inteligencia artificial"],["Ada Lovelace","la primera en imaginar máquinas que manipulan símbolos"]],
+ "tecnolog|ciborg|cíborg|cyborg|posthuman|digital":[["Donna Haraway","el manifiesto cíborg"],["Rosi Braidotti","lo posthumano"]],
+ "internet|redes sociales|pantalla|entusiasmo":[["Remedios Zafra","el entusiasmo y la vida conectada"]],
+ "mente|conciencia|consciencia|cerebro":[["Patricia Churchland","la mente desde el cerebro"],["Isabel de Bohemia","el problema mente-cuerpo"]],
+ "emocion|emoción|sentimiento|afect":[["Martha Nussbaum","la inteligencia de las emociones"],["Sara Ahmed","la política cultural de las emociones"]],
+ "empatia|empatía|compasion|compasión|simpatia|simpatía":[["Edith Stein","sobre el problema de la empatía"],["Sophie de Grouchy","cartas sobre la simpatía"]],
+ "felicidad|alegria|alegría|bienestar":[["Sara Ahmed","la promesa de la felicidad"],["Arete de Cirene","el placer como guía"]],
+ "placer|hedon|disfrut":[["Arete de Cirene","el hedonismo cirenaico"],["Leontion","el placer epicúreo"]],
+ "ansiedad|angustia|depresion|depresión|tristeza|melancol|sufrimiento|dolor":[["Simone Weil","la desgracia y la atención"],["Kisa Gotami","el sufrimiento compartido"],["Juliana de Norwich","todo irá bien"]],
+ "atencion|atención|concentra":[["Simone Weil","la atención es la forma más rara de generosidad"],["Iris Murdoch","mirar con justicia lo real"]],
+ "silencio|meditac|contemplac|soledad|retiro":[["Machig Labdrön","cortar el apego al yo"],["Teresa de Ávila","el castillo interior"]],
+ "dios|divin|religi|fe|espiritual|alma":[["Teresa de Ávila","el castillo interior del alma"],["Hildegarda de Bingen","lo divino en la naturaleza"],["Rabia al-Adawiyya","amar a Dios sin miedo ni recompensa"]],
+ "mistic|místic":[["Margarita Porete","el espejo de las almas simples"],["Hadewijch de Amberes","el amor como abismo"]],
+ "sueño|sueños|inconsciente|psicoanal|deseo inconsciente":[["Lou Andreas-Salomé","psicoanálisis y narcisismo"],["Julia Kristeva","lo semiótico y lo abyecto"]],
+ "lenguaje|palabra|hablar|signo|semiot|semiót":[["Julia Kristeva","lo semiótico"],["Rae Langton","el lenguaje como acción"]],
+ "silenciad|testimonio|credibilidad|injusticia epist":[["Miranda Fricker","la injusticia epistémica"]],
+ "traduc|lengua|idioma|intraducib":[["Barbara Cassin","el vocabulario de los intraducibles"],["Yásnaya Elena Aguilar","el derecho a existir en otra lengua"]],
+ "verdad|conocimiento|saber|epistem":[["Sandra Harding","quién conoce y desde dónde"],["Miranda Fricker","la injusticia de no ser creída"]],
+ "educacion|educación|escuela|enseñ|pedagog|aprender":[["bell hooks","enseñar a transgredir"],["Maria Montessori","la infancia que se educa a sí misma"]],
+ "infancia|niñ|niñez":[["Maria Montessori","la mente absorbente de la infancia"],["Ellen Key","el siglo de los niños"]],
+ "belleza|bello|bella":[["Elaine Scarry","la belleza nos prepara para la justicia"],["Mary Mothersill","la belleza recuperada"]],
+ "arte|artista|museo|pintura":[["Linda Nochlin","¿por qué no ha habido grandes artistas mujeres?"],["Lygia Clark","el arte como experiencia del cuerpo"]],
+ "cine|pelicula|película|mirada|imagen":[["Laura Mulvey","la mirada masculina"]],
+ "estetica|estética|gusto":[["Yuriko Saito","la estética de lo cotidiano"],["Carolyn Korsmeyer","el sentido del gusto"]],
+ "comida|cocina|comer|gusto|sabor":[["Carolyn Korsmeyer","la comida como asunto filosófico"]],
+ "casa|hogar|cotidian|limpiar|ordenar|domestic|doméstic":[["Yuriko Saito","la estética de la vida diaria"],["Agnes Heller","la vida cotidiana"]],
+ "ciudad|calle|urban|pasear|flaneur|flâneur":[["Janet Wolff","la flâneuse invisible"]],
+ "arquitect|diseño|diseno|objeto":[["María Mallo","geometrías naturales en arquitectura"],["Anni Albers","pensar con las manos"]],
+ "musica|música|sonido|armonia|armonía":[["Hildegarda de Bingen","música y visión"],["Ptolemaida de Cirene","la armonía, ¿razón u oído?"]],
+ "poesia|poesía|poetic|poétic|escritura|escribir":[["María Zambrano","la razón poética"],["Hélène Cixous","escribir el cuerpo"]],
+ "tiempo|historia|memoria":[["Hannah Arendt","entre el pasado y el futuro"],["Nelly Richard","arte y memoria"]],
+ "voz|narrar|relato|historia de vida":[["Adriana Cavarero","tú que me miras, tú que me cuentas"]],
+ "discapacidad|diversidad funcional":[["Eva Feder Kittay","la dignidad de la dependencia"]],
+ "velo|islam|corán|coran|musulman":[["Fatema Mernissi","el harén político"],["Leila Ahmed","mujeres y género en el islam"]],
+ "bruja|brujas|hechic":[["Silvia Federici","Calibán y la bruja"]],
+ "misogin|machismo|patriarc|masculin":[["Kate Manne","la lógica de la misoginia"],["Rita Segato","el mandato de masculinidad"]],
+ "confianza|confiar":[["Annette Baier","la confianza como centro de la vida moral"],["Onora O'Neill","confianza en las instituciones"]],
+ "virtud|bien|bondad|moral|etica|ética":[["Iris Murdoch","la soberanía del bien"],["Philippa Foot","la bondad natural"]],
+ "amistad|amig":[["Leontion","la amistad epicúrea"],["Hannah Arendt","la amistad política"]],
+ "cansancio|agotamiento|burnout|productividad":[["Remedios Zafra","el entusiasmo y la autoexplotación"]],
+ "abortar|aborto":[["Judith Jarvis Thomson","una defensa del aborto"]],
+ "humano|humanidad|naturaleza humana":[["Sylvia Wynter","desmontar el «Hombre» como medida de lo humano"],["Mary Midgley","bestia y hombre"]],
+ "cosmos|universo|astronom|estrella":[["Hipatia de Alejandría","astronomía en Alejandría"],["Wang Zhenyi","los eclipses explicados"]]
+};
+const CONK=Object.entries(CONCEPTOS).map(([k,v])=>({roots:k.split('|').map(norm),list:v}));
+/* ¿lo buscado es un concepto del diccionario? */
+function concepto(q){
+  const words=q.split(/[\s,.;:¿?¡!«»"']+/).filter(Boolean);
+  let best=null;
+  for(const c of CONK){
+    let sc=0;
+    for(const r of c.roots){
+      if(r.includes(' ')){ if(q.includes(r)) sc=Math.max(sc,3); continue; }
+      for(const w of words){
+        if(w===r) sc=Math.max(sc,3);
+        else if(r.length>=3&&w.startsWith(r)) sc=Math.max(sc,2);
+        else if(w.length>=5&&r.length>=5&&lev(w,r)<=1) sc=Math.max(sc,1);
+      }
+    }
+    if(sc&&(!best||sc>best.sc))best={c,sc};
+  }
+  if(!best)return null;
+  const list=best.c.list.map(([n,m])=>({p:P.find(x=>x.n===n),m})).filter(o=>o.p);
+  return list.length?{list,sc:best.sc}:null;
+}
+/* si no está en el diccionario: la filósofa cuya ficha mejor encaja con lo buscado */
+function porFicha(q){
+  const words=q.split(/\s+/).filter(w=>w.length>=3);
+  if(!words.length)return null;
+  const sc=P.map(p=>{
+    const s=norm(p.s), tr=norm(p.tr), pl=norm(p.pl), tg=p.tags.map(t=>norm(TAGS[t][0]));
+    let v=0;
+    for(const w of words){
+      if(tg[0].startsWith(w))v+=4; else if(tg.some(t=>t.startsWith(w)))v+=3;
+      if(s.includes(w))v+=2.5; if(tr.includes(w))v+=2; if(pl.includes(w))v+=1;
+    }
+    return {p,v:v?v+p.w*.4:0};
+  }).filter(o=>o.v>0).sort((a,b)=>b.v-a.v).slice(0,3);
+  return sc.length?{list:sc.map(o=>({p:o.p,m:o.p.s.replace(/\.$/,'')}))}:null;
+}
+
+/* en la ficha, solo si llegas desde una búsqueda: por qué te la recomendamos */
 function homLine(p){
   const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-  if(homNow){const o=homNow.list.find(o=>o.p===p); if(o)return `<p class="homl">Sobre lo mismo que <b>${esc(homNow.name)}</b>: ${esc(o.m)}.</p>`;}
+  if(homNow){const o=homNow.list.find(o=>o.p===p); if(o)return homNow.kind==='hom'?`<p class="homl">Sobre lo mismo que <b>${esc(homNow.name)}</b>: ${esc(o.m)}.</p>`:`<p class="homl">Para «<b>${esc(homNow.name)}</b>»: ${esc(o.m)}.</p>`;}
   return '';
 }
 let hits=[], homNow=null;
 function filter(){
   const q=norm(query.trim()); let c=0; hits=[];
   /* si no coincide con ninguna filósofa pero sí con un filósofo, mostramos sus homólogas */
-  homNow=(q&&!P.some(p=>nameScore(p,q)>=2))?homologa(q):null;
-  if(homNow&&!homNow.list.length)homNow=null;
+  homNow=null;
+  /* buscas a una filósofa por su nombre exacto → no recomendamos nada; si no: filósofo → homóloga; idea → filósofa */
+  const exacta=q&&P.some(p=>{const n=norm(p.n);return n===q||n.split(/[\s-]+/).includes(q)||(q.includes(' ')&&n.includes(q))});
+  if(q&&!exacta){
+    const h=homologa(q), c=concepto(q), parcial=P.some(p=>nameScore(p,q)>=2);
+    if(h&&h.list.length&&!parcial)homNow={...h,kind:'hom'};
+    else if(c&&(c.sc===3||!parcial))homNow={...c,kind:'con',name:query.trim()};
+    else if(!parcial){const f=porFicha(q); if(f)homNow={...f,kind:'con',name:query.trim()};}
+  }
   const homSet=new Map((homNow?homNow.list:[]).map((o,k)=>[o.p,2.5-k*.01]));
   P.forEach(p=>{
     const hay=norm([p.n,p.pl,p.tr,p.s,p.era.n,CONTS[p.c],p.tags.map(t=>TAGS[t][0]).join(' ')].join(' '));
@@ -853,17 +984,18 @@ function filter(){
   hits.sort((a,b)=>b.s-a.s||b.p.w-a.p.w);
   const hb=document.getElementById('hom');
   if(homNow){
-    hb.innerHTML='¿Buscas a <b></b>? Sobre lo mismo, desde su lugar: ';
+    hb.innerHTML=homNow.kind==='hom'?'¿Buscas a <b></b>? Sobre lo mismo, desde su lugar: ':'Para «<b></b>», te recomendamos a ';
     hb.querySelector('b').textContent=homNow.name;
     homNow.list.forEach((o,k)=>{const b=document.createElement('button');b.className='hitb';b.textContent=o.p.n;b.style.setProperty('--h',o.p.h);
       b.onclick=e=>{e.stopPropagation();select(o.p);goTo(o.p)};
-      if(k)hb.append(' · '); hb.append(b,' — '+o.m)});
+      if(k===1)hb.append(homNow.kind==='hom'?' · ':'. También: '); else if(k)hb.append(' · ');
+      hb.append(b,' — '+o.m)});
     hb.hidden=false;
   } else hb.hidden=true;
   const cnt=document.getElementById('count');
   cnt.textContent=(q||activeTag||activeCont!==null)?`${c} de ${P.length} filósofas`:`${P.length} filósofas`;
   if(q){
-    if(!c) cnt.textContent='Ninguna coincidencia para «'+query.trim()+'»';
+    if(!c) cnt.textContent='Ninguna coincidencia para «'+query.trim()+'». Prueba con una idea (amor, trabajo, muerte, naturaleza…) o con un filósofo (Kant, Sartre, Foucault…).';
     else { cnt.append(': ');
       hits.slice(0,12).forEach((h,k)=>{const b=document.createElement('button');b.className='hitb';b.textContent=h.p.n;
         b.style.setProperty('--h',h.p.h);b.onclick=e=>{e.stopPropagation();select(h.p);goTo(h.p)};
