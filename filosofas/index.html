@@ -32,6 +32,7 @@
 <link rel="stylesheet" href="ajustes.css">
 <script src="ajustes.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Todas las filósofas","url":"https://todaslasfilosofas.netlify.app/","inLanguage":"es","description":"Mapa interactivo de más de 300 filósofas de todos los tiempos y continentes."}</script>
+<script src="config.js"></script>
 <script src="analitica.js" defer></script>
 <style>
 :root{
@@ -109,7 +110,7 @@ aside,#quiz .box,.hom,.count{overflow-wrap:anywhere}
 aside .homl{font-size:16px;color:var(--muted);border-left:3px solid var(--ec);padding-left:10px}
 aside .homl b{color:var(--fg);font-weight:500}
 .n.near{text-decoration:underline;text-underline-offset:3px}
-aside{position:fixed;right:16px;top:16px;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;
+aside{position:fixed;z-index:15;right:16px;top:16px;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;
   background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 18px 16px;
   transform:translateY(12px);opacity:0;pointer-events:none;transition:.25s}
 aside.open{transform:none;opacity:1;pointer-events:auto}
@@ -119,6 +120,11 @@ aside.open{transform:none;opacity:1;pointer-events:auto}
 aside h2{font:700 26px/1.2 var(--font);margin:0 30px 4px 0;color:var(--ec)}
 aside .meta{color:var(--muted);font-size:16px;margin-bottom:10px}
 aside p{margin:0 0 12px}
+aside .back{display:inline-block;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:99px;padding:5px 12px;font:600 15px var(--font);cursor:pointer;margin:0 34px 10px 0}
+aside .lk{border:0;background:none;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+aside .hint{font-weight:400;font-size:14px}
+aside .tags .chip{color:var(--fg);border-color:var(--ec)}
+aside .tags .chip:hover{background:color-mix(in srgb, var(--ec) 14%, transparent)}
 aside .x{position:absolute;right:10px;top:10px;border:0;background:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:4px 8px}
 aside h3{font:700 15px var(--font);color:var(--muted);margin:16px 0 6px}
 aside .tags,aside .nb{display:flex;flex-wrap:wrap;gap:6px}
@@ -150,6 +156,9 @@ aside a{color:inherit}
 #quiz .also{font-size:16px;color:var(--muted);margin-top:10px}
 #quiz .also button{border:0;background:none;padding:0;cursor:pointer;font:600 17px var(--font);color:var(--ec);text-decoration:underline}
 footer a{color:inherit}
+.cafe{display:inline-block;border:2px solid var(--fg);color:var(--fg)!important;text-decoration:none;border-radius:99px;padding:7px 16px;font:700 16px var(--font);margin-left:4px}
+.cafe:hover{background:color-mix(in srgb, var(--fg) 8%, transparent)}
+.apoyo:has(.cafe[hidden]){display:none}
 footer .legal{display:flex;flex-wrap:wrap;gap:6px 14px}
 footer{color:var(--muted);font-size:15px;max-width:1200px;margin:0 auto;padding:0 16px 30px}
 .count{color:var(--muted);font-size:15px}
@@ -188,6 +197,7 @@ footer{color:var(--muted);font-size:15px;max-width:1200px;margin:0 auto;padding:
 <div class="toast" id="toast"></div>
 <footer>
   <p>Fichas breves escritas como puerta de entrada; las fechas antiguas son aproximadas. ¿Falta alguien? <a href="sugerir.html">Propón una filósofa</a>.</p>
+  <p class="apoyo" data-cafe-wrap>Este proyecto es independiente y sin publicidad. Si te sirve, <a class="cafe" data-cafe hidden>☕ Invítame a un café</a></p>
   <nav class="legal" aria-label="Información legal"><a href="acerca.html">Acerca de</a><a href="privacidad.html">Privacidad y cookies</a><a href="terminos.html">Términos</a><a href="#" onclick="preferenciasCookies();return false">Preferencias de cookies</a><a href="mailto:artdeque@gmail.com">artdeque@gmail.com</a></nav>
 </footer>
 
@@ -708,11 +718,16 @@ function select(p){
   const dates=datesOf(p);
   const wq=encodeURIComponent(p.n);
   card.style.setProperty('--ec',p.h);
+  const atr=t=>String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  const prev=hist.length?hist[hist.length-1]:null;
+  const sameCtx=prev&&prev.q===query&&prev.era===activeEra&&prev.cont===activeCont;
+  const prevTxt=!prev?'':(sameCtx&&prev.p!=null)?P[prev.p].n:prev.q?'«'+prev.q+'»':prev.era!=null?ERAS[prev.era].n:prev.cont!=null?CONTS[prev.cont]:prev.p!=null?P[prev.p].n:'el inicio';
   card.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
+   ${prev?`<button class="back" type="button">← Volver a ${atr(prevTxt)}</button>`:''}
    <h2>${p.n}</h2>
-   <div class="meta">${dates} · ${p.pl}<br>${p.tr} · ${p.era.n} · ${CONTS[p.c]}</div>
-   <p>${p.s}</p>${homLine(p)}
-   <h3>Temas</h3><div class="tags">${p.tags.map(t=>`<button class="chip" data-t="${t}">${TAGS[t][0]}</button>`).join('')}</div>
+   <div class="meta">${dates} · <button class="lk" data-q="${atr(p.pl.split(' / ')[0])}">${p.pl}</button><br><button class="lk" data-q="${atr(p.tr)}">${p.tr}</button> · <button class="lk" data-era="${p.era.k}">${p.era.n}</button> · <button class="lk" data-cont="${p.c}">${CONTS[p.c]}</button></div>
+   <p>${enlazar(p.s,p)}</p>${homLine(p)}
+   <h3>Temas <span class="hint">(toca uno para explorarlo)</span></h3><div class="tags">${p.tags.map(t=>`<button class="chip" data-t="${t}">${TAGS[t][0]} →</button>`).join('')}</div>
    <h3>Vecinas en el mapa</h3><div class="nb">${nb.map(q=>`<button data-i="${q.i}" style="--ec:${q.h}">${q.n}</button>`).join(' · ')}</div>
    <h3>Seguir leyendo</h3>
    <div class="links"><a target="_blank" rel="noopener" href="https://es.wikipedia.org/w/index.php?search=${wq}">Wikipedia</a>
@@ -723,9 +738,47 @@ function select(p){
   card.querySelector('#cpl').onclick=()=>copy(linkTo(p));
   setHash('#'+encodeURIComponent(p.n));
   card.querySelector('.x').onclick=()=>select(null);
-  card.querySelectorAll('.nb button').forEach(b=>b.onclick=()=>{const q=P[+b.dataset.i];select(q);goTo(q)});
-  card.querySelectorAll('.tags .chip').forEach(b=>b.onclick=()=>setTag(b.dataset.t));
+  card.querySelectorAll('.nb button').forEach(b=>b.onclick=()=>{recordar();const q=P[+b.dataset.i];select(q);goTo(q)});
+  card.querySelectorAll('.tags .chip').forEach(b=>b.onclick=()=>explorar(TAGS[b.dataset.t][0]));
+  card.querySelectorAll('.lk').forEach(b=>b.onclick=()=>{if(b.dataset.era!=null)explorar('',{era:+b.dataset.era});else if(b.dataset.cont!=null)explorar('',{cont:+b.dataset.cont});else if(b.dataset.i!=null){recordar();const q=P[+b.dataset.i];select(q);goTo(q)}else explorar(b.dataset.q)});
+  const bk=card.querySelector('.back'); if(bk)bk.onclick=volver;
   card.classList.add('open');
+}
+/* ---------- navegación entre entradas: cada tema, corriente o lugar abre una búsqueda nueva ---------- */
+let hist=[];
+function recordar(){ const h={q:query,p:sel?sel.i:null,era:activeEra,cont:activeCont}, t=hist[hist.length-1];
+  if(t&&t.q===h.q&&t.p===h.p&&t.era===h.era&&t.cont===h.cont)return; hist.push(h); if(hist.length>40)hist.shift(); }
+function abrirEntrada(term,p,f){
+  f=f||{}; query=term; qi.value=term; activeTag=null; activeCont=f.cont??null; activeEra=f.era??null;
+  filter();
+  /* sin búsqueda (época o continente): abrimos la más destacada de las visibles */
+  const vis=P.filter(x=>!x.el.classList.contains('off')).sort((a,b)=>b.w-a.w||a.rank-b.rank);
+  const first=p||(homNow&&homNow.list[0]&&homNow.list[0].p)||(hits[0]&&hits[0].p)||(!term&&vis[0]);
+  if(first){select(first);goTo(first)} else select(null);
+}
+function explorar(term,f){ f=f||{}; if(term===query&&(f.era??null)===activeEra&&(f.cont??null)===activeCont)return; recordar(); clearTimeout(qt); abrirEntrada(term,null,f); }
+function volver(){ const h=hist.pop(); if(!h)return; clearTimeout(qt); abrirEntrada(h.q||'',h.p!=null?P[h.p]:null,{era:h.era,cont:h.cont}); }
+/* convierte en enlaces las ideas del diccionario, las otras filósofas y los filósofos que aparecen en un texto */
+let ENL=null; /* se construye la primera vez (necesita los diccionarios de filósofos e ideas) */
+const crearENL=(()=>{const m=[];
+  P.forEach(q=>{const n=q.n;m.push({t:n,i:q.i});const ap=n.split(' ').filter(w=>w.length>4&&/^[A-ZÁÉÍÓÚÑ]/.test(w)).pop();if(ap&&ap!==n&&!['Alejandría','Mantinea','Bohemia','Ávila','Bingen','Norwich','Siena','Cirene','Crotona','Lucania','Esparta','Rodas','Fliunte','Maronea','Mileto','Nishapur','Amberes','Magdeburgo','Cartagena'].includes(ap))m.push({t:ap,i:q.i})});
+  HOMK.forEach(h=>h.alias.forEach(a=>{if(a.length>=4)m.push({t:a,q:h.name})}));
+  CONK.forEach(c=>c.roots.forEach(r=>{if(r.length>=4&&!r.includes(' '))m.push({root:r,q:null})}));
+  return m});
+function enlazar(txt,self){
+  if(!ENL)ENL=crearENL();
+  const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  let out='',i=0; const used=new Set();
+  const re=/[A-Za-zÀ-ÿĀ-ž'-]+(?:\s(?:de|del|la|y|von|van|al-)?\s?[A-ZÁÉÍÓÚÑ][A-Za-zÀ-ÿĀ-ž'-]+)*/g; let m;
+  while((m=re.exec(txt))){
+    let w=m[0], hit=null;
+    for(const e of ENL){ if(e.t&&e.i!=null&&w.startsWith(e.t)&&e.i!==self.i&&!used.has(e.t)){hit={html:`<button class="lk" data-i="${e.i}">${esc(e.t)}</button>`+esc(w.slice(e.t.length)),k:e.t};break}
+      if(e.t&&e.q&&(w===e.t||w.startsWith(e.t+' '))&&!used.has(e.t)){hit={html:`<button class="lk" data-q="${esc(e.q)}">${esc(w)}</button>`,k:e.t};break} }
+    if(!hit&&w.length>=4&&!/^[A-ZÁÉÍÓÚÑ]/.test(w)){const nw=norm(w);
+      for(const e of ENL){ if(e.root&&(nw===e.root||(e.root.length>=5&&nw.startsWith(e.root)))&&!used.has(e.root)){hit={html:`<button class="lk" data-q="${esc(w)}">${esc(w)}</button>`,k:e.root};break} } }
+    out+=esc(txt.slice(i,m.index))+(hit?hit.html:esc(w)); if(hit)used.add(hit.k); i=m.index+w.length;
+  }
+  return out+esc(txt.slice(i));
 }
 function goTo(p){
   const bh=movimientoReducido()?'auto':'smooth';
@@ -1022,7 +1075,7 @@ function filter(){
     hb.innerHTML=homNow.kind==='hom'?'¿Buscas a <b></b>? Sobre lo mismo, desde su lugar: ':'Para «<b></b>», te recomendamos a ';
     hb.querySelector('b').textContent=homNow.name;
     homNow.list.forEach((o,k)=>{const b=document.createElement('button');b.className='hitb';b.textContent=o.p.n;b.style.setProperty('--ec',o.p.h);
-      b.onclick=e=>{e.stopPropagation();select(o.p);goTo(o.p)};
+      b.onclick=e=>{e.stopPropagation();if(sel&&sel!==o.p)recordar();select(o.p);goTo(o.p)};
       if(k===1)hb.append(homNow.kind==='hom'?' · ':'. También: '); else if(k)hb.append(' · ');
       hb.append(b,' — '+o.m)});
     hb.hidden=false;
@@ -1033,7 +1086,7 @@ function filter(){
     if(!c) cnt.textContent='Ninguna coincidencia para «'+query.trim()+'». Prueba con una idea (amor, trabajo, muerte, naturaleza…) o con un filósofo (Kant, Sartre, Foucault…).';
     else { cnt.append(': ');
       hits.slice(0,12).forEach((h,k)=>{const b=document.createElement('button');b.className='hitb';b.textContent=h.p.n;
-        b.style.setProperty('--ec',h.p.h);b.onclick=e=>{e.stopPropagation();select(h.p);goTo(h.p)};
+        b.style.setProperty('--ec',h.p.h);b.onclick=e=>{e.stopPropagation();if(sel&&sel!==h.p)recordar();select(h.p);goTo(h.p)};
         if(k)cnt.append(' · '); cnt.append(b)});
       if(hits.length>12)cnt.append(' …'); }
   }
@@ -1063,7 +1116,7 @@ legend.innerHTML='<span>Épocas:</span>'+ERAS.map(e=>`<button type="button" aria
 legend.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;activeEra=activeEra===k?null:k;filter()});
 let qt;
 const qi=document.getElementById('q');
-qi.addEventListener('input',e=>{query=e.target.value;filter();
+qi.addEventListener('input',e=>{query=e.target.value;hist=[];filter();
   clearTimeout(qt);if(movimientoReducido())return; /* con movimiento reducido no saltamos solos: se usa Intro o se toca el nombre */
   qt=setTimeout(()=>{const nm=hits.filter(h=>h.s>0);
     if(nm.length===1||homNow)select(nm[0].p); if(nm.length){goTo(nm[0].p)} },500)});
@@ -1098,7 +1151,7 @@ document.getElementById('mList').onclick=()=>setMode('lista');
 document.getElementById('rnd').onclick=()=>{const vis=P.filter(p=>!p.el.classList.contains('off'));const p=vis[Math.floor(Math.random()*vis.length)];if(p){select(p);goTo(p)}};
 /* al cambiar los ajustes de lectura, recolocamos el mapa (cambian los tamaños de los nombres) */
 document.addEventListener('ajustes',()=>{(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{if(mode!=='lista')layout()})});
-document.addEventListener('click',e=>{if(sel&&!quizOpen&&!card.contains(e.target)&&!e.target.classList.contains('n')&&!e.target.closest('#quiz,#aj,#lista'))select(null)});
+document.addEventListener('click',e=>{if(sel&&!quizOpen&&e.target.isConnected&&!card.contains(e.target)&&!e.target.classList.contains('n')&&!e.target.closest('#quiz,#aj,#lista'))select(null)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.querySelector('#aj.open')){if(quizOpen)closeQuiz();else select(null)}});
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(mode!=='lista')layout()},200)});
 
@@ -1199,7 +1252,8 @@ function result(){
    <p>${p.s}</p>
    ${shared.length?`<div class="why">Compartís: ${shared.join(', ')}.</div>`:''}
    <div class="share"><button class="main" id="qsh">Compartir resultado</button><button id="qimg">Imagen para redes</button><button id="qmap">Verla en el mapa</button><button id="qre">Repetir</button></div>
-   <div class="also">También te pareces a: ${also.map(q=>`<button data-i="${q.i}" style="--ec:${q.h}">${q.n}</button>`).join(' · ')}</div></div>`;
+   <div class="also">También te pareces a: ${also.map(q=>`<button data-i="${q.i}" style="--ec:${q.h}">${q.n}</button>`).join(' · ')}</div>
+   ${window.CAFE_URL?`<p class="apoyo" style="margin-top:16px">¿Te ha gustado? <a class="cafe" href="${window.CAFE_URL}" target="_blank" rel="noopener">☕ Invítame a un café</a></p>`:''}</div>`;
   qbox.querySelector('.x').onclick=closeQuiz;
   const text=`Me ha salido ${p.n} en «¿Qué filósofa eres?». ¿Y a ti?`;
   qbox.querySelector('#qsh').onclick=()=>share({title:'¿Qué filósofa eres?',text,url:BASE+'#test'});

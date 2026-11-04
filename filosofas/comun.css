@@ -42,3 +42,7 @@ textarea{min-height:110px;resize:vertical}
 #cc .b{display:flex;gap:8px;flex-wrap:wrap}
 #cc button{font:700 16px var(--font);border-radius:10px;padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fg)}
 #cc button.ok{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+/* botón «Invítame a un café» (contorno: no compite con el botón principal) */
+.cafe{display:inline-block;border:2px solid var(--fg);color:var(--fg);text-decoration:none;border-radius:99px;padding:7px 16px;font:700 16px var(--font)}
+.cafe:hover{background:color-mix(in srgb, var(--fg) 8%, transparent)}
