@@ -1,7 +1,7 @@
 /* Ajustes de lectura (todas las páginas): se aplican antes de pintar para evitar saltos. */
 (function(){
   var CLAVE='filosofas-ajustes', d=document.documentElement;
-  var DEF={letra:'atk',tam:'1',esp:'normal',simbolos:'si',color:'epoca',mov:'auto',tema:'auto'};
+  var DEF={letra:'atk',tam:'1',esp:'normal',simbolos:'si',color:'epoca',mov:'auto',tema:'dark'};
   function leer(){var a={};try{a=JSON.parse(localStorage.getItem(CLAVE)||'{}')||{}}catch(e){}
     /* compatibilidad con la preferencia de tema anterior */
     try{var t=localStorage.getItem('filosofas-theme');if(t&&!a.tema)a.tema=t}catch(e){}
@@ -22,7 +22,7 @@
     ['color','Colores de las épocas',[['epoca','Con colores'],['mono','Sin colores']]],
     ['simbolos','Símbolo de época junto a cada nombre',[['si','Mostrar'],['no','Ocultar']]],
     ['mov','Movimiento y animaciones',[['auto','Como mi dispositivo'],['reducido','Reducido'],['normal','Normal']]],
-    ['tema','Fondo',[['auto','Automático'],['light','Claro'],['dark','Oscuro']]]
+    ['tema','Fondo',[['dark','Verde (el de la casa)'],['light','Claro'],['auto','Según mi dispositivo']]]
   ];
   var ultimoFoco=null;
   function construir(){

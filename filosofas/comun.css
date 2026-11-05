@@ -1,7 +1,7 @@
 /* Estilo de las páginas secundarias (acerca, privacidad, términos, sugerir, 404) */
-:root{--bg:#fbfaf7;--fg:#1d1b18;--muted:#6f6a62;--line:#e4e0d8;--panel:#fff;--accent:#1d7a4a;--err:#a8261c}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121110;--fg:#ece8e1;--muted:#9a948a;--line:#2b2926;--panel:#1b1a18;--accent:#6fd39b;--err:#ff8a7e}}
-:root[data-theme="dark"]{--bg:#121110;--fg:#ece8e1;--muted:#9a948a;--line:#2b2926;--panel:#1b1a18;--accent:#6fd39b;--err:#ff8a7e}
+:root{--bg:#fbfaf7;--fg:#10302a;--muted:#566b63;--line:#d5dfda;--panel:#fff;--accent:#123d33;--err:#a8261c;--logo:#123d33}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f2e27;--fg:#ece8e1;--muted:#b8cbc2;--line:#2b5a4d;--panel:#0b231e;--accent:#4fb58f;--err:#ffb3a8;--logo:#4fb58f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f2e27;--fg:#ece8e1;--muted:#b8cbc2;--line:#2b5a4d;--panel:#0b231e;--accent:#4fb58f;--err:#ffb3a8;--logo:#4fb58f;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.65 var(--font);overflow-x:hidden;letter-spacing:.012em}
 main,footer.legal{zoom:var(--zoom)}
@@ -46,3 +46,7 @@ textarea{min-height:110px;resize:vertical}
 /* botón «Invítame a un café» (contorno: no compite con el botón principal) */
 .cafe{display:inline-block;border:2px solid var(--fg);color:var(--fg);text-decoration:none;border-radius:99px;padding:7px 16px;font:700 16px var(--font)}
 .cafe:hover{background:color-mix(in srgb, var(--fg) 8%, transparent)}
+
+/* marca */
+.marca-p{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--fg);font-weight:700;font-size:20px}
+.marca-p svg{height:56px;width:auto;color:var(--logo)}
