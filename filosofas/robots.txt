@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /gracias.html
 
-Sitemap: https://todaslasfilosofas.netlify.app/sitemap.xml
+Sitemap: https://yesodijoella.com/sitemap.xml
