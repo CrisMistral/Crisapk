@@ -45,3 +45,17 @@ George Eliot (traductora de Feuerbach, ahora su homóloga), Elena Cornaro Piscop
 - **Fechas antiguas** (Teano, Maitreyi, Kisa Gotami, Andal…): las fuentes discrepan entre sí; la web las marca como aproximadas.
 - **Homólogas, vecinas y posición en el mapa** son interpretaciones del proyecto, no datos verificables.
 - **Recomendación:** que una o dos personas expertas (profesorado de filosofía) revisen las fichas antes de la difusión fuerte.
+
+---
+
+## Revisión continua
+
+### Vuelta 1 (lectura de artículos de Wikipedia)
+
+Contrastadas 15 fichas de alto riesgo con el texto de su artículo.
+
+- **Correctas:** Úrsula de Jesús, Im Yunjidang, Aileen Moreton-Robinson, Damo de Crotona (con matices: «según la tradición»).
+- **Fechas corregidas:** Avvaiyar (la más antigua, siglo I a. C., no I–II d. C.), Karaikkal Ammaiyar (siglo V, no c. 550), Damo (c. 535–475 a. C.).
+- **Frases que el artículo no respaldaba (reescritas):** Karaikkal Ammaiyar («pidió un cuerpo de espectro»), Avvaiyar («aforismos para niños», que son de una Avvaiyar posterior), Walatta Petros («obra temprana de la literatura africana»), Kang Jeongildang («camino abierto a las mujeres»), Tadano Makuzu («crítica a la moral confuciana»), Graciela Hierro (título de obra mezclado), Grace de Laguna (no consta como pragmatista).
+- **Ellen Dissanayake:** su año de nacimiento no está publicado; el 1950 de Wikidata es imposible (se licenció en 1957). Ahora la ficha muestra su obra clave (1992).
+- **Sin verificar todavía:** Gerda Walther y Fátima de Nishapur (sus páginas no existen con ese título).
