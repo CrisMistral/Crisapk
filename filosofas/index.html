@@ -145,6 +145,10 @@ aside.open{transform:none;opacity:1;pointer-events:auto}
   aside{left:0;right:0;top:auto;bottom:0;width:auto;max-height:62vh;border-radius:16px 16px 0 0}
 }
 aside h2{font:700 26px/1.2 var(--font);margin:0 30px 4px 0;color:var(--ec)}
+a.nom{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-color:color-mix(in srgb,currentColor 45%,transparent)}
+a.nom:hover{text-decoration-color:currentColor}
+a.nom .ext{font-size:.6em;vertical-align:.35em;margin-left:.2em;font-weight:400}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .cab{display:flex;gap:14px;align-items:flex-start;margin-bottom:6px}
 .cab>div{min-width:0;flex:1}
 .cara{flex:none;margin:0;width:84px;text-align:center}
@@ -831,6 +835,15 @@ function neighbours(p,k=7){
   }).sort((a,b)=>a.d-b.d).slice(0,k).map(o=>o.q);
 }
 const card=document.getElementById('card');
+/* su artículo de Wikipedia (en español si existe); si no lo tenemos, la búsqueda en Wikipedia */
+const WIKI_EXTRA={"Gerda Walther":"de:Gerda Walther","Karaikkal Ammaiyar":"Karaikkal Ammaiyar","Janet Wolff":"en:Janet Wolff","Sulabha":"en:Sulabha"};
+function wikiURL(p){
+  const t=WIKI[p.n]||WIKI_EXTRA[p.n];
+  if(!t)return 'https://es.wikipedia.org/w/index.php?search='+encodeURIComponent(p.n);
+  const m=t.match(/^(en|de|fr):(.*)$/), l=m?m[1]:'es', x=m?m[2]:t;
+  return `https://${l}.wikipedia.org/wiki/`+encodeURIComponent(x.replace(/ /g,'_'));
+}
+const nombre=p=>`<a class="nom" href="${wikiURL(p)}" target="_blank" rel="noopener">${p.n}<span class="vh"> (abre su página de Wikipedia en otra pestaña)</span><span class="ext" aria-hidden="true">↗</span></a>`;
 /* retrato (imagen libre de Wikimedia Commons) o, si no hay, la lechuza en el color de su época */
 function cara(p){
   const c=(window.CARAS||{})[p.n];
@@ -853,13 +866,13 @@ function select(p){
   const prevTxt=!prev?'':(sameCtx&&prev.p!=null)?P[prev.p].n:prev.q?'«'+prev.q+'»':prev.era!=null?ERAS[prev.era].n:prev.cont!=null?CONTS[prev.cont]:prev.p!=null?P[prev.p].n:'el inicio';
   card.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
    ${prev?`<button class="back" type="button">← Volver a ${atr(prevTxt)}</button>`:''}
-   <div class="cab">${cara(p)}<div><h2>${p.n}</h2>
+   <div class="cab">${cara(p)}<div><h2>${nombre(p)}</h2>
    <div class="meta">${dates} · <button class="lk" data-q="${atr(p.pl.split(' / ')[0])}">${p.pl}</button><br><button class="lk" data-q="${atr(p.tr)}">${p.tr}</button> · <button class="lk" data-era="${p.era.k}">${p.era.n}</button> · <button class="lk" data-cont="${p.c}">${CONTS[p.c]}</button></div></div></div>
    <p>${enlazar(p.s,p)}</p>${homLine(p)}
    <h3>Temas <span class="hint">(toca uno para explorarlo)</span></h3><div class="tags">${p.tags.map(t=>`<button class="chip" data-t="${t}">${TAGS[t][0]} →</button>`).join('')}</div>
    <h3>Vecinas en el mapa</h3><div class="nb">${nb.map(q=>`<button data-i="${q.i}" style="--ec:${q.h}">${q.n}</button>`).join(' · ')}</div>
    <h3>Seguir leyendo</h3>
-   <div class="links"><a target="_blank" rel="noopener" href="${WIKI[p.n]?(WIKI[p.n].startsWith('en:')?'https://en.wikipedia.org/wiki/'+encodeURIComponent(WIKI[p.n].slice(3).replace(/ /g,'_')):'https://es.wikipedia.org/wiki/'+encodeURIComponent(WIKI[p.n].replace(/ /g,'_'))):'https://es.wikipedia.org/w/index.php?search='+wq}">Wikipedia${WIKI[p.n]&&WIKI[p.n].startsWith('en:')?' (en inglés)':''}</a>
+   <div class="links"><a target="_blank" rel="noopener" href="${wikiURL(p)}">Wikipedia${WIKI[p.n]&&WIKI[p.n].startsWith('en:')?' (en inglés)':''}</a>
    <a target="_blank" rel="noopener" href="https://plato.stanford.edu/search/searcher.py?query=${wq}">Stanford Encyclopedia</a>
    <a target="_blank" rel="noopener" href="https://www.google.com/search?tbm=bks&q=${wq}">Google Libros</a></div>
    ${tiendas(p)}
@@ -1654,7 +1667,7 @@ function result(){
   qbox.style.setProperty('--ec',p.h);
   const dates=datesOf(p);
   qbox.innerHTML=`<button class="x" aria-label="Cerrar">×</button>
-   <div class="res"><div class="cab">${cara(p)}<div><div class="pre">Tu filósofa es…</div><h2>${p.n}</h2>
+   <div class="res"><div class="cab">${cara(p)}<div><div class="pre">Tu filósofa es…</div><h2>${nombre(p)}</h2>
    <div class="why">${dates} · ${p.pl} · ${p.tr}</div></div></div>
    <p>${p.s}</p>
    ${shared.length?`<div class="why">Compartís: ${shared.join(', ')}.</div>`:''}
