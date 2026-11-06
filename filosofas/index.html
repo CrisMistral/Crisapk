@@ -1126,7 +1126,7 @@ function homologa(q){
     }
   }
   if(!best)return null;
-  return {name:best.sc>=2.5&&best.a.length>3?best.a:best.h.name,list:best.h.list.map(([n,m])=>({p:P.find(x=>x.n===n),m})).filter(o=>o.p)};
+  return {sc:best.sc,name:best.sc>=2&&best.a.length>3?best.a:best.h.name,list:best.h.list.map(([n,m])=>({p:P.find(x=>x.n===n),m})).filter(o=>o.p)};
 }
 
 /* ---------- conceptos: busca una idea y te recomendamos a una filósofa ---------- */
@@ -1211,6 +1211,13 @@ const CONCEPTOS={
  "confianza|confiar":[["Annette Baier","la confianza como centro de la vida moral"],["Onora O'Neill","confianza en las instituciones"]],
  "virtud|bien|bondad|moral|etica|ética":[["Iris Murdoch","la soberanía del bien"],["Philippa Foot","la bondad natural"]],
  "amistad|amig":[["Leontion","la amistad epicúrea"],["Hannah Arendt","la amistad política"]],
+ "deporte|deportes|deportista|futbol|fútbol|atleta|atletismo|gimnasia|ejercicio fisico|ejercicio físico|lanzar|competicion|competición":[["Iris Marion Young","«Lanzar como una chica»: por qué a las niñas se les enseña a moverse con miedo a ocupar espacio"],["Simone de Beauvoir","«El segundo sexo»: el deporte y la pelea como formas de afirmarse en el mundo, negadas a las chicas"]],
+ "juego|jugar|ludic|lúdic":[["María Lugones","la actitud lúdica: jugar para poder viajar al mundo de otras personas"]],
+ "danza|baile|bailar|coreograf":[["Susanne Langer","«Sentimiento y forma»: la danza como imagen de fuerzas vivas"]],
+ "viaje|viajes|viajar|turismo|peregrin":[["Flora Tristán","«Peregrinaciones de una paria»: su viaje al Perú"],["Mary Wollstonecraft","«Cartas desde Suecia, Noruega y Dinamarca»"],["María Lugones","«viajar» entre mundos con amor"]],
+ "humor|risa|reir|reír|comedia|chiste":[["Hélène Cixous","«La risa de la Medusa»"],["Sara Ahmed","la aguafiestas feminista: no reírse de lo que no tiene gracia"]],
+ "moda|ropa|vestir|vestido|maquillaje":[["Iris Marion Young","«Las mujeres recuperan nuestra ropa»: el placer de vestirse"],["Susan Sontag","«Notas sobre lo camp»: el gusto por el artificio"]],
+ "paisaje|montaña|senderismo|aire libre|caminar|pasear":[["Emily Brady","apreciar el paisaje con imaginación y respeto, no como un cuadro"],["Yuriko Saito","«The Aesthetics of Unscenic Nature»: valorar también el paisaje que no sale en las postales"]],
  "cansancio|agotamiento|burnout|productividad":[["Remedios Zafra","el entusiasmo y la autoexplotación"]],
  "abortar|aborto":[["Judith Jarvis Thomson","una defensa del aborto"]],
  "humano|humanidad|naturaleza humana":[["Sylvia Wynter","desmontar el «Hombre» como medida de lo humano"],["Mary Midgley","bestia y hombre"]],
@@ -1390,7 +1397,8 @@ function filter(){
   const exacta=q&&P.some(p=>{const n=norm(p.n);return n===q||n.split(/[\s-]+/).includes(q)||(q.includes(' ')&&n.includes(q))});
   if(q&&!exacta){
     const h=homologa(q), c=concepto(q), parcial=P.some(p=>nameScore(p,q)>=2);
-    if(h&&h.list.length&&!parcial)homNow={...h,kind:'hom'};
+    /* una idea escrita tal cual gana a un filósofo que solo se le parece (sueño ≠ Bueno) */
+    if(h&&h.list.length&&!parcial&&!(h.sc<=2&&c&&c.sc>=3))homNow={...h,kind:'hom'};
     else if(c&&(c.sc>=3||!parcial))homNow={...c,kind:'con',name:query.trim()};
     else if(!parcial){const f=porFicha(q); if(f)homNow={...f,kind:'con',name:query.trim()};}
   }
@@ -1477,7 +1485,8 @@ const IDEAS_GRUPOS={
  'Feminismos':['feminismo ilustrado','feminismo de la diferencia','feminismo negro','interseccionalidad','ecofeminismo','teoría queer','ética del cuidado','feminismo decolonial'],
  'Tradiciones del mundo':['budismo','confucianismo','taoísmo','vedanta','sufismo','filosofía africana','filosofía japonesa','filosofía latinoamericana','pensamiento indígena','colonialismo'],
  'Problemas clásicos':['mente y cuerpo','determinismo','causalidad','sustancia','inmortalidad','lo sublime','el sujeto','la imaginación','la alienación','el contrato social','la paradoja','dilema del tranvía'],
- 'Vida cotidiana':['trabajo','cuidados','maternidad','cuerpo','comida','casa','ciudad','dinero','tecnología','inteligencia artificial','naturaleza','animales','ansiedad','soledad','vejez','ira','miedo']
+ 'Vida cotidiana':['trabajo','cuidados','maternidad','cuerpo','comida','casa','ciudad','dinero','tecnología','inteligencia artificial','naturaleza','animales','ansiedad','soledad','vejez','ira','miedo'],
+ 'Tiempo libre':['deporte','juego','baile','música','cine','viajes','humor','moda','paisaje','amistad','sexo','sueño']
 };
 document.getElementById('ideas-grupos').innerHTML=Object.entries(IDEAS_GRUPOS).map(([g,l])=>`<h4>${g} <span class="dd-h">(abren su filósofa)</span></h4><div class="ideas-l">${l.map(t=>`<button type="button" data-q="${t}">${t}</button>`).join('')}</div>`).join('');
 document.querySelectorAll('#ideas-grupos button').forEach(b=>b.onclick=()=>{cerrarDD();explorar(b.dataset.q)});
