@@ -170,6 +170,13 @@ aside a{color:inherit}
 .share button.main{background:var(--ec);color:var(--bg);border-color:transparent}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:99px;font-size:16px;opacity:0;transition:.25s;pointer-events:none;z-index:30}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+#copiar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);width:min(460px,calc(100vw - 32px));background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:14px;z-index:40}
+#copiar[hidden]{display:none}
+#copiar p{margin:0 0 8px}
+#copiar textarea{width:100%;box-sizing:border-box;font:16px var(--font);background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px;resize:none}
+#copiar div{display:flex;gap:8px;margin-top:8px}
+#copiar button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:10px;padding:8px 14px;font:600 16px var(--font);cursor:pointer}
+#copiar .main{background:var(--fg);color:var(--bg)}
 #quiz{position:fixed;inset:0;z-index:20;background:rgb(0 0 0 / .45);display:none;align-items:center;justify-content:center;padding:16px}
 #quiz.open{display:flex}
 #quiz .box{background:var(--panel);color:var(--fg);border-radius:18px;box-shadow:var(--shadow);width:min(520px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:22px 20px 20px;position:relative}
@@ -211,7 +218,6 @@ footer{color:var(--muted);font-size:15px;max-width:1200px;margin:0 auto;padding:
       <button id="mList" aria-pressed="false">Lista</button>
     </div>
     <button class="quizbtn" id="quizbtn">¿Qué filósofa eres?</button>
-    <button class="ghost" id="rnd">Sorpréndeme</button>
     <button class="ajbtn" type="button" data-ajustes aria-haspopup="dialog"><b aria-hidden="true">Aa</b> Ajustes de lectura</button>
   </div>
   <div class="filtros" id="filtros" role="group" aria-label="Filtros">
@@ -1513,7 +1519,6 @@ document.getElementById('mIdeas').onclick=()=>setMode('ideas');
 document.getElementById('mTime').onclick=()=>setMode('time');
 document.getElementById('mWorld').onclick=()=>setMode('world');
 document.getElementById('mList').onclick=()=>setMode('lista');
-document.getElementById('rnd').onclick=()=>{const vis=P.filter(p=>!p.el.classList.contains('off'));const p=vis[Math.floor(Math.random()*vis.length)];if(p){select(p);goTo(p)}};
 /* al cambiar los ajustes de lectura, recolocamos el mapa (cambian los tamaños de los nombres) */
 document.addEventListener('ajustes',()=>{(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{if(mode!=='lista')layout()})});
 document.addEventListener('click',e=>{if(sel&&!quizOpen&&e.target.isConnected&&!card.contains(e.target)&&!e.target.classList.contains('n')&&!e.target.closest('#quiz,#aj,#lista,#filtros,.zoom'))select(null)});
@@ -1525,13 +1530,25 @@ const BASE=location.origin+location.pathname;
 const linkTo=p=>BASE+'#'+encodeURIComponent(p.n);
 function setHash(h){try{history.replaceState(null,'',h||location.pathname+location.search)}catch(e){}}
 function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2200)}
-async function copy(t){
-  try{await navigator.clipboard.writeText(t);toast('Enlace copiado')}
-  catch(e){prompt('Copia este enlace:',t)}
+/* si el navegador no deja copiar, un cuadro propio con el texto ya seleccionado */
+function cuadroCopiar(t){
+  let c=document.getElementById('copiar');
+  if(!c){c=document.createElement('div');c.id='copiar';c.setAttribute('role','dialog');c.setAttribute('aria-label','Copiar enlace');
+    c.innerHTML='<p>Copia este texto para compartirlo:</p><textarea readonly rows="3"></textarea><div><button type="button" class="main" data-c>Copiar</button><button type="button" data-x>Cerrar</button></div>';
+    document.body.appendChild(c);
+    c.querySelector('[data-x]').onclick=()=>c.hidden=true;
+    c.querySelector('[data-c]').onclick=()=>{const ta=c.querySelector('textarea');ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}
+      if(ok){c.hidden=true;toast('Copiado')}else toast('Mantén pulsado el texto para copiarlo')};
+    c.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();c.hidden=true}});}
+  c.hidden=false;const ta=c.querySelector('textarea');ta.value=t;ta.focus();ta.select();
+}
+async function copy(t,msg='Enlace copiado'){
+  try{await navigator.clipboard.writeText(t);toast(msg)}
+  catch(e){cuadroCopiar(t)}
 }
 async function share(d){
   if(navigator.share){try{await navigator.share(d);return}catch(e){if(e.name==='AbortError')return}}
-  copy(d.url);
+  copy(d.text?d.text+' '+d.url:d.url, d.text?'Resultado copiado: pégalo donde quieras':'Enlace copiado');
 }
 
 /* ---------- test: ¿Qué filósofa eres? ---------- */
@@ -1616,49 +1633,15 @@ function result(){
    <div class="why">${dates} · ${p.pl} · ${p.tr}</div>
    <p>${p.s}</p>
    ${shared.length?`<div class="why">Compartís: ${shared.join(', ')}.</div>`:''}
-   <div class="share"><button class="main" id="qsh">Compartir resultado</button><button id="qimg">Imagen para redes</button><button id="qmap">Verla en el mapa</button><button id="qre">Repetir</button></div>
+   <div class="share"><button class="main" id="qsh">Compartir resultado</button><button id="qmap">Verla en el mapa</button><button id="qre">Repetir</button></div>
    <div class="also">También te pareces a: ${also.map(q=>`<button data-i="${q.i}" style="--ec:${q.h}">${q.n}</button>`).join(' · ')}</div>
    ${window.CAFE_URL?`<p class="apoyo" style="margin-top:16px">¿Te ha gustado? <a class="cafe" href="${window.CAFE_URL}" target="_blank" rel="noopener">☕ Invítame a un café</a></p>`:''}</div>`;
   qbox.querySelector('.x').onclick=closeQuiz;
   const text=`Me ha salido ${p.n} en «¿Qué filósofa eres?». ¿Y a ti?`;
   qbox.querySelector('#qsh').onclick=()=>share({title:'¿Qué filósofa eres?',text,url:BASE+'#test'});
-  qbox.querySelector('#qimg').onclick=()=>shareImage(p,text);
   qbox.querySelector('#qmap').onclick=()=>{closeQuiz();select(p);goTo(p)};
   qbox.querySelector('#qre').onclick=openQuiz;
   qbox.querySelectorAll('.also button').forEach(b=>b.onclick=()=>{const q=P[+b.dataset.i];closeQuiz();select(q);goTo(q)});
-}
-
-/* imagen vertical para historias (1080×1350) */
-function wrap(ctx,t,maxW){const w=t.split(' '),out=[];let l='';
-  for(const x of w){const tt=l?l+' '+x:x; if(ctx.measureText(tt).width>maxW&&l){out.push(l);l=x}else l=tt} if(l)out.push(l); return out}
-async function shareImage(p,text){
-  const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
-  const FF="'Atkinson Hyperlegible Next', sans-serif";
-  try{await document.fonts.load('700 40px "Atkinson Hyperlegible Next"');await document.fonts.load('400 40px "Atkinson Hyperlegible Next"')}catch(e){}
-  x.fillStyle='#0f2e27';x.fillRect(0,0,W,H);
-  /* nube de nombres de fondo */
-  x.textBaseline='top';
-  let sd=7;const rnd=()=>{sd=(sd*16807)%2147483647;return sd/2147483647};
-  P.forEach((q,k)=>{const px=rnd()*W*1.1-80,py=rnd()*H;if(q===p)return;
-    x.font=(18+q.w*6)+'px '+FF;x.fillStyle=q.era.hex+'0d';x.fillText(q.n,px,py)});
-  const col=p.era.hex;
-  x.fillStyle='#b8cbc2';x.font='700 36px '+FF;x.fillText('¿Qué filósofa eres?',80,110);
-  x.fillStyle='#ece8e1';x.font='400 44px '+FF;x.fillText('Me ha salido…',80,330);
-  x.fillStyle=col;let fs=112;x.font=`700 ${fs}px ${FF}`;
-  let lines=wrap(x,p.n,W-160);while(lines.length>3&&fs>70){fs-=8;x.font=`700 ${fs}px ${FF}`;lines=wrap(x,p.n,W-160)}
-  let y=400;lines.forEach(l=>{x.fillText(l,80,y);y+=fs*1.05});
-  const dates=datesOf(p);
-  x.fillStyle='#b8cbc2';x.font='400 34px '+FF;y+=20;x.fillText(dates+' · '+p.pl,80,y);
-  x.fillStyle='#ece8e1';x.font='400 44px '+FF;y+=90;
-  wrap(x,p.s,W-160).slice(0,6).forEach(l=>{x.fillText(l,80,y);y+=62});
-  x.fillStyle=col;x.fillRect(80,H-170,90,6);
-  x.fillStyle='#ece8e1';x.font='700 40px '+FF;x.fillText('Y eso dijo ella',80,H-140);
-  x.fillStyle='#b8cbc2';x.font='400 30px '+FF;x.fillText('Más de 300 pensadoras · ¿y tú cuál eres?',80,H-88);
-  const blob=await new Promise(r=>c.toBlob(r,'image/png'));
-  const file=new File([blob],'mi-filosofa.png',{type:'image/png'});
-  if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],text:text+' '+BASE+'#test'});return}catch(e){if(e.name==='AbortError')return}}
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mi-filosofa.png';document.body.appendChild(a);a.click();a.remove();
-  toast('Imagen descargada');
 }
 
 filter();
