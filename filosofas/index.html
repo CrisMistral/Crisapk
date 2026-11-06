@@ -75,7 +75,8 @@ h1{font:700 clamp(30px,5.5vw,46px)/1.05 var(--font);margin:0;color:var(--fg)}
 .dd[open]>summary,.dd.activo>summary{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
 .dd-v{font-weight:400;color:var(--muted)}
 .dd.activo .dd-v{color:var(--fg);font-weight:700}
-.syms{letter-spacing:.08em;font-size:.8em}
+.syms{font-size:.85em;display:inline-flex;gap:3px}
+.syms .sym{margin:0}
 .dd-p{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:12;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:12px 14px 14px;max-height:min(62vh,560px);overflow:auto}
 @media (min-width:760px){.dd-p{right:auto;width:min(720px,calc(100vw - 48px))}}
 .dd-p h4{font:700 15px var(--font);margin:12px 0 4px;color:var(--fg)}
@@ -1406,8 +1407,9 @@ function filter(){
   document.querySelectorAll('#legend button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.k===activeEra));
   /* lo elegido se ve en el botón del desplegable */
   const pon=(id,txt)=>{const v=document.getElementById('v-'+id),d=document.getElementById('dd-'+id);d.classList.toggle('activo',!!txt);
-    if(txt)v.textContent=': '+txt;else v.innerHTML=id==='epocas'?'<span class="syms" aria-hidden="true">▲■◆●▼★✱</span>':''};
-  pon('epocas',activeEra!==null?ERAS[activeEra].sym+' '+ERAS[activeEra].n:'');
+    if(txt)v.textContent=': '+txt;else v.innerHTML=id==='epocas'?SYMS_HTML:''};
+  pon('epocas',activeEra!==null?ERAS[activeEra].n:'');
+  if(activeEra!==null){const e=ERAS[activeEra];document.getElementById('v-epocas').innerHTML=`: <span class="sym" style="--ec:${e.h}" aria-hidden="true">${e.sym}</span>${e.n}`}
   pon('ideas',activeTag?TAGS[activeTag][0]:'');
   pon('conts',activeCont!==null?CONTS[activeCont]:'');
   document.getElementById('limpiar').hidden=!(activeTag||activeCont!==null||activeEra!==null);
@@ -1433,6 +1435,9 @@ const legend=document.getElementById('legend');
 legend.innerHTML=ERAS.map(e=>`<button type="button" aria-pressed="false" data-k="${e.k}" style="--ec:${e.h}"><span class="sym" aria-hidden="true">${e.sym}</span>${e.n}</button>`).join('');
 legend.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;activeEra=activeEra===k?null:k;filter()});
 /* ---------- desplegables de filtros ---------- */
+/* los símbolos de las épocas, cada uno con el color de su época */
+const SYMS_HTML='<span class="syms" aria-hidden="true">'+ERAS.map(e=>`<span class="sym" style="--ec:${e.h}">${e.sym}</span>`).join('')+'</span>';
+document.getElementById('v-epocas').innerHTML=SYMS_HTML;
 const DDS=[...document.querySelectorAll('#filtros details')];
 function cerrarDD(salvo){DDS.forEach(d=>{if(d!==salvo)d.open=false})}
 DDS.forEach(d=>d.addEventListener('toggle',()=>{if(d.open)cerrarDD(d)}));
