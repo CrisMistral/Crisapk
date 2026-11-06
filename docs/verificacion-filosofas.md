@@ -59,3 +59,13 @@ Contrastadas 15 fichas de alto riesgo con el texto de su artículo.
 - **Frases que el artículo no respaldaba (reescritas):** Karaikkal Ammaiyar («pidió un cuerpo de espectro»), Avvaiyar («aforismos para niños», que son de una Avvaiyar posterior), Walatta Petros («obra temprana de la literatura africana»), Kang Jeongildang («camino abierto a las mujeres»), Tadano Makuzu («crítica a la moral confuciana»), Graciela Hierro (título de obra mezclado), Grace de Laguna (no consta como pragmatista).
 - **Ellen Dissanayake:** su año de nacimiento no está publicado; el 1950 de Wikidata es imposible (se licenció en 1957). Ahora la ficha muestra su obra clave (1992).
 - **Sin verificar todavía:** Gerda Walther y Fátima de Nishapur (sus páginas no existen con ese título).
+
+## Revisión triple (6 de noviembre de 2026)
+
+**1. Datos de las fichas frente a Wikidata.** Fechas de nacimiento y muerte, si está viva y sexo de las 380. No hay errores en las fichas: solo diferencias de un año en fechas antiguas aproximadas (Aspasia, Hiparquia, Ban Zhao, Xie Daoyun), en las que las fuentes no coinciden. Las discrepancias grandes venían de homónimas mal emparejadas en Wikidata (Judith Butler, Isabel de Bohemia, Nancy Cartwright, Jane Bennett, Marina Núñez, Elizabeth Spelman, Janet Wolff), no de las fichas. Pendiente: Amelia Valcárcel figura nacida en 1950 en la ficha y en 1949 en Wikidata.
+
+**2. Retratos.** Las 264 imágenes coinciden con la imagen oficial (P18) del elemento de Wikidata correcto. Se revisaron a ojo tres veces, la última con las fechas de vida al lado. Se descartaron 18: homónimas (Isabel de Bohemia, Nancy Cartwright, Jane Bennett, Marina Núñez), una foto de un hombre (Sofia Yanóvskaya) y las que no muestran a la persona (logotipo, tejido, figuras diminutas, imágenes demasiado oscuras). Créditos y licencias en `creditos.html`.
+
+**3. Coherencia y enlaces.** No hay nombres duplicados. Todas las filósofas citadas en el buscador existen en el mapa, todos los temas son válidos, las comillas están cerradas y las 143 ideas del desplegable recomiendan a alguien. Los 374 enlaces a Wikipedia (más 4 de respaldo) son artículos de la persona correcta.
+
+**Conceptos cotidianos añadidos:** deporte, juego, baile, viajes, humor, moda, paisaje, envidia, celos, lo mono, embarazo, regla, menopausia, lactancia, boda/divorcio, poliamor, ligar, porno, acoso, deuda, sueldo, alquiler/barrio, mascotas, jardín, basura, reparar, cartas, compras, sororidad, adolescencia, juguetes, móvil/redes, estrés, abuelos y series.
