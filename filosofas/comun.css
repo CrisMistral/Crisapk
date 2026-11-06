@@ -50,3 +50,6 @@ textarea{min-height:110px;resize:vertical}
 /* marca */
 .marca-p{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--fg);font-weight:700;font-size:20px}
 .marca-p svg{height:56px;width:auto;color:var(--logo)}
+.creditos{padding-left:1.1em;font-size:16px}
+.creditos li{margin:0 0 8px;overflow-wrap:anywhere}
+.creditos li:target{outline:2px solid currentColor;outline-offset:4px;border-radius:4px}
