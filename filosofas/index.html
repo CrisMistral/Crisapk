@@ -66,16 +66,39 @@ h1{font:700 clamp(30px,5.5vw,46px)/1.05 var(--font);margin:0;color:var(--fg)}
 .seg button,.ghost{background:var(--panel);color:var(--fg);border:0;padding:9px 12px;font:inherit;cursor:pointer}
 .seg button[aria-pressed="true"]{box-shadow:inset 0 -3px 0 var(--fg);font-weight:500}
 .ghost{border:1px solid var(--line);border-radius:10px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.filtros{position:relative;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;margin-top:12px}
+.dd>summary{list-style:none;display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:10px;padding:9px 14px;font:600 16px var(--font);user-select:none}
+.dd>summary::-webkit-details-marker{display:none}
+.dd>summary::after{content:"▾";font-size:.9em;color:var(--muted);transition:transform .15s}
+.dd[open]>summary::after{transform:rotate(180deg)}
+.dd[open]>summary,.dd.activo>summary{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
+.dd-v{font-weight:400;color:var(--muted)}
+.dd.activo .dd-v{color:var(--fg);font-weight:700}
+.syms{letter-spacing:.08em;font-size:.8em}
+.dd-p{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:12;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:12px 14px 14px;max-height:min(62vh,560px);overflow:auto}
+@media (min-width:760px){.dd-p{right:auto;width:min(720px,calc(100vw - 48px))}}
+.dd-p h4{font:700 15px var(--font);margin:12px 0 4px;color:var(--fg)}
+.dd-p h4:first-child{margin-top:2px}
+.dd-h{color:var(--muted);font-size:14px;font-weight:400;margin:0 0 6px}
+.ideas-l{display:flex;flex-wrap:wrap;gap:4px 6px}
+.ideas-l button{border:0;background:none;color:var(--fg);font:15px var(--font);padding:4px 6px;border-radius:8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
+.ideas-l button:hover{background:color-mix(in srgb, var(--fg) 8%, transparent)}
+.limpiar{border:0;background:none;color:var(--fg);font:600 15px var(--font);padding:10px 6px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .chip{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:99px;padding:5px 12px;font:15px var(--font);cursor:pointer}
 .chip[aria-pressed="true"]{color:var(--bg);background:var(--fg);border-color:var(--fg)}
-.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:15px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 8px;font-size:15px;color:var(--muted)}
 .legend button{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:99px;padding:5px 12px;font:15px var(--font);cursor:pointer}
 .legend button[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg);font-weight:700}
 .legend span{color:var(--fg)}
 .wrap{max-width:1200px;margin:0 auto;padding:0 16px 40px}
 .frame{position:relative;background:var(--mapbg);border:1px solid var(--line);border-radius:14px;overflow:auto;-webkit-overflow-scrolling:touch}
-.map{position:relative;margin:0 auto}
+.map{position:relative;transform-origin:0 0}
+.escala{position:relative;margin:0 auto}
+.zoom{display:flex;align-items:center;justify-content:flex-start;gap:6px;margin:6px 0}
+.zoom button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:10px;min-width:42px;height:40px;padding:0 12px;font:700 18px var(--font);cursor:pointer}
+.zoom #ztodo{font-size:15px}
+.zoom span{min-width:56px;text-align:center;color:var(--muted);font-size:15px;font-variant-numeric:tabular-nums}
 .axis{position:absolute;font:14px var(--font);color:var(--muted);pointer-events:none;white-space:nowrap}
 .tick{position:absolute;top:0;bottom:0;border-left:1px dashed var(--line);pointer-events:none}
 .tick b{position:absolute;top:6px;left:4px;font:700 14px var(--font);color:var(--muted);white-space:nowrap}
@@ -190,14 +213,26 @@ footer{color:var(--muted);font-size:15px;max-width:1200px;margin:0 auto;padding:
     <button class="ghost" id="rnd">Sorpréndeme</button>
     <button class="ajbtn" type="button" data-ajustes aria-haspopup="dialog"><b aria-hidden="true">Aa</b> Ajustes de lectura</button>
   </div>
-  <div class="chips" id="chips"></div>
-  <div class="chips" id="conts"></div>
-  <div class="legend" id="legend"></div>
+  <div class="filtros" id="filtros" role="group" aria-label="Filtros">
+    <details class="dd" id="dd-epocas"><summary><span class="dd-n">Épocas</span><span class="dd-v" id="v-epocas"><span class="syms" aria-hidden="true">▲■◆●▼★✱</span></span></summary>
+      <div class="dd-p"><p class="dd-h">Cada época tiene un color y un símbolo. Elige una para ver solo sus filósofas.</p><div class="legend" id="legend"></div></div></details>
+    <details class="dd" id="dd-ideas"><summary><span class="dd-n">Ideas</span><span class="dd-v" id="v-ideas"></span></summary>
+      <div class="dd-p"><h4>Temas del mapa <span class="dd-h">(filtran los nombres)</span></h4><div class="chips" id="chips"></div><div id="ideas-grupos"></div></div></details>
+    <details class="dd" id="dd-conts"><summary><span class="dd-n">Continentes</span><span class="dd-v" id="v-conts"></span></summary>
+      <div class="dd-p"><div class="chips" id="conts"></div></div></details>
+    <button type="button" class="limpiar" id="limpiar" hidden>× Quitar filtros</button>
+  </div>
 </header>
 <div class="wrap">
   <div class="hom" id="hom" hidden></div>
   <div class="count" id="count"></div>
-  <div class="frame" id="frame"><div class="map" id="map"></div></div>
+  <div class="zoom" id="zoom" role="group" aria-label="Tamaño del mapa">
+    <button type="button" id="zmenos" aria-label="Alejar el mapa">−</button>
+    <span id="znivel" aria-live="polite">100 %</span>
+    <button type="button" id="zmas" aria-label="Acercar el mapa">+</button>
+    <button type="button" id="ztodo">Ver todo</button>
+  </div>
+  <div class="frame" id="frame"><div class="escala" id="escala"><div class="map" id="map"></div></div></div>
   <div id="lista" hidden></div>
 </div>
 <aside id="card" aria-live="polite"></aside>
@@ -642,7 +677,19 @@ const P=D.map((r,i)=>{
 [...P].sort((p,q)=>p.b-q.b||p.n.localeCompare(q.n)).forEach((p,k)=>p.rank=k);
 CONTS.forEach((_,c)=>P.filter(p=>p.c===c).sort((a,b)=>a.rank-b.rank).forEach((p,k,arr)=>{p.crank=(k+.5)/arr.length}));
 
-const map=document.getElementById('map'), frame=document.getElementById('frame');
+const map=document.getElementById('map'), frame=document.getElementById('frame'), escala=document.getElementById('escala');
+/* zoom: escalamos el mapa ya colocado (no se recalcula nada) */
+let ZM=1, MW=0, MH=0;
+function aplicarZoom(z, cx, cy){
+  const z0=ZM; ZM=Math.max(.2,Math.min(2.5,z));
+  /* mantener el punto que se mira (cx,cy en coordenadas del marco) */
+  const fx=cx??frame.clientWidth/2, fy=cy??frame.clientHeight/2;
+  const mx=(frame.scrollLeft+fx)/z0, my=(frame.scrollTop+fy)/z0;
+  escala.style.width=MW*ZM+'px'; escala.style.height=MH*ZM+'px';
+  map.style.transform=ZM===1?'':`scale(${ZM})`;
+  frame.scrollLeft=mx*ZM-fx; frame.scrollTop=my*ZM-fy;
+  document.getElementById('znivel').textContent=Math.round(ZM*100)+' %';
+}
 let mode='ideas', sel=null, activeTag=null, query='';
 
 P.forEach(p=>{
@@ -678,7 +725,7 @@ let cols=[];
 
 function layout(){
   const {W,H}=dims();
-  map.style.width=W+'px'; map.style.height=H+'px';
+  map.style.width=W+'px'; map.style.height=H+'px'; MW=W; MH=H; escala.style.width=W*ZM+'px'; escala.style.height=H*ZM+'px';
   map.querySelectorAll('.axis,.tick').forEach(e=>e.remove());
   const pad=40, N=P.length;
   const spread=(key)=>{const v=P.map(p=>p[key]),lo=Math.min(...v),hi=Math.max(...v);
@@ -853,9 +900,9 @@ function enlazar(txt,self){
 function goTo(p){
   const bh=movimientoReducido()?'auto':'smooth';
   if(mode==='lista'){if(p.li)p.li.scrollIntoView({block:'center',behavior:bh});return}
-  frame.scrollTo({left:p.x-frame.clientWidth/2,behavior:bh});
+  frame.scrollTo({left:p.x*ZM-frame.clientWidth/2,behavior:bh});
   const r=frame.getBoundingClientRect();
-  window.scrollTo({top:scrollY+r.top+p.y-(innerWidth<=640?innerHeight*.18:innerHeight/2),behavior:bh});
+  window.scrollTo({top:scrollY+r.top+p.y*ZM-(innerWidth<=640?innerHeight*.18:innerHeight/2),behavior:bh});
 }
 
 function norm(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()}
@@ -1072,7 +1119,7 @@ const CONCEPTOS={
  "igualdad|desigualdad":[["Mary Wollstonecraft","la razón no tiene sexo"],["Elizabeth Anderson","la igualdad democrática"]],
  "trabajo|empleo|explotac|precari":[["Silvia Federici","el trabajo doméstico que sostiene todo lo demás"],["Simone Weil","la condición obrera vivida desde dentro"],["Remedios Zafra","la precariedad del trabajo creativo"]],
  "dinero|capital|economi|mercado|neoliberal":[["Silvia Federici","capitalismo, cuerpos y caza de brujas"],["Nancy Fraser","el capitalismo devora sus propias condiciones"],["Wendy Brown","cómo el neoliberalismo deshace la democracia"]],
- "cuidad|cuidar|cuidados|dependencia":[["Joan Tronto","el cuidado como cuestión democrática"],["Eva Feder Kittay","todos dependemos de alguien"],["Carol Gilligan","la ética del cuidado"]],
+ "cuidad|cuidar|cuidados|dependencia|etica del cuidado|ética del cuidado":[["Joan Tronto","el cuidado como cuestión democrática"],["Eva Feder Kittay","todos dependemos de alguien"],["Carol Gilligan","la ética del cuidado"]],
  "madre|maternidad|maternal|crianza":[["Sara Ruddick","el pensamiento maternal"],["Luisa Muraro","el orden simbólico de la madre"]],
  "cuerpo|cuerpos|corporal|encarn":[["Elizabeth Grosz","cuerpos volátiles"],["Iris Marion Young","cómo nos enseñan a mover el cuerpo"],["Judith Butler","los cuerpos que importan"]],
  "genero|género|mujer|mujeres|femenin":[["Simone de Beauvoir","no se nace mujer: se llega a serlo"],["Judith Butler","el género como performatividad"]],
@@ -1202,7 +1249,7 @@ const CONCEPTOS={
  "valor|valores|axiolog":[["Iris Murdoch","la soberanía del bien"]],
  "presocratic|presocrátic":[["Teano","pitagórica"],["Temistoclea","la sacerdotisa de Delfos que enseñó ética a Pitágoras, según la tradición"],["Cleobulina de Rodas","enigmas y paradojas"]],
  "filosofia antigua|filosofía antigua|grecia|griega|griegos|clasica|clásica":[["Hipatia de Alejandría","la gran maestra de la Antigüedad tardía"],["Diotima de Mantinea","la voz del amor en el Banquete"],["Aspasia de Mileto","la retórica en la Atenas de Pericles"]],
- "helenistic|helenístic":[["Hiparquia de Maronea","la filósofa cínica"],["Leontion","la epicúrea"]],
+ "helenis|helenístic|helenistic":[["Hiparquia de Maronea","la filósofa cínica"],["Leontion","la epicúrea"]],
  "patristic|patrístic|padres de la iglesia":[["Macrina la Joven","el alma y la resurrección"]],
  "escolastic|escolástic":[["Eloísa","la ética de la intención, en diálogo con Abelardo"],["Elena Cornaro Piscopia","doctora en filosofía escolástica en 1678"]],
  "medieval|edad media":[["Hildegarda de Bingen","naturaleza, visión y música"],["Christine de Pizan","la ciudad de las damas"]],
@@ -1357,6 +1404,13 @@ function filter(){
   document.querySelectorAll('#chips .chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===activeTag));
   document.querySelectorAll('#conts .chip').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.c===activeCont));
   document.querySelectorAll('#legend button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.k===activeEra));
+  /* lo elegido se ve en el botón del desplegable */
+  const pon=(id,txt)=>{const v=document.getElementById('v-'+id),d=document.getElementById('dd-'+id);d.classList.toggle('activo',!!txt);
+    if(txt)v.textContent=': '+txt;else v.innerHTML=id==='epocas'?'<span class="syms" aria-hidden="true">▲■◆●▼★✱</span>':''};
+  pon('epocas',activeEra!==null?ERAS[activeEra].sym+' '+ERAS[activeEra].n:'');
+  pon('ideas',activeTag?TAGS[activeTag][0]:'');
+  pon('conts',activeCont!==null?CONTS[activeCont]:'');
+  document.getElementById('limpiar').hidden=!(activeTag||activeCont!==null||activeEra!==null);
   P.forEach(p=>{if(p.li)p.li.hidden=p.el.classList.contains('off')});
   document.querySelectorAll('#lista section').forEach(sc=>sc.hidden=!sc.querySelector('li:not([hidden])'));
 }
@@ -1376,8 +1430,37 @@ Object.entries(TAGS).forEach(([k,v])=>{
 });
 let activeEra=null;
 const legend=document.getElementById('legend');
-legend.innerHTML='<span>Épocas:</span>'+ERAS.map(e=>`<button type="button" aria-pressed="false" data-k="${e.k}" style="--ec:${e.h}"><span class="sym" aria-hidden="true">${e.sym}</span>${e.n}</button>`).join('');
+legend.innerHTML=ERAS.map(e=>`<button type="button" aria-pressed="false" data-k="${e.k}" style="--ec:${e.h}"><span class="sym" aria-hidden="true">${e.sym}</span>${e.n}</button>`).join('');
 legend.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;activeEra=activeEra===k?null:k;filter()});
+/* ---------- desplegables de filtros ---------- */
+const DDS=[...document.querySelectorAll('#filtros details')];
+function cerrarDD(salvo){DDS.forEach(d=>{if(d!==salvo)d.open=false})}
+DDS.forEach(d=>d.addEventListener('toggle',()=>{if(d.open)cerrarDD(d)}));
+document.addEventListener('click',e=>{if(!e.target.closest('#filtros'))cerrarDD()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=DDS.find(d=>d.open);if(o){o.open=false;o.querySelector('summary').focus()}}});
+/* al elegir un filtro, se cierra el desplegable */
+['legend','chips','conts'].forEach(id=>document.getElementById(id).addEventListener('click',e=>{if(e.target.closest('button'))setTimeout(cerrarDD,120)}));
+document.getElementById('limpiar').onclick=()=>{activeTag=null;activeCont=null;activeEra=null;filter()};
+/* ideas del buscador, por grupos: cada una abre su entrada */
+const IDEAS_GRUPOS={
+ 'Grandes preguntas':['amor','muerte','libertad','justicia','felicidad','verdad','belleza','el mal','dios','el tiempo','la identidad','el sentido de la vida','nihilismo'],
+ 'Disciplinas':['lógica','metafísica','epistemología','ética','estética','filosofía política','filosofía del lenguaje','filosofía de la mente','filosofía de la ciencia','bioética','derecho','teología','educación'],
+ 'Épocas de la historia':['presocráticos','filosofía antigua','helenismo','patrística','escolástica','Edad Media','Renacimiento','modernidad','Ilustración','romanticismo','filosofía analítica','filosofía continental','posmodernidad'],
+ 'Escuelas y corrientes':['pitagorismo','sofística','platonismo','aristotelismo','estoicismo','epicureísmo','neoplatonismo','racionalismo','empirismo','idealismo','materialismo','marxismo','anarquismo','pragmatismo','fenomenología','existencialismo','hermenéutica','estructuralismo','teoría crítica','deconstrucción'],
+ 'Feminismos':['feminismo ilustrado','feminismo de la diferencia','feminismo negro','interseccionalidad','ecofeminismo','teoría queer','ética del cuidado','feminismo decolonial'],
+ 'Tradiciones del mundo':['budismo','confucianismo','taoísmo','vedanta','sufismo','filosofía africana','filosofía japonesa','filosofía latinoamericana','pensamiento indígena','colonialismo'],
+ 'Problemas clásicos':['mente y cuerpo','determinismo','causalidad','sustancia','inmortalidad','lo sublime','el sujeto','la imaginación','la alienación','el contrato social','la paradoja','dilema del tranvía'],
+ 'Vida cotidiana':['trabajo','cuidados','maternidad','cuerpo','comida','casa','ciudad','dinero','tecnología','inteligencia artificial','naturaleza','animales','ansiedad','soledad','vejez','ira','miedo']
+};
+document.getElementById('ideas-grupos').innerHTML=Object.entries(IDEAS_GRUPOS).map(([g,l])=>`<h4>${g} <span class="dd-h">(abren su filósofa)</span></h4><div class="ideas-l">${l.map(t=>`<button type="button" data-q="${t}">${t}</button>`).join('')}</div>`).join('');
+document.querySelectorAll('#ideas-grupos button').forEach(b=>b.onclick=()=>{cerrarDD();explorar(b.dataset.q)});
+/* controles del zoom */
+document.getElementById('zmas').onclick=()=>aplicarZoom(ZM*1.25);
+document.getElementById('zmenos').onclick=()=>aplicarZoom(ZM/1.25);
+document.getElementById('ztodo').onclick=()=>{const b=document.getElementById('ztodo');
+  if(ZM<.99){aplicarZoom(1);b.textContent='Ver todo'}else{aplicarZoom(Math.min(1,(frame.clientWidth-4)/MW),0,0);frame.scrollLeft=0;b.textContent='Tamaño normal'}};
+/* Ctrl + rueda (o pellizco en el panel táctil) acerca y aleja sobre el punto del ratón */
+frame.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();const r=frame.getBoundingClientRect();aplicarZoom(ZM*(e.deltaY<0?1.12:1/1.12),e.clientX-r.left,e.clientY-r.top)},{passive:false});
 let qt;
 const qi=document.getElementById('q');
 qi.addEventListener('input',e=>{query=e.target.value;hist=[];filter();
@@ -1406,7 +1489,7 @@ function setMode(m){mode=m;
   document.getElementById('mIdeas').setAttribute('aria-pressed',m==='ideas');
   document.getElementById('mTime').setAttribute('aria-pressed',m==='time');
   document.getElementById('mWorld').setAttribute('aria-pressed',m==='world');
-  layout(); if(sel)goTo(sel); else frame.scrollTo({left:m!=='ideas'?0:(map.offsetWidth-frame.clientWidth)/2});
+  layout(); if(sel)goTo(sel); else frame.scrollTo({left:m!=='ideas'?0:(escala.offsetWidth-frame.clientWidth)/2});
 }
 document.getElementById('mIdeas').onclick=()=>setMode('ideas');
 document.getElementById('mTime').onclick=()=>setMode('time');
@@ -1415,7 +1498,7 @@ document.getElementById('mList').onclick=()=>setMode('lista');
 document.getElementById('rnd').onclick=()=>{const vis=P.filter(p=>!p.el.classList.contains('off'));const p=vis[Math.floor(Math.random()*vis.length)];if(p){select(p);goTo(p)}};
 /* al cambiar los ajustes de lectura, recolocamos el mapa (cambian los tamaños de los nombres) */
 document.addEventListener('ajustes',()=>{(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{if(mode!=='lista')layout()})});
-document.addEventListener('click',e=>{if(sel&&!quizOpen&&e.target.isConnected&&!card.contains(e.target)&&!e.target.classList.contains('n')&&!e.target.closest('#quiz,#aj,#lista'))select(null)});
+document.addEventListener('click',e=>{if(sel&&!quizOpen&&e.target.isConnected&&!card.contains(e.target)&&!e.target.classList.contains('n')&&!e.target.closest('#quiz,#aj,#lista,#filtros,.zoom'))select(null)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.querySelector('#aj.open')){if(quizOpen)closeQuiz();else select(null)}});
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(mode!=='lista')layout()},200)});
 
@@ -1562,7 +1645,7 @@ async function shareImage(p,text){
 
 filter();
 (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{layout();
-  frame.scrollLeft=(map.offsetWidth-frame.clientWidth)/2;
+  frame.scrollLeft=(escala.offsetWidth-frame.clientWidth)/2;
   fromHash();
 });
 function fromHash(){
