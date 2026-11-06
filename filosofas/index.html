@@ -285,15 +285,15 @@ footer{color:var(--muted);font-size:15px;max-width:1200px;margin:0 auto;padding:
 <script>
 /* [nombre, nacimiento, muerte (null = vive, "?" = desconocida), aproximada (1) — o 2: no se sabe el nacimiento y el año es el de su obra clave —, lugar, corriente, temas, idea, peso] */
 const D=[
-["Enheduana", -2285, -2250, 1, "Ur, Mesopotamia", "Poesía sacerdotal sumeria", "mistica estetica", "Suma sacerdotisa de Ur y primera autora conocida con nombre propio: sus himnos a Inanna piensan lo divino, el poder y el yo.", 2],
+["Enheduana", -2300, "?", 1, "Ur, Mesopotamia", "Poesía sacerdotal sumeria", "mistica estetica", "Suma sacerdotisa de Nanna en Ur y quizá la autora más antigua de nombre conocido: himnos a Inanna y a los templos de Sumer.", 2],
 ["Gargi Vachaknavi", -700, "?", 1, "Videha, India", "Upanishads", "metafisica conocimiento", "Interroga a Yajñavalkya sobre aquello en lo que todo el universo está «tejido» en la Brihadaranyaka Upanishad.", 2],
 ["Maitreyi", -700, "?", 1, "Videha, India", "Upanishads", "metafisica mistica", "Renuncia a la riqueza para preguntar por la inmortalidad y el Atman en su diálogo con Yajñavalkya.", 1],
-["Temistoclea", -600, "?", 1, "Delfos", "Presocrática", "etica mistica", "Sacerdotisa de Delfos de quien, según Diógenes Laercio, Pitágoras aprendió buena parte de su ética.", 1],
-["Teano", -550, "?", 1, "Crotona", "Pitagorismo", "etica metafisica", "Pitagórica a la que se atribuyen escritos sobre el número, la virtud y la vida doméstica como asunto filosófico.", 2],
+["Temistoclea", -600, "?", 1, "Delfos", "Presocrática", "etica mistica", "Sacerdotisa de Delfos de quien, según Aristóxeno citado por Diógenes Laercio, Pitágoras tomó la mayoría de sus doctrinas morales.", 1],
+["Teano", -550, "?", 1, "Crotona", "Pitagorismo", "etica metafisica", "Pitagórica de Crotona a la que se atribuyen un tratado sobre la piedad y el número y cartas sobre la vida doméstica; la autoría es discutida.", 2],
 ["Aspasia de Mileto", -470, -400, 1, "Mileto / Atenas", "Retórica ateniense", "politica lenguaje", "Maestra de retórica en la Atenas de Pericles; Platón le atribuye el discurso fúnebre del Menéxeno.", 2],
 ["Diotima de Mantinea", -440, "?", 1, "Mantinea", "Platonismo", "mistica etica", "En el Banquete enseña a Sócrates la escala del amor: de los cuerpos bellos a la Belleza misma.", 2],
 ["Arete de Cirene", -400, "?", 1, "Cirene", "Escuela cirenaica", "etica cuerpo", "Heredó y enseñó la escuela hedonista de su padre Aristipo; formó a su hijo, «el instruido por su madre».", 1],
-["Lastenia de Mantinea", -350, "?", 1, "Atenas", "Academia platónica", "metafisica conocimiento", "Estudió en la Academia con Platón y Espeusipo, al parecer vestida de hombre.", 1],
+["Lastenia de Mantinea", -350, "?", 1, "Mantinea / Atenas", "Academia platónica", "metafisica conocimiento", "Según Diógenes Laercio, estudió en la Academia con Platón y Espeusipo; al parecer, vestida de hombre.", 1],
 ["Hiparquia de Maronea", -350, -280, 1, "Maronea / Atenas", "Cinismo", "cuerpo etica politica", "Cínica que eligió la pobreza y la vida pública con Crates; defendió dedicar su tiempo a la filosofía y no al telar.", 2],
 ["Leontion", -300, "?", 1, "Atenas", "Epicureísmo", "etica conocimiento", "Epicúrea del Jardín que escribió una crítica a Teofrasto, célebre por su estilo.", 1],
 ["Ban Zhao", 45, 117, 1, "Han, China", "Confucianismo", "educacion etica", "Historiadora de la corte Han; en sus «Lecciones para mujeres» defiende que las niñas reciban educación.", 2],
@@ -488,7 +488,7 @@ const D=[
 ["Mía de Crotona", -500, "?", 1, "Crotona", "Pitagorismo", "etica cuidado", "Pitagórica a quien se atribuye una carta sobre la armonía en el cuidado de los recién nacidos.", 1],
 ["Esara de Lucania", -350, "?", 1, "Lucania", "Pitagorismo", "etica mente", "«Sobre la naturaleza humana»: el alma en tres partes como modelo de la justicia en la casa y la ciudad.", 1],
 ["Fintis de Esparta", -300, "?", 1, "Esparta", "Pitagorismo", "etica cuerpo", "Escrito sobre la moderación de las mujeres: la virtud es común, aunque sus tareas difieran.", 1],
-["Axiotea de Fliunte", -350, "?", 1, "Atenas", "Academia platónica", "metafisica conocimiento", "Llegó a la Academia tras leer la República de Platón.", 1],
+["Axiotea de Fliunte", -350, "?", 1, "Fliunte / Atenas", "Academia platónica", "metafisica conocimiento", "Viajó a Atenas para estudiar en la Academia tras leer la República de Platón.", 1],
 ["Asclepigenia", 430, "?", 1, "Atenas", "Neoplatonismo", "mistica metafisica", "Enseñó en la escuela neoplatónica de Atenas y transmitió a Proclo los ritos teúrgicos.", 1],
 ["Ptolemaida de Cirene", -250, "?", 1, "Cirene", "Teoría musical", "estetica ciencia", "Comparó las escuelas pitagórica y aristoxénica: ¿se juzga la armonía con la razón o con el oído?", 1],
 ["Edesia de Alejandría", 410, 480, 1, "Alejandría", "Neoplatonismo", "etica educacion", "Neoplatónica alejandrina, alabada por Damascio por su virtud y su generosidad con los estudiantes.", 1],
@@ -537,9 +537,9 @@ const D=[
 ["Julieta Paredes", 1967, null, 1, "Bolivia", "Feminismo comunitario", "decolonial feminismo cuerpo", "Feminismo comunitario aymara: el entronque patriarcal.", 1],
 ["Verónica Gago", 1976, null, 0, "Argentina", "Feminismo", "feminismo economia politica", "«La potencia feminista»: la huelga y la deuda.", 1],
 ["Yásnaya Elena Aguilar", 1981, null, 0, "Oaxaca, México", "Pensamiento mixe", "lenguaje decolonial", "Lenguas indígenas, Estado-nación y el derecho a existir en otra lengua.", 1],
-["Lopamudra", -1200, "?", 1, "India", "Rig Veda", "cuerpo mistica", "Se le atribuye un himno del Rig Veda que discute el deseo frente a la ascesis.", 1],
-["Mahapajapati Gotami", -600, "?", 1, "India", "Budismo", "mistica etica", "Madre adoptiva del Buda y primera monja: consiguió que las mujeres entraran en la comunidad.", 1],
-["Kisa Gotami", -500, "?", 1, "India", "Budismo", "existencia mistica", "El grano de mostaza: no hay casa donde no haya entrado la muerte.", 1],
+["Lopamudra", -1200, "?", 1, "India", "Rig Veda", "cuerpo mistica", "Se le atribuye un himno del Rig Veda (1.179) en el que pide amor y atención a su esposo, el asceta Agastia.", 1],
+["Mahapajapati Gotami", -600, "?", 1, "India", "Budismo", "mistica etica", "Tía y madrastra del Buda, y primera mujer ordenada monja (bhikkhuni) en la comunidad budista.", 1],
+["Kisa Gotami", -500, "?", 1, "Shravasti, India", "Budismo", "existencia mistica", "El grano de mostaza: no hay casa donde no haya entrado la muerte.", 1],
 ["Sulabha", -400, "?", 1, "India", "Mahabharata", "metafisica logica", "En el Mahabharata debate con el rey Janaka y desmonta su pretensión de estar liberado.", 1],
 ["Avvaiyar", -100, "?", 1, "Tamil Nadu, India", "Sabiduría tamil", "etica educacion", "Nombre de varias poetas sabias tamiles: la más antigua vivió hacia el siglo I a. C.; a una Avvaiyar posterior se atribuyen aforismos éticos muy populares.", 1],
 ["Julia Domna", 160, 217, 1, "Emesa, Siria / Roma", "Filosofía imperial", "politica conocimiento", "Emperatriz que reunió un círculo de filósofos y encargó a Filóstrato la vida de Apolonio.", 1],
@@ -657,7 +657,7 @@ const D=[
 ["Catharine Macaulay", 1731, 1791, 0, "Inglaterra", "Ilustración", "politica educacion feminismo", "Historiadora republicana: discutió con Burke e influyó en Wollstonecraft.", 1],
 ["Helene von Druskowitz", 1856, 1918, 0, "Viena", "Feminismo radical", "feminismo", "Una de las primeras doctoras en filosofía; crítica de Nietzsche y del patriarcado.", 1],
 ["Rebecca Goldstein", 1950, null, 0, "Nueva York", "Filosofía y novela", "logica metafisica", "Filosofía en forma de novela y ensayo: Spinoza, Gödel y la incompletitud.", 1],
-["Khema", -550, "?", 1, "India", "Budismo", "mistica conocimiento", "Monja budista a la que, según la tradición, el Buda llamó la primera en sabiduría.", 1],
+["Khema", -550, "?", 1, "Sagala (hoy Sialkot, Pakistán)", "Budismo", "mistica conocimiento", "Monja budista a la que el Buda llamó la primera de sus discípulas en sabiduría.", 1],
 ["Ksenija Atanasijević", 1894, 1981, 0, "Belgrado", "Filosofía", "metafisica feminismo", "Primera mujer doctora en filosofía de Serbia; estudió a Giordano Bruno.", 1],
 ["Gadis Arivia", 1964, null, 0, "Indonesia", "Feminismo", "feminismo", "Filósofa feminista indonesia; fundó la revista Jurnal Perempuan.", 1],
 ["Ti-Grace Atkinson", 1938, null, 0, "Estados Unidos", "Feminismo radical", "feminismo politica", "Feminismo radical contra la institución del matrimonio.", 1],
@@ -1140,7 +1140,7 @@ const HOM={
  "Mariátegui|Mariategui|José Martí|Marti":[["Silvia Rivera Cusicanqui","la cuestión indígena y la emancipación de América Latina"]],
  "Bataille":[["Audre Lorde","lo erótico como poder"]],
  "Plutarco|Diógenes Laercio":[["Christine de Pizan","escribir las vidas de mujeres ilustres que la historia olvidó"]],
- "Hesíodo|Hesiodo|Homero":[["Enheduana","los dioses y el poder, en la primera obra firmada de la historia"]]
+ "Hesíodo|Hesiodo|Homero":[["Enheduana","los dioses y el poder, en la que quizá es la primera autora con nombre conocido"]]
 };
 const HOMK=Object.entries(HOM).map(([k,v])=>({alias:k.split('|'),name:k.split('|')[0],list:v}));
 /* ¿lo buscado es un filósofo? Coincide con un alias (o con su apellido), tolerando erratas */

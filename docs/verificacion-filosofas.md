@@ -69,3 +69,19 @@ Contrastadas 15 fichas de alto riesgo con el texto de su artículo.
 **3. Coherencia y enlaces.** No hay nombres duplicados. Todas las filósofas citadas en el buscador existen en el mapa, todos los temas son válidos, las comillas están cerradas y las 143 ideas del desplegable recomiendan a alguien. Los 374 enlaces a Wikipedia (más 4 de respaldo) son artículos de la persona correcta.
 
 **Conceptos cotidianos añadidos:** deporte, juego, baile, viajes, humor, moda, paisaje, envidia, celos, lo mono, embarazo, regla, menopausia, lactancia, boda/divorcio, poliamor, ligar, porno, acoso, deuda, sueldo, alquiler/barrio, mascotas, jardín, basura, reparar, cartas, compras, sororidad, adolescencia, juguetes, móvil/redes, estrés, abuelos y series.
+
+## Vuelta 2: lectura de las 380 fichas (por tandas)
+
+### Tanda 1: Antigüedad (15 leídas)
+- **Correctas:** Gargi Vachaknavi, Maitreyi, Mía de Crotona, Hiparquia de Maronea, Esara de Lucania, Sulabha.
+- **Corregidas:**
+  - Enheduana: fecha c. 2300 a. C. y «quizá» la primera autora con nombre conocido, en lugar de afirmarlo.
+  - Lopamudra: el himno 1.179 pide amor y atención a Agastia.
+  - Temistoclea: «la mayoría» de las doctrinas morales, según Aristóxeno.
+  - Mahapajapati Gotami: primera mujer ordenada monja.
+  - Teano: escritos atribuidos y autoría discutida.
+  - Khema: nació en Sagala, hoy Sialkot (Pakistán).
+  - Kisa Gotami: de Shravasti.
+  - Lastenia de Mantinea y Axiotea de Fliunte: lugar de nacimiento y la fuente de cada dato.
+- **Pasan a la tanda siguiente** (no se pudieron leer): Cleobulina, Aspasia, Diotima, Arete de Cirene, Leontion.
+- **Candidatas a añadir** (hay que verificarlas): Arignota de Samos, Uppalavanna.
