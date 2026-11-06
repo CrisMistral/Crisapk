@@ -93,7 +93,7 @@ h1{font:700 clamp(30px,5.5vw,46px)/1.05 var(--font);margin:0;color:var(--fg)}
 .legend button[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg);font-weight:700}
 .legend span{color:var(--fg)}
 .wrap{max-width:1200px;margin:0 auto;padding:0 16px 40px}
-.frame{position:relative;background:var(--mapbg);border:1px solid var(--line);border-radius:14px;overflow:auto;-webkit-overflow-scrolling:touch}
+.frame{touch-action:pan-x pan-y;position:relative;background:var(--mapbg);border:1px solid var(--line);border-radius:14px;overflow:auto;-webkit-overflow-scrolling:touch}
 .map{position:relative;transform-origin:0 0}
 .escala{position:relative;margin:0 auto}
 .zoom{display:flex;align-items:center;justify-content:flex-start;gap:6px;margin:6px 0}
@@ -1466,6 +1466,19 @@ document.getElementById('ztodo').onclick=()=>{const b=document.getElementById('z
   if(ZM<.99){aplicarZoom(1);b.textContent='Ver todo'}else{aplicarZoom(Math.min(1,(frame.clientWidth-4)/MW),0,0);frame.scrollLeft=0;b.textContent='Tamaño normal'}};
 /* Ctrl + rueda (o pellizco en el panel táctil) acerca y aleja sobre el punto del ratón */
 frame.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();const r=frame.getBoundingClientRect();aplicarZoom(ZM*(e.deltaY<0?1.12:1/1.12),e.clientX-r.left,e.clientY-r.top)},{passive:false});
+/* pellizco con dos dedos en el móvil: acerca y aleja sobre el punto entre los dedos; un dedo sigue desplazando */
+(()=>{let d0=0,z0=1,raf=0,ult=null;
+  const dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+  const medio=t=>{const r=frame.getBoundingClientRect();return [(t[0].clientX+t[1].clientX)/2-r.left,(t[0].clientY+t[1].clientY)/2-r.top]};
+  frame.addEventListener('touchstart',e=>{if(e.touches.length===2){d0=dist(e.touches);z0=ZM}},{passive:true});
+  frame.addEventListener('touchmove',e=>{
+    if(e.touches.length!==2||!d0)return;
+    e.preventDefault();
+    ult=[z0*dist(e.touches)/d0,...medio(e.touches)];
+    if(!raf)raf=requestAnimationFrame(()=>{raf=0;if(ult)aplicarZoom(ult[0],ult[1],ult[2])});
+  },{passive:false});
+  frame.addEventListener('touchend',e=>{if(e.touches.length<2)d0=0},{passive:true});
+})();
 let qt;
 const qi=document.getElementById('q');
 qi.addEventListener('input',e=>{query=e.target.value;hist=[];filter();
