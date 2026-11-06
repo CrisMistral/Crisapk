@@ -16,7 +16,7 @@
   window.movimientoReducido=function(){return A.mov==='reducido'||(A.mov==='auto'&&matchMedia('(prefers-reduced-motion: reduce)').matches)};
 
   var GRUPOS=[
-    ['letra','Tipo de letra',[['atk','Atkinson Hyperlegible (recomendada)'],['od','OpenDyslexic']]],
+    ['letra','Tipo de letra',[['atk','Atkinson Hyperlegible (recomendada)'],['verdana','Verdana / Arial'],['od','OpenDyslexic']]],
     ['tam','Tamaño del texto',[['1','Normal'],['2','Grande'],['3','Muy grande']]],
     ['esp','Espacio entre letras y líneas',[['normal','Normal'],['amplio','Amplio']]],
     ['color','Colores de las épocas',[['epoca','Con colores'],['mono','Sin colores']]],

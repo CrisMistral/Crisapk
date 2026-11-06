@@ -4,9 +4,10 @@
 @font-face{font-family:'OpenDyslexic';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/opendyslexic-Bold.woff) format('woff')}
 :root{--font:'Atkinson Hyperlegible Next',system-ui,-apple-system,'Segoe UI',sans-serif;--zoom:1}
 html[data-letra="od"]{--font:'OpenDyslexic','Atkinson Hyperlegible Next',sans-serif}
+html[data-letra="verdana"]{--font:Verdana,Arial,Helvetica,sans-serif}
 html[data-tam="2"]{--zoom:1.15}
 html[data-tam="3"]{--zoom:1.32}
-html[data-esp="amplio"] body{letter-spacing:.05em;word-spacing:.16em;line-height:1.85}
+html[data-esp="amplio"] body{letter-spacing:.1em;word-spacing:.18em;line-height:1.85}
 html[data-esp="amplio"] p,html[data-esp="amplio"] li{margin-bottom:1.1em}
 /* sin colores: todo en el color del texto; la época se sigue viendo por el símbolo */
 html[data-color="mono"] [style*="--ec"],html[data-color="mono"] .n,html[data-color="mono"] aside,html[data-color="mono"] #qbox{--ec:var(--fg)!important}
