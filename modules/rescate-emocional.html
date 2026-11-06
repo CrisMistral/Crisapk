@@ -145,6 +145,9 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .mico{font-size:2rem;flex-shrink:0}
 .minfo h3{font-size:.95rem;font-weight:700;color:var(--teal-dark)}
 .minfo p{font-size:.78rem;color:var(--teal);margin-top:2px}
+.minfo p.msub{color:var(--teal-dark);font-size:.8rem}
+.mgroup{font-size:.78rem;font-weight:800;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.05em;margin:10px 4px 0}
+.mgroup:first-child{margin-top:0}
 .sprow{display:flex;gap:8px;margin-bottom:18px}
 .spbtn{flex:1;padding:10px;border:2px solid var(--mint-mid);border-radius:10px;background:rgba(255,255,255,.7);font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--teal)}
 .spbtn.active{border-color:var(--teal);background:var(--teal);color:#fff}
@@ -361,7 +364,7 @@ const UI={
    emo_start:'Empezar:',emo_other:'← Elegir otra emoción',
    find_q:'¿Qué notas en tu cuerpo ahora mismo?',find_hint:'Elige lo que más se acerca, no tiene que ser exacto',
    find_maybe:'Puede que estés sintiendo...',find_retry:'← Intentarlo de nuevo',
-   med_steps:'pasos · avanza sola con voz',med_done_t:'Meditación completada',med_list:'← Lista',med_repeat:'Repetir',
+   med_steps:'pasos · avanza sola con voz',med_g_calma:'Para calmarte',med_g_tib:'Práctica budista tibetana',med_done_t:'Meditación completada',med_list:'← Lista',med_repeat:'Repetir',
    breath_hint:'🌬️ Respira con el círculo · {b}',breath_hold:'Inhala {i} · mantén {h} · exhala {o}',breath_simple:'Inhala {i} · exhala {o}',
    min_word:'min'},
  en:{c_pp_t:'HORMONAL REVOLUTION',c_pp_s:'For the hard days after having your baby',pp_h:'Hormonal revolution',pp_intro:'Becoming a mother shakes everything: your body, hormones, sleep and identity. Hard days are very common and say nothing bad about you. Here you’ll find help for right now and some information to understand what’s happening.',pp_now:'For right now',pp_know:'To understand what’s happening',pp_k1_h:'Matrescence',pp_k1:'Becoming a mother is a transition as big as adolescence: your body, hormones, identity and daily life all change. It’s normal to feel love, tiredness, fear and longing for your old life all at once.',pp_k2_h:'Hormones and sleep',pp_k2:'After birth, oestrogen and progesterone drop sharply and sleep comes in pieces. Together they can bring tearful, sad days, especially in the first weeks.',pp_k3_h:'Your mind elsewhere',pp_k3:'Your attention reorganises around the baby and the mental load grows. Slips are normal and don’t mean you’ve lost ability. Sharing tasks and writing things down helps a lot.',pp_more_h:'When to ask for help?',pp_more:'<p>In the first days, many mothers have tearful, sad moments that usually pass on their own within about two weeks.</p><p><b>Talk to your midwife, doctor or a perinatal psychologist if:</b></p><ul><li>the low mood lasts more than two weeks, most of the day</li><li>you no longer enjoy almost anything</li><li>you can’t sleep even when the baby sleeps</li><li>you feel worthless or guilty most of the time</li><li>it’s hard to look after yourself or your baby</li></ul><p>Postpartum depression affects almost 1 in 6 mothers and it can be treated. Asking for help doesn’t make you a worse mother. Your midwife can give you a short questionnaire, the Edinburgh scale, to see how you’re doing.</p><p><b>Get help now (emergency number)</b> if you think about hurting yourself or fear hurting the baby, or if you notice confusion or see or hear things others don’t.</p>',pp_read:'To learn more: “Neuromaternal” by Susana Carmona (Ediciones B, 2024, in Spanish).',crisis_h:'Would you like to talk to someone?',crisis_p:'There are people who will listen, free and at any hour:',crisis_note:'Quico keeps you company, but it doesn’t replace a mental health professional.',home_h:'Emotional Kit 🧰',home_p:'What do you need right now?',
@@ -378,7 +381,7 @@ const UI={
    emo_start:'Start:',emo_other:'← Choose another emotion',
    find_q:'What do you notice in your body right now?',find_hint:'Pick what’s closest, it doesn’t have to be exact',
    find_maybe:'You might be feeling...',find_retry:'← Try again',
-   med_steps:'steps · advances on its own with voice',med_done_t:'Meditation complete',med_list:'← List',med_repeat:'Repeat',
+   med_steps:'steps · advances on its own with voice',med_g_calma:'To calm down',med_g_tib:'Tibetan Buddhist practice',med_done_t:'Meditation complete',med_list:'← List',med_repeat:'Repeat',
    breath_hint:'🌬️ Breathe with the circle · {b}',breath_hold:'Inhale {i} · hold {h} · exhale {o}',breath_simple:'Inhale {i} · exhale {o}',
    min_word:'min'},
  fr:{c_pp_t:'RÉVOLUTION HORMONALE',c_pp_s:'Pour les jours difficiles après la naissance de ton bébé',pp_h:'Révolution hormonale',pp_intro:'Devenir mère bouscule tout : le corps, les hormones, le sommeil, l’identité. Les jours difficiles sont très fréquents et ne disent rien de mal sur toi. Tu trouveras ici de l’aide pour tout de suite et quelques infos pour comprendre ce qui t’arrive.',pp_now:'Pour tout de suite',pp_know:'Pour comprendre ce qui t’arrive',pp_k1_h:'Matrescence',pp_k1:'Devenir mère est une transition aussi grande que l’adolescence : le corps, les hormones, l’identité et le quotidien changent. C’est normal de ressentir à la fois de l’amour, de la fatigue, de la peur et la nostalgie de ta vie d’avant.',pp_k2_h:'Hormones et sommeil',pp_k2:'Après l’accouchement, les œstrogènes et la progestérone chutent brutalement et le sommeil est en miettes. Ensemble, ils peuvent amener des jours de larmes et de tristesse, surtout les premières semaines.',pp_k3_h:'La tête ailleurs',pp_k3:'Ton attention se réorganise autour du bébé et la charge mentale augmente. Les oublis sont normaux et ne veulent pas dire que tu as perdu tes capacités. Partager les tâches et tout noter soulage beaucoup.',pp_more_h:'Quand demander de l’aide ?',pp_more:'<p>Les premiers jours, beaucoup de mères ont des moments de larmes et de tristesse qui passent en général tout seuls en deux semaines environ.</p><p><b>Parles-en à ta sage-femme, ton médecin ou une psychologue périnatale si :</b></p><ul><li>le moral bas dure plus de deux semaines, presque toute la journée</li><li>tu ne prends plus plaisir à presque rien</li><li>tu n’arrives pas à dormir même quand le bébé dort</li><li>tu te sens inutile ou coupable presque tout le temps</li><li>c’est difficile de prendre soin de toi ou de ton bébé</li></ul><p>La dépression post-partum touche près d’1 mère sur 6 et elle se soigne. Demander de l’aide ne fait pas de toi une moins bonne mère. Ta sage-femme peut te proposer un court questionnaire, l’échelle d’Édimbourg, pour voir comment tu vas.</p><p><b>Demande de l’aide maintenant (112)</b> si tu penses à te faire du mal ou crains d’en faire au bébé, ou si tu remarques de la confusion ou vois ou entends des choses que les autres ne perçoivent pas.</p>',pp_read:'Pour en savoir plus : « Neuromaternal » de Susana Carmona (Ediciones B, 2024, en espagnol).',crisis_h:'Tu as envie de parler à quelqu’un ?',crisis_p:'Des personnes t’écoutent, gratuitement et à toute heure :',crisis_note:'Quico t’accompagne, mais ne remplace pas une ou un professionnel de santé mentale.',home_h:'Trousse Émotionnelle 🧰',home_p:'De quoi as-tu besoin maintenant ?',
@@ -395,7 +398,7 @@ const UI={
    emo_start:'Commencer :',emo_other:'← Choisir une autre émotion',
    find_q:'Que remarques-tu dans ton corps là, maintenant ?',find_hint:'Choisis ce qui se rapproche le plus, ça n’a pas à être exact',
    find_maybe:'Tu ressens peut-être...',find_retry:'← Réessayer',
-   med_steps:'étapes · avance toute seule avec la voix',med_done_t:'Méditation terminée',med_list:'← Liste',med_repeat:'Répéter',
+   med_steps:'étapes · avance toute seule avec la voix',med_g_calma:'Pour te calmer',med_g_tib:'Pratique bouddhiste tibétaine',med_done_t:'Méditation terminée',med_list:'← Liste',med_repeat:'Répéter',
    breath_hint:'🌬️ Respire avec le cercle · {b}',breath_hold:'Inspire {i} · retiens {h} · expire {o}',breath_simple:'Inspire {i} · expire {o}',
    min_word:'min'}
 };
@@ -454,22 +457,10 @@ const BODY_LABELS={
  fr:['⚡ Tension, agitation, cœur qui s’emballe','🪨 Lourdeur, fatigue, envie de te cacher','🧊 Bloquée, paralysée, incapable de penser','🕳️ Vide, distance, comme si rien n’importait']
 };
 const MED_L={
- en:{1:{name:'Mindful breathing',steps:[['Get comfortable','Sit or lie down. Close your eyes if you like'],['Breathe naturally','Just watch your breath without changing it. Nothing to do'],['Inhale...','Notice the air coming in. Feel your chest or belly rise'],['Exhale...','Notice the air going out. Relax a little more with each exhale'],['Thoughts','If a thought appears, greet it without grabbing it and return to the breath'],['Closing','Open your eyes gently. Take this calm with you']]},
-  2:{name:'Body scan',steps:[['Begin','Lie on your back. Close your eyes. No rush'],['Feet','Bring attention to your feet. Feel their weight and temperature'],['Legs','Move up your legs. Notice any tension or warmth'],['Belly','Feel your belly rise and fall with each breath'],['Chest and arms','Notice your heart. Relax your shoulders and arms'],['Face','Relax your jaw, forehead, eyes. All soft'],['Whole body','Feel your whole body. You are here, now'],['Come back','Wiggle your fingers. Open your eyes. Welcome back']]},
-  3:{name:'Tong-Len (Giving and Taking)',steps:[['Get ready','Sit comfortably, back straight and shoulders loose. Take a couple of unhurried breaths'],['Start with yourself','Think of something weighing on you today. You don’t need to fix it, just acknowledge it kindly'],['Take — as you inhale','As you breathe in, imagine gathering that weight like dark smoke flowing into your chest'],['Transform','In your heart, the smoke dissolves and turns into light. Your heart is bigger than the pain'],['Give — as you exhale','As you breathe out, send relief, calm and kindness like a clear, gentle light'],['Widen the circle','Think of someone you love who is having a hard time. Take in their weight as you inhale; give them relief as you exhale'],['If it feels too heavy','If at any point it’s too much, stop. Just go back to simple breathing. Caring for yourself is compassion too'],['Closing','Let your breath flow freely. Stay a moment with this kind intention, towards yourself and others']]},
-  4:{name:'Observe without grasping',steps:[['Posture','Sit upright but without tension. Close your eyes'],['Anchor','Bring attention to your feet on the floor'],['Observe','Notice sensations that arise. Don’t follow them, just observe'],['No judgement','Pleasant, unpleasant, neutral — just notice. Nothing to fix'],['Everything passes','Each sensation arises and passes on its own'],['Closing','Slowly come back. Open your eyes. Thank you for this time']]},
-  5:{name:'4-7-8 breathing',steps:[['Get ready','Sit comfortably with your back supported. This rhythm calms the nervous system in minutes'],['Learn the rhythm','Inhale through the nose for 4. Hold for 7. Release through the mouth for 8, like blowing out a candle'],['Cycle 1','Follow the circle: inhale 4... hold 7... exhale 8'],['Cycle 2','Again. Inhale 4... hold 7... release slowly 8'],['Cycle 3','You’re doing great. Inhale... hold... and let all the air go'],['Cycle 4','Last cycle. Notice your body feeling a bit heavier'],['Closing','Breathe normally. Notice the difference. You can repeat it whenever you want']]},
-  6:{name:'Your safe place',steps:[['Close your eyes','Get comfortable. We’re going to build a refuge in your mind'],['Imagine the place','A place where you feel completely safe. Real or made up: a beach, a forest, your bed, a cabin'],['See it','What do you see around you? The colours, the light, the shapes. Take your time'],['Hear it','What can you hear there? Waves, birds, soft rain, silence?'],['Feel it','What’s the temperature? What do you touch? Notice the safety in your body'],['Anchor','Put a hand on your chest. This place is yours. You can return whenever you need'],['Come back','Say goodbye for now. Open your eyes slowly. The refuge stays with you']]}},
- fr:{1:{name:'Respiration consciente',steps:[['Mets-toi à l’aise','Assieds-toi ou allonge-toi. Ferme les yeux si tu veux'],['Respire naturellement','Observe juste ta respiration sans la changer. Rien à faire'],['Inspire...','Remarque l’air qui entre. Sens la poitrine ou le ventre monter'],['Expire...','Remarque l’air qui sort. Détends-toi un peu plus à chaque expiration'],['Pensées','Si une pensée apparaît, salue-la sans la saisir et reviens au souffle'],['Clôture','Ouvre les yeux doucement. Emporte ce calme avec toi']]},
-  2:{name:'Scan corporel',steps:[['Commence','Allonge-toi sur le dos. Ferme les yeux. Sans hâte'],['Pieds','Amène l’attention à tes pieds. Sens leur poids et leur température'],['Jambes','Remonte le long de tes jambes. Remarque toute tension ou chaleur'],['Ventre','Sens ton ventre monter et descendre à chaque respiration'],['Poitrine et bras','Remarque ton cœur. Détends tes épaules et tes bras'],['Visage','Détends la mâchoire, le front, les yeux. Tout en douceur'],['Tout le corps','Sens ton corps entier. Tu es ici, maintenant'],['Reviens','Bouge les doigts. Ouvre les yeux. Bienvenue']]},
-  3:{name:'Tong-Len (Donner et Prendre)',steps:[['Prépare-toi','Assieds-toi confortablement, le dos droit et les épaules relâchées. Respire deux fois sans te presser'],['Commence par toi','Pense à quelque chose qui te pèse aujourd’hui. Pas besoin de le régler, juste de le reconnaître avec douceur'],['Prendre — en inspirant','En inspirant, imagine que tu recueilles ce poids comme une fumée sombre qui entre dans ta poitrine'],['Transformer','Dans ton cœur, cette fumée se dissout et devient lumière. Ton cœur est plus grand que la douleur'],['Donner — en expirant','En expirant, envoie du soulagement, du calme et de la douceur, comme une lumière claire'],['Élargis le cercle','Pense à quelqu’un que tu aimes et qui passe un moment difficile. Prends son poids en inspirant ; offre-lui du soulagement en expirant'],['Si c’est trop lourd','Si à un moment c’est trop, arrête-toi. Reviens simplement à ta respiration. Prendre soin de toi, c’est aussi de la compassion'],['Clôture','Laisse ta respiration libre. Reste un instant avec cette intention bienveillante, envers toi et envers les autres']]},
-  4:{name:'Observer sans saisir',steps:[['Posture','Assieds-toi droite mais sans tension. Ferme les yeux'],['Ancre','Amène l’attention à tes pieds au sol'],['Observe','Remarque les sensations qui surgissent. Ne les suis pas, observe simplement'],['Sans jugement','Agréable, désagréable, neutre — remarque juste. Rien à réparer'],['Tout passe','Chaque sensation surgit et s’en va d’elle-même'],['Clôture','Reviens peu à peu. Ouvre les yeux. Merci pour ce temps']]},
-  5:{name:'Respiration 4-7-8',steps:[['Prépare-toi','Assieds-toi confortablement, le dos soutenu. Ce rythme calme le système nerveux en quelques minutes'],['Apprends le rythme','Inspire par le nez en comptant 4. Retiens en comptant 7. Relâche par la bouche en comptant 8, comme pour souffler une bougie'],['Cycle 1','Suis le cercle : inspire 4... retiens 7... expire 8'],['Cycle 2','Encore. Inspire 4... retiens 7... relâche doucement 8'],['Cycle 3','Tu t’en sors très bien. Inspire... retiens... et lâche tout l’air'],['Cycle 4','Dernier cycle. Remarque ton corps un peu plus lourd'],['Clôture','Respire normalement. Remarque la différence. Tu peux la répéter quand tu veux']]},
-  6:{name:'Ton endroit sûr',steps:[['Ferme les yeux','Mets-toi à l’aise. On va construire un refuge dans ton esprit'],['Imagine l’endroit','Un endroit où tu te sens complètement en sécurité. Réel ou inventé : une plage, une forêt, ton lit, une cabane'],['Regarde-le','Que vois-tu autour de toi ? Les couleurs, la lumière, les formes. Prends ton temps'],['Écoute-le','Qu’entends-tu là ? Des vagues, des oiseaux, une pluie douce, le silence ?'],['Ressens-le','Quelle température fait-il ? Que touches-tu ? Remarque la sécurité dans ton corps'],['Ancre','Pose une main sur ta poitrine. Cet endroit est à toi. Tu peux y revenir dès que tu en as besoin'],['Reviens','Dis au revoir pour l’instant. Ouvre les yeux doucement. Le refuge reste avec toi']]}}
 };
 function rescL(r){const lang=crisLang();if(lang==='es'||!RESCUES_L[lang]||!RESCUES_L[lang][r.id])return r;const tr=RESCUES_L[lang][r.id];return {...r,name:tr.name,when:tr.when,desc:tr.desc,steps:r.steps.map((s,i)=>({...s,text:tr.steps[i][0],instruction:tr.steps[i][1]}))};}
 function emoL(e){const lang=crisLang();if(lang==='es'||!EMOTIONS_L[lang]||!EMOTIONS_L[lang][e.id])return e;return {...e,...EMOTIONS_L[lang][e.id]};}
-function medL(m){const lang=crisLang();if(lang==='es'||!MED_L[lang]||!MED_L[lang][m.id])return m;const tr=MED_L[lang][m.id];return {...m,name:tr.name,steps:m.steps.map((s,i)=>({...s,text:tr.steps[i][0],instruction:tr.steps[i][1]}))};}
+function medL(m){const lang=crisLang();if(lang==='es'||!MED_L[lang]||!MED_L[lang][m.id])return m;const tr=MED_L[lang][m.id];return {...m,name:tr.name,sub:tr.sub||m.sub,steps:m.steps.map((s,i)=>({...s,text:tr.steps[i][0],instruction:tr.steps[i][1]}))};}
 function tecGroupLabel(i,esLabel){const lang=crisLang();return (lang!=='es'&&TEC_LABELS[lang])?TEC_LABELS[lang][i]:esLabel;}
 function bodyLabel(i,esLabel){const lang=crisLang();return (lang!=='es'&&BODY_LABELS[lang])?BODY_LABELS[lang][i]:esLabel;}
 function applyStaticI18n(){document.documentElement.lang=crisLang();document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n'));});}
@@ -871,75 +862,119 @@ const BODY_OPTIONS = [
 ];
 
 const MEDITATIONS = [
-  {id:1, name:"Respiración consciente", icon:"🌿", breath:{in:4,out:6},
+  {id:1, g:"calma", name:"Respiración consciente", sub:"Volver al aire cuando la mente se va", icon:"🌿", breath:{in:4,out:6},
     steps:[
-      {text:"Ponte cómoda",instruction:"Siéntate o túmbate. Cierra los ojos si quieres",time:15},
-      {text:"Respira natural",instruction:"Solo observa tu respiración sin cambiarla. No hay que hacer nada",time:20},
-      {text:"Inhala...",instruction:"Nota cómo el aire entra. Siente el pecho o el abdomen subir",time:20},
-      {text:"Exhala...",instruction:"Nota cómo el aire sale. Relájate un poco más en cada exhalación",time:20},
-      {text:"Pensamientos",instruction:"Si aparece un pensamiento, salúdalo sin agarrarlo y vuelve al aire",time:25},
-      {text:"Cierre",instruction:"Abre los ojos suavemente. Lleva esta calma contigo",time:15}
+      {text:"Ponte cómoda",instruction:"Siéntate o túmbate como estés bien. Si quieres, cierra los ojos o deja la mirada baja.",time:20},
+      {text:"Tres respiraciones largas",instruction:"Toma aire por la nariz y suéltalo despacio, como un suspiro. Hazlo tres veces, sin prisa.",time:30},
+      {text:"Deja que respire sola",instruction:"Ahora deja la respiración libre. No hay que hacerla bien: solo mirar cómo entra y cómo sale.",time:45},
+      {text:"Dónde la notas",instruction:"Busca dónde la notas más: en la nariz, en el pecho o en la barriga. Quédate ahí.",time:45},
+      {text:"Cuenta hasta diez",instruction:"Cuenta cada vez que sueltas el aire: uno, dos, tres, hasta diez. Si te pierdes, vuelve a empezar en uno, sin más.",time:60},
+      {text:"Si te vas",instruction:"Es normal que la mente se vaya. Cada vez que te das cuenta y vuelves al aire, eso ya es meditar.",time:45},
+      {text:"Cierre",instruction:"Toma una respiración un poco más honda. Mueve los dedos y abre los ojos cuando quieras.",time:20}
     ]},
-  {id:2, name:"Escaneo corporal", icon:"🧘", breath:{in:5,out:5},
+  {id:2, g:"calma", name:"Escaneo corporal", sub:"Recorrer el cuerpo de los pies a la cara", icon:"🧘", breath:{in:5,out:5},
     steps:[
-      {text:"Empieza",instruction:"Túmbate boca arriba. Cierra los ojos. Sin prisa",time:15},
-      {text:"Pies",instruction:"Lleva la atención a tus pies. Siente su peso y temperatura",time:30},
-      {text:"Piernas",instruction:"Sube por tus piernas. Nota cualquier tensión o calor",time:30},
-      {text:"Abdomen",instruction:"Siente tu vientre subir y bajar con cada respiración",time:30},
-      {text:"Pecho y brazos",instruction:"Nota el corazón. Relaja los hombros y los brazos",time:30},
-      {text:"Cara",instruction:"Relaja la mandíbula, la frente, los ojos. Todo suave",time:25},
-      {text:"Todo el cuerpo",instruction:"Siente el cuerpo completo. Estás aquí, ahora",time:25},
-      {text:"Regresa",instruction:"Mueve los dedos. Abre los ojos. Bienvenida de vuelta",time:20}
+      {text:"Empieza",instruction:"Túmbate boca arriba o siéntate con la espalda apoyada. Cierra los ojos. No hay prisa.",time:20},
+      {text:"Los apoyos",instruction:"Nota dónde toca tu cuerpo el suelo, la cama o la silla. Deja que el peso caiga ahí.",time:30},
+      {text:"Pies",instruction:"Lleva la atención a los pies. Nota su peso, su temperatura, si hay cosquillas o nada en especial.",time:45},
+      {text:"Piernas",instruction:"Sube despacio por las piernas: tobillos, rodillas, muslos. Si encuentras tensión, solo nótala.",time:45},
+      {text:"Caderas y barriga",instruction:"Llega a las caderas y a la barriga. Siente cómo sube y baja con cada respiración.",time:45},
+      {text:"Espalda",instruction:"Recorre la espalda, de abajo arriba. Deja que se apoye un poco más.",time:45},
+      {text:"Manos y brazos",instruction:"Nota las manos, los dedos, los brazos. Déjalos pesados y quietos.",time:45},
+      {text:"Hombros y cuello",instruction:"Los hombros suelen guardar mucho. Al soltar el aire, deja que bajen un poco.",time:45},
+      {text:"Cara",instruction:"Afloja la mandíbula, la lengua, los ojos y la frente. Todo un poco más suave.",time:40},
+      {text:"Todo el cuerpo",instruction:"Siente el cuerpo entero a la vez, respirando. Estás aquí, ahora.",time:40},
+      {text:"Vuelve",instruction:"Mueve los dedos de las manos y de los pies. Estírate si te apetece y abre los ojos.",time:20}
     ]},
-  {id:3, name:"Tong-Len (Dar y Tomar)", icon:"🤲", breath:{in:5,out:5},
+  {id:5, g:"calma", name:"Respiración 4-7-8", sub:"Un ritmo que calma en tres minutos", icon:"🌬️", breath:{in:4,hold:7,out:8},
     steps:[
-      {text:"Prepárate",instruction:"Siéntate cómoda, con la espalda recta y los hombros sueltos. Respira un par de veces sin prisa",time:20},
-      {text:"Empieza por ti",instruction:"Piensa en algo que hoy te pesa. No hace falta arreglarlo, solo reconocerlo con cariño",time:25},
-      {text:"Tomar — al inhalar",instruction:"Al inhalar, imagina que recoges ese peso como un humo oscuro que entra en tu pecho",time:25},
-      {text:"Transformar",instruction:"En tu corazón, ese humo se disuelve y se convierte en luz. Tu corazón es más grande que el dolor",time:30},
-      {text:"Dar — al exhalar",instruction:"Al soltar el aire, envía alivio, calma y amabilidad como una luz clara y suave",time:30},
-      {text:"Amplía el círculo",instruction:"Piensa en alguien que quieres y que lo está pasando mal. Toma su peso al inhalar; dale alivio al exhalar",time:30},
-      {text:"Si se hace pesado",instruction:"Si en algún momento te agobia, para. Vuelve a respirar sin más. Cuidarte también es compasión",time:25},
-      {text:"Cierre",instruction:"Deja la respiración libre. Quédate un momento con esta intención amable, hacia ti y hacia los demás",time:20}
+      {text:"Prepárate",instruction:"Siéntate con la espalda apoyada. Pon la punta de la lengua detrás de los dientes de arriba.",time:15},
+      {text:"El ritmo",instruction:"Toma aire por la nariz contando cuatro. Aguanta contando siete. Suéltalo por la boca contando ocho, como si soplaras una vela.",time:20},
+      {text:"Ciclo uno",instruction:"Sigue el círculo. Toma aire, cuatro. Aguanta, siete. Suelta, ocho.",time:19},
+      {text:"Ciclo dos",instruction:"Otra vez. Toma aire, aguanta y suelta despacio todo el aire.",time:19},
+      {text:"Ciclo tres",instruction:"Muy bien. Si te mareas un poco, respira normal un momento.",time:19},
+      {text:"Ciclo cuatro",instruction:"El último. Nota cómo el cuerpo pesa un poco más.",time:19},
+      {text:"Cierre",instruction:"Respira normal. Nota la diferencia. Puedes repetirla cuando la necesites.",time:20}
     ]},
-  {id:4, name:"Observar sin agarrar", icon:"🌊", breath:{in:5,out:5},
+  {id:4, g:"calma", name:"Observar sin agarrar", sub:"Dejar pasar sonidos, sensaciones y pensamientos", icon:"🌊", breath:{in:5,out:5},
     steps:[
-      {text:"Postura",instruction:"Siéntate derecha pero sin tensión. Cierra los ojos",time:15},
-      {text:"Ancla",instruction:"Lleva la atención a tus pies en el suelo",time:30},
-      {text:"Observa",instruction:"Nota sensaciones que surgen. No las sigas, solo observa",time:60},
-      {text:"Sin juicio",instruction:"Agradable, desagradable, neutro — solo nota. No hay nada que arreglar",time:60},
-      {text:"Todo pasa",instruction:"Cada sensación surge y se va por sí sola",time:60},
-      {text:"Cierre",instruction:"Poco a poco vuelve. Abre los ojos. Gracias por este tiempo",time:20}
+      {text:"Postura",instruction:"Siéntate derecha pero sin tensión. Cierra los ojos o deja la mirada baja.",time:20},
+      {text:"Ancla",instruction:"Nota los pies en el suelo y el aire entrando y saliendo. Este es tu punto de apoyo.",time:40},
+      {text:"Sonidos",instruction:"Escucha los sonidos que llegan, cerca y lejos. No hace falta ponerles nombre: vienen y se van.",time:60},
+      {text:"Sensaciones",instruction:"Ahora las sensaciones del cuerpo: calor, peso, picor. Obsérvalas como quien mira por una ventana.",time:60},
+      {text:"Pensamientos",instruction:"Mira los pensamientos como nubes que cruzan el cielo. No los sigas ni los apartes.",time:60},
+      {text:"Todo pasa",instruction:"Agradable, desagradable o neutro: todo aparece y se va solo. Tú no tienes que hacer nada.",time:40},
+      {text:"Cierre",instruction:"Vuelve a los pies y al aire. Abre los ojos despacio.",time:20}
     ]},
-  {id:5, name:"Respiración 4-7-8", icon:"🌬️", breath:{in:4,hold:7,out:8},
+  {id:6, g:"calma", name:"Tu lugar seguro", sub:"Un refugio en la mente para cuando todo pesa", icon:"🏝️", breath:{in:5,out:5},
     steps:[
-      {text:"Prepárate",instruction:"Siéntate cómoda con la espalda apoyada. Este ritmo calma el sistema nervioso en minutos",time:15},
-      {text:"Aprende el ritmo",instruction:"Inhala por la nariz contando 4. Mantén el aire contando 7. Suelta por la boca contando 8, como soplando una vela",time:20},
-      {text:"Ciclo 1",instruction:"Sigue el círculo: inhala 4... mantén 7... exhala 8",time:20},
-      {text:"Ciclo 2",instruction:"Otra vez. Inhala 4... mantén 7... suelta despacio 8",time:20},
-      {text:"Ciclo 3",instruction:"Vas muy bien. Inhala... mantén... y suelta todo el aire",time:20},
-      {text:"Ciclo 4",instruction:"Último ciclo. Nota cómo el cuerpo pesa un poco más",time:20},
-      {text:"Cierre",instruction:"Respira normal. Nota la diferencia. Puedes repetirla cuando quieras",time:15}
+      {text:"Cierra los ojos",instruction:"Ponte cómoda. Vamos a construir un refugio dentro de tu mente.",time:15},
+      {text:"Elige el lugar",instruction:"Piensa en un sitio donde te sientas a salvo, real o inventado: una playa, un bosque, tu cama, una cabaña.",time:30},
+      {text:"Míralo",instruction:"¿Qué ves? Los colores, la luz, las formas. Tómate tu tiempo para mirarlo bien.",time:40},
+      {text:"Escúchalo",instruction:"¿Qué se oye ahí? Olas, pájaros, lluvia suave o silencio.",time:40},
+      {text:"Siéntelo",instruction:"¿Qué temperatura hace? ¿Qué tocan tus manos y tus pies? Nota la calma en el cuerpo.",time:40},
+      {text:"Un detalle tuyo",instruction:"Añade algo que te haga sentir cuidada: una manta, una persona querida, tu animal.",time:40},
+      {text:"Ancla",instruction:"Pon una mano en el pecho. Este lugar es tuyo. Puedes volver siempre que lo necesites.",time:30},
+      {text:"Regresa",instruction:"Despídete por ahora. Abre los ojos despacio. El refugio se queda contigo.",time:20}
     ]},
-  {id:6, name:"Tu lugar seguro", icon:"🏝️", breath:{in:5,out:5},
+  {id:7, g:"tib", name:"Purificar los aires (lung ro)", sub:"Tres respiraciones de limpieza · mejor por la mañana", icon:"🌬️", breath:{in:6,out:6},
     steps:[
-      {text:"Cierra los ojos",instruction:"Ponte cómoda. Vamos a construir un refugio en tu mente",time:15},
-      {text:"Imagina el lugar",instruction:"Un sitio donde te sientes completamente a salvo. Real o inventado: una playa, un bosque, tu cama, una cabaña",time:30},
-      {text:"Míralo",instruction:"¿Qué ves a tu alrededor? Los colores, la luz, las formas. Tómate tu tiempo",time:30},
-      {text:"Escúchalo",instruction:"¿Qué se oye ahí? ¿Olas, pájaros, lluvia suave, silencio?",time:30},
-      {text:"Siéntelo",instruction:"¿Qué temperatura hace? ¿Qué tocas? Nota la seguridad en el cuerpo",time:30},
-      {text:"Ancla",instruction:"Pon una mano en el pecho. Este lugar es tuyo. Puedes volver siempre que lo necesites",time:25},
-      {text:"Regresa",instruction:"Despídete por ahora. Abre los ojos despacio. El refugio queda contigo",time:20}
+      {text:"Postura de siete puntos",instruction:"Siéntate con las piernas cruzadas, en postura vajra o, si no puedes, en la del bodhisattva, con las rodillas en el suelo. Espalda recta, hombros un poco abiertos, la barbilla algo recogida, los ojos entornados y la lengua tocando el paladar.",time:30},
+      {text:"El gesto de las manos",instruction:"Lleva cada pulgar a la base del dedo anular y cierra los otros cuatro dedos sobre él. Apoya las manos en las rodillas, con los brazos estirados. Así se cierra el paso a la energía negativa.",time:20},
+      {text:"Primera vez · soltar",instruction:"Suelta el aire por las dos fosas nasales, primero despacio y al final con fuerza, mientras abres las manos y estiras los dedos. Imagina que sale todo lo negativo como humo negro: el enfado, el apego, la mente nublada, los bloqueos.",time:20},
+      {text:"Primera vez · luz",instruction:"Ahora toma aire despacio y hondo, desde el vientre, mientras vuelves a cerrar las manos con el pulgar en el anular. Entra una luz blanca y brillante que te llena de las bendiciones de cuerpo, palabra y mente.",time:20},
+      {text:"Segunda vez · soltar",instruction:"Otra vez: suelta despacio y al final con fuerza, abriendo los dedos. Sale el humo negro por la nariz y por todos los poros de la piel.",time:15},
+      {text:"Segunda vez · luz",instruction:"Toma aire lento y profundo, cerrando las manos. La luz blanca trae vida larga, mérito y sabiduría.",time:15},
+      {text:"Tercera vez · soltar",instruction:"La última: suelta todo, primero suave y al final con fuerza. Lo que pesaba se va.",time:15},
+      {text:"Tercera vez · luz",instruction:"Toma aire hondo y cierra las manos. Las emociones se transforman en sabiduría, y la luz te llena entera.",time:15},
+      {text:"Cierre",instruction:"Respira con normalidad. Esta limpieza da vitalidad y buena salud; es bueno hacerla cada mañana al levantarte.",time:20}
+    ]},
+  {id:8, g:"tib", name:"Shi né (calma mental)", sub:"Aires, respiración, loto, esfera de luz y el Buda · unos 25 min", icon:"🪷", breath:{in:5,out:5},
+    steps:[
+      {text:"Postura de siete puntos",instruction:"Siéntate con las piernas cruzadas, en postura vajra o en la del bodhisattva, con las rodillas en el suelo. Espalda recta, hombros un poco abiertos, la barbilla algo recogida, los ojos entornados y la lengua en el paladar.",time:30},
+      {text:"Primero, los aires",instruction:"Antes de meditar, limpiamos los aires tres veces. Pulgar en la base del anular, los otros dedos cerrados encima, y las manos en las rodillas con los brazos estirados.",time:15},
+      {text:"Primera vez",instruction:"Suelta el aire por la nariz, despacio y al final con fuerza, abriendo los dedos: sale lo negativo como humo negro. Luego toma aire hondo cerrando las manos: entra luz blanca.",time:25},
+      {text:"Segunda vez",instruction:"Otra vez: soltar despacio y con fuerza al final, abriendo los dedos. Tomar aire hondo, cerrando las manos, y llenarte de luz.",time:25},
+      {text:"Tercera vez",instruction:"La última: suelta todo lo que pesa y llénate de luz blanca y brillante.",time:25},
+      {text:"Las manos en meditación",instruction:"Sin cambiar la postura, pon la mano derecha sobre la izquierda, con los pulgares tocándose apenas. Respira de forma natural.",time:20},
+      {text:"La respiración como apoyo",instruction:"Deja que la mente se apoye en la respiración. Atiende al aire que entra y al aire que sale, de manera relajada.",time:100},
+      {text:"Mente y aire, uno",instruction:"La mente está en la respiración y la respiración está en la mente. No fuerces el aire: si la respiración está tranquila, la mente también lo estará.",time:100},
+      {text:"Si te distraes",instruction:"Si te has ido, no pasa nada. Vuelve con suavidad al aire que entra y sale. Sin prisa y sin juzgarte.",time:100},
+      {text:"El loto en el corazón",instruction:"Ahora, a la altura del corazón, en el centro de energía y no en el órgano, imagina una flor de loto de ocho pétalos, de color azul claro.",time:100},
+      {text:"Quédate en el loto",instruction:"Deja la atención en la flor. No hace falta verla perfecta: basta con sentir que está ahí.",time:100},
+      {text:"Vuelve al loto",instruction:"Si la mente se ha ido, vuelve a la flor azul de ocho pétalos, abierta en tu corazón.",time:100},
+      {text:"La esfera de luz",instruction:"Encima del loto aparece una pequeña esfera de luz blanca, un bindu. Pasa la atención a ella.",time:100},
+      {text:"Quédate en la luz",instruction:"Descansa en la esfera blanca, clara y luminosa. Si aparece la niebla del sueño o la distracción, vuelve a su brillo.",time:100},
+      {text:"Solo la esfera",instruction:"Solo la esfera de luz, quieta sobre el loto. Nada más que hacer.",time:100},
+      {text:"El Buda",instruction:"Ahora la esfera se convierte en el cuerpo del Buda Shakyamuni, pequeño, en tu corazón. Deja la mente unificada en su imagen.",time:90},
+      {text:"Rayos de luz",instruction:"Del corazón del Buda salen rayos de luz que llenan todo tu cuerpo. Esa luz aclara las emociones y las disuelve todas; disuelve también la mente nublada.",time:60},
+      {text:"Cuerpo de luz",instruction:"Tu cuerpo se vuelve luminoso y transparente, hecho de luz.",time:60},
+      {text:"Descansa",instruction:"Deja que la mente permanezca en paz en ese estado, sin hacer nada más.",time:60},
+      {text:"Cierre",instruction:"Poco a poco, vuelve a notar el cuerpo y el sitio donde estás. Abre los ojos despacio y lleva esta paz contigo.",time:20}
+    ]},
+  {id:3, g:"tib", name:"Tong-len (dar y tomar)", sub:"Dar todo tu bienestar y tomar el sufrimiento de los seres", icon:"🤲", breath:{in:5,out:5},
+    steps:[
+      {text:"Postura",instruction:"Siéntate con el cuerpo erguido y bien colocado. Respira un par de veces con calma.",time:20},
+      {text:"Todos los seres",instruction:"Abre la mente a todos los seres, como si de verdad estuvieran aquí, delante de ti.",time:45},
+      {text:"Su falta de libertad",instruction:"Piensa en que no son libres: están en un océano de sufrimiento, por el karma, los actos negativos y las emociones que los arrastran, y por eso sufren.",time:60},
+      {text:"Reúne lo bueno",instruction:"Junta todo tu karma positivo de todas tus vidas, tu felicidad, tu alegría, tu bienestar y todo el bien que aún no ha dado fruto. Lo vas a ofrecer a todos.",time:45},
+      {text:"Dar · al soltar el aire",instruction:"Al soltar el aire por la nariz, sale una luz blanca hacia todas las direcciones. Toca a todos los seres y les da todo el bienestar y toda la felicidad.",time:75},
+      {text:"Todo lo que necesiten",instruction:"Con esa luz ofreces también muchas formas de tu cuerpo y, si lo necesitan, la joya que cumple todos los deseos. Los seres descansan felices y satisfechos.",time:75},
+      {text:"Tomar · al tomar aire",instruction:"Al tomar aire, el aire es una luz negra que recoge el karma negativo, las tendencias, el sufrimiento, las faltas y las emociones de todos los seres, sin excepción. Lo tomas en ti.",time:75},
+      {text:"Dar y tomar",instruction:"Sigue con la respiración: al soltar, das luz blanca y todo tu bien; al tomar aire, recibes la luz negra del sufrimiento. Primero dar, después tomar.",time:120},
+      {text:"Si da miedo",instruction:"Al principio puede dar un poco de miedo, como si de verdad fueras a cargar con el sufrimiento. Es normal: con la práctica, poco a poco, te acostumbras. Si hoy pesa demasiado, quédate un rato solo en dar.",time:45},
+      {text:"Cierre",instruction:"Deja la respiración libre. Esta práctica hace mucho bien si se hace cada día, aunque sean unos minutos.",time:30}
     ]}
 ];
-function medDur(m){const s=m.steps.reduce((a,x)=>a+x.time,0);return Math.max(1,Math.round(s/60))+' '+t('min_word');}
+// lo que dura de verdad: las cuentas y lo que tarda la voz en decir cada paso (≈ 13 letras por segundo)
+function medDur(m){const s=m.steps.reduce((a,x)=>a+x.time+x.instruction.length/13,0);return Math.max(1,Math.round(s/60))+' '+t('min_word');}
 
 const SPEED = {lento:1.5, normal:1, rapido:0.7};
 const S = {
   view:'home',
   tecCurrent:null, tecStep:0, tecPlaying:false, tecTimer:0, tecDone:false, tecSource:'techniques',
   emoSource:'emotions', findStep:0, findMatches:[],
-  medCurrent:null, medStep:0, medPlaying:false, medTimer:0, medSpeed:'normal', medDone:false
+  medCurrent:null, medStep:0, medPlaying:false, medTimer:0, medSpeed:'normal', medDone:false, medLeft:null, medEnd:0, medLast:0
 };
 let timerInterval = null;
 
@@ -987,7 +1022,7 @@ function speakThen(t,cb){
 function stopTimer(){_speakSeq++;if(timerInterval){clearInterval(timerInterval);timerInterval=null;}try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}}
 
 function go(view){
-  stopTimer();
+  stopTimer();releaseAwake();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('v-'+view).classList.add('active');
   S.view=view;
@@ -1141,11 +1176,13 @@ function renderFind(){
 function findPick(i){beep(400,0.1);vibrate(30);S.findMatches=BODY_OPTIONS[i].ids;S.findStep=1;renderFind();}
 
 function renderMedList(){
-  document.getElementById('med-list').innerHTML=MEDITATIONS.map(m0=>{const m=medL(m0);return`
+  document.getElementById('med-list').innerHTML=[['calma','med_g_calma'],['tib','med_g_tib']].map(([g,k])=>{
+    const l=MEDITATIONS.filter(m=>m.g===g);if(!l.length)return '';
+    return `<h2 class="mgroup">${t(k)}</h2>`+l.map(m0=>{const m=medL(m0);return`
     <button class="mitem" onclick="startMed(${m.id})">
       <span class="mico">${m.icon}</span>
-      <div class="minfo"><h3>${m.name}</h3><p>${medDur(m)} · ${m.steps.length} ${t('med_steps')}</p></div>
-    </button>`;}).join('');
+      <div class="minfo"><h3>${m.name}</h3>${m.sub?`<p class="msub">${m.sub}</p>`:''}<p>${medDur(m)} · ${m.steps.length} ${t('med_steps')}</p></div>
+    </button>`;}).join('');}).join('');
 }
 function setBreathAnim(b){
   // Genera la animación del círculo con el ritmo de esta meditación
@@ -1162,7 +1199,7 @@ function breathHint(b){
 function startMed(id){
   beep(400);vibrate(40);
   S.medCurrent=medL(MEDITATIONS.find(m=>m.id===id));
-  S.medStep=0;S.medPlaying=false;S.medTimer=0;S.medDone=false;
+  S.medStep=0;S.medPlaying=false;S.medTimer=0;S.medDone=false;S.medLeft=null;
   setBreathAnim(S.medCurrent.breath||{in:4,out:6});
   document.getElementById('med-title').textContent=S.medCurrent.name;
   go('meditation-detail'); renderMedStep();
@@ -1211,34 +1248,50 @@ function renderMedStep(){
 }
 function medToggle(){
   if(!S.medPlaying){
-    S.medPlaying=true;const step=S.medCurrent.steps[S.medStep];
-    S.medTimer=Math.round(step.time*SPEED[S.medSpeed]);
-    renderMedStep();
-    // La instrucción se dicta ENTERA antes de arrancar la cuenta del paso
-    speakThen(step.instruction,()=>{
-      if(!S.medPlaying||timerInterval)return;
-      timerInterval=setInterval(medTick,1000);
-    });
+    S.medPlaying=true;const step=S.medCurrent.steps[S.medStep],resume=S.medLeft!=null&&S.medLeft>0;
+    S.medTimer=resume?S.medLeft:Math.round(step.time*SPEED[S.medSpeed]);S.medLeft=null;
+    keepAwake();renderMedStep();
+    // al reanudar sigue la cuenta donde iba; al empezar el paso, la instrucción se dicta ENTERA antes de contar
+    if(resume){medCount();return;}
+    speakThen(step.instruction,()=>{if(S.medPlaying&&!timerInterval)medCount();});
     return;
   }
-  S.medPlaying=false;stopTimer();
+  S.medPlaying=false;S.medLeft=S.medTimer;stopTimer();releaseAwake();
   renderMedStep();
 }
-function medTick(){S.medTimer--;const el=document.getElementById('med-timer');if(el)el.textContent=S.medTimer;const _mt=Math.round(S.medCurrent.steps[S.medStep].time*SPEED[S.medSpeed]);__ring('med-ring',_mt?S.medTimer/_mt:0);if(S.medTimer<=0)medAdv();}
+/* La cuenta va por la hora del reloj, no por los «tics»: si el móvil frena la página, no se atrasa */
+function medCount(){const n=Date.now();S.medEnd=n+S.medTimer*1000;S.medLast=n;timerInterval=setInterval(medTick,500);}
+function medTick(){
+  const n=Date.now();
+  // la página estuvo congelada mucho rato (pantalla apagada sin bloqueo): mejor pausar que saltarse pasos
+  if(n-S.medLast>600e3){S.medPlaying=false;S.medLeft=Math.max(1,Math.ceil((S.medEnd-S.medLast)/1000));stopTimer();releaseAwake();renderMedStep();return;}
+  S.medLast=n;S.medTimer=Math.max(0,Math.ceil((S.medEnd-n)/1000));
+  const el=document.getElementById('med-timer');if(el)el.textContent=S.medTimer;
+  const _mt=Math.round(S.medCurrent.steps[S.medStep].time*SPEED[S.medSpeed]);__ring('med-ring',_mt?S.medTimer/_mt:0);
+  if(S.medTimer<=0)medAdv();
+}
 function medAdv(){
-  stopTimer(); const med=S.medCurrent;
+  stopTimer(); const med=S.medCurrent;S.medLeft=null;
   if(S.medStep<med.steps.length-1){
-    beep(500,0.2);vibrate(40);S.medStep++;S.medPlaying=true;
+    beep(500,0.2);vibrate(40);S.medStep++;S.medPlaying=true;keepAwake();
     S.medTimer=Math.round(med.steps[S.medStep].time*SPEED[S.medSpeed]);
     renderMedStep();
-    speakThen(med.steps[S.medStep].instruction,()=>{
-      if(!S.medPlaying||timerInterval)return;
-      timerInterval=setInterval(medTick,1000);
-    });
-  } else {beep(700,0.3);setTimeout(()=>beep(900,0.4),300);vibrate([60,40,60]);S.medDone=true;S.medPlaying=false;markCalmaDone();renderMedStep();}
+    speakThen(med.steps[S.medStep].instruction,()=>{if(S.medPlaying&&!timerInterval)medCount();});
+  } else {beep(700,0.3);setTimeout(()=>beep(900,0.4),300);vibrate([60,40,60]);S.medDone=true;S.medPlaying=false;releaseAwake();markCalmaDone();renderMedStep();}
 }
 function medNext(){stopTimer();S.medPlaying=false;medAdv();}
-function medPrev(){if(S.medStep<=0)return;stopTimer();S.medPlaying=false;S.medTimer=0;S.medDone=false;S.medStep--;renderMedStep();}
+function medPrev(){if(S.medStep<=0)return;stopTimer();releaseAwake();S.medPlaying=false;S.medTimer=0;S.medLeft=null;S.medDone=false;S.medStep--;renderMedStep();}
+/* Pantalla encendida mientras suena una meditación: si se apaga, el móvil congela la cuenta y la voz */
+let _wl=null,_wlp=null,_wantAwake=false;
+async function keepAwake(){
+  _wantAwake=true;if(_wl||_wlp||!('wakeLock' in navigator))return;
+  try{_wlp=navigator.wakeLock.request('screen');_wl=await _wlp;_wl.addEventListener('release',()=>{_wl=null;});
+    if(!_wantAwake)releaseAwake();} // se pidió soltarla mientras llegaba
+  catch(e){}finally{_wlp=null;}
+}
+function releaseAwake(){_wantAwake=false;try{if(_wl){_wl.release();_wl=null;}}catch(e){}}
+// el móvil suelta el bloqueo al salir de la app: se recupera al volver, y la cuenta se pone al día
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&S.medPlaying&&S.view==='meditation-detail'){keepAwake();if(timerInterval)medTick();}});
 /* Aplica traducciones a los textos estáticos al cargar */
 /* Teléfonos de crisis según idioma (tocar = llamar) */
 const CRISIS={es:[['024','Línea de apoyo en momentos difíciles · 24 h (España)'],['112','Emergencias']],
