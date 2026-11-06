@@ -104,7 +104,7 @@ body{font-family:'Outfit',sans-serif;background:var(--mint);min-height:100vh;col
 .sname{font-size:1.4rem;font-weight:800;color:var(--teal-dark);margin-bottom:8px}
 .sinstr{font-size:.88rem;color:#3d5a58;line-height:1.5}
 .stimer{font-size:3.5rem;font-weight:800;color:var(--teal);margin:12px 0 4px;font-variant-numeric:tabular-nums}
-.dots{display:flex;justify-content:center;gap:6px;margin-bottom:14px}
+.dots{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:14px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--mint-mid);transition:background .3s}
 .dot.done{background:var(--teal)}.dot.active{background:var(--teal-light);transform:scale(1.3)}
 .pbar{background:var(--mint-mid);border-radius:999px;height:4px;margin-bottom:8px;overflow:hidden}
@@ -862,26 +862,26 @@ const BODY_OPTIONS = [
 ];
 
 const MEDITATIONS = [
-  {id:1, g:"calma", name:"Respiración consciente", sub:"Volver al aire cuando la mente se va", icon:"🌿", breath:{in:4,out:6},
+  {id:1, g:"calma", name:"Respiración consciente", sub:"Volver al aire cuando la mente se va", icon:"🌿", breath:null,
     steps:[
       {text:"Ponte cómoda",instruction:"Siéntate o túmbate como estés bien. Si quieres, cierra los ojos o deja la mirada baja.",time:20},
       {text:"Tres respiraciones largas",instruction:"Toma aire por la nariz y suéltalo despacio, como un suspiro. Hazlo tres veces, sin prisa.",time:30},
       {text:"Deja que respire sola",instruction:"Ahora deja la respiración libre. No hay que hacerla bien: solo mirar cómo entra y cómo sale.",time:45},
       {text:"Dónde la notas",instruction:"Busca dónde la notas más: en la nariz, en el pecho o en la barriga. Quédate ahí.",time:45},
-      {text:"Cuenta hasta diez",instruction:"Cuenta cada vez que sueltas el aire: uno, dos, tres, hasta diez. Si te pierdes, vuelve a empezar en uno, sin más.",time:60},
+      {text:"Cuenta hasta diez",instruction:"Cuenta cada vez que sueltas el aire: uno, dos, tres, hasta diez. Si te pierdes, vuelve a empezar en uno, sin más.",time:90},
       {text:"Si te vas",instruction:"Es normal que la mente se vaya. Cada vez que te das cuenta y vuelves al aire, eso ya es meditar.",time:45},
       {text:"Cierre",instruction:"Toma una respiración un poco más honda. Mueve los dedos y abre los ojos cuando quieras.",time:20}
     ]},
   {id:2, g:"calma", name:"Escaneo corporal", sub:"Recorrer el cuerpo de los pies a la cara", icon:"🧘", breath:{in:5,out:5},
     steps:[
-      {text:"Empieza",instruction:"Túmbate boca arriba o siéntate con la espalda apoyada. Cierra los ojos. No hay prisa.",time:20},
+      {text:"Empieza",instruction:"Túmbate boca arriba o siéntate con la espalda apoyada. Si te apetece, cierra los ojos. No hay prisa.",time:20},
       {text:"Los apoyos",instruction:"Nota dónde toca tu cuerpo el suelo, la cama o la silla. Deja que el peso caiga ahí.",time:30},
       {text:"Pies",instruction:"Lleva la atención a los pies. Nota su peso, su temperatura, si hay cosquillas o nada en especial.",time:45},
       {text:"Piernas",instruction:"Sube despacio por las piernas: tobillos, rodillas, muslos. Si encuentras tensión, solo nótala.",time:45},
       {text:"Caderas y barriga",instruction:"Llega a las caderas y a la barriga. Siente cómo sube y baja con cada respiración.",time:45},
       {text:"Espalda",instruction:"Recorre la espalda, de abajo arriba. Deja que se apoye un poco más.",time:45},
       {text:"Manos y brazos",instruction:"Nota las manos, los dedos, los brazos. Déjalos pesados y quietos.",time:45},
-      {text:"Hombros y cuello",instruction:"Los hombros suelen guardar mucho. Al soltar el aire, deja que bajen un poco.",time:45},
+      {text:"Hombros y cuello",instruction:"Los hombros y el cuello suelen guardar mucha tensión. Al soltar el aire, deja que los hombros bajen un poco y que el cuello se afloje.",time:45},
       {text:"Cara",instruction:"Afloja la mandíbula, la lengua, los ojos y la frente. Todo un poco más suave.",time:40},
       {text:"Todo el cuerpo",instruction:"Siente el cuerpo entero a la vez, respirando. Estás aquí, ahora.",time:40},
       {text:"Vuelve",instruction:"Mueve los dedos de las manos y de los pies. Estírate si te apetece y abre los ojos.",time:20}
@@ -889,7 +889,7 @@ const MEDITATIONS = [
   {id:5, g:"calma", name:"Respiración 4-7-8", sub:"Un ritmo que calma en tres minutos", icon:"🌬️", breath:{in:4,hold:7,out:8},
     steps:[
       {text:"Prepárate",instruction:"Siéntate con la espalda apoyada. Pon la punta de la lengua detrás de los dientes de arriba.",time:15},
-      {text:"El ritmo",instruction:"Toma aire por la nariz contando cuatro. Aguanta contando siete. Suéltalo por la boca contando ocho, como si soplaras una vela.",time:20},
+      {text:"El ritmo",instruction:"Toma aire por la nariz contando cuatro. Aguanta contando siete. Suéltalo por la boca contando ocho, con un soplido suave y largo. Si aguantar te agobia, cuenta más deprisa.",time:20},
       {text:"Ciclo uno",instruction:"Sigue el círculo. Toma aire, cuatro. Aguanta, siete. Suelta, ocho.",time:19},
       {text:"Ciclo dos",instruction:"Otra vez. Toma aire, aguanta y suelta despacio todo el aire.",time:19},
       {text:"Ciclo tres",instruction:"Muy bien. Si te mareas un poco, respira normal un momento.",time:19},
@@ -908,61 +908,71 @@ const MEDITATIONS = [
     ]},
   {id:6, g:"calma", name:"Tu lugar seguro", sub:"Un refugio en la mente para cuando todo pesa", icon:"🏝️", breath:{in:5,out:5},
     steps:[
-      {text:"Cierra los ojos",instruction:"Ponte cómoda. Vamos a construir un refugio dentro de tu mente.",time:15},
+      {text:"Cierra los ojos",instruction:"Ponte cómoda y, si te apetece, cierra los ojos. Vamos a construir un refugio dentro de tu mente.",time:15},
       {text:"Elige el lugar",instruction:"Piensa en un sitio donde te sientas a salvo, real o inventado: una playa, un bosque, tu cama, una cabaña.",time:30},
       {text:"Míralo",instruction:"¿Qué ves? Los colores, la luz, las formas. Tómate tu tiempo para mirarlo bien.",time:40},
       {text:"Escúchalo",instruction:"¿Qué se oye ahí? Olas, pájaros, lluvia suave o silencio.",time:40},
       {text:"Siéntelo",instruction:"¿Qué temperatura hace? ¿Qué tocan tus manos y tus pies? Nota la calma en el cuerpo.",time:40},
-      {text:"Un detalle tuyo",instruction:"Añade algo que te haga sentir cuidada: una manta, una persona querida, tu animal.",time:40},
+      {text:"Un detalle tuyo",instruction:"Añade algo que te haga sentir cuidada: una manta, una persona querida, un animal querido.",time:40},
       {text:"Ancla",instruction:"Pon una mano en el pecho. Este lugar es tuyo. Puedes volver siempre que lo necesites.",time:30},
       {text:"Regresa",instruction:"Despídete por ahora. Abre los ojos despacio. El refugio se queda contigo.",time:20}
     ]},
-  {id:7, g:"tib", name:"Purificar los aires (lung ro)", sub:"Tres respiraciones de limpieza · mejor por la mañana", icon:"🌬️", breath:{in:6,out:6},
+  {id:7, g:"tib", name:"Purificar los aires (lung ro)", sub:"Tres respiraciones de limpieza · mejor por la mañana", icon:"🌬️", breath:null,
     steps:[
-      {text:"Postura de siete puntos",instruction:"Siéntate con las piernas cruzadas, en postura vajra o, si no puedes, en la del bodhisattva, con las rodillas en el suelo. Espalda recta, hombros un poco abiertos, la barbilla algo recogida, los ojos entornados y la lengua tocando el paladar.",time:30},
-      {text:"El gesto de las manos",instruction:"Lleva cada pulgar a la base del dedo anular y cierra los otros cuatro dedos sobre él. Apoya las manos en las rodillas, con los brazos estirados. Así se cierra el paso a la energía negativa.",time:20},
-      {text:"Primera vez · soltar",instruction:"Suelta el aire por las dos fosas nasales, primero despacio y al final con fuerza, mientras abres las manos y estiras los dedos. Imagina que sale todo lo negativo como humo negro: el enfado, el apego, la mente nublada, los bloqueos.",time:20},
-      {text:"Primera vez · luz",instruction:"Ahora toma aire despacio y hondo, desde el vientre, mientras vuelves a cerrar las manos con el pulgar en el anular. Entra una luz blanca y brillante que te llena de las bendiciones de cuerpo, palabra y mente.",time:20},
-      {text:"Segunda vez · soltar",instruction:"Otra vez: suelta despacio y al final con fuerza, abriendo los dedos. Sale el humo negro por la nariz y por todos los poros de la piel.",time:15},
-      {text:"Segunda vez · luz",instruction:"Toma aire lento y profundo, cerrando las manos. La luz blanca trae vida larga, mérito y sabiduría.",time:15},
-      {text:"Tercera vez · soltar",instruction:"La última: suelta todo, primero suave y al final con fuerza. Lo que pesaba se va.",time:15},
-      {text:"Tercera vez · luz",instruction:"Toma aire hondo y cierra las manos. Las emociones se transforman en sabiduría, y la luz te llena entera.",time:15},
-      {text:"Cierre",instruction:"Respira con normalidad. Esta limpieza da vitalidad y buena salud; es bueno hacerla cada mañana al levantarte.",time:20}
+      {text:"Postura de siete puntos",instruction:"Siéntate y cruza las piernas en postura vajra o, si te cuesta, en la del bodhisattva, con las rodillas apoyadas en el suelo. Mantén la espalda recta y los hombros un poco abiertos hacia atrás. La cabeza, erguida, con la barbilla algo recogida. Los ojos, entornados, y la lengua tocando el paladar.",time:30},
+      {text:"El gesto de las manos",instruction:"Ahora las manos. Pon cada pulgar en la base del dedo anular y cierra encima los otros cuatro dedos. Apoya las manos así sobre las rodillas y estira los brazos. Este gesto no deja pasar la energía negativa. Al soltar el aire abrirás las manos; al tomarlo, las cerrarás.",time:20},
+      {text:"Primera vez · soltar",instruction:"Primera vez. Vas a soltar el aire por la nariz, primero despacio y al final con fuerza, abriendo poco a poco las manos hasta estirar bien los dedos, como si el aire saliera también por sus puntas. Con él se va lejos de ti todo lo negativo, como humo negro: enfado, apego, mente nublada, enfermedades, bloqueos. Ahora, suelta.",time:20},
+      {text:"Primera vez · luz",instruction:"Ahora, la luz. Imagina que con el aire entra una luz blanca y brillante, y que te llenan las bendiciones de los budas y los lamas: de su cuerpo, su palabra y su mente. Toma aire por la nariz, lento y hondo, desde el vientre, y cierra las manos poco a poco hasta que el pulgar vuelva a la base del anular.",time:20},
+      {text:"Segunda vez · soltar",instruction:"Segunda vez. Ahora el humo negro sale por la nariz y también por cada poro de tu piel. Suelta despacio y, al final, con fuerza, abriendo las manos.",time:15},
+      {text:"Segunda vez · luz",instruction:"Con la luz blanca recibes larga vida y mérito, y la bendición de las Tres Joyas y las Tres Raíces. Toma aire lento y hondo, cerrando las manos.",time:15},
+      {text:"Tercera vez · soltar",instruction:"Tercera y última vez. Deja que se vaya todo lo que pesa. Suelta, primero suave y al final con fuerza, abriendo las manos.",time:15},
+      {text:"Tercera vez · luz",instruction:"La luz blanca te llena entera, y tus emociones se transforman en sabiduría. Toma aire, hondo, cerrando las manos.",time:15},
+      {text:"Cierre",instruction:"Respira con normalidad. Esta limpieza da vitalidad, buena salud y larga vida; es bueno hacerla cada mañana al levantarte.",time:20}
     ]},
-  {id:8, g:"tib", name:"Shi né (calma mental)", sub:"Aires, respiración, loto, esfera de luz y el Buda · unos 25 min", icon:"🪷", breath:{in:5,out:5},
+  {id:8, g:"tib", name:"Shi né (calma mental)", sub:"Aires, respiración, loto, esfera de luz y el Buda", icon:"🪷", breath:null,
     steps:[
-      {text:"Postura de siete puntos",instruction:"Siéntate con las piernas cruzadas, en postura vajra o en la del bodhisattva, con las rodillas en el suelo. Espalda recta, hombros un poco abiertos, la barbilla algo recogida, los ojos entornados y la lengua en el paladar.",time:30},
+      {text:"Postura de siete puntos",instruction:"Siéntate y cruza las piernas en postura vajra o, si te cuesta, en la del bodhisattva, con las rodillas apoyadas en el suelo. Mantén la espalda recta y los hombros un poco abiertos hacia atrás. La cabeza, erguida, con la barbilla algo recogida. Los ojos, entornados, y la lengua tocando el paladar.",time:30},
       {text:"Primero, los aires",instruction:"Antes de meditar, limpiamos los aires tres veces. Pulgar en la base del anular, los otros dedos cerrados encima, y las manos en las rodillas con los brazos estirados.",time:15},
       {text:"Primera vez",instruction:"Suelta el aire por la nariz, despacio y al final con fuerza, abriendo los dedos: sale lo negativo como humo negro. Luego toma aire hondo cerrando las manos: entra luz blanca.",time:25},
-      {text:"Segunda vez",instruction:"Otra vez: soltar despacio y con fuerza al final, abriendo los dedos. Tomar aire hondo, cerrando las manos, y llenarte de luz.",time:25},
-      {text:"Tercera vez",instruction:"La última: suelta todo lo que pesa y llénate de luz blanca y brillante.",time:25},
+      {text:"Segunda vez",instruction:"Segunda vez. Suelta el aire despacio y al final con fuerza, abriendo los dedos. Luego toma aire hondo, cerrando las manos, y llénate de luz.",time:25},
+      {text:"Tercera vez",instruction:"Tercera y última. Suelta todo lo que pesa, abriendo los dedos. Luego toma aire, cerrando las manos, y llénate de luz blanca y brillante.",time:25},
       {text:"Las manos en meditación",instruction:"Sin cambiar la postura, pon la mano derecha sobre la izquierda, con los pulgares tocándose apenas. Respira de forma natural.",time:20},
-      {text:"La respiración como apoyo",instruction:"Deja que la mente se apoye en la respiración. Atiende al aire que entra y al aire que sale, de manera relajada.",time:100},
-      {text:"Mente y aire, uno",instruction:"La mente está en la respiración y la respiración está en la mente. No fuerces el aire: si la respiración está tranquila, la mente también lo estará.",time:100},
-      {text:"Si te distraes",instruction:"Si te has ido, no pasa nada. Vuelve con suavidad al aire que entra y sale. Sin prisa y sin juzgarte.",time:100},
-      {text:"El loto en el corazón",instruction:"Ahora, a la altura del corazón, en el centro de energía y no en el órgano, imagina una flor de loto de ocho pétalos, de color azul claro.",time:100},
-      {text:"Quédate en el loto",instruction:"Deja la atención en la flor. No hace falta verla perfecta: basta con sentir que está ahí.",time:100},
-      {text:"Vuelve al loto",instruction:"Si la mente se ha ido, vuelve a la flor azul de ocho pétalos, abierta en tu corazón.",time:100},
-      {text:"La esfera de luz",instruction:"Encima del loto aparece una pequeña esfera de luz blanca, un bindu. Pasa la atención a ella.",time:100},
-      {text:"Quédate en la luz",instruction:"Descansa en la esfera blanca, clara y luminosa. Si aparece la niebla del sueño o la distracción, vuelve a su brillo.",time:100},
-      {text:"Solo la esfera",instruction:"Solo la esfera de luz, quieta sobre el loto. Nada más que hacer.",time:100},
-      {text:"El Buda",instruction:"Ahora la esfera se convierte en el cuerpo del Buda Shakyamuni, pequeño, en tu corazón. Deja la mente unificada en su imagen.",time:90},
-      {text:"Rayos de luz",instruction:"Del corazón del Buda salen rayos de luz que llenan todo tu cuerpo. Esa luz aclara las emociones y las disuelve todas; disuelve también la mente nublada.",time:60},
+      {text:"La respiración como apoyo",instruction:"Deja que la mente se apoye en la respiración. Atiende al aire que entra y al aire que sale, de manera relajada.",time:45},
+      {text:"La respiración como apoyo",instruction:"Sigue en el aire que entra y que sale.",time:45},
+      {text:"Mente y aire, uno",instruction:"Piensa que el aire y tu mente son una sola cosa, sin separación. Respira con naturalidad, sin forzar. Si la respiración está tranquila, la mente también lo estará.",time:45},
+      {text:"Mente y aire, uno",instruction:"Sin forzar. Solo respirar.",time:45},
+      {text:"Si te distraes",instruction:"Si te has ido, no pasa nada. Vuelve con suavidad al aire que entra y sale. Sin prisa y sin juzgarte.",time:45},
+      {text:"Si te distraes",instruction:"Vuelve al aire, con suavidad.",time:45},
+      {text:"El loto en el corazón",instruction:"Ahora lleva la atención a la altura del corazón: no al órgano, sino al centro de energía. Imagina ahí un loto azul claro con ocho pétalos y, encima, una esfera de luz blanca, un bindu. Por ahora, deja la atención en la flor.",time:45},
+      {text:"El loto en el corazón",instruction:"Sigue en la flor azul.",time:45},
+      {text:"Quédate en el loto",instruction:"Deja la atención en la flor. No hace falta verla perfecta: basta con sentir que está ahí.",time:45},
+      {text:"Quédate en el loto",instruction:"Ocho pétalos, azul claro.",time:45},
+      {text:"Vuelve al loto",instruction:"Si la mente se ha ido, vuelve a la flor azul de ocho pétalos, abierta en tu corazón.",time:45},
+      {text:"Vuelve al loto",instruction:"Solo la flor, en tu corazón.",time:45},
+      {text:"La esfera de luz",instruction:"Ahora pasa la atención a la esfera de luz blanca, el bindu, que está encima del loto. Quédate en ella.",time:45},
+      {text:"La esfera de luz",instruction:"Sigue en la luz blanca.",time:45},
+      {text:"Quédate en la luz",instruction:"Descansa en la esfera blanca, clara y luminosa. Si aparece la niebla del sueño o la distracción, vuelve a su brillo.",time:45},
+      {text:"Quédate en la luz",instruction:"Clara y luminosa.",time:45},
+      {text:"Solo la esfera",instruction:"Solo la esfera de luz, quieta sobre el loto. Nada más que hacer.",time:45},
+      {text:"Solo la esfera",instruction:"Quieta, sobre el loto.",time:45},
+      {text:"El Buda",instruction:"Ahora la esfera de luz toma la forma del Buda Shakyamuni, pequeño, en tu corazón. Reúne toda tu mente en su imagen.",time:90},
+      {text:"Rayos de luz",instruction:"Desde su corazón, el Buda irradia rayos de luz que te llenan el cuerpo entero. La luz aclara tus emociones hasta deshacerlas todas, y también se lleva la mente nublada.",time:60},
       {text:"Cuerpo de luz",instruction:"Tu cuerpo se vuelve luminoso y transparente, hecho de luz.",time:60},
-      {text:"Descansa",instruction:"Deja que la mente permanezca en paz en ese estado, sin hacer nada más.",time:60},
+      {text:"Descansa",instruction:"Quédate así, con la mente en paz, sin hacer nada más.",time:60},
       {text:"Cierre",instruction:"Poco a poco, vuelve a notar el cuerpo y el sitio donde estás. Abre los ojos despacio y lleva esta paz contigo.",time:20}
     ]},
   {id:3, g:"tib", name:"Tong-len (dar y tomar)", sub:"Dar todo tu bienestar y tomar el sufrimiento de los seres", icon:"🤲", breath:{in:5,out:5},
     steps:[
       {text:"Postura",instruction:"Siéntate con el cuerpo erguido y bien colocado. Respira un par de veces con calma.",time:20},
       {text:"Todos los seres",instruction:"Abre la mente a todos los seres, como si de verdad estuvieran aquí, delante de ti.",time:45},
-      {text:"Su falta de libertad",instruction:"Piensa en que no son libres: están en un océano de sufrimiento, por el karma, los actos negativos y las emociones que los arrastran, y por eso sufren.",time:60},
+      {text:"Su falta de libertad",instruction:"Piensa que no son libres. Viven en un océano de sufrimiento, atados por el karma, por sus actos negativos y por las emociones que los arrastran. Y por eso sufren.",time:60},
       {text:"Reúne lo bueno",instruction:"Junta todo tu karma positivo de todas tus vidas, tu felicidad, tu alegría, tu bienestar y todo el bien que aún no ha dado fruto. Lo vas a ofrecer a todos.",time:45},
-      {text:"Dar · al soltar el aire",instruction:"Al soltar el aire por la nariz, sale una luz blanca hacia todas las direcciones. Toca a todos los seres y les da todo el bienestar y toda la felicidad.",time:75},
+      {text:"Dar · al soltar el aire",instruction:"Al soltar el aire por la nariz, sale de ti una luz blanca en todas direcciones. Llega a cada ser y le regala todo tu bienestar y toda tu felicidad.",time:75},
       {text:"Todo lo que necesiten",instruction:"Con esa luz ofreces también muchas formas de tu cuerpo y, si lo necesitan, la joya que cumple todos los deseos. Los seres descansan felices y satisfechos.",time:75},
-      {text:"Tomar · al tomar aire",instruction:"Al tomar aire, el aire es una luz negra que recoge el karma negativo, las tendencias, el sufrimiento, las faltas y las emociones de todos los seres, sin excepción. Lo tomas en ti.",time:75},
-      {text:"Dar y tomar",instruction:"Sigue con la respiración: al soltar, das luz blanca y todo tu bien; al tomar aire, recibes la luz negra del sufrimiento. Primero dar, después tomar.",time:120},
-      {text:"Si da miedo",instruction:"Al principio puede dar un poco de miedo, como si de verdad fueras a cargar con el sufrimiento. Es normal: con la práctica, poco a poco, te acostumbras. Si hoy pesa demasiado, quédate un rato solo en dar.",time:45},
+      {text:"Si da miedo",instruction:"Al principio puede dar algo de miedo, como si de verdad fueras a cargar con el sufrimiento. Es normal, y con la práctica se va pasando. Si en algún momento te agobias, deja la respiración libre unos segundos y vuelve a empezar, siempre primero por dar.",time:45},
+      {text:"Tomar · al tomar aire",instruction:"Ahora, al tomar aire por la nariz, el aire es una luz negra. Recoge el karma negativo, las tendencias, el sufrimiento, las faltas y las emociones que perturban a todos los seres, sin excepción, y tú lo tomas en ti. Al soltar el aire, sigues dando la luz blanca.",time:75},
+      {text:"Dar y tomar",instruction:"Sigue con la respiración: al soltar, das luz blanca y todo tu bien; al tomar aire, recibes la luz negra del sufrimiento. Primero dar, después tomar.",time:60},
+      {text:"Dar y tomar",instruction:"Al soltar el aire, das. Al tomar aire, tomas.",time:60},
       {text:"Cierre",instruction:"Deja la respiración libre. Esta práctica hace mucho bien si se hace cada día, aunque sean unos minutos.",time:30}
     ]}
 ];
@@ -1200,7 +1210,7 @@ function startMed(id){
   beep(400);vibrate(40);
   S.medCurrent=medL(MEDITATIONS.find(m=>m.id===id));
   S.medStep=0;S.medPlaying=false;S.medTimer=0;S.medDone=false;S.medLeft=null;
-  setBreathAnim(S.medCurrent.breath||{in:4,out:6});
+  if(S.medCurrent.breath)setBreathAnim(S.medCurrent.breath); // sin círculo: respiración natural (lung ro, shi né…)
   document.getElementById('med-title').textContent=S.medCurrent.name;
   go('meditation-detail'); renderMedStep();
 }
@@ -1223,15 +1233,15 @@ function renderMedStep(){
   const pct=(S.medStep/med.steps.length)*100;
   const dots=med.steps.map((_,i)=>`<div class="dot ${i<S.medStep?'done':i===S.medStep?'active':''}" ></div>`).join('');
   const tv=S.medPlaying?S.medTimer:Math.round(step.time*SPEED[S.medSpeed]);
-  const b=med.breath||{in:4,out:6};
+  const b=med.breath;
   el.innerHTML=`
     <div class="tcard">
       <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
       <div class="dots" style="margin-top:8px">${dots}</div>
-      <div class="breath-wrap">
+      ${b?`<div class="breath-wrap">
         <div class="breath-circle${S.medPlaying?'':' paused'}"></div>
         <div class="breath-hint">${t('breath_hint',{b:breathHint(b)})}</div>
-      </div>
+      </div>`:''}
       <div class="sbox">
         <div class="snum">${t('step_of',{i:S.medStep+1,n:med.steps.length})}</div>
         <div class="sname">${step.text}</div>
