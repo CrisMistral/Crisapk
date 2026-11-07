@@ -1,4 +1,4 @@
-/* Configuración de «Todas las filósofas».
+/* Configuración de «Eso dijo ella».
  * Rellena solo lo que vayas consiguiendo: lo que quede vacío sigue funcionando como enlace normal (sin comisión).
  */
 
@@ -10,7 +10,7 @@ window.AFILIADOS = {
   casadellibro: { awinmid: '', awinaffid: '' },  // Awin: «Advertiser ID» de Casa del Libro y tu «Publisher ID»
   fnac:         { awinmid: '', awinaffid: '' },  // Awin: «Advertiser ID» de Fnac ES y tu «Publisher ID»
   iberlibro:    { impact: '' },                  // Impact: tu enlace base, p. ej. https://iberlibro.sjv.io/c/123/456/789
-  amazon:       { tag: '' },                     // Amazon Afiliados: tu ID de afiliada, p. ej. todaslasfilo-21
+  amazon:       { tag: '' },                     // Amazon Afiliados: tu ID de afiliada, p. ej. esodijoella-21
   buscalibre:   { param: '' },                   // Buscalibre: el parámetro que te den, p. ej. afiliado=1234
   agapea:       { param: '' },                   // Agapea: el parámetro que te den
 };

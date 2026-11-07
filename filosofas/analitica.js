@@ -1,4 +1,4 @@
-/* Analítica y consentimiento de cookies de «Todas las filósofas».
+/* Analítica y consentimiento de cookies de «Eso dijo ella».
  *
  * Para activarla, rellena ANALITICA:
  *   - Sin cookies (recomendado):  {proveedor:'goatcounter', id:'TU-CODIGO'}   → https://TU-CODIGO.goatcounter.com
