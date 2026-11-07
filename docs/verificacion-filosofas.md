@@ -105,3 +105,18 @@ Contrastadas 15 fichas de alto riesgo con el texto de su artículo.
 
 ### Cambio de nombre
 La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
+
+### Tanda 3: Edad Media (18 leídas)
+- **Correctas:** Rabia al-Adawiyya, Yeshe Tsogyal, Machig Labdrön, Akka Mahadevi, Muktabai, Catalina de Siena.
+- **Corregidas:**
+  - Fátima al-Fihri: nació en Cairuán (Túnez).
+  - Sei Shōnagon, Murasaki Shikibu, Hildegarda y Eloísa: descripciones ajustadas a lo que dicen los artículos.
+  - Clara de Asís: «la pobreza como libertad» no está en el artículo.
+  - Hadewijch: lo del «abismo» no está en el artículo.
+  - Matilde de Magdeburgo: beguina y luego cisterciense en Helfta.
+  - Margarita Porete: el alma «aniquilada» lo ha dejado todo salvo a Dios.
+  - Brígida: escribió a los príncipes por la paz, no para reformar la Iglesia.
+  - Lal Ded: lo de la casta no está en el artículo.
+  - Juliana de Norwich: nació hacia 1342; es «quizá» el primer libro en inglés de una mujer.
+- **Mapa por continentes:** ahora reconoce Túnez, Marruecos, Cairuán, Éfeso y Asia Menor.
+- **Candidatas medievales** (hay que verificarlas): Beatriz de Nazaret, Gertrudis de Helfta, Matilde de Hackeborn, Ángela de Foligno, Margery Kempe, Janabai.
