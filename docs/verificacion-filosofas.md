@@ -248,3 +248,25 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
   - Janet Wolff: «la flâneuse invisible», su ensayo.
   - MacKinnon: «feminismo de la dominación».
   - Gillian Rose: «el duelo y la ley» («Mourning Becomes the Law»).
+
+### Tanda 11: de 1948 a 1959 (45 leídas, 36 nuevas en el registro)
+- **Correctas:** Ueno, Stengers, Iris Marion Young, Rivera Cusicanqui, Te Awekotuku, Pollock, Benhabib, Linda Tuhiwai Smith, Korsmeyer, Acholonu, Mohanty, Alcoff, Haslanger, Wendy Brown, Butler, Barad, Amina Mama, Estrella de Diego, Crenshaw, Elizabeth Anderson. La muerte de Li Xiaojiang (12 de febrero de 2025) ya estaba bien.
+- **Lugar corregido:**
+  - bell hooks nació en Hopkinsville (Kentucky).
+  - Haunani-Kay Trask nació en San Francisco, aunque creció en Hawái; sigue en Oceanía.
+  - Catherine Malabou nació en Sidi Bel Abbès (Argelia). Pasa a África, como Hélène Cixous (Orán).
+  - Más precisos: Asma Barlas (Lahore), Rebecca Goldstein (White Plains), Awa Thiam (Dakar), Yuriko Saito (Sapporo), Rosi Braidotti (Latisana).
+  - Francesca Gargallo: Wikidata confirma Siracusa.
+- **Fecha:** Yuriko Saito nació en 1953 (ya no se da como aproximada). Amelia Valcárcel, 1950, confirmada.
+- **Corregidas:**
+  - Uma Narayan: su libro es «Dislocating Cultures» (1997), no «Descolonizar culturas».
+  - Francesca Gargallo: «Feminismos desde Abya Yala» (2012), las ideas de las mujeres de 607 pueblos originarios.
+  - Moira Gatens: «Imaginary Bodies» (1996) trata de ética, poder y corporalidad; Spinoza va aparte.
+  - Tanella Boni: poeta, filósofa y crítica literaria; la dignidad humana frente a la violencia.
+  - Li Xiaojiang: fundó el primer centro de investigación sobre la mujer en la China posmaoísta.
+  - bell hooks: pedagogía transgresora y el amor como práctica de libertad.
+  - Rita Segato: descripción más corta, con el mismo contenido.
+  - Corrientes más exactas: Valcárcel (feminismo de la igualdad), Barlas (hermenéutica coránica), Gargallo (feminismo latinoamericano).
+- **Añadido:** Sueli Carneiro fundó Geledés, Instituto de la Mujer Negra (1988), y pidió «ennegrecer el feminismo».
+- **Enlace nuevo:** Jane Bennett enlaza a su artículo (antes solo abría una búsqueda en Wikipedia).
+- **Correctas aunque el artículo no lo recoja**, por ser su propia obra: Benhabib (universalismo interactivo), Stengers (cosmopolíticas y la intrusión de Gaia), Ueno (el cuidado).
