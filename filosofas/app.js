@@ -411,7 +411,7 @@ const CONTS=["América del Norte","América Latina y el Caribe","Europa","Áfric
 const CONT_RX=[
  [1,/Lima|Colombia|Uruguay|Ecuador|Bolivia|Cuba|Caracas|Oaxaca|México|Nueva España|Buenos Aires|Argentina|La Paz|Chile|Guatemala|Brasil|São Paulo|Santos|República Dominicana|Jamaica|Panamá/],
  [3,/Costa de Marfil|Camerún|Cartago|Etiopía|Congo|Sokoto|Sudáfrica|Sierra Leona|Kenia|Senegal|Uganda|Alejandría|Cirene|Fez|Egipto|Nigeria|Orán|Túnez|Marruecos|Cairuán/],
- [4,/Beirut|Indonesia|Kioto|Tíbet|Corea|Japón|Irán|Persia|Líbano|Nazaret|Java|Siria|India|Mesopotamia|China|Tokio|Cachemira|Bengala|Basora|Pérgamo|Capadocia|Mileto|Pakistán|Baréin|Calcuta|Bombay|Dehradun|Karnataka|Rajastán|Maharashtra|Éfeso|Asia Menor|Anatolia/],
+ [4,/Beirut|Indonesia|Kioto|Tíbet|Corea|Japón|Irán|Persia|Líbano|Nazaret|Java|Siria|India|Mesopotamia|China|Tokio|Cachemira|Bengala|Basora|Pérgamo|Capadocia|Mileto|Pakistán|Baréin|Calcuta|Bombay|Dehradun|Karnataka|Rajastán|Maharashtra|Éfeso|Asia Menor|Anatolia|\bEdo\b|Sendai/],
  [5,/Aotearoa|Hawái|Fiyi|Australia|Nueva Zelanda|Sídney/],
  [0,/Estados Unidos|EE\. UU\.|Nueva York|Connecticut|Chicago|Illinois|Cedarville|Canadá|Minnesota|Texas|Pensilvania|Ottawa|Ohio|Nueva Jersey|Milwaukee|Massachusetts|Kentucky|Filadelfia|Denver|Cleveland|Carolina|Boston|Baltimore|California|Alabama/]];
 const CONT_FIX={"Dorothy Wrinch":2,"Nazira Zeineddine":4,"Alicia Moreau de Justo":1,"Teresa de la Parra":1,"Francesca Gargallo":1,"Nelly Richard":1,"Griselda Pollock":2};
