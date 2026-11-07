@@ -1,6 +1,8 @@
 """Aplica correcciones a fichas: corrige.py cambios.json  → {nombre:{campo:valor}} (campos: nac, muerte, aprox, lugar, corriente, desc)"""
 import json,re,sys
-p='/home/user/Crisapk/filosofas/index.html';s=open(p).read()
+import os
+APP=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..','filosofas','app.js')  # datos de las fichas
+p=APP;s=open(p).read()
 C=json.load(open(sys.argv[1]))
 idx={'nac':1,'muerte':2,'aprox':3,'lugar':4,'corriente':5,'tags':6,'desc':7,'peso':8}
 for n,cambios in C.items():

@@ -1,6 +1,8 @@
 import json,re,sys,urllib.parse
 import os; S=os.path.dirname(os.path.abspath(__file__))+'/'
-s=open('/home/user/Crisapk/filosofas/index.html').read()
+import os
+APP=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..','filosofas','app.js')  # datos de las fichas
+s=open(APP).read()
 D=json.loads(re.search(r'const D=(\[[\s\S]*?\n\]);',s).group(1))
 W=json.loads(re.search(r'const WIKI=(\{.*?\});',s).group(1))
 W.update({"Gerda Walther":"de:Gerda Walther","Karaikkal Ammaiyar":"Karaikkal Ammaiyar","Janet Wolff":"en:Janet Wolff","Sulabha":"en:Sulabha"})

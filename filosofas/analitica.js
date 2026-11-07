@@ -42,6 +42,7 @@
     if(ANALITICA.proveedor!=='ga4'){ alert('Esta web no usa cookies de analítica ni de publicidad. Solo guarda en tu navegador tus ajustes de lectura.'); return; }
     guardar(''); banner();
   };
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-cookies]');if(a){e.preventDefault();window.preferenciasCookies()}});
 
   if(!ANALITICA.proveedor || !ANALITICA.id) return;
   if(ANALITICA.proveedor==='goatcounter'){
