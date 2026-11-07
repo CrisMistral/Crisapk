@@ -270,3 +270,32 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
 - **Añadido:** Sueli Carneiro fundó Geledés, Instituto de la Mujer Negra (1988), y pidió «ennegrecer el feminismo».
 - **Enlace nuevo:** Jane Bennett enlaza a su artículo (antes solo abría una búsqueda en Wikipedia).
 - **Correctas aunque el artículo no lo recoja**, por ser su propia obra: Benhabib (universalismo interactivo), Stengers (cosmopolíticas y la intrusión de Gaia), Ueno (el cuidado).
+
+### Tanda 12: de 1959 a hoy (35 leídas, última)
+- **Correctas:** Fricker, Marina Núñez (ahora enlaza a su artículo), Koyo Kouoh, Teresia Teaiwa, Sianne Ngai, Garcés, Vasallo, Ypi, María Mallo, Kate Manne, Emily Brady, Peggy Zeglin Brand (sin artículo en Wikipedia: comprobada en las editoriales Penn State y Indiana University Press).
+- **Fechas corregidas:**
+  - Saba Mahmood nació en 1962, no en 1961 (Universidad de California, Times Higher Education y Biblioteca Nacional Alemana; la Wikipedia en inglés dice 1961).
+  - Sylvia Tamale: hacia 1962, como dice Wikipedia en español y en inglés, y no 1967 (trabajó 37 años en la Universidad de Makerere hasta 2022).
+  - Katya Mandoki nació en 1947 en Ciudad de México; antes solo teníamos el año de su obra.
+  - Yuderkys Espinosa (1967) y Julieta Paredes (1967) ya no se dan como aproximadas.
+- **Fechas que se mantienen tras comprobarlas:** Rahel Jaeggi, 1967 (la Wikipedia inglesa dice 1966; la Biblioteca Nacional Alemana y Wikidata, 1967); Lorena Cabnal, hacia 1973 (la Wikipedia española dice 1972, la inglesa y Wikidata 1973); Sianne Ngai, 1971 (Biblioteca Nacional Alemana).
+- **Lugar corregido o más preciso:**
+  - Rahel Jaeggi nació en Berna (Suiza), no en Berlín.
+  - Gadis Arivia nació en Nueva Delhi (India).
+  - Más precisos: Menchú (Uspantán), Langton (Ludhiana), Mahmood (Quetta), Svampa (Allen), Amelia Jones (Durham), Ochy Curiel (Santiago de los Caballeros), Berkins (Pocitos, Salta), Espinosa (Santo Domingo), Paredes (La Paz), Teaiwa (Honolulu), Sara Ahmed (Salford), Cabnal (Jalapa), Gago (Chivilcoy), Ypi (Tirana), Yásnaya Aguilar (Ayutla Mixe), Mandoki (Ciudad de México).
+- **Corregidas:**
+  - Elsa Dorlin: el libro en español es «Autodefensa. Una filosofía de la violencia».
+  - Sylvia Tamale: el libro es «Decolonization and Afro-Feminism» (2020), sin edición en español.
+  - Lorena Cabnal: su concepto es el «territorio cuerpo-tierra».
+  - Yásnaya Aguilar: lingüista y activista de los derechos lingüísticos; «nuestras lenguas no mueren, las matan».
+  - Bonnie Mann: el subtítulo de su libro habla de feminismo, posmodernismo y medio ambiente.
+  - Yuderkys Espinosa: crítica de los feminismos occidentales y eurocéntricos.
+  - Katya Mandoki: «Prosaica» (1994) y «Everyday Aesthetics» (2007) son dos libros distintos.
+  - Peggy Zeglin Brand: «Beauty Matters» lo editó ella sola.
+  - Corrientes más exactas: Raquel Gutiérrez (pensamiento comunitario-popular), Remedios Zafra (crítica cultural y ciberfeminismo), Yásnaya Aguilar (derechos lingüísticos).
+- **Descripciones con más contenido:** Menchú, Langton, Mahmood, Amelia Jones, Djamila Ribeiro y Amia Srinivasan.
+- **Correctas aunque el artículo no lo recoja**, por ser su propia obra: Svampa («consenso de los commodities»), Fricker (injusticia testimonial y hermenéutica), Paredes («entronque patriarcal»), Langton (el silenciamiento), Mahmood (la agencia no siempre es resistencia), Emily Brady (apreciar la naturaleza con imaginación y respeto).
+- **Buscador:** «autodefensa», «defensa personal» y «artes marciales» llevan ahora a Elsa Dorlin, que también aparece en «violencia».
+
+## Repaso terminado
+Las 385 fichas se han leído y contrastado con su artículo de Wikipedia (y, cuando no coincidían, con Wikidata, bibliotecas nacionales, universidades o editoriales). El registro está en `docs/verificacion/estado.json` y las correcciones de cada tanda en `docs/verificacion/t*.json`.
