@@ -175,3 +175,20 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
   - Charlotte Perkins Gilman, Olive Schreiner, Anna Julia Cooper, Emma Goldman, Voltairine de Cleyre: descripciones ajustadas a lo que dicen los artículos.
   - Lugares y corrientes ajustados en Savitribai Phule, Blavatsky, Ellen Key, Vernon Lee, Druskowitz, Zaynab Fawwaz, Mary Parker Follett y Charlotte Maxeke.
 - **Candidatas:** Hedwig Dohm, Malwida von Meysenbug, Stefania Wolicka, Mary Church Terrell.
+
+### Tanda 7: de 1879 a 1910 (36 leídas, tercera pasada programada)
+- **Correctas:** Huda Shaarawi, Kartini, He-Yin Zhen, Malak Hifni Nasif, Mai Ziadeh, Conrad-Martius, Victoria Ocampo, Yamakawa Kikue, Edith Stein, María Skobtsova, Langer, Ransome-Kuti, Grete Hermann, Zambrano, Ayn Rand, Arendt, Carson, Beauvoir, Doria Shafik, Simone Weil, Jeanne Hersch.
+- **Corregidas:**
+  - Susan Stebbing: «propaganda» no aparece en los artículos; se corrige en su ficha y en el buscador.
+  - Hiratsuka Raichō: la cita traducida como en el artículo; cofundó «Seitō».
+  - Alicia Moreau de Justo: nació en Londres.
+  - Teresa de la Parra: nació en París; el tema de sus conferencias.
+  - Dorothy Wrinch: el «principio de inducción» no está en el artículo.
+  - Ksenija Atanasijević: primera doctora del Reino de los serbios, croatas y eslovenos.
+  - Dolores Cacuango: la primera escuela bilingüe, en 1946.
+  - Anandamayi Ma: rehusó ser llamada gurú.
+  - Na Hye-sok, Anni Albers, Begum Rokeya: título u obra exactos.
+  - Nazira Zeineddine: nació en Estambul.
+  - Marjorie Grene: escribió la primera historia de la filosofía de la biología; no la «fundó».
+  - Sofia Yanóvskaya y Rózsa Péter: lugar o corriente.
+- **Candidatas:** Clara Zetkin, Noe Itō, Nabawiyya Musa, Tránsito Amaguaña, Emmy Noether.
