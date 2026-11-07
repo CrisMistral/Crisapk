@@ -160,3 +160,18 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
   - Mary Shepherd y Wang Zhenyi: lugar de nacimiento.
   - Charrière: lo del matrimonio no está en el artículo.
 - **Candidatas:** Mary Somerville, Mary Hays, Jane Marcet, Madame de Genlis, Bettina Brentano.
+
+### Tanda 6: siglo XIX (36 leídas, segunda pasada programada)
+- **Correctas:** Cobbe, Mary Everest Boole, Victoria Welby, Annie Besant, Tarabai Shinde, Pandita Ramabai, Bibi Khanum Astarabadi, Lou Andreas-Salomé, Ricarda Huch, Casely-Hayford, Helene Stöcker, Rosa Luxemburgo, Kollontai, Qiu Jin, Yosano Akiko.
+- **Corregidas:**
+  - Antoinette Brown Blackwell: criticó a Darwin y Spencer en su libro; no consta un debate con ellos.
+  - Clémence Royer: librepensamiento.
+  - Christine Ladd-Franklin: lo del «antilogismo» no está en el artículo.
+  - Maria Montessori: la frase entrecomillada no es suya.
+  - Paulina Luisi: nació en Colón (Argentina).
+  - Anna Tumarkin: nació en Dubrowna; fue la primera profesora de Filosofía en Berna.
+  - Jane Addams: nació en Cedarville; «la democracia como ideal social».
+  - Mary Whiton Calkins: nació en Connecticut; psicología del yo.
+  - Charlotte Perkins Gilman, Olive Schreiner, Anna Julia Cooper, Emma Goldman, Voltairine de Cleyre: descripciones ajustadas a lo que dicen los artículos.
+  - Lugares y corrientes ajustados en Savitribai Phule, Blavatsky, Ellen Key, Vernon Lee, Druskowitz, Zaynab Fawwaz, Mary Parker Follett y Charlotte Maxeke.
+- **Candidatas:** Hedwig Dohm, Malwida von Meysenbug, Stefania Wolicka, Mary Church Terrell.
