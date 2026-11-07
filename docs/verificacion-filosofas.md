@@ -120,3 +120,11 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
   - Juliana de Norwich: nació hacia 1342; es «quizá» el primer libro en inglés de una mujer.
 - **Mapa por continentes:** ahora reconoce Túnez, Marruecos, Cairuán, Éfeso y Asia Menor.
 - **Candidatas medievales** (hay que verificarlas): Beatriz de Nazaret, Gertrudis de Helfta, Matilde de Hackeborn, Ángela de Foligno, Margery Kempe, Janabai.
+
+### Añadidas (verificadas en Wikipedia)
+- Beatriz de Nazaret, Gertrudis de Helfta, Ángela de Foligno, Margery Kempe y Janabai (total: 385).
+- **Descartadas:**
+  - Matilde de Hackeborn: no escribió.
+  - Arignota: sus obras son probablemente apócrifas.
+  - Temista: no se conserva ninguna obra.
+  - Uppalavanna: sin obra.
