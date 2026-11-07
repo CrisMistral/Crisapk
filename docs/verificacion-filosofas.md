@@ -128,3 +128,16 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
   - Arignota: sus obras son probablemente apócrifas.
   - Temista: no se conserva ninguna obra.
   - Uppalavanna: sin obra.
+
+### Tanda 4: Renacimiento y Barroco (18 leídas)
+- **Correctas:** Isotta Nogarola, Laura Cereta, Teresa de Ávila, Lucrezia Marinella, Margaret Cavendish, Anne Conway (el enlace pasa a su artículo inequívoco, en inglés).
+- **Corregidas:**
+  - Christine de Pizan: contra la misoginia del «Roman de la Rose».
+  - Mirabai: murió hacia 1546.
+  - Tullia d'Aragona: neoplatonismo amoroso; descripción ajustada.
+  - Oliva Sabuco: murió hacia 1646; autoría disputada con su padre.
+  - Anna Maria van Schurman: nació en Colonia; corriente, pietismo.
+  - Madeleine de Scudéry: nació en El Havre; corriente, preciosismo.
+  - Isabel de Bohemia: nació en Heidelberg; corriente, cartesianismo.
+  - Corrientes que los artículos no respaldaban, cambiadas en Teresa de Cartagena, Moderata Fonte, Marie de Gournay, Cristina de Suecia y Elena Cornaro.
+- **Candidatas:** Arcangela Tarabotti, Vittoria Colonna, Lady Ranelagh.
