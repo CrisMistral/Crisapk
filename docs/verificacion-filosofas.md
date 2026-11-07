@@ -141,3 +141,22 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
   - Isabel de Bohemia: nació en Heidelberg; corriente, cartesianismo.
   - Corrientes que los artículos no respaldaban, cambiadas en Teresa de Cartagena, Moderata Fonte, Marie de Gournay, Cristina de Suecia y Elena Cornaro.
 - **Candidatas:** Arcangela Tarabotti, Vittoria Colonna, Lady Ranelagh.
+
+### Tanda 5: siglos XVII–XIX (36 leídas, primera pasada programada)
+- **Correctas:** Madame de Lambert, Sor Juana, Madre Castillo, Kimpa Vita, Laura Bassi, Agnesi, Macaulay, Olympe de Gouges, Josefa Amar, Wollstonecraft, Wang Zhenyi, Sophie Germain, Nana Asma'u, Frances Wright, Sojourner Truth, Martineau, Flora Tristán, Nísia Floresta, Margaret Fuller, Ada Lovelace, Táhirih.
+- **Corregidas:**
+  - Concepción Arenal: «Odia el delito y compadece al delincuente» se le atribuye, pero no es suya. Se quita de la ficha y del buscador.
+  - Elizabeth Cady Stanton: participó en la Declaración de Seneca Falls (no consta que la redactara).
+  - Juana Manso: el periódico pionero lo fundó en Brasil.
+  - Harriet Taylor Mill: la coautoría con Mill es discutida.
+  - Karoline von Günderrode: lo de Schelling no está en el artículo.
+  - Sophie de Grouchy: nació en Meulan.
+  - Germaine de Staël: el romanticismo alemán, no el idealismo.
+  - Émilie du Châtelet: defendió a Leibniz frente a los newtonianos.
+  - Damaris Masham: platonismo de Cambridge.
+  - Mary Astell: cita exacta.
+  - Trotter Cockburn y Jeanne Guyon: descripción ajustada.
+  - George Eliot: realismo.
+  - Mary Shepherd y Wang Zhenyi: lugar de nacimiento.
+  - Charrière: lo del matrimonio no está en el artículo.
+- **Candidatas:** Mary Somerville, Mary Hays, Jane Marcet, Madame de Genlis, Bettina Brentano.
