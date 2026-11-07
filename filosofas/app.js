@@ -151,16 +151,16 @@ const D=[
 ["Helen Longino", 1944, null, 0, "Estados Unidos", "Filosofía de la ciencia", "ciencia conocimiento", "La ciencia como conocimiento social.", 1],
 ["Susan Haack", 1945, 2026, 0, "Inglaterra", "Epistemología", "conocimiento logica", "«Fundherentismo» y filosofía de las lógicas.", 1],
 ["Shulamith Firestone", 1945, 2012, 0, "Ottawa / Nueva York", "Feminismo radical", "feminismo cuerpo", "«La dialéctica del sexo».", 1],
-["Elizabeth Spelman", 1945, null, 0, "Estados Unidos", "Feminismo", "feminismo raza", "«La mujer inesencial»: ¿qué mujer es «la mujer»?", 1],
+["Elizabeth Spelman", 1945, 2025, 0, "Estados Unidos", "Feminismo", "feminismo raza", "«La mujer inesencial»: los problemas de exclusión en el pensamiento feminista, pensando raza y género juntos.", 1],
 ["Catharine MacKinnon", 1946, null, 0, "Minnesota", "Derecho feminista", "feminismo politica", "Acoso sexual como discriminación; feminismo de la dominación.", 2],
 ["Susan Moller Okin", 1946, 2004, 0, "Nueva Zelanda", "Teoría política", "politica feminismo", "Justicia, género y familia.", 1],
-["Eva Feder Kittay", 1946, null, 0, "Ginebra / EE. UU.", "Ética del cuidado", "cuidado cuerpo", "Discapacidad, dependencia y la dignidad del cuidado.", 1],
+["Eva Feder Kittay", 1946, null, 0, "Malmö (Suecia) / EE. UU.", "Ética del cuidado", "cuidado cuerpo", "Ética del cuidado: la dependencia humana y la discapacidad cognitiva, en el centro de la teoría de la justicia.", 1],
 ["Martha Nussbaum", 1947, null, 0, "Nueva York", "Ética", "etica politica estetica", "Enfoque de las capacidades y la inteligencia de las emociones.", 3],
 ["Nancy Fraser", 1947, null, 0, "Baltimore", "Teoría crítica", "politica economia feminismo", "Redistribución y reconocimiento.", 2],
 ["Adela Cortina", 1947, null, 0, "Valencia", "Ética discursiva", "etica politica", "Ética cívica y la «aporofobia», el rechazo al pobre.", 2],
 ["Adriana Cavarero", 1947, null, 0, "Italia", "Feminismo de la diferencia", "feminismo existencia", "Narración, voz y unicidad.", 1],
-["Barbara Cassin", 1947, null, 0, "París", "Filología filosófica", "lenguaje", "Los sofistas y el «Vocabulario de los intraducibles».", 1],
-["Gillian Rose", 1947, 1995, 0, "Londres", "Hegelianismo", "politica existencia", "«Love's Work»: el amor, el duelo y la filosofía como trabajo; también una lectura crítica de Hegel y Adorno.", 1],
+["Barbara Cassin", 1947, null, 0, "Boulogne-Billancourt, Francia", "Filología filosófica", "lenguaje", "Los sofistas y el «Vocabulario de los intraducibles».", 1],
+["Gillian Rose", 1947, 1995, 0, "Londres", "Hegelianismo", "politica existencia", "Defensa del pensamiento especulativo de Hegel y estudio de Adorno; «Love's Work» (1995), memorias de su vida, su filosofía y su cáncer.", 1],
 ["Patricia Hill Collins", 1948, null, 0, "Filadelfia", "Feminismo negro", "raza feminismo conocimiento", "Pensamiento feminista negro y matriz de dominación.", 2],
 ["Michèle Le Dœuff", 1948, null, 0, "Francia", "Feminismo", "conocimiento feminismo", "El imaginario filosófico y la elección de Hipparchia.", 1],
 ["Isabelle Stengers", 1949, null, 0, "Bélgica", "Filosofía de la ciencia", "ciencia ecologia", "Cosmopolíticas y la intrusión de Gaia.", 2],
@@ -246,10 +246,10 @@ const D=[
 ["Domitila Barrios de Chungara", 1937, 2012, 0, "Bolivia", "Movimiento obrero", "politica feminismo economia", "«Si me permiten hablar... Domitila, una mujer de las minas de Bolivia»: su testimonio, recogido por Moema Viezzer.", 1],
 ["Josefina Ludmer", 1939, 2016, 0, "Argentina", "Crítica cultural", "lenguaje feminismo", "«Las tretas del débil»: leer a Sor Juana como estrategia de quien no puede hablar.", 1],
 ["Marilena Chaui", 1941, null, 0, "Brasil", "Filosofía política", "politica metafisica", "Espinosa y el autoritarismo en la sociedad brasileña.", 1],
-["Beatriz Nascimento", 1942, 1995, 0, "Brasil", "Pensamiento negro", "raza decolonial", "El quilombo como forma de vida y de resistencia negra.", 1],
+["Beatriz Nascimento", 1942, 1995, 0, "Brasil", "Feminismo negro brasileño", "raza decolonial", "El quilombo como forma de vida y de resistencia negra.", 1],
 ["Ofelia Schutte", 1945, null, 0, "Cuba / EE. UU.", "Filosofía latinoamericana", "decolonial feminismo", "Identidad cultural y liberación en el pensamiento latinoamericano.", 1],
 ["Marcela Lagarde", 1948, null, 0, "México", "Antropología feminista", "feminismo politica", "«Los cautiverios de las mujeres» y el concepto de feminicidio.", 2],
-["Suely Rolnik", 1948, null, 0, "Brasil", "Esquizoanálisis", "psique politica estetica", "Las esferas de la insurrección: descolonizar el inconsciente.", 1],
+["Suely Rolnik", 1948, null, 0, "Brasil", "Micropolítica (con Guattari)", "psique politica estetica", "«Esferas de la insurrección» (2019): «apuntes para una vida sin proxenetismo»; coautora de «Micropolítica» con Félix Guattari.", 1],
 ["Nelly Richard", 1948, null, 0, "Caen / Santiago de Chile", "Crítica cultural", "estetica politica", "Arte, memoria y feminismo en el Chile de la dictadura y la transición.", 1],
 ["Rigoberta Menchú", 1959, null, 0, "Guatemala", "Movimiento indígena", "decolonial politica", "Testimonio maya k'iche' contra el genocidio; Nobel de la Paz.", 2],
 ["Maristella Svampa", 1961, null, 0, "Argentina", "Ecología política", "ecologia politica economia", "El «consenso de los commodities» y el extractivismo.", 1],
@@ -286,7 +286,7 @@ const D=[
 ["Na Hye-sok", 1896, 1948, 0, "Corea", "Feminismo coreano", "feminismo estetica", "Pintora y escritora feminista coreana; en «Confesión de un divorcio» (1934) denunció la desigualdad entre hombres y mujeres.", 1],
 ["Nazira Zeineddine", 1908, 1976, 0, "Estambul / Líbano", "Feminismo e islam", "feminismo", "Erudita drusa: usó el Corán y el hadiz contra el velo integral y la reclusión de las mujeres en «Al-Sufur wal-hijab» (1928).", 1],
 ["Uma Chakravarti", 1941, null, 0, "India", "Historia feminista", "feminismo politica", "El «patriarcado brahmánico»: casta y género juntos.", 1],
-["Kamla Bhasin", 1946, 2021, 0, "India", "Feminismo sudasiático", "feminismo politica", "Feminismo popular en el sur de Asia, con canciones y lemas.", 1],
+["Kamla Bhasin", 1946, 2021, 0, "Shaheedanwali (hoy Pakistán) / Nueva Delhi", "Feminismo sudasiático", "feminismo politica", "Feminismo popular en el sur de Asia, con carteles, teatro, lemas y poesía recitada como «Azadi».", 1],
 ["Chizuko Ueno", 1948, null, 0, "Japón", "Feminismo", "feminismo economia cuidado", "Patriarcado, capitalismo y cuidado en Japón.", 1],
 ["Asma Barlas", 1950, null, 0, "Pakistán / EE. UU.", "Hermenéutica feminista", "feminismo mistica", "Lectura del Corán contra el patriarcado.", 1],
 ["Li Xiaojiang", 1951, 2025, 0, "China", "Estudios de la mujer", "feminismo conocimiento", "Fundó los estudios de la mujer en la China posmaoísta.", 1],
@@ -314,7 +314,7 @@ const D=[
 ["Mary Mothersill", 1923, 2008, 0, "Edmonton (Canadá) / Nueva York", "Estética", "estetica conocimiento", "«Beauty Restored» (1984), considerado un texto central de la estética.", 1],
 ["Susan Sontag", 1933, 2004, 0, "Nueva York", "Ensayo", "estetica politica", "«Contra la interpretación» y «Notas sobre lo camp»: una erótica del arte en lugar de una hermenéutica.", 2],
 ["Ellen Dissanayake", 1992, null, 2, "Estados Unidos", "Estética evolutiva", "estetica cuerpo ciencia", "«Homo Aestheticus» (1992): el arte como «hacer especial» lo cotidiano, una necesidad humana.", 1],
-["Elaine Scarry", 1946, null, 0, "Estados Unidos", "Estética", "estetica etica cuerpo", "«Sobre la belleza y ser justos»: la belleza nos entrena para la justicia.", 1],
+["Elaine Scarry", 1946, null, 0, "Estados Unidos", "Estética", "estetica etica cuerpo", "«Sobre la belleza y ser justos»: defiende la belleza, menospreciada en el pensamiento occidental, y su lazo con la justicia.", 1],
 ["Carolyn Korsmeyer", 1950, null, 0, "Estados Unidos", "Estética", "estetica cuerpo", "«El sentido del gusto»: la comida y el gusto como asuntos filosóficos.", 1],
 ["Sianne Ngai", 1971, null, 0, "Estados Unidos", "Teoría estética", "estetica economia", "«Our Aesthetic Categories»: lo mono, lo chiflado y lo interesante como categorías estéticas del capitalismo tardío.", 1],
 ["Peggy Zeglin Brand", 1995, null, 2, "Estados Unidos", "Estética feminista", "estetica feminismo", "Coeditó con Carolyn Korsmeyer «Feminism and Tradition in Aesthetics» y después «Beauty Matters»: el canon estético revisado desde las mujeres.", 1],
@@ -355,7 +355,7 @@ const D=[
 ["Anandamayi Ma", 1896, 1982, 0, "Kheora, Bengala (hoy Bangladés)", "Espiritualidad hindú", "mistica existencia", "Santa y mística hindú que rehusó ser llamada gurú; una de las grandes figuras espirituales de la India del siglo XX.", 1],
 ["Doria Shafik", 1908, 1975, 0, "Egipto", "Feminismo árabe", "feminismo politica", "Doctora en filosofía por la Sorbona; lideró la lucha por el voto de las mujeres egipcias.", 1],
 ["Etel Adnan", 1925, 2021, 0, "Beirut, Líbano", "Poesía y pintura", "estetica politica", "Poeta y pintora libanesa-estadounidense; estudió filosofía en la Sorbona, escribió sobre la guerra civil libanesa y pintó paisajes.", 1],
-["Élisabeth Badinter", 1944, null, 0, "Francia", "Feminismo ilustrado", "feminismo cuidado", "«¿Existe el amor maternal?»: el instinto maternal como construcción histórica.", 1],
+["Élisabeth Badinter", 1944, null, 0, "Francia", "Feminismo ilustrado", "feminismo cuidado", "«¿Existe el instinto maternal?» (1980): si el amor materno es un instinto natural o una conducta reforzada por la cultura.", 1],
 ["Antoinette Brown Blackwell", 1825, 1921, 0, "Henrietta, Nueva York", "Feminismo", "feminismo ciencia mistica", "Primera mujer ordenada ministra protestante en EE. UU.; criticó a Darwin y Spencer en «The Sexes Throughout Nature» (1875).", 1],
 ["Clémence Royer", 1830, 1902, 0, "Nantes", "Librepensamiento", "ciencia feminismo", "Tradujo al francés «El origen de las especies» de Darwin (1862); defendió la instrucción laica de las mujeres.", 1],
 ["Frances Power Cobbe", 1822, 1904, 0, "Dublín", "Ética victoriana", "etica cuidado feminismo", "Filósofa moral pionera de la protección de los animales y de los derechos de las mujeres.", 1],
@@ -575,7 +575,7 @@ function neighbours(p,k=7){
 }
 const card=document.getElementById('card');
 /* su artículo de Wikipedia (en español si existe); si no lo tenemos, la búsqueda en Wikipedia */
-const WIKI_EXTRA={"Gerda Walther":"de:Gerda Walther","Karaikkal Ammaiyar":"Karaikkal Ammaiyar","Janet Wolff":"en:Janet Wolff","Sulabha":"en:Sulabha"};
+const WIKI_EXTRA={"Gerda Walther":"de:Gerda Walther","Karaikkal Ammaiyar":"Karaikkal Ammaiyar","Janet Wolff":"en:Janet Wolff","Sulabha":"en:Sulabha","Elizabeth Spelman":"en:Elizabeth V. Spelman"};
 function wikiURL(p){
   const t=WIKI[p.n]||WIKI_EXTRA[p.n];
   if(!t)return 'https://es.wikipedia.org/w/index.php?search='+encodeURIComponent(p.n);
@@ -956,7 +956,7 @@ const CONCEPTOS={
  "poesia|poesía|poetic|poétic|escritura|escribir":[["María Zambrano","la razón poética"],["Hélène Cixous","escribir el cuerpo"]],
  "tiempo|historia|memoria|reloj|relojes|calendario|agenda":[["Hannah Arendt","entre el pasado y el futuro"],["Nelly Richard","arte y memoria"]],
  "voz|narrar|relato|historia de vida":[["Adriana Cavarero","tú que me miras, tú que me cuentas"]],
- "discapacidad|diversidad funcional":[["Eva Feder Kittay","la dignidad de la dependencia"]],
+ "discapacidad|diversidad funcional":[["Eva Feder Kittay","la dependencia, en el centro de la justicia"]],
  "velo|islam|corán|coran|musulman":[["Fatema Mernissi","el harén político"],["Leila Ahmed","mujeres y género en el islam"]],
  "bruja|brujas|hechic":[["Silvia Federici","Calibán y la bruja"]],
  "misogin|machismo|patriarc|masculin":[["Kate Manne","la lógica de la misoginia"],["Rita Segato","el mandato de masculinidad"]],

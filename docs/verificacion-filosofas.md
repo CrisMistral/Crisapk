@@ -229,3 +229,22 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
   - Merchant, O'Neill, Jaggar, Lloyd, Margulis: lugar o corriente.
 - **Ninguna de las vivas ha fallecido** sin que la ficha lo diga.
 - **Candidatas:** Françoise d'Eaubonne, Mariarosa Dalla Costa, Selma James, Maria Mies, Leopoldina Fortunati, Cherríe Moraga, Alicia Puleo, María Milagros Rivera Garretas, Esperanza Guisán.
+
+### Tanda 10: de 1942 a 1948 (36 leídas)
+- **Correctas:** Churchland, Mouffe, Angela Davis, Haraway, Lugones, Amorós, Nancy Cartwright (enlace a la filósofa, no a la actriz), Longino, Connell, Firestone, Schutte, MacKinnon, Okin, Mieke Bal, Annas, Fraser, Cortina, Cavarero, Amadiume, Ramphele, Hill Collins, Le Dœuff, Lagarde, Nelly Richard.
+- **Fecha corregida:** Elizabeth Spelman murió el 26 de diciembre de 2025; la web la daba por viva. Ahora enlaza también a su artículo, que no teníamos. La muerte de Susan Haack (10 de marzo de 2026) ya estaba bien.
+- **Lugar corregido:**
+  - Eva Feder Kittay nació en Malmö (Suecia), no en Ginebra.
+  - Kamla Bhasin nació en Shaheedanwali (hoy Pakistán).
+  - Barbara Cassin nació en Boulogne-Billancourt.
+- **Corregidas:**
+  - Gillian Rose: no hizo una «lectura crítica» de Hegel, sino una defensa de su pensamiento especulativo.
+  - Badinter: título en español, «¿Existe el instinto maternal?».
+  - Suely Rolnik: subtítulo exacto de «Esferas de la insurrección».
+  - Kittay, Bhasin, Scarry y Spelman: descripción ajustada.
+  - Beatriz Nascimento: feminismo negro brasileño.
+- **Correctas aunque el artículo no lo recoja**, por ser su propia obra:
+  - Nussbaum: «la inteligencia de las emociones», subtítulo de «Paisajes del pensamiento».
+  - Janet Wolff: «la flâneuse invisible», su ensayo.
+  - MacKinnon: «feminismo de la dominación».
+  - Gillian Rose: «el duelo y la ley» («Mourning Becomes the Law»).

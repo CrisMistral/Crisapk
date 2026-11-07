@@ -5,7 +5,7 @@ APP=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..','filosofas
 s=open(APP).read()
 D=json.loads(re.search(r'const D=(\[[\s\S]*?\n\]);',s).group(1))
 W=json.loads(re.search(r'const WIKI=(\{.*?\});',s).group(1))
-W.update({"Gerda Walther":"de:Gerda Walther","Karaikkal Ammaiyar":"Karaikkal Ammaiyar","Janet Wolff":"en:Janet Wolff","Sulabha":"en:Sulabha"})
+W.update({"Gerda Walther":"de:Gerda Walther","Karaikkal Ammaiyar":"Karaikkal Ammaiyar","Janet Wolff":"en:Janet Wolff","Sulabha":"en:Sulabha","Elizabeth Spelman":"en:Elizabeth V. Spelman"})
 E=json.load(open(S+'estado.json'))
 hechas=set(E['revisadas'])
 EUR=re.compile(r'Europa',re.I)
