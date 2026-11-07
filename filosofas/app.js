@@ -80,7 +80,7 @@ const D=[
 ["Hiratsuka Raichō", 1886, 1971, 0, "Tokio", "Feminismo japonés", "feminismo existencia", "«En el principio la mujer era el sol»: fundó la revista Seitō.", 1],
 ["Hedwig Conrad-Martius", 1888, 1966, 0, "Alemania", "Fenomenología", "metafisica ciencia", "Fenomenología realista: ontología de la naturaleza y del ser vivo.", 1],
 ["Edith Stein", 1891, 1942, 0, "Breslavia", "Fenomenología", "existencia mistica mente", "«Sobre el problema de la empatía». Asesinada en Auschwitz.", 3],
-["Dorothy Wrinch", 1894, 1976, 0, "Argentina / Inglaterra", "Lógica", "logica ciencia", "Del principio de inducción a la estructura de las proteínas.", 1],
+["Dorothy Wrinch", 1894, 1976, 0, "Rosario (Argentina) / Inglaterra / EE. UU.", "Lógica y biología teórica", "logica ciencia", "Matemática y bioquímica teórica: estudió lógica con Russell, trabajó sobre el método científico y propuso el modelo «ciclol» de las proteínas.", 1],
 ["Susanne Langer", 1895, 1985, 0, "Nueva York", "Filosofía del símbolo", "estetica lenguaje mente", "«Nueva clave de la filosofía»: el arte como forma simbólica del sentir.", 2],
 ["Gerda Walther", 1897, 1977, 0, "Alemania", "Fenomenología", "mistica existencia", "Fenomenología de la comunidad y de la experiencia mística.", 1],
 ["Grete Hermann", 1901, 1984, 0, "Bremen", "Neokantismo", "ciencia logica etica", "Mostró un error en la prueba de von Neumann sobre la mecánica cuántica.", 1],
@@ -240,7 +240,7 @@ const D=[
 ["Paulina Luisi", 1875, 1950, 0, "Colón (Entre Ríos, Argentina) / Montevideo", "Feminismo", "feminismo politica cuerpo", "Primera médica uruguaya; sufragio y educación sexual.", 1],
 ["Dolores Cacuango", 1881, 1971, 0, "Ecuador", "Movimiento indígena", "decolonial educacion politica", "Fundó escuelas bilingües quichua-castellano en Ecuador.", 1],
 ["Alicia Moreau de Justo", 1885, 1986, 0, "Buenos Aires", "Socialismo", "politica feminismo", "Médica socialista y feminista; luchó por el voto de las mujeres en Argentina.", 1],
-["Teresa de la Parra", 1889, 1936, 0, "Caracas", "Ensayo latinoamericano", "feminismo estetica", "Conferencias sobre la influencia de las mujeres en la formación del alma americana.", 1],
+["Teresa de la Parra", 1889, 1936, 0, "París / Caracas", "Literatura feminista venezolana", "feminismo estetica", "Novelista venezolana, autora de «Ifigenia» (1924); en 1927 habló en La Habana de la influencia oculta de las mujeres en la Independencia.", 1],
 ["Victoria Ocampo", 1890, 1979, 0, "Buenos Aires", "Ensayo", "estetica feminismo", "Fundó la revista Sur, puente entre el pensamiento europeo y el latinoamericano.", 2],
 ["Heleieth Saffioti", 1934, 2010, 0, "Brasil", "Feminismo marxista", "economia feminismo", "«La mujer en la sociedad de clases»: patriarcado y capitalismo en Brasil.", 1],
 ["Domitila Barrios de Chungara", 1937, 2012, 0, "Bolivia", "Movimiento obrero", "politica feminismo economia", "«Si me permiten hablar»: una mujer de las minas bolivianas.", 1],
@@ -379,7 +379,7 @@ const D=[
 ["Helene von Druskowitz", 1856, 1918, 0, "Viena", "Feminismo militante", "feminismo", "Una de las primeras doctoras en filosofía; crítica de Nietzsche y del patriarcado.", 1],
 ["Rebecca Goldstein", 1950, null, 0, "Nueva York", "Filosofía y novela", "logica metafisica", "Filosofía en forma de novela y ensayo: Spinoza, Gödel y la incompletitud.", 1],
 ["Khema", -550, "?", 1, "Sagala (hoy Sialkot, Pakistán)", "Budismo", "mistica conocimiento", "Monja budista a la que el Buda llamó la primera de sus discípulas en sabiduría.", 1],
-["Ksenija Atanasijević", 1894, 1981, 0, "Belgrado", "Filosofía", "metafisica feminismo", "Primera mujer doctora en filosofía de Serbia; estudió a Giordano Bruno.", 1],
+["Ksenija Atanasijević", 1894, 1981, 0, "Belgrado", "Filosofía", "metafisica feminismo", "Primera mujer doctorada en el Reino de los serbios, croatas y eslovenos (1922), con una tesis sobre Giordano Bruno.", 1],
 ["Gadis Arivia", 1964, null, 0, "Indonesia", "Feminismo", "feminismo", "Filósofa feminista indonesia; fundó la revista Jurnal Perempuan.", 1],
 ["Ti-Grace Atkinson", 1938, null, 0, "Estados Unidos", "Feminismo radical", "feminismo politica", "Feminismo radical contra la institución del matrimonio.", 1],
 ["Jeanne Guyon", 1648, 1717, 0, "Montargis, Francia", "Quietismo", "mistica", "Mística del amor puro, heredera del quietismo de Molinos; estuvo presa en Vincennes y en la Bastilla (1695–1703).", 1],
@@ -414,7 +414,7 @@ const CONT_RX=[
  [4,/Beirut|Indonesia|Kioto|Tíbet|Corea|Japón|Irán|Persia|Líbano|Nazaret|Java|Siria|India|Mesopotamia|China|Tokio|Cachemira|Bengala|Basora|Pérgamo|Capadocia|Mileto|Pakistán|Baréin|Calcuta|Bombay|Dehradun|Karnataka|Rajastán|Maharashtra|Éfeso|Asia Menor|Anatolia/],
  [5,/Aotearoa|Hawái|Fiyi|Australia|Nueva Zelanda|Sídney/],
  [0,/Estados Unidos|EE\. UU\.|Nueva York|Connecticut|Chicago|Illinois|Cedarville|Canadá|Minnesota|Texas|Pensilvania|Ottawa|Ohio|Nueva Jersey|Milwaukee|Massachusetts|Kentucky|Filadelfia|Denver|Cleveland|Carolina|Boston|Baltimore|California|Alabama/]];
-const CONT_FIX={"Dorothy Wrinch":2,"Francesca Gargallo":1,"Nelly Richard":1,"Griselda Pollock":2};
+const CONT_FIX={"Dorothy Wrinch":2,"Teresa de la Parra":1,"Francesca Gargallo":1,"Nelly Richard":1,"Griselda Pollock":2};
 function contOf(n,pl){ if(n in CONT_FIX)return CONT_FIX[n]; const f=pl.split(" / ")[0];
   for(const [c,rx] of CONT_RX) if(rx.test(f)) return c; return 2; }
 
