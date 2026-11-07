@@ -1,6 +1,6 @@
-# Publicar «Y eso dijo ella» en Cloudflare
+# Publicar «Eso dijo ella» en Cloudflare
 
-Dominio: **yesodijoella.com** · Web: carpeta `filosofas/` del repositorio **CrisMistral/Crisapk**
+Dominio: **esodijoella.org** · Web: carpeta `filosofas/` del repositorio **CrisMistral/Crisapk**
 
 Con esto, la web vive en Cloudflare Pages (gratis) y **se publica sola cada vez que se guarda un cambio en GitHub**.
 
@@ -11,7 +11,7 @@ Con esto, la web vive en Cloudflare Pages (gratis) y **se publica sola cada vez 
 1. Entra en **dash.cloudflare.com** y crea la cuenta con **artdeque@gmail.com**.
 2. **Activa la verificación en dos pasos:** icono de perfil → *My Profile* → *Authentication* → *Two-Factor Authentication*.
 3. En el menú de la izquierda: **Domain Registration → Register Domains**.
-4. Busca `yesodijoella.com`, elige **1 año** y paga (vale la tarjeta de Revolut).
+4. Busca `esodijoella.org`, elige **1 año** y paga (vale la tarjeta de Revolut).
 5. En los datos de contacto, deja activada la **protección de privacidad** (viene incluida).
 6. Decide la **renovación automática**: si la desactivas, apúntate un recordatorio en el calendario un mes antes de que caduque.
 
@@ -23,13 +23,13 @@ Con esto, la web vive en Cloudflare Pages (gratis) y **se publica sola cada vez 
 
    | Campo | Qué poner |
    |---|---|
-   | Project name | `yesodijoella` |
+   | Project name | `esodijoella` |
    | Production branch | `main` *(ver la nota de abajo)* |
    | Framework preset | `None` |
    | Build command | *(vacío)* |
    | Build output directory | `filosofas` |
 
-4. Pulsa **Save and Deploy**. En un minuto tendrás la web en `yesodijoella.pages.dev`.
+4. Pulsa **Save and Deploy**. En un minuto tendrás la web en `esodijoella.pages.dev`.
 
 > **Nota sobre la rama:** ahora mismo todos los cambios de la web están en la rama `ccr-a366421d-nldxb1`, no en `main`. Dos opciones:
 > - **Recomendada:** pídeme que abra un *pull request* y lo fusionas en `main` desde GitHub. Desde entonces, `main` es la web.
@@ -37,9 +37,9 @@ Con esto, la web vive en Cloudflare Pages (gratis) y **se publica sola cada vez 
 
 ## 3 · Poner el dominio (2 minutos)
 
-1. En el proyecto `yesodijoella` de Pages: **Custom domains → Set up a custom domain**.
-2. Escribe `yesodijoella.com` → *Continue* → *Activate domain*. Como el dominio está en tu misma cuenta, Cloudflare crea los registros solo.
-3. Repite con `www.yesodijoella.com`.
+1. En el proyecto `esodijoella` de Pages: **Custom domains → Set up a custom domain**.
+2. Escribe `esodijoella.org` → *Continue* → *Activate domain*. Como el dominio está en tu misma cuenta, Cloudflare crea los registros solo.
+3. Repite con `www.esodijoella.org`.
 4. Para que `www` lleve siempre a la dirección sin `www`: en el dominio → **Rules → Redirect Rules → Create rule** → plantilla *Redirect from WWW to root*.
 5. Espera unos minutos: el candado (HTTPS) se activa solo.
 
@@ -55,5 +55,5 @@ Usa **FormSubmit** y llega a artdeque@gmail.com.
 
 ## 6 · Avísame cuando…
 
-- …esté en `yesodijoella.pages.dev` → reviso que todo funciona.
-- …funcione `yesodijoella.com` → lo compruebo y te paso los siguientes pasos: Ko-fi y afiliados.
+- …esté en `esodijoella.pages.dev` → reviso que todo funciona.
+- …funcione `esodijoella.org` → lo compruebo y te paso los siguientes pasos: Ko-fi y afiliados.

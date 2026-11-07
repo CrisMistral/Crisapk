@@ -1,7 +1,7 @@
-# Afiliaciones de «Y eso dijo ella»
+# Afiliaciones de «Eso dijo ella»
 
 Guía para darte de alta en cada programa y conectar los códigos con la web.
-Web: **https://yesodijoella.com** · Contacto: **artdeque@gmail.com**
+Web: **https://esodijoella.org** · Contacto: **artdeque@gmail.com**
 
 > Cuando tengas un código, pégalo en `filosofas/config.js` (bloque `AFILIADOS`) o pásamelo y lo pongo yo.
 > Los enlaces de cada ficha ya funcionan: en cuanto el código esté puesto, empiezan a contar las comisiones.
@@ -10,7 +10,7 @@ Web: **https://yesodijoella.com** · Contacto: **artdeque@gmail.com**
 
 ## Antes de empezar
 
-1. **Publica la web en yesodijoella.com.** Todos los programas revisan la web antes de aceptarte.
+1. **Publica la web en esodijoella.org.** Todos los programas revisan la web antes de aceptarte.
 2. **Ten a mano:** nombre completo, NIF/DNI, dirección, IBAN o PayPal. Los ingresos se declaran a Hacienda; si llegan a ser regulares, consulta con una gestoría.
 3. **Usa siempre la misma dirección web.** Si más adelante compras un dominio propio, tendrás que actualizarlo en cada panel.
 
@@ -41,9 +41,9 @@ Web: **https://yesodijoella.com** · Contacto: **artdeque@gmail.com**
 
 ## Textos para pegar en las solicitudes
 
-**Nombre del sitio:** Y eso dijo ella
+**Nombre del sitio:** Eso dijo ella
 
-**URL:** https://yesodijoella.com
+**URL:** https://esodijoella.org
 
 **Categoría:** Educación / Libros / Cultura
 
@@ -51,7 +51,7 @@ Web: **https://yesodijoella.com** · Contacto: **artdeque@gmail.com**
 Mapa interactivo de más de 300 filósofas de todas las épocas y continentes, con fichas, recomendaciones de lectura y un test «¿Qué filósofa eres?».
 
 **Descripción larga:**
-«Y eso dijo ella» es una web divulgativa en español que reúne a más de 300 pensadoras, desde la Antigüedad hasta hoy, en un mapa interactivo organizado por temas, épocas y continentes. Cada filósofa tiene una ficha con su idea principal y enlaces para leer sus libros. Quien busca un concepto (el amor, la muerte, el trabajo) o el nombre de un filósofo recibe la recomendación de una filósofa que trata ese tema. La web es accesible (tipografía legible, paleta apta para daltonismo, ajustes de lectura) y no tiene publicidad.
+«Eso dijo ella» es una web divulgativa en español que reúne a más de 300 pensadoras, desde la Antigüedad hasta hoy, en un mapa interactivo organizado por temas, épocas y continentes. Cada filósofa tiene una ficha con su idea principal y enlaces para leer sus libros. Quien busca un concepto (el amor, la muerte, el trabajo) o el nombre de un filósofo recibe la recomendación de una filósofa que trata ese tema. La web es accesible (tipografía legible, paleta apta para daltonismo, ajustes de lectura) y no tiene publicidad.
 
 **Público:** lectoras y lectores interesados en filosofía, feminismo y humanidades; estudiantes de bachillerato y universidad; profesorado de filosofía. Principalmente España y América Latina.
 
@@ -63,11 +63,11 @@ Mapa interactivo de más de 300 filósofas de todas las épocas y continentes, c
 
 ## Plantilla de correo para editoriales (Sirio, Octaedro, Libros.com)
 
-> **Asunto:** Colaboración con «Y eso dijo ella», mapa de más de 300 pensadoras
+> **Asunto:** Colaboración con «Eso dijo ella», mapa de más de 300 pensadoras
 >
 > Hola:
 >
-> Soy la responsable de «Y eso dijo ella» (https://yesodijoella.com), un mapa interactivo y gratuito de más de 300 filósofas de todas las épocas, con fichas y recomendaciones de lectura. Lo usan sobre todo estudiantes, profesorado y lectoras interesadas en filosofía y feminismo.
+> Soy la responsable de «Eso dijo ella» (https://esodijoella.org), un mapa interactivo y gratuito de más de 300 filósofas de todas las épocas, con fichas y recomendaciones de lectura. Lo usan sobre todo estudiantes, profesorado y lectoras interesadas en filosofía y feminismo.
 >
 > Me gustaría enlazar desde las fichas a los títulos de vuestro catálogo relacionados con las pensadoras que aparecen. ¿Tenéis programa de afiliación o de colaboración para webs divulgativas? También estaría abierta a otras fórmulas, como reseñas o una sección de novedades.
 >

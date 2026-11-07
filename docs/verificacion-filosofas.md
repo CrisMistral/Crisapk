@@ -1,4 +1,4 @@
-# Verificación de las fichas de «Y eso dijo ella»
+# Verificación de las fichas de «Eso dijo ella»
 
 Fecha: 5 de noviembre de 2026 · Fuente principal: **Wikidata** (base de datos de Wikipedia), consultada automáticamente.
 
@@ -85,3 +85,23 @@ Contrastadas 15 fichas de alto riesgo con el texto de su artículo.
   - Lastenia de Mantinea y Axiotea de Fliunte: lugar de nacimiento y la fuente de cada dato.
 - **Pasan a la tanda siguiente** (no se pudieron leer): Cleobulina, Aspasia, Diotima, Arete de Cirene, Leontion.
 - **Candidatas a añadir** (hay que verificarlas): Arignota de Samos, Uppalavanna.
+
+### Tanda 2: Antigüedad (18 leídas)
+- **Correctas:** Aspasia de Mileto, Ptolemaida de Cirene, Ban Zhao, María la Judía, Asclepigenia, Andal.
+- **Corregidas:**
+  - Cleobulina: hija de Cleóbulo, autora de enigmas en hexámetros.
+  - Diotima: quizá es un personaje literario.
+  - Arete de Cirene: «a veces» considerada sucesora; su hijo, «Metrodidacto».
+  - Leontion: tratado perdido, según Cicerón y Plinio.
+  - Fintis: la ficha decía lo contrario que su texto (para ella, la moderación es la virtud propia de la mujer). Pasa a ser de Crotona y se llama solo «Fintis».
+  - Julia Domna: animó a Filóstrato, no se lo encargó.
+  - Perpetua: nació hacia 182; se quita «primer texto cristiano escrito por una mujer», que el artículo no respalda.
+  - Sosípatra: nacida en Éfeso, enseñó en Pérgamo.
+  - Macrina la Joven: el diálogo lo escribe Gregorio en su memoria.
+  - Xie Daoyun: influencias taoístas y confucianas, no «Xuanxue».
+  - Hipatia: nació hacia 355; su muerte es símbolo «casi mito».
+  - Edesia: el elogio literal de Damascio.
+- **Candidata:** Temista de Lámpsaco (epicúrea).
+
+### Cambio de nombre
+La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.

@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /gracias.html
 
-Sitemap: https://yesodijoella.com/sitemap.xml
+Sitemap: https://esodijoella.org/sitemap.xml
