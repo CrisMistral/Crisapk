@@ -192,3 +192,22 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
   - Marjorie Grene: escribió la primera historia de la filosofía de la biología; no la «fundó».
   - Sofia Yanóvskaya y Rózsa Péter: lugar o corriente.
 - **Candidatas:** Clara Zetkin, Noe Itō, Nabawiyya Musa, Tránsito Amaguaña, Emmy Noether.
+
+### Tanda 8: de 1910 a 1935 (36 leídas)
+- **Correctas:** Masterman, Anscombe, Murdoch, Midgley, Barcan Marcus, Warnock, Hesse, Heller, Thomson, Noddings, Irigaray, El Saadawi, Millett, Wittig, Oluwole.
+- **Correctas aunque el artículo en español no lo recoja**, porque es su propia obra o concepto:
+  - Sontag: «una erótica del arte en lugar de una hermenéutica», frase final de «Contra la interpretación».
+  - Harding: la «objetividad fuerte».
+  - Audre Lorde: «nunca desmontarán» traduce el título original.
+- **Corregidas:**
+  - Philippa Foot: una de las fundadoras de la ética de las virtudes; se quita el «naturalismo moral».
+  - Ruth Millikan: nació en Filadelfia; su término es «biosemántica».
+  - Mary Mothersill: nació en Edmonton (Canadá); se quita lo que el artículo no dice de «Beauty Restored».
+  - Mary Daly: nació en Schenectady; tesis de «Más allá de Dios Padre».
+  - Sylvia Wynter: nació en Holguín (Cuba), criada en Jamaica.
+  - Linda Nochlin: título exacto del ensayo.
+  - Annette Baier: «la importancia ética de la confianza».
+  - Carla Lonzi: Rivolta Femminile y la crítica de la dialéctica hegeliana.
+  - Lygia Clark: obras que existen «en la experiencia de quien participa».
+  - Bachmann, Castellanos, Adnan, Kofman, Saffioti, Boggs, Dunayevskaya y Oodgeroo Noonuccal: descripción o corriente ajustadas.
+- **Mapa por continentes:** revisadas las 385; Tadano Makuzu salía en Europa y ahora está en Asia.
