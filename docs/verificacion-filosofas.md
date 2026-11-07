@@ -211,3 +211,21 @@ La web pasa a llamarse «Eso dijo ella» y el dominio a esodijoella.org.
   - Lygia Clark: obras que existen «en la experiencia de quien participa».
   - Bachmann, Castellanos, Adnan, Kofman, Saffioti, Boggs, Dunayevskaya y Oodgeroo Noonuccal: descripción o corriente ajustadas.
 - **Mapa por continentes:** revisadas las 385; Tadano Makuzu salía en Europa y ahora está en Asia.
+
+### Tanda 9: de 1935 a 1942 (36 leídas)
+- **Correctas:** Ruddick, Boden, Gilligan, Fox Keller, Ruether, Cora Diamond, Lippard, Margulis, Plumwood, Greer, Luisa Muraro (murió el 13 de junio de 2026, como dice la ficha), Mernissi, Leila Ahmed, Ogundipe-Leslie, Kristeva, Frye, Chaui, Krauss, Mulvey, Spivak, Federici, Anzaldúa.
+- **Correctas aunque el artículo no lo recoja**, por ser su propia obra:
+  - Lorraine Code: «¿Importa el sexo de quien conoce?», título de su ensayo de 1981.
+  - Uma Chakravarti: el «patriarcado brahmánico».
+  - Hélène Cixous: «escribir el cuerpo», la llamada de «La risa de la Medusa».
+- **Corregidas:**
+  - Julieta Kirkwood: su libro trata de las feministas y los partidos; la lucha contra la dictadura fue el movimiento que cofundó en 1983.
+  - Ti-Grace Atkinson: lo de «contra el matrimonio» no está en el artículo.
+  - Wangari Maathai: el Nobel de la Paz, por el desarrollo sostenible, la democracia y la paz; lo de «plantar árboles como democracia» no está en el artículo.
+  - Victoria Camps: lo de «ética del buen gobierno» no está en el artículo.
+  - Carole Pateman: el contrato sexual es «anterior» al contrato social.
+  - Domitila Barrios de Chungara: título exacto; el testimonio lo recogió Moema Viezzer.
+  - Marilyn Strathern: nació en el norte de Gales.
+  - Merchant, O'Neill, Jaggar, Lloyd, Margulis: lugar o corriente.
+- **Ninguna de las vivas ha fallecido** sin que la ficha lo diga.
+- **Candidatas:** Françoise d'Eaubonne, Mariarosa Dalla Costa, Selma James, Maria Mies, Leopoldina Fortunati, Cherríe Moraga, Alicia Puleo, María Milagros Rivera Garretas, Esperanza Guisán.
