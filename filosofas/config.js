@@ -46,6 +46,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!window.CAFE_URL) { a.hidden = true; return; }
     a.href = window.CAFE_URL; a.target = '_blank'; a.rel = 'noopener'; a.hidden = false;
   });
+  /* páginas de cada filósofa: los enlaces a tiendas llevan el código de afiliada, si lo hay */
+  document.querySelectorAll('a[data-tienda]').forEach(function (a) {
+    var t = (window.TIENDAS || []).filter(function (x) { return x[0] === a.getAttribute('data-tienda'); })[0];
+    if (!t || !window.esAfiliado(t[0])) return;
+    a.href = window.enlaceTienda(t[0], t[3], a.getAttribute('data-consulta') || '');
+    a.rel = 'sponsored noopener';
+  });
   /* aviso obligatorio de Amazon: solo si el código de Amazon está puesto */
   document.querySelectorAll('[data-aviso-amazon]').forEach(function (el) { el.hidden = !window.esAfiliado('amazon'); });
 });

@@ -7,7 +7,7 @@
 const {chromium}=require('playwright');const fs=require('fs');
 let AXE;try{AXE=fs.readFileSync(require.resolve('axe-core/axe.min.js'),'utf8')}catch(e){console.error('Falta axe-core: ejecuta «npm install axe-core» y vuelve a probar.');process.exit(2)}
 const B='http://localhost:8765/';
-const PAGS=['','acerca.html','sugerir.html','privacidad.html','terminos.html','creditos.html','gracias.html','404.html'];
+const PAGS=['','acerca.html','sugerir.html','privacidad.html','terminos.html','creditos.html','gracias.html','404.html','filosofa/index.html','filosofa/simone-weil.html','filosofa/peggy-zeglin-brand.html','filosofa/hipatia-de-alejandria.html'];
 const ACEPTADOS=new Set(['target-size','color-contrast']);
 let graves=0;
 async function axe(p,etq,principal){

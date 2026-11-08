@@ -3,6 +3,7 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f2e27;--fg:#ece8e1;--muted:#b8cbc2;--line:#2b5a4d;--panel:#0b231e;--accent:#4fb58f;--err:#ffb3a8;--logo:#4fb58f;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0f2e27;--fg:#ece8e1;--muted:#b8cbc2;--line:#2b5a4d;--panel:#0b231e;--accent:#4fb58f;--err:#ffb3a8;--logo:#4fb58f;color-scheme:dark}
 *{box-sizing:border-box}
+[hidden]{display:none!important} /* lo oculto se queda oculto aunque su estilo diga otra cosa (p. ej. el botón del café sin enlace) */
 body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.65 var(--font);overflow-x:hidden;letter-spacing:.035em;word-spacing:.06em}
 em,i,cite{font-style:normal}
 main,footer.legal{zoom:var(--zoom)}
@@ -54,3 +55,30 @@ textarea{min-height:110px;resize:vertical}
 .creditos{padding-left:1.1em;font-size:16px}
 .creditos li{margin:0 0 8px;overflow-wrap:anywhere}
 .creditos li:target{outline:2px solid currentColor;outline-offset:4px;border-radius:4px}
+
+/* páginas de cada filósofa (filosofa/) y su índice: colores de las épocas, como en el mapa */
+:root{--e0:#805010;--e1:#7b2f0c;--e2:#55233b;--e3:#2a537d;--e4:#194161;--e5:#2a7c60;--e6:#6c7410}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--e0:#e9c16e;--e1:#ef6e27;--e2:#e58baa;--e3:#3a9ce2;--e4:#84d7fe;--e5:#a5f9cc;--e6:#efe97f}}
+:root[data-theme="dark"]{--e0:#e9c16e;--e1:#ef6e27;--e2:#e58baa;--e3:#3a9ce2;--e4:#84d7fe;--e5:#a5f9cc;--e6:#efe97f}
+.migas{color:var(--muted);font-size:16px;margin:4px 0 0}
+.filosofa .cab{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-top:14px}
+.filosofa .cab>div{flex:1 1 260px}
+.filosofa h1{color:var(--ec,var(--fg));margin:0 0 8px}
+.filosofa .cara{margin:0;flex:none;width:150px}
+.filosofa .cara img{display:block;width:150px;height:auto;border-radius:12px;border:2px solid var(--ec,var(--line))}
+.filosofa .cara figcaption{color:var(--muted);font-size:14px;line-height:1.4;margin-top:6px}
+.filosofa .meta{color:var(--muted);font-size:17px;margin:0}
+.filosofa .lema{font-size:21px;line-height:1.55;margin:20px 0}
+.sym{color:var(--ec)}
+.lista{padding-left:1.1em;margin:0}
+.lista li{margin:0 0 8px}
+.vecinas,.tiendas,.indice{list-style:none;padding:0;margin:0}
+.vecinas{display:flex;flex-wrap:wrap;gap:6px 18px}
+.vecinas a{font-weight:700}
+.tiendas li,.indice li{margin:0 0 8px}
+.afil{color:var(--muted);font-size:15px}
+details.mas{margin-top:8px}
+details.mas summary{cursor:pointer;color:var(--muted);font-weight:700}
+details.mas .tiendas{margin-top:8px}
+.saltos{font-size:16px}
+.indice a{font-weight:700}

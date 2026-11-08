@@ -1374,7 +1374,9 @@ let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(mod
 
 /* ---------- compartir ---------- */
 const BASE=location.origin+location.pathname;
-const linkTo=p=>BASE+'#'+encodeURIComponent(p.n);
+/* cada filósofa tiene su página: filosofa/<slug> (en esodijoella.org sin «.html»; en otros sitios, con él) */
+const slug=n=>norm(n.replace(/œ/g,'oe').replace(/æ/g,'ae').replace(/ß/g,'ss').replace(/ø/g,'o').replace(/ł/g,'l')).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const linkTo=p=>BASE.replace(/[^/]*$/,'')+'filosofa/'+slug(p.n)+(/(^|\.)esodijoella\.org$/.test(location.hostname)?'':'.html');
 function setHash(h){try{history.replaceState(null,'',h||location.pathname+location.search)}catch(e){}}
 function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2200)}
 /* si el navegador no deja copiar, un cuadro propio con el texto ya seleccionado */
@@ -1502,8 +1504,10 @@ function result(){
 filter();
 (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{layout();
   frame.scrollLeft=(escala.offsetWidth-frame.clientWidth)/2;
-  fromHash();
+  if(location.hash)fromHash(); else fromQuery();
 });
+/* ?q=idea abre esa búsqueda (lo usan los enlaces de las páginas de cada filósofa) */
+function fromQuery(){let q='';try{q=(new URLSearchParams(location.search).get('q')||'').slice(0,80).trim()}catch(e){}if(q)abrirEntrada(q)}
 function fromHash(){
   let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){return}
   if(h==='test'){openQuiz();return}

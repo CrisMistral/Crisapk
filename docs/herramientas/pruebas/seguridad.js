@@ -9,7 +9,7 @@ const PAY='"><img src=x onerror="window.__x=1;alert(1)"><script>window.__x=1</sc
 (async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:390,height:800}});
  await ctx.route(B+'**',async r=>{const res=await r.fetch();const h=res.headers();h['content-security-policy']=CSP;await r.fulfill({response:res,headers:h})});
  const errs=[];let alertas=0,ejecutado=0;
- for(const pg of ['','acerca.html','sugerir.html?filosofa=Prueba','creditos.html','privacidad.html','terminos.html','404.html']){
+ for(const pg of ['','acerca.html','sugerir.html?filosofa=Prueba','creditos.html','privacidad.html','terminos.html','404.html','filosofa/index.html','filosofa/simone-weil.html','filosofa/hiratsuka-raicho.html','?q=trabajo']){
   const p=await ctx.newPage();
   p.on('console',m=>{if(m.type()==='error')errs.push((pg||'index')+': '+m.text())});p.on('pageerror',e=>errs.push((pg||'index')+' JS: '+e.message));
   await p.goto(B+pg);await p.waitForTimeout(900);
@@ -22,6 +22,7 @@ const PAY='"><img src=x onerror="window.__x=1;alert(1)"><script>window.__x=1</sc
  await p.goto(B+'#'+encodeURIComponent(PAY));await p.waitForTimeout(800);
  await p.fill('#q',PAY);await p.waitForTimeout(800);ejecutado+=await p.evaluate(()=>window.__x||0);
  await p.goto(B+'sugerir.html?filosofa='+encodeURIComponent(PAY));await p.waitForTimeout(600);ejecutado+=await p.evaluate(()=>window.__x||0);
+ await p.goto(B+'?q='+encodeURIComponent(PAY));await p.waitForTimeout(900);ejecutado+=await p.evaluate(()=>window.__x||0);
  console.log('intentos de inyección → código ejecutado:',ejecutado,'| alertas:',alertas);
  console.log('errores o bloqueos de CSP:',errs);
  await b.close();process.exit(errs.length||alertas||ejecutado?1:0)})();
