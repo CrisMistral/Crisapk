@@ -13,13 +13,24 @@ La web es **estática**: no tiene servidor propio, ni base de datos, ni zona de 
 - **Sin secretos en el repositorio**: no hay contraseñas, claves ni datos personales. Los códigos de afiliado de `config.js` son públicos por naturaleza.
 - **Formulario**: tiene un campo trampa para robots (`_honey`) y validación.
 
-## Lo que tienes que hacer tú (10 minutos)
+## Lo que tienes que hacer tú (unos 20 minutos)
 
 1. **GitHub**: activa la verificación en dos pasos (Settings → Password and authentication → Two-factor authentication).
 2. **Cloudflare**: activa la verificación en dos pasos (My Profile → Authentication).
 3. **Donde compres el dominio**: activa la verificación en dos pasos y el **bloqueo de transferencia** (Registrar lock / Transfer lock). En Cloudflare viene activado.
 4. **Cloudflare Pages**: publica solo desde la rama principal (`main`) y no des acceso al proyecto a nadie más.
 5. **FormSubmit** (opcional): cuando llegue el primer correo de confirmación, FormSubmit te da una dirección alias. Si me la pasas, la pongo en el formulario en lugar de tu correo.
+6. **Tu correo personal en GitHub**: el repositorio `Crisapk` es **público** y 49 cambios que hiciste desde la web de GitHub llevan tu correo personal como autora. Cualquiera puede verlo. Para que no vuelva a pasar: GitHub → Settings → Emails → activa «Keep my email addresses private» y «Block command line pushes that expose my email».
+7. **Un repositorio propio y privado para «Eso dijo ella»** (recomendado): así el correo de los cambios antiguos no queda a la vista, y la web no se mezcla con los otros proyectos de `Crisapk`. Cloudflare Pages funciona igual con repositorios privados.
+8. **GitHub Pages**: está activado en `Crisapk`. Si pasamos la web a `main` en este repositorio, también se publicaría en `crismistral.github.io/Crisapk/filosofas/`, **sin** las protecciones de `_headers`. Con un repositorio propio sin GitHub Pages, esto no pasa.
+
+## Revisión del 8 de noviembre de 2026
+
+- Sin contraseñas ni claves en el repositorio ni en su historial (`.env.example` solo tiene ejemplos).
+- Lo que escribe la gente nunca se convierte en código: probado con código malicioso en la dirección, el buscador y el formulario, aplicando la política de seguridad real.
+- Cabeceras: se cambia `interest-cohort` (obsoleta, Chrome la marcaba como error) por `browsing-topics`, y `netlify.toml` queda igual que `_headers`.
+- La política de seguridad permite todavía Google Analytics y GoatCounter por si los activas. Si eliges Cloudflare Web Analytics (recomendado: sin cookies ni banner), se pueden quitar esos dominios y la política queda más estricta.
+- Las pruebas automáticas están en `docs/herramientas/pruebas/` (ver `docs/herramientas/README.md`).
 
 ## Si algún día cambias algo a mano
 

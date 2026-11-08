@@ -403,8 +403,7 @@ const ERAS=[
  {n:"Ilustración",to:1800,h:255},{n:"Siglo XIX",to:1880,h:215},{n:"Siglo XX",to:1940,h:178},{n:"Contemporánea",to:9999,h:130}
 ];
 const SIMBOLOS=['▲','■','◆','●','▼','★','✱'];
-const OSCURO=["#e9c16e", "#ef6e27", "#e58baa", "#3a9ce2", "#84d7fe", "#a5f9cc", "#efe97f"]; /* colores para las imágenes generadas (fondo oscuro) */
-ERAS.forEach((e,k)=>{e.k=k;e.h='var(--e'+k+')';e.sym=SIMBOLOS[k];e.hex=OSCURO[k]});
+ERAS.forEach((e,k)=>{e.k=k;e.h='var(--e'+k+')';e.sym=SIMBOLOS[k]});
 const eraOf=b=>ERAS.find(e=>b<e.to);
 /* continentes: se deducen del primer lugar (origen o lugar principal de su obra) */
 const CONTS=["América del Norte","América Latina y el Caribe","Europa","África","Asia","Oceanía"];
@@ -590,10 +589,17 @@ function cara(p){
   const alt=(c[1]?'Representación imaginada de ':'Retrato de ')+p.n;
   return `<figure class="cara"><a href="creditos.html#${c[0]}" title="${alt}. Autoría y licencia de la imagen"><img src="caras/${c[0]}.webp" alt="${alt}" width="192" height="240" decoding="async"></a>${c[1]?'<figcaption>Retrato imaginado</figcaption>':''}</figure>`;
 }
-function select(p){
+/* quién abrió la ficha: al cerrarla, el foco del teclado vuelve allí */
+let abridor=null;
+/* foco: true = llevar el foco a la ficha; false = no moverlo; sin indicar = moverlo salvo mientras se escribe en el buscador */
+function select(p,foco){
+  const act=document.activeElement, qbus=document.getElementById('q'), enFicha=!!act&&card.contains(act);
   sel=p;
   P.forEach(q=>q.el.classList.remove('sel','near'));
-  if(!p){card.classList.remove('open');if(!quizOpen)setHash('');return}
+  if(!p){card.classList.remove('open');if(!quizOpen)setHash('');
+    if(!quizOpen&&(!act||act===document.body||enFicha)){
+      const v=abridor&&abridor.isConnected&&abridor.getClientRects().length?abridor:qbus; v.focus({preventScroll:true});}
+    abridor=null;return}
   p.el.classList.add('sel');
   const nb=neighbours(p); nb.forEach(q=>q.el.classList.add('near'));
   const dates=datesOf(p);
@@ -625,6 +631,11 @@ function select(p){
   card.querySelectorAll('.lk').forEach(b=>b.onclick=()=>{if(b.dataset.era!=null)explorar('',{era:+b.dataset.era});else if(b.dataset.cont!=null)explorar('',{cont:+b.dataset.cont});else if(b.dataset.i!=null){recordar();const q=P[+b.dataset.i];select(q);goTo(q)}else explorar(b.dataset.q)});
   const bk=card.querySelector('.back'); if(bk)bk.onclick=volver;
   card.classList.add('open');
+  /* si la abre una persona (y no el buscador mientras escribe), el foco pasa al nombre de la ficha */
+  if(foco===true||(foco!==false&&act!==qbus&&!quizOpen)){
+    if(act&&act!==document.body&&!enFicha)abridor=act;
+    const h=card.querySelector('h2'); h.tabIndex=-1; h.focus({preventScroll:true});
+  }
 }
 /* ---------- comprar sus libros: tres opciones claras y el resto plegado ---------- */
 function tiendas(p){
@@ -1264,7 +1275,8 @@ legend.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=+b.dataset.k
 const SYMS_HTML='<span class="syms" aria-hidden="true">'+ERAS.map(e=>`<span class="sym" style="--ec:${e.h}">${e.sym}</span>`).join('')+'</span>';
 document.getElementById('v-epocas').innerHTML=SYMS_HTML;
 const DDS=[...document.querySelectorAll('#filtros details')];
-function cerrarDD(salvo){DDS.forEach(d=>{if(d!==salvo)d.open=false})}
+/* al cerrar un desplegable que tenía el foco, el foco vuelve a su título (si no, se perdería) */
+function cerrarDD(salvo){DDS.forEach(d=>{if(d!==salvo&&d.open){const dentro=d.contains(document.activeElement);d.open=false;if(dentro)d.querySelector('summary').focus({preventScroll:true})}})}
 DDS.forEach(d=>d.addEventListener('toggle',()=>{if(d.open)cerrarDD(d)}));
 document.addEventListener('click',e=>{if(!e.target.closest('#filtros'))cerrarDD()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=DDS.find(d=>d.open);if(o){o.open=false;o.querySelector('summary').focus()}}});
@@ -1311,11 +1323,22 @@ frame.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();const
 })();
 let qt;
 const qi=document.getElementById('q');
+/* lectores de pantalla: cuando se deja de escribir, se anuncia el resultado y cómo abrir la ficha */
+let avt;
+function anunciar(){
+  const av=document.getElementById('aviso'); if(!av)return;
+  if(!query.trim()){av.textContent='';return}
+  let t=document.getElementById('count').textContent.trim();
+  if(homNow&&homNow.list[0])t=(homNow.kind==='hom'?'¿Buscas a '+homNow.name+'? Te proponemos a ':'Para «'+homNow.name+'», te recomendamos a ')+homNow.list[0].p.n+'. '+t;
+  if(hits.length)t+=(/[.?!]$/.test(t)?'':'.')+' Pulsa Intro para abrir la ficha de '+hits[0].p.n+'.';
+  av.textContent=t;
+}
 qi.addEventListener('input',e=>{query=e.target.value;hist=[];filter();
+  clearTimeout(avt);avt=setTimeout(anunciar,700);
   clearTimeout(qt);if(movimientoReducido())return; /* con movimiento reducido no saltamos solos: se usa Intro o se toca el nombre */
   qt=setTimeout(()=>{const nm=hits.filter(h=>h.s>0);
-    if(nm.length===1||homNow)select(nm[0].p); if(nm.length){goTo(nm[0].p)} },500)});
-qi.addEventListener('keydown',e=>{if(e.key==='Enter'&&hits.length){clearTimeout(qt);select(hits[0].p);goTo(hits[0].p);qi.blur()}});
+    if(nm.length&&(nm.length===1||homNow))select(nm[0].p); if(nm.length){goTo(nm[0].p)} },500)});
+qi.addEventListener('keydown',e=>{if(e.key==='Enter'&&hits.length){clearTimeout(qt);clearTimeout(avt);select(hits[0].p,true);goTo(hits[0].p)}});
 function buildList(){
   const L=document.getElementById('lista');
   L.innerHTML=ERAS.map(e=>`<section style="--ec:${e.h}" aria-labelledby="era-${e.k}"><h2 id="era-${e.k}"><span class="sym" aria-hidden="true">${e.sym}</span>${e.n}</h2><ul></ul></section>`).join('');
@@ -1323,7 +1346,7 @@ function buildList(){
   [...P].sort((a,b)=>a.rank-b.rank).forEach(p=>{
     const li=document.createElement('li'), b=document.createElement('button');
     b.type='button';b.style.setProperty('--ec',p.h);
-    b.innerHTML='<span class="nm"></span><small></small>';
+    b.innerHTML='<span class="nm"></span><span class="vh">, </span><small></small>';
     b.querySelector('.nm').textContent=p.n;b.querySelector('small').textContent=datesOf(p)+' · '+p.pl;
     b.onclick=e=>{e.stopPropagation();select(p)};
     li.appendChild(b);uls[p.era.k].appendChild(li);p.li=li;
@@ -1421,8 +1444,15 @@ const QS=[
 let quizOpen=false, qn=0, qsc={}, qera=null;
 const qbox=document.getElementById('qbox'), qwrap=document.getElementById('quiz');
 function openQuiz(){quizOpen=true;qn=0;qsc={};qera=null;select(null);qwrap.classList.add('open');setHash('#test');renderQ()}
-function closeQuiz(){quizOpen=false;qwrap.classList.remove('open');if(!sel)setHash('')}
+function closeQuiz(){const dentro=qwrap.contains(document.activeElement)||document.activeElement===document.body;
+  quizOpen=false;qwrap.classList.remove('open');if(!sel)setHash('');
+  if(dentro)document.getElementById('quizbtn').focus({preventScroll:true})} /* el foco vuelve al botón del test */
 qwrap.addEventListener('click',e=>{if(e.target===qwrap)closeQuiz()});
+/* mientras el test está abierto, el tabulador no sale de él */
+qwrap.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const f=[...qbox.querySelectorAll('button,a[href]')];if(!f.length)return;
+  const a=f[0],z=f[f.length-1];
+  if(e.shiftKey&&(document.activeElement===a||!qbox.contains(document.activeElement))){e.preventDefault();z.focus()}
+  else if(!e.shiftKey&&(document.activeElement===z||!qbox.contains(document.activeElement))){e.preventDefault();a.focus()}});
 document.getElementById('quizbtn').onclick=e=>{e.stopPropagation();openQuiz()};
 function renderQ(){
   const Q=QS[qn];
@@ -1466,6 +1496,7 @@ function result(){
   qbox.querySelector('#qmap').onclick=()=>{closeQuiz();select(p);goTo(p)};
   qbox.querySelector('#qre').onclick=openQuiz;
   qbox.querySelectorAll('.also button').forEach(b=>b.onclick=()=>{const q=P[+b.dataset.i];closeQuiz();select(q);goTo(q)});
+  const rh=qbox.querySelector('h2'); rh.tabIndex=-1; rh.focus({preventScroll:true}); /* el foco pasa al resultado */
 }
 
 filter();

@@ -146,8 +146,8 @@ aside .homl b{color:var(--fg);font-weight:500}
 .n.near{text-decoration:underline;text-underline-offset:3px}
 aside{position:fixed;z-index:15;right:16px;top:16px;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;
   background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 18px 16px;
-  transform:translateY(12px);opacity:0;pointer-events:none;transition:.25s}
-aside.open{transform:none;opacity:1;pointer-events:auto}
+  transform:translateY(12px);opacity:0;pointer-events:none;visibility:hidden;transition:transform .25s,opacity .25s,visibility 0s .25s}
+aside.open{transform:none;opacity:1;pointer-events:auto;visibility:visible;transition:transform .25s,opacity .25s,visibility 0s}
 @media (max-width:640px){
   aside{left:0;right:0;top:auto;bottom:0;width:auto;max-height:62vh;border-radius:16px 16px 0 0}
   .seg{display:grid;grid-template-columns:1fr 1fr;width:100%}
@@ -261,9 +261,10 @@ footer{color:var(--muted);font-size:15px;max-width:1200px;margin:0 auto;padding:
     <button type="button" class="limpiar" id="limpiar" hidden>× Quitar filtros</button>
   </div>
 </header>
-<div class="wrap">
+<main class="wrap">
   <div class="hom" id="hom" hidden></div>
   <div class="count" id="count"></div>
+  <div class="vh" id="aviso" role="status"></div>
   <div class="zoom" id="zoom" role="group" aria-label="Tamaño del mapa">
     <button type="button" id="zmenos" aria-label="Alejar el mapa">−</button>
     <span id="znivel" aria-live="polite">100 %</span>
@@ -272,8 +273,8 @@ footer{color:var(--muted);font-size:15px;max-width:1200px;margin:0 auto;padding:
   </div>
   <div class="frame" id="frame"><div class="escala" id="escala"><div class="map" id="map"></div></div></div>
   <div id="lista" hidden></div>
-</div>
-<aside id="card" aria-live="polite"></aside>
+</main>
+<aside id="card" aria-label="Ficha de la filósofa"></aside>
 <div id="quiz" role="dialog" aria-modal="true" aria-label="¿Qué filósofa eres?"><div class="box" id="qbox"></div></div>
 <div class="toast" id="toast"></div>
 <footer>
