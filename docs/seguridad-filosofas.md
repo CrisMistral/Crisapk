@@ -20,7 +20,7 @@ La web es **estática**: no tiene servidor propio, ni base de datos, ni zona de 
 3. **Donde compres el dominio**: activa la verificación en dos pasos y el **bloqueo de transferencia** (Registrar lock / Transfer lock). En Cloudflare viene activado.
 4. **Cloudflare Pages**: publica solo desde la rama principal (`main`) y no des acceso al proyecto a nadie más.
 5. **FormSubmit** (opcional): cuando llegue el primer correo de confirmación, FormSubmit te da una dirección alias. Si me la pasas, la pongo en el formulario en lugar de tu correo.
-6. **Tu correo personal en GitHub**: el repositorio `Crisapk` es **público** y 49 cambios que hiciste desde la web de GitHub llevan tu correo personal como autora. Cualquiera puede verlo. Para que no vuelva a pasar: GitHub → Settings → Emails → activa «Keep my email addresses private» y «Block command line pushes that expose my email».
+6. **Tu correo personal en GitHub**: el repositorio `Crisapk` es **público** y más de 50 cambios que hiciste desde la web de GitHub llevan tu correo personal como autora. Cualquiera puede verlo. Para que no vuelva a pasar: GitHub → Settings → Emails → activa «Keep my email addresses private» y «Block command line pushes that expose my email».
 7. **Un repositorio propio y privado para «Eso dijo ella»** (recomendado): así el correo de los cambios antiguos no queda a la vista, y la web no se mezcla con los otros proyectos de `Crisapk`. Cloudflare Pages funciona igual con repositorios privados.
 8. **GitHub Pages**: está activado en `Crisapk`. Si pasamos la web a `main` en este repositorio, también se publicaría en `crismistral.github.io/Crisapk/filosofas/`, **sin** las protecciones de `_headers`. Con un repositorio propio sin GitHub Pages, esto no pasa.
 
