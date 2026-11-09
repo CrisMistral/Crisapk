@@ -1,0 +1,4 @@
+#!/bin/sh
+# Revisión de privacidad de lo que entra en el commit: el repositorio es público (ver tools/hooks/privacidad.cjs)
+DIR=$(cd "$(dirname "$0")" && pwd)
+exec node "$DIR/../hooks/privacidad.cjs" --pre-commit
