@@ -8,14 +8,14 @@ const URL_CAL = 'https://outlook.office365.com/owa/calendar/' + 'prueba@ejemplo.
 const ev = (uid, d, a, b, s) => `BEGIN:VEVENT\r\nUID:${uid}\r\nDTSTART;TZID=Romance Standard Time:${d}T${a}00\r\nDTEND;TZID=Romance Standard Time:${d}T${b}00\r\nSUMMARY:${s}\r\nEND:VEVENT`;
 const ICS = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'X-WR-CALNAME:Prueba',
   ev('h1', '20261109', '1000', '1200', 'Historia del arte I. Ana Pérez'),
-  ev('s1', '20261110', '1630', '1930', 'Seminarios I. Luis Gómez.'),
+  ev('s1', '20261110', '0900', '1100', 'Cerámica I. Luis Gómez.'),
   ev('e1', '20261111', '1000', '1200', 'Escultura. Pepa Ruiz'),
   ev('h2', '20261117', '1200', '1400', 'Historia del arte I. Ana Pérez'), // la del 16 se ha movido al 17
   'BEGIN:VEVENT\r\nUID:f1\r\nDTSTART;VALUE=DATE:20261112\r\nDTEND;VALUE=DATE:20261113\r\nSUMMARY:FESTIVO. Día de prueba\r\nEND:VEVENT',
   'END:VCALENDAR'].join('\r\n');
-const SUBJ = ['HISTORIA DEL ARTE I', 'SEMINARIOS DE INVESTIGACIÓN I', 'TRABAJO FIN DE MÁSTER'];
-const VIEJO = { url: URL_CAL, subjects: SUBJ, codes: { H: 'Historia del arte I', S: 'Seminarios de investigación I' },
-  ev: [['20261109', '1000', '1200', 'H', 'Ana Pérez'], ['20261110', '1630', '1930', 'S', 'Luis Gómez'], ['20261116', '1000', '1200', 'H', 'Ana Pérez']] };
+const SUBJ = ['HISTORIA DEL ARTE I', 'TALLER DE CERÁMICA I', 'PROYECTO DE JARDINERÍA'];
+const VIEJO = { url: URL_CAL, subjects: SUBJ, codes: { H: 'Historia del arte I', S: 'Taller de cerámica I' },
+  ev: [['20261109', '1000', '1200', 'H', 'Ana Pérez'], ['20261110', '0900', '1100', 'S', 'Luis Gómez'], ['20261116', '1000', '1200', 'H', 'Ana Pérez']] };
 const NUEVO = { url: URL_CAL, subjects: SUBJ, remind: 15, mine: true, manual: false };
 
 module.exports = async ({ browser, base, fail }) => {
@@ -43,7 +43,7 @@ module.exports = async ({ browser, base, fail }) => {
   cierto(fail, 'ya no queda horario a mano', !(await page.evaluate(() => QCLASES.hasManual())));
   const sem = await page.evaluate(() => QCLASES.week(0, 10).map((o) => ({ d: new Date(o.st).getDate(), n: o.name, l: o.l, ad: o.ad, oculta: o.hidden })));
   const de = (d) => sem.filter((x) => x.d === d);
-  cierto(fail, '«Seminarios I. Luis Gómez.» se reconoce como Seminarios de investigación I', de(10).some((x) => /Seminarios de investigaci/.test(x.n)));
+  cierto(fail, '«Cerámica I. Luis Gómez.» se reconoce como Taller de cerámica I', de(10).some((x) => /Taller de cer/.test(x.n)));
   igual(fail, 'sin lugar, se enseña quién da la clase', (de(9)[0] || {}).l, 'Ana Pérez');
   cierto(fail, 'con «solo mis asignaturas», Escultura no sale', !de(11).length);
   cierto(fail, 'los festivos sí salen', de(12).some((x) => x.ad));
@@ -53,8 +53,8 @@ module.exports = async ({ browser, base, fail }) => {
   igual(fail, 'la tarea va con la clase movida al 17', tareas, [['h2', '2026-11-17', ['Llevar el cuaderno']]]);
   // 4) títulos cortos: una palabra sola no basta para decidir la asignatura
   const sub = (t) => page.evaluate((x) => { const s = QCLASES.subjectOf(x); return s ? s.name : null; }, t);
-  igual(fail, '«Trabajo. Grupo B» no es el TFM', await sub('Trabajo. Grupo B'), null);
-  igual(fail, '«Seminarios II. Ana» no es Seminarios I', await sub('Seminarios II. Ana'), null);
+  igual(fail, '«Proyecto. Grupo B» no es el de jardinería', await sub('Proyecto. Grupo B'), null);
+  igual(fail, '«Cerámica II. Ana» no es Cerámica I', await sub('Cerámica II. Ana'), null);
   if (errs.length) fail('errores: ' + errs.join(' | '));
   await ctx.close();
 };

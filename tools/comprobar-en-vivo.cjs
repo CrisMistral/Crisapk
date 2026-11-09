@@ -17,7 +17,9 @@ const paginas = ['', ...args.filter((a) => a !== 'index.html')];
   if (espera) {
     const t0 = Date.now();
     for (;;) {
-      const r = await fetch(BASE + espera.ruta + '?nc=' + Date.now(), { cache: 'no-store' }).then((x) => x.text()).catch(() => '');
+      const res = await fetch(BASE + espera.ruta + '?nc=' + Date.now(), { cache: 'no-store' }).catch(() => null);
+      if (res && res.status === 404) { console.log(`${espera.ruta} no existe en la web publicada (404): revisa la ruta.`); process.exit(1); }
+      const r = res && res.ok ? await res.text() : '';
       if (r.includes(espera.texto)) { console.log(`Publicado (${Math.round((Date.now() - t0) / 1000)} s).`); break; }
       if (Date.now() - t0 > 8 * 60e3) { console.log('Pasados 8 minutos, el cambio aún no está publicado.'); process.exit(1); }
       await new Promise((r) => setTimeout(r, 15000));
@@ -29,7 +31,8 @@ const paginas = ['', ...args.filter((a) => a !== 'index.html')];
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
     const page = await ctx.newPage(), errs = [];
     page.on('pageerror', (e) => errs.push(e.message));
-    await page.goto(BASE + p, { waitUntil: 'load' }).catch((e) => errs.push('no carga: ' + e.message));
+    const res = await page.goto(BASE + p, { waitUntil: 'load' }).catch((e) => { errs.push('no carga: ' + e.message); return null; });
+    if (res && !res.ok()) errs.push('HTTP ' + res.status() + ' (¿ruta mal escrita? usa modules/<nombre>.html)');
     await page.waitForTimeout(2500);
     console.log((errs.length ? '✗ ' : '✓ ') + (p || 'inicio') + (errs.length ? ' · ' + errs.slice(0, 3).join(' | ') : ''));
     if (errs.length) mal++;

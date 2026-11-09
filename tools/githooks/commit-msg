@@ -1,0 +1,4 @@
+#!/bin/sh
+# Revisión de privacidad del mensaje del commit (ver tools/hooks/privacidad.cjs)
+DIR=$(cd "$(dirname "$0")" && pwd)
+exec node "$DIR/../hooks/privacidad.cjs" --commit-msg "$1"

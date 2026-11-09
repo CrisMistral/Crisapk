@@ -7,8 +7,29 @@
           {
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/tools/hooks/privacidad.cjs\"",
-            "timeout": 30,
+            "timeout": 60,
             "statusMessage": "Comprobando que el commit no lleva datos personales…"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__github__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/tools/hooks/privacidad.cjs\"",
+            "timeout": 30,
+            "statusMessage": "Comprobando que no van datos personales a GitHub…"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git -C \"$CLAUDE_PROJECT_DIR\" config core.hooksPath tools/githooks 2>/dev/null || true"
           }
         ]
       }

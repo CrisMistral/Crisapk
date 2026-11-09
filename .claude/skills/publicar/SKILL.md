@@ -7,7 +7,7 @@ description: Publica en Quico un cambio ya hecho y probado, de principio a fin �
 
 Sigue estos pasos en orden. Si uno falla, para, arréglalo o cuéntalo; no sigas a ciegas.
 
-1. **Revisa lo que vas a subir.** `git status` y `git diff --stat`. Nada de datos personales (el repositorio es público; el hook de privacidad lo vigila en el commit). Nada de restos de pruebas (capturas, carpetas `undefined/`).
+1. **Revisa lo que vas a subir.** `git status` y `git diff --stat`. Nada de datos personales: ni en el código, ni en el mensaje del commit, ni en el título o la descripción del PR (el repositorio es público; los hooks de privacidad lo vigilan, pero no reconocen todo, por ejemplo un horario escrito a mano o una lista de fechas). Nada de restos de pruebas (capturas, carpetas `undefined/`).
 
 2. **Versiones.** Si cambiaste algún `shared/*.js`, sube su `?v=` en todas las páginas que lo cargan. Sube `CACHE_NAME` en `service-worker.js` si cambió algo de la app.
 
@@ -30,9 +30,9 @@ Sigue estos pasos en orden. Si uno falla, para, arréglalo o cuéntalo; no sigas
 
 7. **Espera a que esté publicado y compruébalo:** elige un texto que solo exista en la versión nueva y el archivo publicado donde está:
    ```bash
-   node tools/comprobar-en-vivo.cjs --espera "<texto nuevo>" <ruta/del/archivo> <módulos tocados…>
+   node tools/comprobar-en-vivo.cjs --espera "<texto nuevo>" modules/<archivo>.html modules/<otro tocado>.html
    ```
-   Abre el inicio y los módulos indicados en un navegador limpio y avisa de errores.
+   Las rutas, tal cual están en el repositorio (`modules/calendario.html`, `shared/cal.js`…). Abre el inicio y las páginas indicadas en un navegador limpio y avisa de errores o de páginas que no existen.
 
 8. **Cuéntaselo a la persona** en español, corto y sin jerga:
    - qué puede hacer ahora y dónde (p. ej. «📅 Calendario → toca un día → …»);

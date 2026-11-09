@@ -3,7 +3,7 @@ let chromium;
 try { ({ chromium } = require('playwright')); }
 catch (e) {
   try { ({ chromium } = require('/opt/node22/lib/node_modules/playwright')); } // contenedor de Claude Code en la nube
-  catch (_) { console.error('Falta Playwright: npm i -D playwright && npx playwright install chromium'); process.exit(1); }
+  catch (_) { console.error('Falta Playwright: npm i --no-save playwright && npx playwright install chromium'); process.exit(1); }
 }
 
 /* Página nueva con la hora de Madrid, móvil, idioma y reloj fijo (para mover el tiempo con clock.runFor).
