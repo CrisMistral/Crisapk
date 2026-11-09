@@ -9,9 +9,10 @@ Sigue estos pasos en orden. Si uno falla, para, arréglalo o cuéntalo; no sigas
 
 1. **Revisa lo que vas a subir.** `git status` y `git diff --stat`. Nada de datos personales: ni en el código, ni en el mensaje del commit, ni en el título o la descripción del PR (el repositorio es público; los hooks de privacidad lo vigilan, pero no reconocen todo, por ejemplo un horario escrito a mano o una lista de fechas). Nada de restos de pruebas (capturas, carpetas `undefined/`).
 
-2. **Versiones.** Si cambiaste algún `shared/*.js`, sube su `?v=` en todas las páginas que lo cargan. Sube `CACHE_NAME` en `service-worker.js` si cambió algo de la app.
+2. **Versiones.** `node tools/subir-versiones.cjs` (trae antes el main de ahora): sube el `?v=` de cada `shared/*.js` cambiado en todas las páginas que lo cargan, y `CACHE_NAME` si cambió algo de la app, siempre por encima de lo que ya está publicado. Repetirlo no vuelve a subir. Si dice que no reconoce `CACHE_NAME`, súbelo a mano.
 
 3. **Pruebas.** `npm test` (o al menos las relacionadas con el cambio más `versiones idiomas humo`). Si algo falla, arréglalo antes de seguir.
+   Si el cambio no es trivial, antes del commit pide una revisión al agente `revisor-quico` (dile qué has cambiado), arregla lo que encuentre y repite los pasos 2 y 3.
 
 4. **Commit y push** a la rama de la sesión (la que indican las instrucciones de la sesión):
    - mensaje en español: una línea de resumen y, debajo, qué cambia y por qué;
