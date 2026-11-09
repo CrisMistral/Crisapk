@@ -30,6 +30,11 @@
           {
             "type": "command",
             "command": "git -C \"$CLAUDE_PROJECT_DIR\" config core.hooksPath tools/githooks 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/tools/servidor.cjs\" --fondo 8765 >/dev/null 2>&1 || true",
+            "timeout": 15
           }
         ]
       }

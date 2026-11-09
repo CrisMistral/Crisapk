@@ -34,12 +34,12 @@ module.exports = async ({ ROOT, fail, ok }) => {
   if (!deApp.length) { ok('nada de la app ha cambiado respecto a main'); return; }
   let swAntes = '';
   try { swAntes = (git(ROOT, ['show', base + ':service-worker.js']).match(/CACHE_NAME\s*=\s*'([^']+)'/) || [])[1]; } catch (e) {}
-  if (swAntes === sw[1]) fail(`han cambiado ${deApp.length} archivo(s) de la app (${deApp.slice(0, 3).join(', ')}…) pero CACHE_NAME sigue en '${sw[1]}': súbelo en service-worker.js`);
+  if (swAntes === sw[1]) fail(`han cambiado ${deApp.length} archivo(s) de la app (${deApp.slice(0, 3).join(', ')}…) pero CACHE_NAME sigue en '${sw[1]}': node tools/subir-versiones.cjs lo arregla`);
   for (const f of deApp.filter((x) => /^shared\/[\w.-]+\.js$/.test(x))) {
     const s = f.slice(7), ahora = Object.keys(porScript[s] || {})[0];
     let antes = null;
     for (const p of paginas(ROOT)) { try { const r = refs(git(ROOT, ['show', base + ':' + p]))[s]; if (r) { antes = [...r][0]; break; } } catch (e) {} }
-    if (ahora && antes && ahora === antes) fail(`${f} ha cambiado pero sigue cargándose con ?v=${ahora}: súbelo en todas las páginas que lo cargan`);
+    if (ahora && antes && ahora === antes) fail(`${f} ha cambiado pero sigue cargándose con ?v=${ahora}: node tools/subir-versiones.cjs lo arregla`);
   }
   ok(`${deApp.length} archivo(s) de la app cambiados; CACHE_NAME ${swAntes} → ${sw[1]}`);
 };
