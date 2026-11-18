@@ -44,22 +44,52 @@ module.exports = async ({ browser, base, fail, ok }) => {
   await page.waitForTimeout(300);
   cierto(fail, 'en la cama empieza el sonido de fondo', await page.evaluate(() => sndPlaying()));
   igual(fail, 'el sonido es un WAV generado aquí', await page.evaluate(() => snd.src.startsWith('blob:')), true);
+  // pausar para también el sonido; seguir lo vuelve a poner
+  await page.evaluate(() => { isRunning = true; pauseRoutine(); });
+  cierto(fail, 'pausar para el sonido', await page.evaluate(() => snd.paused));
+  await page.evaluate(() => pauseRoutine()); await page.waitForTimeout(200);
+  cierto(fail, 'seguir lo vuelve a poner', await page.evaluate(() => !snd.paused));
   await page.clock.runFor(31 * 60e3);
   cierto(fail, 'a los 30 minutos se apaga solo', !(await page.evaluate(() => sndPlaying())));
+  // si algo lo vuelve a poner en marcha (pantalla de bloqueo, auriculares), se para solo
+  await page.evaluate(() => snd.play()); await page.waitForTimeout(300); await page.clock.runFor(6000);
+  cierto(fail, 'tras apagarse no vuelve a sonar aunque le den a play', await page.evaluate(() => snd.paused));
 
-  // «No me duermo»: guía casi a oscuras con pantalla encendida, y al final se suelta
+  // «Probar» suena al volumen de verdad (sin fundido) y el botón pasa a «Parar»
   await page.evaluate(() => showHome());
+  await page.click('#sndTry'); await page.waitForTimeout(300); await page.clock.runFor(1000);
+  cierto(fail, '«Probar» suena a volumen normal', (await page.evaluate(() => snd.volume)) >= 0.6);
+  igual(fail, 'el botón pasa a Parar', await page.textContent('#sndTry'), await page.evaluate(() => t('snd_trying')));
+  // «No me duermo» justo después: el sonido dura toda la guía (no los segundos que le quedaban a la prueba)
   await page.click('text=No me duermo');
   await page.waitForTimeout(200);
+  cierto(fail, 'en No me duermo el sonido tiene tiempo de sobra', (await page.evaluate(() => sndEnd - Date.now())) > 19 * 60e3);
+  cierto(fail, 'y hay botón para pararlo', await page.evaluate(() => !document.getElementById('sndOffV').hidden));
+  // el sistema suelta la pantalla encendida (botón lateral, otra app): al volver, se pide otra vez
+  const pidesAntes = await page.evaluate(() => window.__wl.filter((x) => x === 'pide').length);
+  await page.evaluate(() => { wakeLock.dispatchEvent(new Event('release')); document.dispatchEvent(new Event('visibilitychange')); });
+  await page.waitForTimeout(100);
+  igual(fail, 'al volver a la app, No me duermo recupera la pantalla encendida', (await page.evaluate(() => window.__wl.filter((x) => x === 'pide').length)) - pidesAntes, 1);
   cierto(fail, 'No me duermo pide la pantalla encendida', (await page.evaluate(() => window.__wl)).includes('pide'));
   igual(fail, 'primera frase', await page.textContent('#velaLine'), await page.evaluate(() => t('v_vela1')));
   cierto(fail, 'con sonido elegido, suena también', await page.evaluate(() => sndPlaying()));
   await page.clock.runFor(301e3);
   igual(fail, 'al acabar dice cuándo levantarse', await page.textContent('#velaLine'), await page.evaluate(() => t('v_vela6')));
-  igual(fail, 'al acabar suelta la pantalla', await page.evaluate(() => window.__wl.slice(-1)[0]), 'suelta');
+  igual(fail, 'al acabar suelta la pantalla', await page.evaluate(() => wakeLock), null);
   igual(fail, 'y se queda oscura', await page.evaluate(() => document.getElementById('dim').style.opacity), '0.9');
   await page.evaluate(() => showHome());
   cierto(fail, 'volver al inicio para el sonido', !(await page.evaluate(() => sndPlaying())));
   if (errs.length) fail('errores: ' + errs.join(' | '));
   await ctx.close();
+
+  const q = await abrir(browser, { storage: { cris_onboarded: '"1"' } });
+  await q.page.goto(base + 'index.html');
+  const mins = await q.page.evaluate(() => {
+    const r = [];
+    localStorage.setItem('cris_noche_cfg', JSON.stringify({ off: [], min: 23 })); r.push(nocheMin());
+    localStorage.setItem('cris_noche_cfg', JSON.stringify({ off: ['higiene'], min: 22, v: 2 })); r.push(nocheMin());
+    return r;
+  });
+  igual(fail, 'Quico no se fía de los minutos de la rutina de antes y sí de los nuevos', mins, [27, 22]);
+  await q.ctx.close();
 };

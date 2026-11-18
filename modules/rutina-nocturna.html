@@ -291,7 +291,7 @@ const UI={
    v_first:'{title}. Primero: {n}. {d}',v_next:'{n}. {d}',v_startside:'Empieza por: {s}.',v_go:'¡Ya! {s} segundos.',
    v_switch:'Cambia de lado: {s}.',v_sx_done:'¡Muy bien! Estiramientos terminados.',
    v_min:'{n} minutos',v_min1:'1 minuto',v_sec:'{n} segundos',
-   snd_l:'🔈 Sonido para dormir',snd_none:'Sin sonido',snd_brown:'Ruido suave · 30 min',snd_try:'▶️ Probar',snd_stop:'🔇 Parar el sonido',
+   snd_l:'🔈 Sonido para dormir',snd_none:'Sin sonido',snd_brown:'Ruido suave (se apaga solo)',snd_trying:'⏹️ Parar',snd_try:'▶️ Probar',snd_stop:'🔇 Parar el sonido',
    vela_btn:'🌙 No me duermo',vela_title:'🌙 Si no llega el sueño',vela_desc:'Sin mirar la hora',
    v_vela1:'No pasa nada. No mires la hora. Estar tumbada con los ojos cerrados también descansa.',
    v_vela2:'Pon una mano en la barriga. Toma aire por la nariz contando cuatro y suéltalo despacio por la boca, contando siete u ocho. Sin forzar.',
@@ -319,7 +319,7 @@ const UI={
    v_first:'{title}. First: {n}. {d}',v_next:'{n}. {d}',v_startside:'Start with: {s}.',v_go:'Go! {s} seconds.',
    v_switch:'Switch sides: {s}.',v_sx_done:'Well done! Stretches finished.',
    v_min:'{n} minutes',v_min1:'1 minute',v_sec:'{n} seconds',
-   snd_l:'🔈 Sleep sound',snd_none:'No sound',snd_brown:'Soft noise · 30 min',snd_try:'▶️ Try it',snd_stop:'🔇 Stop the sound',
+   snd_l:'🔈 Sleep sound',snd_none:'No sound',snd_brown:'Soft noise (turns itself off)',snd_trying:'⏹️ Stop',snd_try:'▶️ Try it',snd_stop:'🔇 Stop the sound',
    vela_btn:'🌙 I can’t sleep',vela_title:'🌙 If sleep won’t come',vela_desc:'Without checking the time',
    v_vela1:'That’s okay. Don’t look at the time. Lying down with your eyes closed is restful too.',
    v_vela2:'Put a hand on your belly. Breathe in through your nose for a count of four and breathe out slowly through your mouth for seven or eight. Don’t force it.',
@@ -347,7 +347,7 @@ const UI={
    v_first:'{title}. D’abord : {n}. {d}',v_next:'{n}. {d}',v_startside:'Commence par : {s}.',v_go:'C’est parti ! {s} secondes.',
    v_switch:'Change de côté : {s}.',v_sx_done:'Très bien ! Étirements terminés.',
    v_min:'{n} minutes',v_min1:'1 minute',v_sec:'{n} secondes',
-   snd_l:'🔈 Son pour dormir',snd_none:'Sans son',snd_brown:'Bruit doux · 30 min',snd_try:'▶️ Essayer',snd_stop:'🔇 Arrêter le son',
+   snd_l:'🔈 Son pour dormir',snd_none:'Sans son',snd_brown:'Bruit doux (s’arrête tout seul)',snd_trying:'⏹️ Arrêter',snd_try:'▶️ Essayer',snd_stop:'🔇 Arrêter le son',
    vela_btn:'🌙 Je n’arrive pas à dormir',vela_title:'🌙 Si le sommeil ne vient pas',vela_desc:'Sans regarder l’heure',
    v_vela1:'Ce n’est pas grave. Ne regarde pas l’heure. Rester allongée les yeux fermés, ça repose aussi.',
    v_vela2:'Pose une main sur ton ventre. Inspire par le nez en comptant jusqu’à quatre et expire lentement par la bouche en comptant jusqu’à sept ou huit. Sans forcer.',
@@ -406,13 +406,14 @@ const steps = [
   { id:'movil', title:'📱 El móvil a dormir', desc:'Alarma, modo avión y boca abajo', dim:.3, tasks:[
     { name:'⏰ Alarma a la hora de siempre', secs:15, say:'Mira que la alarma de mañana esté puesta, a la hora de siempre.' },
     { name:'✈️ Modo avión y volumen bajito', secs:20, say:'Pon el móvil en modo avión y baja el volumen. Yo seguiré sonando.' },
-    { name:'🙃 Boca abajo, lejos de la mano', secs:15, say:'Déjalo boca abajo y lejos de la mano. Lo ideal es fuera del cuarto; si se queda contigo, así está bien.' },
+    { name:'🙃 Boca abajo, lejos de la mano', secs:15, say:'Déjalo boca abajo y lejos de la mano. Si usas el sonido de fondo, en la mesita; si no, lo ideal es fuera del cuarto.' },
     { name:'🌙 Suelta el día', secs:20, phrase:true }]},
   { id:'meditacion', title:'🕯️ Meditación Shiné', desc:'Tumbada y con los ojos cerrados', dim:.55, meditation:{
     intro:'Shiné significa «morar en calma». Es una práctica budista básica de atención plena.',
     steps:[
       { secs:30, phase:'Postura', instruction:'Túmbate boca arriba, cómoda. Una mano en el pecho y otra en la barriga, y cierra los ojos. Deja que la cama te sostenga.' },
-      { secs:150, phase:'Exhalación larga', instruction:'Toma aire por la nariz contando cuatro y suéltalo despacio por la boca, contando siete u ocho. Luego espera a que el cuerpo pida aire. Que suba la mano de la barriga, no la del pecho. Sin forzar: si te mareas, cuenta más corto.' },
+      { secs:75, phase:'Exhalación larga', instruction:'Toma aire por la nariz contando cuatro y suéltalo despacio por la boca, contando siete u ocho. Luego espera a que el cuerpo pida aire. Que suba la mano de la barriga, no la del pecho. Sin forzar: si te mareas, cuenta más corto.' },
+      { secs:75, phase:'Exhalación larga', instruction:'Así. Suelta el aire despacio, sin prisa. Que la mano de la barriga suba y baje.' },
       { secs:60, phase:'Respiración natural', instruction:'Ahora deja la respiración libre, sin cambiarla. Nota el aire que entra y sale. Si la mente se va, vuelve con suavidad a la respiración.' },
       { secs:120, phase:'Cuenta atrás', instruction:'En cada exhalación, cuenta hacia atrás desde 10. Al llegar a 1, o si te pierdes, vuelve a 10 tranquila. No hay que terminar: te aviso yo.' },
       { secs:60, phase:'Respiración libre', instruction:'Deja de contar. Si aparece un pensamiento, no hagas nada con él: vuelve a notar el aire que sale. Los pensamientos van y vienen como nubes. Tú eres el cielo.' },
@@ -448,13 +449,14 @@ const STEPS_L={
   {title:'📱 Phone to bed',desc:'Alarm, airplane mode and face down',tasks:[
     {name:'⏰ Alarm at the usual time',say:'Check that tomorrow’s alarm is set, at the usual time.'},
     {name:'✈️ Airplane mode, volume low',say:'Put your phone in airplane mode and turn the volume down. You’ll still hear me.'},
-    {name:'🙃 Face down, out of reach',say:'Leave it face down and out of reach. Outside the bedroom is best; if it stays with you, that’s fine.'},
+    {name:'🙃 Face down, out of reach',say:'Leave it face down and out of reach. If you’re using the background sound, on the nightstand; if not, outside the bedroom is best.'},
     {name:'🌙 Let go of the day'}]},
   {title:'🕯️ Shiné meditation',desc:'Lying down, eyes closed',meditation:{
     intro:'Shiné means “abiding in calm”. It’s a basic Buddhist mindfulness practice.',
     steps:[
      {phase:'Posture',instruction:'Lie on your back, comfortably. One hand on your chest and the other on your belly, and close your eyes. Let the bed hold you.'},
      {phase:'Long out-breath',instruction:'Breathe in through your nose for a count of four and breathe out slowly through your mouth for seven or eight. Then wait until your body wants air. Let the hand on your belly rise, not the one on your chest. Don’t force it: if you feel dizzy, count shorter.'},
+     {phase:'Long out-breath',instruction:'That’s it. Let the air out slowly, no rush. Let the hand on your belly rise and fall.'},
      {phase:'Natural breathing',instruction:'Now let your breath flow freely, without changing it. Notice the air coming in and going out. If your mind wanders, gently come back to the breath.'},
      {phase:'Countdown',instruction:'On each out-breath, count down from 10. When you reach 1, or if you lose count, calmly go back to 10. You don’t need to finish: I’ll let you know.'},
      {phase:'Free breathing',instruction:'Stop counting. If a thought shows up, don’t do anything with it: go back to feeling the air going out. Thoughts come and go like clouds. You are the sky.'},
@@ -487,13 +489,14 @@ const STEPS_L={
   {title:'📱 Le téléphone au lit',desc:'Réveil, mode avion et écran retourné',tasks:[
     {name:'⏰ Réveil à l’heure habituelle',say:'Vérifie que le réveil de demain est bien mis, à l’heure habituelle.'},
     {name:'✈️ Mode avion et volume bas',say:'Mets le téléphone en mode avion et baisse le volume. Tu m’entendras quand même.'},
-    {name:'🙃 Retourné, loin de la main',say:'Pose-le écran vers le bas, loin de ta main. L’idéal, c’est hors de la chambre ; s’il reste avec toi, c’est bien comme ça.'},
+    {name:'🙃 Retourné, loin de la main',say:'Pose-le écran vers le bas, loin de ta main. Si tu utilises le son de fond, sur la table de nuit ; sinon, l’idéal, c’est hors de la chambre.'},
     {name:'🌙 Lâche la journée'}]},
   {title:'🕯️ Méditation Shiné',desc:'Allongée, les yeux fermés',meditation:{
     intro:'Shiné signifie « demeurer dans le calme ». C’est une pratique bouddhiste de base de pleine conscience.',
     steps:[
      {phase:'Posture',instruction:'Allonge-toi sur le dos, confortablement. Une main sur la poitrine et l’autre sur le ventre, et ferme les yeux. Laisse le lit te porter.'},
      {phase:'Longue expiration',instruction:'Inspire par le nez en comptant jusqu’à quatre et expire lentement par la bouche en comptant jusqu’à sept ou huit. Puis attends que le corps redemande de l’air. C’est la main sur le ventre qui monte, pas celle sur la poitrine. Sans forcer : si la tête tourne, compte moins longtemps.'},
+     {phase:'Longue expiration',instruction:'Voilà. Laisse sortir l’air lentement, sans te presser. Que la main sur le ventre monte et descende.'},
      {phase:'Respiration naturelle',instruction:'Maintenant, laisse ta respiration libre, sans la changer. Sens l’air qui entre et qui sort. Si l’esprit s’en va, reviens doucement à la respiration.'},
      {phase:'Compte à rebours',instruction:'À chaque expiration, compte à rebours depuis 10. Arrivée à 1, ou si tu te perds, reviens calmement à 10. Pas besoin de finir : je te préviens.'},
      {phase:'Respiration libre',instruction:'Arrête de compter. Si une pensée arrive, ne fais rien avec elle : reviens à l’air qui sort. Les pensées vont et viennent comme des nuages. Tu es le ciel.'},
@@ -548,7 +551,7 @@ function onSteps(){const o=offIds();return steps.map((_,i)=>i).filter(i=>!o.incl
 function toggleStep(id){
   const o=offIds(),k=o.indexOf(id);
   if(k>=0)o.splice(k,1);else{if(steps.length-o.length<=1)return;o.push(id);}
-  try{const c=JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}');c.off=o;c.min=planMinutes(o);localStorage.setItem('cris_noche_cfg',JSON.stringify(c));}catch(e){}
+  try{const c=JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}');c.off=o;c.min=planMinutes(o);c.v=2;localStorage.setItem('cris_noche_cfg',JSON.stringify(c));}catch(e){}
   renderHome();
   const b=$('stepRow').children[steps.findIndex(s=>s.id===id)];if(b)b.focus(); // el foco sigue en el mismo paso
 }
@@ -561,9 +564,10 @@ function renderHome(){
     return `<button class="stp${on?'':' off'}" aria-pressed="${on}" aria-label="${n}" title="${n}" onclick="toggleStep('${s.id}')">${emo(s.title)}</button>`;}).join('');
   const m=planMinutes(o);
   document.getElementById('planH').textContent=m===1?t('plan_h1'):t('plan_h',{m});
-  try{const c=JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}');if(c.min!==m){c.off=o;c.min=m;localStorage.setItem('cris_noche_cfg',JSON.stringify(c));}}catch(e){}
+  // v:2 = minutos de la rutina con el protocolo de descanso (la portada de Quico no se fía de los de antes)
+  try{const c=JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}');if(c.min!==m||c.v!==2){c.off=o;c.min=m;c.v=2;localStorage.setItem('cris_noche_cfg',JSON.stringify(c));}}catch(e){}
   const k=sndKind();$('sndSel').innerHTML=['none','brown'].map(x=>`<option value="${x}"${x===k?' selected':''}>${t('snd_'+x)}</option>`).join('');
-  $('sndTry').hidden=k==='none';
+  $('sndTry').hidden=k==='none'; sndBtns();
 }
 
 let ON = [];          // índices de los pasos activos en esta noche
@@ -843,9 +847,10 @@ function pauseRoutine() {
     if (!isRunning) { isRunning = true; speak(t('v_wait')); syncPause(); }
     return;
   }
-  if (isRunning) { stopTimer(); hush(); releaseAwake(); }
-  else { startTimer(); speak(nowName()); }
-  syncPause();
+  // pausar es pararlo todo (una llamada, la puerta…): también el sonido; al seguir vuelve, y se apaga a su hora igual
+  if (isRunning) { stopTimer(); hush(); releaseAwake(); if (snd && sndOn) try { snd.pause(); } catch (e) {} }
+  else { startTimer(); speak(nowName()); if (snd && sndOn) try { const p = snd.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} }
+  syncPause(); sndBtns();
 }
 
 function nextStep() {
@@ -893,7 +898,7 @@ function endRoutine() {
    curan»: no han demostrado ayudar a dormir.
    Arranca al meterse en la cama; en iOS se «despierta» en el toque de Comenzar o de No me duermo. */
 const IN_BED = steps.findIndex(s => s.id === 'mente');
-let snd = null, sndEnd = 0, sndIv = null, sndOn = false; // sndOn: se pidió que suene (no la preparación en silencio)
+let snd = null, sndEnd = 0, sndIv = null, sndOn = false, sndFade = true; // sndOn: se pidió que suene (no la preparación en silencio)
 const sndUrl = {};
 const sndKind = () => { try { return JSON.parse(localStorage.getItem('cris_noche_cfg') || '{}').snd === 'brown' ? 'brown' : 'none'; } catch (e) { return 'none'; } };
 function setSnd(k) {
@@ -916,7 +921,8 @@ function sndSrc(k) {
   // ruido marrón de 20 s; el último segundo se funde con el primero para que el bucle no dé un salto
   const n = rate * 20, F = rate, x = new Float32Array(n); let a = 0, m = 0;
   for (let i = 0; i < n; i++) { a = (a + .02 * (Math.random() * 2 - 1)) / 1.02; x[i] = a; m = Math.max(m, Math.abs(a)); }
-  return sndUrl[k] = wavUrl(1, rate, n - F, i => { let y = x[i]; if (i < F) { const f = i / F; y = y * f + x[n - F + i] * (1 - f); } return [.3 * y / m]; });
+  // fundido de potencia constante (dos ruidos distintos: con uno lineal, el volumen bajaría a mitad)
+  return sndUrl[k] = wavUrl(1, rate, n - F, i => { let y = x[i]; if (i < F) { const f = i / F; y = y * Math.sqrt(f) + x[n - F + i] * Math.sqrt(1 - f); } return [.3 * y / m]; });
 }
 const sndPlaying = () => sndOn && !!snd && !snd.paused;
 function sndPrime() { // en un toque: deja el audio listo para poder sonar luego sin toque (iOS)
@@ -933,18 +939,33 @@ function sndStart(min) {
   try {
     if (!snd || !snd.src.startsWith(sndSrc(k))) { if (snd) snd.pause(); snd = new Audio(sndSrc(k)); snd.loop = true; }
     snd.muted = false; try { snd.volume = .7; } catch (e) {}
-    sndOn = true; sndEnd = Date.now() + min * 60e3;
-    snd.ontimeupdate = sndCheck; clearInterval(sndIv); sndIv = setInterval(sndCheck, 5000);
+    sndOn = true; sndEnd = Date.now() + min * 60e3; sndFade = min >= 5; // «Probar» suena al volumen de verdad, sin fundido
+    snd.ontimeupdate = sndCheck;
+    // si algo lo vuelve a poner en marcha cuando ya se apagó (la pantalla de bloqueo, unos auriculares…), se para
+    snd.onplay = () => { if (!sndOn && !snd.muted) snd.pause(); };
+    clearInterval(sndIv); sndIv = setInterval(sndCheck, 5000);
     const p = snd.play(); if (p && p.catch) p.catch(() => {});
   } catch (e) {}
+  sndBtns();
 }
 function sndCheck() { // por reloj: aunque el móvil frene la página, se apaga cuando toca
-  if (!snd || !sndEnd) return;
+  if (!snd) return;
+  if (!sndEnd) { if (!snd.muted && !snd.paused) snd.pause(); return; } // ya se apagó: no vuelve a sonar
   const left = sndEnd - Date.now();
   if (left <= 0) { sndStop(); return; }
-  if (left < 60e3) try { snd.volume = .7 * left / 60e3; } catch (e) {}
+  if (sndFade && left < 60e3) try { snd.volume = .7 * left / 60e3; } catch (e) {}
 }
-function sndStop() { clearInterval(sndIv); sndIv = null; sndEnd = 0; sndOn = false; if (snd) { try { snd.pause(); snd.currentTime = 0; } catch (e) {} } const b = document.getElementById('sndOff'); if (b) b.remove(); }
+// «Probar» ↔ «Parar» y el botón de parar en «No me duermo»
+function sndBtns() {
+  const b = document.getElementById('sndTry'); if (b) b.textContent = sndPlaying() ? t('snd_trying') : t('snd_try');
+  const o = document.getElementById('sndOffV'); if (o) o.hidden = !sndPlaying();
+}
+function sndStop() {
+  clearInterval(sndIv); sndIv = null; sndEnd = 0; sndOn = false;
+  if (snd) { try { snd.pause(); snd.currentTime = 0; } catch (e) {} }
+  const b = document.getElementById('sndOff'); if (b) b.remove();
+  sndBtns();
+}
 function sndTry() { // ▶️ Probar: 6 segundos para ajustar el volumen
   if (sndPlaying()) { sndStop(); return; }
   sndStart(.1);
@@ -961,8 +982,9 @@ function velaStart() {
   $('stepTitle').textContent = t('vela_title'); $('stepDesc').textContent = t('vela_desc'); $('counter').textContent = '';
   $('pauseBtn').classList.add('hidden'); $('nextBtn').classList.add('hidden'); $('endBtn').classList.remove('hidden');
   setRing(0, '🌙', true); setDim(.6);
-  $('stepContent').innerHTML = `<div class="sx-card"><div class="vela-line" id="velaLine"></div></div>`;
-  if (!sndOn) sndStart(20);
+  $('stepContent').innerHTML = `<div class="sx-card"><div class="vela-line" id="velaLine"></div></div>
+    <button class="btn sec" id="sndOffV" hidden onclick="sndStop()" style="margin-top:12px">${t('snd_stop')}</button>`;
+  if (!sndOn || sndEnd - Date.now() < 20 * 60e3) sndStart(20); // con tiempo de sobra para toda la guía
   keepAwake(); vela0 = Date.now(); velaIdx = -1; clearInterval(velaIv); velaIv = setInterval(velaTick, 1000); velaTick();
 }
 function velaTick() {
@@ -986,7 +1008,11 @@ async function keepAwake() {
 }
 function releaseAwake() { wantAwake = false; try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {} }
 // el móvil suelta el bloqueo al salir de la app: se recupera al volver (y se pone al día el tiempo)
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && isRunning && !waiting) { tick(); if (isRunning) keepAwake(); } });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState !== 'visible') return;
+  if (isRunning && !waiting) { tick(); if (isRunning) keepAwake(); }
+  if (velaIv) { velaTick(); if (velaIv) keepAwake(); } // «No me duermo» también la recupera
+});
 
 /* Atrás del móvil: el padre llama __crisBack() (síncrono); true = retrocedió.
    Corriendo → pausa · en pausa (o en info / al terminar) → portada del módulo · en la portada → false */
