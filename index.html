@@ -1286,7 +1286,7 @@ setInterval(checkNotif,30000);
    al salir de un módulo (por si cambió el calendario) y al tocar los ajustes. */
 const agTag=o=>'q-ag-'+o.id+'@'+o.rem;
 // minutos de la rutina nocturna (los guarda el módulo con su personalización)
-function nocheMin(){try{const m=+JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}').min;return m>0?m:23;}catch(e){return 23;}}
+function nocheMin(){try{const m=+JSON.parse(localStorage.getItem('cris_noche_cfg')||'{}').min;return m>0?m:27;}catch(e){return 27;}}
 function agText(o,ms){const lg=crisLang()==='en'?'en-GB':crisLang(),emo=o.kind==='clase'?'🎓':(o.e||'📌');
   return (ms>3*3600e3?t('ag_rem_day',{e:emo,h:new Date(o.st).toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'}),s:o.name}):t('ag_rem_min',{e:emo,n:Math.max(1,Math.round(ms/6e4)),s:o.name}))+(o.l?' · '+o.l:'');}
 function pushItems(){
