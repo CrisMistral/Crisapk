@@ -21,7 +21,7 @@ Compañera diaria para personas adultas con TDAH (sobre todo mujeres): «Mi día
 
 ## Probar
 - `npm test` — todas (levanta su propio servidor; usa Playwright, que en el contenedor de Claude Code ya está; fuera: `npm i --no-save playwright && npx playwright install chromium`). `npm test -- regla clases` para solo algunas; `VERBOSE=1` para ver detalles.
-- Pruebas en `tests/`: `humo` (pulsa todos los botones de cada pantalla), `versiones`, `subir-versiones`, `idiomas`, `regla`, `calendario`, `clases`, `meditaciones`, `privacidad`. Datos de prueba inventados, nunca los suyos.
+- Pruebas en `tests/`: `humo` (pulsa todos los botones de cada pantalla), `versiones`, `subir-versiones`, `idiomas`, `regla`, `calendario`, `clases`, `meditaciones`, `noche`, `alarma`, `privacidad`. Datos de prueba inventados, nunca los suyos.
 - Para mirarla a mano: el servidor local arranca solo al empezar la sesión en `http://localhost:8765/` (si no: `node tools/servidor.cjs --fondo`).
 - Revisión antes de publicar algo que no sea trivial: el agente `revisor-quico` (lista de comprobación del proyecto; solo lee y prueba).
 

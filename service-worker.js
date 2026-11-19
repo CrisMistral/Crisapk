@@ -1,7 +1,7 @@
 // Service Worker - Cris App
 // Cachea todos los módulos para que la app funcione sin conexión.
 
-const CACHE_NAME = 'cris-app-v126';
+const CACHE_NAME = 'cris-app-v127';
 
 const ASSETS = [
   './',
@@ -141,7 +141,7 @@ async function pushShown(tag) {
 self.addEventListener('push', (event) => {
   event.waitUntil((async () => {
     let d = null; try { d = event.data ? event.data.json() : null; } catch (e) {}
-    let title = 'Quico', body = '', tag;
+    let title = 'Quico', body = '', tag, alarm = false;
     if (d && d.iv && d.ct) {
       const key = await pushKey();
       if (key) {
@@ -149,13 +149,16 @@ self.addEventListener('push', (event) => {
           const b = (x) => Uint8Array.from(atob(x), (c) => c.charCodeAt(0));
           const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b(d.iv) }, key, b(d.ct));
           const o = JSON.parse(new TextDecoder().decode(pt));
-          title = o.t || title; body = o.b || ''; tag = o.g;
+          title = o.t || title; body = o.b || ''; tag = o.g; alarm = !!o.a && !!tag;
         } catch (e) {}
       }
     }
     await pushShown(tag);
     // misma etiqueta que el aviso local: si Quico estaba abierto y ya avisó, se sustituye sin repetir
-    return self.registration.showNotification(title, { body, tag, icon: 'icons/notif-192.png', badge: 'icons/badge-96.png' });
+    const opt = { body, tag, icon: 'icons/notif-192.png', badge: 'icons/badge-96.png' };
+    // alarma (despertar / dormir): vibra, vuelve a sonar aunque sustituya a la anterior y se queda hasta tocarla
+    if (alarm) { opt.renotify = true; opt.requireInteraction = true; opt.vibrate = [500, 250, 500, 250, 900]; }
+    return self.registration.showNotification(title, opt);
   })());
 });
 

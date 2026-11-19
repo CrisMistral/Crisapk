@@ -16,7 +16,7 @@
   const REMOTE='https://fantastic-arithmetic-ef000d.netlify.app/api/sync';
   const API=/(^|\.)github\.io$/.test(location.hostname)?REMOTE:'api/sync';
   const ITER=600000;
-  const SKIP=new Set([SK,'cris_ag_rem_v1','cris_clases_err_v1','cris_clases_rem','cris_clases_setup','cris_cal_setup']);
+  const SKIP=new Set([SK,'cris_ag_rem_v1','cris_pantalla','cris_clases_err_v1','cris_clases_rem','cris_clases_setup','cris_cal_setup']);
   const mine=k=>k&&(k.indexOf('cris_')===0||k.indexOf('lim-')===0)&&!SKIP.has(k);
   function st(){try{const v=JSON.parse(localStorage.getItem(SK));return v&&typeof v==='object'?v:null;}catch(e){return null;}}
   function save(v){try{if(v)localStorage.setItem(SK,JSON.stringify(v));else localStorage.removeItem(SK);}catch(e){}}

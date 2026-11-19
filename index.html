@@ -269,6 +269,21 @@ body{
 .tp-run-b button.alt{background:#fff;color:#4b5563;border:2px solid #d1d5db;}
 #tmToast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:400;width:min(92vw,420px);display:none;align-items:center;gap:10px;background:#7c4a03;color:#fff;border-radius:16px;padding:10px 10px 10px 16px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;box-shadow:0 8px 24px rgba(0,0,0,.25);}
 #tmToast.show{display:flex;}
+/* Alarma a pantalla completa (despertar / dormir) y reloj de noche de la pantalla fija */
+#alarmBox{position:fixed;inset:0;z-index:1100;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;background:var(--teal-dark);color:#fff;text-align:center;font-family:'Outfit',sans-serif;}
+#alarmBox.show{display:flex;}
+#alarmBox .al-emo{font-size:76px;line-height:1;animation:alPulse 1.6s ease-in-out infinite;}
+#alarmBox .al-t{font-size:1.7rem;font-weight:800;max-width:560px;}
+#alarmBox .al-b{font-size:1.02rem;opacity:.9;max-width:520px;margin-bottom:8px;}
+#alarmBox button{width:min(86vw,420px);min-height:64px;border-radius:20px;font-family:inherit;font-size:1.2rem;font-weight:800;cursor:pointer;}
+#alGo{border:none;background:#fff;color:var(--teal-dark);}
+#alOk{border:2px solid rgba(255,255,255,.7);background:transparent;color:#fff;}
+#alarmBox.solo #alOk{border:none;background:#fff;color:var(--teal-dark);}
+@keyframes alPulse{50%{transform:scale(1.12);}}
+html.calm #alarmBox .al-emo{animation:none;}
+@media (prefers-reduced-motion:reduce){#alarmBox .al-emo{animation:none;}}
+#nightClock{position:fixed;inset:0;z-index:1050;display:none;align-items:center;justify-content:center;background:#000;color:#5c4632;font-family:'Outfit',sans-serif;font-size:24vmin;font-weight:300;cursor:pointer;user-select:none;}
+#nightClock.show{display:flex;}
 #tmToast button{min-height:44px;border:none;border-radius:12px;background:#fff;color:#7c4a03;font-family:inherit;font-weight:800;padding:8px 14px;cursor:pointer;flex-shrink:0;}
 .de-row{display:flex;align-items:center;gap:8px;background:var(--white-card);border:2px solid var(--mint-mid);border-radius:14px;padding:8px 8px 8px 12px;margin-bottom:8px;}
 .de-in{flex:1;min-width:0;border:2px solid transparent;border-radius:10px;background:var(--mint-bg);padding:9px 10px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--teal-dark);}
@@ -431,8 +446,12 @@ body.mod-open #menuBtn{display:none;}
   font-size:.92rem;font-weight:700;cursor:pointer;margin-bottom:10px;
 }
 #notifBtn.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+#pantBtn{width:100%;border:2px solid var(--mint-mid);background:var(--white-card);color:var(--teal-dark);border-radius:16px;padding:14px;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;margin-bottom:10px;}
+#pantBtn.on{background:var(--teal);border-color:var(--teal);color:#fff;}
 #notifTimes{background:var(--white-card);border:2px solid var(--mint-mid);border-radius:16px;padding:12px 14px;margin-bottom:10px;}
 .nt-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:.86rem;font-weight:600;color:var(--teal-dark);}
+.nt-sw{min-width:64px;min-height:40px;border:2px solid var(--mint-mid);border-radius:12px;background:#fff;color:var(--teal-dark);font-family:'Outfit',sans-serif;font-size:.86rem;font-weight:800;cursor:pointer;}
+.nt-sw.on{background:var(--teal);border-color:var(--teal);color:#fff;}
 .nt-row input{border:2px solid var(--mint-mid);border-radius:10px;padding:6px 10px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark);background:#fff;}
 
 /* ── Ajustes rápidos ── */
@@ -477,8 +496,8 @@ body.mod-open #menuBtn{display:none;}
 <script src="shared/dia.js?v=119"></script>
 <script src="shared/clases.js?v=122"></script>
 <script src="shared/cal.js?v=123"></script>
-<script src="shared/sync.js?v=117"></script>
-<script src="shared/avisos.js?v=118"></script>
+<script src="shared/sync.js?v=118"></script>
+<script src="shared/avisos.js?v=119"></script>
 </head>
 <body>
 
@@ -543,9 +562,13 @@ body.mod-open #menuBtn{display:none;}
     <div id="notifTimes" style="display:none;">
       <div class="nt-row"><span data-i18n="notif_morning">☀️ Empezar el día</span><input type="time" id="nt-m" value="09:30" onchange="saveNotifTimes()"></div>
       <div class="nt-row"><span data-i18n="notif_night">🌙 Rutina nocturna</span><input type="time" id="nt-n" value="21:30" onchange="saveNotifTimes()"></div>
+      <div class="nt-row"><span data-i18n="notif_alarm">⏰ Que pite como alarma</span><button id="nt-al" class="nt-sw" onclick="toggleAlarm()"></button></div>
+      <div class="cfg-note" id="nt-al-note" data-i18n="notif_alarm_note">Si no abres Quico, vuelve a pitar a los 5 y a los 10 min. Con el móvil en silencio no suena: para despertarte, pon también la alarma del reloj.</div>
       <div class="cfg-note" data-i18n="notif_hint">Suenan aunque Quico esté cerrado. En iPhone, añade Quico a la pantalla de inicio.</div>
     </div>
     <div class="nt-row" style="margin-bottom:12px"><span data-i18n="cfg_name">🙂 Tu nombre</span><input type="text" id="nameInput" maxlength="18" placeholder="…" oninput="saveName(this.value)" style="width:130px;border:2px solid var(--mint-mid);border-radius:10px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--teal-dark);background:#fff"></div>
+    <button id="pantBtn" onclick="togglePantalla()">🖥️ Usar como pantalla fija</button>
+    <div class="cfg-note" id="pantNote" data-i18n="pant_note" style="display:none;margin:-4px 0 12px">Para una tablet en la mesa, enchufada: no se apaga mientras Quico está abierto. De noche se queda oscura con un reloj; tócala para encenderla.</div>
     <button id="calmBtn" onclick="toggleCalm()">🕯️ Reducir estímulos</button>
     <div class="cfg-chips">
       <button id="c-voice" onclick="toggleCfg('voice')" data-i18n="cfg_voice">🗣️ Voz</button>
@@ -591,6 +614,8 @@ body.mod-open #menuBtn{display:none;}
 </aside>
 
 <!-- Aviso de fin del temporizador mientras hay otro módulo abierto -->
+<div id="alarmBox" role="alertdialog" aria-modal="true" aria-labelledby="alT"><div class="al-emo" id="alEmo">⏰</div><div class="al-t" id="alT"></div><div class="al-b" id="alB"></div><button id="alGo" onclick="alarmAct(true)" hidden></button><button id="alOk" onclick="alarmAct(false)" data-i18n="al_ok">Vale</button></div>
+<div id="nightClock" aria-hidden="true"></div>
 <div id="tmToast" role="alert"><span id="tmToastT"></span><button onclick="tmToastGo()" data-i18n="tm_see">Ver</button></div>
 
 <!-- Visor de módulos -->
@@ -610,6 +635,10 @@ const I18N={
   lang_label:'Idioma', modules_label:'Módulos', settings_label:'Ajustes', ob_replay:'🦘 Ver el recorrido',
   notif_morning:'☀️ Empezar el día', notif_night:'🌙 Rutina nocturna',
   notif_hint:'Suenan aunque Quico esté cerrado. En iPhone, añade Quico a la pantalla de inicio.',
+  notif_alarm:'⏰ Que pite como alarma', notif_alarm_note:'Si no abres Quico, vuelve a pitar a los 5 y a los 10 min. Con el móvil en silencio no suena: para despertarte, pon también la alarma del reloj.',
+  al_yes:'Sí', al_no:'No', al_ok:'Vale', al_go_n:'🌙 Empezar la rutina',
+  pant_off:'🖥️ Usar como pantalla fija', pant_on:'🖥️ Pantalla fija activada — toca para quitar',
+  pant_note:'Para una tablet en la mesa, enchufada: no se apaga mientras Quico está abierto. De noche se queda oscura con un reloj; tócala para encenderla.',
   cfg_voice:'🗣️ Voz', cfg_sound:'🔔 Sonido', cfg_vib:'📳 Vibración',
   cfg_note:'Los ajustes se aplican a toda la app',
   drawer_footer:'Quico · tu compañero cada día 💚',
@@ -671,6 +700,10 @@ const I18N={
   lang_label:'Language', modules_label:'Modules', settings_label:'Settings', ob_replay:'🦘 Watch the tour',
   notif_morning:'☀️ Start the day', notif_night:'🌙 Night routine',
   notif_hint:'They ring even when Quico is closed. On iPhone, add Quico to your home screen.',
+  notif_alarm:'⏰ Beep like an alarm', notif_alarm_note:'If you don’t open Quico, it beeps again after 5 and 10 min. With your phone on silent it won’t ring: to wake up, also set your clock alarm.',
+  al_yes:'Yes', al_no:'No', al_ok:'OK', al_go_n:'🌙 Start my routine',
+  pant_off:'🖥️ Use as a fixed screen', pant_on:'🖥️ Fixed screen on — tap to turn off',
+  pant_note:'For a tablet on your table, plugged in: it stays on while Quico is open. At night it goes dark with a clock; tap it to light it up.',
   cfg_voice:'🗣️ Voice', cfg_sound:'🔔 Sound', cfg_vib:'📳 Vibration',
   cfg_note:'Settings apply across the whole app',
   drawer_footer:'Quico · your everyday companion 💚',
@@ -732,6 +765,10 @@ const I18N={
   lang_label:'Langue', modules_label:'Modules', settings_label:'Réglages', ob_replay:'🦘 Revoir la visite',
   notif_morning:'☀️ Commencer la journée', notif_night:'🌙 Routine du soir',
   notif_hint:'Elles sonnent même quand Quico est fermé. Sur iPhone, ajoute Quico à l’écran d’accueil.',
+  notif_alarm:'⏰ Sonner comme une alarme', notif_alarm_note:'Si tu n’ouvres pas Quico, ça sonne encore après 5 et 10 min. Si ton téléphone est en silencieux, ça ne sonne pas : pour te réveiller, mets aussi l’alarme de l’horloge.',
+  al_yes:'Oui', al_no:'Non', al_ok:'OK', al_go_n:'🌙 Commencer ma routine',
+  pant_off:'🖥️ Utiliser comme écran fixe', pant_on:'🖥️ Écran fixe activé — touche pour l’enlever',
+  pant_note:'Pour une tablette sur ta table, branchée : elle reste allumée tant que Quico est ouvert. La nuit, elle devient sombre avec une horloge ; touche-la pour la rallumer.',
   cfg_voice:'🗣️ Voix', cfg_sound:'🔔 Son', cfg_vib:'📳 Vibration',
   cfg_note:'Les réglages s’appliquent à toute l’appli',
   drawer_footer:'Quico · ton compagnon de chaque jour 💚',
@@ -821,7 +858,7 @@ function setLang(l){
   applyStaticI18n();
   buildModuleList();
   setGreeting();
-  renderToday();renderCfg();renderNotif();pushSync(); // los avisos push, en el idioma nuevo
+  renderToday();renderCfg();renderNotif();renderPantalla();pushSync(); // los avisos push, en el idioma nuevo
   if(document.getElementById('daySheet').classList.contains('open')){
     renderDayEdit();
     document.getElementById('ds-sub').textContent=t('ds_sub_list');
@@ -1220,6 +1257,11 @@ function toggleNotif(){
     renderNotif();
   });
 }
+/* Despertar y dormir «como alarma» (sí por defecto): el aviso vibra, se queda hasta tocarlo y,
+   si no abre Quico, vuelve a pitar a los 5 y a los 10 min (lo manda el servidor con el resto) */
+const ALARM_REP=[5,10],ALARM_VIB=[500,250,500,250,900];
+function alarmOn(n){return n.al!==false;}
+function toggleAlarm(){const n=getNotifCfg();n.al=!alarmOn(n);setNotifCfg(n);renderNotif();pushSync(true);}
 function saveNotifTimes(){
   const n=getNotifCfg();
   n.m=document.getElementById('nt-m').value;
@@ -1235,10 +1277,15 @@ function renderNotif(){
   document.getElementById('notifTimes').style.display=n.on?'block':'none';
   if(n.m)document.getElementById('nt-m').value=n.m;
   if(n.n)document.getElementById('nt-n').value=n.n;
+  const al=alarmOn(n),sw=document.getElementById('nt-al');
+  sw.classList.toggle('on',al);sw.textContent=al?t('al_yes'):t('al_no');sw.setAttribute('aria-pressed',al);
+  document.getElementById('nt-al-note').style.display=al?'block':'none';
 }
-function fireNotif(title,body,tag){
+function fireNotif(title,body,tag,alarm){
   // tag: el mismo que lleva el aviso push de esa hora; si los dos llegan, el segundo sustituye al primero sin repetir
   const o={body,icon:'icons/notif-192.png',badge:'icons/badge-96.png'};if(tag)o.tag=tag;
+  // alarma: vibra, vuelve a sonar aunque sustituya a otro con la misma etiqueta y se queda hasta tocarla
+  if(alarm&&tag){o.renotify=true;o.requireInteraction=true;o.vibrate=ALARM_VIB;}
   try{
     if(navigator.serviceWorker&&navigator.serviceWorker.controller){
       // icon: la cara de Quico · badge: su silueta (Android pinta la insignia de un color; con un PNG opaco sale un cuadrado)
@@ -1249,36 +1296,46 @@ function fireNotif(title,body,tag){
   }catch(e){try{new Notification(title,{body});}catch(_){}}
 }
 /* Aviso local, salvo que el push ya lo enseñara (el service worker apunta sus etiquetas) */
-function fireNotifOnce(title,body,tag){(window.QPUSH?QPUSH.shown():Promise.resolve([])).catch(()=>[]).then(s=>{if(s.indexOf(tag)<0)fireNotif(title,body,tag);});}
+function fireNotifOnce(title,body,tag,alarm){(window.QPUSH?QPUSH.shown():Promise.resolve([])).catch(()=>[]).then(s=>{if(s.indexOf(tag)<0)fireNotif(title,body,tag,alarm);});}
+/* ¿Está abierto ahora este módulo? */
+function modIs(name){const f=document.getElementById('moduleFrame');return document.body.classList.contains('mod-open')&&!!f&&(f.getAttribute('src')||'').indexOf(name)>=0;}
 /* ¿Está hecha la rutina de la noche a la que pertenece este momento? (misma clave y desfase de 5 h que el módulo) */
 function nightDoneAt(ms){const d=new Date(ms-5*3600e3),p=x=>String(x).padStart(2,'0');try{return localStorage.getItem('cris_noche_v1_'+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()))==='1';}catch(e){return false;}}
 function minsOf(hhmm){const p=(hhmm||'').split(':');return (+p[0])*60+(+p[1]);}
 function checkNotif(){
   const n=getNotifCfg();
-  if(!n.on||!('Notification' in window)||Notification.permission!=='granted')return;
+  if(!n.on)return;
+  // sin permiso (p. ej. una tablet donde solo se abrió Quico) no hay avisos del sistema, pero la alarma sí pita en pantalla
+  const canN='Notification' in window&&Notification.permission==='granted';
   const now=new Date();
   const nowMin=now.getHours()*60+now.getMinutes();
   const today=todayLocal();
+  const al=alarmOn(n);
   // "¿ya pasó la hora objetivo y aún no he avisado hoy?" — así, al abrir la app,
   // salta el aviso pendiente aunque no estuviera abierta a la hora exacta.
-  if(n.m&&n.lastM!==today&&nowMin>=minsOf(n.m)){
+  const mT=t('notif_m_title',{name:cfgName()}),mB=()=>{const day=now.getDay(),zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');return t('notif_m_body',{p:t('pil')[day],z:zona});};
+  if(canN&&n.m&&n.lastM!==today&&nowMin>=minsOf(n.m)){
     n.lastM=today;setNotifCfg(n);
-    const day=now.getDay();
-    const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');
-    fireNotifOnce(t('notif_m_title',{name:cfgName()}),t('notif_m_body',{p:t('pil')[day],z:zona}),'q-m-'+today);
+    fireNotifOnce(mT,mB(),'q-m-'+today,al);
   }
-  if(n.n&&n.lastN!==today&&nowMin>=minsOf(n.n)){
+  // si ya está con la rutina abierta o hecha, ni aviso ni pitido
+  const nightOk=()=>!nightDoneAt(Date.now())&&!(!document.hidden&&modIs('rutina-nocturna'));
+  if(canN&&n.n&&n.lastN!==today&&nowMin>=minsOf(n.n)){
     n.lastN=today;setNotifCfg(n);
-    if(!nightDoneAt(Date.now()))fireNotifOnce(t('notif_n_title'),t('notif_n_body',{m:nocheMin()}),'q-n-'+today);
+    if(nightOk())fireNotifOnce(t('notif_n_title'),t('notif_n_body',{m:nocheMin()}),'q-n-'+today,al);
   }
   // Pre-aviso suave (transición, no alarma): solo dentro de los 10 min previos
-  if(n.n&&n.lastPreN!==today&&n.lastN!==today){
+  if(canN&&n.n&&n.lastPreN!==today&&n.lastN!==today){
     const tgt=minsOf(n.n);
     if(nowMin>=tgt-10&&nowMin<tgt){
       n.lastPreN=today;setNotifCfg(n);
       if(!nightDoneAt(Date.now()))fireNotifOnce(t('notif_pre_title'),t('notif_pre_body'),'q-pre-'+today);
     }
   }
+  // Quico a la vista desde antes de la hora (una pantalla en la mesa, o la estaba usando): pita aquí
+  if(al&&n.m&&n.seenM!==today&&ringable(n.m,'m'+today))alarmRing('m',mT,mB());
+  if(al&&n.n&&n.seenN!==today&&nightOk()&&ringable(n.n,'n'+today))
+    alarmRing('n',t('notif_n_title'),t('notif_n_body',{m:nocheMin()}),()=>openModule('modules/rutina-nocturna.html'));
 }
 setInterval(checkNotif,30000);
 /* Avisos push (shared/avisos.js): la lista de los próximos 7 días, con el mismo texto y la misma
@@ -1293,11 +1350,13 @@ function agText(o,ms){const lg=crisLang()==='en'?'en-GB':crisLang(),emo=o.kind==
 function pushItems(){
   const n=getNotifCfg(),now=Date.now(),out=[];if(!n.on)return out;
   const at=(d,hhmm,off)=>{const m=minsOf(hhmm);if(!(m>=0))return 0;const x=new Date(d);x.setHours(0,m-(off||0),0,0);return x.getTime();};
+  // despertar y dormir como alarma: con su marca (a) y sus repeticiones, salvo el día que ya abrió Quico
+  const al=alarmOn(n),alarm=(it,seen)=>{out.push(it);if(!al)return;it.a=1;if(!seen)ALARM_REP.forEach(m=>out.push({...it,at:it.at+m*6e4}));};
   for(let i=0;i<7;i++){
     const d=new Date(now);d.setDate(d.getDate()+i);const day=d.getDay(),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    if(n.m){const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');out.push({at:at(d,n.m),t:t('notif_m_title',{name:cfgName()}),b:t('notif_m_body',{p:t('pil')[day],z:zona}),g:'q-m-'+key});}
+    if(n.m){const zona=ZONES[day]?t('zone')[ZONES[day][2]]:t('notif_finde');alarm({at:at(d,n.m),t:t('notif_m_title',{name:cfgName()}),b:t('notif_m_body',{p:t('pil')[day],z:zona}),g:'q-m-'+key},n.seenM===key);}
     if(n.n&&!nightDoneAt(at(d,n.n))){out.push({at:at(d,n.n,10),t:t('notif_pre_title'),b:t('notif_pre_body'),g:'q-pre-'+key});
-      out.push({at:at(d,n.n),t:t('notif_n_title'),b:t('notif_n_body',{m:nocheMin()}),g:'q-n-'+key});}
+      alarm({at:at(d,n.n),t:t('notif_n_title'),b:t('notif_n_body',{m:nocheMin()}),g:'q-n-'+key},n.seenN===key);}
   }
   if(window.QCAL)QCAL.agenda(now,now+7*864e5).forEach(o=>{if(o.rem>0)out.push({at:o.st-o.rem*6e4,t:agText(o,o.rem*6e4),b:'',g:agTag(o)});});
   return out.filter(x=>x.at>now+60e3).sort((a,b)=>a.at-b.at).slice(0,150);
@@ -1314,7 +1373,8 @@ let _pushT=null;
 window.addEventListener('storage',()=>{clearTimeout(_pushT);_pushT=setTimeout(()=>pushSync(),1500);});
 setTimeout(()=>pushSync(),4000);
 setInterval(()=>{if(!document.hidden)pushSync();},15*60e3);
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden){checkNotif();homeTick();clsSync();pushSync();} });
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){_visSince=Date.now();checkNotif();alarmsSeenOnOpen();pantLock();pantTick();homeTick();clsSync();pushSync();} });
+setTimeout(()=>{alarmsSeenOnOpen();pantLock();},2500);
 setTimeout(clsSync,1500);
 /* Enlace con datos para «Calendario» (p. ej. reglas pasadas de otra app): …/#calendario=<datos> */
 (function(){const m=location.hash.match(/^#calendario=(.+)$/);if(!m)return;
@@ -1432,16 +1492,82 @@ function tmMore(){QDIA.addTime(5);renderToday();}
 function tmStop(){QDIA.stopTimer();renderToday();}
 function tmOpen(){const tm=QDIA.timer();openModule('modules/rutina-diaria.html#foco='+encodeURIComponent((tm&&tm.id)||''));}
 let _alarmCtx=null;
+function beepTones(vol){try{
+  if(!_alarmCtx)_alarmCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(_alarmCtx.state==='suspended')_alarmCtx.resume();
+  [[760,0,.22],[980,.26,.22],[1240,.52,.42]].forEach(([f,at,d])=>{const o=_alarmCtx.createOscillator(),g=_alarmCtx.createGain(),t0=_alarmCtx.currentTime+at;
+    o.frequency.value=f;o.connect(g);g.connect(_alarmCtx.destination);g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+.02);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.start(t0);o.stop(t0+d+.02);});
+}catch(e){}}
 function homeAlarm(){
   const c=getCfg();
-  if(c.sound!==false&&c.calm!==true){try{
-    if(!_alarmCtx)_alarmCtx=new(window.AudioContext||window.webkitAudioContext)();
-    if(_alarmCtx.state==='suspended')_alarmCtx.resume();
-    [[760,0,.22],[980,.26,.22],[1240,.52,.42]].forEach(([f,at,d])=>{const o=_alarmCtx.createOscillator(),g=_alarmCtx.createGain(),t0=_alarmCtx.currentTime+at;
-      o.frequency.value=f;o.connect(g);g.connect(_alarmCtx.destination);g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(.2,t0+.02);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.start(t0);o.stop(t0+d+.02);});
-  }catch(e){}}
+  if(c.sound!==false&&c.calm!==true)beepTones(.2);
   if(hapticOK())navigator.vibrate([160,90,160,90,320]);
 }
+/* ── ALARMA EN PANTALLA (despertar y dormir) ──
+   Si Quico está a la vista desde antes de la hora (una pantalla en la mesa, o la estaba usando),
+   pita aquí, cada vez un poco más fuerte, hasta que toque «Vale» (como mucho 5 min; el cartel se queda).
+   Tiempos por reloj, no por tics. Es la alarma que ella eligió: pita aunque haya quitado el sonido de los botones. */
+let _visSince=Date.now(),_ringKind=null,_ringEnd=0,_ringT=null,_ringAct=null;const _rung={};
+function ringable(hhmm,key){
+  if(document.hidden||_rung[key])return false;
+  const at=new Date();at.setHours(0,minsOf(hhmm),0,0);const late=Date.now()-at.getTime();
+  if(!(late>=0&&late<3*60e3&&_visSince<=at.getTime()))return false;
+  _rung[key]=1;return true;
+}
+function alarmRing(kind,title,body,act){
+  alarmStop();_ringKind=kind;_ringAct=act||null;const t0=Date.now();_ringEnd=t0+5*60e3;
+  document.getElementById('alEmo').textContent=kind==='m'?'⏰':'🌙';
+  document.getElementById('alT').textContent=title;document.getElementById('alB').textContent=body||'';
+  const go=document.getElementById('alGo');go.hidden=!act;go.textContent=t('al_go_n');
+  const box=document.getElementById('alarmBox');box.classList.toggle('solo',!act);box.classList.add('show');
+  document.getElementById('tmToast').classList.remove('show');pantTick();
+  // en iPhone/iPad, que suene aunque el interruptor de silencio esté puesto (solo mientras pita)
+  try{if(navigator.audioSession)navigator.audioSession.type='playback';}catch(e){}
+  const tick=()=>{if(!_ringKind)return;
+    if(Date.now()>=_ringEnd){_ringEnd=0;try{if(navigator.audioSession)navigator.audioSession.type='auto';}catch(e){}return;} // se calla; el cartel sigue
+    if(!document.hidden){beepTones(Math.min(.45,.12+(Date.now()-t0)/30000*.33));if('vibrate' in navigator)try{navigator.vibrate([400,150,400]);}catch(e){}}
+    _ringT=setTimeout(tick,1600);};
+  tick();
+}
+function alarmStop(){clearTimeout(_ringT);_ringT=null;_ringKind=null;_ringEnd=0;document.getElementById('alarmBox').classList.remove('show');
+  try{if(navigator.audioSession)navigator.audioSession.type='auto';}catch(e){}}
+/* «Vale» o «Empezar la rutina»: se apaga, cuenta como vista (no se repite) y, si toca, abre la rutina */
+function alarmAct(go){const k=_ringKind,a=_ringAct;alarmStop();_lastTouch=Date.now();if(k)alarmsSeen([k]);if(go&&a)a();}
+/* Vista: el servidor ya no manda las repeticiones de hoy */
+function alarmsSeen(kinds){const n=getNotifCfg(),d=todayLocal();let ch=false;
+  kinds.forEach(k=>{const f=k==='m'?'seenM':'seenN';if(n[f]!==d){n[f]=d;ch=true;}});
+  if(ch){setNotifCfg(n);pushSync(true);}}
+/* Al abrir Quico (o volver a él) pasada la hora: la alarma de hoy ya está vista, salvo la que está pitando */
+function alarmsSeenOnOpen(){const n=getNotifCfg();if(!n.on||!alarmOn(n))return;const d=new Date(),x=d.getHours()*60+d.getMinutes(),k=[];
+  if(n.m&&x>=minsOf(n.m)&&_ringKind!=='m')k.push('m');if(n.n&&x>=minsOf(n.n)&&_ringKind!=='n')k.push('n');if(k.length)alarmsSeen(k);}
+/* El audio solo arranca tras un toque: se prepara en cada toque (si hay alarmas) para que luego pueda pitar sola */
+function audioUnlock(){const n=getNotifCfg();if(!(n.on&&alarmOn(n))&&!pantOn())return;
+  try{if(!_alarmCtx)_alarmCtx=new(window.AudioContext||window.webkitAudioContext)();if(_alarmCtx.state!=='running')_alarmCtx.resume();}catch(e){}}
+
+/* ── PANTALLA FIJA (Quico en una tablet en la mesa, todo el día) ──
+   Solo en este aparato (no viaja con la cuenta): la pantalla no se apaga mientras Quico está abierto,
+   y de noche, si nadie la toca en 3 min, se queda negra con un reloj tenue (un toque = luz otra vez).
+   Así la alarma de despertar puede pitar aquí. */
+const PANT_K='cris_pantalla';let _pantWL=null,_lastTouch=Date.now();
+function pantOn(){try{return localStorage.getItem(PANT_K)==='1';}catch(e){return false;}}
+async function pantLock(){if(!pantOn()||document.hidden||_pantWL||!('wakeLock' in navigator))return;
+  try{const w=await navigator.wakeLock.request('screen');if(!pantOn()||document.hidden){w.release();return;}_pantWL=w;w.addEventListener('release',()=>{if(_pantWL===w)_pantWL=null;});}catch(e){}}
+function pantFree(){const w=_pantWL;_pantWL=null;if(w)try{w.release();}catch(e){}}
+function togglePantalla(){const on=!pantOn();try{on?localStorage.setItem(PANT_K,'1'):localStorage.removeItem(PANT_K);}catch(e){}
+  _lastTouch=Date.now();audioUnlock();on?pantLock():pantFree();renderPantalla();pantTick();}
+function renderPantalla(){const b=document.getElementById('pantBtn'),on=pantOn();b.classList.toggle('on',on);b.textContent=on?t('pant_on'):t('pant_off');
+  document.getElementById('pantNote').style.display=on?'block':'none';}
+/* De noche: desde la hora de dormir hasta la de empezar el día (si no las tiene, de 23:00 a 8:00) */
+function isNight(){const n=getNotifCfg(),a=minsOf(n.n||'23:00'),b=minsOf(n.m||'08:00'),d=new Date(),x=d.getHours()*60+d.getMinutes();
+  return a>b?(x>=a||x<b):(x>=a&&x<b);}
+function pantTick(){
+  const el=document.getElementById('nightClock'),show=pantOn()&&!document.hidden&&!_ringKind&&isNight()&&Date.now()-_lastTouch>3*60e3;
+  if(show){const lg=crisLang()==='en'?'en-GB':crisLang();el.textContent=new Date().toLocaleTimeString(lg,{hour:'2-digit',minute:'2-digit'});}
+  el.classList.toggle('show',show);
+}
+function poke(){_lastTouch=Date.now();audioUnlock();if(document.getElementById('nightClock').classList.contains('show'))pantTick();}
+document.addEventListener('pointerdown',poke,true);
+setInterval(pantTick,5000);
 function tmToastGo(){
   document.getElementById('tmToast').classList.remove('show');
   if(_toastAct){const a=_toastAct;_toastAct=null;a();return;}
@@ -1719,7 +1845,7 @@ function toggleItem(id){
 })();
 renderToday();
 renderCfg();
-renderNotif();
+renderNotif();renderPantalla();
 
 // Generar lista de módulos en el cajón (se reconstruye al cambiar de idioma)
 function buildModuleList(){
@@ -1916,6 +2042,7 @@ function setFrame(file){
   const fr=document.createElement('iframe');
   fr.id='moduleFrame';fr.title='Módulo de Quico';
   if(file)fr.src=file;
+  fr.addEventListener('load',()=>{try{fr.contentDocument.addEventListener('pointerdown',poke,true);}catch(e){}});
   old.replaceWith(fr);
 }
 

@@ -32,7 +32,7 @@
     return s;
   }
   let last='',lastAt=0,busy=null,pend=null;
-  /* items: [{at: ms, t: título, b: texto, g: etiqueta}] — sube la lista si cambió (o cada 6 h).
+  /* items: [{at: ms, t: título, b: texto, g: etiqueta, a: 1 si es alarma}] — sube la lista si cambió (o cada 6 h).
      Si llega otra mientras se sube una, se sube la última al terminar (nunca se queda una vieja). */
   async function schedule(items,force,keepalive){
     if(!supported()||Notification.permission!=='granted')return {ok:false,err:'perm'};
@@ -43,7 +43,7 @@
       try{
         const s=await subscription(),k=await aesKey(),sl=await salt(),te=new TextEncoder();
         const enc=await Promise.all(items.map(async it=>{const iv=crypto.getRandomValues(new Uint8Array(12));
-          const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},k,te.encode(JSON.stringify({t:it.t,b:it.b,g:it.g})));
+          const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},k,te.encode(JSON.stringify(it.a?{t:it.t,b:it.b,g:it.g,a:1}:{t:it.t,b:it.b,g:it.g})));
           const h=await crypto.subtle.digest('SHA-256',te.encode(sl+'|'+it.g));
           return {at:it.at,id:b64(h).slice(0,32),iv:b64(iv),ct:b64(ct)};}));
         const r=await call({a:'set',sub:s.toJSON(),items:enc},keepalive);
